@@ -6,9 +6,11 @@ function injectedMethod (tab, method, callback) {
     });*/
 }
 
-function getBgColors (tab) {
+function getBgColors (event, content) {
+	var tab = '';
+	alert(event.url);
   injectedMethod(tab, 'getBgColors', function (response) {
-    alert('Elements in tab: ');// + response.data);
+    //alert('Elements in tab: ');// + response.data);
     return true;
   });
 }
