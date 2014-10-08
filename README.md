@@ -16,8 +16,8 @@ Editing files in SharePoint Online from any device which has Chrome desktop brow
 
 * Go to your SharePoint Online site
 * Open Chrome Developer Tool
-* Select source tab
+* Select sources tab
 * View your files loaded to the page
-* Select the one you want to edit
+* Select the file you want to edit
 * Make your changes and save (cmd+s / ctrl+s)
 * You will get promt saying if the save was successful or not
