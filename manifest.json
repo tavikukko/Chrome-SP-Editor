@@ -1,7 +1,7 @@
 {
-	"name": "SP Console",
+	"name": "Chrome SP Editor",
 	"version": "0.0.1",
-	"description": "run sp commands.",
+	"description": "Update SharePoint Online files from Chrome Developer Tools",
 	"icons": {
 	},
   "devtools_page": "devtools.html",
