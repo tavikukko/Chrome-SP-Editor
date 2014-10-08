@@ -1,4 +1,5 @@
 chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event, content) {
+
 	var updateFile = function updateFile() {
 		SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 			var fileAbsUrl = "REPLACE-FILE-URL";
