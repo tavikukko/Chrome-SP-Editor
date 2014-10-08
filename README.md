@@ -8,6 +8,6 @@ Editing files in SharePoint Online from any device which has Chrome desktop brow
 
 ## Installation
 
-Clone the repository (git clone https://github.com/tavikukko/Chrome-SP-Editor.git OR download ZIP)
-Open Chrome with url chrome://extensions/
-Click "Load unpacked extension..." and select Chrome-SP-Editor folder
+* Clone the repository (git clone https://github.com/tavikukko/Chrome-SP-Editor.git OR download ZIP)
+* Open Chrome with url chrome://extensions/
+* Click "Load unpacked extension..." and select Chrome-SP-Editor folder
