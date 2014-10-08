@@ -3,7 +3,10 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 	var updateFile = function updateFile() {
 		SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 			var fileAbsUrl = "REPLACE-FILE-URL";
-			var fileRelUrl = fileAbsUrl.replace(_spPageContextInfo.siteAbsoluteUrl.replace(_spPageContextInfo.siteServerRelativeUrl, ''),'');
+			var siteAbsoluteUrl = _spPageContextInfo.siteAbsoluteUrl;
+			var siteServerRelativeUrl = _spPageContextInfo.siteServerRelativeUrl;
+
+			var fileRelUrl = fileAbsUrl.replace(siteAbsoluteUrl.substring(0, siteAbsoluteUrl.lastIndexOf(siteServerRelativeUrl)),'');
 
 			var fileContent = "REPLACE-CONTENT";
 			var unescapedFileContent = unescape(fileContent);
