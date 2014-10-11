@@ -2,8 +2,8 @@ String.prototype.hashCode = function() {
   var hash = 0, i, chr, len;
   if (this.length == 0) return hash;
   for (i = 0, len = this.length; i < len; i++) {
-    chr   = this.charCodeAt(i);
-    hash  = ((hash << 5) - hash) + chr;
+    chr = this.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
     hash |= 0; // Convert to 32bit integer
   }
   return hash;
@@ -15,8 +15,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 	port.postMessage(content.hashCode());
 
-	port.onMessage.addListener(function (save) {
-		if (!save) return;
+	port.onMessage.addListener(function () {
 
 		var updateFile = function updateFile() {
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
@@ -39,6 +38,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 				for (var i = 0; i < unescapedFileContent.length; i++) {
 					fileCreateInfo.get_content().append(unescapedFileContent.charCodeAt(i));
 				}
+
 				file.checkOut();
 				file.saveBinary(fileCreateInfo);
 				file.checkIn();
