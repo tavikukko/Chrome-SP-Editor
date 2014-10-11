@@ -1,49 +1,66 @@
+String.prototype.hashCode = function() {
+  var hash = 0, i, chr, len;
+  if (this.length == 0) return hash;
+  for (i = 0, len = this.length; i < len; i++) {
+    chr   = this.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};
+
 chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event, content) {
 
-	var updateFile = function updateFile() {
-		SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
-			var fileAbsUrl = "REPLACE-FILE-URL";
-			var siteAbsoluteUrl = _spPageContextInfo.siteAbsoluteUrl;
-			var siteServerRelativeUrl = _spPageContextInfo.siteServerRelativeUrl;
+	var port = chrome.extension.connect();
 
-			var fileRelUrl = fileAbsUrl.replace(siteAbsoluteUrl.substring(0, siteAbsoluteUrl.lastIndexOf(siteServerRelativeUrl)),'');
+	port.postMessage(content.hashCode());
 
-			var fileContent = "REPLACE-CONTENT";
-			var unescapedFileContent = unescape(fileContent);
+	port.onMessage.addListener(function (save) {
+		if (!save) return;
 
-			var clientContext = new SP.ClientContext.get_current();
+		var updateFile = function updateFile() {
+			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
+				var fileAbsUrl = "REPLACE-FILE-URL";
+				var siteAbsoluteUrl = _spPageContextInfo.siteAbsoluteUrl;
+				var siteServerRelativeUrl = _spPageContextInfo.siteServerRelativeUrl;
 
-			var file = clientContext.get_site().get_rootWeb().getFileByServerRelativeUrl(fileRelUrl);
-			var list = file.get_listItemAllFields().get_parentList();
+				var fileRelUrl = fileAbsUrl.replace(siteAbsoluteUrl.substring(0, siteAbsoluteUrl.lastIndexOf(siteServerRelativeUrl)),'');
 
-			var fileCreateInfo = new SP.FileCreationInformation();
-			fileCreateInfo.set_url(fileAbsUrl);
-			fileCreateInfo.set_content(new SP.Base64EncodedByteArray());
-			fileCreateInfo.set_overwrite(true);
+				var fileContent = "REPLACE-CONTENT";
+				var unescapedFileContent = unescape(fileContent);
 
-			for (var i = 0; i < unescapedFileContent.length; i++) {
-				fileCreateInfo.get_content().append(unescapedFileContent.charCodeAt(i));
-			}
+				var clientContext = new SP.ClientContext.get_current();
 
-			var existingFile = list.get_rootFolder().get_files().add(fileCreateInfo);
+				var file = clientContext.get_site().get_rootWeb().getFileByServerRelativeUrl(fileRelUrl);
 
-			clientContext.load(existingFile);
-			clientContext.executeQueryAsync(onRequestSucceeded, onRequestFailed);
-		});
-	};
+				var fileCreateInfo = new SP.FileCreationInformation();
+				fileCreateInfo.set_content(new SP.Base64EncodedByteArray());
 
-	var onRequestSucceeded = function onRequestSucceeded() {
-		alert('File saved succesfully!');
-	};
+				for (var i = 0; i < unescapedFileContent.length; i++) {
+					fileCreateInfo.get_content().append(unescapedFileContent.charCodeAt(i));
+				}
+				file.checkOut();
+				file.saveBinary(fileCreateInfo);
+				file.checkIn();
+				file.publish();
+				clientContext.load(file);
+				clientContext.executeQueryAsync(onRequestSucceeded, onRequestFailed);
+			});
+		};
 
-	var onRequestFailed = function onRequestFailed(sender, args) {
-		alert(args.get_message());
-	};
+		var onRequestSucceeded = function onRequestSucceeded() {
+			alert('File saved succesfully!');
+		};
 
-	var script = updateFile + " " + onRequestSucceeded + " " + onRequestFailed;
-	script = script.replace("REPLACE-FILE-URL", event.url);
-	script = script.replace("REPLACE-CONTENT", escape(content));
-	script = script + " updateFile();";
+		var onRequestFailed = function onRequestFailed(sender, args) {
+			alert(args.get_message());
+		};
 
-	chrome.devtools.inspectedWindow.eval(script);
+		var script = updateFile + " " + onRequestSucceeded + " " + onRequestFailed;
+		script = script.replace("REPLACE-FILE-URL", event.url);
+		script = script.replace("REPLACE-CONTENT", escape(content));
+		script = script + " updateFile();";
+
+		chrome.devtools.inspectedWindow.eval(script);
+	});
 });
