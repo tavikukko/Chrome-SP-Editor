@@ -13,7 +13,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 	var port = chrome.extension.connect();
 
-	port.postMessage(content.hashCode());
+	var payload = { "type":"save", "content":content.hashCode() };
+
+	port.postMessage(payload);
 
 	port.onMessage.addListener(function () {
 
@@ -64,3 +66,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		chrome.devtools.inspectedWindow.eval(script);
 	});
 });
+
+chrome.devtools.panels.create("SharePoint", "", "panel.html",
+	function(panel) {
+		//
+	}
+);
