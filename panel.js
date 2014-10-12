@@ -3,8 +3,11 @@ function elem(elem) {
 }
 
 elem("autosave").addEventListener('change', function(e) {
-    localStorage.autosave = elem("autosave").checked;
+  var payload = { "type":"autosavechange", "content":elem("autosave").checked };
+  port.postMessage(payload);
 }, false);
 
-localStorage.autosave = false;
+var port = chrome.extension.connect();
+var payload = { "type":"autosavechange", "content":false };
+port.postMessage(payload);
 elem("autosave").checked = false;
