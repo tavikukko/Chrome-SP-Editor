@@ -24,7 +24,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 				var fileAbsUrl = "REPLACE-FILE-URL";
 				var siteAbsoluteUrl = _spPageContextInfo.siteAbsoluteUrl;
 				var siteServerRelativeUrl = _spPageContextInfo.siteServerRelativeUrl;
-
+					if(siteServerRelativeUrl.length == 1) siteAbsoluteUrl += siteServerRelativeUrl;
 				var fileRelUrl = fileAbsUrl.replace(siteAbsoluteUrl.substring(0, siteAbsoluteUrl.lastIndexOf(siteServerRelativeUrl)),'');
 
 				var fileContent = "REPLACE-CONTENT";
