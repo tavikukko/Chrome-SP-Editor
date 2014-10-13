@@ -20,7 +20,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 	port.onMessage.addListener(function () {
 
 		var updateFile = function updateFile() {
-			
+
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 				SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
 					var fileAbsUrl = "REPLACE-FILE-URL";
@@ -31,7 +31,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 					var documentPath = fileAbsUrl.substring(0, fileAbsUrl.lastIndexOf("/"));
 
 					var executor = new SP.RequestExecutor(documentPath);
-					
+
 					executor.executeAsync({
 						url: documentPath + "/_api/contextinfo",
 						method: "POST",
@@ -78,7 +78,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		var onRequestFailed = function onRequestFailed(sender, args) {
 			alert(args.get_message());
 		};
-		
+
 		var script = updateFile + " " + onRequestSucceeded + " " + onRequestFailed;
 		script = script.replace("REPLACE-FILE-URL", event.url);
 		script = script.replace("REPLACE-CONTENT", escape(content));
@@ -88,7 +88,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 	});
 });
 
-chrome.devtools.panels.create("SharePoint", "", "panel.html",
+chrome.devtools.panels.create("SharePoint", "", "index.html",
 	function(panel) {
 		//
 	}
