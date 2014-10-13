@@ -30,9 +30,6 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 					var fileRelUrl = fileAbsUrl.replace(siteAbsoluteUrl.substring(0, siteAbsoluteUrl.lastIndexOf(siteServerRelativeUrl)),"");
 					var documentPath = fileAbsUrl.substring(0, fileAbsUrl.lastIndexOf("/"));
 
-					var fileContent = "REPLACE-CONTENT";
-					var unescapedFileContent = unescape(fileContent);
-
 					var executor = new SP.RequestExecutor(documentPath);
 					
 					executor.executeAsync({
@@ -81,7 +78,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		var onRequestFailed = function onRequestFailed(sender, args) {
 			alert(args.get_message());
 		};
-
+		
 		var script = updateFile + " " + onRequestSucceeded + " " + onRequestFailed;
 		script = script.replace("REPLACE-FILE-URL", event.url);
 		script = script.replace("REPLACE-CONTENT", escape(content));
