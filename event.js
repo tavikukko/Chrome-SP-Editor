@@ -88,7 +88,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 	});
 });
 
-chrome.devtools.panels.create("SharePoint", "", "index.html",
+chrome.devtools.panels.create("SharePoint", "", "panel.html",
 	function(panel) {
 		//
 	}
