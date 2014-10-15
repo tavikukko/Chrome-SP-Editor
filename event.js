@@ -24,6 +24,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 				SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
 					var fileAbsUrl = "REPLACE-FILE-URL";
+          fileAbsUrl = fileAbsUrl.substring(0, fileAbsUrl.indexOf("?"));
 					var siteAbsoluteUrl = _spPageContextInfo.siteAbsoluteUrl;
 					var siteServerRelativeUrl = _spPageContextInfo.siteServerRelativeUrl;
 					if(siteServerRelativeUrl.length == 1) siteAbsoluteUrl += siteServerRelativeUrl;
