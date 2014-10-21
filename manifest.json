@@ -5,6 +5,12 @@
 	"icons": {},
 	"devtools_page": "devtools.html",
 	"background": { "scripts": [ "background.js"] },
+	   "content_scripts": [
+        {
+            "js": ["content.js"],
+            "matches": ["<all_urls>"]
+        }
+    ],
 	"permissions": ["https://*/*", "tabs"],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"manifest_version": 2

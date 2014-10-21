@@ -4,14 +4,14 @@ String.prototype.hashCode = function() {
   for (i = 0, len = this.length; i < len; i++) {
     chr = this.charCodeAt(i);
     hash = ((hash << 5) - hash) + chr;
-    hash |= 0; // Convert to 32bit integer
+    hash |= 0;
   }
   return hash;
 };
 
 chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event, content) {
 
-	var port = chrome.extension.connect();
+	var port = chrome.runtime.connect();
 
 	var payload = { "type":"save", "content":content.hashCode() };
 
@@ -47,7 +47,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 								var clientContext = new SP.ClientContext(webUrl);
 
-								var file = clientContext.get_web().getFileByServerRelativeUrl(fileRelUrl);
+								this.file = clientContext.get_web().getFileByServerRelativeUrl(fileRelUrl);
 
 								var fileCreateInfo = new SP.FileCreationInformation();
 								fileCreateInfo.set_content(new SP.Base64EncodedByteArray());
@@ -56,12 +56,15 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 									fileCreateInfo.get_content().append(unescapedFileContent.charCodeAt(i));
 								}
 
-								file.checkOut();
-								file.saveBinary(fileCreateInfo);
-								file.checkIn();
-								file.publish();
-								clientContext.load(file);
-								clientContext.executeQueryAsync(onRequestSucceeded, onRequestFailed);
+								this.file.checkOut();
+								this.file.saveBinary(fileCreateInfo);
+								this.file.checkIn();
+								this.file.publish();
+								clientContext.load(this.file);
+								clientContext.executeQueryAsync(
+                  Function.createDelegate(this, updateFileSucceeded),
+                  Function.createDelegate(this, updateFileFailed)
+                );
 							}
 						},
 						error: function (err) {
@@ -72,25 +75,25 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 			});
 		};
 
-		var onRequestSucceeded = function onRequestSucceeded() {
-			alert('File saved succesfully!');
+		var updateFileSucceeded = function updateFileSucceeded() {
+      window.postMessage({ function: 'updateFile', success: true, result: null, source: 'chrome-sp-editor' }, '*');
 		};
 
-		var onRequestFailed = function onRequestFailed(sender, args) {
-			alert(args.get_message());
+		var updateFileFailed = function updateFileFailed(sender, args) {
+      window.postMessage({ function: 'updateFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
 		};
 
-		var script = updateFile + " " + onRequestSucceeded + " " + onRequestFailed;
+		var script = updateFile + " " + updateFileSucceeded + " " + updateFileFailed + " " ;
 		script = script.replace("REPLACE-FILE-URL", event.url);
 		script = script.replace("REPLACE-CONTENT", escape(content));
-		script = script + " updateFile();";
+    script = script + " updateFile();";
 
-		chrome.devtools.inspectedWindow.eval(script);
+    chrome.devtools.inspectedWindow.eval(script);
 	});
 });
 
 chrome.devtools.panels.create("SharePoint", "", "panel.html",
 	function(panel) {
-		//
+		// add actions here if necessary
 	}
 );
