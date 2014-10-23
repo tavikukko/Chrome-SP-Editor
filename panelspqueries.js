@@ -14,13 +14,11 @@ var getCustomActions = function getCustomActions() {
 };
 
 var getCustomActionsSucceeded = function getCustomActionsSucceeded(sender, args) {
-    var listInfo = '';
     var actions = [];
     var listEnumerator = UserCustomActions.getEnumerator();
 
     while (listEnumerator.moveNext()) {
         var oList = listEnumerator.get_current();
-        listInfo += 'Location: ' + oList.get_location() +  '\n' + 'Description:' + oList.get_description() +  '\n'+ 'scriptSrc:' + oList.get_scriptSrc() +  '\n';
         actions.push({location: oList.get_location(),
         description: oList.get_description(),
         scriptSrc: oList.get_scriptSrc(),
