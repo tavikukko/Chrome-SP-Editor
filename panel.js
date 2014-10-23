@@ -15,8 +15,28 @@ port.onMessage.addListener(function (message) {
         else
           alert(message.result);
           break;
-      case '0':
-          //todo
+      case 'getCustomActions':
+        if(message.success){
+          var items = message.result;
+          var ul = document.createElement('ul');
+          var ulatt=document.createAttribute("class");
+          ulatt.value="list-group";
+          ul.setAttributeNode(ulatt);
+
+          for (i = 0; i < items.length; i++) {
+                var li=document.createElement('li');
+                var liatt=document.createAttribute("class");
+                liatt.value="list-group-item";
+                li.setAttributeNode(liatt);
+                ul.appendChild(li);
+                li.innerHTML=items[i].scriptSrc;
+          }
+
+          var element = elem("scriptlinks");
+          element.appendChild(ul);
+        }
+        else
+          alert(message.result);
           break;
       default:
 

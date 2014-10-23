@@ -15,18 +15,22 @@ var getCustomActions = function getCustomActions() {
 
 var getCustomActionsSucceeded = function getCustomActionsSucceeded(sender, args) {
     var listInfo = '';
-
+    var actions = [];
     var listEnumerator = UserCustomActions.getEnumerator();
 
     while (listEnumerator.moveNext()) {
         var oList = listEnumerator.get_current();
         listInfo += 'Location: ' + oList.get_location() +  '\n' + 'Description:' + oList.get_description() +  '\n'+ 'scriptSrc:' + oList.get_scriptSrc() +  '\n';
+        actions.push({location: oList.get_location(),
+        description: oList.get_description(),
+        scriptSrc: oList.get_scriptSrc(),
+        sequence: oList.get_sequence()});
     }
-    alert(listInfo);
+    window.postMessage({ function: 'getCustomActions', success: true, result: actions, source: 'chrome-sp-editor' }, '*');
 };
 
 var getCustomActionsFailed = function getCustomActionsFailed(sender, args) {
-    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+    window.postMessage({ function: 'getCustomActions', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
 };
 
 function elem(elem) {
