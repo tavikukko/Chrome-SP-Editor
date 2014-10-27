@@ -17,23 +17,38 @@ port.onMessage.addListener(function (message) {
           break;
       case 'getCustomActions':
         if(message.success){
-          var items = message.result;
-          var ul = document.createElement('ul');
-          var ulatt=document.createAttribute("class");
-          ulatt.value="list-group";
-          ul.setAttributeNode(ulatt);
+            var element = elem("scriptlinks");
+            while (element.firstChild) {
+              element.removeChild(element.firstChild);
+            }
 
-          for (i = 0; i < items.length; i++) {
-                var li=document.createElement('li');
-                var liatt=document.createAttribute("class");
-                liatt.value="list-group-item";
-                li.setAttributeNode(liatt);
-                ul.appendChild(li);
-                li.innerHTML=items[i].scriptSrc;
+            for (j = 0; j < message.result.length; j++) {
+              var items = message.result[j];
+              items.sort(function(a,b){return a.sequence - b.sequence});
+
+              var ul = document.createElement('ul');
+              var ulatt = document.createAttribute("class");
+              ulatt.value="list-group";
+              ul.setAttributeNode(ulatt);
+
+              for (i = 0; i < items.length; i++) {
+                if(i==0){
+                    var li=document.createElement('li');
+                    var liatt=document.createAttribute("class");
+                    liatt.value="list-group-item active";
+                    li.setAttributeNode(liatt);
+                    ul.appendChild(li);
+                    li.innerHTML=items[i].scope;
+                  }
+                  var li=document.createElement('li');
+                  var liatt=document.createAttribute("class");
+                  liatt.value="list-group-item";
+                  li.setAttributeNode(liatt);
+                  ul.appendChild(li);
+                  li.innerHTML=items[i].scriptSrc;
+              }
+              element.appendChild(ul);
           }
-
-          var element = elem("scriptlinks");
-          element.appendChild(ul);
         }
         else
           alert(message.result);
