@@ -24,10 +24,10 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 				SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
 					var fileAbsUrl = "REPLACE-FILE-URL";
-          if(fileAbsUrl.indexOf("?") > -1) fileAbsUrl = fileAbsUrl.substring(0, fileAbsUrl.indexOf("?"));
+            if(fileAbsUrl.indexOf("?") > -1) fileAbsUrl = fileAbsUrl.substring(0, fileAbsUrl.indexOf("?"));
 					var siteAbsoluteUrl = _spPageContextInfo.siteAbsoluteUrl;
 					var siteServerRelativeUrl = _spPageContextInfo.siteServerRelativeUrl;
-					if(siteServerRelativeUrl.length == 1) siteAbsoluteUrl += siteServerRelativeUrl;
+            if(siteServerRelativeUrl.length == 1) siteAbsoluteUrl += siteServerRelativeUrl;
 					var fileRelUrl = fileAbsUrl.replace(siteAbsoluteUrl.substring(0, siteAbsoluteUrl.lastIndexOf(siteServerRelativeUrl)),"");
 					var documentPath = fileAbsUrl.substring(0, fileAbsUrl.lastIndexOf("/"));
 
@@ -52,9 +52,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 								var fileCreateInfo = new SP.FileCreationInformation();
 								fileCreateInfo.set_content(new SP.Base64EncodedByteArray());
 
-								for (var i = 0; i < unescapedFileContent.length; i++) {
-									fileCreateInfo.get_content().append(unescapedFileContent.charCodeAt(i));
-								}
+                for (var i = 0; i < unescapedFileContent.length; i++) {
+                    fileCreateInfo.get_content().append(unescapedFileContent.charCodeAt(i));
+                }
 
 								this.file.checkOut();
 								this.file.saveBinary(fileCreateInfo);
@@ -85,7 +85,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 		var script = updateFile + " " + updateFileSucceeded + " " + updateFileFailed + " " ;
 		script = script.replace("REPLACE-FILE-URL", event.url);
-		script = script.replace("REPLACE-CONTENT", escape(content));
+		script = script.replace("REPLACE-CONTENT", encodeURIComponent(content));
     script = script + " updateFile();";
 
     chrome.devtools.inspectedWindow.eval(script);
