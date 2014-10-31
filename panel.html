@@ -40,6 +40,22 @@
               <h4>Scriptlinks</h4>
               <p>Add / remove scriptlinks from site with customactions</p>
             </div>
+            <!--<div class="input-group">
+              <input id="scriptpath" type="text" class="form-control" placeholder="~sitecollection/style library/scripts/custom.js">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" id="addscript">Add ScriptLink</button>
+              </span>
+            </div>-->
+            <div class="input-group">
+                <input id="scriptpath" type="text" class="form-control" placeholder="~sitecollection/style library/scripts/custom.js">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Add ScriptLink <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li id="addscriptsite"><a href="#">To site collection</a></li>
+                        <li id="addscriptweb"><a href="#">To current web</a></li>
+                    </ul>
+                </div>
+            </div>
             <div id="scriptlinks">
             </div>
           </div>

@@ -88,3 +88,11 @@ elem('btnFiles').addEventListener('click',function(e){
 elem('btnAbout').addEventListener('click',function(e){
     swap('about','save','script', 'files');
 });
+
+elem('addscriptsite').addEventListener('click',function(e){
+    alert(elem('scriptpath').value);
+});
+
+elem('addscriptweb').addEventListener('click',function(e){
+    alert(elem('scriptpath').value);
+});

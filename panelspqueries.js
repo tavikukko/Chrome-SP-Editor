@@ -26,7 +26,7 @@ var getCustomActionsSucceeded = function getCustomActionsSucceeded(sender, args)
         description: oList.get_description(),
         scriptSrc: oList.get_scriptSrc(),
         sequence: oList.get_sequence(),
-        scope: "Web Custom Actions"});
+        scope: "Current web scriptlinks"});
     }
 
     var siteactions = [];
@@ -38,7 +38,7 @@ var getCustomActionsSucceeded = function getCustomActionsSucceeded(sender, args)
         description: oList.get_description(),
         scriptSrc: oList.get_scriptSrc(),
         sequence: oList.get_sequence(),
-        scope: "Site Custom Actions"});
+        scope: "Site collection scriptlinks"});
     }
 
     var actions = [];
