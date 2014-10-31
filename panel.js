@@ -45,7 +45,7 @@ port.onMessage.addListener(function (message) {
                   liatt.value="list-group-item";
                   li.setAttributeNode(liatt);
                   ul.appendChild(li);
-                  var koko = "<span class='glyphicon glyphicon-remove pull-right'></span>";
+                  var koko = "<span class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
                   li.innerHTML=koko+items[i].scriptSrc;
               }
               element.appendChild(ul);
