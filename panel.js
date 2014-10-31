@@ -45,9 +45,18 @@ port.onMessage.addListener(function (message) {
                   liatt.value="list-group-item";
                   li.setAttributeNode(liatt);
                   ul.appendChild(li);
-                  li.innerHTML=items[i].scriptSrc;
+                  var koko = "<span class='glyphicon glyphicon-remove pull-right'></span>";
+                  li.innerHTML=koko+items[i].scriptSrc;
               }
               element.appendChild(ul);
+
+              var removescript = document.getElementsByClassName("glyphicon-remove");
+
+              for(var i=0;i<removescript.length;i++){
+                  removescript[i].addEventListener('click',function(e){
+                      alert("remove me");
+                  });
+              }
           }
         }
         else
