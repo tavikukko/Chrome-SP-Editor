@@ -40,16 +40,27 @@
               <h4>Scriptlinks</h4>
               <p>Add / remove scriptlinks</p>
             </div>
+            <hr>
             <div class="input-group">
-                <input id="scriptpath" type="text" class="form-control" placeholder="~sitecollection/style library/scripts/custom.js">
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Add ScriptLink <span class="caret"></span></button>
-                    <ul class="dropdown-menu pull-right">
-                        <li id="addscriptsite"><a href="#">To site collection</a></li>
-                        <li id="addscriptweb"><a href="#">To current web</a></li>
-                    </ul>
+              <div class="row">
+                <div class="col-xs-2">
+                  <input id="scriptsequence" type="text" class="form-control" placeholder="Sequence">
                 </div>
+                <div class="col-xs-7">
+                  <input id="scriptpath" type="text" class="form-control" placeholder="Script path eg. ~sitecollection/style library/scripts/custom.js">
+                </div>
+                <div class="col-xs-3">
+                  <div class="input-group-btn">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Add ScriptLink <span class="caret"></span></button>
+                      <ul class="dropdown-menu pull-right">
+                          <li id="addscriptsite"><a href="#">To site collection</a></li>
+                          <li id="addscriptweb"><a href="#">To current web</a></li>
+                      </ul>
+                  </div>
+                </div>
+              </div>
             </div>
+            <hr>
             <div id="scriptlinks">
             </div>
           </div>

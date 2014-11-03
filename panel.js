@@ -15,6 +15,12 @@ port.onMessage.addListener(function (message) {
         else
           alert(message.result);
           break;
+      case 'addCustomAction':
+        if(message.success)
+          alert('scriptlink added successfully!');
+        else
+          alert(message.result);
+          break;
       case 'getCustomActions':
         if(message.success){
             var element = elem("scriptlinks");
@@ -45,8 +51,8 @@ port.onMessage.addListener(function (message) {
                   liatt.value="list-group-item";
                   li.setAttributeNode(liatt);
                   ul.appendChild(li);
-                  var koko = "<span class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
-                  li.innerHTML=koko+items[i].scriptSrc;
+                  var koko = "<span class='pull-left' style='width: 10%' >10030</span><span class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
+                  li.innerHTML = "<span class='pull-left' style='width: 10%' >"+items[i].sequence+"</span><span>"+items[i].scriptSrc+"</span><span class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
               }
               element.appendChild(ul);
 
@@ -99,9 +105,34 @@ elem('btnAbout').addEventListener('click',function(e){
 });
 
 elem('addscriptsite').addEventListener('click',function(e){
-    alert(elem('scriptpath').value);
+  addscriptlink('site');
 });
 
 elem('addscriptweb').addEventListener('click',function(e){
-    alert(elem('scriptpath').value);
+  addscriptlink('web');
 });
+
+function addscriptlink (scope)
+{
+  //alert(elem('scriptpath').value);
+  var scriptpath = elem('scriptpath').value;
+  var scriptsequence = elem('scriptsequence').value;
+
+  if(scriptpath == "")
+    {
+      alert('Script path cannot be empty');
+      return;
+    }
+  else if (scriptsequence == "")
+    {
+      alert('Sequence cannot be empty');
+      return;
+    }
+
+  var script = addCustomAction + ' ' + addCustomActionSucceeded + ' ' + addCustomActionFailed;
+  script += ' addCustomAction(REPLACE-SCOPE, REPLACE-URL, REPLACE-SEQUENCE);';
+  script = script.replace('REPLACE-SCOPE', "'" + scope + "'");
+  script = script.replace('REPLACE-URL', "'" + scriptpath + "'");
+  script = script.replace('REPLACE-SEQUENCE', scriptsequence);
+  chrome.devtools.inspectedWindow.eval(script);
+}

@@ -1,3 +1,4 @@
+// getCustomActions
 var getCustomActions = function getCustomActions() {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
     SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
@@ -52,6 +53,39 @@ var getCustomActionsFailed = function getCustomActionsFailed(sender, args) {
     window.postMessage({ function: 'getCustomActions', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
 };
 
+// addCustomAction
+var addCustomAction = function addCustomAction(scope, url, sequence) {
+  SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
+    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
+    var clientContext = new SP.ClientContext();
+    var UserCustomActions;
+
+    if(scope === 'site') UserCustomActions = clientContext.get_site().get_userCustomActions();
+    else UserCustomActions = clientContext.get_web().get_userCustomActions();
+
+    var newUserCustomAction = UserCustomActions.add();
+    newUserCustomAction.set_location('ScriptLink');
+    newUserCustomAction.set_scriptSrc(url);
+    newUserCustomAction.set_sequence(sequence);
+    newUserCustomAction.update();
+
+    clientContext.executeQueryAsync(
+      Function.createDelegate(this, addCustomActionSucceeded),
+      Function.createDelegate(this, addCustomActionFailed)
+      );
+    });
+  });
+};
+
+var addCustomActionSucceeded = function addCustomActionSucceeded(sender, args) {
+    window.postMessage({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+};
+
+var addCustomActionFailed = function addCustomActionFailed(sender, args) {
+    window.postMessage({ function: 'addCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+};
+
+// helper functions
 function elem(elem) {
     return document.getElementById(elem);
 }
