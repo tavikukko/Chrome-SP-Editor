@@ -51,18 +51,16 @@ port.onMessage.addListener(function (message) {
                   liatt.value="list-group-item";
                   li.setAttributeNode(liatt);
                   ul.appendChild(li);
-                  var koko = "<span class='pull-left' style='width: 10%' >10030</span><span class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
                   li.innerHTML = "<span class='pull-left' style='width: 10%' >"+items[i].sequence+"</span><span>"+items[i].scriptSrc+"</span><span class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
               }
               element.appendChild(ul);
+          }
+          var removescript = document.getElementsByClassName("glyphicon-remove");
 
-              var removescript = document.getElementsByClassName("glyphicon-remove");
-
-              for(var i=0;i<removescript.length;i++){
-                  removescript[i].addEventListener('click',function(e){
-                      alert("remove me");
-                  });
-              }
+          for(var i=0;i<removescript.length;i++){
+              removescript[i].addEventListener('click',function(e){
+                  alert("remove me");
+              });
           }
         }
         else
@@ -114,7 +112,6 @@ elem('addscriptweb').addEventListener('click',function(e){
 
 function addscriptlink (scope)
 {
-  //alert(elem('scriptpath').value);
   var scriptpath = elem('scriptpath').value;
   var scriptsequence = elem('scriptsequence').value;
 
