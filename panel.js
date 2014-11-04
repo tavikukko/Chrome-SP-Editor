@@ -21,6 +21,12 @@ port.onMessage.addListener(function (message) {
         else
           alert(message.result);
           break;
+        case 'removeCustomAction':
+          if(message.success)
+            alert('scriptlink removed successfully!');
+          else
+            alert(message.result);
+            break;
       case 'getCustomActions':
         if(message.success){
             var element = elem("scriptlinks");
@@ -44,14 +50,14 @@ port.onMessage.addListener(function (message) {
                     liatt.value="list-group-item active";
                     li.setAttributeNode(liatt);
                     ul.appendChild(li);
-                    li.innerHTML=items[i].scope;
+                    li.innerHTML=items[i].heading;
                   }
                   var li=document.createElement('li');
                   var liatt=document.createAttribute("class");
                   liatt.value="list-group-item";
                   li.setAttributeNode(liatt);
                   ul.appendChild(li);
-                  li.innerHTML = "<span class='pull-left' style='width: 10%' >"+items[i].sequence+"</span><span>"+items[i].scriptSrc+"</span><span class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
+                  li.innerHTML = "<span class='pull-left' style='width: 10%' >"+items[i].sequence+"</span><span>"+items[i].scriptSrc+"</span><span data-sequence='"+items[i].sequence+"' data-url='"+items[i].scriptSrc+"' data-scope='"+items[i].scope+"' data-id='"+items[i].id+"' class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
               }
               element.appendChild(ul);
           }
@@ -59,7 +65,17 @@ port.onMessage.addListener(function (message) {
 
           for(var i=0;i<removescript.length;i++){
               removescript[i].addEventListener('click',function(e){
-                  alert("remove me");
+                /*  alert($(this).data('sequence'));
+                  alert($(this).data('url'));
+                  alert($(this).data('scope'));
+                  alert($(this).data('id'));
+                */
+              var script = removeCustomAction + ' ' + removeCustomActionSucceeded + ' ' + removeCustomActionSucceeded2 + ' ' + removeCustomActionFailed;
+              script += ' removeCustomAction(REPLACE-SCOPE, REPLACE-ID);';
+              script = script.replace('REPLACE-SCOPE', "'" + $(this).data('scope') + "'");
+              script = script.replace('REPLACE-ID', "'" + $(this).data('id') + "'");
+              chrome.devtools.inspectedWindow.eval(script);
+
               });
           }
         }

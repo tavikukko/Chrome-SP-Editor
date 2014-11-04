@@ -27,7 +27,9 @@ var getCustomActionsSucceeded = function getCustomActionsSucceeded(sender, args)
         description: oList.get_description(),
         scriptSrc: oList.get_scriptSrc(),
         sequence: oList.get_sequence(),
-        scope: "Current web scriptlinks"});
+        heading: "Current web scriptlinks",
+        scope: "web",
+        id: oList.get_id().toString()});
     }
 
     var siteactions = [];
@@ -39,7 +41,9 @@ var getCustomActionsSucceeded = function getCustomActionsSucceeded(sender, args)
         description: oList.get_description(),
         scriptSrc: oList.get_scriptSrc(),
         sequence: oList.get_sequence(),
-        scope: "Site collection scriptlinks"});
+        heading: "Site collection scriptlinks",
+        scope: "site",
+        id: oList.get_id().toString()});
     }
 
     var actions = [];
@@ -84,6 +88,52 @@ var addCustomActionSucceeded = function addCustomActionSucceeded(sender, args) {
 var addCustomActionFailed = function addCustomActionFailed(sender, args) {
     window.postMessage({ function: 'addCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
 };
+
+// removeCustomAction
+var removeCustomAction = function removeCustomAction(scope, id) {
+  SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
+    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
+    this.clientContext = new SP.ClientContext();
+    this.UserCustomActions;
+    this.id = id;
+    if(scope === 'site') this.UserCustomActions = clientContext.get_site().get_userCustomActions();
+    else this.UserCustomActions = clientContext.get_web().get_userCustomActions();
+    clientContext.load(this.UserCustomActions)
+    clientContext.executeQueryAsync(
+      Function.createDelegate(this, removeCustomActionSucceeded),
+      Function.createDelegate(this, removeCustomActionFailed)
+      );
+    });
+  });
+};
+
+var removeCustomActionSucceeded = function removeCustomActionSucceeded(sender, args) {
+
+  var customActionEnumerator = this.UserCustomActions.getEnumerator();
+  var deleteId;
+  while (customActionEnumerator.moveNext()) {
+  	var oUserCustomAction = customActionEnumerator.get_current();
+  	if (oUserCustomAction.get_id().toString() === this.id) {
+  		deleteId = oUserCustomAction.get_id();
+  	}
+  }
+  var customActionToDelete = this.UserCustomActions.getById(deleteId);
+  customActionToDelete.deleteObject();
+  this.clientContext.load(customActionToDelete);
+  this.clientContext.executeQueryAsync(
+    Function.createDelegate(this, removeCustomActionSucceeded2),
+    Function.createDelegate(this, removeCustomActionFailed)
+    );
+};
+
+var removeCustomActionSucceeded2 = function removeCustomActionSucceeded2(sender, args) {
+    window.postMessage({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+};
+
+var removeCustomActionFailed = function removeCustomActionFailed(sender, args) {
+    window.postMessage({ function: 'removeCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+};
+
 
 // helper functions
 function elem(elem) {
