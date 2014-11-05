@@ -26,6 +26,7 @@ var getCustomActionsSucceeded = function getCustomActionsSucceeded(sender, args)
         webactions.push({location: oList.get_location(),
         description: oList.get_description(),
         scriptSrc: oList.get_scriptSrc(),
+        scriptBlock: oList.get_scriptBlock(),
         sequence: oList.get_sequence(),
         heading: "Current web scriptlinks",
         scope: "web",
@@ -40,6 +41,7 @@ var getCustomActionsSucceeded = function getCustomActionsSucceeded(sender, args)
         siteactions.push({location: oList.get_location(),
         description: oList.get_description(),
         scriptSrc: oList.get_scriptSrc(),
+        scriptBlock: oList.get_scriptBlock(),
         sequence: oList.get_sequence(),
         heading: "Site collection scriptlinks",
         scope: "site",
@@ -69,7 +71,18 @@ var addCustomAction = function addCustomAction(scope, url, sequence) {
 
     var newUserCustomAction = UserCustomActions.add();
     newUserCustomAction.set_location('ScriptLink');
-    newUserCustomAction.set_scriptSrc(url);
+    if(url.match(/.js$/))
+      newUserCustomAction.set_scriptSrc(url);
+    else{
+
+      url = url.toLowerCase();
+      if(url.indexOf("~sitecollection") > -1)
+        url = url.replace("~sitecollection", _spPageContextInfo.siteAbsoluteUrl);
+      else if(url.indexOf("~site") > -1)
+        url = url.replace("~site", _spPageContextInfo.webAbsoluteUrl);
+
+      newUserCustomAction.set_scriptBlock("document.write('<link rel=\"stylesheet\" href=\"" + url + "\" />');");
+    }
     newUserCustomAction.set_sequence(sequence);
     newUserCustomAction.update();
 
@@ -133,7 +146,6 @@ var removeCustomActionSucceeded2 = function removeCustomActionSucceeded2(sender,
 var removeCustomActionFailed = function removeCustomActionFailed(sender, args) {
     window.postMessage({ function: 'removeCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
 };
-
 
 // helper functions
 function elem(elem) {

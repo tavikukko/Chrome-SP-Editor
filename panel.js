@@ -57,7 +57,11 @@ port.onMessage.addListener(function (message) {
                   liatt.value="list-group-item";
                   li.setAttributeNode(liatt);
                   ul.appendChild(li);
-                  li.innerHTML = "<span class='pull-left' style='width: 10%' >"+items[i].sequence+"</span><span>"+items[i].scriptSrc+"</span><span data-sequence='"+items[i].sequence+"' data-url='"+items[i].scriptSrc+"' data-scope='"+items[i].scope+"' data-id='"+items[i].id+"' class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
+                  var scripturl = items[i].scriptSrc;
+                  if(!scripturl) {
+                    scripturl = items[i].scriptBlock.substring(45, items[i].scriptBlock.indexOf("/>") - 2);
+                  }
+                  li.innerHTML = "<span class='pull-left' style='width: 10%' >"+items[i].sequence+"</span><span>"+scripturl+"</span><span data-scope='"+items[i].scope+"' data-id='"+items[i].id+"' class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
               }
               element.appendChild(ul);
           }
@@ -65,11 +69,6 @@ port.onMessage.addListener(function (message) {
 
           for(var i=0;i<removescript.length;i++){
               removescript[i].addEventListener('click',function(e){
-                /*  alert($(this).data('sequence'));
-                  alert($(this).data('url'));
-                  alert($(this).data('scope'));
-                  alert($(this).data('id'));
-                */
               var script = removeCustomAction + ' ' + removeCustomActionSucceeded + ' ' + removeCustomActionSucceeded2 + ' ' + removeCustomActionFailed;
               script += ' removeCustomAction(REPLACE-SCOPE, REPLACE-ID);';
               script = script.replace('REPLACE-SCOPE', "'" + $(this).data('scope') + "'");
