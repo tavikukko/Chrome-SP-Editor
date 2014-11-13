@@ -71,18 +71,33 @@ var addCustomAction = function addCustomAction(scope, url, sequence) {
 
     var newUserCustomAction = UserCustomActions.add();
     newUserCustomAction.set_location('ScriptLink');
-    if(url.match(/.js$/))
-      newUserCustomAction.set_scriptSrc(url);
-    else{
+    if(url.indexOf("~") > -1 && url.match(/.js$/))
+      {
+        newUserCustomAction.set_scriptSrc(url);
+      }
 
-      url = url.toLowerCase();
-      if(url.indexOf("~sitecollection") > -1)
-        url = url.replace("~sitecollection", _spPageContextInfo.siteAbsoluteUrl);
-      else if(url.indexOf("~site") > -1)
-        url = url.replace("~site", _spPageContextInfo.webAbsoluteUrl);
+    else if(url.match(/.js$/))
+      {
+        //generate unique variable names
+        var headID = "";
+        var newScript = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        for( var i=0; i < 5; i++ )
+            headID += possible.charAt(Math.floor(Math.random() * possible.length));
+        for( var i=0; i < 5; i++ )
+            newScript += possible.charAt(Math.floor(Math.random() * possible.length));
 
+        var jsScriptBlock = "var " + headID + " = document.getElementsByTagName(\"head\")[0]; ";
+        jsScriptBlock += "var " + newScript + " = document.createElement(\"script\");";
+        jsScriptBlock += " " + newScript + ".type = \"text/javascript\";";
+        jsScriptBlock += " " + newScript + ".src = \""+url+"\";" ;
+        jsScriptBlock += " " + headID + ".appendChild(" + newScript + ");";
+        newUserCustomAction.set_scriptBlock(jsScriptBlock);
+      }
+    else if(url.match(/.css$/)){
       newUserCustomAction.set_scriptBlock("document.write('<link rel=\"stylesheet\" href=\"" + url + "\" />');");
     }
+    else return;
     newUserCustomAction.set_sequence(sequence);
     newUserCustomAction.update();
 

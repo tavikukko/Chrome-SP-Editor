@@ -59,7 +59,10 @@ port.onMessage.addListener(function (message) {
                   ul.appendChild(li);
                   var scripturl = items[i].scriptSrc;
                   if(!scripturl) {
-                    scripturl = items[i].scriptBlock.substring(45, items[i].scriptBlock.indexOf("/>") - 2);
+                    if(items[i].scriptBlock.indexOf("link rel") > -1)
+                      scripturl = items[i].scriptBlock.substring(items[i].scriptBlock.indexOf("href=")+6, items[i].scriptBlock.indexOf(".css") + 4);
+                    else
+                      scripturl = items[i].scriptBlock.substring(items[i].scriptBlock.indexOf(".src = ")+8, items[i].scriptBlock.indexOf(".js") + 3);
                   }
                   li.innerHTML = "<span class='pull-left' style='width: 10%' >"+items[i].sequence+"</span><span>"+scripturl+"</span><span data-scope='"+items[i].scope+"' data-id='"+items[i].id+"' class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
               }
