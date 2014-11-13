@@ -16,7 +16,8 @@ Editing files in SharePoint Online from any device which has Chrome desktop brow
 
 * Go to your SharePoint Online site
 * Open Chrome Developer Tool
+* Select SharePoint tab and select "Update changes to SharePoint"
 * Select sources tab
-* Select file for editing
+* Select js/css file for editing
 * Make changes and save (cmd+s / ctrl+s)
 * You will get promt saying if the save was successful or not
