@@ -162,6 +162,38 @@ var removeCustomActionFailed = function removeCustomActionFailed(sender, args) {
     window.postMessage({ function: 'removeCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
 };
 
+// add new file to _catalogs/masterpage
+var addFile = function addFile(filename) {
+  SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
+    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
+    var clientContext = new SP.ClientContext();
+    var site = clientContext.get_site();
+
+    var createInfo = new SP.FileCreationInformation();
+    createInfo.set_content(new SP.Base64EncodedByteArray());
+    createInfo.set_overwrite(true);
+    createInfo.set_url(filename);
+    this.file = site.get_rootWeb().getFolderByServerRelativeUrl('_catalogs/masterpage').get_files().add(createInfo);
+    clientContext.load(this.file);
+
+    clientContext.executeQueryAsync(
+      Function.createDelegate(this, addFileSucceeded),
+      Function.createDelegate(this, addFileFailed)
+      );
+    });
+  });
+};
+
+var addFileSucceeded = function addFileSucceeded(sender, args) {
+    var result = [];
+    result.push(this.file);
+    window.postMessage({ function: 'addFile', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+};
+
+var addFileFailed = function addFileFailed(sender, args) {
+    window.postMessage({ function: 'addFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+};
+
 // helper functions
 function elem(elem) {
     return document.getElementById(elem);

@@ -21,6 +21,12 @@ port.onMessage.addListener(function (message) {
         else
           alert(message.result);
           break;
+      case 'addFile':
+        if(message.success)
+          alert('File added successfully!');
+        else
+          alert(message.result);
+          break;
         case 'removeCustomAction':
           if(message.success)
             alert('scriptlink removed successfully!');
@@ -126,6 +132,20 @@ elem('addscriptsite').addEventListener('click',function(e){
 
 elem('addscriptweb').addEventListener('click',function(e){
   addscriptlink('web');
+});
+
+elem('addfilebtn').addEventListener('click',function(e){
+  var filename = elem('addfile').value;
+  if (filename == "")
+    {
+      alert("Filename cannot be empty!")
+      return;
+    }
+
+  var script = addFile + ' ' + addFileSucceeded + ' ' + addFileFailed;
+  script += ' addFile(REPLACE-FILENAME);';
+  script = script.replace('REPLACE-FILENAME', "'" + filename + "'");
+  chrome.devtools.inspectedWindow.eval(script);
 });
 
 function addscriptlink (scope)
