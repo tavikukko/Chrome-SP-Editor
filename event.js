@@ -17,9 +17,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 	port.postMessage(payload);
 
-	port.onMessage.addListener(function () {
+	port.onMessage.addListener(function (msg) {
 
-		var updateFile = function updateFile() {
+    var updateFile = function updateFile(checkout, publish) {
 
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 				SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
@@ -56,10 +56,11 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
                     fileCreateInfo.get_content().append(unescapedFileContent.charCodeAt(i));
                 }
 
-								this.file.checkOut();
+								if (!checkout) this.file.checkOut();
 								this.file.saveBinary(fileCreateInfo);
-								this.file.checkIn();
-								this.file.publish();
+								if (!checkout) this.file.checkIn();
+								if (!publish) this.file.publish();
+
 								clientContext.load(this.file);
 								clientContext.executeQueryAsync(
                   Function.createDelegate(this, updateFileSucceeded),
@@ -86,7 +87,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		var script = updateFile + " " + updateFileSucceeded + " " + updateFileFailed + " " ;
 		script = script.replace("REPLACE-FILE-URL", event.url);
 		script = script.replace("REPLACE-CONTENT", encodeURIComponent(content));
-    script = script + " updateFile();";
+    script = script + " updateFile("+msg.autoCheckout+", "+msg.autoPublish+");";
 
     chrome.devtools.inspectedWindow.eval(script);
 	});

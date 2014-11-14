@@ -107,6 +107,16 @@ elem("autosave").addEventListener('change', function(e) {
   port.postMessage(payload);
 }, false);
 
+elem("autocheckout").addEventListener('change', function(e) {
+  var payload = { "type":"autocheckoutchange", "content":elem("autocheckout").checked };
+  port.postMessage(payload);
+}, false);
+
+elem("autopublish").addEventListener('change', function(e) {
+  var payload = { "type":"autopublishchange", "content":elem("autopublish").checked };
+  port.postMessage(payload);
+}, false);
+
 elem('btnSave').addEventListener('click',function(e){
     swap('save','script','files','about');
 });
