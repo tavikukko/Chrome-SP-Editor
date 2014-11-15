@@ -175,7 +175,6 @@ var addFile = function addFile(filename) {
     createInfo.set_url(filename);
     this.file = site.get_rootWeb().getFolderByServerRelativeUrl('_catalogs/masterpage').get_files().add(createInfo);
     clientContext.load(this.file);
-
     clientContext.executeQueryAsync(
       Function.createDelegate(this, addFileSucceeded),
       Function.createDelegate(this, addFileFailed)
@@ -185,8 +184,6 @@ var addFile = function addFile(filename) {
 };
 
 var addFileSucceeded = function addFileSucceeded(sender, args) {
-    var result = [];
-    result.push(this.file);
     window.postMessage({ function: 'addFile', success: true, result: null, source: 'chrome-sp-editor' }, '*');
 };
 

@@ -17,7 +17,6 @@ chrome.runtime.onConnect.addListener(function (port) {
         autoSave = req.content;
       } else if (req.type == 'autocheckoutchange') {
         autoCheckout = req.content;
-        alert('koko');
       } else if (req.type == 'autopublishchange') {
         autoPublish = req.content;
       }

@@ -146,16 +146,29 @@ elem('addscriptweb').addEventListener('click',function(e){
 
 elem('addfilebtn').addEventListener('click',function(e){
   var filename = elem('addfile').value;
+  filename = filename.replace(/[^a-z0-9/._-]/gi,'');
   if (filename == "")
     {
-      alert("Filename cannot be empty!")
+      alert("Filename cannot be empty!");
       return;
     }
+  else if (filename.match(/.css$/) || filename.match(/.js$/))
+    {
+    var script = addFile + ' ' + addFileSucceeded + ' ' + addFileFailed;
+    script += ' addFile(REPLACE-FILENAME);';
+    script = script.replace('REPLACE-FILENAME', "'" + filename + "'");
+    chrome.devtools.inspectedWindow.eval(script);
+  }
+  else
+    {
+      alert("Filename need to end with .js or .css!");
+      return;
+    }
+});
 
-  var script = addFile + ' ' + addFileSucceeded + ' ' + addFileFailed;
-  script += ' addFile(REPLACE-FILENAME);';
-  script = script.replace('REPLACE-FILENAME', "'" + filename + "'");
-  chrome.devtools.inspectedWindow.eval(script);
+$('#addfile').keyup(function(){
+     var txtBoxVal =$(this).val();
+    $('#trimmedfilename').text(txtBoxVal.replace(/[^a-z0-9/._-]/gi,''));
 });
 
 function addscriptlink (scope)
