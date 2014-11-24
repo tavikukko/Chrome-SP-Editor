@@ -33,4 +33,4 @@ open Chrome developer tools.
 * Select SharePoint tab, select "Scriptlinks" from left navigation
 * Give sequence for the link to be added. The sequence will tell the order to load the files
 * Add the URL to the file. Local js files, use ~sitecollection/path/to/your/file.js. Local css and external css and js files must use absolute url.
-* From the dropdown, selet if you want the file to be added only to current site, or to the whole sitecollection level.
+* From the dropdown, select if you want the file to be added only to current site, or to the whole site collection.
