@@ -41,7 +41,9 @@
           <div id="page-content-wrapper">
             <div>
               <h4>Scriptlinks</h4>
-              <p>Add / remove scriptlinks</p>
+              <p>Add / remove scriptlinks.
+              <b>Local</b> js files, use <b>~sitecollection/path/to/your/file.js</b>.
+              <b>Local css</b> and <b>external css and js</b> files must use absolute url.</p>
             </div>
             <hr>
             <div class="input-group">
@@ -50,7 +52,7 @@
                   <input id="scriptsequence" type="text" class="form-control" placeholder="Sequence">
                 </div>
                 <div class="col-xs-7">
-                  <input id="scriptpath" type="text" class="form-control" placeholder="Script path eg. ~sitecollection/style library/scripts/custom.js">
+                  <input id="scriptpath" type="text" class="form-control" placeholder="~sitecollection/style library/scripts/custom.js">
                 </div>
                 <div class="col-xs-3">
                   <div class="input-group-btn">
@@ -71,7 +73,7 @@
         <div id="files" style="display: none;">
           <div id="page-content-wrapper">
             <h4>Files</h4>
-            <p>Add files to rootsite _catalogs/masterpage folder.</p>
+            <p>Add files to rootsite Style library.</p>
             <p>Allowed characters [a-z 0-9 . _ -], trimmed automatically.</p>
             <hr>
             <div class="row">
@@ -85,7 +87,7 @@
                </div>
             </div>
             <hr>
-            <span>~sitecollection/_catalogs/masterpage/</span><span id="trimmedfilename"></span>
+            <span>/Style library/</span><span id="trimmedfilename"></span>
           </div>
         </div>
         <div id="about" style="display: none;">

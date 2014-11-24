@@ -162,7 +162,7 @@ var removeCustomActionFailed = function removeCustomActionFailed(sender, args) {
     window.postMessage({ function: 'removeCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
 };
 
-// add new file to _catalogs/masterpage
+// add new file to style%20library
 var addFile = function addFile(filename) {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
     SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
@@ -173,7 +173,8 @@ var addFile = function addFile(filename) {
     createInfo.set_content(new SP.Base64EncodedByteArray());
     createInfo.set_overwrite(true);
     createInfo.set_url(filename);
-    this.file = site.get_rootWeb().getFolderByServerRelativeUrl('_catalogs/masterpage').get_files().add(createInfo);
+    //this.file = site.get_rootWeb().getFolderByServerRelativeUrl('_catalogs/masterpage').get_files().add(createInfo);
+    this.file = site.get_rootWeb().getFolderByServerRelativeUrl('style%20library').get_files().add(createInfo);
     clientContext.load(this.file);
     clientContext.executeQueryAsync(
       Function.createDelegate(this, addFileSucceeded),

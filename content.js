@@ -10,6 +10,6 @@ window.addEventListener('message', function(event) {
     message === undefined || message.source === undefined) {
     return;
   }
-  
+
   chrome.runtime.sendMessage(message);
 });
