@@ -173,7 +173,6 @@ var addFile = function addFile(filename) {
     createInfo.set_content(new SP.Base64EncodedByteArray());
     createInfo.set_overwrite(true);
     createInfo.set_url(filename);
-    //this.file = site.get_rootWeb().getFolderByServerRelativeUrl('_catalogs/masterpage').get_files().add(createInfo);
     this.file = site.get_rootWeb().getFolderByServerRelativeUrl('style%20library').get_files().add(createInfo);
     clientContext.load(this.file);
     clientContext.executeQueryAsync(

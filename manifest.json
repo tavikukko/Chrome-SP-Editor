@@ -1,7 +1,7 @@
 {
 	"name": "Chrome SP Editor",
 	"version": "1.0.0",
-	"description": "Update SharePoint Online files from Chrome Developer Tools",
+	"description": "Create and update SharePoint Online css/js files from Chrome Developer Tools",
 	"icons": {},
 	"devtools_page": "devtools.html",
 	"background": { "scripts": [ "background.js"] },
