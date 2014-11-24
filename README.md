@@ -15,10 +15,22 @@ Also possibility to add local and external js/css resources references with user
 
 ## Usage
 
-* Go to your SharePoint Online site
-* Open Chrome Developer Tool
-* Select SharePoint tab and select "Update changes to SharePoint"
+Go to your SharePoint Online site and
+open Chrome developer tools.
+### Edit files
+* Select SharePoint tab, select "Save to SharePoint" from left navigation" and select "Update changes to SharePoint".
 * Select sources tab
 * Select js/css file for editing
 * Make changes and save (cmd+s / ctrl+s)
 * You will get promt saying if the save was successful or not
+
+### Create files
+* Select SharePoint tab, select "Files" from left navigation
+* Write filename (.js/.css) and press add
+* New empty file will be created in the Style library of the rootweb
+
+### Add css / js references to site / sitecollection
+* Select SharePoint tab, select "Scriptlinks" from left navigation
+* Give sequence for the link to be added. The sequence will tell the order to load the files
+* Add the URL to the file. Local js files, use ~sitecollection/path/to/your/file.js. Local css and external css and js files must use absolute url.
+* From the dropdown, selet if you want the file to be added only to current site, or to the whole sitecollection level.
