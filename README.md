@@ -7,6 +7,8 @@ A Google Chrome Extension for creating and updating files (js, css) in SharePoin
 Creating and editing js / css files in SharePoint Online from any device which has Chrome desktop browser.
 Also possibility to add local and external js/css resources references with usercustomactions.
 
+Introduction video http://youtu.be/Nk_NZhdpZEo
+
 ## Installation
 * Install extension from Chrome web store http://tiny.cc/chromesp
 * OR
