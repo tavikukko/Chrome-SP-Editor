@@ -37,3 +37,6 @@ open Chrome developer tools.
 * Give sequence for the link to be added. The sequence will tell the order to load the files
 * Add the URL to the file. Local js files, use ~sitecollection/path/to/your/file.js. Local css and external css and js files must use absolute url.
 * From the dropdown, select if you want the file to be added only to current site, or to the whole site collection.
+
+### Chrome Workspaces
+* The tools works also when using Chrome workspaces, is saves the file tothe disk and also the SharePoint.
