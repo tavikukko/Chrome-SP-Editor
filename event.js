@@ -9,6 +9,37 @@ String.prototype.hashCode = function() {
   return hash;
 };
 
+if (typeof String.prototype.endsWith !== 'function') {
+    String.prototype.endsWith = function(suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+}
+
+var files = [];
+
+chrome.devtools.network.onRequestFinished.addListener(function(request) {
+	var filesCount = files.length;
+	var requestUrl = request.request.url.toLowerCase();
+	var addit = true;
+
+	if(requestUrl.indexOf("?") > -1) 
+	{
+		requestUrl = requestUrl.substring(0, requestUrl.indexOf("?"));
+	}
+
+	for (i = 0; i < filesCount; i++)
+	{
+		if(files[i] == requestUrl)
+		{
+			addit = false;
+			break;
+		}
+	}
+
+	if(addit) files.push(requestUrl);
+});
+
+
 chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(event, content) {
 
 	var port = chrome.runtime.connect();
@@ -24,10 +55,10 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 				SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
 					var fileAbsUrl = "REPLACE-FILE-URL";
-            if(fileAbsUrl.indexOf("?") > -1) fileAbsUrl = fileAbsUrl.substring(0, fileAbsUrl.indexOf("?"));
+            		if(fileAbsUrl.indexOf("?") > -1) fileAbsUrl = fileAbsUrl.substring(0, fileAbsUrl.indexOf("?"));
 					var siteAbsoluteUrl = _spPageContextInfo.siteAbsoluteUrl;
 					var siteServerRelativeUrl = _spPageContextInfo.siteServerRelativeUrl;
-            if(siteServerRelativeUrl.length == 1) siteAbsoluteUrl += siteServerRelativeUrl;
+            		if(siteServerRelativeUrl.length == 1) siteAbsoluteUrl += siteServerRelativeUrl;
 					var fileRelUrl = fileAbsUrl.replace(siteAbsoluteUrl.substring(0, siteAbsoluteUrl.lastIndexOf(siteServerRelativeUrl)),"");
 					var documentPath = fileAbsUrl.substring(0, fileAbsUrl.lastIndexOf("/"));
 
@@ -52,9 +83,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 								var fileCreateInfo = new SP.FileCreationInformation();
 								fileCreateInfo.set_content(new SP.Base64EncodedByteArray());
 
-                for (var i = 0; i < unescapedFileContent.length; i++) {
-                    fileCreateInfo.get_content().append(unescapedFileContent.charCodeAt(i));
-                }
+						                for (var i = 0; i < unescapedFileContent.length; i++) {
+						                    fileCreateInfo.get_content().append(unescapedFileContent.charCodeAt(i));
+						                }
 
 								if (!checkout) this.file.checkOut();
 								this.file.saveBinary(fileCreateInfo);
@@ -63,9 +94,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 								clientContext.load(this.file);
 								clientContext.executeQueryAsync(
-                  Function.createDelegate(this, updateFileSucceeded),
-                  Function.createDelegate(this, updateFileFailed)
-                );
+					                  Function.createDelegate(this, updateFileSucceeded),
+					                  Function.createDelegate(this, updateFileFailed)
+				                );
 							}
 						},
 						error: function (err) {
@@ -77,15 +108,37 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		};
 
 		var updateFileSucceeded = function updateFileSucceeded() {
-      window.postMessage({ function: 'updateFile', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+      		window.postMessage({ function: 'updateFile', success: true, result: null, source: 'chrome-sp-editor' }, '*');
 		};
 
 		var updateFileFailed = function updateFileFailed(sender, args) {
-      window.postMessage({ function: 'updateFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+      		window.postMessage({ function: 'updateFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
 		};
 
 		var script = updateFile + " " + updateFileSucceeded + " " + updateFileFailed + " " ;
-		script = script.replace("REPLACE-FILE-URL", event.url);
+
+		var eventUrl = event.url.toLowerCase();
+
+		// if using chrome "Workspaces" and "map file to network" we need to find the file from the request list
+		if(eventUrl.indexOf("file:") > -1)
+		{
+			var filesCount = files.length;
+
+			for (i = 0; i < filesCount; i++)
+			{
+				if(files[i].endsWith(eventUrl.substring(eventUrl.lastIndexOf('/')+1)))
+				{
+					eventUrl = files[i];
+					break;
+				}
+			}			
+			if(eventUrl.indexOf("file:") > -1) {
+				alert("Could not find '" + eventUrl.substring(eventUrl.lastIndexOf('/')+1) + "' from SharePoint, please refresh the page while devtools is open.")
+				return;
+			}			
+		}
+
+		script = script.replace("REPLACE-FILE-URL", eventUrl);
 		script = script.replace("REPLACE-CONTENT", encodeURIComponent(content));
     script = script + " updateFile("+msg.autoCheckout+", "+msg.autoPublish+");";
 
