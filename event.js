@@ -1,4 +1,4 @@
-String.prototype.hashCode = function() {
+/*String.prototype.hashCode = function() {
 	var hash = 0, i, chr, len;
 	if (this.length == 0) return hash;
 	for (i = 0, len = this.length; i < len; i++) {
@@ -8,7 +8,7 @@ String.prototype.hashCode = function() {
 	}
 	return hash;
 };
-
+*/
 if(typeof String.prototype.endsWith !== 'function') {
 	String.prototype.endsWith = function(suffix) {
 		return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -19,7 +19,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 	var port = chrome.runtime.connect();
 
-	var payload = { "type":"save", "content":content.hashCode() };
+	var payload = { "type":"save", "content":content };
 
 	port.postMessage(payload);
 
