@@ -65,10 +65,19 @@ port.onMessage.addListener(function (message) {
                   ul.appendChild(li);
                   var scripturl = items[i].scriptSrc;
                   if(!scripturl) {
-                    if(items[i].scriptBlock.indexOf("link rel") > -1)
-                      scripturl = items[i].scriptBlock.substring(items[i].scriptBlock.indexOf("href=")+6, items[i].scriptBlock.indexOf(".css") + 4);
+                    console.log(items[i].scriptBlock);
+                    if(items[i].scriptBlock.indexOf("href") > -1)
+                    {
+                      scripturl = items[i].scriptBlock.substring(items[i].scriptBlock.indexOf("href"));
+                      scripturl = scripturl.substring(scripturl.indexOf("\"")+1);
+                      scripturl = scripturl.substring(0, scripturl.indexOf("\""));
+                    }
                     else
-                      scripturl = items[i].scriptBlock.substring(items[i].scriptBlock.indexOf(".src = ")+8, items[i].scriptBlock.indexOf(".js") + 3);
+                    {
+                      scripturl = items[i].scriptBlock.substring(items[i].scriptBlock.indexOf(".src"));
+                      scripturl = scripturl.substring(scripturl.indexOf("\"")+1);
+                      scripturl = scripturl.substring(0, scripturl.indexOf("\""));
+                    }
                   }
                   li.innerHTML = "<span class='pull-left' style='width: 10%' >"+items[i].sequence+"</span><span>"+scripturl+"</span><span data-scope='"+items[i].scope+"' data-id='"+items[i].id+"' class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
               }
