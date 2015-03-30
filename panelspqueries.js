@@ -71,9 +71,18 @@ var addCustomAction = function addCustomAction(scope, url, sequence) {
 
     var newUserCustomAction = UserCustomActions.add();
     newUserCustomAction.set_location('ScriptLink');
+
+    var querystrings = "";
+
+    if(url.split("?").length > 1)
+    {
+      querystrings = '?' + url.split("?")[1];
+      url = url.split("?")[0];
+    }
+
     if(url.indexOf("~") > -1 && url.match(/.js$/))
       {
-        newUserCustomAction.set_scriptSrc(url);
+        newUserCustomAction.set_scriptSrc(url+querystrings);
       }
 
     else if(url.match(/.js$/))
@@ -90,12 +99,12 @@ var addCustomAction = function addCustomAction(scope, url, sequence) {
         var jsScriptBlock = "var " + headID + " = document.getElementsByTagName(\"head\")[0]; ";
         jsScriptBlock += "var " + newScript + " = document.createElement(\"script\");";
         jsScriptBlock += " " + newScript + ".type = \"text/javascript\";";
-        jsScriptBlock += " " + newScript + ".src = \""+url+"\";" ;
+        jsScriptBlock += " " + newScript + ".src = \""+url+querystrings+"\";" ;
         jsScriptBlock += " " + headID + ".appendChild(" + newScript + ");";
         newUserCustomAction.set_scriptBlock(jsScriptBlock);
       }
     else if(url.match(/.css$/)){
-      newUserCustomAction.set_scriptBlock("document.write('<link rel=\"stylesheet\" href=\"" + url + "\" />');");
+      newUserCustomAction.set_scriptBlock("document.write('<link rel=\"stylesheet\" href=\"" + url+querystrings + "\" />');");
     }
     else return;
     newUserCustomAction.set_sequence(sequence);
