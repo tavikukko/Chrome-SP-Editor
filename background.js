@@ -7,9 +7,9 @@ var autoPublish;
 chrome.runtime.onConnect.addListener(function (port) {
     port.onMessage.addListener(function (req) {
       if (req.type == 'save') {
-	    	//var hash = req.content;
-		   // if (hash != lastHash && autoSave ){
-        if (autoSave){
+	    	var hash = req.content;
+		    if (hash != lastHash && autoSave ){
+          lastHash = hash;
           port.postMessage({ "autoCheckout":autoCheckout, "autoPublish":autoPublish });
 		    }
   		} else if (req.type == 'autosavechange') {
