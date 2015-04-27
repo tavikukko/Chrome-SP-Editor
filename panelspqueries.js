@@ -238,6 +238,46 @@ var getWebPropertiesFailed = function getWebPropertiesFailed(sender, args) {
     window.postMessage({ function: 'getWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
 };
 
+// addWebProperties
+var addWebProperties = function addWebProperties(prop, value) {
+  SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
+    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
+    this.clientContext = new SP.ClientContext();
+    this.prop = prop;
+    this.value = value;
+    this.web = this.clientContext.get_web();
+    this.webProperties = this.clientContext.get_web().get_allProperties();
+    this.clientContext.load(this.webProperties);
+    this.clientContext.load(this.web);
+    this.clientContext.executeQueryAsync(
+      Function.createDelegate(this, addWebPropertiesSucceeded),
+      Function.createDelegate(this, addWebPropertiesFailed)
+      );
+    });
+  });
+};
+
+var addWebPropertiesSucceeded = function addWebPropertiesSucceeded(sender, args) {
+
+    var allProperties = this.webProperties;
+    allProperties.set_item(this.prop, this.value);
+    this.web.update();
+    this.clientContext.executeQueryAsync(
+      Function.createDelegate(this, addWebPropertiesSucceeded2),
+      Function.createDelegate(this, addWebPropertiesFailed)
+      );
+};
+
+var addWebPropertiesSucceeded2 = function addWebPropertiesSucceeded2(sender, args) {
+    window.postMessage({ function: 'addWebProperties', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+};
+
+var addWebPropertiesFailed = function addWebPropertiesFailed(sender, args) {
+    window.postMessage({ function: 'addWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+};
+
+
+
 // updateWebProperties
 var updateWebProperties = function updateWebProperties(prop, value) {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
@@ -245,11 +285,11 @@ var updateWebProperties = function updateWebProperties(prop, value) {
     this.clientContext = new SP.ClientContext();
     this.prop = prop;
     this.value = value;
-    this.web = clientContext.get_web();
-    this.webProperties = clientContext.get_web().get_allProperties();
-    clientContext.load(this.webProperties);
-    clientContext.load(this.web);
-    clientContext.executeQueryAsync(
+    this.web = this.clientContext.get_web();
+    this.webProperties = this.clientContext.get_web().get_allProperties();
+    this.clientContext.load(this.webProperties);
+    this.clientContext.load(this.web);
+    this.clientContext.executeQueryAsync(
       Function.createDelegate(this, updateWebPropertiesSucceeded),
       Function.createDelegate(this, updateWebPropertiesFailed)
       );

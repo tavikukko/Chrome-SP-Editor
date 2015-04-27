@@ -235,6 +235,12 @@ port.onMessage.addListener(function (message) {
         else
           alert(message.result);
           break;
+      case 'addWebProperties':
+        if(message.success)
+          alert('property added successfully!');
+        else
+          alert(message.result);
+          break;
       case 'updateWebProperties':
         if(message.success)
           alert('property updated successfully!');
@@ -336,6 +342,18 @@ elem('addfilebtn').addEventListener('click',function(e){
 $('#addfile').keyup(function(){
      var txtBoxVal =$(this).val();
     $('#trimmedfilename').text(txtBoxVal.replace(/[^a-z0-9/._-]/gi,''));
+});
+
+elem('addpropertybtn').addEventListener('click',function(e){
+  var propertykey = elem('propertykey').value;
+  var propertyvalue = elem('propertyvalue').value;
+
+  var script = addWebProperties + ' ' + addWebPropertiesSucceeded + ' ' + addWebPropertiesSucceeded2 + ' ' + addWebPropertiesFailed;
+  script += ' addWebProperties(REPLACE-PROP, REPLACE-VALUE);';
+  script = script.replace('REPLACE-PROP', "'" + propertykey + "'");
+  script = script.replace('REPLACE-VALUE', "'" + propertyvalue + "'");
+  chrome.devtools.inspectedWindow.eval(script);
+
 });
 
 function addscriptlink (scope)
