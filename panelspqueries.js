@@ -200,14 +200,91 @@ var addFileFailed = function addFileFailed(sender, args) {
     window.postMessage({ function: 'addFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
 };
 
+// getWebProperties
+var getWebProperties = function getWebProperties() {
+  SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
+    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
+    var clientContext = new SP.ClientContext();
+    this.webProperties = clientContext.get_web().get_allProperties();
+    clientContext.load(this.webProperties);
+    clientContext.executeQueryAsync(
+      Function.createDelegate(this, getWebPropertiesSucceeded),
+      Function.createDelegate(this, getWebPropertiesFailed)
+      );
+    });
+  });
+};
+
+var getWebPropertiesSucceeded = function getWebPropertiesSucceeded(sender, args) {
+    var compare = function compare(a,b) {
+      if (a.prop.toLowerCase() < b.prop.toLowerCase())
+         return -1;
+      if (a.prop.toLowerCase() > b.prop.toLowerCase())
+        return 1;
+      return 0;
+      }
+    
+    var allProperties = this.webProperties.get_fieldValues();
+    var arr = [];
+    for (property in allProperties) 
+        arr.push({prop: property, value: allProperties[property]});   
+    
+    arr.sort(compare);
+    var propertyBag = arr.slice();
+    window.postMessage({ function: 'getWebProperties', success: true, result: propertyBag, source: 'chrome-sp-editor' }, '*');
+};
+
+var getWebPropertiesFailed = function getWebPropertiesFailed(sender, args) {
+    window.postMessage({ function: 'getWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+};
+
+// updateWebProperties
+var updateWebProperties = function updateWebProperties(prop, value) {
+  SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
+    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
+    this.clientContext = new SP.ClientContext();
+    this.prop = prop;
+    this.value = value;
+    this.web = clientContext.get_web();
+    this.webProperties = clientContext.get_web().get_allProperties();
+    clientContext.load(this.webProperties);
+    clientContext.load(this.web);
+    clientContext.executeQueryAsync(
+      Function.createDelegate(this, updateWebPropertiesSucceeded),
+      Function.createDelegate(this, updateWebPropertiesFailed)
+      );
+    });
+  });
+};
+
+var updateWebPropertiesSucceeded = function updateWebPropertiesSucceeded(sender, args) {
+    
+    var allProperties = this.webProperties;
+    allProperties.set_item(this.prop, this.value);
+    this.web.update();
+    this.clientContext.executeQueryAsync(
+      Function.createDelegate(this, updateWebPropertiesSucceeded2),
+      Function.createDelegate(this, updateWebPropertiesFailed)
+      );
+};
+
+var updateWebPropertiesSucceeded2 = function updateWebPropertiesSucceeded2(sender, args) {
+    window.postMessage({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+};
+
+var updateWebPropertiesFailed = function updateWebPropertiesFailed(sender, args) {
+    window.postMessage({ function: 'updateWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+};
+
 // helper functions
 function elem(elem) {
     return document.getElementById(elem);
 }
 
-function swap(a, b, c, d) {
+function swap(a, b, c, d, e) {
     elem(a).style.display = 'block';
     elem(b).style.display = 'none';
     elem(c).style.display = 'none';
     elem(d).style.display = 'none';
+    elem(e).style.display = 'none';
 }
