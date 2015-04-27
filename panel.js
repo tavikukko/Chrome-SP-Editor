@@ -108,6 +108,13 @@ port.onMessage.addListener(function (message) {
 
             for (j = 0; j < message.result.length; j++) {
 
+              var divform=document.createElement('div');
+              var divformClass=document.createAttribute("class");
+              divformClass.value = 'form-group';
+              divform.setAttributeNode(divformClass);
+
+              element.appendChild(divform);
+
               var items = message.result[j];
               //label
               var label=document.createElement('label');
@@ -117,21 +124,21 @@ port.onMessage.addListener(function (message) {
               var labelAtt=document.createAttribute("for");
               labelAtt.value='propInput'+j;
               label.setAttributeNode(labelAtt);
-              
-              element.appendChild(label);
+
+              divform.appendChild(label);
               //div for buttons
               var div=document.createElement('div');
               var divClass=document.createAttribute("class");
               divClass.value = 'input-group';
               div.setAttributeNode(divClass);
 
-              element.appendChild(div);
+              divform.appendChild(div);
               //input
               var input=document.createElement('input');
               var inputType=document.createAttribute("type");
               inputType.value='text';
               input.setAttributeNode(inputType);
-              
+
               var inputId=document.createAttribute("id");
               inputId.value='propInput'+j;
               input.setAttributeNode(inputId);
@@ -154,14 +161,14 @@ port.onMessage.addListener(function (message) {
               span.setAttributeNode(spanClass);
 
               div.appendChild(span);
-              
-              //button update  
+
+              //button update
               var buttonUpdate=document.createElement('button');
               buttonUpdate.innerHTML = 'Update';
               var buttonClass=document.createAttribute("class");
               buttonClass.value='btn btn-default update-property';
               buttonUpdate.setAttributeNode(buttonClass);
-              
+
               var buttonUpdateDataId=document.createAttribute("data-id");
               buttonUpdateDataId.value='proplabel'+j;
               buttonUpdate.setAttributeNode(buttonUpdateDataId);
@@ -200,28 +207,29 @@ port.onMessage.addListener(function (message) {
               updateproperty[i].addEventListener('click',function(e){
              //   alert( $('#'+$(this).data('id')).html());
              //   alert( $('#'+$(this).data('value')).val());
-              var script = updateWebProperties + ' ' + updateWebPropertiesSucceeded + ' ' + updateWebPropertiesSucceeded2 + ' ' + updateWebPropertiesFailed;
-              script += ' updateWebProperties(REPLACE-PROP, REPLACE-VALUE);';
-              script = script.replace('REPLACE-PROP', "'" + $('#'+$(this).data('id')).html() + "'");
-              script = script.replace('REPLACE-VALUE', "'" + $('#'+$(this).data('value')).val() + "'");
-              chrome.devtools.inspectedWindow.eval(script); 
+             if (confirm('Are you sure you want to update '+$('#'+$(this).data('id')).html()+' property?')) {
+               var script = updateWebProperties + ' ' + updateWebPropertiesSucceeded + ' ' + updateWebPropertiesSucceeded2 + ' ' + updateWebPropertiesFailed;
+               script += ' updateWebProperties(REPLACE-PROP, REPLACE-VALUE);';
+               script = script.replace('REPLACE-PROP', "'" + $('#'+$(this).data('id')).html() + "'");
+               script = script.replace('REPLACE-VALUE', "'" + $('#'+$(this).data('value')).val() + "'");
+               chrome.devtools.inspectedWindow.eval(script);
+              }
 
               });
-          }            
+          }
 
           var removeproperty = document.getElementsByClassName("remove-property");
 
           for(var i=0;i<removeproperty.length;i++){
               removeproperty[i].addEventListener('click',function(e){
-                alert( $('#'+$(this).data('id')).html());
-          /*    var script = removeCustomAction + ' ' + removeCustomActionSucceeded + ' ' + removeCustomActionSucceeded2 + ' ' + removeCustomActionFailed;
-              script += ' removeCustomAction(REPLACE-SCOPE, REPLACE-ID);';
-              script = script.replace('REPLACE-SCOPE', "'" + $(this).data('scope') + "'");
-              script = script.replace('REPLACE-ID', "'" + $(this).data('id') + "'");
-              chrome.devtools.inspectedWindow.eval(script); */
-
+              if (confirm('Are you sure you want to delete '+$('#'+$(this).data('id')).html()+' property?')) {
+                var script = deleteWebProperties + ' ' + deleteWebPropertiesSucceeded + ' ' + deleteWebPropertiesSucceeded2 + ' ' + deleteWebPropertiesFailed;
+                script += ' deleteWebProperties(REPLACE-PROP);';
+                script = script.replace('REPLACE-PROP', "'" + $('#'+$(this).data('id')).html() + "'");
+                chrome.devtools.inspectedWindow.eval(script);
+              }
               });
-          } 
+          }
 
         }
         else
@@ -232,7 +240,13 @@ port.onMessage.addListener(function (message) {
           alert('property updated successfully!');
         else
           alert(message.result);
-          break;                    
+          break;
+      case 'deleteWebProperties':
+        if(message.success)
+          alert('property deleted successfully!');
+        else
+          alert(message.result);
+          break;
       default:
 
   }
