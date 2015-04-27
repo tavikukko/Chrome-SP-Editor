@@ -1,8 +1,8 @@
 {
 	"name": "Chrome SP Editor",
 	"homepage_url": "https://github.com/tavikukko/Chrome-SP-Editor",
-	"version": "1.2.0",
-	"description": "Create and update SharePoint Online css/js files from Chrome Developer Tools",
+	"version": "1.2.1",
+	"description": "Create and update SharePoint Online css/js files, inject files to web and manage web properties from Chrome Developer Tools",
 	"icons": {
 		"16": "icon16.png",
 		"32": "icon32.png",

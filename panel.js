@@ -16,8 +16,12 @@ port.onMessage.addListener(function (message) {
           alert(message.result);
           break;
       case 'addCustomAction':
-        if(message.success)
+        if(message.success){
           alert('scriptlink added successfully!');
+          var script = getCustomActions + ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;
+          script += ' getCustomActions();';
+          chrome.devtools.inspectedWindow.eval(script);
+        }
         else
           alert(message.result);
           break;
@@ -28,8 +32,12 @@ port.onMessage.addListener(function (message) {
           alert(message.result);
           break;
         case 'removeCustomAction':
-          if(message.success)
+          if(message.success){
             alert('scriptlink removed successfully!');
+            var script = getCustomActions + ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;
+            script += ' getCustomActions();';
+            chrome.devtools.inspectedWindow.eval(script);
+          }
           else
             alert(message.result);
             break;
@@ -236,20 +244,32 @@ port.onMessage.addListener(function (message) {
           alert(message.result);
           break;
       case 'addWebProperties':
-        if(message.success)
+        if(message.success){
           alert('property added successfully!');
+          var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
+          script += ' getWebProperties();';
+          chrome.devtools.inspectedWindow.eval(script);
+        }
         else
           alert(message.result);
           break;
       case 'updateWebProperties':
-        if(message.success)
+        if(message.success){
           alert('property updated successfully!');
+          var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
+          script += ' getWebProperties();';
+          chrome.devtools.inspectedWindow.eval(script);
+        }
         else
           alert(message.result);
           break;
       case 'deleteWebProperties':
-        if(message.success)
+        if(message.success){
           alert('property deleted successfully!');
+          var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
+          script += ' getWebProperties();';
+          chrome.devtools.inspectedWindow.eval(script);
+        }
         else
           alert(message.result);
           break;
