@@ -38,5 +38,10 @@ open Chrome developer tools.
 * Add the URL to the file. Local js files, use ~sitecollection/path/to/your/file.js. Local css and external css and js files must use absolute url.
 * From the dropdown, select if you want the file to be added only to current site, or to the whole site collection.
 
+### Web properties
+* Select SharePoint tab, select "Web properties" from left navigation
+* Add new property and value and press "Add property"
+* Edit or modify current properties from the list below
+
 ### Chrome Workspaces
 * The tools works also when using Chrome workspaces, is saves the file to the disk and also the SharePoint.
