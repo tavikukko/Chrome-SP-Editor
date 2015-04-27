@@ -99,6 +99,140 @@ port.onMessage.addListener(function (message) {
         else
           alert(message.result);
           break;
+      case 'getWebProperties':
+        if(message.success){
+            var element = elem("webPropertyBag");
+            while (element.firstChild) {
+              element.removeChild(element.firstChild);
+            }
+
+            for (j = 0; j < message.result.length; j++) {
+
+              var items = message.result[j];
+              //label
+              var label=document.createElement('label');
+              label.innerHTML = items.prop;
+              label.id = 'proplabel'+j;
+
+              var labelAtt=document.createAttribute("for");
+              labelAtt.value='propInput'+j;
+              label.setAttributeNode(labelAtt);
+              
+              element.appendChild(label);
+              //div for buttons
+              var div=document.createElement('div');
+              var divClass=document.createAttribute("class");
+              divClass.value = 'input-group';
+              div.setAttributeNode(divClass);
+
+              element.appendChild(div);
+              //input
+              var input=document.createElement('input');
+              var inputType=document.createAttribute("type");
+              inputType.value='text';
+              input.setAttributeNode(inputType);
+              
+              var inputId=document.createAttribute("id");
+              inputId.value='propInput'+j;
+              input.setAttributeNode(inputId);
+
+              var inputClass=document.createAttribute("class");
+              inputClass.value='form-control';
+              input.setAttributeNode(inputClass);
+
+              var inputAria=document.createAttribute("aria-describedby");
+              inputAria.value='helpBlock';
+              input.setAttributeNode(inputAria);
+
+              input.value = items.value;
+
+              div.appendChild(input);
+
+              var span=document.createElement('span');
+              var spanClass=document.createAttribute("class");
+              spanClass.value='input-group-btn';
+              span.setAttributeNode(spanClass);
+
+              div.appendChild(span);
+              
+              //button update  
+              var buttonUpdate=document.createElement('button');
+              buttonUpdate.innerHTML = 'Update';
+              var buttonClass=document.createAttribute("class");
+              buttonClass.value='btn btn-default update-property';
+              buttonUpdate.setAttributeNode(buttonClass);
+              
+              var buttonUpdateDataId=document.createAttribute("data-id");
+              buttonUpdateDataId.value='proplabel'+j;
+              buttonUpdate.setAttributeNode(buttonUpdateDataId);
+
+              var buttonUpdateDataValue=document.createAttribute("data-value");
+              buttonUpdateDataValue.value='propInput'+j;
+              buttonUpdate.setAttributeNode(buttonUpdateDataValue);
+
+              var buttonType=document.createAttribute("type");
+              buttonType.value='button';
+              buttonUpdate.setAttributeNode(buttonType);
+
+              span.appendChild(buttonUpdate);
+
+              //button remove
+              var buttonRemove=document.createElement('button');
+              buttonRemove.innerHTML = 'Remove';
+              var buttonClass=document.createAttribute("class");
+              buttonClass.value='btn btn-default remove-property';
+              buttonRemove.setAttributeNode(buttonClass);
+
+              var buttonRemoveDataId=document.createAttribute("data-id");
+              buttonRemoveDataId.value='proplabel'+j;
+              buttonRemove.setAttributeNode(buttonRemoveDataId);
+
+              var buttonType=document.createAttribute("type");
+              buttonType.value='button';
+              buttonRemove.setAttributeNode(buttonType);
+
+              span.appendChild(buttonRemove);
+            }
+
+          var updateproperty = document.getElementsByClassName("update-property");
+
+          for(var i=0;i<updateproperty.length;i++){
+              updateproperty[i].addEventListener('click',function(e){
+             //   alert( $('#'+$(this).data('id')).html());
+             //   alert( $('#'+$(this).data('value')).val());
+              var script = updateWebProperties + ' ' + updateWebPropertiesSucceeded + ' ' + updateWebPropertiesSucceeded2 + ' ' + updateWebPropertiesFailed;
+              script += ' updateWebProperties(REPLACE-PROP, REPLACE-VALUE);';
+              script = script.replace('REPLACE-PROP', "'" + $('#'+$(this).data('id')).html() + "'");
+              script = script.replace('REPLACE-VALUE', "'" + $('#'+$(this).data('value')).val() + "'");
+              chrome.devtools.inspectedWindow.eval(script); 
+
+              });
+          }            
+
+          var removeproperty = document.getElementsByClassName("remove-property");
+
+          for(var i=0;i<removeproperty.length;i++){
+              removeproperty[i].addEventListener('click',function(e){
+                alert( $('#'+$(this).data('id')).html());
+          /*    var script = removeCustomAction + ' ' + removeCustomActionSucceeded + ' ' + removeCustomActionSucceeded2 + ' ' + removeCustomActionFailed;
+              script += ' removeCustomAction(REPLACE-SCOPE, REPLACE-ID);';
+              script = script.replace('REPLACE-SCOPE', "'" + $(this).data('scope') + "'");
+              script = script.replace('REPLACE-ID', "'" + $(this).data('id') + "'");
+              chrome.devtools.inspectedWindow.eval(script); */
+
+              });
+          } 
+
+        }
+        else
+          alert(message.result);
+          break;
+      case 'updateWebProperties':
+        if(message.success)
+          alert('property updated successfully!');
+        else
+          alert(message.result);
+          break;                    
       default:
 
   }
@@ -108,7 +242,7 @@ var payload = { "type":"autosavechange", "content":false };
 port.postMessage(payload);
 
 elem("autosave").checked = false;
-swap('save','script','files','about');
+swap('save','script','files','webproperties','about');
 
 //event bindings
 elem("autosave").addEventListener('change', function(e) {
@@ -130,22 +264,29 @@ elem("autopublish").addEventListener('change', function(e) {
 
 
 elem('btnSave').addEventListener('click',function(e){
-    swap('save','script','files','about');
+    swap('save','script','files','webproperties','about');
 });
 
 elem('btnScript').addEventListener('click',function(e){
-    swap('script','files','about','save');
+    swap('script','files','webproperties','about','save');
     var script = getCustomActions + ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;
     script += ' getCustomActions();';
     chrome.devtools.inspectedWindow.eval(script);
 });
 
 elem('btnFiles').addEventListener('click',function(e){
-    swap('files','script','save','about');
+    swap('files','webproperties','script','save','about');
 });
 
 elem('btnAbout').addEventListener('click',function(e){
-    swap('about','save','script', 'files');
+    swap('about','save','script', 'files','webproperties');
+});
+
+elem('btnWebProperties').addEventListener('click',function(e){
+    swap('webproperties','save','script', 'files','about');
+    var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
+    script += ' getWebProperties();';
+    chrome.devtools.inspectedWindow.eval(script);
 });
 
 elem('addscriptsite').addEventListener('click',function(e){
