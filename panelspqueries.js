@@ -52,11 +52,11 @@ var getCustomActionsSucceeded = function getCustomActionsSucceeded(sender, args)
     actions.push(webactions);
     actions.push(siteactions);
 
-    window.postMessage({ function: 'getCustomActions', success: true, result: actions, source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'getCustomActions', success: true, result: actions, source: 'chrome-sp-editor' }), '*');
 };
 
 var getCustomActionsFailed = function getCustomActionsFailed(sender, args) {
-    window.postMessage({ function: 'getCustomActions', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'getCustomActions', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 
 // addCustomAction
@@ -119,11 +119,11 @@ var addCustomAction = function addCustomAction(scope, url, sequence) {
 };
 
 var addCustomActionSucceeded = function addCustomActionSucceeded(sender, args) {
-    window.postMessage({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 };
 
 var addCustomActionFailed = function addCustomActionFailed(sender, args) {
-    window.postMessage({ function: 'addCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'addCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 
 // removeCustomAction
@@ -164,11 +164,11 @@ var removeCustomActionSucceeded = function removeCustomActionSucceeded(sender, a
 };
 
 var removeCustomActionSucceeded2 = function removeCustomActionSucceeded2(sender, args) {
-    window.postMessage({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 };
 
 var removeCustomActionFailed = function removeCustomActionFailed(sender, args) {
-    window.postMessage({ function: 'removeCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 
 // add new file to style%20library
@@ -193,11 +193,11 @@ var addFile = function addFile(filename) {
 };
 
 var addFileSucceeded = function addFileSucceeded(sender, args) {
-    window.postMessage({ function: 'addFile', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'addFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 };
 
 var addFileFailed = function addFileFailed(sender, args) {
-    window.postMessage({ function: 'addFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'addFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 
 // getWebProperties
@@ -231,11 +231,11 @@ var getWebPropertiesSucceeded = function getWebPropertiesSucceeded(sender, args)
 
     arr.sort(compare);
     var propertyBag = arr.slice();
-    window.postMessage({ function: 'getWebProperties', success: true, result: propertyBag, source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'getWebProperties', success: true, result: propertyBag, source: 'chrome-sp-editor' }), '*');
 };
 
 var getWebPropertiesFailed = function getWebPropertiesFailed(sender, args) {
-    window.postMessage({ function: 'getWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'getWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 
 // addWebProperties
@@ -269,14 +269,12 @@ var addWebPropertiesSucceeded = function addWebPropertiesSucceeded(sender, args)
 };
 
 var addWebPropertiesSucceeded2 = function addWebPropertiesSucceeded2(sender, args) {
-    window.postMessage({ function: 'addWebProperties', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'addWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 };
 
 var addWebPropertiesFailed = function addWebPropertiesFailed(sender, args) {
-    window.postMessage({ function: 'addWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
-
-
 
 // updateWebProperties
 var updateWebProperties = function updateWebProperties(prop, value) {
@@ -309,11 +307,11 @@ var updateWebPropertiesSucceeded = function updateWebPropertiesSucceeded(sender,
 };
 
 var updateWebPropertiesSucceeded2 = function updateWebPropertiesSucceeded2(sender, args) {
-    window.postMessage({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 };
 
 var updateWebPropertiesFailed = function updateWebPropertiesFailed(sender, args) {
-    window.postMessage({ function: 'updateWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 
 // deleteWebProperties
@@ -346,11 +344,11 @@ var deleteWebPropertiesSucceeded = function deleteWebPropertiesSucceeded(sender,
 };
 
 var deleteWebPropertiesSucceeded2 = function deleteWebPropertiesSucceeded2(sender, args) {
-    window.postMessage({ function: 'deleteWebProperties', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 };
 
 var deleteWebPropertiesFailed = function deleteWebPropertiesFailed(sender, args) {
-    window.postMessage({ function: 'deleteWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+    window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 
 

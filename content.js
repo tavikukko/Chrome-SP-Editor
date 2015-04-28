@@ -4,7 +4,7 @@ window.addEventListener('message', function(event) {
     return;
   }
 
-  var message = event.data;
+  var message = JSON.parse(event.data);
 
   if (typeof message !== 'object' || message === null ||
     message === undefined || message.source === undefined) {
