@@ -3,7 +3,7 @@ Chrome SP Editor
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 
 ## Version history
-* 1.2.4 Added filtering for propertyabg value listing
+* 1.2.4 Added filtering for propertybag value listing
 * 1.2.3 Small messaging enhancements
 * 1.2.2 Small messaging enhancements
 * 1.2.1 Small usability enhancements
