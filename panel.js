@@ -116,14 +116,20 @@ port.onMessage.addListener(function (message) {
 
             for (j = 0; j < message.result.length; j++) {
 
+              var items = message.result[j];
+
               var divform=document.createElement('div');
+
+              var divformDataId=document.createAttribute("data-id");
+              divformDataId.value=items.prop;
+              divform.setAttributeNode(divformDataId);
+
               var divformClass=document.createAttribute("class");
               divformClass.value = 'form-group';
               divform.setAttributeNode(divformClass);
 
               element.appendChild(divform);
 
-              var items = message.result[j];
               //label
               var label=document.createElement('label');
               label.innerHTML = items.prop;
@@ -238,6 +244,18 @@ port.onMessage.addListener(function (message) {
               }
               });
           }
+
+          var $rows = $('#webPropertyBag .form-group');
+
+          $('#filterprops').keyup(function() {
+              var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+              //alert(rows);
+              $rows.show().filter(function() {
+                  var text = $(this).data('id').replace(/\s+/g, ' ').toLowerCase();
+                  //alert(text);
+                  return !~text.indexOf(val);
+              }).hide();
+          });
 
         }
         else
@@ -373,7 +391,6 @@ elem('addpropertybtn').addEventListener('click',function(e){
   script = script.replace('REPLACE-PROP', "'" + propertykey + "'");
   script = script.replace('REPLACE-VALUE', "'" + propertyvalue + "'");
   chrome.devtools.inspectedWindow.eval(script);
-
 });
 
 function addscriptlink (scope)
