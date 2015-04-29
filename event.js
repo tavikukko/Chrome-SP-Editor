@@ -98,11 +98,11 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		};
 
 		var updateFileFailed = function updateFileFailed(sender, args) {
-			window.postMessage({ function: 'updateFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }, '*');
+			window.postMessage(JSON.stringify({ function: 'updateFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 		};
 
 		var updateFileSucceeded2 = function updateFileSucceeded2() {
-			window.postMessage({ function: 'updateFile', success: true, result: null, source: 'chrome-sp-editor' }, '*');
+			window.postMessage(JSON.stringify({ function: 'updateFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 		};
 
 		var script = updateFile + " " + updateFileSucceeded + " " + updateFileSucceeded2 + " " + updateFileFailed + " " ;
