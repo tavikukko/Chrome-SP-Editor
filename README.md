@@ -8,7 +8,7 @@ A Google Chrome Extension for creating and updating files (js, css) in SharePoin
 * 1.2.2 Small messaging enhancements
 * 1.2.1 Small usability enhancements
 * 1.2.0 Added support for view, add, edit and delete web propertybag values
-* 1.1.0 Added support for chrome workspaces and and querystring for injections
+* 1.1.0 Added support for chrome workspaces and querystring for injections
 * 1.0.0 First published version
 
 ## Description
