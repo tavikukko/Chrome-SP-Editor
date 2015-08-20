@@ -1,7 +1,6 @@
 // getCustomActions
 var getCustomActions = function getCustomActions() {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
-    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
     var clientContext = new SP.ClientContext();
     var web = clientContext.get_web();
     var site = clientContext.get_site();
@@ -13,7 +12,6 @@ var getCustomActions = function getCustomActions() {
       Function.createDelegate(this, getCustomActionsSucceeded),
       Function.createDelegate(this, getCustomActionsFailed)
       );
-    });
   });
 };
 
@@ -62,7 +60,6 @@ var getCustomActionsFailed = function getCustomActionsFailed(sender, args) {
 // addCustomAction
 var addCustomAction = function addCustomAction(scope, url, sequence) {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
-    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
     var clientContext = new SP.ClientContext();
     var UserCustomActions;
 
@@ -114,7 +111,6 @@ var addCustomAction = function addCustomAction(scope, url, sequence) {
       Function.createDelegate(this, addCustomActionSucceeded),
       Function.createDelegate(this, addCustomActionFailed)
       );
-    });
   });
 };
 
@@ -129,7 +125,6 @@ var addCustomActionFailed = function addCustomActionFailed(sender, args) {
 // removeCustomAction
 var removeCustomAction = function removeCustomAction(scope, id) {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
-    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
     this.clientContext = new SP.ClientContext();
     this.UserCustomActions;
     this.id = id;
@@ -140,7 +135,6 @@ var removeCustomAction = function removeCustomAction(scope, id) {
       Function.createDelegate(this, removeCustomActionSucceeded),
       Function.createDelegate(this, removeCustomActionFailed)
       );
-    });
   });
 };
 
@@ -174,7 +168,6 @@ var removeCustomActionFailed = function removeCustomActionFailed(sender, args) {
 // add new file to style%20library
 var addFile = function addFile(filename) {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
-    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
     var clientContext = new SP.ClientContext();
     var site = clientContext.get_site();
 
@@ -188,7 +181,6 @@ var addFile = function addFile(filename) {
       Function.createDelegate(this, addFileSucceeded),
       Function.createDelegate(this, addFileFailed)
       );
-    });
   });
 };
 
@@ -203,7 +195,6 @@ var addFileFailed = function addFileFailed(sender, args) {
 // getWebProperties
 var getWebProperties = function getWebProperties() {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
-    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
     var clientContext = new SP.ClientContext();
     this.webProperties = clientContext.get_web().get_allProperties();
     clientContext.load(this.webProperties);
@@ -211,7 +202,6 @@ var getWebProperties = function getWebProperties() {
       Function.createDelegate(this, getWebPropertiesSucceeded),
       Function.createDelegate(this, getWebPropertiesFailed)
       );
-    });
   });
 };
 
@@ -241,7 +231,6 @@ var getWebPropertiesFailed = function getWebPropertiesFailed(sender, args) {
 // addWebProperties
 var addWebProperties = function addWebProperties(prop, value) {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
-    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
     this.clientContext = new SP.ClientContext();
     this.prop = prop;
     this.value = value;
@@ -253,7 +242,6 @@ var addWebProperties = function addWebProperties(prop, value) {
       Function.createDelegate(this, addWebPropertiesSucceeded),
       Function.createDelegate(this, addWebPropertiesFailed)
       );
-    });
   });
 };
 
@@ -279,7 +267,6 @@ var addWebPropertiesFailed = function addWebPropertiesFailed(sender, args) {
 // updateWebProperties
 var updateWebProperties = function updateWebProperties(prop, value) {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
-    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
     this.clientContext = new SP.ClientContext();
     this.prop = prop;
     this.value = value;
@@ -291,7 +278,6 @@ var updateWebProperties = function updateWebProperties(prop, value) {
       Function.createDelegate(this, updateWebPropertiesSucceeded),
       Function.createDelegate(this, updateWebPropertiesFailed)
       );
-    });
   });
 };
 
@@ -317,7 +303,6 @@ var updateWebPropertiesFailed = function updateWebPropertiesFailed(sender, args)
 // deleteWebProperties
 var deleteWebProperties = function deleteWebProperties(prop) {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
-    SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
     this.clientContext = new SP.ClientContext();
     this.prop = prop;
     this.web = clientContext.get_web();
@@ -328,7 +313,6 @@ var deleteWebProperties = function deleteWebProperties(prop) {
       Function.createDelegate(this, deleteWebPropertiesSucceeded),
       Function.createDelegate(this, deleteWebPropertiesFailed)
       );
-    });
   });
 };
 

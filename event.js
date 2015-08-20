@@ -26,7 +26,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 	port.onMessage.addListener(function (msg) {
 
 	var updateFile = function updateFile(chkt, pblh) {
-
+		SP.SOD.registerSod('sp.requestexecutor.js', '/_layouts/15/sp.requestexecutor.js');
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 				SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
 					this.checkout = chkt;
