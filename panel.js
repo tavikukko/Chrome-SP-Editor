@@ -1,4 +1,9 @@
 var port = chrome.runtime.connect();
+var injectAlertify = "if (typeof alertify == 'undefined') { " +
+"var loadAlertify = document.createElement('script'); " +
+      "loadAlertify.src = '" + chrome.extension.getURL("alertify.js") + "'; " +
+      "document.body.appendChild(loadAlertify); } ";
+chrome.devtools.inspectedWindow.eval(injectAlertify);
 
 // Listen to messages from the background page
 port.onMessage.addListener(function (message) {
@@ -13,30 +18,20 @@ port.onMessage.addListener(function (message) {
           break;
       case 'addCustomAction':
         if(message.success){
-          alert('scriptlink added successfully!');
           var script = getCustomActions + ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;
           script += ' getCustomActions();';
           chrome.devtools.inspectedWindow.eval(script);
         }
-        else
-          alert(message.result);
-          break;
+        break;
       case 'addFile':
-        if(message.success)
-          alert('File added successfully!');
-        else
-          alert(message.result);
           break;
         case 'removeCustomAction':
           if(message.success){
-            alert('scriptlink removed successfully!');
             var script = getCustomActions + ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;
             script += ' getCustomActions();';
             chrome.devtools.inspectedWindow.eval(script);
           }
-          else
-            alert(message.result);
-            break;
+          break;
       case 'getCustomActions':
         if(message.success){
             var element = elem("scriptlinks");
@@ -69,7 +64,6 @@ port.onMessage.addListener(function (message) {
                   ul.appendChild(li);
                   var scripturl = items[i].scriptSrc;
                   if(!scripturl) {
-                    console.log(items[i].scriptBlock);
                     if(items[i].scriptBlock.indexOf("href") > -1)
                     {
                       scripturl = items[i].scriptBlock.substring(items[i].scriptBlock.indexOf("href"));
@@ -101,8 +95,8 @@ port.onMessage.addListener(function (message) {
           }
         }
         else
-          alert(message.result);
-          break;
+          chrome.devtools.inspectedWindow.eval(alertifyConf + " alertify.delay(10000).error('"+message.result+"')");
+        break;
       case 'getWebProperties':
         if(message.success){
             var element = elem("webPropertyBag");
@@ -215,16 +209,11 @@ port.onMessage.addListener(function (message) {
 
           for(var i=0;i<updateproperty.length;i++){
               updateproperty[i].addEventListener('click',function(e){
-             //   alert( $('#'+$(this).data('id')).html());
-             //   alert( $('#'+$(this).data('value')).val());
-             if (confirm('Are you sure you want to update '+$('#'+$(this).data('id')).html()+' property?')) {
-               var script = alertifyLogs + ' ' + updateWebProperties + ' ' + updateWebPropertiesSucceeded + ' ' + updateWebPropertiesSucceeded2 + ' ' + updateWebPropertiesFailed;
+               var script = alertifyConf + ' ' + updateWebProperties + ' ' + updateWebPropertiesSucceeded + ' ' + updateWebPropertiesSucceeded2 + ' ' + updateWebPropertiesFailed;
                script += ' updateWebProperties(REPLACE-PROP, REPLACE-VALUE);';
                script = script.replace('REPLACE-PROP', "'" + $('#'+$(this).data('id')).html() + "'");
                script = script.replace('REPLACE-VALUE', "'" + $('#'+$(this).data('value')).val() + "'");
                chrome.devtools.inspectedWindow.eval(script);
-              }
-
               });
           }
 
@@ -232,12 +221,10 @@ port.onMessage.addListener(function (message) {
 
           for(var i=0;i<removeproperty.length;i++){
               removeproperty[i].addEventListener('click',function(e){
-              if (confirm('Are you sure you want to delete '+$('#'+$(this).data('id')).html()+' property?')) {
-                var script = alertifyLogs + ' ' + deleteWebProperties + ' ' + deleteWebPropertiesSucceeded + ' ' + deleteWebPropertiesSucceeded2 + ' ' + deleteWebPropertiesFailed;
+                var script = alertifyConf + ' ' + deleteWebProperties + ' ' + deleteWebPropertiesSucceeded + ' ' + deleteWebPropertiesSucceeded2 + ' ' + deleteWebPropertiesFailed;
                 script += ' deleteWebProperties(REPLACE-PROP);';
                 script = script.replace('REPLACE-PROP', "'" + $('#'+$(this).data('id')).html() + "'");
                 chrome.devtools.inspectedWindow.eval(script);
-              }
               });
           }
 
@@ -245,44 +232,37 @@ port.onMessage.addListener(function (message) {
 
           $('#filterprops').keyup(function() {
               var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-              //alert(rows);
               $rows.show().filter(function() {
                   var text = $(this).data('id').replace(/\s+/g, ' ').toLowerCase();
-                  //alert(text);
                   return !~text.indexOf(val);
               }).hide();
           });
-
         }
         else
-          alert(message.result);
-          break;
+          chrome.devtools.inspectedWindow.eval(alertifyConf + " alertify.delay(10000).error('"+message.result+"')");
+        break;
       case 'addWebProperties':
         if(message.success){
-          //alert('property added successfully!');
           var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
           script += ' getWebProperties();';
           chrome.devtools.inspectedWindow.eval(script);
         }
-          break;
+        break;
       case 'updateWebProperties':
         if(message.success){
-          //alert('property updated successfully!');
           var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
           script += ' getWebProperties();';
           chrome.devtools.inspectedWindow.eval(script);
         }
-          break;
+        break;
       case 'deleteWebProperties':
         if(message.success){
-          //alert('property deleted successfully!');
           var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
           script += ' getWebProperties();';
           chrome.devtools.inspectedWindow.eval(script);
         }
-          break;
+        break;
       default:
-
   }
 });
 
@@ -350,19 +330,19 @@ elem('addfilebtn').addEventListener('click',function(e){
   filename = filename.replace(/[^a-z0-9/._-]/gi,'');
   if (filename == "")
     {
-      alert("Filename cannot be empty!");
+      chrome.devtools.inspectedWindow.eval(alertifyConf + " alertify.delay(10000).error('Filename cannot be empty!')");
       return;
     }
   else if (filename.match(/.css$/) || filename.match(/.js$/))
     {
-    var script = addFile + ' ' + addFileSucceeded + ' ' + addFileFailed;
+    var script = alertifyConf + ' ' + addFile + ' ' + addFileSucceeded + ' ' + addFileFailed;
     script += ' addFile(REPLACE-FILENAME);';
     script = script.replace('REPLACE-FILENAME', "'" + filename + "'");
     chrome.devtools.inspectedWindow.eval(script);
   }
   else
     {
-      alert("Filename need to end with .js or .css!");
+      chrome.devtools.inspectedWindow.eval(alertifyConf + " alertify.delay(10000).error('Filename needs to end with .js or .css!')");
       return;
     }
 });
@@ -376,7 +356,7 @@ elem('addpropertybtn').addEventListener('click',function(e){
   var propertykey = elem('propertykey').value;
   var propertyvalue = elem('propertyvalue').value;
 
-  var script = alertifyLogs + ' ' + addWebProperties + ' ' + addWebPropertiesSucceeded + ' ' + addWebPropertiesSucceeded2 + ' ' + addWebPropertiesFailed;
+  var script = alertifyConf + ' ' + addWebProperties + ' ' + addWebPropertiesSucceeded + ' ' + addWebPropertiesSucceeded2 + ' ' + addWebPropertiesFailed;
   script += ' addWebProperties(REPLACE-PROP, REPLACE-VALUE);';
   script = script.replace('REPLACE-PROP', "'" + propertykey + "'");
   script = script.replace('REPLACE-VALUE', "'" + propertyvalue + "'");
@@ -390,16 +370,16 @@ function addscriptlink (scope)
 
   if(scriptpath == "")
     {
-      alert('Script path cannot be empty');
+      chrome.devtools.inspectedWindow.eval(alertifyConf + " alertify.delay(10000).error('Script path cannot be empty!')");
       return;
     }
   else if (scriptsequence == "")
     {
-      alert('Sequence cannot be empty');
+      chrome.devtools.inspectedWindow.eval(alertifyConf + " alertify.delay(10000).error('Sequence cannot be empty!')");
       return;
     }
 
-  var script = addCustomAction + ' ' + addCustomActionSucceeded + ' ' + addCustomActionFailed;
+  var script = alertifyConf + ' ' + addCustomAction + ' ' + addCustomActionSucceeded + ' ' + addCustomActionFailed;
   script += ' addCustomAction(REPLACE-SCOPE, REPLACE-URL, REPLACE-SEQUENCE);';
   script = script.replace('REPLACE-SCOPE', "'" + scope + "'");
   script = script.replace('REPLACE-URL', "'" + scriptpath + "'");

@@ -39,6 +39,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 					var fileRelUrl = fileAbsUrl.replace(siteAbsoluteUrl.substring(0, siteAbsoluteUrl.lastIndexOf(siteServerRelativeUrl)),"");
 					var documentPath = fileAbsUrl.substring(0, fileAbsUrl.lastIndexOf("/"));
 					var fileToUpdate = fileAbsUrl.substring(fileAbsUrl.lastIndexOf("/")+1);
+					alertify.delay(5000).log("Updating file <b>" + fileToUpdate + "</b>...");
 
 					var executor = new SP.RequestExecutor(documentPath);
 
@@ -109,12 +110,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 			window.postMessage(JSON.stringify({ function: 'updateFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 		};
 
-		var str = "if (typeof alertify == 'undefined') { " +
-		"var alex = document.createElement('script'); " +
-		      "alex.src = '" + chrome.extension.getURL("alertify.js") + "'; " +
-		      "document.body.appendChild(alex); } alertify.logPosition('bottom right'); ";
+		var alertifyConf = "alertify.logPosition('bottom right'); alertify.maxLogItems(2); ";
 
-		var script = str + " " + updateFile + " " + updateFileSucceeded + " " + updateFileSucceeded2 + " " + updateFileFailed + " " ;
+		var script = alertifyConf + " " + updateFile + " " + updateFileSucceeded + " " + updateFileSucceeded2 + " " + updateFileFailed + " " ;
 
 		var eventUrl = event.url.toLowerCase();
 
@@ -139,7 +137,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 				}
 
 				if(eventUrl.indexOf("file:") > -1) {
-					alert("Could not find '" + eventFileName + "' from current page.")
+					chrome.devtools.inspectedWindow.eval(alertifyConf + " alertify.delay(10000).error('Could not find '" + eventFileName + "' from current page.')");
 					return;
 				}
 			}
