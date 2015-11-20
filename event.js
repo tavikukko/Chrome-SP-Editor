@@ -39,6 +39,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 					if(siteServerRelativeUrl.length == 1) siteAbsoluteUrl += siteServerRelativeUrl;
 					var fileRelUrl = fileAbsUrl.replace(siteAbsoluteUrl.substring(0, siteAbsoluteUrl.lastIndexOf(siteServerRelativeUrl)),"");
 					var documentPath = fileAbsUrl.substring(0, fileAbsUrl.lastIndexOf("/"));
+					var fileToUpdate = fileAbsUrl.substring(fileAbsUrl.lastIndexOf("/")+1);
 
 					var executor = new SP.RequestExecutor(documentPath);
 
@@ -53,6 +54,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 								this.clientContext = new SP.ClientContext(webUrl);
 								this.file = this.clientContext.get_web().getFileByServerRelativeUrl(fileRelUrl);
 								this.clientContext.load(this.file);
+								this.fileToUpdate = fileToUpdate;
 								this.clientContext.executeQueryAsync(
 								Function.createDelegate(this, updateFileSucceeded),
 								Function.createDelegate(this, updateFileFailed));
@@ -104,7 +106,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		};
 
 		var updateFileSucceeded2 = function updateFileSucceeded2() {
-			alertify.delay(1500).success("File updated successfully!");
+			alertify.delay(5000).success("File <b>" + this.fileToUpdate + "</b> updated successfully!");
 			window.postMessage(JSON.stringify({ function: 'updateFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 		};
 
