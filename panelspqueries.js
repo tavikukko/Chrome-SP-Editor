@@ -1,3 +1,8 @@
+var alertifyLogs = "if (typeof alertify == 'undefined') { " +
+"var alex = document.createElement('script'); " +
+      "alex.src = '" + chrome.extension.getURL("alertify.js") + "'; " +
+      "document.body.appendChild(alex); } alertify.logPosition('bottom right'); ";
+
 // getCustomActions
 var getCustomActions = function getCustomActions() {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
@@ -257,10 +262,12 @@ var addWebPropertiesSucceeded = function addWebPropertiesSucceeded(sender, args)
 };
 
 var addWebPropertiesSucceeded2 = function addWebPropertiesSucceeded2(sender, args) {
+    alertify.delay(5000).success("Property added successfully!");
     window.postMessage(JSON.stringify({ function: 'addWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 };
 
 var addWebPropertiesFailed = function addWebPropertiesFailed(sender, args) {
+    alertify.delay(10000).error(args.get_message());
     window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 
@@ -293,10 +300,12 @@ var updateWebPropertiesSucceeded = function updateWebPropertiesSucceeded(sender,
 };
 
 var updateWebPropertiesSucceeded2 = function updateWebPropertiesSucceeded2(sender, args) {
+  alertify.delay(5000).success("Property updated successfully!");
     window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 };
 
 var updateWebPropertiesFailed = function updateWebPropertiesFailed(sender, args) {
+    alertify.delay(10000).error(args.get_message());
     window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 
@@ -328,10 +337,12 @@ var deleteWebPropertiesSucceeded = function deleteWebPropertiesSucceeded(sender,
 };
 
 var deleteWebPropertiesSucceeded2 = function deleteWebPropertiesSucceeded2(sender, args) {
+  alertify.delay(5000).success("Property deleted successfully!");
     window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 };
 
 var deleteWebPropertiesFailed = function deleteWebPropertiesFailed(sender, args) {
+  alertify.delay(10000).error(args.get_message());
     window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 

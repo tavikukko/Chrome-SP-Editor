@@ -29,7 +29,6 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		SP.SOD.registerSod('sp.requestexecutor.js', '/_layouts/15/sp.requestexecutor.js');
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 				SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
-					alertify.logPosition("bottom right");
 					this.checkout = chkt;
 					this.publish = pblh;
 					var fileAbsUrl = "REPLACE-FILE-URL";
@@ -113,7 +112,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		var str = "if (typeof alertify == 'undefined') { " +
 		"var alex = document.createElement('script'); " +
 		      "alex.src = '" + chrome.extension.getURL("alertify.js") + "'; " +
-		      "document.body.appendChild(alex); }";
+		      "document.body.appendChild(alex); } alertify.logPosition('bottom right'); ";
 
 		var script = str + " " + updateFile + " " + updateFileSucceeded + " " + updateFileSucceeded2 + " " + updateFileFailed + " " ;
 
