@@ -22,9 +22,11 @@ Also possibility to add local and external js/css resources references with user
 Introduction video http://youtu.be/Nk_NZhdpZEo
 
 ## Installation
-* Install extension from Chrome web store http://tiny.cc/chromesp
-* OR
-* Clone the repository (git clone https://github.com/tavikukko/Chrome-SP-Editor.git OR download ZIP)
+Install extension from Chrome web store http://tiny.cc/chromesp
+
+## Manual installation
+Clone the repository
+* git clone https://github.com/tavikukko/Chrome-SP-Editor.git
 * Open Chrome with url chrome://extensions/
 * Click "Load unpacked extension..." and select Chrome-SP-Editor folder
 
