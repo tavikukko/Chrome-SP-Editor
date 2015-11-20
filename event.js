@@ -29,6 +29,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		SP.SOD.registerSod('sp.requestexecutor.js', '/_layouts/15/sp.requestexecutor.js');
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 				SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
+					alertify.logPosition("bottom right");
 					this.checkout = chkt;
 					this.publish = pblh;
 					var fileAbsUrl = "REPLACE-FILE-URL";
@@ -58,7 +59,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 							}
 						},
 						error: function (err) {
-							alert(JSON.stringify(err));
+							alertify.delay(10000).error(JSON.stringify(err));
 						}
 					});
 				});
@@ -98,14 +99,21 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		};
 
 		var updateFileFailed = function updateFileFailed(sender, args) {
+			alertify.delay(10000).error(args.get_message());
 			window.postMessage(JSON.stringify({ function: 'updateFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 		};
 
 		var updateFileSucceeded2 = function updateFileSucceeded2() {
+			alertify.delay(1500).success("File updated successfully!");
 			window.postMessage(JSON.stringify({ function: 'updateFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 		};
 
-		var script = updateFile + " " + updateFileSucceeded + " " + updateFileSucceeded2 + " " + updateFileFailed + " " ;
+		var str = "if (typeof alertify == 'undefined') { " +
+		"var alex = document.createElement('script'); " +
+		      "alex.src = '" + chrome.extension.getURL("alertify.js") + "'; " +
+		      "document.body.appendChild(alex); }";
+
+		var script = str + " " + updateFile + " " + updateFileSucceeded + " " + updateFileSucceeded2 + " " + updateFileFailed + " " ;
 
 		var eventUrl = event.url.toLowerCase();
 
@@ -139,7 +147,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 			script = script.replace("REPLACE-CONTENT", encodeURIComponent(content));
 			script = script + " updateFile("+msg.autoCheckout+", "+msg.autoPublish+");";
 
-			chrome.devtools.inspectedWindow.eval(script);
+    	chrome.devtools.inspectedWindow.eval(script);
 		});
 	});
 });

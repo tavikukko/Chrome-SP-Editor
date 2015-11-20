@@ -10,10 +10,6 @@ port.onMessage.addListener(function (message) {
 
   switch (message.function) {
       case 'updateFile':
-        if(message.success)
-          alert('File updated successfully!');
-        else
-          alert(message.result);
           break;
       case 'addCustomAction':
         if(message.success){
