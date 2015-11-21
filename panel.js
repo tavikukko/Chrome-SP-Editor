@@ -1,10 +1,5 @@
 var port = chrome.runtime.connect();
-/*var injectAlertify = "if (typeof alertify == 'undefined') { " +
-"var loadAlertify = document.createElement('script'); " +
-      "loadAlertify.src = '" + chrome.extension.getURL("alertify.js") + "'; " +
-      "document.body.appendChild(loadAlertify); } ";
-chrome.devtools.inspectedWindow.eval(injectAlertify);
-*/
+
 // Listen to messages from the background page
 port.onMessage.addListener(function (message) {
 
@@ -85,24 +80,10 @@ port.onMessage.addListener(function (message) {
 
           for(var i=0;i<removescript.length;i++){
               removescript[i].addEventListener('click',function(e){
-                // verify alertify.js
+
               var script = removeCustomAction + ' ' + removeCustomActionSucceeded + ' ' + removeCustomActionSucceeded2 + ' ' + removeCustomActionFailed;
               var evalScript =  alertifyConf + " removeCustomAction('" + $(this).data('scope') + "', '" + $(this).data('id') + "');";
-/*
-              script = script + " if (typeof alertify == 'undefined') { " +
-        			 " var scriptx = document.createElement('script'); " +
-        			 " scriptx.onload = function() { " +
-        				  alertifyConf + " removeCustomAction(REPLACE-SCOPE, REPLACE-ID); " +
-        			 " }; " +
-        			 " scriptx.src = '"+chrome.extension.getURL("alertify.js")+"'; " +
-        			 " document.body.appendChild(scriptx); " +
-        			 " } else { " +
-        					alertifyConf + " removeCustomAction(REPLACE-SCOPE, REPLACE-ID); " +
-        			 " }";
 
-              script = script.replace(/REPLACESCOPE/g, "'" + $(this).data('scope') + "'");
-              script = script.replace(/REPLACEID/g, "'" + $(this).data('id') + "'");
-*/
               chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
 
               });
@@ -225,24 +206,10 @@ port.onMessage.addListener(function (message) {
 
           for(var i=0;i<updateproperty.length;i++){
               updateproperty[i].addEventListener('click',function(e){
-                // verify alertify.js
+
                var script = updateWebProperties + ' ' + updateWebPropertiesSucceeded + ' ' + updateWebPropertiesSucceeded2 + ' ' + updateWebPropertiesFailed;
                var evalScript = alertifyConf + " updateWebProperties('" + $('#'+$(this).data('id')).html() + "', '" + $('#'+$(this).data('value')).val() + "');";
-/*
-               script = script + " if (typeof alertify == 'undefined') { " +
-         			 " var scriptx = document.createElement('script'); " +
-         			 " scriptx.onload = function() { " +
-         				  alertifyConf + " updateWebProperties(REPLACE-PROP, REPLACE-VALUE); " +
-         			 " }; " +
-         			 " scriptx.src = '"+chrome.extension.getURL("alertify.js")+"'; " +
-         			 " document.body.appendChild(scriptx); " +
-         			 " } else { " +
-         					alertifyConf + " updateWebProperties(REPLACE-PROP, REPLACE-VALUE); " +
-         			 " }";
 
-               script = script.replace(/REPLACEPROP/g, "'" + $('#'+$(this).data('id')).html() + "'");
-               script = script.replace(/REPLACEVALUE/g, "'" + $('#'+$(this).data('value')).val() + "'");
-*/
                chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
               });
           }
@@ -251,23 +218,10 @@ port.onMessage.addListener(function (message) {
 
           for(var i=0;i<removeproperty.length;i++){
               removeproperty[i].addEventListener('click',function(e){
-                // verify alertify.js
+
                 var script = deleteWebProperties + ' ' + deleteWebPropertiesSucceeded + ' ' + deleteWebPropertiesSucceeded2 + ' ' + deleteWebPropertiesFailed;
                 var evalScript = alertifyConf + " deleteWebProperties('" + $('#'+$(this).data('id')).html() + "');";
-/*
-                script = script + " if (typeof alertify == 'undefined') { " +
-          			 " var scriptx = document.createElement('script'); " +
-          			 " scriptx.onload = function() { " +
-          				  alertifyConf + " deleteWebProperties(REPLACE-PROP); " +
-          			 " }; " +
-          			 " scriptx.src = '"+chrome.extension.getURL("alertify.js")+"'; " +
-          			 " document.body.appendChild(scriptx); " +
-          			 " } else { " +
-          					alertifyConf + " deleteWebProperties(REPLACE-PROP); " +
-          			 " }";
 
-                script = script.replace(/REPLACEPROP/g, "'" + $('#'+$(this).data('id')).html() + "'");
-*/
                 chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
               });
           }
@@ -324,18 +278,10 @@ elem("autosave").addEventListener('change', function(e) {
   port.postMessage(payload);
 }, false);
 
-/*
-elem("autocheckout").addEventListener('change', function(e) {
-  var payload = { "type":"autocheckoutchange", "content":elem("autocheckout").checked };
-  port.postMessage(payload);
-}, false);
-*/
-
 elem("autopublish").addEventListener('change', function(e) {
   var payload = { "type":"autopublishchange", "content":elem("autopublish").checked };
   port.postMessage(payload);
 }, false);
-
 
 elem('btnSave').addEventListener('click',function(e){
     swap('save','script','files','webproperties','about');
@@ -382,23 +328,9 @@ elem('addfilebtn').addEventListener('click',function(e){
     }
   else if (filename.match(/.css$/) || filename.match(/.js$/))
     {
-      // verify alertify.js
     var script = addFile + ' ' + addFileSucceeded + ' ' + addFileFailed;
     var evalScript = alertifyConf + " addFile('" + filename + "');";
-/*
-    script = script + " if (typeof alertify == 'undefined') { " +
-     " var scriptx = document.createElement('script'); " +
-     " scriptx.onload = function() { " +
-        alertifyConf + " addFile(REPLACE-FILENAME); " +
-     " }; " +
-     " scriptx.src = '"+chrome.extension.getURL("alertify.js")+"'; " +
-     " document.body.appendChild(scriptx); " +
-     " } else { " +
-        alertifyConf + " addFile(REPLACE-FILENAME); " +
-     " }";
 
-    script = script.replace(/REPLACEFILENAME/g, "'" + filename + "'");
-*/
     chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
   }
   else
@@ -417,24 +349,10 @@ $('#addfile').keyup(function(){
 elem('addpropertybtn').addEventListener('click',function(e){
   var propertykey = elem('propertykey').value;
   var propertyvalue = elem('propertyvalue').value;
-  // verify alertify.js
+
   var script = addWebProperties + ' ' + addWebPropertiesSucceeded + ' ' + addWebPropertiesSucceeded2 + ' ' + addWebPropertiesFailed;
   var evalScript = alertifyConf + " addWebProperties('" + propertykey + "', '" + propertyvalue + "');";
-/*
-  script = script + " if (typeof alertify == 'undefined') { " +
-   " var scriptx = document.createElement('script'); " +
-   " scriptx.onload = function() { " +
-      alertifyConf + " addWebProperties(REPLACE-PROP, REPLACE-VALUE); " +
-   " }; " +
-   " scriptx.src = '"+chrome.extension.getURL("alertify.js")+"'; " +
-   " document.body.appendChild(scriptx); " +
-   " } else { " +
-      alertifyConf + " addWebProperties(REPLACE-PROP, REPLACE-VALUE); " +
-   " }";
 
-  script = script.split('REPLACEPROP').join("'" + propertykey + "'"); //.replace(/REPLACEPROP/g, "'" + propertykey + "'");
-  script = script.split('REPLACEVALUE').join("'" + propertyvalue + "'"); //.replace(/REPLACEVALUE/g, "'" + propertyvalue + "'");
-*/
   chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
 });
 
@@ -455,24 +373,9 @@ function addscriptlink (scope)
       chrome.devtools.inspectedWindow.eval(alertyfyScript.replace(/EVAL/g, evalScript));
       return;
     }
-    // verify alertify.js
+
   var script = addCustomAction + ' ' + addCustomActionSucceeded + ' ' + addCustomActionFailed;
   var evalScript = alertifyConf + " addCustomAction('" + scope + "', '" + scriptpath + "', " + scriptsequence + "); ";
 
-/*  script = script + " if (typeof alertify == 'undefined') { " +
-   " var scriptx = document.createElement('script'); " +
-   " scriptx.onload = function() { " +
-      alertifyConf + " addCustomAction(REPLACE-SCOPE, REPLACE-URL, REPLACE-SEQUENCE); " +
-   " }; " +
-   " scriptx.src = '"+chrome.extension.getURL("alertify.js")+"'; " +
-   " document.body.appendChild(scriptx); " +
-   " } else { " +
-      alertifyConf + " addCustomAction(REPLACE-SCOPE, REPLACE-URL, REPLACE-SEQUENCE); " +
-   " }";
-
-  script = script.replace(/REPLACESCOPE/g, "'" + scope + "'");
-  script = script.replace(/REPLACEURL/g, "'" + scriptpath + "'");
-  script = script.replace(/REPLACESEQUENCE/g, scriptsequence);
-*/
   chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
 }
