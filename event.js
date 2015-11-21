@@ -112,7 +112,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 		var alertifyConf = "alertify.logPosition('bottom right'); alertify.maxLogItems(2); ";
 
-		var script = alertifyConf + " " + updateFile + " " + updateFileSucceeded + " " + updateFileSucceeded2 + " " + updateFileFailed + " " ;
+		var script = updateFile + " " + updateFileSucceeded + " " + updateFileSucceeded2 + " " + updateFileFailed + " " ;
 
 		var eventUrl = event.url.toLowerCase();
 
@@ -144,7 +144,17 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 			script = script.replace("REPLACE-FILE-URL", eventUrl);
 			script = script.replace("REPLACE-CONTENT", encodeURIComponent(content));
-			script = script + " updateFile("+msg.autoCheckout+", "+msg.autoPublish+");";
+
+			script = script + " if (typeof alertify == 'undefined') { " +
+			 " var scriptx = document.createElement('script'); " +
+			 " scriptx.onload = function() { " +
+				  alertifyConf + " updateFile("+msg.autoCheckout+", "+msg.autoPublish+"); " +
+			 " }; " +
+			 " scriptx.src = '"+chrome.extension.getURL("alertify.js")+"'; " +
+			 " document.body.appendChild(scriptx); " +
+			 " } else { " +
+					alertifyConf + " updateFile("+msg.autoCheckout+", "+msg.autoPublish+");" +
+			 " }";
 
     	chrome.devtools.inspectedWindow.eval(script);
 		});

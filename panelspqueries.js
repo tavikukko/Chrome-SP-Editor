@@ -1,4 +1,15 @@
-var alertifyConf = "alertify.logPosition('bottom right'); alertify.maxLogItems(2); ";
+var alertifyConf = " alertify.logPosition('bottom right'); alertify.maxLogItems(2); ";
+
+var alertyfyScript = " if (typeof alertify == 'undefined') { " +
+ " var scriptx = document.createElement('script'); " +
+ " scriptx.onload = function() { " +
+    " EVAL " +
+ " }; " +
+ " scriptx.src = '"+chrome.extension.getURL("alertify.js")+"'; " +
+ " document.body.appendChild(scriptx); " +
+ " } else { " +
+    " EVAL " +
+ " } ";
 
 // getCustomActions
 var getCustomActions = function getCustomActions() {
