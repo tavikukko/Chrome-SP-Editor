@@ -29,8 +29,6 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 		SP.SOD.registerSod('sp.requestexecutor.js', '/_layouts/15/sp.requestexecutor.js');
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 				SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
-					this.checkout = chkt;
-					this.publish = pblh;
 					var fileAbsUrl = "REPLACE-FILE-URL";
 					if(fileAbsUrl.indexOf("?") > -1) fileAbsUrl = fileAbsUrl.substring(0, fileAbsUrl.indexOf("?"));
 					var siteAbsoluteUrl = _spPageContextInfo.siteAbsoluteUrl;
@@ -51,6 +49,8 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 							if (data.body) {
 								var body = JSON.parse(data.body);
 								var webUrl = body.d.GetContextWebInformation.WebFullUrl;
+								this.checkout = chkt;
+								this.publish = pblh;
 								this.clientContext = new SP.ClientContext(webUrl);
 								this.file = this.clientContext.get_web().getFileByServerRelativeUrl(fileRelUrl);
 								this.clientContext.load(this.file);
@@ -81,18 +81,12 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 			}
 
 			if (this.file.get_checkOutType() == SP.CheckOutType.none)
-			{
 				this.file.checkOut();
-				this.file.saveBinary(fileCreateInfo);
-				this.file.checkIn();
-			}
-			else
-			{
-				this.file.saveBinary(fileCreateInfo);
-				this.file.checkIn();
-			}
 
-			if (!this.publish) this.file.publish();
+			this.file.saveBinary(fileCreateInfo);
+
+			if (!this.publish) this.file.checkIn('Updated from Chrome SP Editor', SP.CheckinType.minorCheckIn);
+			else this.file.checkIn('Updated from Chrome SP Editor', SP.CheckinType.majorCheckIn);
 
 			this.clientContext.load(this.file);
 			this.clientContext.executeQueryAsync(
@@ -154,7 +148,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 			 " document.body.appendChild(scriptx); " +
 			 " } else { " +
 					alertifyConf + " updateFile("+msg.autoCheckout+", "+msg.autoPublish+");" +
-			 " }";
+			 " } ";
 
     	chrome.devtools.inspectedWindow.eval(script);
 		});
