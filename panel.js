@@ -274,12 +274,13 @@ swap('save','script','files','webproperties','about');
 
 //event bindings
 elem("autosave").addEventListener('change', function(e) {
-  var payload = { "type":"autosavechange", "content":elem("autosave").checked };
+  var payload = { "type":"autosavechange", "content":elem("autosave").checked, "tabId": chrome.devtools.inspectedWindow.tabId };
+
   port.postMessage(payload);
 }, false);
 
 elem("autopublish").addEventListener('change', function(e) {
-  var payload = { "type":"autopublishchange", "content":elem("autopublish").checked };
+  var payload = { "type":"autopublishchange", "content":elem("autopublish").checked, "tabId": chrome.devtools.inspectedWindow.tabId };
   port.postMessage(payload);
 }, false);
 

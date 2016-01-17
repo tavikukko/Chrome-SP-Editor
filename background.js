@@ -1,24 +1,38 @@
 var lastHash;
-var autoSave;
 var connPort;
-var autoCheckout;
-var autoPublish;
+var activeSaveTabs = [];
+var activePublishTabs = [];
 
 chrome.runtime.onConnect.addListener(function (port) {
     port.onMessage.addListener(function (req) {
       if (req.type == 'save') {
 	    	var hash = req.content;
-		    if (hash != lastHash && autoSave ){
+		    if (hash != lastHash && activeSaveTabs.indexOf(req.tabId) > -1){
           lastHash = hash;
-          port.postMessage({ "autoCheckout":autoCheckout, "autoPublish":autoPublish });
+          var publish = activePublishTabs.indexOf(req.tabId) > -1;
+          port.postMessage({ "autoPublish":publish });
 		    }
   		} else if (req.type == 'autosavechange') {
-        connPort = port; //save panel port for future messages
-        autoSave = req.content;
-      } else if (req.type == 'autocheckoutchange') {
-        autoCheckout = req.content;
+        if(!req.content)
+        for(var i = activeSaveTabs.length - 1; i >= 0; i--) {
+            if(activeSaveTabs[i] === req.tabId) {
+               activeSaveTabs.splice(i, 1);
+            }
+        }
+        else {
+          activeSaveTabs.push(req.tabId);
+        }
+        connPort = port;
       } else if (req.type == 'autopublishchange') {
-        autoPublish = req.content;
+        if(!req.content)
+        for(var i = activePublishTabs.length - 1; i >= 0; i--) {
+            if(activePublishTabs[i] === req.tabId) {
+               activePublishTabs.splice(i, 1);
+            }
+        }
+        else {
+          activePublishTabs.push(req.tabId);
+        }
       }
     });
 });

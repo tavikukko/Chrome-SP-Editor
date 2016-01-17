@@ -19,13 +19,13 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 	var port = chrome.runtime.connect();
 
-	var payload = { "type":"save", "content":content.hashCode() };
+	var payload = { "type":"save", "content":content.hashCode(), "tabId": chrome.devtools.inspectedWindow.tabId };
 
 	port.postMessage(payload);
 
 	port.onMessage.addListener(function (msg) {
 
-	var updateFile = function updateFile(chkt, pblh) {
+	var updateFile = function updateFile(pblh) {
 		SP.SOD.registerSod('sp.requestexecutor.js', '/_layouts/15/sp.requestexecutor.js');
 			SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 				SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
@@ -49,7 +49,6 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 							if (data.body) {
 								var body = JSON.parse(data.body);
 								var webUrl = body.d.GetContextWebInformation.WebFullUrl;
-								this.checkout = chkt;
 								this.publish = pblh;
 								this.clientContext = new SP.ClientContext(webUrl);
 								this.file = this.clientContext.get_web().getFileByServerRelativeUrl(fileRelUrl);
@@ -142,12 +141,12 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 			script = script + " if (typeof alertify == 'undefined') { " +
 			 " var scriptx = document.createElement('script'); " +
 			 " scriptx.onload = function() { " +
-				  alertifyConf + " updateFile("+msg.autoCheckout+", "+msg.autoPublish+"); " +
+				  alertifyConf + " updateFile("+msg.autoPublish+"); " +
 			 " }; " +
 			 " scriptx.src = '"+chrome.extension.getURL("alertify.js")+"'; " +
 			 " document.body.appendChild(scriptx); " +
 			 " } else { " +
-					alertifyConf + " updateFile("+msg.autoCheckout+", "+msg.autoPublish+");" +
+					alertifyConf + " updateFile("+msg.autoPublish+");" +
 			 " } ";
 
     	chrome.devtools.inspectedWindow.eval(script);
