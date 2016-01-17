@@ -186,13 +186,16 @@ var removeCustomActionFailed = function removeCustomActionFailed(sender, args) {
   window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 };
 
-// add new file to style%20library
+// add new file to root site Style Library
 var addFile = function addFile(filename) {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
     var clientContext = new SP.ClientContext();
     var site = clientContext.get_site();
     var createInfo = new SP.FileCreationInformation();
     createInfo.set_content(new SP.Base64EncodedByteArray());
+    var fileContent = "/* Created from Chrome SP Editor */";
+    for (var i = 0; i < fileContent.length; i++)
+        createInfo.get_content().append(fileContent.charCodeAt(i));
     createInfo.set_overwrite(true);
     createInfo.set_url(filename);
     this.file = site.get_rootWeb().getFolderByServerRelativeUrl('style%20library').get_files().add(createInfo);
