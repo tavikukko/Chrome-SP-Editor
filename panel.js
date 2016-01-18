@@ -311,11 +311,27 @@ elem('btnWebProperties').addEventListener('click',function(e){
 });
 
 elem('addscriptsite').addEventListener('click',function(e){
-  addscriptlink('site');
+  var scriptpath = elem('scriptpath').value;
+  var scriptsequence = elem('scriptsequence').value;
+  addscriptlink('site', scriptsequence, scriptpath);
 });
 
 elem('addscriptweb').addEventListener('click',function(e){
-  addscriptlink('web');
+  var scriptpath = elem('scriptpath').value;
+  var scriptsequence = elem('scriptsequence').value;
+  addscriptlink('web', scriptsequence, scriptpath);
+});
+
+elem('fileaddscriptsite').addEventListener('click',function(e){
+  var scriptpath = elem('filescriptpath').value;
+  var scriptsequence = elem('filescriptsequence').value;
+  addscriptlink('site', scriptsequence, scriptpath);
+});
+
+elem('fileaddscriptweb').addEventListener('click',function(e){
+  var scriptpath = elem('filescriptpath').value;
+  var scriptsequence = elem('filescriptsequence').value;
+  addscriptlink('web', scriptsequence, scriptpath);
 });
 
 elem('addfilebtn').addEventListener('click',function(e){
@@ -344,7 +360,8 @@ elem('addfilebtn').addEventListener('click',function(e){
 
 $('#addfile').keyup(function(){
      var txtBoxVal =$(this).val();
-    $('#trimmedfilename').text(txtBoxVal.replace(/[^a-z0-9/._-]/gi,''));
+     $('#trimmedfilename').text(txtBoxVal.replace(/[^a-z0-9/._-]/gi,''));
+     $('#filescriptpath').val('~sitecollection/Style library/' + txtBoxVal.replace(/[^a-z0-9/._-]/gi,''));
 });
 
 elem('addpropertybtn').addEventListener('click',function(e){
@@ -357,10 +374,10 @@ elem('addpropertybtn').addEventListener('click',function(e){
   chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
 });
 
-function addscriptlink (scope)
+function addscriptlink (scope, scriptsequence, scriptpath)
 {
-  var scriptpath = elem('scriptpath').value;
-  var scriptsequence = elem('scriptsequence').value;
+//  var scriptpath = elem('scriptpath').value;
+//  var scriptsequence = elem('scriptsequence').value;
 
   if(scriptpath == "")
     {

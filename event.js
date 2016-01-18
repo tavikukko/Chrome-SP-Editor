@@ -156,6 +156,12 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function(
 
 chrome.devtools.panels.create("SharePoint", "", "panel.html",
 	function(panel) {
+		var port = chrome.runtime.connect();
+		var payload = { "type":"autosavechange", "content":false, "tabId": chrome.devtools.inspectedWindow.tabId  };
+		port.postMessage(payload);
+
+		payload = { "type":"autopublishchange", "content":false, "tabId": chrome.devtools.inspectedWindow.tabId };
+	  port.postMessage(payload);
 		// add actions here if necessary
 	}
 );
