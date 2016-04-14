@@ -89,7 +89,17 @@ var addCustomAction = function addCustomAction(scope, url, sequence) {
       url = url.split("?")[0];
     }
 
-    newUserCustomAction.set_scriptSrc(url+querystrings);
+    if(url.match(/.js$/)){
+      newUserCustomAction.set_scriptSrc(url+querystrings);
+    }
+    else if(url.match(/.css$/)){
+      newUserCustomAction.set_scriptBlock("document.write('<link rel=\"stylesheet\" href=\"" + url+querystrings + "\" />');");
+    }
+    else{
+      alertify.delay(5000).error("Only JS and CSS files!!");
+      return;
+    }
+
     newUserCustomAction.set_sequence(sequence);
     newUserCustomAction.update();
     alertify.delay(5000).log("Adding scriptLink...");
