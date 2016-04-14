@@ -84,39 +84,12 @@ var addCustomAction = function addCustomAction(scope, url, sequence) {
 
     var querystrings = "";
 
-    if(url.split("?").length > 1)
-    {
+    if(url.split("?").length > 1){
       querystrings = '?' + url.split("?")[1];
       url = url.split("?")[0];
     }
 
-    if(url.indexOf("~") > -1 && url.match(/.js$/))
-      {
-        newUserCustomAction.set_scriptSrc(url+querystrings);
-      }
-
-    else if(url.match(/.js$/))
-      {
-        //generate unique variable names
-        var headID = "";
-        var newScript = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        for( var i=0; i < 5; i++ )
-            headID += possible.charAt(Math.floor(Math.random() * possible.length));
-        for( var i=0; i < 5; i++ )
-            newScript += possible.charAt(Math.floor(Math.random() * possible.length));
-
-        var jsScriptBlock = "var " + headID + " = document.getElementsByTagName(\"head\")[0]; ";
-        jsScriptBlock += "var " + newScript + " = document.createElement(\"script\");";
-        jsScriptBlock += " " + newScript + ".type = \"text/javascript\";";
-        jsScriptBlock += " " + newScript + ".src = \""+url+querystrings+"\";" ;
-        jsScriptBlock += " " + headID + ".appendChild(" + newScript + ");";
-        newUserCustomAction.set_scriptBlock(jsScriptBlock);
-      }
-    else if(url.match(/.css$/)){
-      newUserCustomAction.set_scriptBlock("document.write('<link rel=\"stylesheet\" href=\"" + url+querystrings + "\" />');");
-    }
-    else return;
+    newUserCustomAction.set_scriptSrc(url+querystrings);
     newUserCustomAction.set_sequence(sequence);
     newUserCustomAction.update();
     alertify.delay(5000).log("Adding scriptLink...");
