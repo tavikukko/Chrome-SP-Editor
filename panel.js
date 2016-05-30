@@ -200,6 +200,24 @@ port.onMessage.addListener(function (message) {
               buttonRemove.setAttributeNode(buttonType);
 
               span.appendChild(buttonRemove);
+              
+              //button index
+              var buttonIndex=document.createElement('button');
+              buttonIndex.innerHTML = 'Index';
+              var buttonClass=document.createAttribute("class");
+              buttonClass.value='btn btn-default index-property';
+              buttonIndex.setAttributeNode(buttonClass);
+
+              var buttonIndexDataId=document.createAttribute("data-id");
+              buttonIndexDataId.value='proplabel'+j;
+              buttonIndex.setAttributeNode(buttonIndexDataId);
+
+              var buttonType=document.createAttribute("type");
+              buttonType.value='button';
+              buttonIndex.setAttributeNode(buttonType);
+
+              span.appendChild(buttonIndex);              
+              
             }
 
           var updateproperty = document.getElementsByClassName("update-property");
@@ -221,6 +239,18 @@ port.onMessage.addListener(function (message) {
 
                 var script = deleteWebProperties + ' ' + deleteWebPropertiesSucceeded + ' ' + deleteWebPropertiesSucceeded2 + ' ' + deleteWebPropertiesFailed;
                 var evalScript = alertifyConf + " deleteWebProperties('" + $('#'+$(this).data('id')).html() + "');";
+
+                chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
+              });
+          }
+
+          var indexproperty = document.getElementsByClassName("index-property");
+
+          for(var i=0;i<indexproperty.length;i++){
+              indexproperty[i].addEventListener('click',function(e){
+
+                var script = addToIndexedPropertyKeys + ' ' + addToIndexedPropertyKeysSucceeded + ' ' + addToIndexedPropertyKeysSucceeded2 + ' ' + addToIndexedPropertyKeysFailed;
+                var evalScript = alertifyConf + " addToIndexedPropertyKeys('" + $('#'+$(this).data('id')).html() + "');";
 
                 chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
               });
@@ -262,6 +292,13 @@ port.onMessage.addListener(function (message) {
           chrome.devtools.inspectedWindow.eval(script);
         }
         break;
+      case 'addToIndexedPropertyKeys':
+        if(message.success){
+          var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
+          script += ' getWebProperties();';
+          chrome.devtools.inspectedWindow.eval(script);
+        }
+        break;        
       default:
   }
 });
