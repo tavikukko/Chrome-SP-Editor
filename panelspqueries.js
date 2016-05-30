@@ -363,17 +363,19 @@ var deleteWebPropertiesFailed = function deleteWebPropertiesFailed(sender, args)
 };
 
 // addToIndexedPropertyKeys
-var addToIndexedPropertyKeys = function addToIndexedPropertyKeys(prop) {
+var addToIndexedPropertyKeys = function addToIndexedPropertyKeys(prop, remove) {
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
     this.clientContext = new SP.ClientContext();
     this.prop = prop;
-    alert(prop);
-    // this.value = value;
+    this.remove = remove;
     this.web = this.clientContext.get_web();
     this.webProperties = this.clientContext.get_web().get_allProperties();
     this.clientContext.load(this.webProperties);
     this.clientContext.load(this.web);
-    alertify.delay(5000).log("Adding '<b>" + prop + "</b>' to vti_indexedpropertykeys...");
+    if(remove)
+      alertify.delay(5000).log("Removing '<b>" + prop + "</b>' from vti_indexedpropertykeys...");
+    else
+      alertify.delay(5000).log("Adding '<b>" + prop + "</b>' to vti_indexedpropertykeys...");
     this.clientContext.executeQueryAsync(
       Function.createDelegate(this, addToIndexedPropertyKeysSucceeded),
       Function.createDelegate(this, addToIndexedPropertyKeysFailed)
@@ -393,16 +395,24 @@ var addToIndexedPropertyKeysSucceeded = function addToIndexedPropertyKeysSucceed
 
   var newIndexValue = "";
 
-  if (allProperties.get_fieldValues()["vti_indexedpropertykeys"]) {
-    newIndexValue = allProperties.get_fieldValues()["vti_indexedpropertykeys"] + b64encoded + "|";
+  if (!this.remove) {
+    if (allProperties.get_fieldValues()["vti_indexedpropertykeys"]) {
+      if (allProperties.get_fieldValues()["vti_indexedpropertykeys"].indexOf(b64encoded) == -1) {
+          newIndexValue = allProperties.get_fieldValues()["vti_indexedpropertykeys"] + b64encoded + "|";
+      }
+      else {
+        alertify.delay(10000).error('Property key ' + this.prop + ' already indexed!');
+        return;
+      }
+    }
+    else {
+      newIndexValue = b64encoded + "|";
   }
-  else {
-    newIndexValue = b64encoded + "|";
+    }
+  else{
+    newIndexValue = allProperties.get_fieldValues()["vti_indexedpropertykeys"].replace(b64encoded + "|", "");
   }
-
-  // ad here to check if already indeksed
-  // remeber to make delete option too.
-
+  
   allProperties.set_item("vti_indexedpropertykeys", newIndexValue);
   this.web.update();
   this.clientContext.executeQueryAsync(
@@ -412,7 +422,10 @@ var addToIndexedPropertyKeysSucceeded = function addToIndexedPropertyKeysSucceed
 };
 
 var addToIndexedPropertyKeysSucceeded2 = function addToIndexedPropertyKeysSucceeded2(sender, args) {
-  alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!");
+  if(this.remove)
+    alertify.delay(5000).success("Property removed from vti_indexedpropertykeys successfully!");
+  else
+    alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!");
   window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 };
 
@@ -433,15 +446,4 @@ function swap(a, b, c, d, e) {
   elem(c).style.display = 'none';
   elem(d).style.display = 'none';
   elem(e).style.display = 'none';
-}
-
-function EncodePropertyKey(propKey) {
-  alert(propKey);
-  var bytes = [];
-  for (var i = 0; i < propKey.length; ++i) {
-    bytes.push(propKey.charCodeAt(i));
-    bytes.push(0);
-  }
-  var b64encoded = window.btoa(String.fromCharCode.apply(null, bytes));
-  return b64encoded;
 }

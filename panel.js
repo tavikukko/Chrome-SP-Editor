@@ -100,7 +100,11 @@ port.onMessage.addListener(function (message) {
             while (element.firstChild) {
               element.removeChild(element.firstChild);
             }
-
+            
+            var obj = message.result.filter(function ( obj ) {
+                return obj.prop === 'vti_indexedpropertykeys';
+            })[0];
+                        
             for (j = 0; j < message.result.length; j++) {
 
               var items = message.result[j];
@@ -201,11 +205,31 @@ port.onMessage.addListener(function (message) {
 
               span.appendChild(buttonRemove);
               
+              var isIndexed = false;
               //button index
+              if(obj !== undefined)
+              {
+                var bytes = [];
+                for (var i = 0; i < items.prop.length; ++i) {
+                  bytes.push(items.prop.charCodeAt(i));
+                  bytes.push(0);
+                }
+                var b64encoded = window.btoa(String.fromCharCode.apply(null, bytes));
+                if (obj.value.indexOf(b64encoded) > -1) isIndexed = true;
+              }
+              
               var buttonIndex=document.createElement('button');
-              buttonIndex.innerHTML = 'Index';
+              if(isIndexed)
+                buttonIndex.innerHTML = 'UnIndex';
+              else
+                buttonIndex.innerHTML = 'Index';
+
               var buttonClass=document.createAttribute("class");
-              buttonClass.value='btn btn-default index-property';
+              if(isIndexed)
+                buttonClass.value='btn btn-success unindex-property';
+              else
+                buttonClass.value='btn btn-default index-property';
+
               buttonIndex.setAttributeNode(buttonClass);
 
               var buttonIndexDataId=document.createAttribute("data-id");
@@ -250,7 +274,19 @@ port.onMessage.addListener(function (message) {
               indexproperty[i].addEventListener('click',function(e){
 
                 var script = addToIndexedPropertyKeys + ' ' + addToIndexedPropertyKeysSucceeded + ' ' + addToIndexedPropertyKeysSucceeded2 + ' ' + addToIndexedPropertyKeysFailed;
-                var evalScript = alertifyConf + " addToIndexedPropertyKeys('" + $('#'+$(this).data('id')).html() + "');";
+                var evalScript = alertifyConf + " addToIndexedPropertyKeys('" + $('#'+$(this).data('id')).html() + "', false);";
+
+                chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
+              });
+          }
+
+          var unindexproperty = document.getElementsByClassName("unindex-property");
+
+          for(var i=0;i<unindexproperty.length;i++){
+              unindexproperty[i].addEventListener('click',function(e){
+
+                var script = addToIndexedPropertyKeys + ' ' + addToIndexedPropertyKeysSucceeded + ' ' + addToIndexedPropertyKeysSucceeded2 + ' ' + addToIndexedPropertyKeysFailed;
+                var evalScript = alertifyConf + " addToIndexedPropertyKeys('" + $('#'+$(this).data('id')).html() + "', true);";
 
                 chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
               });
