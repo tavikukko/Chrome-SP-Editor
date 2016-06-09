@@ -76,4 +76,4 @@ open Chrome developer tools.
 * The tools works also when using Chrome workspaces, is saves the file to the disk and also the SharePoint.
 
 ### Known issues
-* The tool does not work on personal site frontpage, _layouts/15/onedrive.aspx. (Found by [admiralman](https://github.com/admiralman))
+* [#3](https://github.com/tavikukko/Chrome-SP-Editor/issues/3) The tool does not work on personal site frontpage, _layouts/15/onedrive.aspx. (Found by [admiralman](https://github.com/admiralman))
