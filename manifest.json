@@ -11,18 +11,22 @@
 		"128": "icon128.png"
 	},
 	"web_accessible_resources": [
-    "alertify.js"
+    "alertify.js", "pnp.js", "r.js"
   ],
 	"devtools_page": "devtools.html",
 	"background": { "scripts": [ "background.js"] },
 	   "content_scripts": [
         {
+			"run_at": "document_end",
 			"css": ["alertify.css"],
-            "js": ["alertify.js","content.js"],
+            "js": ["alertify.js","content.js", "pnp.js", "r.js"],
             "matches": ["<all_urls>"]
         }
     ],
-	"permissions": ["https://*/*", "http://*/*", "tabs"],
+	"permissions": ["webRequest",
+        "webRequestBlocking",
+        "tabs",
+        "storage","https://*/*", "http://*/*", "tabs"],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"manifest_version": 2
 }

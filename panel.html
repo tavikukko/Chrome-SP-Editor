@@ -25,6 +25,9 @@
                   <a href="#" id="btnWebProperties">Web properties</a>
                 </li>
                 <li>
+                  <a href="#" id="btnWebhooks">Webhooks</a>
+                </li>
+                <li>
                   <a href="#" id="btnAbout">About</a>
                 </li>
             </ul>
@@ -35,8 +38,6 @@
           <div id="page-content-wrapper">
             <h4>Save to SharePoint</h4>
             <p><label><input id="autosave" type="checkbox" /> Update changes to SharePoint</label></p>
-            <!--  <hr>
-              <p><label><input id="autocheckout" type="checkbox" /> Don't auto checkout / checkin</label></p>-->
             <p><label><input id="autopublish" type="checkbox" /> Publish a Major version on save</label></p>
           </div>
         </div>
@@ -49,8 +50,7 @@
               <b>Local css</b> and <b>external css and js</b> files must use absolute url.</p>
             </div>
             <hr>
-            <div class="input-group">
-              <div class="row">
+              <div class="row"> 
                 <div class="col-xs-2">
                   <input id="scriptsequence" type="text" class="form-control" placeholder="Sequence">
                 </div>
@@ -66,7 +66,6 @@
                       </ul>
                   </div>
                 </div>
-              </div>
             </div>
             <hr>
             <div id="scriptlinks">
@@ -76,13 +75,12 @@
         <div id="files" style="display: none;">
           <div id="page-content-wrapper">
             <h4>Files</h4>
-            <p>Add files to rootsite Style library.</p>
-            <p>Allowed characters [a-z 0-9 . _ -], trimmed automatically.</p>
-            <hr>
+            <p>Add files to rootsite Style library.
+            Allowed characters [a-z 0-9 . _ -], trimmed automatically.</p>
             <div class="row">
                <div class="col-lg-6">
                   <div class="input-group">
-                     <input id="addfile" type="text" class="form-control">
+                     <input id="addfile" type="text" class="form-control" placeholder="myfile.js">
                      <span class="input-group-btn">
                         <button id="addfilebtn" class="btn btn-default" type="button">Add</button>
                      </span>
@@ -92,7 +90,6 @@
             <hr>
             <h4>Scriptlink</h4>
             <p>Inject the new file: <b><span id="trimmedfilename"></b></p>
-            <div class="input-group">
               <div class="row">
                 <div class="col-xs-2">
                   <input id="filescriptsequence" type="text" class="form-control" placeholder="Sequence">
@@ -110,7 +107,6 @@
                   </div>
                 </div>
               </div>
-            </div>
           </div>
         </div>
 
@@ -122,7 +118,6 @@
               <p>Current web propertybag values</p>
             </div>
             <hr>
-            <div class="input-group">
               <div class="row">
                 <div class="col-xs-2">
                   <input id="propertykey" type="text" class="form-control" placeholder="New property key">
@@ -136,19 +131,55 @@
                   </div>
                 </div>
               </div>
-            </div>
             <hr>
-            <div class="input-group">
               <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-3">
                   <input id="filterprops" type="text" class="form-control" placeholder="Filter properties">
                 </div>
               </div>
-            </div>
             <hr>
              <div id="webPropertyBag">
             </div>
           </div>
+        </div>
+
+        <div id="webhook" style="display: none;">
+          <div id="page-content-wrapper">
+            <div>
+              <h4>WebHooks</h4>
+              <p>Add / remove webhooks.</p>
+            </div>
+            <hr>
+            
+
+              <div class="row"> 
+
+                <div class="col-xs-4">
+                  <select class="form-control" id="webhooklist">
+                    <option value="" selected disabled>Please select</option>
+                    <option>Documents</option>
+                    <option>Pages</option>
+                    <option>Custom List</option>
+                    <option>My Items jee</option>
+                  </select>
+                </div>
+                <div class="col-xs-8">
+                   <div class="input-group">
+                     <input id="webhookurl" type="text" class="form-control" placeholder="Full url to your webhook endpoint">
+                     <span class="input-group-btn">
+                        <button id="addwebhookbtn" class="btn btn-default" type="button">Add</button>
+                     </span>
+                  </div>
+              </div>
+
+            </div>
+
+
+            <hr>
+            <div id="subscriptions">
+            </div>
+          
+        </div>
         </div>
 
 
@@ -168,6 +199,8 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <!-- panel js -->
+    <script src="pnp.js"></script>
     <script src="panelspqueries.js"></script>
+
     <script src="panel.js"></script>
 </body>
