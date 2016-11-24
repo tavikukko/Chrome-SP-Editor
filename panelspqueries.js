@@ -110,7 +110,7 @@ var removeCustomAction = function removeCustomAction() {
 
   requirejs([pnp, alertify], function ($pnp, alertify) {
     alertify.confirm("Really want to delete this scriptLink?", function () {
-     if (scope === 'site') {
+      if (scope === 'site') {
         $pnp.sp.site.userCustomActions.getById(id).delete().then(function (result) {
           alertify.delay(5000).success("ScriptLink removed successfully!");
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
@@ -141,39 +141,20 @@ var removeCustomAction = function removeCustomAction() {
 // add new file to root site Style Library
 var addFile = function addFile() {
   var filename = arguments[1];
-  requirejs([alertify], function (alertify) {
-    SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
-      var clientContext = new SP.ClientContext();
-      var site = clientContext.get_site();
-      var createInfo = new SP.FileCreationInformation();
-      createInfo.set_content(new SP.Base64EncodedByteArray());
-      var fileContent = "/* Created from Chrome SP Editor */";
-      for (var i = 0; i < fileContent.length; i++)
-        createInfo.get_content().append(fileContent.charCodeAt(i));
-      createInfo.set_overwrite(true);
-      createInfo.set_url(filename);
-      this.file = site.get_rootWeb().getFolderByServerRelativeUrl('style%20library').get_files().add(createInfo);
-      clientContext.load(this.file);
-      alertify.delay(5000).log("Adding '<b>" + filename + "</b>' to Style Library...");
-      clientContext.executeQueryAsync(
-        Function.createDelegate(this, addFileSucceeded),
-        Function.createDelegate(this, addFileFailed)
-      );
+  requirejs([pnp, alertify], function ($pnp, alertify) {
+    alertify.delay(5000).log("Adding '<b>" + filename + "</b>' to Style Library...");
+    var contentStr = '/* Created from Chrome SP Editor */';
+    var contentBytes = new Uint8Array(contentStr.length);
+    for (var i = 0; i < contentStr.length; i++)
+      contentBytes[i] = contentStr.charCodeAt(i);
+
+    $pnp.sp.site.rootWeb.getFolderByServerRelativeUrl("Style Library").files.add(filename, contentBytes).then(function (result) {
+      alertify.delay(5000).success("File added successfully!");
+      window.postMessage(JSON.stringify({ function: 'addFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+    }).catch(function (data) {
+      alertify.delay(10000).error(data);
+      window.postMessage(JSON.stringify({ function: 'addFile', success: false, result: data, source: 'chrome-sp-editor' }), '*');
     });
-  });
-};
-
-var addFileSucceeded = function addFileSucceeded(sender, args) {
-  requirejs([alertify], function (alertify) {
-    alertify.delay(5000).success("File added successfully!");
-    window.postMessage(JSON.stringify({ function: 'addFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-  });
-};
-
-var addFileFailed = function addFileFailed(sender, args) {
-  requirejs([alertify], function (alertify) {
-    alertify.delay(10000).error(args.get_message());
-    window.postMessage(JSON.stringify({ function: 'addFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
   });
 };
 

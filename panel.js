@@ -606,7 +606,7 @@ elem('addfilebtn').addEventListener('click', function (e) {
     return;
   }
   else if (filename.match(/.css$/) || filename.match(/.js$/)) {
-    var script = r + ' ' + alertify + ' ' + exescript + ' ' + addFile + ' ' + addFileSucceeded + ' ' + addFileFailed;
+    var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addFile; // + ' ' + addFileSucceeded + ' ' + addFileFailed;
     script += " exescript(addFile, '" + filename + "');";
     chrome.devtools.inspectedWindow.eval(script);
   }
