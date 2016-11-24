@@ -13,18 +13,19 @@ port.onMessage.addListener(function (message) {
       break;
     case 'addCustomAction':
       if (message.success) {
-        var script = getCustomActions + ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;
-        script += ' getCustomActions();';
-        chrome.devtools.inspectedWindow.eval(script);
+          var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions; //+ ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;;
+          script += " exescript(getCustomActions);";
+          chrome.devtools.inspectedWindow.eval(script);
       }
       break;
     case 'addFile':
       break;
     case 'removeCustomAction':
       if (message.success) {
-        var script = getCustomActions + ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;
-        script += ' getCustomActions();';
-        chrome.devtools.inspectedWindow.eval(script);
+
+          var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions; //+ ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;;
+          script += " exescript(getCustomActions);";
+          chrome.devtools.inspectedWindow.eval(script);
       }
       break;
     case 'getCustomActions':
@@ -79,7 +80,7 @@ port.onMessage.addListener(function (message) {
         for (var i = 0; i < removescript.length; i++) {
           removescript[i].addEventListener('click', function (e) {
 
-            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + removeCustomAction + ' ' + removeCustomActionSucceeded + ' ' + removeCustomActionSucceeded2 + ' ' + removeCustomActionFailed;
+            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + removeCustomAction; // + ' ' + removeCustomActionSucceeded + ' ' + removeCustomActionSucceeded2 + ' ' + removeCustomActionFailed;
             script += " exescript(removeCustomAction, '" + $(this).data('scope') + "', '" + $(this).data('id') + "');";
             chrome.devtools.inspectedWindow.eval(script);
 
@@ -544,7 +545,7 @@ elem('btnSave').addEventListener('click', function (e) {
 elem('btnScript').addEventListener('click', function (e) {
   swap('script', 'files', 'webproperties', 'about', 'save', 'webhook');
 
-  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions + ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;;
+  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions; //+ ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;;
   script += " exescript(getCustomActions);";
   chrome.devtools.inspectedWindow.eval(script);
 
@@ -660,7 +661,7 @@ function addscriptlink(scope, scriptsequence, scriptpath) {
     return;
   }
 
-  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addCustomAction + ' ' + addCustomActionSucceeded + ' ' + addCustomActionFailed;
+  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addCustomAction;// + ' ' + addCustomActionSucceeded + ' ' + addCustomActionFailed;
   script += " exescript(addCustomAction, '" + scope + "', '" + scriptpath + "', '" + scriptsequence + "');";
   chrome.devtools.inspectedWindow.eval(script);
 }
