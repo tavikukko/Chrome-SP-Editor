@@ -13,7 +13,7 @@ port.onMessage.addListener(function (message) {
       break;
     case 'addCustomAction':
       if (message.success) {
-        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions; //+ ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;;
+        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
         script += " exescript(getCustomActions);";
         chrome.devtools.inspectedWindow.eval(script);
       }
@@ -23,7 +23,7 @@ port.onMessage.addListener(function (message) {
     case 'removeCustomAction':
       if (message.success) {
 
-        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions; //+ ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;;
+        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
         script += " exescript(getCustomActions);";
         chrome.devtools.inspectedWindow.eval(script);
       }
@@ -71,16 +71,16 @@ port.onMessage.addListener(function (message) {
                 scripturl = scripturl.substring(0, scripturl.indexOf("\""));
               }
             }
-            li.innerHTML = "<span class='pull-left' style='width: 10%' >" + items[i].sequence + "</span><span>" + scripturl + "</span><span data-scope='" + items[i].scope + "' data-id='" + items[i].id + "' class='glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
+            li.innerHTML = "<span class='pull-left' style='width: 10%' >" + items[i].sequence + "</span><span>" + scripturl + "</span><span data-scope='" + items[i].scope + "' data-id='" + items[i].id + "' class='scriptlinks-remove glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
           }
           element.appendChild(ul);
         }
-        var removescript = document.getElementsByClassName("glyphicon-remove");
+        var removescript = document.getElementsByClassName("scriptlinks-remove");
 
         for (var i = 0; i < removescript.length; i++) {
           removescript[i].addEventListener('click', function (e) {
 
-            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + removeCustomAction; // + ' ' + removeCustomActionSucceeded + ' ' + removeCustomActionSucceeded2 + ' ' + removeCustomActionFailed;
+            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + removeCustomAction;
             script += " exescript(removeCustomAction, '" + $(this).data('scope') + "', '" + $(this).data('id') + "');";
             chrome.devtools.inspectedWindow.eval(script);
 
@@ -247,7 +247,7 @@ port.onMessage.addListener(function (message) {
         for (var i = 0; i < updateproperty.length; i++) {
           updateproperty[i].addEventListener('click', function (e) {
 
-            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + updateWebProperties;// + ' ' + updateWebPropertiesSucceeded + ' ' + updateWebPropertiesSucceeded2 + ' ' + updateWebPropertiesFailed;
+            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + updateWebProperties;
             script += " exescript(updateWebProperties, '" + $('#' + $(this).data('id')).html() + "', '" + $('#' + $(this).data('value')).val() + "');";
             chrome.devtools.inspectedWindow.eval(script);
 
@@ -259,7 +259,7 @@ port.onMessage.addListener(function (message) {
         for (var i = 0; i < removeproperty.length; i++) {
           removeproperty[i].addEventListener('click', function (e) {
 
-            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + deleteWebProperties;// + ' ' + deleteWebPropertiesSucceeded + ' ' + deleteWebPropertiesSucceeded2 + ' ' + deleteWebPropertiesFailed;
+            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + deleteWebProperties;
             script += " exescript(deleteWebProperties, '" + $('#' + $(this).data('id')).html() + "');";
             chrome.devtools.inspectedWindow.eval(script);
 
@@ -271,7 +271,7 @@ port.onMessage.addListener(function (message) {
         for (var i = 0; i < indexproperty.length; i++) {
           indexproperty[i].addEventListener('click', function (e) {
 
-            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys;// + ' ' + addToIndexedPropertyKeysSucceeded + ' ' + addToIndexedPropertyKeysSucceeded2 + ' ' + addToIndexedPropertyKeysFailed;
+            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys;
             script += " exescript(addToIndexedPropertyKeys, '" + $('#' + $(this).data('id')).html() + "', false);";
             chrome.devtools.inspectedWindow.eval(script);
 
@@ -283,7 +283,7 @@ port.onMessage.addListener(function (message) {
         for (var i = 0; i < unindexproperty.length; i++) {
           unindexproperty[i].addEventListener('click', function (e) {
 
-            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys;// + ' ' + addToIndexedPropertyKeysSucceeded + ' ' + addToIndexedPropertyKeysSucceeded2 + ' ' + addToIndexedPropertyKeysFailed;
+            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys;
             script += " exescript(addToIndexedPropertyKeys, '" + $('#' + $(this).data('id')).html() + "', true);";
             chrome.devtools.inspectedWindow.eval(script);
 
@@ -308,11 +308,8 @@ port.onMessage.addListener(function (message) {
       break;
     case 'addWebProperties':
       if (message.success) {
-        /*  var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
-          script += ' getWebProperties();';
-          chrome.devtools.inspectedWindow.eval(script);*/
 
-        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties; // + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
+        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
         script += " exescript(getWebProperties);";
         chrome.devtools.inspectedWindow.eval(script);
 
@@ -320,36 +317,44 @@ port.onMessage.addListener(function (message) {
       break;
     case 'updateWebProperties':
       if (message.success) {
-        /*  var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
-          script += ' getWebProperties();';
-          chrome.devtools.inspectedWindow.eval(script);*/
 
-        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties; // + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
+        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
         script += " exescript(getWebProperties);";
         chrome.devtools.inspectedWindow.eval(script);
       }
       break;
     case 'deleteWebProperties':
       if (message.success) {
-        /* var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
-         script += ' getWebProperties();';
-         chrome.devtools.inspectedWindow.eval(script); */
-        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties; // + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
+
+        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
         script += " exescript(getWebProperties);";
         chrome.devtools.inspectedWindow.eval(script);
       }
       break;
     case 'addToIndexedPropertyKeys':
       if (message.success) {
-        /*   var script = getWebProperties + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
-           script += ' getWebProperties();';
-           chrome.devtools.inspectedWindow.eval(script);*/
 
-        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties; // + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
+        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
         script += " exescript(getWebProperties);";
         chrome.devtools.inspectedWindow.eval(script);
       }
       break;
+    case 'addSubscriptions':
+      if (message.success) {
+        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
+        script += " exescript(getSubscriptions);";
+        chrome.devtools.inspectedWindow.eval(script);
+      }
+      break;
+
+    case 'removeSubscription':
+      if (message.success) {
+        var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
+        script += " exescript(getSubscriptions);";
+        chrome.devtools.inspectedWindow.eval(script);
+      }
+      break;
+
     case 'getSubscriptions':
       if (message.success) {
         var element = elem("subscriptions");
@@ -364,6 +369,43 @@ port.onMessage.addListener(function (message) {
               .attr("value", value.listId)
               .text(value.listTitle));
         });
+
+        var items = message.result;
+
+        var ul = document.createElement('ul');
+        var ulatt = document.createAttribute("class");
+        ulatt.value = "list-group";
+        ul.setAttributeNode(ulatt);
+
+        for (i = 0; i < items.length; i++) {
+          var li = document.createElement('li');
+          var liatt = document.createAttribute("class");
+          liatt.value = "list-group-item active";
+          li.setAttributeNode(liatt);
+          ul.appendChild(li);
+          li.innerHTML = "<span style='display: inline-block;width: 33.33%;text-align: left;'>" + items[i].listTitle + "</span><span style='display: inline-block;width: 33.33%;text-align: center;'>" + items[i].subExpirationDateTime + "</span><span style='display: inline-block;width: 33.33%;text-align: right;'>" + items[i].subId + "</span>";
+
+          var li = document.createElement('li');
+          var liatt = document.createAttribute("class");
+          liatt.value = "list-group-item";
+          li.setAttributeNode(liatt);
+          ul.appendChild(li);
+
+          li.innerHTML = "<span>" + items[i].subNotificationUrl + "</span><span data-scope='" + items[i].listId + "' data-id='" + items[i].subId + "' class='sub-remove glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
+        }
+        element.appendChild(ul);
+
+        var removesub = document.getElementsByClassName("sub-remove");
+
+        for (var i = 0; i < removesub.length; i++) {
+          removesub[i].addEventListener('click', function (e) {
+
+            var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + removeSubscription;
+            script += " exescript(removeSubscription, '" + $(this).data('scope') + "', '" + $(this).data('id') + "');";
+            chrome.devtools.inspectedWindow.eval(script);
+
+          });
+        }
 
       }
       else {
@@ -399,7 +441,7 @@ elem('btnSave').addEventListener('click', function (e) {
 elem('btnScript').addEventListener('click', function (e) {
   swap('script', 'files', 'webproperties', 'about', 'save', 'webhook');
 
-  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions; //+ ' ' + getCustomActionsSucceeded + ' ' + getCustomActionsFailed;;
+  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
   script += " exescript(getCustomActions);";
   chrome.devtools.inspectedWindow.eval(script);
 
@@ -423,7 +465,7 @@ elem('btnWebhooks').addEventListener('click', function (e) {
 elem('btnWebProperties').addEventListener('click', function (e) {
   swap('webproperties', 'save', 'script', 'files', 'about', 'webhook');
 
-  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties; // + ' ' + getWebPropertiesSucceeded + ' ' + getWebPropertiesFailed;
+  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
   script += " exescript(getWebProperties);";
   chrome.devtools.inspectedWindow.eval(script);
 
@@ -463,7 +505,7 @@ elem('addfilebtn').addEventListener('click', function (e) {
     return;
   }
   else if (filename.match(/.css$/) || filename.match(/.js$/)) {
-    var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addFile; // + ' ' + addFileSucceeded + ' ' + addFileFailed;
+    var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addFile;
     script += " exescript(addFile, '" + filename + "');";
     chrome.devtools.inspectedWindow.eval(script);
   }
@@ -486,14 +528,20 @@ elem('addpropertybtn').addEventListener('click', function (e) {
   var propertykey = elem('propertykey').value;
   var propertyvalue = elem('propertyvalue').value;
 
-  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addWebProperties;// + ' ' + addWebPropertiesSucceeded + ' ' + addWebPropertiesSucceeded2 + ' ' + addWebPropertiesFailed;
+  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addWebProperties;
   script += " exescript(addWebProperties, '" + propertykey + "', '" + propertyvalue + "');";
   chrome.devtools.inspectedWindow.eval(script);
 
 });
 
 elem('addwebhookbtn').addEventListener('click', function (e) {
-  alert('not imlemented yet!');
+
+  var webhooklist = $("#webhooklist").val();
+  var webhookurl = elem('webhookurl').value;
+
+  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addSubscriptions;
+  script += " exescript(addSubscriptions, '" + webhooklist + "', '" + webhookurl + "');";
+  chrome.devtools.inspectedWindow.eval(script);
 
 });
 
@@ -516,7 +564,7 @@ function addscriptlink(scope, scriptsequence, scriptpath) {
     return;
   }
 
-  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addCustomAction;// + ' ' + addCustomActionSucceeded + ' ' + addCustomActionFailed;
+  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + addCustomAction;
   script += " exescript(addCustomAction, '" + scope + "', '" + scriptpath + "', '" + scriptsequence + "');";
   chrome.devtools.inspectedWindow.eval(script);
 }
