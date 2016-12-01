@@ -609,8 +609,10 @@ var getSubscriptions = function getSubscriptions() {
     $pnp.sp.web.lists.filter('Hidden eq false').expand('Subscriptions').get().then(function (lists) {
 
       var webHookSubscriptions = [];
+      var listsx = [];
 
       lists.forEach(function (list) {
+        listsx.push({listTitle : list.Title, listId: list.Id});
         if (list.Subscriptions.length > 0) {
           list.Subscriptions.forEach(function (subscription) {
             webHookSubscriptions.push({
@@ -624,7 +626,7 @@ var getSubscriptions = function getSubscriptions() {
         }
       });
 
-      window.postMessage(JSON.stringify({ function: 'getSubscriptions', success: true, result: webHookSubscriptions, source: 'chrome-sp-editor' }), '*');
+      window.postMessage(JSON.stringify({ function: 'getSubscriptions', success: true, result: webHookSubscriptions, lists: listsx, source: 'chrome-sp-editor' }), '*');
     })
       .catch(function (err) {
         alertify.delay(10000).error(err);

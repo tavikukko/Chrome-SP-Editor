@@ -356,176 +356,14 @@ port.onMessage.addListener(function (message) {
         while (element.firstChild) {
           element.removeChild(element.firstChild);
         }
+        $('#webhooklist').find('option').remove().end();
 
-        for (j = 0; j < message.result.length; j++) {
-
-          var items = message.result[j];
-
-          var divform = document.createElement('div');
-
-          var divformDataId = document.createAttribute("data-id");
-          divformDataId.value = items.Title;
-          divform.setAttributeNode(divformDataId);
-
-          var divformClass = document.createAttribute("class");
-          divformClass.value = 'form-group';
-          divform.setAttributeNode(divformClass);
-
-          element.appendChild(divform);
-
-          //label
-          var label = document.createElement('label');
-          label.innerHTML = items.Title;
-          label.id = 'proplabel' + j;
-
-          var labelAtt = document.createAttribute("for");
-          labelAtt.value = 'propInput' + j;
-          label.setAttributeNode(labelAtt);
-
-          divform.appendChild(label);
-          //div for buttons
-
-          alert(JSON.stringify(items.subscriptions));
-          for (k = -1; k < items.subscriptions.length; k++) {
-
-            var div = document.createElement('div');
-            var divClass = document.createAttribute("class");
-            divClass.value = 'input-group';
-            div.setAttributeNode(divClass);
-
-            divform.appendChild(div);
-
-            var sub = items.subscriptions[0];
-            //input
-            var input = document.createElement('input');
-            var inputType = document.createAttribute("type");
-            inputType.value = 'text';
-            input.setAttributeNode(inputType);
-
-            var inputId = document.createAttribute("id");
-            inputId.value = 'propInput' + j;
-            input.setAttributeNode(inputId);
-
-            var inputClass = document.createAttribute("class");
-            inputClass.value = 'form-control';
-            input.setAttributeNode(inputClass);
-
-            var inputAria = document.createAttribute("aria-describedby");
-            inputAria.value = 'helpBlock';
-            input.setAttributeNode(inputAria);
-
-            input.value = sub.notificationUrl;
-
-            div.appendChild(input);
-
-            var span = document.createElement('span');
-            var spanClass = document.createAttribute("class");
-            spanClass.value = 'input-group-btn';
-            span.setAttributeNode(spanClass);
-
-            div.appendChild(span);
-
-            //button update
-            var buttonUpdate = document.createElement('button');
-            buttonUpdate.innerHTML = 'Update';
-            var buttonClass = document.createAttribute("class");
-            buttonClass.value = 'btn btn-default update-property';
-            buttonUpdate.setAttributeNode(buttonClass);
-
-            var buttonUpdateDataId = document.createAttribute("data-id");
-            buttonUpdateDataId.value = 'proplabel' + j;
-            buttonUpdate.setAttributeNode(buttonUpdateDataId);
-
-            var buttonUpdateDataValue = document.createAttribute("data-value");
-            buttonUpdateDataValue.value = 'propInput' + j;
-            buttonUpdate.setAttributeNode(buttonUpdateDataValue);
-
-            var buttonType = document.createAttribute("type");
-            buttonType.value = 'button';
-            buttonUpdate.setAttributeNode(buttonType);
-
-            span.appendChild(buttonUpdate);
-          }
-          /*
-                        //button remove
-                        var buttonRemove=document.createElement('button');
-                        buttonRemove.innerHTML = 'Remove';
-                        var buttonClass=document.createAttribute("class");
-                        buttonClass.value='btn btn-default remove-property';
-                        buttonRemove.setAttributeNode(buttonClass);
-          
-                        var buttonRemoveDataId=document.createAttribute("data-id");
-                        buttonRemoveDataId.value='proplabel'+j;
-                        buttonRemove.setAttributeNode(buttonRemoveDataId);
-          
-                        var buttonType=document.createAttribute("type");
-                        buttonType.value='button';
-                        buttonRemove.setAttributeNode(buttonType);
-          
-                        span.appendChild(buttonRemove);
-                        
-                        var isIndexed = false;
-                        //button index
-                        if(obj !== undefined)
-                        {
-                          var bytes = [];
-                          for (var i = 0; i < items.prop.length; ++i) {
-                            bytes.push(items.prop.charCodeAt(i));
-                            bytes.push(0);
-                          }
-                          var b64encoded = window.btoa(String.fromCharCode.apply(null, bytes));
-                          if (obj.value.indexOf(b64encoded) > -1) isIndexed = true;
-                        }
-                        
-                        var buttonIndex=document.createElement('button');
-                        if(isIndexed)
-                          buttonIndex.innerHTML = 'UnIndex';
-                        else
-                          buttonIndex.innerHTML = 'Index';
-          
-                        var buttonClass=document.createAttribute("class");
-                        if(isIndexed)
-                          buttonClass.value='btn btn-success unindex-property';
-                        else
-                          buttonClass.value='btn btn-default index-property';
-          
-                        buttonIndex.setAttributeNode(buttonClass);
-          
-                        var buttonIndexDataId=document.createAttribute("data-id");
-                        buttonIndexDataId.value='proplabel'+j;
-                        buttonIndex.setAttributeNode(buttonIndexDataId);
-          
-                        var buttonType=document.createAttribute("type");
-                        buttonType.value='button';
-                        buttonIndex.setAttributeNode(buttonType);
-          
-                        span.appendChild(buttonIndex);              
-                        
-                      }
-          
-                    var updateproperty = document.getElementsByClassName("update-property");
-          
-                    for(var i=0;i<updateproperty.length;i++){
-                        updateproperty[i].addEventListener('click',function(e){
-          
-                         var script = updateWebProperties + ' ' + updateWebPropertiesSucceeded + ' ' + updateWebPropertiesSucceeded2 + ' ' + updateWebPropertiesFailed;
-                         var evalScript = alertifyConf + " updateWebProperties('" + $('#'+$(this).data('id')).html() + "', '" + $('#'+$(this).data('value')).val() + "');";
-          
-                         chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
-                        });
-                    }
-          
-                    var removeproperty = document.getElementsByClassName("remove-property");
-          
-                    for(var i=0;i<removeproperty.length;i++){
-                        removeproperty[i].addEventListener('click',function(e){
-          
-                          var script = deleteWebProperties + ' ' + deleteWebPropertiesSucceeded + ' ' + deleteWebPropertiesSucceeded2 + ' ' + deleteWebPropertiesFailed;
-                          var evalScript = alertifyConf + " deleteWebProperties('" + $('#'+$(this).data('id')).html() + "');";
-          
-                          chrome.devtools.inspectedWindow.eval(script + alertyfyScript.replace(/EVAL/g, evalScript));
-                        }); */
-        }
+        $.each(message.lists, function (key, value) {
+          $('#webhooklist')
+            .append($("<option></option>")
+              .attr("value", value.listId)
+              .text(value.listTitle));
+        });
 
       }
       else {
@@ -577,6 +415,9 @@ elem('btnAbout').addEventListener('click', function (e) {
 
 elem('btnWebhooks').addEventListener('click', function (e) {
   swap('webhook', 'about', 'save', 'script', 'files', 'webproperties');
+  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
+  script += " exescript(getSubscriptions);";
+  chrome.devtools.inspectedWindow.eval(script);
 });
 
 elem('btnWebProperties').addEventListener('click', function (e) {
@@ -652,10 +493,8 @@ elem('addpropertybtn').addEventListener('click', function (e) {
 });
 
 elem('addwebhookbtn').addEventListener('click', function (e) {
+  alert('not imlemented yet!');
 
-  var script = pnp + ' ' + r + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
-  script += " exescript(getSubscriptions, 'kukko');";
-  chrome.devtools.inspectedWindow.eval(script);
 });
 
 function addscriptlink(scope, scriptsequence, scriptpath) {
