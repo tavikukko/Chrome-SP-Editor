@@ -559,11 +559,11 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
       // window.postMessage(JSON.stringify({ function: 'getWebProperties', success: true, result: propertyBag, source: 'chrome-sp-editor' }), '*');
 
     }).catch(function (data) {
-        alertify.delay(10000).error(data);
-        window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: data, source: 'chrome-sp-editor' }), '*');
- 
-    
-     });
+      alertify.delay(10000).error(data);
+      window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+
+
+    });
 
   });
 };
@@ -606,37 +606,29 @@ var getSubscriptions = function getSubscriptions() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    $pnp.sp.web.lists.filter('Hidden eq false').get().then(function (lists) {
+    $pnp.sp.web.lists.filter('Hidden eq false').expand('Subscriptions').get().then(function (lists) {
 
-      var promises = [];
-      var listWithSubcription = [];
+      var webHookSubscriptions = [];
 
       lists.forEach(function (list) {
-        promises.push($pnp.sp.web.lists.getById(list.Id).subscriptions.get());
-      });
-
-      Promise.all(promises).then(promise => {
-        promise.forEach(function (subscriptions) {
-          subscriptions.forEach(function (subscription) {
-            var list = listWithSubcription.find(x => x.Id === subscription.resource);
-            if (!list) {
-              list = lists.find(x => x.Id === subscription.resource);
-              listWithSubcription.push(list);
-              list = listWithSubcription.find(x => x.Id === list.Id);
-            }
-
-            if (!list.subscriptions) list.subscriptions = [];
-            list.subscriptions.push(subscription)
-            alertify.delay(5000).success(subscription.id);
+        if (list.Subscriptions.length > 0) {
+          list.Subscriptions.forEach(function (subscription) {
+            webHookSubscriptions.push({
+              listTitle: list.Title,
+              listId: list.Id,
+              subExpirationDateTime: subscription.expirationDateTime,
+              subId: subscription.id,
+              subNotificationUrl: subscription.notificationUrl
+            });
           });
-        });
-        //console.log(listWithSubcription);
-        window.postMessage(JSON.stringify({ function: 'getSubscriptions', success: true, result: listWithSubcription, source: 'chrome-sp-editor' }), '*');
+        }
       });
 
-    }).catch(function (err) {
-      alertify.delay(10000).error(err);
-    });
+      window.postMessage(JSON.stringify({ function: 'getSubscriptions', success: true, result: webHookSubscriptions, source: 'chrome-sp-editor' }), '*');
+    })
+      .catch(function (err) {
+        alertify.delay(10000).error(err);
+      });
   });
 };
 

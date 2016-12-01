@@ -350,7 +350,7 @@ port.onMessage.addListener(function (message) {
         chrome.devtools.inspectedWindow.eval(script);
       }
       break;
-    case 'getSubscriptionsx':
+    case 'getSubscriptions':
       if (message.success) {
         var element = elem("subscriptions");
         while (element.firstChild) {
@@ -385,7 +385,7 @@ port.onMessage.addListener(function (message) {
           divform.appendChild(label);
           //div for buttons
 
-          //alert(JSON.stringify(items.subscriptions));
+          alert(JSON.stringify(items.subscriptions));
           for (k = -1; k < items.subscriptions.length; k++) {
 
             var div = document.createElement('div');
