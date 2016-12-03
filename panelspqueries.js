@@ -1,10 +1,14 @@
 var pnp = "var pnp = '" + chrome.extension.getURL('pnp.js') + "';";
-var r = "var r = '" + chrome.extension.getURL('r.js') + "';";
+//var r = "var r = '" + chrome.extension.getURL('r.js') + "';";
+var sj = "var sj = '" + chrome.extension.getURL('system.js') + "';";
 var alertify = "var alertify = '" + chrome.extension.getURL('alertify.js') + "';";
 
 // getCustomActions
 var getCustomActions = function getCustomActions() {
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+ // requirejs([pnp, alertify], function ($pnp, alertify) {
+Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
     var promises = [];
     var webactions = [];
@@ -80,7 +84,10 @@ var addCustomAction = function addCustomAction() {
     return;
   }
 
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+  //requirejs([pnp, alertify], function ($pnp, alertify) {
+    Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
     alertify.delay(5000).log("Adding scriptLink...");
     if (scope === 'site')
       $pnp.sp.site.userCustomActions.add(payload)
@@ -108,7 +115,11 @@ var removeCustomAction = function removeCustomAction() {
   var scope = arguments[1];
   var id = arguments[2]
 
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+ // requirejs([pnp, alertify], function ($pnp, alertify) {
+   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
     alertify.confirm("Really want to delete this scriptLink?", function () {
       if (scope === 'site') {
         $pnp.sp.site.userCustomActions.getById(id).delete().then(function (result) {
@@ -141,7 +152,11 @@ var removeCustomAction = function removeCustomAction() {
 // add new file to root site Style Library
 var addFile = function addFile() {
   var filename = arguments[1];
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+ // requirejs([pnp, alertify], function ($pnp, alertify) {
+   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
     alertify.delay(5000).log("Adding '<b>" + filename + "</b>' to Style Library...");
     var contentStr = '/* Created from Chrome SP Editor */';
     var contentBytes = new Uint8Array(contentStr.length);
@@ -160,7 +175,11 @@ var addFile = function addFile() {
 
 // getWebProperties
 var getWebProperties = function getWebProperties() {
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+  //requirejs([pnp, alertify], function ($pnp, alertify) {
+    Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
     $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then(function (result) {
 
       var compare = function compare(a, b) {
@@ -196,7 +215,11 @@ var addWebProperties = function addWebProperties() {
   var value = arguments[2];
 
 
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+ // requirejs([pnp, alertify], function ($pnp, alertify) {
+   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
     alertify.delay(5000).log("Adding " + prop + " webproperty...");
 
     var webid = "";
@@ -267,7 +290,11 @@ var updateWebProperties = function updateWebProperties() {
   var value = arguments[2];
 
 
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+ // requirejs([pnp, alertify], function ($pnp, alertify) {
+   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
     alertify.delay(5000).log("Updating " + prop + " webproperty...");
 
     var webid = "";
@@ -337,7 +364,11 @@ var deleteWebProperties = function deleteWebProperties() {
   var prop = arguments[1];
 
 
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+//  requirejs([pnp, alertify], function ($pnp, alertify) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
     var webid = "";
     var siteid = "";
 
@@ -407,7 +438,10 @@ var deleteWebProperties = function deleteWebProperties() {
 var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
   var prop = arguments[1];
   var remove = arguments[2];
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+ // requirejs([pnp, alertify], function ($pnp, alertify) {
+   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
     $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then(function (result) {
 
@@ -520,9 +554,9 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
 
 var exescript = function exescript(script) {
   var params = arguments;
-  if (typeof requirejs == 'undefined') {
+  if (typeof SystemJS == 'undefined') {
     var s = document.createElement('script');
-    s.src = r;
+    s.src = sj;
     s.onload = function () {
       script.apply(this, params);
     };
@@ -535,7 +569,9 @@ var alertError = function alertError() {
 
   var errorMsg = arguments[1];
 
-  requirejs([alertify], function (alertify) {
+ // requirejs([alertify], function (alertify) {
+   Promise.all([SystemJS.import(alertify)]).then(function(modules) {
+    var alertify = modules[0];
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -547,7 +583,10 @@ var alertError = function alertError() {
 
 var getSubscriptions = function getSubscriptions() {
 
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+ // requirejs([pnp, alertify], function ($pnp, alertify) {
+Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -585,7 +624,10 @@ var addSubscriptions = function addSubscriptions() {
   var listId = arguments[1];
   var hookurl = arguments[2];
 
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+//  requirejs([pnp, alertify], function ($pnp, alertify) {
+Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -610,7 +652,10 @@ var removeSubscription = function removeSubscription() {
   var listId = arguments[1];
   var subId = arguments[2];
 
-  requirejs([pnp, alertify], function ($pnp, alertify) {
+ // requirejs([pnp, alertify], function ($pnp, alertify) {
+Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);

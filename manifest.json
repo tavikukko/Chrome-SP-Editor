@@ -11,7 +11,7 @@
 		"128": "icon128.png"
 	},
 	"web_accessible_resources": [
-    "alertify.js", "pnp.js", "r.js"
+    "alertify.js", "pnp.js", "r.js", "system.js"
   ],
 	"devtools_page": "devtools.html",
 	"background": { "scripts": [ "background.js"] },
@@ -19,7 +19,7 @@
         {
 			"run_at": "document_end",
 			"css": ["alertify.css"],
-            "js": ["alertify.js","content.js", "pnp.js", "r.js"],
+            "js": ["alertify.js","content.js", "pnp.js", "r.js", "system.js"],
             "matches": ["<all_urls>"]
         }
     ],

@@ -29,7 +29,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 
 			var pblh = arguments[1];
 
-			requirejs([alertify], function (alertify) {
+Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 				SP.SOD.registerSod('sp.requestexecutor.js', '/_layouts/15/sp.requestexecutor.js');
 				SP.SOD.executeFunc('sp.js', 'SP.ClientContext', function () {
 					SP.SOD.executeFunc('sp.requestexecutor.js', 'SP.RequestExecutor', function () {
@@ -74,7 +76,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 
 		var updateFileSucceeded = function updateFileSucceeded() {
 			var self = this;
-			requirejs([alertify], function (alertify) {
+Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
 				var fileContent = "REPLACE-CONTENT";
 				var unescapedFileContent = unescape(fileContent);
@@ -102,7 +106,10 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 		};
 
 		var updateFileFailed = function updateFileFailed(sender, args) {
-			requirejs([alertify], function (alertify) {
+Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
 				alertify.delay(10000).error(args.get_message());
 				window.postMessage(JSON.stringify({ function: 'updateFile', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
 			});
@@ -110,7 +117,10 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 
 		var updateFileSucceeded2 = function updateFileSucceeded2() {
 			var self = this;
-			requirejs([alertify], function (alertify) {
+Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
 				alertify.delay(5000).success("File <b>" + self.fileToUpdate + "</b> updated successfully!");
 				window.postMessage(JSON.stringify({ function: 'updateFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 			});
@@ -120,9 +130,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 
 		var exescript = function exescript(script) {
 			var params = arguments;
-			if (typeof requirejs == 'undefined') {
+			if (typeof SystemJS == 'undefined') {
 				var s = document.createElement('script');
-				s.src = r;
+				s.src = sj;
 				s.onload = function () {
 					script.apply(this, params);
 				};
@@ -134,6 +144,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 		var pnp = "var pnp = '" + chrome.extension.getURL('pnp.js') + "';";
 		var r = "var r = '" + chrome.extension.getURL('r.js') + "';";
 		var alertify = "var alertify = '" + chrome.extension.getURL('alertify.js') + "';";
+		var sj = "var sj = '" + chrome.extension.getURL('system.js') + "';";
 
 		var eventUrl = event.url.toLowerCase();
 
@@ -160,7 +171,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 				}
 			}
 
-			var script = r + ' ' + alertify + ' ' + exescript + ' ' + updateFile + " " + updateFileSucceeded + " " + updateFileSucceeded2 + " " + updateFileFailed;
+			var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateFile + " " + updateFileSucceeded + " " + updateFileSucceeded2 + " " + updateFileFailed;
 			script += " exescript(updateFile, " + msg.autoPublish + ");";
 			script = script.replace("REPLACE-FILE-URL", eventUrl);
 			script = script.replace("REPLACE-CONTENT", encodeURIComponent(content));
