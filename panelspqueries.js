@@ -1,12 +1,10 @@
 var pnp = "var pnp = '" + chrome.extension.getURL('pnp.js') + "';";
-//var r = "var r = '" + chrome.extension.getURL('r.js') + "';";
 var sj = "var sj = '" + chrome.extension.getURL('system.js') + "';";
 var alertify = "var alertify = '" + chrome.extension.getURL('alertify.js') + "';";
 
 // getCustomActions
 var getCustomActions = function getCustomActions() {
- // requirejs([pnp, alertify], function ($pnp, alertify) {
-Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -84,10 +82,13 @@ var addCustomAction = function addCustomAction() {
     return;
   }
 
-  //requirejs([pnp, alertify], function ($pnp, alertify) {
-    Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
     alertify.delay(5000).log("Adding scriptLink...");
     if (scope === 'site')
       $pnp.sp.site.userCustomActions.add(payload)
@@ -95,8 +96,8 @@ var addCustomAction = function addCustomAction() {
           alertify.delay(5000).success("ScriptLink added successfully!");
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }).catch(function (data) {
-          alertify.delay(10000).error(data);
-          window.postMessage(JSON.stringify({ function: 'addCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+          alertify.delay(10000).error(data.message.value);
+          window.postMessage(JSON.stringify({ function: 'addCustomAction', success: false, result: data, source: 'chrome-sp-editor' }), '*');
         });
     else
       $pnp.sp.web.userCustomActions.add(payload)
@@ -104,8 +105,8 @@ var addCustomAction = function addCustomAction() {
           alertify.delay(5000).success("ScriptLink added successfully!");
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }).catch(function (data) {
-          alertify.delay(10000).error(data);
-          window.postMessage(JSON.stringify({ function: 'addCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+          alertify.delay(10000).error(data.message.value);
+          window.postMessage(JSON.stringify({ function: 'addCustomAction', success: false, result: data, source: 'chrome-sp-editor' }), '*');
         });
   });
 };
@@ -115,20 +116,24 @@ var removeCustomAction = function removeCustomAction() {
   var scope = arguments[1];
   var id = arguments[2]
 
- // requirejs([pnp, alertify], function ($pnp, alertify) {
-   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
     alertify.confirm("Really want to delete this scriptLink?", function () {
+      alertify.delay(5000).log("Removing scriptLink...");
+
       if (scope === 'site') {
         $pnp.sp.site.userCustomActions.getById(id).delete().then(function (result) {
           alertify.delay(5000).success("ScriptLink removed successfully!");
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 
         }).catch(function (data) {
-          alertify.delay(10000).error(data);
-          window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+          alertify.delay(10000).error(data.message.value);
+          window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: false, result: data, source: 'chrome-sp-editor' }), '*');
 
         });
       }
@@ -138,8 +143,8 @@ var removeCustomAction = function removeCustomAction() {
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 
         }).catch(function (data) {
-          alertify.delay(10000).error(data);
-          window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+          alertify.delay(10000).error(data.message.value);
+          window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: false, result: data, source: 'chrome-sp-editor' }), '*');
 
         });
       }
@@ -152,10 +157,12 @@ var removeCustomAction = function removeCustomAction() {
 // add new file to root site Style Library
 var addFile = function addFile() {
   var filename = arguments[1];
- // requirejs([pnp, alertify], function ($pnp, alertify) {
-   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
 
     alertify.delay(5000).log("Adding '<b>" + filename + "</b>' to Style Library...");
     var contentStr = '/* Created from Chrome SP Editor */';
@@ -167,7 +174,7 @@ var addFile = function addFile() {
       alertify.delay(5000).success("File added successfully!");
       window.postMessage(JSON.stringify({ function: 'addFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
     }).catch(function (data) {
-      alertify.delay(10000).error(data);
+      alertify.delay(10000).error(data.message.value);
       window.postMessage(JSON.stringify({ function: 'addFile', success: false, result: data, source: 'chrome-sp-editor' }), '*');
     });
   });
@@ -175,10 +182,12 @@ var addFile = function addFile() {
 
 // getWebProperties
 var getWebProperties = function getWebProperties() {
-  //requirejs([pnp, alertify], function ($pnp, alertify) {
-    Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
 
     $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then(function (result) {
 
@@ -214,11 +223,12 @@ var addWebProperties = function addWebProperties() {
   var prop = arguments[1];
   var value = arguments[2];
 
-
- // requirejs([pnp, alertify], function ($pnp, alertify) {
-   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
 
     alertify.delay(5000).log("Adding " + prop + " webproperty...");
 
@@ -259,7 +269,7 @@ var addWebProperties = function addWebProperties() {
                 window.postMessage(JSON.stringify({ function: 'addWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
               }
               else {
-                alertify.delay(10000).error(args.get_message());
+                alertify.delay(10000).error(xhr2.responseText);
                 window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
               }
             }
@@ -272,11 +282,11 @@ var addWebProperties = function addWebProperties() {
         xhr.send();
 
       }).catch(function (data) {
-        alertify.delay(10000).error(args.get_message());
+        alertify.delay(10000).error(data.message.value);
         window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
       });
     }).catch(function (data) {
-      alertify.delay(10000).error(args.get_message());
+      alertify.delay(10000).error(data.message.value);
       window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
     });
 
@@ -289,70 +299,77 @@ var updateWebProperties = function updateWebProperties() {
   var prop = arguments[1];
   var value = arguments[2];
 
-
- // requirejs([pnp, alertify], function ($pnp, alertify) {
-   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
-    alertify.delay(5000).log("Updating " + prop + " webproperty...");
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
 
-    var webid = "";
-    var siteid = "";
-    $pnp.sp.site.get().then(function (data) {
-      siteid = data.Id;
-      $pnp.sp.web.get().then(function (data) {
-        webid = data.Id;
-        var guid = function () {
-          function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-          }
-          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        }
+    alertify.confirm("Really want to update <b>" + prop + "</b> property?", function () {
 
-        var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+      alertify.delay(5000).log("Updating " + prop + " webproperty...");
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', spHostUrl + '/_api/contextinfo');
-        xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            var uuid = guid();
-            var data = JSON.parse(xhr.responseText);
-
-            var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-            var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-            xhr2.setRequestHeader('Content-Type', 'application/xml');
-            xhr2.setRequestHeader('SPRequestGuid', uuid);
-            xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-            xhr2.onload = function () {
-              if (xhr2.status === 200) {
-                alertify.delay(5000).success("Property updated successfully!");
-                window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-              }
-              else {
-                alertify.delay(10000).error(xhr2.responseText);
-                window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-              }
+      var webid = "";
+      var siteid = "";
+      $pnp.sp.site.get().then(function (data) {
+        siteid = data.Id;
+        $pnp.sp.web.get().then(function (data) {
+          webid = data.Id;
+          var guid = function () {
+            function s4() {
+              return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
             }
-              ;
-            var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="' + uuid + '|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-            xhr2.send(payload);
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
           }
-        }
-          ;
-        xhr.send();
 
+          var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', spHostUrl + '/_api/contextinfo');
+          xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var uuid = guid();
+              var data = JSON.parse(xhr.responseText);
+
+              var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
+              var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+
+              var xhr2 = new XMLHttpRequest();
+              xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
+              xhr2.setRequestHeader('Content-Type', 'application/xml');
+              xhr2.setRequestHeader('SPRequestGuid', uuid);
+              xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
+              xhr2.onload = function () {
+                if (xhr2.status === 200) {
+                  alertify.delay(5000).success("Property updated successfully!");
+                  window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+                }
+                else {
+                  alertify.delay(10000).error(xhr2.responseText);
+                  window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                }
+              }
+                ;
+              var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="' + uuid + '|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
+              xhr2.send(payload);
+            }
+          }
+            ;
+          xhr.send();
+
+        }).catch(function (data) {
+          alertify.delay(10000).error(data.message.value);
+          window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+        });
       }).catch(function (data) {
-        alertify.delay(10000).error(data);
+        alertify.delay(10000).error(data.message.value);
         window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
       });
-    }).catch(function (data) {
-      alertify.delay(10000).error(data);
-      window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+
+    }, function () {
+      // user clicked "cancel"
     });
 
   });
@@ -363,85 +380,94 @@ var updateWebProperties = function updateWebProperties() {
 var deleteWebProperties = function deleteWebProperties() {
   var prop = arguments[1];
 
-
-//  requirejs([pnp, alertify], function ($pnp, alertify) {
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
-    var webid = "";
-    var siteid = "";
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
 
-    alertify.delay(5000).log("Removing " + prop + " from webproperties...");
+    alertify.confirm("Really want to delete <b>" + prop + "</b> property?", function () {
 
-    $pnp.sp.site.get().then(function (data) {
-      siteid = data.Id;
-      $pnp.sp.web.get().then(function (data) {
-        webid = data.Id;
-        var guid = function () {
-          function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-          }
-          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        }
+      var webid = "";
+      var siteid = "";
 
-        var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+      alertify.delay(5000).log("Removing " + prop + " from webproperties...");
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', spHostUrl + '/_api/contextinfo');
-        xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            var uuid = guid();
-            var data = JSON.parse(xhr.responseText);
-
-            var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-            var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-            xhr2.setRequestHeader('Content-Type', 'application/xml');
-            xhr2.setRequestHeader('SPRequestGuid', uuid);
-            xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-            xhr2.onload = function () {
-              if (xhr2.status === 200) {
-                alertify.delay(5000).success("Property deleted successfully!");
-                window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-              }
-              else {
-                alertify.delay(10000).error(xhr2.responseText);
-                window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-              }
+      $pnp.sp.site.get().then(function (data) {
+        siteid = data.Id;
+        $pnp.sp.web.get().then(function (data) {
+          webid = data.Id;
+          var guid = function () {
+            function s4() {
+              return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
             }
-              ;
-            var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="Null" /></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="' + uuid + '|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-            xhr2.send(payload);
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
           }
-        }
-          ;
-        xhr.send();
 
+          var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', spHostUrl + '/_api/contextinfo');
+          xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var uuid = guid();
+              var data = JSON.parse(xhr.responseText);
+
+              var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
+              var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+
+              var xhr2 = new XMLHttpRequest();
+              xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
+              xhr2.setRequestHeader('Content-Type', 'application/xml');
+              xhr2.setRequestHeader('SPRequestGuid', uuid);
+              xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
+              xhr2.onload = function () {
+                if (xhr2.status === 200) {
+                  alertify.delay(5000).success("Property deleted successfully!");
+                  if (prop != "vti_indexedpropertykeys")
+                    addToIndexedPropertyKeys.apply(this, ['', prop, true]);
+                  window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+                }
+                else {
+                  alertify.delay(10000).error(xhr2.responseText);
+                  window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                }
+              }
+                ;
+              var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="Null" /></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="' + uuid + '|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
+              xhr2.send(payload);
+            }
+          }
+            ;
+          xhr.send();
+
+        }).catch(function (data) {
+          alertify.delay(10000).error(data.message.value);
+          window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+        });
       }).catch(function (data) {
-        alertify.delay(10000).error(data);
+        alertify.delay(10000).error(data.message.value);
         window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
       });
-    }).catch(function (data) {
-      alertify.delay(10000).error(data);
-      window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+    }, function () {
+      // user clicked "cancel"
     });
-
   });
-
 };
 
 // addToIndexedPropertyKeys
 var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
   var prop = arguments[1];
   var remove = arguments[2];
- // requirejs([pnp, alertify], function ($pnp, alertify) {
-   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
 
     $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then(function (result) {
 
@@ -477,6 +503,7 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
         }
       }
       else {
+        if (propertyBag[0].value.indexOf(b64encoded) == -1) return;
         newIndexValue = propertyBag[0].value.replace(b64encoded + "|", "");
       }
 
@@ -538,15 +565,15 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
           xhr.send();
 
         }).catch(function (data) {
-          alertify.delay(10000).error(data);
+          alertify.delay(10000).error(data.message.value);
           window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: data, source: 'chrome-sp-editor' }), '*');
         });
       }).catch(function (data) {
-        alertify.delay(10000).error(data);
+        alertify.delay(10000).error(data.message.value);
         window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: data, source: 'chrome-sp-editor' }), '*');
       });
     }).catch(function (data) {
-      alertify.delay(10000).error(data);
+      alertify.delay(10000).error(data.message.value);
       window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: data, source: 'chrome-sp-editor' }), '*');
     });
   });
@@ -569,8 +596,7 @@ var alertError = function alertError() {
 
   var errorMsg = arguments[1];
 
- // requirejs([alertify], function (alertify) {
-   Promise.all([SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
     var alertify = modules[0];
 
     alertify.logPosition('bottom right');
@@ -583,8 +609,7 @@ var alertError = function alertError() {
 
 var getSubscriptions = function getSubscriptions() {
 
- // requirejs([pnp, alertify], function ($pnp, alertify) {
-Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -612,10 +637,9 @@ Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(mod
       });
 
       window.postMessage(JSON.stringify({ function: 'getSubscriptions', success: true, result: webHookSubscriptions, lists: weblists, source: 'chrome-sp-editor' }), '*');
-    })
-      .catch(function (err) {
-        alertify.delay(10000).error(err);
-      });
+    }).catch(function (data) {
+      alertify.delay(10000).error(data.message.value);
+    });
   });
 };
 
@@ -624,8 +648,7 @@ var addSubscriptions = function addSubscriptions() {
   var listId = arguments[1];
   var hookurl = arguments[2];
 
-//  requirejs([pnp, alertify], function ($pnp, alertify) {
-Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -641,8 +664,8 @@ Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(mod
       alertify.delay(5000).success("Webhook added successfully!");
       window.postMessage(JSON.stringify({ function: 'addSubscriptions', success: true, result: null, source: 'chrome-sp-editor' }), '*');
     })
-      .catch(function (err) {
-        alertify.delay(10000).error(err);
+      .catch(function (data) {
+        alertify.delay(10000).error(data.message.value);
       });
   });
 };
@@ -652,23 +675,27 @@ var removeSubscription = function removeSubscription() {
   var listId = arguments[1];
   var subId = arguments[2];
 
- // requirejs([pnp, alertify], function ($pnp, alertify) {
-Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function(modules) {
+  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    alertify.delay(5000).log("Removing webhook...");
+    alertify.confirm("Really want to delete webhook with id <b>" + subId + "</b> ?", function () {
 
-    $pnp.sp.web.lists.getById(listId).subscriptions.getById(subId).delete().then(function (result) {
-      alertify.delay(5000).success("Webhook removed successfully!");
-      window.postMessage(JSON.stringify({ function: 'removeSubscription', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-    })
-      .catch(function (err) {
-        alertify.delay(10000).error(err);
-      });
+      alertify.delay(5000).log("Removing webhook...");
+
+      $pnp.sp.web.lists.getById(listId).subscriptions.getById(subId).delete().then(function (result) {
+        alertify.delay(5000).success("Webhook removed successfully!");
+        window.postMessage(JSON.stringify({ function: 'removeSubscription', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+      })
+        .catch(function (data) {
+          alertify.delay(10000).error(data.message.value);
+        });
+    }, function () {
+      // user clicked "cancel"
+    });
   });
 };
 

@@ -442,7 +442,20 @@ var HttpClient = (function () {
         this.mergeHeaders(rawHeaders, options.headers);
         options = util_1.Util.extend(options, { headers: rawHeaders });
         var retry = function (ctx) {
-            _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
+            _this._impl.fetch(url, options).then(function (response) {
+                if (!response.ok) {
+                    response.json().then(function (json) {
+                        var result = json;
+                        if (json.hasOwnProperty("odata.error")) {
+                            result = json["odata.error"];
+                        }
+                        ctx.reject(result);
+                    });
+                }
+                else {
+                    ctx.resolve(response);
+                }
+            }).catch(function (response) {
                 var delay = ctx.delay;
                 if (response.status !== 429 && response.status !== 503) {
                     ctx.reject(response);

@@ -1,7 +1,7 @@
 {
 	"name": "Chrome SP Editor",
 	"homepage_url": "https://github.com/tavikukko/Chrome-SP-Editor",
-	"version": "1.2.18",
+	"version": "1.3.0",
 	"description": "Create and update SharePoint Online css/js files, inject files to web and manage web properties from Chrome Developer Tools",
 	"icons": {
 		"16": "icon16.png",
@@ -11,7 +11,7 @@
 		"128": "icon128.png"
 	},
 	"web_accessible_resources": [
-    "alertify.js", "pnp.js", "r.js", "system.js"
+    "alertify.js", "pnp.js", "system.js"
   ],
 	"devtools_page": "devtools.html",
 	"background": { "scripts": [ "background.js"] },
@@ -19,7 +19,7 @@
         {
 			"run_at": "document_end",
 			"css": ["alertify.css"],
-            "js": ["alertify.js","content.js", "pnp.js", "r.js", "system.js"],
+            "js": ["alertify.js", "content.js", "pnp.js", "system.js"],
             "matches": ["<all_urls>"]
         }
     ],

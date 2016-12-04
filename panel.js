@@ -259,7 +259,7 @@ port.onMessage.addListener(function (message) {
         for (var i = 0; i < removeproperty.length; i++) {
           removeproperty[i].addEventListener('click', function (e) {
 
-            var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + deleteWebProperties;
+            var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys + ' '+ deleteWebProperties;
             script += " exescript(deleteWebProperties, '" + $('#' + $(this).data('id')).html() + "');";
             chrome.devtools.inspectedWindow.eval(script);
 
