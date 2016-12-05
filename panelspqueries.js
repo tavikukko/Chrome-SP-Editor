@@ -8,9 +8,16 @@ var getCustomActions = function getCustomActions() {
     var $pnp = modules[0];
     var alertify = modules[1];
 
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
     var promises = [];
     var webactions = [];
     var siteactions = [];
+
     promises.push($pnp.sp.site.userCustomActions.get());
     promises.push($pnp.sp.web.userCustomActions.get());
     Promise.all(promises).then(promise => {
@@ -86,6 +93,12 @@ var addCustomAction = function addCustomAction() {
     var $pnp = modules[0];
     var alertify = modules[1];
 
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
@@ -96,7 +109,7 @@ var addCustomAction = function addCustomAction() {
           alertify.delay(5000).success("ScriptLink added successfully!");
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }).catch(function (data) {
-          alertify.delay(10000).error(data.message.value);
+          alertify.delay(10000).error(data.error.message.value);
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: false, result: data, source: 'chrome-sp-editor' }), '*');
         });
     else
@@ -105,7 +118,7 @@ var addCustomAction = function addCustomAction() {
           alertify.delay(5000).success("ScriptLink added successfully!");
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }).catch(function (data) {
-          alertify.delay(10000).error(data.message.value);
+          alertify.delay(10000).error(data.error.message.value);
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: false, result: data, source: 'chrome-sp-editor' }), '*');
         });
   });
@@ -120,6 +133,12 @@ var removeCustomAction = function removeCustomAction() {
     var $pnp = modules[0];
     var alertify = modules[1];
 
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
@@ -132,7 +151,7 @@ var removeCustomAction = function removeCustomAction() {
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 
         }).catch(function (data) {
-          alertify.delay(10000).error(data.message.value);
+          alertify.delay(10000).error(data.error.message.value);
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: false, result: data, source: 'chrome-sp-editor' }), '*');
 
         });
@@ -143,7 +162,7 @@ var removeCustomAction = function removeCustomAction() {
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 
         }).catch(function (data) {
-          alertify.delay(10000).error(data.message.value);
+          alertify.delay(10000).error(data.error.message.value);
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: false, result: data, source: 'chrome-sp-editor' }), '*');
 
         });
@@ -161,6 +180,12 @@ var addFile = function addFile() {
     var $pnp = modules[0];
     var alertify = modules[1];
 
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
@@ -174,7 +199,7 @@ var addFile = function addFile() {
       alertify.delay(5000).success("File added successfully!");
       window.postMessage(JSON.stringify({ function: 'addFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
     }).catch(function (data) {
-      alertify.delay(10000).error(data.message.value);
+      alertify.delay(10000).error(data.error.message.value);
       window.postMessage(JSON.stringify({ function: 'addFile', success: false, result: data, source: 'chrome-sp-editor' }), '*');
     });
   });
@@ -185,6 +210,12 @@ var getWebProperties = function getWebProperties() {
   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -206,7 +237,7 @@ var getWebProperties = function getWebProperties() {
       arr.sort(compare);
 
       var propertyBag = arr.filter(function (el) {
-        return el.prop !== "odata.editLink" && el.prop !== "odata.id" && el.prop !== "odata.type";
+        return el.prop !== "odata.editLink" && el.prop !== "odata.id" && el.prop !== "odata.type" && el.prop !== "__metadata";
       });
 
       window.postMessage(JSON.stringify({ function: 'getWebProperties', success: true, result: propertyBag, source: 'chrome-sp-editor' }), '*');
@@ -226,6 +257,12 @@ var addWebProperties = function addWebProperties() {
   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -282,11 +319,11 @@ var addWebProperties = function addWebProperties() {
         xhr.send();
 
       }).catch(function (data) {
-        alertify.delay(10000).error(data.message.value);
+        alertify.delay(10000).error(data.error.message.value);
         window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
       });
     }).catch(function (data) {
-      alertify.delay(10000).error(data.message.value);
+      alertify.delay(10000).error(data.error.message.value);
       window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
     });
 
@@ -302,6 +339,12 @@ var updateWebProperties = function updateWebProperties() {
   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -360,11 +403,11 @@ var updateWebProperties = function updateWebProperties() {
           xhr.send();
 
         }).catch(function (data) {
-          alertify.delay(10000).error(data.message.value);
+          alertify.delay(10000).error(data.error.message.value);
           window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
         });
       }).catch(function (data) {
-        alertify.delay(10000).error(data.message.value);
+        alertify.delay(10000).error(data.error.message.value);
         window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
       });
 
@@ -383,6 +426,12 @@ var deleteWebProperties = function deleteWebProperties() {
   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -444,11 +493,11 @@ var deleteWebProperties = function deleteWebProperties() {
           xhr.send();
 
         }).catch(function (data) {
-          alertify.delay(10000).error(data.message.value);
+          alertify.delay(10000).error(data.error.message.value);
           window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
         });
       }).catch(function (data) {
-        alertify.delay(10000).error(data.message.value);
+        alertify.delay(10000).error(data.error.message.value);
         window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
       });
     }, function () {
@@ -465,6 +514,12 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -565,15 +620,15 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
           xhr.send();
 
         }).catch(function (data) {
-          alertify.delay(10000).error(data.message.value);
+          alertify.delay(10000).error(data.error.message.value);
           window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: data, source: 'chrome-sp-editor' }), '*');
         });
       }).catch(function (data) {
-        alertify.delay(10000).error(data.message.value);
+        alertify.delay(10000).error(data.error.message.value);
         window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: data, source: 'chrome-sp-editor' }), '*');
       });
     }).catch(function (data) {
-      alertify.delay(10000).error(data.message.value);
+      alertify.delay(10000).error(data.error.message.value);
       window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: data, source: 'chrome-sp-editor' }), '*');
     });
   });
@@ -613,6 +668,12 @@ var getSubscriptions = function getSubscriptions() {
     var $pnp = modules[0];
     var alertify = modules[1];
 
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
@@ -623,8 +684,8 @@ var getSubscriptions = function getSubscriptions() {
 
       lists.forEach(function (list) {
         weblists.push({ listTitle: list.Title, listId: list.Id });
-        if (list.Subscriptions.length > 0) {
-          list.Subscriptions.forEach(function (subscription) {
+        if (list.Subscriptions.results.length > 0) {
+          list.Subscriptions.results.forEach(function (subscription) {
             webHookSubscriptions.push({
               listTitle: list.Title,
               listId: list.Id,
@@ -638,7 +699,7 @@ var getSubscriptions = function getSubscriptions() {
 
       window.postMessage(JSON.stringify({ function: 'getSubscriptions', success: true, result: webHookSubscriptions, lists: weblists, source: 'chrome-sp-editor' }), '*');
     }).catch(function (data) {
-      alertify.delay(10000).error(data.message.value);
+      alertify.delay(10000).error(JSON.stringify(data));
     });
   });
 };
@@ -651,6 +712,12 @@ var addSubscriptions = function addSubscriptions() {
   Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -665,7 +732,7 @@ var addSubscriptions = function addSubscriptions() {
       window.postMessage(JSON.stringify({ function: 'addSubscriptions', success: true, result: null, source: 'chrome-sp-editor' }), '*');
     })
       .catch(function (data) {
-        alertify.delay(10000).error(data.message.value);
+        alertify.delay(10000).error(data.error.message.value);
       });
   });
 };
@@ -679,6 +746,12 @@ var removeSubscription = function removeSubscription() {
     var $pnp = modules[0];
     var alertify = modules[1];
 
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
@@ -691,7 +764,7 @@ var removeSubscription = function removeSubscription() {
         window.postMessage(JSON.stringify({ function: 'removeSubscription', success: true, result: null, source: 'chrome-sp-editor' }), '*');
       })
         .catch(function (data) {
-          alertify.delay(10000).error(data.message.value);
+          alertify.delay(10000).error(data.error.message.value);
         });
     }, function () {
       // user clicked "cancel"

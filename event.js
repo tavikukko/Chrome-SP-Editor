@@ -33,6 +33,12 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 				var $pnp = modules[0];
 				var alertify = modules[1];
 
+				$pnp.setup({
+					headers: {
+						"Accept": "application/json; odata=verbose"
+					}
+				});
+
 				alertify.logPosition('bottom right');
 				alertify.maxLogItems(2);
 
@@ -62,27 +68,27 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 								$pnp.sp.site.rootWeb.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkin(comment, checkinType).then(function (result) {
 									alertify.delay(5000).success("File <b>" + fileToUpdate + "</b> updated successfully!");
 								}).catch(function (data) {
-									alertify.delay(10000).error(data.message.value);
+									alertify.delay(10000).error(data.error.message.value);
 								});
 							}).catch(function (data) {
-								alertify.delay(10000).error(data.message.value);
+								alertify.delay(10000).error(data.error.message.value);
 							});
 						}).catch(function (data) {
-							alertify.delay(10000).error(data.message.value);
+							alertify.delay(10000).error(data.error.message.value);
 						});
 					} else {
 						$pnp.sp.site.rootWeb.getFolderByServerRelativeUrl(relativeFolderUrl).files.add(fileToUpdate, contentBytes).then(function (result) {
 							$pnp.sp.site.rootWeb.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkin(comment, checkinType).then(function (result) {
 								alertify.delay(5000).success("File <b>" + fileToUpdate + "</b> updated successfully!");
 							}).catch(function (data) {
-								alertify.delay(10000).error(data.message.value);
+								alertify.delay(10000).error(data.error.message.value);
 							});
 						}).catch(function (data) {
-							alertify.delay(10000).error(data.message.value);
+							alertify.delay(10000).error(data.error.message.value);
 						});
 					}
 				}).catch(function (data) {
-					alertify.delay(10000).error(data.message.value);
+					alertify.delay(10000).error(data.error.message.value);
 				});
 			});
 		};
