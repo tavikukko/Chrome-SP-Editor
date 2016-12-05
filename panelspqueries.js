@@ -699,7 +699,10 @@ var getSubscriptions = function getSubscriptions() {
 
       window.postMessage(JSON.stringify({ function: 'getSubscriptions', success: true, result: webHookSubscriptions, lists: weblists, source: 'chrome-sp-editor' }), '*');
     }).catch(function (data) {
-      alertify.delay(10000).error(JSON.stringify(data));
+      if (data.error == undefined)
+        alertify.delay(10000).error('WebHook not supported');
+      else
+        alertify.delay(10000).error(data.error.message.value);
     });
   });
 };
