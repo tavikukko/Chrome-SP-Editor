@@ -230,11 +230,6 @@ var getWebProperties = function getWebProperties() {
         return 0;
       }
 
-      var SPDecode = function (toDecode) {
-        var decodedString = toDecode.replace(/_x/g, "%u");
-        return unescape(decodedString);
-      }
-
       var arr = [];
       for (x in result.AllProperties) {
        
