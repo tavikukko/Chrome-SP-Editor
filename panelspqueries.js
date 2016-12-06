@@ -230,9 +230,26 @@ var getWebProperties = function getWebProperties() {
         return 0;
       }
 
+      var SPDecode = function (toDecode) {
+        var decodedString = toDecode.replace(/_x/g, "%u");
+        return unescape(decodedString);
+      }
+
       var arr = [];
-      for (x in result.AllProperties)
-        arr.push({ prop: x.replace(/_x005f_/g, '_').replace(/OData_/g, ''), value: result.AllProperties[x] });
+      for (x in result.AllProperties) {
+       
+        var re = /_x.*?_/g;
+        var found = x.match(re);
+        var y = x;
+        
+        if (found != null)
+          for (g in found) {
+            var unesc = found[g].replace("_x", "%u").replace("_", "");
+            x = x.replace(found[g], unescape(unesc));
+          }
+
+        arr.push({ prop: x.replace(/OData_/g, ''), value: result.AllProperties[y] });
+      }
 
       arr.sort(compare);
 
