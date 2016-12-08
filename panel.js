@@ -71,8 +71,8 @@ port.onMessage.addListener(function(message) {
                                 scripturl = scripturl.substring(0, scripturl.indexOf("\""));
                             }
                         }
-                        if (scripturl.length < 1) scripturl = "No scriptSrc detected, must be scriptBlock";
-                        
+                        if (scripturl.length < 1) scripturl = "CustomAction scriptSrc is empty";
+
                         li.innerHTML = "<span class='pull-left' style='width: 10%' >" + items[i].sequence + "</span><span>" + scripturl + "</span><span data-scope='" + items[i].scope + "' data-id='" + items[i].id + "' class='scriptlinks-remove glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
                     }
                     element.appendChild(ul);
