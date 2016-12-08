@@ -6,7 +6,7 @@ A Google Chrome Extension for creating and updating files (js, css) in SharePoin
 - 1.3.0 Added possibility to create webhooks (webhooks are still in preview) for lists
     * Changed SharePoint Client Object Model to PnP-JS-Core
     * Chrome SP Editor works now in classic and modern pages
-    * Chrome SP Editor works now SP2013, SP2016 and SharePoint Online
+    * Chrome SP Editor works now with SP2013, SP2016 and SharePoint Online
     * Fixed some rendering issues
 - 1.2.18 Added possibility to create indexed webproperties
 - 1.2.17 Small fix
