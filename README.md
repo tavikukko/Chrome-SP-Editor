@@ -78,7 +78,7 @@ Go to your SharePoint site and open Chrome developer tools.
 * Edit or modify current properties from the list below
 * click index in you want make the property searchable (you need to create managedproperty after the property has been crawled)
 
-### Webhooks (still in preview)
+### Webhooks
 * Select list where the webhook subscription will be added
 * Give the full path to the endpoint (endpoint must handle POST request and return provided validationstring)
 
