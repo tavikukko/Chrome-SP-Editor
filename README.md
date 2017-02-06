@@ -1,4 +1,4 @@
-Chrome SP Editor
+SP Editor
 ==
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 
