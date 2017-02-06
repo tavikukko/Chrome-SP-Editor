@@ -84,4 +84,4 @@ Go to your SharePoint site and open Chrome developer tools.
 * Give the full path to the endpoint (endpoint must handle POST request and return provided validationstring)
 
 ### Chrome Workspaces
-* Chrome SP Editor works also when using Chrome workspaces, it saves the file to the disk and also the SharePoint.
+* SP Editor works also when using Chrome workspaces, it saves the file to the disk and also the SharePoint.
