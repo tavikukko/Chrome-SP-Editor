@@ -39,7 +39,7 @@ Also possibility to add local and external js/css resources references with user
 Introduction video http://youtu.be/Nk_NZhdpZEo (outdated but you get the idea)
 
 ## Installation
-Install extension from Chrome web store https://chrome.google.com/webstore/detail/chrome-sp-editor/ecblfcmjnbbgaojblcpmjoamegpbodhd
+Install extension from Chrome web store https://chrome.google.com/webstore/detail/sp-editor/ecblfcmjnbbgaojblcpmjoamegpbodhd
 
 ## Manual installation
 Clone the repository
