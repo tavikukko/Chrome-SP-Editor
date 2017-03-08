@@ -6,6 +6,7 @@ A Google Chrome Extension for creating and updating files (js, css) in SharePoin
 - 1.4 Bug fixes
     * Fixed issue when saving files from another web/sitecollection
     * Fixed issue about Scriptlinks were not always rendered
+    * Updated pnp-js-core to v2.0.1
 - 1.3.1 Name and Icon change
 - 1.3.0 Added possibility to create webhooks for lists
     * Changed SharePoint Client Object Model to PnP-JS-Core
