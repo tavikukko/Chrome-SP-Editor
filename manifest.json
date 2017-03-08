@@ -2,7 +2,7 @@
 	"name": "SP Editor",
 	"homepage_url": "https://github.com/tavikukko/Chrome-SP-Editor",
 	"version": "1.4.0",
-	"description": "Create and update SharePoint Online/OnPremise css/js files, inject files to web, manage web properties and Webhook subscriptions from Chrome Developer Tools",
+	"description": "Create and update SharePoint Online/SP2013/SP2016 css/js files, inject files to web, manage web properties and list Webhook",
 	"icons": {
 		"16": "icon16.png",
 		"32": "icon32.png",
