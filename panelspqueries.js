@@ -1,10 +1,10 @@
-var pnp = "var pnp = '" + chrome.extension.getURL('pnp.js') + "';";
+var pnp = "var speditorpnp = '" + chrome.extension.getURL('pnp.js') + "';";
 var sj = "var sj = '" + chrome.extension.getURL('system.js') + "';";
 var alertify = "var alertify = '" + chrome.extension.getURL('alertify.js') + "';";
 
 // getCustomActions
 var getCustomActions = function getCustomActions() {
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -23,6 +23,7 @@ var getCustomActions = function getCustomActions() {
     Promise.all(promises).then(promise => {
       promise.forEach(function (actions) {
         actions.forEach(function (action) {
+          if (action.ScriptSrc || action.ScriptBlock) {
           if (action.Scope == 3)
             webactions.push({
               location: action.Location,
@@ -45,6 +46,7 @@ var getCustomActions = function getCustomActions() {
               scope: "site",
               id: action.Id
             });
+        }
         });
       });
       var actions = [];
@@ -89,7 +91,7 @@ var addCustomAction = function addCustomAction() {
     return;
   }
 
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -129,7 +131,7 @@ var removeCustomAction = function removeCustomAction() {
   var scope = arguments[1];
   var id = arguments[2]
 
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -176,7 +178,7 @@ var removeCustomAction = function removeCustomAction() {
 // add new file to root site Style Library
 var addFile = function addFile() {
   var filename = arguments[1];
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -207,7 +209,7 @@ var addFile = function addFile() {
 
 // getWebProperties
 var getWebProperties = function getWebProperties() {
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -266,7 +268,7 @@ var addWebProperties = function addWebProperties() {
   var prop = arguments[1];
   var value = arguments[2];
 
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -348,7 +350,7 @@ var updateWebProperties = function updateWebProperties() {
   var prop = arguments[1];
   var value = arguments[2];
 
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -435,7 +437,7 @@ var updateWebProperties = function updateWebProperties() {
 var deleteWebProperties = function deleteWebProperties() {
   var prop = arguments[1];
 
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -523,7 +525,7 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
   var prop = arguments[1];
   var remove = arguments[2];
 
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -676,7 +678,7 @@ var alertError = function alertError() {
 
 var getSubscriptions = function getSubscriptions() {
 
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -724,7 +726,7 @@ var addSubscriptions = function addSubscriptions() {
   var listId = arguments[1];
   var hookurl = arguments[2];
 
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -757,7 +759,7 @@ var removeSubscription = function removeSubscription() {
   var listId = arguments[1];
   var subId = arguments[2];
 
-  Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
 

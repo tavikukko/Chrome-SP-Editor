@@ -29,7 +29,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 
 			var pblh = arguments[1];
 
-			Promise.all([SystemJS.import(pnp), SystemJS.import(alertify)]).then(function (modules) {
+			Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
 				var $pnp = modules[0];
 				var alertify = modules[1];
 
@@ -44,11 +44,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 
 				var fileAbsUrl = "REPLACE-FILE-URL";
 				if (fileAbsUrl.indexOf("?") > -1) fileAbsUrl = fileAbsUrl.substring(0, fileAbsUrl.indexOf("?"));
-				var siteAbsoluteUrl = _spPageContextInfo.siteAbsoluteUrl;
-				var siteServerRelativeUrl = _spPageContextInfo.siteServerRelativeUrl;
-				if (siteServerRelativeUrl.length == 1) siteAbsoluteUrl += siteServerRelativeUrl;
-				var fileRelUrl = fileAbsUrl.replace(siteAbsoluteUrl.substring(0, siteAbsoluteUrl.lastIndexOf(siteServerRelativeUrl)), "");
-				var documentPath = fileAbsUrl.substring(0, fileAbsUrl.lastIndexOf("/"));
+				var fileRelUrl = fileAbsUrl.replace(window.location.origin, "");
 				var fileToUpdate = fileAbsUrl.substring(fileAbsUrl.lastIndexOf("/") + 1);
 				var relativeFolderUrl = fileRelUrl.substring(0, fileRelUrl.lastIndexOf("/"));
 				alertify.delay(5000).log("Updating file <b>" + fileToUpdate + "</b>...");
@@ -61,11 +57,26 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 				var checkinType = 0;
 				if (pblh) checkinType = 1;
 
-				$pnp.sp.site.rootWeb.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).get().then(function (result) {
-					if (result.CheckOutType == 2) {
-						$pnp.sp.site.rootWeb.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkout().then(function (result) {
-							$pnp.sp.site.rootWeb.getFolderByServerRelativeUrl(relativeFolderUrl).files.add(fileToUpdate, contentBytes).then(function (result) {
-								$pnp.sp.site.rootWeb.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkin(comment, checkinType).then(function (result) {
+				$pnp.sp.site.getWebUrlFromPageUrl(fileAbsUrl).then(function (targerWebUrl) {
+				var webcontext = new $pnp.Web(targerWebUrl);
+					webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).get().then(function (result) {
+						if (result.CheckOutType == 2) {
+							webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkout().then(function (result) {
+								webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.add(fileToUpdate, contentBytes).then(function (result) {
+									webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkin(comment, checkinType).then(function (result) {
+										alertify.delay(5000).success("File <b>" + fileToUpdate + "</b> updated successfully!");
+									}).catch(function (data) {
+										alertify.delay(10000).error(data.error.message.value);
+									});
+								}).catch(function (data) {
+									alertify.delay(10000).error(data.error.message.value);
+								});
+							}).catch(function (data) {
+								alertify.delay(10000).error(data.error.message.value);
+							});
+						} else {
+							webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.add(fileToUpdate, contentBytes).then(function (result) {
+								webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkin(comment, checkinType).then(function (result) {
 									alertify.delay(5000).success("File <b>" + fileToUpdate + "</b> updated successfully!");
 								}).catch(function (data) {
 									alertify.delay(10000).error(data.error.message.value);
@@ -73,22 +84,10 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 							}).catch(function (data) {
 								alertify.delay(10000).error(data.error.message.value);
 							});
-						}).catch(function (data) {
-							alertify.delay(10000).error(data.error.message.value);
-						});
-					} else {
-						$pnp.sp.site.rootWeb.getFolderByServerRelativeUrl(relativeFolderUrl).files.add(fileToUpdate, contentBytes).then(function (result) {
-							$pnp.sp.site.rootWeb.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkin(comment, checkinType).then(function (result) {
-								alertify.delay(5000).success("File <b>" + fileToUpdate + "</b> updated successfully!");
-							}).catch(function (data) {
-								alertify.delay(10000).error(data.error.message.value);
-							});
-						}).catch(function (data) {
-							alertify.delay(10000).error(data.error.message.value);
-						});
-					}
-				}).catch(function (data) {
-					alertify.delay(10000).error(data.error.message.value);
+						}
+					}).catch(function (data) {
+						alertify.delay(10000).error(data.error.message.value);
+					});
 				});
 			});
 		};
@@ -121,7 +120,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 			else script.apply(this, params);
 		}
 
-		var pnp = "var pnp = '" + chrome.extension.getURL('pnp.js') + "';";
+		var pnp = "var speditorpnp = '" + chrome.extension.getURL('pnp.js') + "';";
 		var alertify = "var alertify = '" + chrome.extension.getURL('alertify.js') + "';";
 		var sj = "var sj = '" + chrome.extension.getURL('system.js') + "';";
 
