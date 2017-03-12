@@ -3,6 +3,9 @@ SP Editor
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 
 ## Version history
+- 1.5 New Feature
+    * PnP JS Console: Write TypeScript using PnP-JS-Core definitions and execute on current context
+    * Updated pnp-js-core to v2.0.2
 - 1.4 Bug fixes
     * Fixed issue when saving files from another web/sitecollection
     * Fixed issue about Scriptlinks were not always rendered
@@ -86,6 +89,10 @@ Go to your SharePoint site and open Chrome developer tools.
 ### Webhooks
 * Select list where the webhook subscription will be added
 * Give the full path to the endpoint (endpoint must handle POST request and return provided validationstring)
+
+### PnP JS Console
+* Write TypeScript using PnP-JS-Core definitions and execute on current context
+* ctrl + d to execute
 
 ### Chrome Workspaces
 * SP Editor works also when using Chrome workspaces, it saves the file to the disk and also the SharePoint.

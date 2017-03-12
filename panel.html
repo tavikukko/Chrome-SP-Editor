@@ -1,10 +1,15 @@
+<!DOCTYPE html>
+<html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
 </head>
 <body>
+    <script src="monaco-editor/min/vs/loader.js"></script>
     <div id="wrapper">
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
@@ -27,6 +32,9 @@
                 <li>
                   <a href="#" id="btnWebhooks">Webhooks</a>
                 </li>
+                <li>
+                  <a href="#" id="btnPnPJSConsole">PnP JS Console</a>
+                </li>               
                 <li>
                   <a href="#" id="btnAbout">About</a>
                 </li>
@@ -178,6 +186,11 @@
         </div>
         </div>
 
+        <div id="monaco" style="display: none;">
+            <div id="monaco-container">
+              <div id="container" style="width:100%;height:800px;border:1px solid grey"></div>
+            </div>
+        </div>
 
         <div id="about" style="display: none;">
           <div id="page-content-wrapper">

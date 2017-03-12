@@ -794,11 +794,12 @@ function elem(elem) {
   return document.getElementById(elem);
 }
 
-function swap(a, b, c, d, e, f) {
+function swap(a, b, c, d, e, f, g) {
   elem(a).style.display = 'block';
   elem(b).style.display = 'none';
   elem(c).style.display = 'none';
   elem(d).style.display = 'none';
   elem(e).style.display = 'none';
   elem(f).style.display = 'none';
+  elem(g).style.display = 'none';
 }
