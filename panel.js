@@ -1,7 +1,7 @@
 var port = chrome.runtime.connect();
 
 // Listen to messages from the background page
-port.onMessage.addListener(function(message) {
+port.onMessage.addListener(function (message) {
 
     if (typeof message !== 'object' || message === null ||
         message === undefined || message.source === undefined) {
@@ -37,7 +37,7 @@ port.onMessage.addListener(function(message) {
 
                 for (j = 0; j < message.result.length; j++) {
                     var items = message.result[j];
-                    items.sort(function(a, b) { return a.sequence - b.sequence });
+                    items.sort(function (a, b) { return a.sequence - b.sequence });
 
                     var ul = document.createElement('ul');
                     var ulatt = document.createAttribute("class");
@@ -80,7 +80,7 @@ port.onMessage.addListener(function(message) {
                 var removescript = document.getElementsByClassName("scriptlinks-remove");
 
                 for (var i = 0; i < removescript.length; i++) {
-                    removescript[i].addEventListener('click', function(e) {
+                    removescript[i].addEventListener('click', function (e) {
 
                         var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + removeCustomAction;
                         script += " exescript(removeCustomAction, '" + $(this).data('scope') + "', '" + $(this).data('id') + "');";
@@ -102,7 +102,7 @@ port.onMessage.addListener(function(message) {
                     element.removeChild(element.firstChild);
                 }
 
-                var obj = message.result.filter(function(obj) {
+                var obj = message.result.filter(function (obj) {
                     return obj.prop === 'vti_indexedpropertykeys';
                 })[0];
 
@@ -247,7 +247,7 @@ port.onMessage.addListener(function(message) {
                 var updateproperty = document.getElementsByClassName("update-property");
 
                 for (var i = 0; i < updateproperty.length; i++) {
-                    updateproperty[i].addEventListener('click', function(e) {
+                    updateproperty[i].addEventListener('click', function (e) {
 
                         var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateWebProperties;
                         script += " exescript(updateWebProperties, '" + $('#' + $(this).data('id')).html() + "', '" + $('#' + $(this).data('value')).val() + "');";
@@ -259,7 +259,7 @@ port.onMessage.addListener(function(message) {
                 var removeproperty = document.getElementsByClassName("remove-property");
 
                 for (var i = 0; i < removeproperty.length; i++) {
-                    removeproperty[i].addEventListener('click', function(e) {
+                    removeproperty[i].addEventListener('click', function (e) {
 
                         var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys + ' ' + deleteWebProperties;
                         script += " exescript(deleteWebProperties, '" + $('#' + $(this).data('id')).html() + "');";
@@ -271,7 +271,7 @@ port.onMessage.addListener(function(message) {
                 var indexproperty = document.getElementsByClassName("index-property");
 
                 for (var i = 0; i < indexproperty.length; i++) {
-                    indexproperty[i].addEventListener('click', function(e) {
+                    indexproperty[i].addEventListener('click', function (e) {
 
                         var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys;
                         script += " exescript(addToIndexedPropertyKeys, '" + $('#' + $(this).data('id')).html() + "', false);";
@@ -283,7 +283,7 @@ port.onMessage.addListener(function(message) {
                 var unindexproperty = document.getElementsByClassName("unindex-property");
 
                 for (var i = 0; i < unindexproperty.length; i++) {
-                    unindexproperty[i].addEventListener('click', function(e) {
+                    unindexproperty[i].addEventListener('click', function (e) {
 
                         var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys;
                         script += " exescript(addToIndexedPropertyKeys, '" + $('#' + $(this).data('id')).html() + "', true);";
@@ -294,9 +294,9 @@ port.onMessage.addListener(function(message) {
 
                 var $rows = $('#webPropertyBag .form-group');
 
-                $('#filterprops').keyup(function() {
+                $('#filterprops').keyup(function () {
                     var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-                    $rows.show().filter(function() {
+                    $rows.show().filter(function () {
                         var text = $(this).data('id').replace(/\s+/g, ' ').toLowerCase();
                         return !~text.indexOf(val);
                     }).hide();
@@ -365,7 +365,7 @@ port.onMessage.addListener(function(message) {
                 }
                 $('#webhooklist').find('option').remove().end();
 
-                $.each(message.lists, function(key, value) {
+                $.each(message.lists, function (key, value) {
                     $('#webhooklist')
                         .append($("<option></option>")
                             .attr("value", value.listId)
@@ -400,7 +400,7 @@ port.onMessage.addListener(function(message) {
                 var removesub = document.getElementsByClassName("sub-remove");
 
                 for (var i = 0; i < removesub.length; i++) {
-                    removesub[i].addEventListener('click', function(e) {
+                    removesub[i].addEventListener('click', function (e) {
 
                         var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + removeSubscription;
                         script += " exescript(removeSubscription, '" + $(this).data('scope') + "', '" + $(this).data('id') + "');";
@@ -425,22 +425,22 @@ elem("autosave").checked = false;
 swap('save', 'script', 'files', 'webproperties', 'about', 'webhook', 'monaco');
 
 //event bindings
-elem("autosave").addEventListener('change', function(e) {
+elem("autosave").addEventListener('change', function (e) {
     var payload = { "type": "autosavechange", "content": elem("autosave").checked, "tabId": chrome.devtools.inspectedWindow.tabId };
 
     port.postMessage(payload);
 }, false);
 
-elem("autopublish").addEventListener('change', function(e) {
+elem("autopublish").addEventListener('change', function (e) {
     var payload = { "type": "autopublishchange", "content": elem("autopublish").checked, "tabId": chrome.devtools.inspectedWindow.tabId };
     port.postMessage(payload);
 }, false);
 
-elem('btnSave').addEventListener('click', function(e) {
+elem('btnSave').addEventListener('click', function (e) {
     swap('save', 'script', 'files', 'webproperties', 'about', 'webhook', 'monaco');
 });
 
-elem('btnScript').addEventListener('click', function(e) {
+elem('btnScript').addEventListener('click', function (e) {
     swap('script', 'files', 'webproperties', 'about', 'save', 'webhook', 'monaco');
 
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
@@ -449,22 +449,22 @@ elem('btnScript').addEventListener('click', function(e) {
 
 });
 
-elem('btnFiles').addEventListener('click', function(e) {
+elem('btnFiles').addEventListener('click', function (e) {
     swap('files', 'webproperties', 'script', 'save', 'about', 'webhook', 'monaco');
 });
 
-elem('btnAbout').addEventListener('click', function(e) {
+elem('btnAbout').addEventListener('click', function (e) {
     swap('about', 'save', 'script', 'files', 'webproperties', 'webhook', 'monaco');
 });
 
-elem('btnWebhooks').addEventListener('click', function(e) {
+elem('btnWebhooks').addEventListener('click', function (e) {
     swap('webhook', 'about', 'save', 'script', 'files', 'webproperties', 'monaco');
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
     script += " exescript(getSubscriptions);";
     chrome.devtools.inspectedWindow.eval(script);
 });
 
-elem('btnWebProperties').addEventListener('click', function(e) {
+elem('btnWebProperties').addEventListener('click', function (e) {
     swap('webproperties', 'save', 'script', 'files', 'about', 'webhook', 'monaco');
 
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
@@ -473,158 +473,164 @@ elem('btnWebProperties').addEventListener('click', function(e) {
 
 });
 
-elem('btnPnPJSConsole').addEventListener('click', function(e) {
+elem('btnPnPJSConsole').addEventListener('click', function (e) {
     swap('monaco', 'webproperties', 'save', 'script', 'files', 'about', 'webhook');
 
 
-require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
-require(['vs/editor/editor.main'], function () {
+    require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
+    require(['vs/editor/editor.main'], function () {
 
-    var loadDeclaration = function loadDeclaration() {
-        var loadDeclaration = function (path) {
-            return new Promise(function (resolve, reject) {
-                var request = new XMLHttpRequest();
-                request.open('GET', path, true);
-                request.onload = function () {
-                    monaco.languages.typescript.typescriptDefaults.addExtraLib(request.responseText, path);
-                    resolve();
-                };
-                request.send();
-            });
+        var loadDeclaration = function loadDeclaration() {
+            var loadDeclaration = function (path) {
+                return new Promise(function (resolve, reject) {
+                    var request = new XMLHttpRequest();
+                    request.open('GET', path, true);
+                    request.onload = function () {
+                        monaco.languages.typescript.typescriptDefaults.addExtraLib(request.responseText, path);
+                        resolve();
+                    };
+                    request.send();
+                });
+            };
+
+            return Promise.all([
+                loadDeclaration('typings/pnp.d.ts'),
+            ]);
         };
 
-        return Promise.all([
-            loadDeclaration('typings/pnp.d.ts'),
-        ]);
-    };
-
-    // validation settings
-    monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
-        noSemanticValidation: false,
-        noSyntaxValidation: false
-    });
-
-    monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-        target: monaco.languages.typescript.ScriptTarget.ES6,
-        allowNonTsExtensions: true
-    });
-
-    loadDeclaration().then(function () {
-
-        var playground = monaco.editor.create(document.getElementById('container'), {
-            value: [
-                'import pnp from "pnp";',
-                '',
-                'pnp.sp.web.lists.select("Title").get().then(result => {',
-                '\t// gets all list titles from current web and writes them to console',
-                '\t// hit \'ctrl + d\' to test it :)',               
-                '\tconsole.log(result);',
-                '});',
-            ].join('\n'),
-            language: 'typescript',
-            lineNumbers: true,
-            roundedSelection: true,
-            scrollBeyondLastLine: false,
-            readOnly: false,
-            theme: "vs-dark",
-            fontSize: 16,
-            //glyphMargin: true,
-            renderIndentGuides: true,
-            suggestOnTriggerCharacters: true,
-            showTypeScriptWarnings: false
+        // validation settings
+        monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+            noSemanticValidation: false,
+            noSyntaxValidation: false
         });
 
-        var playgroundBinding = playground.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
-            try {
-                var js = ts.transpileModule(playground.getValue(), { compilerOptions: { module: 1 /* CommonJS */ } });
-                var prepnp = 'pnp';
+        monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+            target: monaco.languages.typescript.ScriptTarget.ES6,
+            allowNonTsExtensions: true
+        });
 
-                var lines = js.outputText.split('\n');
-                var code = [];
-                var prepnp = [];
-                lines.forEach(function (line) {
-                    // remove imports
-                    if (line.toLowerCase().indexOf(' = require') == -1 && line.toLowerCase().indexOf('use strict') == -1) {
-                        code.push(line);
-                    }
-                    if (line.toLowerCase().indexOf(' = require') > -1) {
-                        // fix imports
-                        var lineRe = line.match("var (.*) = require");
-                        prepnp.push('var ' + lineRe[1] + ' = modules[0];');
-                    }
-                });
-
-                code.pop(); // remove the last empty line
-
-                var exescript = [
-                    'var exescript = function(script) {',
-                    '\t var params = arguments;',
-                    '\t if (typeof SystemJS == "undefined") {',
-                    '\t\t var s = document.createElement("script");',
-                    '\t\t s.src = sj;',
-                    '\t\t s.onload = function () {',
-                    '\t\t\t script.apply(this, params);',
-                    '\t\t };',
-                    '\t\t (document.head || document.documentElement).appendChild(s);',
-                    '\t }',
-                    '\t else script.apply(this, params);',
-                    '}',
-                ].join('\n');
-
-                var execme = [
-                    'var execme = function execme() {',
-                    '\tPromise.all([SystemJS.import(speditorpnp)]).then(function (modules) {',
-                    '\t\t' + prepnp.join('\n'),
-                    '\t\t// Your code starts here',
-                    '\t\t// #####################',
-                    '' + code.map(function (e) { return '\t\t\t' + e }).join('\n'),
-                    '\t\t// #####################',
-                    '\t\t// Your code ends here',
-                    '\t});',
-                    '};'].join('\n');
-
-                var script = pnp + '\n' + sj + '\n\n' + exescript + '\n\n' + execme + '\n\n';
-
-                script += "exescript(execme);";
-                chrome.devtools.inspectedWindow.eval(script);
-            }
-            catch (e) { 
-                console.log(e);
+        monaco.languages.registerCompletionItemProvider('typescript', {
+            provideCompletionItems: function (model, position) {
+                return createDependencyProposals(); // from snippets.js
             }
         });
 
+        loadDeclaration().then(function () {
+
+            var playground = monaco.editor.create(document.getElementById('container'), {
+                value: [
+                    'import pnp from "pnp";',
+                    '',
+                    'pnp.sp.web.lists.select("Title").get().then(result => {',
+                    '\t// gets all list titles from current web and writes them to console',
+                    '\t// hit \'ctrl + d\' to test it :)',
+                    '\tconsole.log(result);',
+                    '});',
+                ].join('\n'),
+                language: 'typescript',
+                lineNumbers: true,
+                roundedSelection: true,
+                scrollBeyondLastLine: false,
+                readOnly: false,
+                theme: "vs-dark",
+                fontSize: 16,
+                //glyphMargin: true,
+                renderIndentGuides: true,
+                suggestOnTriggerCharacters: true,
+                showTypeScriptWarnings: false
+            });
+
+            var playgroundBinding = playground.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
+                try {
+                    var js = ts.transpileModule(playground.getValue(), { compilerOptions: { module: 1 /* CommonJS */ } });
+                    var prepnp = 'pnp';
+
+                    var lines = js.outputText.split('\n');
+                    var code = [];
+                    var prepnp = [];
+                    lines.forEach(function (line) {
+                        // remove imports
+                        if (line.toLowerCase().indexOf(' = require') == -1 && line.toLowerCase().indexOf('use strict') == -1) {
+                            code.push(line);
+                        }
+                        if (line.toLowerCase().indexOf(' = require') > -1) {
+                            // fix imports
+                            var lineRe = line.match("var (.*) = require");
+                            prepnp.push('var ' + lineRe[1] + ' = modules[0];');
+                        }
+                    });
+
+                    code.pop(); // remove the last empty line
+
+                    var exescript = [
+                        'var exescript = function(script) {',
+                        '\t var params = arguments;',
+                        '\t if (typeof SystemJS == "undefined") {',
+                        '\t\t var s = document.createElement("script");',
+                        '\t\t s.src = sj;',
+                        '\t\t s.onload = function () {',
+                        '\t\t\t script.apply(this, params);',
+                        '\t\t };',
+                        '\t\t (document.head || document.documentElement).appendChild(s);',
+                        '\t }',
+                        '\t else script.apply(this, params);',
+                        '}',
+                    ].join('\n');
+
+                    var execme = [
+                        'var execme = function execme() {',
+                        '\tPromise.all([SystemJS.import(speditorpnp)]).then(function (modules) {',
+                        '\t\t' + prepnp.join('\n'),
+                        '\t\t// Your code starts here',
+                        '\t\t// #####################',
+                        '' + code.map(function (e) { return '\t\t\t' + e }).join('\n'),
+                        '\t\t// #####################',
+                        '\t\t// Your code ends here',
+                        '\t});',
+                        '};'].join('\n');
+
+                    var script = pnp + '\n' + sj + '\n\n' + exescript + '\n\n' + execme + '\n\n';
+
+                    script += "exescript(execme);";
+                    chrome.devtools.inspectedWindow.eval(script);
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            });
+
+        });
+
     });
 
-});
-
 
 });
 
-elem('addscriptsite').addEventListener('click', function(e) {
+elem('addscriptsite').addEventListener('click', function (e) {
     var scriptpath = elem('scriptpath').value;
     var scriptsequence = elem('scriptsequence').value;
     addscriptlink('site', scriptsequence, scriptpath);
 });
 
-elem('addscriptweb').addEventListener('click', function(e) {
+elem('addscriptweb').addEventListener('click', function (e) {
     var scriptpath = elem('scriptpath').value;
     var scriptsequence = elem('scriptsequence').value;
     addscriptlink('web', scriptsequence, scriptpath);
 });
 
-elem('fileaddscriptsite').addEventListener('click', function(e) {
+elem('fileaddscriptsite').addEventListener('click', function (e) {
     var scriptpath = elem('filescriptpath').value;
     var scriptsequence = elem('filescriptsequence').value;
     addscriptlink('site', scriptsequence, scriptpath);
 });
 
-elem('fileaddscriptweb').addEventListener('click', function(e) {
+elem('fileaddscriptweb').addEventListener('click', function (e) {
     var scriptpath = elem('filescriptpath').value;
     var scriptsequence = elem('filescriptsequence').value;
     addscriptlink('web', scriptsequence, scriptpath);
 });
 
-elem('addfilebtn').addEventListener('click', function(e) {
+elem('addfilebtn').addEventListener('click', function (e) {
     var filename = elem('addfile').value;
     filename = filename.replace(/[^a-z0-9/._-]/gi, '');
     if (filename == "") {
@@ -647,13 +653,13 @@ elem('addfilebtn').addEventListener('click', function(e) {
     }
 });
 
-$('#addfile').keyup(function() {
+$('#addfile').keyup(function () {
     var txtBoxVal = $(this).val();
     $('#trimmedfilename').text(txtBoxVal.replace(/[^a-z0-9/._-]/gi, ''));
     $('#filescriptpath').val('~sitecollection/Style library/' + txtBoxVal.replace(/[^a-z0-9/._-]/gi, ''));
 });
 
-elem('addpropertybtn').addEventListener('click', function(e) {
+elem('addpropertybtn').addEventListener('click', function (e) {
     var propertykey = elem('propertykey').value;
     var propertyvalue = elem('propertyvalue').value;
 
@@ -663,7 +669,7 @@ elem('addpropertybtn').addEventListener('click', function(e) {
 
 });
 
-elem('addwebhookbtn').addEventListener('click', function(e) {
+elem('addwebhookbtn').addEventListener('click', function (e) {
 
     var webhooklist = $("#webhooklist").val();
     var webhookurl = elem('webhookurl').value;
