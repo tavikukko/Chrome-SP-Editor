@@ -93,6 +93,14 @@ Go to your SharePoint site and open Chrome developer tools.
 ### PnP JS Console
 * Write TypeScript using PnP-JS-Core definitions and execute on current context
 * ctrl + d to execute
+* for sp2013 change the headers of the request for this to work
+```
+pnp.setup({
+    headers: {
+        "Accept": "application/json;odata=verbose",
+    }
+});
+```
 
 ### Chrome Workspaces
 * SP Editor works also when using Chrome workspaces, it saves the file to the disk and also the SharePoint.
