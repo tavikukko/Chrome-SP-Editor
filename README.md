@@ -93,7 +93,7 @@ Go to your SharePoint site and open Chrome developer tools.
 ### PnP JS Console
 * Write TypeScript using PnP-JS-Core definitions and execute on current context
 * ctrl + d to execute
-* for sp2013 change the headers of the request for this to work
+* for sp2013 change, the headers of the request:
 ```
 pnp.setup({
     headers: {
