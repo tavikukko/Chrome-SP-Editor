@@ -807,8 +807,17 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
 
 var loadWebpart = function loadWebpart() {
   var wpId = arguments[1];
-  var xml = "test for wp " + wpId;
-  window.postMessage(JSON.stringify({ function: 'loadWebpart', success: true, result: xml, source: 'chrome-sp-editor' }), '*');
+  var pageurl = location.protocol+'//'+location.host + _spPageContextInfo.serverRequestPath;
+
+  function reqListener () {
+    window.postMessage(JSON.stringify({ function: 'loadWebpart', success: true, result: this.responseText, source: 'chrome-sp-editor' }), '*');
+  }
+
+  var oReq = new XMLHttpRequest();
+  oReq.addEventListener("load", reqListener);
+  oReq.open("GET", "/_vti_bin/exportwp.aspx?pageurl=" + pageurl + "&guidstring=" + wpId);
+  oReq.send();
+  
 };
 
 
