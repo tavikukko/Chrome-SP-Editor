@@ -414,6 +414,49 @@ port.onMessage.addListener(function (message) {
                 //error
             }
             break;
+
+        case 'getZonesAndWebparts':
+            if (message.success) {
+                var zones = message.result;
+                var html = '';
+                for (var zone of zones)
+                {
+                    html += '<div class="zone">';
+                    for (var wp of zone)
+                    {
+                        if (!wp.title)
+                            wp.title = "Webpart";
+                        
+                        html += `<div class="webpart" data-id="${wp.id}">${wp.title}</div>`;
+                    }
+                    html += '</div>';
+                }
+                document.getElementById("webpart-zones-list").innerHTML = html;
+
+                if (!webpartXmlEditor) {
+                    require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
+                    require(['vs/editor/editor.main'], function () {
+                        webpartXmlEditor = monaco.editor.create(document.getElementById('webpart-xml-container'), {
+                            value: '',
+                            language: 'xml',
+                            lineNumbers: true,
+                            roundedSelection: true,
+                            scrollBeyondLastLine: false,
+                            readOnly: false,
+                            theme: "vs-dark",
+                            fontSize: 16,
+                            renderIndentGuides: true
+                        });
+                    });
+                }
+            }
+            break;
+        case 'loadWebpart':
+            if (message.success) {
+                var xml = message.result;
+                webpartXmlEditor.setValue(xml);
+            }
+            break;
         default:
     }
 });
@@ -422,7 +465,7 @@ var payload = { "type": "autosavechange", "content": false };
 port.postMessage(payload);
 
 elem("autosave").checked = false;
-swap('save', 'script', 'files', 'webproperties', 'about', 'webhook', 'monaco');
+swap('save');
 
 //event bindings
 elem("autosave").addEventListener('change', function (e) {
@@ -437,11 +480,11 @@ elem("autopublish").addEventListener('change', function (e) {
 }, false);
 
 elem('btnSave').addEventListener('click', function (e) {
-    swap('save', 'script', 'files', 'webproperties', 'about', 'webhook', 'monaco');
+    swap('save');
 });
 
 elem('btnScript').addEventListener('click', function (e) {
-    swap('script', 'files', 'webproperties', 'about', 'save', 'webhook', 'monaco');
+    swap('script');
 
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
     script += " exescript(getCustomActions);";
@@ -450,22 +493,22 @@ elem('btnScript').addEventListener('click', function (e) {
 });
 
 elem('btnFiles').addEventListener('click', function (e) {
-    swap('files', 'webproperties', 'script', 'save', 'about', 'webhook', 'monaco');
+    swap('files');
 });
 
 elem('btnAbout').addEventListener('click', function (e) {
-    swap('about', 'save', 'script', 'files', 'webproperties', 'webhook', 'monaco');
+    swap('about');
 });
 
 elem('btnWebhooks').addEventListener('click', function (e) {
-    swap('webhook', 'about', 'save', 'script', 'files', 'webproperties', 'monaco');
+    swap('webhook');
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
     script += " exescript(getSubscriptions);";
     chrome.devtools.inspectedWindow.eval(script);
 });
 
 elem('btnWebProperties').addEventListener('click', function (e) {
-    swap('webproperties', 'save', 'script', 'files', 'about', 'webhook', 'monaco');
+    swap('webproperties');
 
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
     script += " exescript(getWebProperties);";
@@ -474,7 +517,7 @@ elem('btnWebProperties').addEventListener('click', function (e) {
 });
 
 elem('btnPnPJSConsole').addEventListener('click', function (e) {
-    swap('monaco', 'webproperties', 'save', 'script', 'files', 'about', 'webhook');
+    swap('monaco');
 
 
     require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
@@ -606,6 +649,16 @@ elem('btnPnPJSConsole').addEventListener('click', function (e) {
 
 });
 
+var webpartXmlEditor;
+elem('btnPageEditor').addEventListener('click', function (e) {
+    swap('pageeditor');
+
+    var script = exescript + ' ' + getZonesAndWebparts;
+    script += " exescript(getZonesAndWebparts);";
+    chrome.devtools.inspectedWindow.eval(script);
+
+});
+
 elem('addscriptsite').addEventListener('click', function (e) {
     var scriptpath = elem('scriptpath').value;
     var scriptsequence = elem('scriptsequence').value;
@@ -679,6 +732,19 @@ elem('addwebhookbtn').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+
+elem('webpart-zones-list').addEventListener('click', function (e) {
+
+    var idAttr = e.target.attributes["data-id"];
+    if (!idAttr)
+        return;
+
+    var script = exescript + ' ' + loadWebpart;
+    script += " exescript(loadWebpart, '" + idAttr.value + "');";
+    chrome.devtools.inspectedWindow.eval(script);
+
+});
+
 
 function addscriptlink(scope, scriptsequence, scriptpath) {
 

@@ -7,6 +7,38 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
+    <style type="text/css">
+      #webpart-xml-container {
+        width:68%;
+        height:800px;
+        border:1px solid grey;
+        margin-left:32%;
+      }
+      #webpart-zones-list {
+        float: left;
+        width: 30%;
+        height: 100%;
+        padding-left: 10px;
+      }
+      .zone {
+        margin-top: 10px;
+        padding-top: 7px;
+        padding-bottom: 10px;
+      }
+      .zone:before {
+        content: 'WEBPART ZONE';
+        font-size: 9px;
+        color: #ccc;
+        display: block;
+        border-bottom: 1px solid #777;
+      }
+      .webpart {
+        margin: 4px;
+        padding: 3px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+      }
+    </style>
 </head>
 <body>
     <script src="monaco-editor/min/vs/loader.js"></script>
@@ -34,7 +66,10 @@
                 </li>
                 <li>
                   <a href="#" id="btnPnPJSConsole">PnP JS Console</a>
-                </li>               
+                </li>
+                <li>
+                  <a href="#" id="btnPageEditor">Page editor</a>
+                </li>
                 <li>
                   <a href="#" id="btnAbout">About</a>
                 </li>
@@ -190,6 +225,13 @@
             <div id="monaco-container">
               <div id="container" style="width:100%;height:800px;border:1px solid grey"></div>
             </div>
+        </div>
+
+        <div id="pageeditor" style="display: none;">
+            <div id="webpart-zones-list">
+              
+            </div>
+            <div id="webpart-xml-container"></div>
         </div>
 
         <div id="about" style="display: none;">

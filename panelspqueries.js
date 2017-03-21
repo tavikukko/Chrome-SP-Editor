@@ -789,17 +789,37 @@ var removeSubscription = function removeSubscription() {
   });
 };
 
+var getZonesAndWebparts = function getZonesAndWebparts() {
+  var selectAll = function(parent, selector) {
+    return Array.prototype.slice.call(parent.querySelectorAll(selector));
+  };
+
+  var webparts = selectAll(document, '.ms-webpart-zone')
+    .map(zone => selectAll(zone, '.ms-webpartzone-cell')
+      .map(cell => ({ 
+        id: cell.querySelector('[webpartid]').attributes['webpartid'].value,
+        title: (cell.querySelector('.ms-webpart-titleText > nobr > span:first-child') || {}).innerHTML,
+      }))
+    );
+
+  window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts', success: true, result: webparts, source: 'chrome-sp-editor' }), '*');
+};
+
+var loadWebpart = function loadWebpart() {
+  var wpId = arguments[1];
+  var xml = "test for wp " + wpId;
+  window.postMessage(JSON.stringify({ function: 'loadWebpart', success: true, result: xml, source: 'chrome-sp-editor' }), '*');
+};
+
+
 // helper functions
 function elem(elem) {
   return document.getElementById(elem);
 }
 
-function swap(a, b, c, d, e, f, g) {
-  elem(a).style.display = 'block';
-  elem(b).style.display = 'none';
-  elem(c).style.display = 'none';
-  elem(d).style.display = 'none';
-  elem(e).style.display = 'none';
-  elem(f).style.display = 'none';
-  elem(g).style.display = 'none';
+var allElements = ['save', 'script', 'files', 'webproperties', 'about', 'webhook', 'monaco', 'pageeditor'];
+function swap(visibleElement) {
+  for (var i = 0; i < allElements.length; i++)
+    elem(allElements[i]).style.display = 'none';
+  elem(visibleElement).style.display = 'block';
 }
