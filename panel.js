@@ -473,11 +473,11 @@ port.onMessage.addListener(function (message) {
                 elem('dimmer').style.display = 'none';
 
             if (message.success) {
-                var idAttr = document.querySelector('.webpart.selected').attributes["data-id"];
-                if (!idAttr)
-                    return;
-                webpartXmlCache[idAttr.value] = webpartXmlEditor.getValue();
-                selectWebpart('');
+                var selectedWp = document.querySelector('.webpart.selected');
+                selectedWp.setAttribute("data-id", message.result);
+                webpartXmlCache[message.result] = webpartXmlEditor.getValue();
+                elem("webpart-save-success").style.display = "";
+                setTimeout(function() { elem("webpart-save-success").style.display = "none"; }, 4000);
             } else {
                 elem("webpart-save-error").innerHTML = message.result;
                 elem("webpart-save-error").style.display = "";
@@ -681,11 +681,10 @@ var webpartXmlEditor;
 elem('btnPageEditor').addEventListener('click', function (e) {
     swap('pageeditor');
 
-    elem("webpart-zones-list").innerHTML = '';
     if (webpartXmlEditor)
-        webpartXmlEditor.setValue('');
+        return;
 
-    var script = exescript + ' ' + getZonesAndWebparts;
+    var script = sj + ' ' + exescript + ' ' + getZonesAndWebparts;
     script += " exescript(getZonesAndWebparts);";
     chrome.devtools.inspectedWindow.eval(script);
 
@@ -769,6 +768,16 @@ var dimmerTimeout;
 var errorTimeout;
 elem('webpart-zones-list').addEventListener('click', function (e) {
 
+    var selectedWp = document.querySelector('.webpart.selected');
+    if (selectedWp) {
+        var selectedWpId = selectedWp.attributes["data-id"].value;
+        if (webpartXmlCache[selectedWpId] != webpartXmlEditor.getValue())
+        {
+            if (!confirm("Drop changes to current webpart?"))
+                return;
+        }
+    }
+
     var idAttr = e.target.attributes["data-id"];
     if (!idAttr)
         return;
@@ -779,6 +788,8 @@ elem('webpart-zones-list').addEventListener('click', function (e) {
     }
 
     // if not loaded in 500 ms - show dimmer
+    if (dimmerTimeout)
+        clearTimeout(dimmerTimeout);
     dimmerTimeout = setTimeout(function() { 
         elem('dimmer').style.display='';
         dimmerTimeout = 0;
@@ -807,6 +818,8 @@ elem('webpart-save-button').addEventListener('click', function(e) {
     var wpContents = webpartXmlEditor.getValue();
 
     // if not loaded in 500 ms - show dimmer
+    if (dimmerTimeout)
+        clearTimeout(dimmerTimeout);
     dimmerTimeout = setTimeout(function() { 
         elem('dimmer').style.display='';
         dimmerTimeout = 0;

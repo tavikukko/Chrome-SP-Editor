@@ -23,6 +23,21 @@
         float: right;
         margin-right: 8px;
       }
+      #webpart-save-error {
+        padding-left: 20px;
+        padding-top: 6px;
+        color: #A41f12;
+        font-size: 16px;
+        display: inline-block;
+      }
+      #webpart-save-success {
+        padding-left: 20px;
+        padding-top: 6px;
+        color: #1f6302;
+        font-size: 16px;
+        display: inline-block;
+      }
+
       #webpart-zones-list {
         float: left;
         width: 20%;
@@ -44,11 +59,11 @@
         position: relative;
         top: 50%;
         transform: translateY(-50%);
-        content: 'Loading...';
-        width: 100px;
+        content: 'Please wait...';
+        width: 200px;
         height: 50px;
         color: #fff;
-        text-shadow: 5px 5px rgba(0, 0, 0, 0, 0.9);
+        text-shadow: #EEE 0 0 20px;
       }      
       .zone {
         margin-top: 10px;
@@ -283,6 +298,7 @@
             <div id="webpart-zones-list"></div>
             <div id="webpart-xml-container"></div>
             <span id="webpart-save-error" style="display: none;"></span>
+            <span id="webpart-save-success" style="display: none;">Webpart saved.</span>
             <a href="" id="webpart-save-button" class="btn btn-default">Save changes</a>
         </div>
 

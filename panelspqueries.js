@@ -837,14 +837,15 @@ var saveWebpart = function saveWebpart() {
   context.load(oldWp, 'ZoneIndex');
 
   context.executeQueryAsync(function () {
-      var newWpDef = wpm.importWebPart(xml);
-      var newWp = newWpDef.get_webPart();
-      wpm.addWebPart(newWp, oldWpDef.get_zoneId(), oldWp.get_zoneIndex());
+      var importedDef = wpm.importWebPart(xml);
+      var newWp = importedDef.get_webPart();
+      var newWpDef = wpm.addWebPart(newWp, oldWpDef.get_zoneId(), oldWp.get_zoneIndex());
       oldWpDef.deleteWebPart();
+      context.load(newWpDef);
 
       context.executeQueryAsync(function () {
-        window.postMessage(JSON.stringify({ function: 'saveWebpart', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-      }, function() {
+        window.postMessage(JSON.stringify({ function: 'saveWebpart', success: true, result: newWpDef.get_id().toString(), source: 'chrome-sp-editor' }), '*');
+      }, function(sender, args) {
         window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
       });
   },
