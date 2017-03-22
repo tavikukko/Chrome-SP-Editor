@@ -447,14 +447,23 @@ port.onMessage.addListener(function (message) {
                             fontSize: 16,
                             renderIndentGuides: true
                         });
+
+                        window.addEventListener('resize', function(){
+                            webpartXmlEditor.layout();
+                        });
                     });
                 }
             }
             break;
         case 'loadWebpart':
+            if (dimmerTimeout)
+                clearTimeout(dimmerTimeout);
+            else
+                elem('dimmer').style.display = 'none';
             if (message.success) {
-                var xml = message.result;
-                webpartXmlEditor.setValue(xml);
+                var wpId = message.result.id;
+                webpartXmlCache[wpId] = message.result.xml;
+                selectWebpart(wpId);
             }
             break;
         default:
@@ -649,6 +658,7 @@ elem('btnPnPJSConsole').addEventListener('click', function (e) {
 
 });
 
+var webpartXmlCache = {};
 var webpartXmlEditor;
 elem('btnPageEditor').addEventListener('click', function (e) {
     swap('pageeditor');
@@ -733,11 +743,23 @@ elem('addwebhookbtn').addEventListener('click', function (e) {
 
 });
 
+var dimmerTimeout;
 elem('webpart-zones-list').addEventListener('click', function (e) {
 
     var idAttr = e.target.attributes["data-id"];
     if (!idAttr)
         return;
+
+    if (webpartXmlCache[idAttr.value]) {
+        selectWebpart(idAttr.value);
+        return;
+    }
+
+    // if not loaded in 500 ms - show dimmer
+    dimmerTimeout = setTimeout(function() { 
+        elem('dimmer').style.display='';
+        dimmerTimeout = 0;
+    }, 500);
 
     var script = exescript + ' ' + loadWebpart;
     script += " exescript(loadWebpart, '" + idAttr.value + "');";

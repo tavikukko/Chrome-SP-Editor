@@ -8,18 +8,41 @@
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
     <style type="text/css">
+      body, html, #wrapper, #pageeditor {
+        height: 100%;
+      }
       #webpart-xml-container {
-        width:68%;
-        height:800px;
+        width:78%;
+        height:100%;
         border:1px solid grey;
-        margin-left:32%;
+        margin-left:22%;
+        overflow-y: hidden;
       }
       #webpart-zones-list {
         float: left;
-        width: 30%;
+        width: 20%;
         height: 100%;
         padding-left: 10px;
+        overflow-y: auto;
       }
+      #dimmer {
+        background: rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top:0;
+        right:0;
+        bottom:0;
+        left: 250px;
+        text-align: center;
+      }
+      #dimmer:before {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        content: 'Loading...';
+        width: 100px;
+        height: 50px;
+        color: #fff;
+      }      
       .zone {
         margin-top: 10px;
         padding-top: 7px;
@@ -38,6 +61,28 @@
         border: 1px solid #ccc;
         cursor: pointer;
       }
+      .webpart.selected {
+        position: relative;
+        margin-right: 15px;
+        padding-right: 0;
+        border-right: none;
+        background-color: #ccc;
+      }
+      .webpart.selected:after {
+        left: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(204, 204, 204, 0);
+        border-left-color: #ccc;
+        border-width: 14px;
+        margin-top: -14px;
+      }
+
     </style>
 </head>
 <body>
@@ -242,6 +287,7 @@
             <div>twitter: <a href="https://twitter.com/tavikukko">https://twitter.com/tavikukko</a></div>
           </div>
         </div>
+        <div id="dimmer" style="display: none;"></div>
         <!-- /#page-content-wrapper -->
     </div>
     <!-- /#wrapper -->

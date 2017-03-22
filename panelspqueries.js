@@ -809,14 +809,17 @@ var loadWebpart = function loadWebpart() {
   var wpId = arguments[1];
   var pageurl = location.protocol+'//'+location.host + _spPageContextInfo.serverRequestPath;
 
-  function reqListener () {
-    window.postMessage(JSON.stringify({ function: 'loadWebpart', success: true, result: this.responseText, source: 'chrome-sp-editor' }), '*');
-  }
-
-  var oReq = new XMLHttpRequest();
-  oReq.addEventListener("load", reqListener);
-  oReq.open("GET", "/_vti_bin/exportwp.aspx?pageurl=" + pageurl + "&guidstring=" + wpId);
-  oReq.send();
+  var req = new XMLHttpRequest();
+  req.addEventListener("load", function () {
+    window.postMessage(JSON.stringify({ 
+      function: 'loadWebpart', 
+      success: true, 
+      result: { id: wpId, xml: this.responseText }, 
+      source: 'chrome-sp-editor' 
+    }), '*');
+  });
+  req.open("GET", "/_vti_bin/exportwp.aspx?pageurl=" + pageurl + "&guidstring=" + wpId);
+  req.send();
   
 };
 
@@ -824,6 +827,17 @@ var loadWebpart = function loadWebpart() {
 // helper functions
 function elem(elem) {
   return document.getElementById(elem);
+}
+
+function selectWebpart(wpId) {
+  var wps = document.querySelectorAll('.webpart');
+  for (var i = 0; i < wps.length; i++) {
+      if (wps[i].attributes['data-id'].value == wpId)
+          wps[i].className = 'webpart selected';
+      else
+          wps[i].className = 'webpart';
+  }
+  webpartXmlEditor.setValue(webpartXmlCache[wpId]);
 }
 
 var allElements = ['save', 'script', 'files', 'webproperties', 'about', 'webhook', 'monaco', 'pageeditor'];
