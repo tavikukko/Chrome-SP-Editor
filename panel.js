@@ -466,6 +466,24 @@ port.onMessage.addListener(function (message) {
                 selectWebpart(wpId);
             }
             break;
+        case 'saveWebpart':
+            if (dimmerTimeout)
+                clearTimeout(dimmerTimeout);
+            else
+                elem('dimmer').style.display = 'none';
+
+            if (message.success) {
+                var idAttr = document.querySelector('.webpart.selected').attributes["data-id"];
+                if (!idAttr)
+                    return;
+                webpartXmlCache[idAttr.value] = webpartXmlEditor.getValue();
+                selectWebpart('');
+            } else {
+                elem("webpart-save-error").innerHTML = message.result;
+                elem("webpart-save-error").style.display = "";
+                errorTimeout = setTimeout(function() { elem("webpart-save-error").style.display = "none"; }, 10000);
+            }
+            break;
         default:
     }
 });
@@ -663,6 +681,10 @@ var webpartXmlEditor;
 elem('btnPageEditor').addEventListener('click', function (e) {
     swap('pageeditor');
 
+    elem("webpart-zones-list").innerHTML = '';
+    if (webpartXmlEditor)
+        webpartXmlEditor.setValue('');
+
     var script = exescript + ' ' + getZonesAndWebparts;
     script += " exescript(getZonesAndWebparts);";
     chrome.devtools.inspectedWindow.eval(script);
@@ -744,6 +766,7 @@ elem('addwebhookbtn').addEventListener('click', function (e) {
 });
 
 var dimmerTimeout;
+var errorTimeout;
 elem('webpart-zones-list').addEventListener('click', function (e) {
 
     var idAttr = e.target.attributes["data-id"];
@@ -763,6 +786,34 @@ elem('webpart-zones-list').addEventListener('click', function (e) {
 
     var script = exescript + ' ' + loadWebpart;
     script += " exescript(loadWebpart, '" + idAttr.value + "');";
+    chrome.devtools.inspectedWindow.eval(script);
+
+});
+
+elem('webpart-save-button').addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var selectedWp = document.querySelector('.webpart.selected');
+    if (!webpartXmlEditor || !webpartXmlEditor.getValue() || !selectedWp)
+        return;
+
+    var idAttr = selectedWp.attributes["data-id"];
+    if (!idAttr)
+        return;
+
+    elem("webpart-save-error").style.display = "none";
+    
+    var wpContents = webpartXmlEditor.getValue();
+
+    // if not loaded in 500 ms - show dimmer
+    dimmerTimeout = setTimeout(function() { 
+        elem('dimmer').style.display='';
+        dimmerTimeout = 0;
+    }, 500);
+
+    var script = exescript + ' ' + saveWebpart;
+    script += " exescript(saveWebpart, '" + idAttr.value + "', '" + encodeURIComponent(wpContents) + "');";
     chrome.devtools.inspectedWindow.eval(script);
 
 });

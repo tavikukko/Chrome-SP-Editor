@@ -823,6 +823,36 @@ var loadWebpart = function loadWebpart() {
   
 };
 
+var saveWebpart = function saveWebpart() {
+  var wpId = arguments[1];
+  var xml = decodeURIComponent(arguments[2]);
+  var pageurl = location.protocol+'//'+location.host + _spPageContextInfo.serverRequestPath;
+
+  var context = SP.ClientContext.get_current();
+  var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
+  var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
+  var oldWpDef = wpm.get_webParts().getById(new SP.Guid(wpId));
+  var oldWp = oldWpDef.get_webPart();
+  context.load(oldWpDef, 'ZoneId');
+  context.load(oldWp, 'ZoneIndex');
+
+  context.executeQueryAsync(function () {
+      var newWpDef = wpm.importWebPart(xml);
+      var newWp = newWpDef.get_webPart();
+      wpm.addWebPart(newWp, oldWpDef.get_zoneId(), oldWp.get_zoneIndex());
+      oldWpDef.deleteWebPart();
+
+      context.executeQueryAsync(function () {
+        window.postMessage(JSON.stringify({ function: 'saveWebpart', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+      }, function() {
+        window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+      });
+  },
+  function(sender, args) {
+      window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+  });
+  
+};
 
 // helper functions
 function elem(elem) {

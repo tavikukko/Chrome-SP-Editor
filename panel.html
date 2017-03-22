@@ -13,10 +13,15 @@
       }
       #webpart-xml-container {
         width:78%;
-        height:100%;
+        height:92%;
         border:1px solid grey;
         margin-left:22%;
         overflow-y: hidden;
+      }
+      #webpart-save-button {
+        margin-top: 2px;
+        float: right;
+        margin-right: 8px;
       }
       #webpart-zones-list {
         float: left;
@@ -24,6 +29,7 @@
         height: 100%;
         padding-left: 10px;
         overflow-y: auto;
+        overflow-x: hidden;
       }
       #dimmer {
         background: rgba(0, 0, 0, 0.2);
@@ -42,6 +48,7 @@
         width: 100px;
         height: 50px;
         color: #fff;
+        text-shadow: 5px 5px rgba(0, 0, 0, 0, 0.9);
       }      
       .zone {
         margin-top: 10px;
@@ -273,10 +280,10 @@
         </div>
 
         <div id="pageeditor" style="display: none;">
-            <div id="webpart-zones-list">
-              
-            </div>
+            <div id="webpart-zones-list"></div>
             <div id="webpart-xml-container"></div>
+            <span id="webpart-save-error" style="display: none;"></span>
+            <a href="" id="webpart-save-button" class="btn btn-default">Save changes</a>
         </div>
 
         <div id="about" style="display: none;">
