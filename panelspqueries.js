@@ -24,29 +24,29 @@ var getCustomActions = function getCustomActions() {
       promise.forEach(function (actions) {
         actions.forEach(function (action) {
           if (action.ScriptSrc || action.ScriptBlock) {
-          if (action.Scope == 3)
-            webactions.push({
-              location: action.Location,
-              description: action.Description,
-              scriptSrc: action.ScriptSrc,
-              scriptBlock: action.ScriptBlock,
-              sequence: action.Sequence,
-              heading: "Current web scriptlinks",
-              scope: "web",
-              id: action.Id
-            });
-          else
-            siteactions.push({
-              location: action.Location,
-              description: action.Description,
-              scriptSrc: action.ScriptSrc,
-              scriptBlock: action.ScriptBlock,
-              sequence: action.Sequence,
-              heading: "Site collection scriptlinks",
-              scope: "site",
-              id: action.Id
-            });
-        }
+            if (action.Scope == 3)
+              webactions.push({
+                location: action.Location,
+                description: action.Description,
+                scriptSrc: action.ScriptSrc,
+                scriptBlock: action.ScriptBlock,
+                sequence: action.Sequence,
+                heading: "Current web scriptlinks",
+                scope: "web",
+                id: action.Id
+              });
+            else
+              siteactions.push({
+                location: action.Location,
+                description: action.Description,
+                scriptSrc: action.ScriptSrc,
+                scriptBlock: action.ScriptBlock,
+                sequence: action.Sequence,
+                heading: "Site collection scriptlinks",
+                scope: "site",
+                id: action.Id
+              });
+          }
         });
       });
       var actions = [];
@@ -234,11 +234,11 @@ var getWebProperties = function getWebProperties() {
 
       var arr = [];
       for (x in result.AllProperties) {
-       
+
         var re = /_x.*?_/g;
         var found = x.match(re);
         var y = x;
-        
+
         if (found != null)
           for (g in found) {
             var unesc = found[g].replace("_x", "%u").replace("_", "");
@@ -790,13 +790,13 @@ var removeSubscription = function removeSubscription() {
 };
 
 var getZonesAndWebparts = function getZonesAndWebparts() {
-  var selectAll = function(parent, selector) {
+  var selectAll = function (parent, selector) {
     return Array.prototype.slice.call(parent.querySelectorAll(selector));
   };
 
   var webparts = selectAll(document, '.ms-webpart-zone')
     .map(zone => selectAll(zone, '.ms-webpartzone-cell')
-      .map(cell => ({ 
+      .map(cell => ({
         id: cell.querySelector('[webpartid]').attributes['webpartid'].value,
         title: (cell.querySelector('.ms-webpart-titleText > nobr > span:first-child') || {}).innerHTML,
       }))
@@ -807,30 +807,30 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
 
 var loadWebpart = function loadWebpart() {
   var wpId = arguments[1];
-  var pageurl = location.protocol+'//'+location.host + _spPageContextInfo.serverRequestPath;
+  var pageurl = location.protocol + '//' + location.host + _spPageContextInfo.serverRequestPath;
 
   var req = new XMLHttpRequest();
   req.addEventListener("load", function () {
-    window.postMessage(JSON.stringify({ 
-      function: 'loadWebpart', 
-      success: true, 
-      result: { id: wpId, xml: this.responseText }, 
-      source: 'chrome-sp-editor' 
+    window.postMessage(JSON.stringify({
+      function: 'loadWebpart',
+      success: true,
+      result: { id: wpId, xml: this.responseText },
+      source: 'chrome-sp-editor'
     }), '*');
   });
-  req.open("GET", _spPageContextInfo.siteAbsoluteUrl + 
-                  "/_vti_bin/exportwp.aspx?pageurl=" + 
-                  pageurl + 
-                  "&guidstring=" + 
-                  wpId);
+  req.open("GET", _spPageContextInfo.siteAbsoluteUrl +
+    "/_vti_bin/exportwp.aspx?pageurl=" +
+    pageurl +
+    "&guidstring=" +
+    wpId);
   req.send();
-  
+
 };
 
 var saveWebpart = function saveWebpart() {
   var wpId = arguments[1];
   var xml = decodeURIComponent(arguments[2]);
-  var pageurl = location.protocol+'//'+location.host + _spPageContextInfo.serverRequestPath;
+  var pageurl = location.protocol + '//' + location.host + _spPageContextInfo.serverRequestPath;
 
   var context = SP.ClientContext.get_current();
   var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
@@ -841,22 +841,22 @@ var saveWebpart = function saveWebpart() {
   context.load(oldWp, 'ZoneIndex');
 
   context.executeQueryAsync(function () {
-      var importedDef = wpm.importWebPart(xml);
-      var newWp = importedDef.get_webPart();
-      var newWpDef = wpm.addWebPart(newWp, oldWpDef.get_zoneId(), oldWp.get_zoneIndex());
-      oldWpDef.deleteWebPart();
-      context.load(newWpDef);
+    var importedDef = wpm.importWebPart(xml);
+    var newWp = importedDef.get_webPart();
+    var newWpDef = wpm.addWebPart(newWp, oldWpDef.get_zoneId(), oldWp.get_zoneIndex());
+    oldWpDef.deleteWebPart();
+    context.load(newWpDef);
 
-      context.executeQueryAsync(function () {
-        window.postMessage(JSON.stringify({ function: 'saveWebpart', success: true, result: newWpDef.get_id().toString(), source: 'chrome-sp-editor' }), '*');
-      }, function(sender, args) {
-        window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
-      });
-  },
-  function(sender, args) {
+    context.executeQueryAsync(function () {
+      window.postMessage(JSON.stringify({ function: 'saveWebpart', success: true, result: newWpDef.get_id().toString(), source: 'chrome-sp-editor' }), '*');
+    }, function (sender, args) {
       window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
-  });
-  
+    });
+  },
+    function (sender, args) {
+      window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+    });
+
 };
 
 // helper functions
@@ -867,10 +867,10 @@ function elem(elem) {
 function selectWebpart(wpId) {
   var wps = document.querySelectorAll('.webpart');
   for (var i = 0; i < wps.length; i++) {
-      if (wps[i].attributes['data-id'].value == wpId)
-          wps[i].className = 'webpart selected';
-      else
-          wps[i].className = 'webpart';
+    if (wps[i].attributes['data-id'].value == wpId)
+      wps[i].className = 'webpart selected';
+    else
+      wps[i].className = 'webpart';
   }
   webpartXmlEditor.setValue(webpartXmlCache[wpId]);
 }
