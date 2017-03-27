@@ -509,12 +509,14 @@ elem('btnPnPJSConsole').addEventListener('click', function (e) {
             allowNonTsExtensions: true
         });
 
+        /*
         monaco.languages.registerCompletionItemProvider('typescript', {
             provideCompletionItems: function (model, position) {
                 return createDependencyProposals(); // from snippets.js
             }
         });
-
+        */
+        
         loadDeclaration().then(function () {
 
             var playground = monaco.editor.create(document.getElementById('container'), {
