@@ -7,6 +7,105 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
+    <style type="text/css">
+      body, html, #wrapper, #pageeditor {
+        height: 100%;
+      }
+      #webpart-xml-container {
+        width:78%;
+        height:92%;
+        border:1px solid grey;
+        margin-left:22%;
+        overflow-y: hidden;
+      }
+      #webpart-save-button {
+        margin-top: 2px;
+        float: right;
+        margin-right: 8px;
+      }
+      #webpart-save-error {
+        padding-left: 20px;
+        padding-top: 6px;
+        color: #A41f12;
+        font-size: 16px;
+        display: inline-block;
+      }
+      #webpart-save-success {
+        padding-left: 20px;
+        padding-top: 6px;
+        color: #1f6302;
+        font-size: 16px;
+        display: inline-block;
+      }
+
+      #webpart-zones-list {
+        float: left;
+        width: 20%;
+        height: 100%;
+        padding-left: 10px;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      #dimmer {
+        background: rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top:0;
+        right:0;
+        bottom:0;
+        left: 250px;
+        text-align: center;
+      }
+      #dimmer:before {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        content: 'Please wait...';
+        width: 200px;
+        height: 50px;
+        color: #fff;
+        text-shadow: #EEE 0 0 20px;
+      }      
+      .zone {
+        margin-top: 10px;
+        padding-top: 7px;
+        padding-bottom: 10px;
+      }
+      .zone:before {
+        content: 'WEBPART ZONE';
+        font-size: 9px;
+        color: #ccc;
+        display: block;
+        border-bottom: 1px solid #777;
+      }
+      .webpart {
+        margin: 4px;
+        padding: 3px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+      }
+      .webpart.selected {
+        position: relative;
+        margin-right: 15px;
+        padding-right: 0;
+        border-right: none;
+        background-color: #ccc;
+      }
+      .webpart.selected:after {
+        left: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(204, 204, 204, 0);
+        border-left-color: #ccc;
+        border-width: 14px;
+        margin-top: -14px;
+      }
+
+    </style>
 </head>
 <body>
     <script src="monaco-editor/min/vs/loader.js"></script>
@@ -34,7 +133,10 @@
                 </li>
                 <li>
                   <a href="#" id="btnPnPJSConsole">PnP JS Console</a>
-                </li>               
+                </li>
+                <li>
+                  <a href="#" id="btnPageEditor">Page editor</a>
+                </li>
                 <li>
                   <a href="#" id="btnAbout">About</a>
                 </li>
@@ -192,6 +294,14 @@
             </div>
         </div>
 
+        <div id="pageeditor" style="display: none;">
+            <div id="webpart-zones-list"></div>
+            <div id="webpart-xml-container"></div>
+            <span id="webpart-save-error" style="display: none;"></span>
+            <span id="webpart-save-success" style="display: none;">Webpart saved.</span>
+            <a href="" id="webpart-save-button" class="btn btn-default">Save changes</a>
+        </div>
+
         <div id="about" style="display: none;">
           <div id="page-content-wrapper">
             <h4>About</h4>
@@ -200,6 +310,7 @@
             <div>twitter: <a href="https://twitter.com/tavikukko">https://twitter.com/tavikukko</a></div>
           </div>
         </div>
+        <div id="dimmer" style="display: none;"></div>
         <!-- /#page-content-wrapper -->
     </div>
     <!-- /#wrapper -->
