@@ -1,5 +1,6 @@
 function createDependencyProposals() {
     return [
+        // web snippets
         {
             label: 'pnp-web-get',
             kind: monaco.languages.CompletionItemKind.Snippet,
