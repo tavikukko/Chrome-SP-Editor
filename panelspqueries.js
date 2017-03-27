@@ -818,7 +818,11 @@ var loadWebpart = function loadWebpart() {
       source: 'chrome-sp-editor' 
     }), '*');
   });
-  req.open("GET", "/_vti_bin/exportwp.aspx?pageurl=" + pageurl + "&guidstring=" + wpId);
+  req.open("GET", _spPageContextInfo.siteAbsoluteUrl + 
+                  "/_vti_bin/exportwp.aspx?pageurl=" + 
+                  pageurl + 
+                  "&guidstring=" + 
+                  wpId);
   req.send();
   
 };
