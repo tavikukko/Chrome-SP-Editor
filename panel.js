@@ -414,6 +414,76 @@ port.onMessage.addListener(function (message) {
                 //error
             }
             break;
+
+        case 'getZonesAndWebparts':
+            if (message.success) {
+                var zones = message.result;
+                var html = '';
+                for (var zone of zones)
+                {
+                    html += '<div class="zone">';
+                    for (var wp of zone)
+                    {
+                        if (!wp.title)
+                            wp.title = "Webpart";
+                        
+                        html += `<div class="webpart" data-id="${wp.id}">${wp.title}</div>`;
+                    }
+                    html += '</div>';
+                }
+                document.getElementById("webpart-zones-list").innerHTML = html;
+
+                if (!webpartXmlEditor) {
+                    require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
+                    require(['vs/editor/editor.main'], function () {
+                        webpartXmlEditor = monaco.editor.create(document.getElementById('webpart-xml-container'), {
+                            value: '',
+                            language: 'xml',
+                            lineNumbers: true,
+                            roundedSelection: true,
+                            scrollBeyondLastLine: false,
+                            readOnly: false,
+                            theme: "vs-dark",
+                            fontSize: 16,
+                            renderIndentGuides: true
+                        });
+
+                        window.addEventListener('resize', function(){
+                            webpartXmlEditor.layout();
+                        });
+                    });
+                }
+            }
+            break;
+        case 'loadWebpart':
+            if (dimmerTimeout)
+                clearTimeout(dimmerTimeout);
+            else
+                elem('dimmer').style.display = 'none';
+            if (message.success) {
+                var wpId = message.result.id;
+                webpartXmlCache[wpId] = message.result.xml;
+                selectWebpart(wpId);
+            }
+            break;
+        case 'saveWebpart':
+            if (dimmerTimeout)
+                clearTimeout(dimmerTimeout);
+            else
+                elem('dimmer').style.display = 'none';
+
+            if (message.success) {
+                var selectedWp = document.querySelector('.webpart.selected');
+                selectedWp.setAttribute("data-id", message.result);
+                webpartXmlCache[message.result] = webpartXmlEditor.getValue();
+                elem("webpart-save-success").style.display = "";
+                setTimeout(function() { elem("webpart-save-success").style.display = "none"; }, 4000);
+            } else {
+                elem("webpart-save-error").innerHTML = message.result;
+                elem("webpart-save-error").style.display = "";
+                errorTimeout = setTimeout(function() { elem("webpart-save-error").style.display = "none"; }, 10000);
+            }
+            break;
         default:
     }
 });
@@ -422,7 +492,7 @@ var payload = { "type": "autosavechange", "content": false };
 port.postMessage(payload);
 
 elem("autosave").checked = false;
-swap('save', 'script', 'files', 'webproperties', 'about', 'webhook', 'monaco');
+swap('save');
 
 //event bindings
 elem("autosave").addEventListener('change', function (e) {
@@ -437,11 +507,11 @@ elem("autopublish").addEventListener('change', function (e) {
 }, false);
 
 elem('btnSave').addEventListener('click', function (e) {
-    swap('save', 'script', 'files', 'webproperties', 'about', 'webhook', 'monaco');
+    swap('save');
 });
 
 elem('btnScript').addEventListener('click', function (e) {
-    swap('script', 'files', 'webproperties', 'about', 'save', 'webhook', 'monaco');
+    swap('script');
 
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
     script += " exescript(getCustomActions);";
@@ -450,22 +520,22 @@ elem('btnScript').addEventListener('click', function (e) {
 });
 
 elem('btnFiles').addEventListener('click', function (e) {
-    swap('files', 'webproperties', 'script', 'save', 'about', 'webhook', 'monaco');
+    swap('files');
 });
 
 elem('btnAbout').addEventListener('click', function (e) {
-    swap('about', 'save', 'script', 'files', 'webproperties', 'webhook', 'monaco');
+    swap('about');
 });
 
 elem('btnWebhooks').addEventListener('click', function (e) {
-    swap('webhook', 'about', 'save', 'script', 'files', 'webproperties', 'monaco');
+    swap('webhook');
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
     script += " exescript(getSubscriptions);";
     chrome.devtools.inspectedWindow.eval(script);
 });
 
 elem('btnWebProperties').addEventListener('click', function (e) {
-    swap('webproperties', 'save', 'script', 'files', 'about', 'webhook', 'monaco');
+    swap('webproperties');
 
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
     script += " exescript(getWebProperties);";
@@ -474,7 +544,7 @@ elem('btnWebProperties').addEventListener('click', function (e) {
 });
 
 elem('btnPnPJSConsole').addEventListener('click', function (e) {
-    swap('monaco', 'webproperties', 'save', 'script', 'files', 'about', 'webhook');
+    swap('monaco');
 
 
     require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
@@ -606,6 +676,20 @@ elem('btnPnPJSConsole').addEventListener('click', function (e) {
 
 });
 
+var webpartXmlCache = {};
+var webpartXmlEditor;
+elem('btnPageEditor').addEventListener('click', function (e) {
+    swap('pageeditor');
+
+    if (webpartXmlEditor)
+        return;
+
+    var script = sj + ' ' + exescript + ' ' + getZonesAndWebparts;
+    script += " exescript(getZonesAndWebparts);";
+    chrome.devtools.inspectedWindow.eval(script);
+
+});
+
 elem('addscriptsite').addEventListener('click', function (e) {
     var scriptpath = elem('scriptpath').value;
     var scriptsequence = elem('scriptsequence').value;
@@ -679,6 +763,74 @@ elem('addwebhookbtn').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+
+var dimmerTimeout;
+var errorTimeout;
+elem('webpart-zones-list').addEventListener('click', function (e) {
+
+    var selectedWp = document.querySelector('.webpart.selected');
+    if (selectedWp) {
+        var selectedWpId = selectedWp.attributes["data-id"].value;
+        if (webpartXmlCache[selectedWpId] != webpartXmlEditor.getValue())
+        {
+            if (!confirm("Drop changes to current webpart?"))
+                return;
+        }
+    }
+
+    var idAttr = e.target.attributes["data-id"];
+    if (!idAttr)
+        return;
+
+    if (webpartXmlCache[idAttr.value]) {
+        selectWebpart(idAttr.value);
+        return;
+    }
+
+    // if not loaded in 500 ms - show dimmer
+    if (dimmerTimeout)
+        clearTimeout(dimmerTimeout);
+    dimmerTimeout = setTimeout(function() { 
+        elem('dimmer').style.display='';
+        dimmerTimeout = 0;
+    }, 500);
+
+    var script = exescript + ' ' + loadWebpart;
+    script += " exescript(loadWebpart, '" + idAttr.value + "');";
+    chrome.devtools.inspectedWindow.eval(script);
+
+});
+
+elem('webpart-save-button').addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var selectedWp = document.querySelector('.webpart.selected');
+    if (!webpartXmlEditor || !webpartXmlEditor.getValue() || !selectedWp)
+        return;
+
+    var idAttr = selectedWp.attributes["data-id"];
+    if (!idAttr)
+        return;
+
+    elem("webpart-save-error").style.display = "none";
+    
+    var wpContents = webpartXmlEditor.getValue();
+
+    // if not loaded in 500 ms - show dimmer
+    if (dimmerTimeout)
+        clearTimeout(dimmerTimeout);
+    dimmerTimeout = setTimeout(function() { 
+        elem('dimmer').style.display='';
+        dimmerTimeout = 0;
+    }, 500);
+
+    var script = exescript + ' ' + saveWebpart;
+    script += " exescript(saveWebpart, '" + idAttr.value + "', '" + encodeURIComponent(wpContents) + "');";
+    chrome.devtools.inspectedWindow.eval(script);
+
+});
+
 
 function addscriptlink(scope, scriptsequence, scriptpath) {
 
