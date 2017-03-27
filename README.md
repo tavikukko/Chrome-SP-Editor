@@ -3,6 +3,8 @@ SP Editor
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 
 ## Version history
+- 1.6 New Feature
+    * Page editor: edit webpart properties. created by @andrei-markeev
 - 1.5 New Feature
     * PnP JS Console: Write TypeScript using PnP-JS-Core definitions and execute on current context
     * Updated pnp-js-core to v2.0.2
@@ -101,6 +103,9 @@ pnp.setup({
     }
 });
 ```
+### Page editor
+* Edit the webpart properties using the the editor.
+* Make sute the page checked out to be able to save it back with changes.
 
 ### Chrome Workspaces
 * SP Editor works also when using Chrome workspaces, it saves the file to the disk and also the SharePoint.
