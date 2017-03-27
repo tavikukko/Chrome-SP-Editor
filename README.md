@@ -4,7 +4,7 @@ A Google Chrome Extension for creating and updating files (js, css) in SharePoin
 
 ## Version history
 - 1.6 New Feature
-    * Page editor: edit webpart properties. created by @andrei-markeev
+    * Page editor: edit webpart properties. created by [@andrei-markeev](https://github.com/andrei-markeev)
 - 1.5 New Feature
     * PnP JS Console: Write TypeScript using PnP-JS-Core definitions and execute on current context
     * Updated pnp-js-core to v2.0.2
