@@ -796,11 +796,13 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
 
   var webparts = selectAll(document, '.ms-webpart-zone')
     .map(zone => selectAll(zone, '.ms-webpartzone-cell')
+      .filter(cell => {
+        return cell.querySelector('[webpartid]') !== null
+      })
       .map(cell => ({
         id: cell.querySelector('[webpartid]').attributes['webpartid'].value,
         title: (cell.querySelector('.ms-webpart-titleText > nobr > span:first-child') || {}).innerHTML,
-      }))
-    );
+      })));
 
   window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts', success: true, result: webparts, source: 'chrome-sp-editor' }), '*');
 };
