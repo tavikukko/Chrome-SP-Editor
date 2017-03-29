@@ -3,6 +3,7 @@ SP Editor
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 
 ## Version history
+- 1.6.1 Small fix
 - 1.6 New Feature
     * Page editor: edit webpart properties. created by [@andrei-markeev](https://github.com/andrei-markeev)
 - 1.5 New Feature
