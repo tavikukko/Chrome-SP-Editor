@@ -129,6 +129,9 @@
                   <a href="#" id="btnWebProperties">Web properties</a>
                 </li>
                 <li>
+                  <a href="#" id="btnListProperties">List properties</a>
+                </li>
+                <li>
                   <a href="#" id="btnWebhooks">Webhooks</a>
                 </li>
                 <li>
@@ -249,6 +252,38 @@
               </div>
             <hr>
              <div id="webPropertyBag">
+            </div>
+          </div>
+        </div>
+
+        <div id="listproperties" style="display: none;">
+          <div id="page-content-wrapper">
+            <div>
+              <h4>List properties</h4>
+              <p>Selected list propertybag values</p>
+            </div>
+            <hr>
+              <div class="row">
+                <div class="col-xs-4">
+                  <select class="form-control" id="weblist">
+
+                  </select>
+                </div>
+
+                <div class="col-xs-3">
+                  <input id="listpropertykey" type="text" class="form-control" placeholder="New property key">
+                </div>
+                <div class="col-xs-3">
+                  <input id="listpropertyvalue" type="text" class="form-control" placeholder="New property value">
+                </div>
+                <div class="col-xs-2">
+                  <div class="input-group-btn">
+                      <button id="addlistpropertybtn" type="button" class="btn btn-default" >Add property</button>
+                  </div>
+                </div>
+              </div>
+            <hr>
+             <div id="listPropertyBag">
             </div>
           </div>
         </div>

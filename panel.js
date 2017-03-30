@@ -341,6 +341,283 @@ port.onMessage.addListener(function (message) {
                 chrome.devtools.inspectedWindow.eval(script);
             }
             break;
+
+        case 'getListProperties':
+            if (message.success) {
+
+                var element = elem("listPropertyBag");
+                while (element.firstChild) {
+                    element.removeChild(element.firstChild);
+                }
+
+                var listobj = message.result.filter(function (listobj) {
+                    return listobj.prop === 'vti_indexedpropertykeys';
+                })[0];
+
+                for (j = 0; j < message.result.length; j++) {
+                    var items = message.result[j];
+
+                    var divform = document.createElement('div');
+
+                    var divformDataId = document.createAttribute("data-id");
+                    divformDataId.value = items.prop;
+                    divform.setAttributeNode(divformDataId);
+
+                    var divformClass = document.createAttribute("class");
+                    divformClass.value = 'form-group';
+                    divform.setAttributeNode(divformClass);
+
+                    element.appendChild(divform);
+
+                    //label
+                    var label = document.createElement('label');
+                    label.innerHTML = items.prop;
+                    label.id = 'proplabel' + j;
+
+                    var labelAtt = document.createAttribute("for");
+                    labelAtt.value = 'propInput' + j;
+                    label.setAttributeNode(labelAtt);
+
+                    divform.appendChild(label);
+                    //div for buttons
+                    var div = document.createElement('div');
+                    var divClass = document.createAttribute("class");
+                    divClass.value = 'input-group';
+                    div.setAttributeNode(divClass);
+
+                    divform.appendChild(div);
+                    //input
+                    var input = document.createElement('input');
+                    var inputType = document.createAttribute("type");
+                    inputType.value = 'text';
+                    input.setAttributeNode(inputType);
+
+                    var inputId = document.createAttribute("id");
+                    inputId.value = 'propInput' + j;
+                    input.setAttributeNode(inputId);
+
+                    var inputClass = document.createAttribute("class");
+                    inputClass.value = 'form-control';
+                    input.setAttributeNode(inputClass);
+
+                    var inputAria = document.createAttribute("aria-describedby");
+                    inputAria.value = 'helpBlock';
+                    input.setAttributeNode(inputAria);
+
+                    input.value = items.value;
+
+                    div.appendChild(input);
+
+                    var span = document.createElement('span');
+                    var spanClass = document.createAttribute("class");
+                    spanClass.value = 'input-group-btn';
+                    span.setAttributeNode(spanClass);
+
+                    div.appendChild(span);
+
+                    //button update
+                    var buttonUpdate = document.createElement('button');
+                    buttonUpdate.innerHTML = 'Update';
+                    var buttonClass = document.createAttribute("class");
+                    buttonClass.value = 'btn btn-default update-list-property';
+                    buttonUpdate.setAttributeNode(buttonClass);
+
+                    var buttonUpdateDataId = document.createAttribute("data-id");
+                    buttonUpdateDataId.value = 'proplabel' + j;
+                    buttonUpdate.setAttributeNode(buttonUpdateDataId);
+
+                    var buttonUpdateDataValue = document.createAttribute("data-value");
+                    buttonUpdateDataValue.value = 'propInput' + j;
+                    buttonUpdate.setAttributeNode(buttonUpdateDataValue);
+
+                    var buttonType = document.createAttribute("type");
+                    buttonType.value = 'button';
+                    buttonUpdate.setAttributeNode(buttonType);
+
+                    span.appendChild(buttonUpdate);
+
+                    //button remove
+                    var buttonRemove = document.createElement('button');
+                    buttonRemove.innerHTML = 'Remove';
+                    var buttonClass = document.createAttribute("class");
+                    buttonClass.value = 'btn btn-default remove-list-property';
+                    buttonRemove.setAttributeNode(buttonClass);
+
+                    var buttonRemoveDataId = document.createAttribute("data-id");
+                    buttonRemoveDataId.value = 'proplabel' + j;
+                    buttonRemove.setAttributeNode(buttonRemoveDataId);
+
+                    var buttonType = document.createAttribute("type");
+                    buttonType.value = 'button';
+                    buttonRemove.setAttributeNode(buttonType);
+
+                    span.appendChild(buttonRemove);
+
+                    var isIndexed = false;
+                    //button index
+                    if (listobj !== undefined) {
+                        var bytes = [];
+                        for (var i = 0; i < items.prop.length; ++i) {
+                            bytes.push(items.prop.charCodeAt(i));
+                            bytes.push(0);
+                        }
+                        var b64encoded = window.btoa(String.fromCharCode.apply(null, bytes));
+                        if (listobj.value.indexOf(b64encoded) > -1) isIndexed = true;
+                    }
+
+                    var buttonIndex = document.createElement('button');
+                    if (isIndexed)
+                        buttonIndex.innerHTML = 'UnIndex';
+                    else
+                        buttonIndex.innerHTML = 'Index';
+
+                    var buttonClass = document.createAttribute("class");
+                    if (isIndexed)
+                        buttonClass.value = 'btn btn-success unindex-list-property';
+                    else
+                        buttonClass.value = 'btn btn-default index-list-property';
+
+                    buttonIndex.setAttributeNode(buttonClass);
+
+                    var buttonIndexDataId = document.createAttribute("data-id");
+                    buttonIndexDataId.value = 'proplabel' + j;
+                    buttonIndex.setAttributeNode(buttonIndexDataId);
+
+                    var buttonType = document.createAttribute("type");
+                    buttonType.value = 'button';
+                    buttonIndex.setAttributeNode(buttonType);
+
+                    span.appendChild(buttonIndex);
+
+                }
+
+                var updateproperty = document.getElementsByClassName("update-list-property");
+
+                for (var i = 0; i < updateproperty.length; i++) {
+                    updateproperty[i].addEventListener('click', function (e) {
+
+                        var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateListProperties;
+                        script += " exescript(updateListProperties, '" + $('#' + $(this).data('id')).html() + "', '" + $('#' + $(this).data('value')).val() + "', '" + $("#weblist").val() + "');";
+                        chrome.devtools.inspectedWindow.eval(script);
+
+                    });
+                }
+
+                var removeproperty = document.getElementsByClassName("remove-list-property");
+
+                for (var i = 0; i < removeproperty.length; i++) {
+                    removeproperty[i].addEventListener('click', function (e) {
+
+                        var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedListPropertyKeys + ' ' + deleteListProperties;
+                        script += " exescript(deleteListProperties, '" + $('#' + $(this).data('id')).html() + "', '" + $("#weblist").val() + "');";
+                        chrome.devtools.inspectedWindow.eval(script);
+
+                    });
+                }
+
+                var indexproperty = document.getElementsByClassName("index-list-property");
+
+                for (var i = 0; i < indexproperty.length; i++) {
+                    indexproperty[i].addEventListener('click', function (e) {
+
+                        var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedListPropertyKeys;
+                        script += " exescript(addToIndexedListPropertyKeys, '" + $('#' + $(this).data('id')).html() + "', '" + $("#weblist").val() + "', false);";
+                        chrome.devtools.inspectedWindow.eval(script);
+
+                    });
+                }
+
+                var unindexproperty = document.getElementsByClassName("unindex-list-property");
+
+                for (var i = 0; i < unindexproperty.length; i++) {
+                    unindexproperty[i].addEventListener('click', function (e) {
+
+                        var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedListPropertyKeys;
+                        script += " exescript(addToIndexedListPropertyKeys, '" + $('#' + $(this).data('id')).html() + "', '" + $("#weblist").val() + "', true);";
+                        chrome.devtools.inspectedWindow.eval(script);
+
+                    });
+                }
+            }
+            else {
+                var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
+                script += " exescript(alertError, '" + message.result + "');";
+                chrome.devtools.inspectedWindow.eval(script);
+            }
+            break;
+
+        case 'getLists':
+            if (message.success) {
+
+                $('#weblist').find('option').remove().end();
+
+                $.each(message.result, function (key, value) {
+                    $('#weblist')
+                        .append($("<option></option>")
+                            .attr("value", value.listId)
+                            .text(value.listTitle));
+                });
+
+                var listId = message.result[0].listId;
+
+                var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getListProperties;
+                script += " exescript(getListProperties, '" + listId + "');";
+                chrome.devtools.inspectedWindow.eval(script);
+
+            }
+            else {
+                //error
+            }
+            break;
+
+        case 'addListProperties':
+            if (message.success) {
+
+                var listId = $("#weblist").val();
+
+                var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getListProperties;
+                script += " exescript(getListProperties, '" + listId + "');";
+                chrome.devtools.inspectedWindow.eval(script);
+
+            }
+            break;
+
+        case 'updateListProperties':
+            if (message.success) {
+
+                var listId = $("#weblist").val();
+
+                var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getListProperties;
+                script += " exescript(getListProperties, '" + listId + "');";
+                chrome.devtools.inspectedWindow.eval(script);
+
+            }
+            break;
+
+        case 'deleteListProperties':
+            if (message.success) {
+
+                var listId = $("#weblist").val();
+
+                var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getListProperties;
+                script += " exescript(getListProperties, '" + listId + "');";
+                chrome.devtools.inspectedWindow.eval(script);
+
+            }
+            break;
+
+        case 'addToIndexedListPropertyKeys':
+            if (message.success) {
+
+                var listId = $("#weblist").val();
+
+                var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getListProperties;
+                script += " exescript(getListProperties, '" + listId + "');";
+                chrome.devtools.inspectedWindow.eval(script);
+
+            }
+            break;
+
         case 'addSubscriptions':
             if (message.success) {
                 var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
@@ -419,14 +696,12 @@ port.onMessage.addListener(function (message) {
             if (message.success) {
                 var zones = message.result;
                 var html = '';
-                for (var zone of zones)
-                {
+                for (var zone of zones) {
                     html += '<div class="zone">';
-                    for (var wp of zone)
-                    {
+                    for (var wp of zone) {
                         if (!wp.title)
                             wp.title = "Webpart";
-                        
+
                         html += `<div class="webpart" data-id="${wp.id}">${wp.title}</div>`;
                     }
                     html += '</div>';
@@ -448,7 +723,7 @@ port.onMessage.addListener(function (message) {
                             renderIndentGuides: true
                         });
 
-                        window.addEventListener('resize', function(){
+                        window.addEventListener('resize', function () {
                             webpartXmlEditor.layout();
                         });
                     });
@@ -477,11 +752,11 @@ port.onMessage.addListener(function (message) {
                 selectedWp.setAttribute("data-id", message.result);
                 webpartXmlCache[message.result] = webpartXmlEditor.getValue();
                 elem("webpart-save-success").style.display = "";
-                setTimeout(function() { elem("webpart-save-success").style.display = "none"; }, 4000);
+                setTimeout(function () { elem("webpart-save-success").style.display = "none"; }, 4000);
             } else {
                 elem("webpart-save-error").innerHTML = message.result;
                 elem("webpart-save-error").style.display = "";
-                errorTimeout = setTimeout(function() { elem("webpart-save-error").style.display = "none"; }, 10000);
+                errorTimeout = setTimeout(function () { elem("webpart-save-error").style.display = "none"; }, 10000);
             }
             break;
         default:
@@ -543,6 +818,14 @@ elem('btnWebProperties').addEventListener('click', function (e) {
 
 });
 
+elem('btnListProperties').addEventListener('click', function (e) {
+    swap('listproperties');
+    var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getLists;
+    script += " exescript(getLists);";
+    chrome.devtools.inspectedWindow.eval(script);
+
+});
+
 elem('btnPnPJSConsole').addEventListener('click', function (e) {
     swap('monaco');
 
@@ -586,7 +869,7 @@ elem('btnPnPJSConsole').addEventListener('click', function (e) {
             }
         });
         */
-        
+
         loadDeclaration().then(function () {
 
             var playground = monaco.editor.create(document.getElementById('container'), {
@@ -755,6 +1038,17 @@ elem('addpropertybtn').addEventListener('click', function (e) {
 
 });
 
+elem('addlistpropertybtn').addEventListener('click', function (e) {
+    var propertykey = elem('listpropertykey').value;
+    var propertyvalue = elem('listpropertyvalue').value;
+    var listId = $("#weblist").val();
+
+    var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addListProperties;
+    script += " exescript(addListProperties, '" + propertykey + "', '" + propertyvalue + "', '" + listId + "');";
+    chrome.devtools.inspectedWindow.eval(script);
+
+});
+
 elem('addwebhookbtn').addEventListener('click', function (e) {
 
     var webhooklist = $("#webhooklist").val();
@@ -766,6 +1060,16 @@ elem('addwebhookbtn').addEventListener('click', function (e) {
 
 });
 
+elem('weblist').addEventListener('change', function (e) {
+
+    var listId = $("#weblist").val();
+
+    var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getListProperties;
+    script += " exescript(getListProperties, '" + listId + "');";
+    chrome.devtools.inspectedWindow.eval(script);
+
+});
+
 var dimmerTimeout;
 var errorTimeout;
 elem('webpart-zones-list').addEventListener('click', function (e) {
@@ -773,8 +1077,7 @@ elem('webpart-zones-list').addEventListener('click', function (e) {
     var selectedWp = document.querySelector('.webpart.selected');
     if (selectedWp) {
         var selectedWpId = selectedWp.attributes["data-id"].value;
-        if (webpartXmlCache[selectedWpId] != webpartXmlEditor.getValue())
-        {
+        if (webpartXmlCache[selectedWpId] != webpartXmlEditor.getValue()) {
             if (!confirm("Drop changes to current webpart?"))
                 return;
         }
@@ -792,8 +1095,8 @@ elem('webpart-zones-list').addEventListener('click', function (e) {
     // if not loaded in 500 ms - show dimmer
     if (dimmerTimeout)
         clearTimeout(dimmerTimeout);
-    dimmerTimeout = setTimeout(function() { 
-        elem('dimmer').style.display='';
+    dimmerTimeout = setTimeout(function () {
+        elem('dimmer').style.display = '';
         dimmerTimeout = 0;
     }, 500);
 
@@ -803,7 +1106,7 @@ elem('webpart-zones-list').addEventListener('click', function (e) {
 
 });
 
-elem('webpart-save-button').addEventListener('click', function(e) {
+elem('webpart-save-button').addEventListener('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -816,14 +1119,14 @@ elem('webpart-save-button').addEventListener('click', function(e) {
         return;
 
     elem("webpart-save-error").style.display = "none";
-    
+
     var wpContents = webpartXmlEditor.getValue();
 
     // if not loaded in 500 ms - show dimmer
     if (dimmerTimeout)
         clearTimeout(dimmerTimeout);
-    dimmerTimeout = setTimeout(function() { 
-        elem('dimmer').style.display='';
+    dimmerTimeout = setTimeout(function () {
+        elem('dimmer').style.display = '';
         dimmerTimeout = 0;
     }, 500);
 

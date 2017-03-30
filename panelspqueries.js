@@ -648,6 +648,436 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
   });
 };
 
+// getListProperties
+var getListProperties = function getListProperties() {
+
+  var listId = arguments[1];
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    $pnp.sp.web.lists.getById(listId).expand('RootFolder/Properties')
+      .select('RootFolder/Properties').get().then(function (result) {
+
+      var compare = function compare(a, b) {
+        if (a.prop.toLowerCase() < b.prop.toLowerCase())
+          return -1;
+        if (a.prop.toLowerCase() > b.prop.toLowerCase())
+          return 1;
+        return 0;
+      }
+
+      var arr = [];
+      for (x in result.RootFolder.Properties) {
+
+        var re = /_x.*?_/g;
+        var found = x.match(re);
+        var y = x;
+
+        if (found != null)
+          for (g in found) {
+            var unesc = found[g].replace("_x", "%u").replace("_", "");
+            x = x.replace(found[g], unescape(unesc));
+          }
+
+        arr.push({ prop: x.replace(/OData_/g, ''), value: result.RootFolder.Properties[y] });
+      }
+
+      arr.sort(compare);
+
+      var propertyBag = arr.filter(function (el) {
+        return el.prop !== "odata.editLink" && el.prop !== "odata.id" && el.prop !== "odata.type" && el.prop !== "__metadata";
+      });
+
+      window.postMessage(JSON.stringify({ function: 'getListProperties', success: true, result: propertyBag, source: 'chrome-sp-editor' }), '*');
+
+    }).catch(function (data) {
+      window.postMessage(JSON.stringify({ function: 'getListProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+    });
+  });
+};
+
+var getLists = function getLists() {
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    $pnp.sp.web.lists.filter('Hidden eq false').get().then(function (lists) {
+
+      var weblists = [];
+
+      lists.forEach(function (list) {
+        weblists.push({ listTitle: list.Title, listId: list.Id });
+      });
+
+      window.postMessage(JSON.stringify({ function: 'getLists', success: true, result: weblists, source: 'chrome-sp-editor' }), '*');
+    }).catch(function (data) {
+        alertify.delay(10000).error(data.error.message.value);
+    });
+  });
+};
+
+// addListProperties
+var addListProperties = function addListProperties() {
+
+  var prop = arguments[1];
+  var value = arguments[2];
+  var listId = arguments[3];
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    alertify.delay(5000).log("Adding " + prop + " listproperty...");
+
+      $pnp.sp.web.get().then(function (data) {
+        var guid = function () {
+          function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          }
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        }
+
+        var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', spHostUrl + '/_api/contextinfo');
+        xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            var uuid = guid();
+            var data = JSON.parse(xhr.responseText);
+
+            var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
+            var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
+            xhr2.setRequestHeader('Content-Type', 'application/xml');
+            xhr2.setRequestHeader('SPRequestGuid', uuid);
+            xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
+            xhr2.onload = function () {
+              if (xhr2.status === 200) {
+                alertify.delay(5000).success("List property added successfully!");
+                window.postMessage(JSON.stringify({ function: 'addListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+              }
+              else {
+                alertify.delay(10000).error(xhr2.responseText);
+                window.postMessage(JSON.stringify({ function: 'addListProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+              }
+            }
+              ;
+            var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><ObjectPath Id="1" ObjectPathId="0" /><ObjectPath Id="3" ObjectPathId="2" /><ObjectPath Id="5" ObjectPathId="4" /><ObjectPath Id="7" ObjectPathId="6" /><ObjectPath Id="9" ObjectPathId="8" /><ObjectPath Id="11" ObjectPathId="10" /><Method Name="SetFieldValue" Id="12" ObjectPathId="10"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="13" ObjectPathId="8" /></Actions><ObjectPaths><StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" /><Property Id="2" ParentId="0" Name="Web" /><Property Id="4" ParentId="2" Name="Lists" /><Method Id="6" ParentId="4" Name="GetById"><Parameters><Parameter Type="String">' + listId + '</Parameter></Parameters></Method><Property Id="8" ParentId="6" Name="RootFolder" /><Property Id="10" ParentId="8" Name="Properties" /></ObjectPaths></Request>';  
+            xhr2.send(payload);
+          }
+        }
+          ;
+        xhr.send();
+
+      }).catch(function (data) {
+        alertify.delay(10000).error(data.error.message.value);
+        window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+      });
+  });
+};
+
+// updateListProperties
+var updateListProperties = function updateListProperties() {
+
+  var prop = arguments[1];
+  var value = arguments[2];
+  var listId = arguments[3];
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    alertify.delay(5000).log("Updating " + prop + " listproperty...");
+
+      $pnp.sp.web.get().then(function (data) {
+        var guid = function () {
+          function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          }
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        }
+
+        var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', spHostUrl + '/_api/contextinfo');
+        xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            var uuid = guid();
+            var data = JSON.parse(xhr.responseText);
+
+            var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
+            var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
+            xhr2.setRequestHeader('Content-Type', 'application/xml');
+            xhr2.setRequestHeader('SPRequestGuid', uuid);
+            xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
+            xhr2.onload = function () {
+              if (xhr2.status === 200) {
+                alertify.delay(5000).success("List property updated successfully!");
+                window.postMessage(JSON.stringify({ function: 'updateListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+              }
+              else {
+                alertify.delay(10000).error(xhr2.responseText);
+                window.postMessage(JSON.stringify({ function: 'updateListProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+              }
+            }
+              ;
+            var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><ObjectPath Id="1" ObjectPathId="0" /><ObjectPath Id="3" ObjectPathId="2" /><ObjectPath Id="5" ObjectPathId="4" /><ObjectPath Id="7" ObjectPathId="6" /><ObjectPath Id="9" ObjectPathId="8" /><ObjectPath Id="11" ObjectPathId="10" /><Method Name="SetFieldValue" Id="12" ObjectPathId="10"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="13" ObjectPathId="8" /></Actions><ObjectPaths><StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" /><Property Id="2" ParentId="0" Name="Web" /><Property Id="4" ParentId="2" Name="Lists" /><Method Id="6" ParentId="4" Name="GetById"><Parameters><Parameter Type="String">' + listId + '</Parameter></Parameters></Method><Property Id="8" ParentId="6" Name="RootFolder" /><Property Id="10" ParentId="8" Name="Properties" /></ObjectPaths></Request>';  
+            xhr2.send(payload);
+          }
+        }
+          ;
+        xhr.send();
+
+      }).catch(function (data) {
+        alertify.delay(10000).error(data.error.message.value);
+        window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+      });
+  });
+};
+
+// deleteListProperties
+var deleteListProperties = function deleteListProperties() {
+
+  var prop = arguments[1];
+  var listId = arguments[2];
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    alertify.delay(5000).log("Removing " + prop + " listproperty...");
+
+      $pnp.sp.web.get().then(function (data) {
+        var guid = function () {
+          function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          }
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        }
+
+        var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', spHostUrl + '/_api/contextinfo');
+        xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            var uuid = guid();
+            var data = JSON.parse(xhr.responseText);
+
+            var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
+            var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
+            xhr2.setRequestHeader('Content-Type', 'application/xml');
+            xhr2.setRequestHeader('SPRequestGuid', uuid);
+            xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
+            xhr2.onload = function () {
+              if (xhr2.status === 200) {
+                alertify.delay(5000).success("List property removed successfully!");
+                if (prop != "vti_indexedpropertykeys")
+                    addToIndexedListPropertyKeys.apply(this, ['', prop, listId, true]);
+                window.postMessage(JSON.stringify({ function: 'deleteListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+              }
+              else {
+                alertify.delay(10000).error(xhr2.responseText);
+                window.postMessage(JSON.stringify({ function: 'deleteListProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+              }
+            }
+              ;
+            var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><ObjectPath Id="1" ObjectPathId="0" /><ObjectPath Id="3" ObjectPathId="2" /><ObjectPath Id="5" ObjectPathId="4" /><ObjectPath Id="7" ObjectPathId="6" /><ObjectPath Id="9" ObjectPathId="8" /><ObjectPath Id="11" ObjectPathId="10" /><Method Name="SetFieldValue" Id="12" ObjectPathId="10"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="Null" /></Parameters></Method><Method Name="Update" Id="13" ObjectPathId="8" /></Actions><ObjectPaths><StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" /><Property Id="2" ParentId="0" Name="Web" /><Property Id="4" ParentId="2" Name="Lists" /><Method Id="6" ParentId="4" Name="GetById"><Parameters><Parameter Type="String">' + listId + '</Parameter></Parameters></Method><Property Id="8" ParentId="6" Name="RootFolder" /><Property Id="10" ParentId="8" Name="Properties" /></ObjectPaths></Request>';  
+            xhr2.send(payload);
+          }
+        }
+          ;
+        xhr.send();
+
+      }).catch(function (data) {
+        alertify.delay(10000).error(data.error.message.value);
+        window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+      });
+  });
+};
+
+// addToIndexedListPropertyKeys
+var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
+  var prop = arguments[1];
+  var listId = arguments[2];
+  var remove = arguments[3];
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    $pnp.sp.web.lists.getById(listId).expand('RootFolder/Properties')
+      .select('RootFolder/Properties').get().then(function (result) {
+
+      var arr = [];
+      for (x in result.RootFolder.Properties)
+        arr.push({ prop: x.replace(/_x005f_/g, '_').replace(/OData_/g, ''), value: result.RootFolder.Properties[x] });
+
+      var propertyBag = arr.filter(function (el) {
+        return el.prop === "vti_indexedpropertykeys";
+      });
+
+      var bytes = [];
+      for (var i = 0; i < prop.length; ++i) {
+        bytes.push(prop.charCodeAt(i));
+        bytes.push(0);
+      }
+      var b64encoded = window.btoa(String.fromCharCode.apply(null, bytes));
+
+      var newIndexValue = "";
+
+      if (!remove) {
+        if (propertyBag.length > 0) {
+          if (propertyBag[0].value.indexOf(b64encoded) == -1) {
+            newIndexValue = propertyBag[0].value + b64encoded + "|";
+          }
+          else {
+            alertify.delay(10000).error('Property key ' + prop + ' already indexed!');
+            return;
+          }
+        }
+        else {
+          newIndexValue = b64encoded + "|";
+        }
+      }
+      else {
+        if (propertyBag[0].value.indexOf(b64encoded) == -1) return;
+        newIndexValue = propertyBag[0].value.replace(b64encoded + "|", "");
+      }
+
+      if (remove)
+        alertify.delay(5000).log("Removing '<b>" + prop + "</b>' from vti_indexedpropertykeys...");
+      else
+        alertify.delay(5000).log("Adding '<b>" + prop + "</b>' to vti_indexedpropertykeys...");
+
+        $pnp.sp.web.get().then(function (data) {
+          var guid = function () {
+            function s4() {
+              return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+            }
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+          }
+
+          var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', spHostUrl + '/_api/contextinfo');
+          xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var uuid = guid();
+              var data = JSON.parse(xhr.responseText);
+
+              var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
+              var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+
+              var xhr2 = new XMLHttpRequest();
+              xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
+              xhr2.setRequestHeader('Content-Type', 'application/xml');
+              xhr2.setRequestHeader('SPRequestGuid', uuid);
+              xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
+              xhr2.onload = function () {
+                if (xhr2.status === 200) {
+                  if (remove)
+                    alertify.delay(5000).success("Property removed from vti_indexedpropertykeys successfully!");
+                  else
+                    alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!");
+                  window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+                }
+                else {
+                  alertify.delay(10000).error(xhr2.responseText);
+                  window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                }
+              }
+                ;
+              var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><ObjectPath Id="1" ObjectPathId="0" /><ObjectPath Id="3" ObjectPathId="2" /><ObjectPath Id="5" ObjectPathId="4" /><ObjectPath Id="7" ObjectPathId="6" /><ObjectPath Id="9" ObjectPathId="8" /><ObjectPath Id="11" ObjectPathId="10" /><Method Name="SetFieldValue" Id="12" ObjectPathId="10"><Parameters><Parameter Type="String">vti_indexedpropertykeys</Parameter><Parameter Type="String">' + newIndexValue + '</Parameter></Parameters></Method><Method Name="Update" Id="13" ObjectPathId="8" /></Actions><ObjectPaths><StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" /><Property Id="2" ParentId="0" Name="Web" /><Property Id="4" ParentId="2" Name="Lists" /><Method Id="6" ParentId="4" Name="GetById"><Parameters><Parameter Type="String">' + listId + '</Parameter></Parameters></Method><Property Id="8" ParentId="6" Name="RootFolder" /><Property Id="10" ParentId="8" Name="Properties" /></ObjectPaths></Request>';  
+              xhr2.send(payload);
+            }
+          }
+            ;
+          xhr.send();
+
+        }).catch(function (data) {
+          alertify.delay(10000).error(data.error.message.value);
+          window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+        });
+    }).catch(function (data) {
+      alertify.delay(10000).error(data.error.message.value);
+      window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+    });
+  });
+};
+
 var exescript = function exescript(script) {
   var params = arguments;
   if (typeof SystemJS == 'undefined') {
@@ -877,7 +1307,7 @@ function selectWebpart(wpId) {
   webpartXmlEditor.setValue(webpartXmlCache[wpId]);
 }
 
-var allElements = ['save', 'script', 'files', 'webproperties', 'about', 'webhook', 'monaco', 'pageeditor'];
+var allElements = ['save', 'script', 'files', 'webproperties', 'listproperties', 'about', 'webhook', 'monaco', 'pageeditor'];
 function swap(visibleElement) {
   for (var i = 0; i < allElements.length; i++)
     elem(allElements[i]).style.display = 'none';
