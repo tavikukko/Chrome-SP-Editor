@@ -106,7 +106,7 @@ pnp.setup({
 ```
 ### Page editor
 * Edit the webpart properties using the the editor.
-* Make sute the page checked out to be able to save it back with changes.
+* Make sure the page checked out to be able to save it back with changes.
 
 ### Chrome Workspaces
 * SP Editor works also when using Chrome workspaces, it saves the file to the disk and also the SharePoint.
