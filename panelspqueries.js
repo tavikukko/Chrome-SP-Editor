@@ -1272,6 +1272,45 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
   });
 
 
+  var getFileContent = function(serverRelativeUrl) {
+      var absolutePart = location.protocol + '//' + location.host;
+      var serverRelativeUrl = serverRelativeUrl.replace(absolutePart, '');
+      var r = new Sys.Net.WebRequest();
+      r.set_url(absolutePart + _spPageContextInfo.siteServerRelativeUrl + "/_api/web/GetFileByServerRelativeUrl('" + serverRelativeUrl + "')/$value");
+      r.set_httpVerb("GET");
+      r.add_completed((executor, args) => {
+          if (executor.get_responseAvailable()) {
+              if (executor.get_statusCode() != "200")
+                  window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: false, result: "" +  executor.get_statusCode(), source: 'chrome-sp-editor' }), '*');
+              else {
+                  var zones = executor.get_responseData().replace(/[\r\n]/g,'').match(/<[A-Za-z0-9]+:WebPartZone(?:\s[^>]*)?\sID=['"][A-Za-z0-9_\-]+['"]/gi).map(s => s.match(/\sID=['"]([A-Za-z0-9_\-]+)['"]/i)[1]);
+                  window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: true, result: zones, source: 'chrome-sp-editor' }), '*');
+              }
+          }
+          else {
+              if (executor.get_timedOut() || executor.get_aborted())
+                  window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: false, result: "Request failed", source: 'chrome-sp-editor' }), '*');
+          }
+      });
+      r.invoke();
+  }
+
+  var context = SP.ClientContext.get_current();
+  var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
+  var item = page.get_listItemAllFields();
+  context.load(item, 'PublishingPageLayout');
+
+  context.executeQueryAsync(function() {
+      getFileContent(item.get_item("PublishingPageLayout").get_url());
+  }, function(sender, args) {
+      if (args.get_errorCode() == -2146232832)
+      {
+          getFileContent(_spPageContextInfo.serverRequestPath);
+      }
+  });
+
+
+
 };
 
 var loadWebpart = function loadWebpart() {

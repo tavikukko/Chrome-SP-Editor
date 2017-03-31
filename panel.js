@@ -698,6 +698,7 @@ port.onMessage.addListener(function (message) {
                 var html = '';
                 for (var zone of zones) {
                     html += '<div class="zone">';
+                    html += '<h3>WEBPART ZONE</h3>';
                     html += `<div class="add-new-webpart">Add new</div>`;
                     for (var wp of zone) {
                         if (!wp.title)
@@ -735,6 +736,15 @@ port.onMessage.addListener(function (message) {
             if (message.success) {
                 for (var wp of message.result) {
                     document.querySelector(`[data-id="${wp.id}"]`).innerHTML = wp.title;
+                }
+            }
+            break;
+        case 'getZonesAndWebparts3':
+            if (message.success) {
+                var zoneElements = document.querySelectorAll('.zone');
+                for (var i = 0; i < zoneElements.length; i++) {
+                    zoneElements[i].setAttribute("data-zone-id", message.result[i]);
+                    zoneElements[i].querySelector('h3').innerHTML = message.result[i];
                 }
             }
             break;
