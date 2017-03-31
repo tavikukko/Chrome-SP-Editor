@@ -372,10 +372,10 @@ port.onMessage.addListener(function (message) {
                     //label
                     var label = document.createElement('label');
                     label.innerHTML = items.prop;
-                    label.id = 'proplabel' + j;
+                    label.id = 'listproplabel' + j;
 
                     var labelAtt = document.createAttribute("for");
-                    labelAtt.value = 'propInput' + j;
+                    labelAtt.value = 'listpropInput' + j;
                     label.setAttributeNode(labelAtt);
 
                     divform.appendChild(label);
@@ -393,7 +393,7 @@ port.onMessage.addListener(function (message) {
                     input.setAttributeNode(inputType);
 
                     var inputId = document.createAttribute("id");
-                    inputId.value = 'propInput' + j;
+                    inputId.value = 'listpropInput' + j;
                     input.setAttributeNode(inputId);
 
                     var inputClass = document.createAttribute("class");
@@ -423,11 +423,11 @@ port.onMessage.addListener(function (message) {
                     buttonUpdate.setAttributeNode(buttonClass);
 
                     var buttonUpdateDataId = document.createAttribute("data-id");
-                    buttonUpdateDataId.value = 'proplabel' + j;
+                    buttonUpdateDataId.value = 'listproplabel' + j;
                     buttonUpdate.setAttributeNode(buttonUpdateDataId);
 
                     var buttonUpdateDataValue = document.createAttribute("data-value");
-                    buttonUpdateDataValue.value = 'propInput' + j;
+                    buttonUpdateDataValue.value = 'listpropInput' + j;
                     buttonUpdate.setAttributeNode(buttonUpdateDataValue);
 
                     var buttonType = document.createAttribute("type");
@@ -444,7 +444,7 @@ port.onMessage.addListener(function (message) {
                     buttonRemove.setAttributeNode(buttonClass);
 
                     var buttonRemoveDataId = document.createAttribute("data-id");
-                    buttonRemoveDataId.value = 'proplabel' + j;
+                    buttonRemoveDataId.value = 'listproplabel' + j;
                     buttonRemove.setAttributeNode(buttonRemoveDataId);
 
                     var buttonType = document.createAttribute("type");
@@ -480,7 +480,7 @@ port.onMessage.addListener(function (message) {
                     buttonIndex.setAttributeNode(buttonClass);
 
                     var buttonIndexDataId = document.createAttribute("data-id");
-                    buttonIndexDataId.value = 'proplabel' + j;
+                    buttonIndexDataId.value = 'listproplabel' + j;
                     buttonIndex.setAttributeNode(buttonIndexDataId);
 
                     var buttonType = document.createAttribute("type");
