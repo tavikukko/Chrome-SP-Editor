@@ -508,8 +508,6 @@ port.onMessage.addListener(function (message) {
                 for (var i = 0; i < removeproperty.length; i++) {
                     removeproperty[i].addEventListener('click', function (e) {
 
-                        alert( $(this).data('id'));
-
                         var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedListPropertyKeys + ' ' + deleteListProperties;
                         script += " exescript(deleteListProperties, '" + $('#' + $(this).data('id')).html() + "', '" + $("#weblist").val() + "');";
                         chrome.devtools.inspectedWindow.eval(script);
