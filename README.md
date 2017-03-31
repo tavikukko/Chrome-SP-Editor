@@ -3,6 +3,9 @@ SP Editor
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 
 ## Version history
+- 1.7 New Feature ( not yet released )
+    * List Properties: view, edit, add, remove and index list RootFolder properties
+    * Enhancements in Page editor: add & remove webparts by [@andrei-markeev](https://github.com/andrei-markeev)
 - 1.6.1 Small fix
 - 1.6 New Feature
     * Page editor: edit webpart properties. created by [@andrei-markeev](https://github.com/andrei-markeev)
@@ -85,6 +88,13 @@ Go to your SharePoint site and open Chrome developer tools.
 
 ### Web properties
 * Select SharePoint tab, select "Web properties" from left navigation
+* Add new property and value and press "Add property"
+* Edit or modify current properties from the list below
+* click index in you want make the property searchable (you need to create managedproperty after the property has been crawled)
+
+### List properties
+* Select SharePoint tab, select "List properties" from left navigation
+* Select list from dropdown to see RootFolder properties
 * Add new property and value and press "Add property"
 * Edit or modify current properties from the list below
 * click index in you want make the property searchable (you need to create managedproperty after the property has been crawled)
