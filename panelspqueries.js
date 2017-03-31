@@ -794,7 +794,7 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
     return Array.prototype.slice.call(parent.querySelectorAll(selector));
   };
 
-  var webparts = selectAll(document, '.ms-webpart-zone')
+  var webpartsFromDOM = selectAll(document, '.ms-webpart-zone')
     .map(zone => selectAll(zone, '.ms-webpartzone-cell')
       .filter(cell => {
         return cell.querySelector('[webpartid]') !== null
@@ -804,7 +804,30 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
         title: (cell.querySelector('.ms-webpart-titleText > nobr > span:first-child') || {}).innerHTML,
       })));
 
-  window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts', success: true, result: webparts, source: 'chrome-sp-editor' }), '*');
+  window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts', success: true, result: webpartsFromDOM, source: 'chrome-sp-editor' }), '*');
+
+  var context = SP.ClientContext.get_current();
+  var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
+  var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
+  var webparts = wpm.get_webParts();
+
+  context.load(webparts, 'Include(Id, ZoneId, WebPart)');
+
+  context.executeQueryAsync(function () {
+    var webpartsFromWPM = [];
+    var e = webparts.getEnumerator();
+    while(e.moveNext())
+    {
+      var wp = e.get_current();
+      webpartsFromWPM.push({ id: wp.get_id().toString(), zoneId: wp.get_zoneId(), title: wp.get_webPart().get_title() });
+    }
+    window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: true, result: webpartsFromWPM, source: 'chrome-sp-editor' }), '*');
+  },
+  function (sender, args) {
+    window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+  });
+
+
 };
 
 var loadWebpart = function loadWebpart() {
@@ -829,24 +852,36 @@ var loadWebpart = function loadWebpart() {
 
 };
 
+// replaces webpart with wpId or adds a new webpart if wpId is null
+// returns id of the newly created webpart
 var saveWebpart = function saveWebpart() {
   var wpId = arguments[1];
   var xml = decodeURIComponent(arguments[2]);
+  var zoneId = arguments[3];
+  var zoneIndex = 0;
+
   var pageurl = location.protocol + '//' + location.host + _spPageContextInfo.serverRequestPath;
 
   var context = SP.ClientContext.get_current();
   var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
   var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
-  var oldWpDef = wpm.get_webParts().getById(new SP.Guid(wpId));
-  var oldWp = oldWpDef.get_webPart();
-  context.load(oldWpDef, 'ZoneId');
-  context.load(oldWp, 'ZoneIndex');
+  if (wpId != "new") {
+    var oldWpDef = wpm.get_webParts().getById(new SP.Guid(wpId));
+    var oldWp = oldWpDef.get_webPart();
+    context.load(oldWpDef, 'ZoneId');
+    context.load(oldWp, 'ZoneIndex');
+  }
 
   context.executeQueryAsync(function () {
     var importedDef = wpm.importWebPart(xml);
     var newWp = importedDef.get_webPart();
-    var newWpDef = wpm.addWebPart(newWp, oldWpDef.get_zoneId(), oldWp.get_zoneIndex());
-    oldWpDef.deleteWebPart();
+    if (wpId != "new") {
+      zoneId = oldWpDef.get_zoneId();
+      zoneIndex = oldWp.get_zoneIndex();
+    }
+    var newWpDef = wpm.addWebPart(newWp, zoneId, zoneIndex);
+    if (wpId != "new")
+      oldWpDef.deleteWebPart();
     context.load(newWpDef);
 
     context.executeQueryAsync(function () {
@@ -855,11 +890,33 @@ var saveWebpart = function saveWebpart() {
       window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
     });
   },
-    function (sender, args) {
-      window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
-    });
+  function (sender, args) {
+    window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+  });
 
 };
+
+var deleteWebpart = function deleteWebpart() {
+  var wpId = arguments[1];
+
+  var pageurl = location.protocol + '//' + location.host + _spPageContextInfo.serverRequestPath;
+
+  var context = SP.ClientContext.get_current();
+  var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
+  var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
+  var wpDef = wpm.get_webParts().getById(new SP.Guid(wpId));
+  wpDef.deleteWebPart();
+
+  context.executeQueryAsync(function () {
+    var wpCellInDOM = document.querySelector(`[webpartid='${wpId}']`).parentNode.parentNode;
+    wpCellInDOM.parentNode.removeChild(wpCellInDOM);
+    window.postMessage(JSON.stringify({ function: 'deleteWebpart', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+  }, function (sender, args) {
+    window.postMessage(JSON.stringify({ function: 'deleteWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+  });
+
+};
+
 
 // helper functions
 function elem(elem) {
@@ -874,7 +931,25 @@ function selectWebpart(wpId) {
     else
       wps[i].className = 'webpart';
   }
-  webpartXmlEditor.setValue(webpartXmlCache[wpId]);
+  webpartXmlEditor.setValue(wpId ? webpartXmlCache[wpId] : '');
+}
+
+function scheduleDimmer() {
+    // if operation completed in less than 500 ms, dimmer is not necessary and only adds blinking
+    // so we will show dimmer only after 500ms after operation has started
+    if (dimmerTimeout)
+        clearTimeout(dimmerTimeout);
+    dimmerTimeout = setTimeout(function() { 
+        elem('dimmer').style.display='';
+        dimmerTimeout = 0;
+    }, 500);
+}
+
+function hideDimmer() {
+  if (dimmerTimeout)
+      clearTimeout(dimmerTimeout);
+  else
+      elem('dimmer').style.display = 'none';
 }
 
 var allElements = ['save', 'script', 'files', 'webproperties', 'about', 'webhook', 'monaco', 'pageeditor'];

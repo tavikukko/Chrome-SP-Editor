@@ -23,6 +23,11 @@
         float: right;
         margin-right: 8px;
       }
+      #webpart-delete-button {
+        margin-top: 2px;
+        float: right;
+        margin-right: 8px;
+      }
       #webpart-save-error {
         padding-left: 20px;
         padding-top: 6px;
@@ -103,6 +108,14 @@
         border-left-color: #ccc;
         border-width: 14px;
         margin-top: -14px;
+      }
+      .add-new-webpart {
+        margin: 4px;
+        padding: 3px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        color: #ccc;
+        border: 1px dashed #999;
       }
 
     </style>
@@ -300,6 +313,7 @@
             <span id="webpart-save-error" style="display: none;"></span>
             <span id="webpart-save-success" style="display: none;">Webpart saved.</span>
             <a href="" id="webpart-save-button" class="btn btn-default">Save changes</a>
+            <a href="" id="webpart-delete-button" class="btn btn-danger">Delete webpart</a>
         </div>
 
         <div id="about" style="display: none;">
