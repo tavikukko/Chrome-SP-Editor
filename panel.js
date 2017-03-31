@@ -735,16 +735,28 @@ port.onMessage.addListener(function (message) {
         case 'getZonesAndWebparts2':
             if (message.success) {
                 for (var wp of message.result) {
-                    document.querySelector(`[data-id="${wp.id}"]`).innerHTML = wp.title;
+                    var wpElement = document.querySelector(`[data-id="${wp.id}"]`);
+                    wpElement.innerHTML = wp.title;
+                    wpElement.parentNode.setAttribute("data-zone-id", wp.zoneId);
+                    wpElement.parentNode.querySelector("h3").innerHTML = wp.zoneId;
                 }
             }
             break;
         case 'getZonesAndWebparts3':
             if (message.success) {
-                var zoneElements = document.querySelectorAll('.zone');
-                for (var i = 0; i < zoneElements.length; i++) {
-                    zoneElements[i].setAttribute("data-zone-id", message.result[i]);
-                    zoneElements[i].querySelector('h3').innerHTML = message.result[i];
+                var zoneElements = Array.prototype.slice.call(document.querySelectorAll('.zone'));
+                var zones = message.result;
+                for (var i = 0; i < zones.length; i++) {
+                    var zoneElement = document.querySelector(`[data-zone-id="${zones[i]}"]`);
+                    if (zoneElement == null)
+                    {
+                        // add empty zone
+                        var newZoneElement = document.createElement('div');
+                        newZoneElement.className = 'zone';
+                        newZoneElement.setAttribute('data-zone-id', zones[i]);
+                        newZoneElement.innerHTML = `<h3>${zones[i]}</h3><div class="add-new-webpart">Add new</div>`;
+                        zoneElements[i].parentNode.insertBefore(newZoneElement, zoneElements[i]);
+                    }
                 }
             }
             break;
@@ -1152,6 +1164,10 @@ elem('webpart-save-button').addEventListener('click', function (e) {
     if (!idAttr)
         return;
 
+    var zoneAttr = selectedWp.parentNode.attributes["data-zone-id"];
+    if (idAttr.value == "new" && !zoneAttr)
+        return;
+
     elem("webpart-save-error").style.display = "none";
 
     var wpContents = webpartXmlEditor.getValue();
@@ -1159,7 +1175,7 @@ elem('webpart-save-button').addEventListener('click', function (e) {
     scheduleDimmer();
 
     var script = exescript + ' ' + saveWebpart;
-    script += " exescript(saveWebpart, '" + idAttr.value + "', '" + encodeURIComponent(wpContents) + "');";
+    script += " exescript(saveWebpart, '" + idAttr.value + "', '" + encodeURIComponent(wpContents) + "', '" + (zoneAttr ? zoneAttr.value : "") + "');";
     chrome.devtools.inspectedWindow.eval(script);
 
 });
