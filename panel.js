@@ -1175,7 +1175,7 @@ elem('webpart-save-button').addEventListener('click', function (e) {
     scheduleDimmer();
 
     var script = exescript + ' ' + saveWebpart;
-    script += " exescript(saveWebpart, '" + idAttr.value + "', '" + encodeURIComponent(wpContents) + "', '" + (zoneAttr ? zoneAttr.value : "") + "');";
+    script += " exescript(saveWebpart, '" + idAttr.value + "', '" + encodeURIComponent(wpContents).replace(/'/g, "%27") + "', '" + (zoneAttr ? zoneAttr.value : "") + "');";
     chrome.devtools.inspectedWindow.eval(script);
 
 });
