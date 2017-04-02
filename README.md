@@ -3,7 +3,7 @@ SP Editor
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 
 ## Version history
-- 1.7 New Feature ( not yet released )
+- 1.7 New Feature
     * List Properties: view, edit, add, remove and index list RootFolder properties
     * Enhancements in Page editor: add & remove webparts by [@andrei-markeev](https://github.com/andrei-markeev)
 - 1.6.1 Small fix
@@ -106,7 +106,7 @@ Go to your SharePoint site and open Chrome developer tools.
 ### PnP JS Console
 * Write TypeScript using PnP-JS-Core definitions and execute on current context
 * ctrl + d to execute
-* for sp2013 change, the headers of the request:
+* for sp2013 change the headers of the request:
 ```
 pnp.setup({
     headers: {
