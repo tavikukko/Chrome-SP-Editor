@@ -1250,64 +1250,89 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
 
   window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts', success: true, result: webpartsFromDOM, source: 'chrome-sp-editor' }), '*');
 
-  var context = SP.ClientContext.get_current();
-  var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
-  var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
-  var webparts = wpm.get_webParts();
+  /*
+    var context = SP.ClientContext.get_current();
+    var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
+    var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
+    var webparts = wpm.get_webParts();
+  
+    context.load(webparts, 'Include(Id, ZoneId, WebPart)');
+  
+    context.executeQueryAsync(function () {
+      var webpartsFromWPM = [];
+      var e = webparts.getEnumerator();
+      while(e.moveNext())
+      {
+        var wp = e.get_current();
+        webpartsFromWPM.push({ id: wp.get_id().toString(), zoneId: wp.get_zoneId(), title: wp.get_webPart().get_title() });
+      }
+      window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: true, result: webpartsFromWPM, source: 'chrome-sp-editor' }), '*');
+    },
+    function (sender, args) {
+      window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+    });*/
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+    $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath)
+      .getLimitedWebPartManager(1)
+      .webparts.expand("webpart")
+      .select("ID, ZoneId, Title").get().then(webparts => {
+        var webpartsFromWPM = [];
+        webparts.forEach(function (webpart) {
+          webpartsFromWPM.push({ id: webpart.Id, zoneId: webpart.ZoneId, title: webpart.webpart.Title });
+        });
+        window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: true, result: webpartsFromWPM, source: 'chrome-sp-editor' }), '*');
+      }).catch(function (data) {
+        window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+      });
 
-  context.load(webparts, 'Include(Id, ZoneId, WebPart)');
-
-  context.executeQueryAsync(function () {
-    var webpartsFromWPM = [];
-    var e = webparts.getEnumerator();
-    while(e.moveNext())
-    {
-      var wp = e.get_current();
-      webpartsFromWPM.push({ id: wp.get_id().toString(), zoneId: wp.get_zoneId(), title: wp.get_webPart().get_title() });
-    }
-    window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: true, result: webpartsFromWPM, source: 'chrome-sp-editor' }), '*');
-  },
-  function (sender, args) {
-    window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
-  });
-
-
-  var getFileContent = function(serverRelativeUrl) {
+    var getFileContent = function (serverRelativeUrl) {
       var absolutePart = location.protocol + '//' + location.host;
       var serverRelativeUrl = serverRelativeUrl.replace(absolutePart, '');
       var r = new Sys.Net.WebRequest();
       r.set_url(absolutePart + _spPageContextInfo.siteServerRelativeUrl + "/_api/web/GetFileByServerRelativeUrl('" + serverRelativeUrl + "')/$value");
       r.set_httpVerb("GET");
       r.add_completed((executor, args) => {
-          if (executor.get_responseAvailable()) {
-              if (executor.get_statusCode() != "200")
-                  window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: false, result: "" +  executor.get_statusCode(), source: 'chrome-sp-editor' }), '*');
-              else {
-                  var zones = executor.get_responseData().replace(/[\r\n]/g,'').match(/<[A-Za-z0-9]+:WebPartZone(?:\s[^>]*)?\sID=['"][A-Za-z0-9_\-]+['"]/gi).map(s => s.match(/\sID=['"]([A-Za-z0-9_\-]+)['"]/i)[1]);
-                  window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: true, result: zones, source: 'chrome-sp-editor' }), '*');
-              }
-          }
+        if (executor.get_responseAvailable()) {
+          if (executor.get_statusCode() != "200")
+            window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: false, result: "" + executor.get_statusCode(), source: 'chrome-sp-editor' }), '*');
           else {
-              if (executor.get_timedOut() || executor.get_aborted())
-                  window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: false, result: "Request failed", source: 'chrome-sp-editor' }), '*');
+            var zones = executor.get_responseData().replace(/[\r\n]/g, '').match(/<[A-Za-z0-9]+:WebPartZone(?:\s[^>]*)?\sID=['"][A-Za-z0-9_\-]+['"]/gi).map(s => s.match(/\sID=['"]([A-Za-z0-9_\-]+)['"]/i)[1]);
+            window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: true, result: zones, source: 'chrome-sp-editor' }), '*');
           }
+        }
+        else {
+          if (executor.get_timedOut() || executor.get_aborted())
+            window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: false, result: "Request failed", source: 'chrome-sp-editor' }), '*');
+        }
       });
       r.invoke();
-  }
+    }
 
-  var context = SP.ClientContext.get_current();
-  var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
-  var item = page.get_listItemAllFields();
-  context.load(item, 'PublishingPageLayout');
+    $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath)
+      .listItemAllFields.select("PublishingPageLayout").get().then(g => {
+        getFileContent(g.PublishingPageLayout.Url);
+      }).catch(function (error) {
+        getFileContent(_spPageContextInfo.serverRequestPath);
+      });
 
-  context.executeQueryAsync(function() {
-      getFileContent(item.get_item("PublishingPageLayout").get_url());
-  }, function(sender, args) {
-      if (args.get_errorCode() == -2146232832)
-      {
-          getFileContent(_spPageContextInfo.serverRequestPath);
-      }
+    /*
+        var context = SP.ClientContext.get_current();
+        var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
+        var item = page.get_listItemAllFields();
+        context.load(item, 'PublishingPageLayout');
+    
+        context.executeQueryAsync(function () {
+          getFileContent(item.get_item("PublishingPageLayout").get_url());
+        }, function (sender, args) {
+          if (args.get_errorCode() == -2146232832) {
+            getFileContent(_spPageContextInfo.serverRequestPath);
+          }
+        });
+    */
   });
+
 
 
 
@@ -1373,9 +1398,9 @@ var saveWebpart = function saveWebpart() {
       window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
     });
   },
-  function (sender, args) {
-    window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
-  });
+    function (sender, args) {
+      window.postMessage(JSON.stringify({ function: 'saveWebpart', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+    });
 
 };
 
@@ -1418,21 +1443,21 @@ function selectWebpart(wpId) {
 }
 
 function scheduleDimmer() {
-    // if operation completed in less than 500 ms, dimmer is not necessary and only adds blinking
-    // so we will show dimmer only after 500ms after operation has started
-    if (dimmerTimeout)
-        clearTimeout(dimmerTimeout);
-    dimmerTimeout = setTimeout(function() { 
-        elem('dimmer').style.display='';
-        dimmerTimeout = 0;
-    }, 500);
+  // if operation completed in less than 500 ms, dimmer is not necessary and only adds blinking
+  // so we will show dimmer only after 500ms after operation has started
+  if (dimmerTimeout)
+    clearTimeout(dimmerTimeout);
+  dimmerTimeout = setTimeout(function () {
+    elem('dimmer').style.display = '';
+    dimmerTimeout = 0;
+  }, 500);
 }
 
 function hideDimmer() {
   if (dimmerTimeout)
-      clearTimeout(dimmerTimeout);
+    clearTimeout(dimmerTimeout);
   else
-      elem('dimmer').style.display = 'none';
+    elem('dimmer').style.display = 'none';
 }
 
 var allElements = ['save', 'script', 'files', 'webproperties', 'listproperties', 'about', 'webhook', 'monaco', 'pageeditor'];

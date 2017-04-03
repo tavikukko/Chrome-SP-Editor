@@ -1006,7 +1006,7 @@ elem('btnPageEditor').addEventListener('click', function (e) {
     if (webpartXmlEditor)
         return;
 
-    var script = sj + ' ' + exescript + ' ' + getZonesAndWebparts;
+    var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getZonesAndWebparts;
     script += " exescript(getZonesAndWebparts);";
     chrome.devtools.inspectedWindow.eval(script);
 
