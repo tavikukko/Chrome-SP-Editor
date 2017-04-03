@@ -1250,27 +1250,6 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
 
   window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts', success: true, result: webpartsFromDOM, source: 'chrome-sp-editor' }), '*');
 
-  /*
-    var context = SP.ClientContext.get_current();
-    var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
-    var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
-    var webparts = wpm.get_webParts();
-  
-    context.load(webparts, 'Include(Id, ZoneId, WebPart)');
-  
-    context.executeQueryAsync(function () {
-      var webpartsFromWPM = [];
-      var e = webparts.getEnumerator();
-      while(e.moveNext())
-      {
-        var wp = e.get_current();
-        webpartsFromWPM.push({ id: wp.get_id().toString(), zoneId: wp.get_zoneId(), title: wp.get_webPart().get_title() });
-      }
-      window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: true, result: webpartsFromWPM, source: 'chrome-sp-editor' }), '*');
-    },
-    function (sender, args) {
-      window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
-    });*/
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
