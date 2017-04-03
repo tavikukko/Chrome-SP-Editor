@@ -736,6 +736,7 @@ port.onMessage.addListener(function (message) {
             if (message.success) {
                 for (var wp of message.result) {
                     var wpElement = document.querySelector(`[data-id="${wp.id}"]`);
+                    if (wp.title != "")
                     wpElement.innerHTML = wp.title;
                     wpElement.parentNode.setAttribute("data-zone-id", wp.zoneId);
                     wpElement.parentNode.querySelector("h3").innerHTML = wp.zoneId;

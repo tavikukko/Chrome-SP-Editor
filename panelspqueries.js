@@ -1277,14 +1277,14 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
     $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath)
       .getLimitedWebPartManager(1)
       .webparts.expand("webpart")
-      .select("ID, ZoneId, Title").get().then(webparts => {
+      .select("Id, ZoneId, Title").get().then(webparts => {
         var webpartsFromWPM = [];
         webparts.forEach(function (webpart) {
-          webpartsFromWPM.push({ id: webpart.Id, zoneId: webpart.ZoneId, title: webpart.webpart.Title });
+          webpartsFromWPM.push({ id: webpart.Id, zoneId: webpart.ZoneId, title: webpart.WebPart.Title });
         });
         window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: true, result: webpartsFromWPM, source: 'chrome-sp-editor' }), '*');
-      }).catch(function (data) {
-        window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: data, source: 'chrome-sp-editor' }), '*');
+      }).catch(function (error) {
+        window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
 
     var getFileContent = function (serverRelativeUrl) {
@@ -1298,7 +1298,7 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
           if (executor.get_statusCode() != "200")
             window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: false, result: "" + executor.get_statusCode(), source: 'chrome-sp-editor' }), '*');
           else {
-            var zones = executor.get_responseData().replace(/[\r\n]/g, '').match(/<[A-Za-z0-9]+:WebPartZone(?:\s[^>]*)?\sID=['"][A-Za-z0-9_\-]+['"]/gi).map(s => s.match(/\sID=['"]([A-Za-z0-9_\-]+)['"]/i)[1]);
+            var zones = executor.get_responseData().replace(/[\r\n]/g, '').match(/<[A-Za-z0-9]+:WebPartZone(?:\s(?:%>|[^>])*)?\sID=['"][A-Za-z0-9_\-]+['"]/gi).map(s => s.match(/\sID=['"]([A-Za-z0-9_\-]+)['"]/i)[1]);
             window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: true, result: zones, source: 'chrome-sp-editor' }), '*');
           }
         }
@@ -1316,26 +1316,7 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
       }).catch(function (error) {
         getFileContent(_spPageContextInfo.serverRequestPath);
       });
-
-    /*
-        var context = SP.ClientContext.get_current();
-        var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
-        var item = page.get_listItemAllFields();
-        context.load(item, 'PublishingPageLayout');
-    
-        context.executeQueryAsync(function () {
-          getFileContent(item.get_item("PublishingPageLayout").get_url());
-        }, function (sender, args) {
-          if (args.get_errorCode() == -2146232832) {
-            getFileContent(_spPageContextInfo.serverRequestPath);
-          }
-        });
-    */
   });
-
-
-
-
 };
 
 var loadWebpart = function loadWebpart() {
@@ -1370,6 +1351,7 @@ var saveWebpart = function saveWebpart() {
 
   var pageurl = location.protocol + '//' + location.host + _spPageContextInfo.serverRequestPath;
 
+  // todo: convert to pnp-js-core
   var context = SP.ClientContext.get_current();
   var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
   var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
@@ -1409,6 +1391,7 @@ var deleteWebpart = function deleteWebpart() {
 
   var pageurl = location.protocol + '//' + location.host + _spPageContextInfo.serverRequestPath;
 
+  // todo: convert to pnp-js-core
   var context = SP.ClientContext.get_current();
   var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
   var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
