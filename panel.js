@@ -11,89 +11,7 @@ port.onMessage.addListener(function (message) {
     switch (message.function) {
         case 'updateFile':
             break;
-        case 'addCustomAction':
-            if (message.success) {
-                var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
-                script += " exescript(getCustomActions);";
-                chrome.devtools.inspectedWindow.eval(script);
-            }
-            break;
         case 'addFile':
-            break;
-        case 'removeCustomAction':
-            if (message.success) {
-
-                var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
-                script += " exescript(getCustomActions);";
-                chrome.devtools.inspectedWindow.eval(script);
-            }
-            break;
-        case 'getCustomActions':
-            if (message.success) {
-                var element = elem("scriptlinks");
-                while (element.firstChild) {
-                    element.removeChild(element.firstChild);
-                }
-
-                for (j = 0; j < message.result.length; j++) {
-                    var items = message.result[j];
-                    items.sort(function (a, b) { return a.sequence - b.sequence });
-
-                    var ul = document.createElement('ul');
-                    var ulatt = document.createAttribute("class");
-                    ulatt.value = "list-group";
-                    ul.setAttributeNode(ulatt);
-
-                    for (i = 0; i < items.length; i++) {
-                        if (i == 0) {
-                            var li = document.createElement('li');
-                            var liatt = document.createAttribute("class");
-                            liatt.value = "list-group-item active";
-                            li.setAttributeNode(liatt);
-                            ul.appendChild(li);
-                            li.innerHTML = items[i].heading;
-                        }
-                        var li = document.createElement('li');
-                        var liatt = document.createAttribute("class");
-                        liatt.value = "list-group-item";
-                        li.setAttributeNode(liatt);
-                        ul.appendChild(li);
-                        var scripturl = items[i].scriptSrc;
-                        if (!scripturl) {
-                            if (items[i].scriptBlock.indexOf("href") > -1) {
-                                scripturl = items[i].scriptBlock.substring(items[i].scriptBlock.indexOf("href"));
-                                scripturl = scripturl.substring(scripturl.indexOf("\"") + 1);
-                                scripturl = scripturl.substring(0, scripturl.indexOf("\""));
-                            }
-                            else {
-                                scripturl = items[i].scriptBlock.substring(items[i].scriptBlock.indexOf(".src"));
-                                scripturl = scripturl.substring(scripturl.indexOf("\"") + 1);
-                                scripturl = scripturl.substring(0, scripturl.indexOf("\""));
-                            }
-                        }
-                        if (scripturl.length < 1) scripturl = "CustomAction scriptSrc is empty";
-
-                        li.innerHTML = "<span class='pull-left' style='width: 10%' >" + items[i].sequence + "</span><span>" + scripturl + "</span><span data-scope='" + items[i].scope + "' data-id='" + items[i].id + "' class='scriptlinks-remove glyphicon glyphicon-remove pull-right' style='cursor: hand;'></span>";
-                    }
-                    element.appendChild(ul);
-                }
-                var removescript = document.getElementsByClassName("scriptlinks-remove");
-
-                for (var i = 0; i < removescript.length; i++) {
-                    removescript[i].addEventListener('click', function (e) {
-
-                        var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + removeCustomAction;
-                        script += " exescript(removeCustomAction, '" + $(this).data('scope') + "', '" + $(this).data('id') + "');";
-                        chrome.devtools.inspectedWindow.eval(script);
-
-                    });
-                }
-            }
-            else {
-                var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
-                script += " exescript(alertError, '" + message.result + "');";
-                chrome.devtools.inspectedWindow.eval(script);
-            }
             break;
         case 'getWebProperties':
             if (message.success) {
@@ -805,9 +723,9 @@ port.onMessage.addListener(function (message) {
 var payload = { "type": "autosavechange", "content": false };
 port.postMessage(payload);
 
-elem("autosave").checked = false;
-swap('save');
-
+//elem("autosave").checked = false;
+//swap('save');
+riot.mount("sidebar, save");
 //event bindings
 elem("autosave").addEventListener('change', function (e) {
     var payload = { "type": "autosavechange", "content": elem("autosave").checked, "tabId": chrome.devtools.inspectedWindow.tabId };
@@ -820,10 +738,12 @@ elem("autopublish").addEventListener('change', function (e) {
     port.postMessage(payload);
 }, false);
 
+/*
 elem('btnSave').addEventListener('click', function (e) {
     swap('save');
-});
+});*/
 
+/*
 elem('btnScript').addEventListener('click', function (e) {
     swap('script');
 
@@ -832,15 +752,22 @@ elem('btnScript').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+*/
 
+/*
 elem('btnFiles').addEventListener('click', function (e) {
     swap('files');
 });
+*/
 
+/*
 elem('btnAbout').addEventListener('click', function (e) {
     swap('about');
 });
 
+*/
+
+/*
 elem('btnWebhooks').addEventListener('click', function (e) {
     swap('webhook');
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
@@ -848,6 +775,9 @@ elem('btnWebhooks').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 });
 
+*/
+
+/*
 elem('btnWebProperties').addEventListener('click', function (e) {
     swap('webproperties');
 
@@ -856,7 +786,9 @@ elem('btnWebProperties').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+*/
 
+/*
 elem('btnListProperties').addEventListener('click', function (e) {
     swap('listproperties');
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getLists;
@@ -864,7 +796,9 @@ elem('btnListProperties').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+*/
 
+/*
 elem('btnPnPJSConsole').addEventListener('click', function (e) {
     swap('monaco');
 
@@ -901,13 +835,13 @@ elem('btnPnPJSConsole').addEventListener('click', function (e) {
             allowNonTsExtensions: true
         });
 
-        /*
+        
         monaco.languages.registerCompletionItemProvider('typescript', {
-            provideCompletionItems: function (model, position) {
-                return createDependencyProposals(); // from snippets.js
-            }
+           // provideCompletionItems: function (model, position) {
+           //     return createDependencyProposals(); // from snippets.js
+           // }
         });
-        */
+        
 
         loadDeclaration().then(function () {
 
@@ -936,7 +870,7 @@ elem('btnPnPJSConsole').addEventListener('click', function (e) {
 
             var playgroundBinding = playground.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
                 try {
-                    var js = ts.transpileModule(playground.getValue(), { compilerOptions: { module: 1 /* CommonJS */ } });
+                    var js = ts.transpileModule(playground.getValue(), { compilerOptions: { module: 1  } });
                     var prepnp = 'pnp';
 
                     var lines = js.outputText.split('\n');
@@ -999,9 +933,11 @@ elem('btnPnPJSConsole').addEventListener('click', function (e) {
 
 
 });
-
+*/
 var webpartXmlCache = {};
 var webpartXmlEditor;
+
+/*
 elem('btnPageEditor').addEventListener('click', function (e) {
     swap('pageeditor');
 
@@ -1013,31 +949,43 @@ elem('btnPageEditor').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+*/
 
+/*
 elem('addscriptsite').addEventListener('click', function (e) {
     var scriptpath = elem('scriptpath').value;
     var scriptsequence = elem('scriptsequence').value;
     addscriptlink('site', scriptsequence, scriptpath);
 });
 
+*/
+
+/*
 elem('addscriptweb').addEventListener('click', function (e) {
     var scriptpath = elem('scriptpath').value;
     var scriptsequence = elem('scriptsequence').value;
     addscriptlink('web', scriptsequence, scriptpath);
 });
 
+*/
+
+/*
 elem('fileaddscriptsite').addEventListener('click', function (e) {
     var scriptpath = elem('filescriptpath').value;
     var scriptsequence = elem('filescriptsequence').value;
     addscriptlink('site', scriptsequence, scriptpath);
 });
+*/
 
+/*
 elem('fileaddscriptweb').addEventListener('click', function (e) {
     var scriptpath = elem('filescriptpath').value;
     var scriptsequence = elem('filescriptsequence').value;
     addscriptlink('web', scriptsequence, scriptpath);
 });
+*/
 
+/*
 elem('addfilebtn').addEventListener('click', function (e) {
     var filename = elem('addfile').value;
     filename = filename.replace(/[^a-z0-9/._-]/gi, '');
@@ -1060,13 +1008,17 @@ elem('addfilebtn').addEventListener('click', function (e) {
         return;
     }
 });
+*/
 
+/*
 $('#addfile').keyup(function () {
     var txtBoxVal = $(this).val();
     $('#trimmedfilename').text(txtBoxVal.replace(/[^a-z0-9/._-]/gi, ''));
     $('#filescriptpath').val('~sitecollection/Style library/' + txtBoxVal.replace(/[^a-z0-9/._-]/gi, ''));
 });
+*/
 
+/*
 elem('addpropertybtn').addEventListener('click', function (e) {
     var propertykey = elem('propertykey').value;
     var propertyvalue = elem('propertyvalue').value;
@@ -1076,7 +1028,9 @@ elem('addpropertybtn').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+*/
 
+/*
 elem('addlistpropertybtn').addEventListener('click', function (e) {
     var propertykey = elem('listpropertykey').value;
     var propertyvalue = elem('listpropertyvalue').value;
@@ -1087,7 +1041,9 @@ elem('addlistpropertybtn').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+*/
 
+/*
 elem('addwebhookbtn').addEventListener('click', function (e) {
 
     var webhooklist = $("#webhooklist").val();
@@ -1098,7 +1054,9 @@ elem('addwebhookbtn').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+*/
 
+/*
 elem('weblist').addEventListener('change', function (e) {
 
     var listId = $("#weblist").val();
@@ -1108,9 +1066,12 @@ elem('weblist').addEventListener('change', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+*/
 
 var dimmerTimeout;
 var errorTimeout;
+
+/*
 elem('webpart-zones-list').addEventListener('click', function (e) {
 
     var selectedWp = document.querySelector('.webpart.selected');
@@ -1153,7 +1114,9 @@ elem('webpart-zones-list').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+*/
 
+/*
 elem('webpart-save-button').addEventListener('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -1181,7 +1144,9 @@ elem('webpart-save-button').addEventListener('click', function (e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
+*/
 
+/*
 elem('webpart-delete-button').addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -1206,7 +1171,7 @@ elem('webpart-delete-button').addEventListener('click', function(e) {
     chrome.devtools.inspectedWindow.eval(script);
 
 });
-
+*/
 
 function addscriptlink(scope, scriptsequence, scriptpath) {
 

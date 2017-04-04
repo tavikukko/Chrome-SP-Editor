@@ -24,14 +24,28 @@ var getCustomActions = function getCustomActions() {
       promise.forEach(function (actions) {
         actions.forEach(function (action) {
           if (action.ScriptSrc || action.ScriptBlock) {
+
+            var scripturl = action.ScriptSrc;
+            if (!scripturl) {
+              if (action.ScriptBlock.indexOf("href") > -1) {
+                scripturl = action.ScriptBlock.substring(action.ScriptBlock.indexOf("href"));
+                scripturl = scripturl.substring(scripturl.indexOf("\"") + 1);
+                scripturl = scripturl.substring(0, scripturl.indexOf("\""));
+              }
+              else {
+                scripturl = action.ScriptBlock.substring(action.ScriptBlock.indexOf(".src"));
+                scripturl = scripturl.substring(scripturl.indexOf("\"") + 1);
+                scripturl = scripturl.substring(0, scripturl.indexOf("\""));
+              }
+            }
+            if (scripturl.length < 1) scripturl = "CustomAction scriptSrc is empty";
+
             if (action.Scope == 3)
               webactions.push({
                 location: action.Location,
                 description: action.Description,
-                scriptSrc: action.ScriptSrc,
-                scriptBlock: action.ScriptBlock,
+                scripturl: scripturl,
                 sequence: action.Sequence,
-                heading: "Current web scriptlinks",
                 scope: "web",
                 id: action.Id
               });
@@ -39,10 +53,8 @@ var getCustomActions = function getCustomActions() {
               siteactions.push({
                 location: action.Location,
                 description: action.Description,
-                scriptSrc: action.ScriptSrc,
-                scriptBlock: action.ScriptBlock,
+                scripturl: scripturl,
                 sequence: action.Sequence,
-                heading: "Site collection scriptlinks",
                 scope: "site",
                 id: action.Id
               });
@@ -75,25 +87,12 @@ var addCustomAction = function addCustomAction() {
 
   var querystrings = "";
 
-  if (url.split("?").length > 1) {
-    querystrings = '?' + url.split("?")[1];
-    url = url.split("?")[0];
-  }
-
-  if (url.match(/.js$/)) {
-    payload.ScriptSrc = url + querystrings;
-  }
-  else if (url.match(/.css$/)) {
-    payload.ScriptBlock = "document.write('<link rel=\"stylesheet\" href=\"" + url + querystrings + "\" />');";
-  }
-  else {
-    alertify.delay(5000).error("Only JS and CSS files!!");
-    return;
-  }
-
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
 
     $pnp.setup({
       headers: {
@@ -101,8 +100,21 @@ var addCustomAction = function addCustomAction() {
       }
     });
 
-    alertify.logPosition('bottom right');
-    alertify.maxLogItems(2);
+    if (url.split("?").length > 1) {
+      querystrings = '?' + url.split("?")[1];
+      url = url.split("?")[0];
+    }
+
+    if (url.match(/.js$/)) {
+      payload.ScriptSrc = url + querystrings;
+    }
+    else if (url.match(/.css$/)) {
+      payload.ScriptBlock = "document.write('<link rel=\"stylesheet\" href=\"" + url + querystrings + "\" />');";
+    }
+    else {
+      alertify.delay(5000).error("Only JS and CSS files!!");
+      return;
+    }
 
     alertify.delay(5000).log("Adding scriptLink...");
     if (scope === 'site')
@@ -1157,7 +1169,7 @@ var getSubscriptions = function getSubscriptions() {
 
       window.postMessage(JSON.stringify({ function: 'getSubscriptions', success: true, result: webHookSubscriptions, lists: weblists, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      alertify.delay(10000).error(error.data.responseBody.error.message.value);
     });
   });
 };
@@ -1334,7 +1346,7 @@ var saveWebpart = function saveWebpart() {
 
   var pageurl = location.protocol + '//' + location.host + _spPageContextInfo.serverRequestPath;
 
-SP.SOD.executeFunc('sp.js', 'SP.ClientContext', () => {
+  SP.SOD.executeFunc('sp.js', 'SP.ClientContext', () => {
 
     var context = SP.ClientContext.get_current();
     var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
@@ -1391,7 +1403,7 @@ var deleteWebpart = function deleteWebpart() {
         window.postMessage(JSON.stringify({ function: 'deleteWebpart', success: true, result: null, source: 'chrome-sp-editor' }), '*');
       }).catch(function (error) {
         var message = error.data.responseBody.error.message.value;
-       window.postMessage(JSON.stringify({ function: 'deleteWebpart', success: false, result: message, source: 'chrome-sp-editor' }), '*');
+        window.postMessage(JSON.stringify({ function: 'deleteWebpart', success: false, result: message, source: 'chrome-sp-editor' }), '*');
       });
   });
 };

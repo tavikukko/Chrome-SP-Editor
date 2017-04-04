@@ -121,83 +121,15 @@
     </style>
 </head>
 <body>
+  <script src="js/riot.js"></script>
     <script src="monaco-editor/min/vs/loader.js"></script>
     <div id="wrapper">
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                  <p>Chrome SharePoint Editor</p>
-                </li>
-                <li>
-                  <a href="#" id="btnSave">Save to SharePoint</a>
-                </li>
-                <li>
-                  <a href="#" id="btnScript">Scriptlinks</a>
-                </li>
-                <li>
-                  <a href="#" id="btnFiles">Files</a>
-                </li>
-                <li>
-                  <a href="#" id="btnWebProperties">Web properties</a>
-                </li>
-                <li>
-                  <a href="#" id="btnListProperties">List properties</a>
-                </li>
-                <li>
-                  <a href="#" id="btnWebhooks">Webhooks</a>
-                </li>
-                <li>
-                  <a href="#" id="btnPnPJSConsole">PnP JS Console</a>
-                </li>
-                <li>
-                  <a href="#" id="btnPageEditor">Page editor</a>
-                </li>
-                <li>
-                  <a href="#" id="btnAbout">About</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
-        <!-- Page Content -->
-        <div id="save">
-          <div id="page-content-wrapper">
-            <h4>Save to SharePoint</h4>
-            <p><label><input id="autosave" type="checkbox" /> Update changes to SharePoint</label></p>
-            <p><label><input id="autopublish" type="checkbox" /> Publish a Major version on save</label></p>
-          </div>
-        </div>
-        <div id="script" style="display: none;">
-          <div id="page-content-wrapper">
-            <div>
-              <h4>Scriptlinks</h4>
-              <p>Add / remove scriptlinks.
-              <b>Local</b> js files, use <b>~sitecollection/path/to/your/file.js</b>.
-              <b>Local css</b> and <b>external css and js</b> files must use absolute url.</p>
-            </div>
-            <hr>
-              <div class="row"> 
-                <div class="col-xs-2">
-                  <input id="scriptsequence" type="text" class="form-control" placeholder="Sequence">
-                </div>
-                <div class="col-xs-7">
-                  <input id="scriptpath" type="text" class="form-control" placeholder="~sitecollection/style library/scripts/custom.js">
-                </div>
-                <div class="col-xs-3">
-                  <div class="input-group-btn">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Add ScriptLink <span class="caret"></span></button>
-                      <ul class="dropdown-menu pull-right">
-                          <li id="addscriptsite"><a href="#">To site collection</a></li>
-                          <li id="addscriptweb"><a href="#">To current web</a></li>
-                      </ul>
-                  </div>
-                </div>
-            </div>
-            <hr>
-            <div id="scriptlinks">
-            </div>
-          </div>
-        </div>
+        <sidebar></sidebar>
+
+        <save></save>
+
+        <scriptlinks></scriptlinks>
+
         <div id="files" style="display: none;">
           <div id="page-content-wrapper">
             <h4>Files</h4>
@@ -367,6 +299,10 @@
     <script src="js/jquery-1.11.0.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    
+    <script src="tags/sidebar.js"></script>
+    <script src="tags/save.js"></script>
+    <script src="tags/scriptlinks.js"></script>
     <!-- panel js -->
     <script src="pnp.js"></script>
     <script src="panelspqueries.js"></script>
