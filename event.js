@@ -65,28 +65,28 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 								webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.add(fileToUpdate, contentBytes).then(function (result) {
 									webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkin(comment, checkinType).then(function (result) {
 										alertify.delay(5000).success("File <b>" + fileToUpdate + "</b> updated successfully!");
-									}).catch(function (data) {
-										alertify.delay(10000).error(data.error.message.value);
+									}).catch(function (error) {
+										alertify.delay(10000).error(error.data.responseBody.error.message.value);
 									});
-								}).catch(function (data) {
-									alertify.delay(10000).error(data.error.message.value);
+								}).catch(function (error) {
+									alertify.delay(10000).error(error.data.responseBody.error.message.value);
 								});
-							}).catch(function (data) {
-								alertify.delay(10000).error(data.error.message.value);
+							}).catch(function (error) {
+								alertify.delay(10000).error(error.data.responseBody.error.message.value);
 							});
 						} else {
 							webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.add(fileToUpdate, contentBytes).then(function (result) {
 								webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkin(comment, checkinType).then(function (result) {
 									alertify.delay(5000).success("File <b>" + fileToUpdate + "</b> updated successfully!");
-								}).catch(function (data) {
-									alertify.delay(10000).error(data.error.message.value);
+								}).catch(function (error) {
+									alertify.delay(10000).error(error.data.responseBody.error.message.value);
 								});
-							}).catch(function (data) {
-								alertify.delay(10000).error(data.error.message.value);
+							}).catch(function (error) {
+								alertify.delay(10000).error(error.data.responseBody.error.message.value);
 							});
 						}
-					}).catch(function (data) {
-						alertify.delay(10000).error(data.error.message.value);
+					}).catch(function (error) {
+						alertify.delay(10000).error(error.data.responseBody.error.message.value);
 					});
 				});
 			});
