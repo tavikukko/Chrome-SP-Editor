@@ -58,39 +58,49 @@ riot.tag("scriptlinks",
       script += " exescript(getCustomActions);";
       chrome.devtools.inspectedWindow.eval(script);
 
-      // TODO: convert to switch!!
       port.onMessage.addListener(function (message) {
         if (typeof message !== 'object' || message === null ||
           message === undefined || message.source === undefined) {
           return;
         }
-        if (message.function == "getCustomActions") {
-          if (message.success) {
-            this.web = message.result[0].slice();
-            this.web.sort(function (a, b) { return a.sequence - b.sequence });
 
-            this.site = message.result[1].slice();
-            this.site.sort(function (a, b) { return a.sequence - b.sequence });
+        switch (message.function) {
+          case 'getCustomActions':
+            if (message.success) {
 
-            this.update();
-          }
-          else {
-            var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
-            script += " exescript(alertError, '" + message.result + "');";
-            chrome.devtools.inspectedWindow.eval(script);
-          }
-        }
-        else if (message.function == "removeCustomAction") {
-          var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
-          script += " exescript(getCustomActions);";
-          chrome.devtools.inspectedWindow.eval(script);
-        }
-        else if (message.function == "addCustomAction") {
-          if (message.success) {
+              this.web = message.result[0].slice();
+              this.web.sort(function (a, b) { return a.sequence - b.sequence });
+
+              this.site = message.result[1].slice();
+              this.site.sort(function (a, b) { return a.sequence - b.sequence });
+
+              this.update();
+              
+            }
+            else {
+
+              var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
+              script += " exescript(alertError, '" + message.result + "');";
+              chrome.devtools.inspectedWindow.eval(script);
+
+            }
+            break;
+          case 'removeCustomAction':
+
             var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
             script += " exescript(getCustomActions);";
             chrome.devtools.inspectedWindow.eval(script);
-          }
+
+            break;
+          case 'addCustomAction':
+
+            if (message.success) {
+              var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
+              script += " exescript(getCustomActions);";
+              chrome.devtools.inspectedWindow.eval(script);
+            }
+
+            break;
         }
       }.bind(this));
 

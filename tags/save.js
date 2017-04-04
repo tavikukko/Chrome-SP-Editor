@@ -17,13 +17,17 @@ riot.tag("save",
     }.bind(this);
 
     this.autosave = function (e) {
+
       var payload = { "type": "autosavechange", "content": e.target.checked, "tabId": chrome.devtools.inspectedWindow.tabId };
       port.postMessage(payload);
+
     }.bind(this);
 
     this.autopublish = function (e) {
+
       var payload = { "type": "autopublishchange", "content": e.target.checked, "tabId": chrome.devtools.inspectedWindow.tabId };
       port.postMessage(payload);
+      
     }.bind(this);
 
   });

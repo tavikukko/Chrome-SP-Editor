@@ -45,8 +45,6 @@ riot.tag("sidebar",
     }.bind(this);
 
     this.btnSave = function () {
-      //riot.util.tags.unmountAll(this.tagit);
-      //this.tagit.unmount(true);
       riot.mount("save");
       swap("save");
     }.bind(this);
