@@ -745,6 +745,7 @@ port.onMessage.addListener(function (message) {
         case 'getZonesAndWebparts3':
             if (message.success) {
                 var zoneElements = Array.prototype.slice.call(document.querySelectorAll('.zone'));
+                var parentNode = document.getElementById('webpart-zones-list');
                 var zones = message.result;
                 for (var i = 0; i < zones.length; i++) {
                     var zoneElement = document.querySelector(`[data-zone-id="${zones[i]}"]`);
@@ -755,7 +756,7 @@ port.onMessage.addListener(function (message) {
                         newZoneElement.className = 'zone';
                         newZoneElement.setAttribute('data-zone-id', zones[i]);
                         newZoneElement.innerHTML = `<h3>${zones[i]}</h3><div class="add-new-webpart">Add new</div>`;
-                        zoneElements[i].parentNode.insertBefore(newZoneElement, zoneElements[i]);
+                        parentNode.insertBefore(newZoneElement, zoneElements[i]);
                     }
                 }
             }
