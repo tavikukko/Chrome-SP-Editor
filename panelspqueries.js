@@ -1330,10 +1330,7 @@ var saveWebpart = function saveWebpart() {
 
   var pageurl = location.protocol + '//' + location.host + _spPageContextInfo.serverRequestPath;
 
-  // todo: convert to pnp-js-core
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
-    var $pnp = modules[0];
-    var alertify = modules[1];
+SP.SOD.executeFunc('sp.js', 'SP.ClientContext', () => {
 
     var context = SP.ClientContext.get_current();
     var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
