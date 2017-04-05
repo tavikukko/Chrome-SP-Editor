@@ -126,6 +126,7 @@ riot.tag("webproperties", `
 
     this.updateprop = function (e) {
 
+      // TODO: get updated value!!
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateWebProperties;
       script += " exescript(updateWebProperties, '" + e.item.property.prop + "', '" + e.item.property.value + "');";
       chrome.devtools.inspectedWindow.eval(script);
@@ -145,6 +146,12 @@ riot.tag("webproperties", `
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys;
       script += " exescript(addToIndexedPropertyKeys, '" + e.item.property.prop + "', " + this.indexed(e.item.property.prop) + ");";
       chrome.devtools.inspectedWindow.eval(script);
+
+    }.bind(this);
+
+    this.filter = function (e) {
+
+      //TODO filter function here
 
     }.bind(this);
 
