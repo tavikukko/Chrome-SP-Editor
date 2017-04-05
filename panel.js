@@ -9,11 +9,11 @@ port.onMessage.addListener(function (message) {
     }
 
     switch (message.function) {
-        case 'updateFile':
+      /*   case 'updateFile':
             break;
         case 'addFile':
             break;
-      /*  case 'getWebProperties':
+       case 'getWebProperties':
             if (message.success) {
                 var element = elem("webPropertyBag");
                 while (element.firstChild) {

@@ -53,23 +53,18 @@ riot.tag("files", `
     }.bind(this);
 
     this.addweb = function (e) {
-
-    var scriptpath = elem('filescriptpath').value;
-    var scriptsequence = elem('filescriptsequence').value;
-    addscriptlink('web', scriptsequence, scriptpath);
-
+      var scriptpath = elem('filescriptpath').value;
+      var scriptsequence = elem('filescriptsequence').value;
+      addscriptlink('web', scriptsequence, scriptpath);
     }.bind(this);
 
     this.addsite = function (e) {
-
-    var scriptpath = elem('filescriptpath').value;
-    var scriptsequence = elem('filescriptsequence').value;
-    addscriptlink('site', scriptsequence, scriptpath);
-
+      var scriptpath = elem('filescriptpath').value;
+      var scriptsequence = elem('filescriptsequence').value;
+      addscriptlink('site', scriptsequence, scriptpath);
     }.bind(this);
 
     this.addfile = function (e) {
-
       var filename = elem('addfile').value;
       filename = filename.replace(/[^a-z0-9/._-]/gi, '');
       if (filename == "") {
@@ -87,10 +82,8 @@ riot.tag("files", `
         var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
         script += " exescript(alertError, 'Filename needs to end with .js or .css!');";
         chrome.devtools.inspectedWindow.eval(script);
-
         return;
       }
-
     }.bind(this);
 
   });
