@@ -94,11 +94,9 @@ riot.tag("webproperties", `
           case 'deleteWebProperties':
           case 'addWebProperties':
           case 'addToIndexedPropertyKeys':
-
             var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
             script += " exescript(getWebProperties);";
             chrome.devtools.inspectedWindow.eval(script);
-
             break;
         }
       }.bind(this));
@@ -106,7 +104,6 @@ riot.tag("webproperties", `
     }.bind(this);
 
     this.indexed = function (prop) {
-
       if (this.indexedpropertykeys !== undefined) {
         var bytes = [];
         for (var i = 0; i < prop.length; ++i) {
@@ -117,18 +114,14 @@ riot.tag("webproperties", `
         if (this.indexedpropertykeys.value.indexOf(b64encoded) > -1) return true
       }
       return false;
-
     }.bind(this);
 
     this.addprop = function (e) {
-
       var propertykey = elem('propertykey').value;
       var propertyvalue = elem('propertyvalue').value;
-
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addWebProperties;
       script += " exescript(addWebProperties, '" + propertykey + "', '" + propertyvalue + "');";
       chrome.devtools.inspectedWindow.eval(script);
-
     }.bind(this);
 
     this.updateprop = function (e) {
@@ -154,5 +147,5 @@ riot.tag("webproperties", `
         return ~t.prop.toLowerCase().indexOf(this.filterstr);
       }.bind(this));
     }.bind(this);
-
+    
   });
