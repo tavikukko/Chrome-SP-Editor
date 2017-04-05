@@ -7,9 +7,9 @@ riot.tag("files", `
             <div class="row">
                <div class="col-lg-6">
                   <div class="input-group">
-                     <input id="addfile" type="text" class="form-control" placeholder="myfile.js">
+                     <input keyup="{ updatepath }" id="addfile" type="text" class="form-control" placeholder="myfile.js">
                      <span class="input-group-btn">
-                        <button id="addfilebtn" class="btn btn-default" type="button">Add</button>
+                        <button onclick="{ addfile }" id="addfilebtn" class="btn btn-default" type="button">Add</button>
                      </span>
                   </div>
                </div>
@@ -22,14 +22,14 @@ riot.tag("files", `
                   <input id="filescriptsequence" type="text" class="form-control" placeholder="Sequence">
                 </div>
                 <div class="col-xs-7">
-                  <input id="filescriptpath" type="text" class="form-control" placeholder="">
+                  <input id="filescriptpath" type="text" class="form-control" placeholder="" value="{ filescriptpath }">
                 </div>
                 <div class="col-xs-3">
                   <div class="input-group-btn">
                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Add ScriptLink <span class="caret"></span></button>
                       <ul class="dropdown-menu pull-right">
-                          <li id="fileaddscriptsite"><a href="#">To site collection</a></li>
-                          <li id="fileaddscriptweb"><a href="#">To current web</a></li>
+                          <li onclick="{ addsite }" id="fileaddscriptsite"><a href="#">To site collection</a></li>
+                          <li onclick="{ addweb }" id="fileaddscriptweb"><a href="#">To current web</a></li>
                       </ul>
                   </div>
                 </div>
@@ -38,87 +38,58 @@ riot.tag("files", `
         </div>`,
   function (opts) {
 
+    this.filescriptpath = "";
+
     this.on("mount", function () {
       this.init();
     });
 
     this.init = function () {
-      /*
-            var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
-            script += " exescript(getCustomActions);";
-            chrome.devtools.inspectedWindow.eval(script);
-      
-            port.onMessage.addListener(function (message) {
-              if (typeof message !== 'object' || message === null ||
-                message === undefined || message.source === undefined) {
-                return;
-              }
-      
-              switch (message.function) {
-                case 'getCustomActions':
-                  if (message.success) {
-      
-                    this.web = message.result[0].slice();
-                    this.web.sort(function (a, b) { return a.sequence - b.sequence });
-      
-                    this.site = message.result[1].slice();
-                    this.site.sort(function (a, b) { return a.sequence - b.sequence });
-      
-                    this.update();
-                    
-                  }
-                  else {
-      
-                    var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
-                    script += " exescript(alertError, '" + message.result + "');";
-                    chrome.devtools.inspectedWindow.eval(script);
-      
-                  }
-                  break;
-                case 'removeCustomAction':
-      
-                  var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
-                  script += " exescript(getCustomActions);";
-                  chrome.devtools.inspectedWindow.eval(script);
-      
-                  break;
-                case 'addCustomAction':
-      
-                  if (message.success) {
-                    var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
-                    script += " exescript(getCustomActions);";
-                    chrome.devtools.inspectedWindow.eval(script);
-                  }
-      
-                  break;
-              }
-            }.bind(this));
-      */
+      // add init code here
+    }.bind(this);
+
+    this.updatepath = function (e) {
+      this.filescriptpath = '~sitecollection/Style library/' + e.target.value.replace(/[^a-z0-9/._-]/gi, '');
     }.bind(this);
 
     this.addweb = function (e) {
 
-      var scriptpath = elem('scriptpath').value;
-      var scriptsequence = elem('scriptsequence').value;
-
-      addscriptlink('web', scriptsequence, scriptpath);
+    var scriptpath = elem('filescriptpath').value;
+    var scriptsequence = elem('filescriptsequence').value;
+    addscriptlink('web', scriptsequence, scriptpath);
 
     }.bind(this);
 
     this.addsite = function (e) {
 
-      var scriptpath = elem('scriptpath').value;
-      var scriptsequence = elem('scriptsequence').value;
-
-      addscriptlink('site', scriptsequence, scriptpath);
+    var scriptpath = elem('filescriptpath').value;
+    var scriptsequence = elem('filescriptsequence').value;
+    addscriptlink('site', scriptsequence, scriptpath);
 
     }.bind(this);
 
-    this.remove = function (e) {
+    this.addfile = function (e) {
 
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + removeCustomAction;
-      script += " exescript(removeCustomAction, '" + e.item.link.scope + "', '" + e.item.link.id + "');";
-      chrome.devtools.inspectedWindow.eval(script);
+      var filename = elem('addfile').value;
+      filename = filename.replace(/[^a-z0-9/._-]/gi, '');
+      if (filename == "") {
+        var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
+        script += " exescript(alertError, 'Filename cannot be empty!');";
+        chrome.devtools.inspectedWindow.eval(script);
+        return;
+      }
+      else if (filename.match(/.css$/) || filename.match(/.js$/)) {
+        var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addFile;
+        script += " exescript(addFile, '" + filename + "');";
+        chrome.devtools.inspectedWindow.eval(script);
+      }
+      else {
+        var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
+        script += " exescript(alertError, 'Filename needs to end with .js or .css!');";
+        chrome.devtools.inspectedWindow.eval(script);
+
+        return;
+      }
 
     }.bind(this);
 
