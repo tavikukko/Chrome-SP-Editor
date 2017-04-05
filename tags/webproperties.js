@@ -45,7 +45,7 @@ riot.tag("webproperties", `
         </div>`,
   function (opts) {
 
-    this.obj = null;
+    this.indexedpropertykeys = null;
     this.properties = [];
     this.filterstr = "";
 
@@ -77,7 +77,7 @@ riot.tag("webproperties", `
           case 'getWebProperties':
             if (message.success) {
 
-              this.obj = message.result.filter(function (obj) {
+              this.indexedpropertykeys = message.result.filter(function (obj) {
                 return obj.prop === 'vti_indexedpropertykeys';
               })[0];
 
@@ -107,14 +107,14 @@ riot.tag("webproperties", `
 
     this.indexed = function (prop) {
 
-      if (this.obj !== undefined) {
+      if (this.indexedpropertykeys !== undefined) {
         var bytes = [];
         for (var i = 0; i < prop.length; ++i) {
           bytes.push(prop.charCodeAt(i));
           bytes.push(0);
         }
         var b64encoded = window.btoa(String.fromCharCode.apply(null, bytes));
-        if (this.obj.value.indexOf(b64encoded) > -1) return true
+        if (this.indexedpropertykeys.value.indexOf(b64encoded) > -1) return true
       }
       return false;
 
