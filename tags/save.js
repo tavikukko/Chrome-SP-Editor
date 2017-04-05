@@ -1,11 +1,11 @@
-riot.tag("save",
-  `<div id="save">
-    <div id="page-content-wrapper">
-      <h4>Save to SharePoint</h4>
-      <p><label><input onclick="{ autosave }" type="checkbox" /> Update changes to SharePoint</label></p>
-      <p><label><input onclick="{ autopublish }" type="checkbox" /> Publish a Major version on save</label></p>
-    </div>
-  </div>`,
+riot.tag("save", `
+        <div id="save">
+          <div id="page-content-wrapper">
+            <h4>Save to SharePoint</h4>
+            <p><label><input onclick="{ autosave }" type="checkbox" /> Update changes to SharePoint</label></p>
+            <p><label><input onclick="{ autopublish }" type="checkbox" /> Publish a Major version on save</label></p>
+          </div>
+        </div>`,
   function (opts) {
 
     this.on("mount", function () {
@@ -27,7 +27,7 @@ riot.tag("save",
 
       var payload = { "type": "autopublishchange", "content": e.target.checked, "tabId": chrome.devtools.inspectedWindow.tabId };
       port.postMessage(payload);
-      
+
     }.bind(this);
 
   });

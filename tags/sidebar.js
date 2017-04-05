@@ -1,5 +1,5 @@
-riot.tag("sidebar",
-  `<div id="sidebar-wrapper">
+riot.tag("sidebar", `
+        <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                   <p>Chrome SharePoint Editor</p>
@@ -45,40 +45,43 @@ riot.tag("sidebar",
     }.bind(this);
 
     this.btnSave = function () {
-      riot.mount("save");
+      //riot.mount("save");
       swap("save");
     }.bind(this);
 
     this.btnScript = function () {
-      riot.mount("scriptlinks");
-      swap("script");
+      // riot.mount("scriptlinks");
+      swap("scriptlinks");
     }.bind(this);
 
     this.btnFiles = function () {
-
+      // riot.mount("files");
+      swap("files");
     }.bind(this);
 
     this.btnWebProperties = function () {
-
+      // riot.mount("webproperties");
+      swap("webproperties");
     }.bind(this);
 
     this.btnListProperties = function () {
-
+      // riot.mount("listproperties");
+      swap("listproperties");
     }.bind(this);
 
     this.btnWebhooks = function () {
-
+      swap("webhooks");
     }.bind(this);
 
     this.btnPnPJSConsole = function () {
-
+      swap("pnpjsconsole");
     }.bind(this);
 
     this.btnPageEditor = function () {
-
+      swap("pageeditor");
     }.bind(this);
 
     this.btnAbout = function () {
-
+      swap("about");
     }.bind(this);
   });

@@ -725,8 +725,10 @@ port.postMessage(payload);
 
 //elem("autosave").checked = false;
 //swap('save');
-riot.mount("sidebar, save");
+riot.mount("*");
 //event bindings
+
+/*
 elem("autosave").addEventListener('change', function (e) {
     var payload = { "type": "autosavechange", "content": elem("autosave").checked, "tabId": chrome.devtools.inspectedWindow.tabId };
 
@@ -737,6 +739,7 @@ elem("autopublish").addEventListener('change', function (e) {
     var payload = { "type": "autopublishchange", "content": elem("autopublish").checked, "tabId": chrome.devtools.inspectedWindow.tabId };
     port.postMessage(payload);
 }, false);
+*/
 
 /*
 elem('btnSave').addEventListener('click', function (e) {

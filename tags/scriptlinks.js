@@ -1,5 +1,5 @@
-riot.tag("scriptlinks",
-  `<div id="script">
+riot.tag("scriptlinks", `
+        <div id="scriptlinks" style="display: none;">
           <div id="page-content-wrapper">
             <div>
               <h4>Scriptlinks</h4>
@@ -75,7 +75,7 @@ riot.tag("scriptlinks",
               this.site.sort(function (a, b) { return a.sequence - b.sequence });
 
               this.update();
-              
+
             }
             else {
 

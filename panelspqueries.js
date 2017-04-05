@@ -1443,7 +1443,7 @@ function hideDimmer() {
     elem('dimmer').style.display = 'none';
 }
 
-var allElements = ['save', 'script', 'files', 'webproperties', 'listproperties', 'about', 'webhook', 'monaco', 'pageeditor'];
+var allElements = ['save', 'scriptlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor'];
 function swap(visibleElement) {
   for (var i = 0; i < allElements.length; i++)
     elem(allElements[i]).style.display = 'none';
