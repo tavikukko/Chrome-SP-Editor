@@ -22,16 +22,16 @@ riot.tag("webproperties", `
             <hr>
               <div class="row">
                 <div class="col-xs-3">
-                  <input id="filterprops" type="text" class="form-control" placeholder="Filter properties">
+                  <input keyup="{ filterprops }" id="filterprops" type="text" class="form-control" placeholder="Filter properties">
                 </div>
               </div>
             <hr>
              <div id="webPropertyBag">
-              <div class="form-group" each="{ property, i in properties }>
+              <div class="form-group" each="{ property, i in filtered()  }>
               <div class="row">
                 <label>{ property.prop }</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" aria-describedby="helpBlock" value="{ property.value }">
+                  <input keyup="{ updatevalue }" type="text" class="form-control" aria-describedby="helpBlock" value="{ property.value }">
                   <span class="input-group-btn">
                     <button onclick="{ updateprop }" class="btn btn-default update-property" type="button">Update</button>
                     <button onclick="{ removeprop }" class="btn btn-default remove-property" type="button">Remove</button>
@@ -46,10 +46,20 @@ riot.tag("webproperties", `
   function (opts) {
 
     this.obj = null;
+    this.properties = [];
+    this.filterstr = "";
 
     this.on("mount", function () {
       this.init();
     });
+
+    this.updatevalue = function (e) {
+      e.item.property.value = e.target.value;
+    }.bind(this);
+
+    this.filterprops = function (e) {
+      this.filterstr = e.target.value.toLowerCase();
+    }.bind(this);
 
     this.init = function () {
 
@@ -73,14 +83,11 @@ riot.tag("webproperties", `
 
               this.properties = message.result.slice();
               this.update();
-
             }
             else {
-
               var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
               script += " exescript(alertError, '" + message.result + "');";
               chrome.devtools.inspectedWindow.eval(script);
-
             }
             break;
           case 'updateWebProperties':
@@ -125,34 +132,27 @@ riot.tag("webproperties", `
     }.bind(this);
 
     this.updateprop = function (e) {
-
-      // TODO: get updated value!!
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateWebProperties;
       script += " exescript(updateWebProperties, '" + e.item.property.prop + "', '" + e.item.property.value + "');";
       chrome.devtools.inspectedWindow.eval(script);
-
     }.bind(this);
 
     this.removeprop = function (e) {
-
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys + ' ' + deleteWebProperties;
       script += " exescript(deleteWebProperties, '" + e.item.property.prop + "');";
       chrome.devtools.inspectedWindow.eval(script);
-
     }.bind(this);
 
     this.indexprop = function (e) {
-
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addToIndexedPropertyKeys;
       script += " exescript(addToIndexedPropertyKeys, '" + e.item.property.prop + "', " + this.indexed(e.item.property.prop) + ");";
       chrome.devtools.inspectedWindow.eval(script);
-
     }.bind(this);
 
-    this.filter = function (e) {
-
-      //TODO filter function here
-
+    this.filtered = function () {
+      return this.properties.filter(function (t) {
+        return ~t.prop.toLowerCase().indexOf(this.filterstr);
+      }.bind(this));
     }.bind(this);
 
   });
