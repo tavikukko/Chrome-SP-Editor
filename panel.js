@@ -13,7 +13,7 @@ port.onMessage.addListener(function (message) {
             break;
         case 'addFile':
             break;
-        case 'getWebProperties':
+      /*  case 'getWebProperties':
             if (message.success) {
                 var element = elem("webPropertyBag");
                 while (element.firstChild) {
@@ -225,8 +225,8 @@ port.onMessage.addListener(function (message) {
                 script += " exescript(alertError, '" + message.result + "');";
                 chrome.devtools.inspectedWindow.eval(script);
             }
-            break;
-        case 'addWebProperties':
+            break;*/
+  /*      case 'addWebProperties':
             if (message.success) {
 
                 var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
@@ -259,7 +259,7 @@ port.onMessage.addListener(function (message) {
                 chrome.devtools.inspectedWindow.eval(script);
             }
             break;
-
+*/
         case 'getListProperties':
             if (message.success) {
 
