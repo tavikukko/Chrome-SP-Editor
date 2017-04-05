@@ -260,7 +260,7 @@ port.onMessage.addListener(function (message) {
             }
             break;
 */
-        case 'getListProperties':
+ /*       case 'getListProperties':
             if (message.success) {
 
                 var element = elem("listPropertyBag");
@@ -463,8 +463,8 @@ port.onMessage.addListener(function (message) {
                 chrome.devtools.inspectedWindow.eval(script);
             }
             break;
-
-        case 'getLists':
+*/
+   /*     case 'getLists':
             if (message.success) {
 
                 $('#weblist').find('option').remove().end();
@@ -487,7 +487,7 @@ port.onMessage.addListener(function (message) {
                 //error
             }
             break;
-
+*/
         case 'addListProperties':
             if (message.success) {
 

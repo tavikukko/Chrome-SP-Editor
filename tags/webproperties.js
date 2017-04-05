@@ -27,7 +27,7 @@ riot.tag("webproperties", `
               </div>
             <hr>
              <div id="webPropertyBag">
-              <div class="form-group" each="{ property, i in filtered()  }>
+              <div class="form-group" each="{ property, i in filtered() }">
               <div class="row">
                 <label>{ property.prop }</label>
                 <div class="input-group">
@@ -147,5 +147,5 @@ riot.tag("webproperties", `
         return ~t.prop.toLowerCase().indexOf(this.filterstr);
       }.bind(this));
     }.bind(this);
-    
+
   });
