@@ -488,7 +488,7 @@ port.onMessage.addListener(function (message) {
             }
             break;
 */
-        case 'addListProperties':
+  /*      case 'addListProperties':
             if (message.success) {
 
                 var listId = $("#weblist").val();
@@ -535,7 +535,7 @@ port.onMessage.addListener(function (message) {
 
             }
             break;
-
+*/
         case 'addSubscriptions':
             if (message.success) {
                 var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
