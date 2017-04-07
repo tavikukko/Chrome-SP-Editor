@@ -1,5 +1,5 @@
 riot.tag("scriptlinks", `
-        <div id="scriptlinks" style="display: none;">
+        <div id="scriptlinks">
           <div id="page-content-wrapper">
             <div>
               <h4>Scriptlinks</h4>

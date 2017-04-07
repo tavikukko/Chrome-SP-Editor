@@ -1,5 +1,5 @@
 riot.tag("listproperties", `
-        <div id="listproperties" style="display: none;">
+        <div>
           <div id="page-content-wrapper">
             <div>
               <h4>List properties</h4>

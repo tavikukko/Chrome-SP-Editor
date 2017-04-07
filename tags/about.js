@@ -1,5 +1,5 @@
 riot.tag("about", `
-        <div id="about" style="display: none;">
+        <div>
           <div id="page-content-wrapper">
             <h4>About</h4>
             <hr>

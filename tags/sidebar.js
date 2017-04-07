@@ -46,37 +46,47 @@ riot.tag("sidebar", `
 
     this.btnSave = function () {
       swap("save");
+      riot.mount("save");
     }.bind(this);
 
     this.btnScript = function () {
       swap("scriptlinks");
+      riot.mount("scriptlinks");
     }.bind(this);
 
     this.btnFiles = function () {
       swap("files");
+      riot.mount("files");
     }.bind(this);
 
     this.btnWebProperties = function () {
       swap("webproperties");
+      riot.mount("webproperties");
     }.bind(this);
 
     this.btnListProperties = function () {
       swap("listproperties");
+      riot.mount("listproperties");
     }.bind(this);
 
     this.btnWebhooks = function () {
       swap("webhooks");
+      riot.mount("webhooks");
     }.bind(this);
 
     this.btnPnPJSConsole = function () {
       swap("pnpjsconsole");
+      if (pnpjsconsole) return;
+      pnpjsconsole = riot.mount("pnpjsconsole");
     }.bind(this);
 
     this.btnPageEditor = function () {
       swap("pageeditor");
+      riot.mount("pageeditor");
     }.bind(this);
 
     this.btnAbout = function () {
       swap("about");
+      riot.mount("about");
     }.bind(this);
   });

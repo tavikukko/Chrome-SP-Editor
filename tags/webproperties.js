@@ -1,5 +1,5 @@
 riot.tag("webproperties", `
-        <div id="webproperties" style="display: none;">
+        <div>
           <div id="page-content-wrapper">
             <div>
               <h4>Web properties</h4>

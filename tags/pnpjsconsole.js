@@ -1,9 +1,9 @@
 riot.tag("pnpjsconsole", `
-       <div id="pnpjsconsole" style="display: none;">
-            <div id="monaco-container">
-              <div id="container" style="width:100%;height:800px;border:1px solid grey"></div>
-            </div>
-        </div>`,
+    <div id="pnpjsconsole" >
+      <div id="monaco-container">
+        <div id="pnpjs-container" class="koko"></div>
+      </div>
+    </div>`,
   function (opts) {
 
     this.on("mount", function () {
@@ -11,82 +11,140 @@ riot.tag("pnpjsconsole", `
     });
 
     this.init = function () {
-      /*
-            var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
-            script += " exescript(getCustomActions);";
-            chrome.devtools.inspectedWindow.eval(script);
-      
-            port.onMessage.addListener(function (message) {
-              if (typeof message !== 'object' || message === null ||
-                message === undefined || message.source === undefined) {
-                return;
-              }
-      
-              switch (message.function) {
-                case 'getCustomActions':
-                  if (message.success) {
-      
-                    this.web = message.result[0].slice();
-                    this.web.sort(function (a, b) { return a.sequence - b.sequence });
-      
-                    this.site = message.result[1].slice();
-                    this.site.sort(function (a, b) { return a.sequence - b.sequence });
-      
-                    this.update();
-      
-                  }
-                  else {
-      
-                    var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
-                    script += " exescript(alertError, '" + message.result + "');";
-                    chrome.devtools.inspectedWindow.eval(script);
-      
-                  }
-                  break;
-                case 'removeCustomAction':
-      
-                  var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
-                  script += " exescript(getCustomActions);";
-                  chrome.devtools.inspectedWindow.eval(script);
-      
-                  break;
-                case 'addCustomAction':
-      
-                  if (message.success) {
-                    var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
-                    script += " exescript(getCustomActions);";
-                    chrome.devtools.inspectedWindow.eval(script);
-                  }
-      
-                  break;
-              }
-            }.bind(this));
-      */
-    }.bind(this);
 
-    this.addweb = function (e) {
+      require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
+      require(['vs/editor/editor.main'], function () {
 
-      var scriptpath = elem('scriptpath').value;
-      var scriptsequence = elem('scriptsequence').value;
+        var loadDeclaration = function loadDeclaration() {
+          var loadDeclaration = function (path) {
+            return new Promise(function (resolve, reject) {
+              var request = new XMLHttpRequest();
+              request.open('GET', path, true);
+              request.onload = function () {
+                monaco.languages.typescript.typescriptDefaults.addExtraLib(request.responseText, path);
+                resolve();
+              };
+              request.send();
+            });
+          };
 
-      addscriptlink('web', scriptsequence, scriptpath);
+          return Promise.all([
+            loadDeclaration('typings/pnp.d.ts'),
+          ]);
+        };
 
-    }.bind(this);
+        // validation settings
+        monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+          noSemanticValidation: false,
+          noSyntaxValidation: false
+        });
 
-    this.addsite = function (e) {
+        monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+          target: monaco.languages.typescript.ScriptTarget.ES6,
+          allowNonTsExtensions: true
+        });
 
-      var scriptpath = elem('scriptpath').value;
-      var scriptsequence = elem('scriptsequence').value;
 
-      addscriptlink('site', scriptsequence, scriptpath);
+        monaco.languages.registerCompletionItemProvider('typescript', {
+          // provideCompletionItems: function (model, position) {
+          //     return createDependencyProposals(); // from snippets.js
+          // }
+        });
 
-    }.bind(this);
 
-    this.remove = function (e) {
+        loadDeclaration().then(function () {
 
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + removeCustomAction;
-      script += " exescript(removeCustomAction, '" + e.item.link.scope + "', '" + e.item.link.id + "');";
-      chrome.devtools.inspectedWindow.eval(script);
+          playground = monaco.editor.create(document.getElementById('pnpjs-container'), {
+            value: [
+              'import pnp from "pnp";',
+              '',
+              'pnp.sp.web.lists.select("Title").get().then(result => {',
+              '\t// gets all list titles from current web and writes them to console',
+              '\t// hit \'ctrl + d\' to test it :)',
+              '\tconsole.log(result);',
+              '});',
+            ].join('\n'),
+            language: 'typescript',
+            lineNumbers: true,
+            roundedSelection: true,
+            scrollBeyondLastLine: false,
+            readOnly: false,
+            theme: "vs-dark",
+            fontSize: 16,
+            //glyphMargin: true,
+            renderIndentGuides: true,
+            suggestOnTriggerCharacters: true,
+            showTypeScriptWarnings: false
+          });
+
+          var playgroundBinding = playground.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
+            try {
+              var js = ts.transpileModule(playground.getValue(), { compilerOptions: { module: 1 } });
+              var prepnp = 'pnp';
+
+              var lines = js.outputText.split('\n');
+              var code = [];
+              var prepnp = [];
+              lines.forEach(function (line) {
+                // remove imports
+                if (line.toLowerCase().indexOf(' = require') == -1 && line.toLowerCase().indexOf('use strict') == -1) {
+                  code.push(line);
+                }
+                if (line.toLowerCase().indexOf(' = require') > -1) {
+                  // fix imports
+                  var lineRe = line.match("var (.*) = require");
+                  prepnp.push('var ' + lineRe[1] + ' = modules[0];');
+                }
+              });
+
+              code.pop(); // remove the last empty line
+
+              var exescript = [
+                'var exescript = function(script) {',
+                '\t var params = arguments;',
+                '\t if (typeof SystemJS == "undefined") {',
+                '\t\t var s = document.createElement("script");',
+                '\t\t s.src = sj;',
+                '\t\t s.onload = function () {',
+                '\t\t\t script.apply(this, params);',
+                '\t\t };',
+                '\t\t (document.head || document.documentElement).appendChild(s);',
+                '\t }',
+                '\t else script.apply(this, params);',
+                '}',
+              ].join('\n');
+
+              var execme = [
+                'var execme = function execme() {',
+                '\tPromise.all([SystemJS.import(speditorpnp)]).then(function (modules) {',
+                '\t\t' + prepnp.join('\n'),
+                '\t\t// Your code starts here',
+                '\t\t// #####################',
+                '' + code.map(function (e) { return '\t\t\t' + e }).join('\n'),
+                '\t\t// #####################',
+                '\t\t// Your code ends here',
+                '\t});',
+                '};'].join('\n');
+
+              var script = pnp + '\n' + sj + '\n\n' + exescript + '\n\n' + execme + '\n\n';
+
+              script += "exescript(execme);";
+              chrome.devtools.inspectedWindow.eval(script);
+            }
+            catch (e) {
+              console.log(e);
+            }
+          });
+
+          window.addEventListener('resize', function () {
+            playground.layout();
+          }.bind(this));
+
+          this.update();
+
+        }.bind(this));
+
+      }.bind(this));
 
     }.bind(this);
 

@@ -1,5 +1,5 @@
 riot.tag("files", `
-        <div id="files" style="display: none;">
+        <div>
           <div id="page-content-wrapper">
             <h4>Files</h4>
             <p>Add files to rootsite Style library.

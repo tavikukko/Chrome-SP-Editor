@@ -1445,7 +1445,9 @@ function hideDimmer() {
 
 var allElements = ['save', 'scriptlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor'];
 function swap(visibleElement) {
-  for (var i = 0; i < allElements.length; i++)
-    elem(allElements[i]).style.display = 'none';
-  elem(visibleElement).style.display = 'block';
+  for (var i = 0; i < allElements.length; i++){
+    if(document.getElementsByTagName(allElements[i]))
+      document.getElementsByTagName(allElements[i])[0].style.display = 'none';
+  }
+  document.getElementsByTagName(visibleElement)[0].style.display = 'block';
 }
