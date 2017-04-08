@@ -1248,14 +1248,15 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
   };
 
   var webpartsFromDOM = selectAll(document, '.ms-webpart-zone')
-    .map(zone => selectAll(zone, '.ms-webpartzone-cell')
+    .map(zone => ({ webparts: selectAll(zone, '.ms-webpartzone-cell')
       .filter(cell => {
         return cell.querySelector('[webpartid]') !== null
       })
       .map(cell => ({
         id: cell.querySelector('[webpartid]').attributes['webpartid'].value,
         title: (cell.querySelector('.ms-webpart-titleText > nobr > span:first-child') || {}).innerHTML,
-      })));
+      }))
+    }));
 
   window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts', success: true, result: webpartsFromDOM, source: 'chrome-sp-editor' }), '*');
 
@@ -1414,17 +1415,7 @@ function elem(elem) {
   return document.getElementById(elem);
 }
 
-function selectWebpart(wpId) {
-  var wps = document.querySelectorAll('.webpart');
-  for (var i = 0; i < wps.length; i++) {
-    if (wps[i].attributes['data-id'].value == wpId)
-      wps[i].className = 'webpart selected';
-    else
-      wps[i].className = 'webpart';
-  }
-  webpartXmlEditor.setValue(wpId ? webpartXmlCache[wpId] : '');
-}
-
+var dimmerTimeout;
 function scheduleDimmer() {
   // if operation completed in less than 500 ms, dimmer is not necessary and only adds blinking
   // so we will show dimmer only after 500ms after operation has started
