@@ -1,5 +1,5 @@
 /**
- * sp-pnp-js v2.0.2 - A JavaScript library for SharePoint development.
+ * sp-pnp-js v2.0.3 - A JavaScript library for SharePoint development.
  * MIT (https://github.com/SharePoint/PnP-JS-Core/blob/master/LICENSE)
  * Copyright (c) 2017 Microsoft
  * docs: http://officedev.github.io/PnP-JS-Core
@@ -81,7 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/assets/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 49);
+/******/ 	return __webpack_require__(__webpack_require__.s = 41);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -97,7 +97,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var decorators_1 = __webpack_require__(47);
+var decorators_1 = __webpack_require__(31);
 var pnplibconfig_1 = __webpack_require__(4);
 var Util = (function () {
     function Util() {
@@ -388,7 +388,7 @@ __decorate([
 ], Util, "makeUrlAbsolute", null);
 exports.Util = Util;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ }),
 /* 1 */
@@ -409,10 +409,11 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var collections_1 = __webpack_require__(6);
-var odata_1 = __webpack_require__(3);
+var odata_1 = __webpack_require__(2);
 var pnplibconfig_1 = __webpack_require__(4);
-var exceptions_1 = __webpack_require__(2);
-var queryablerequest_1 = __webpack_require__(42);
+var exceptions_1 = __webpack_require__(3);
+var queryablerequest_1 = __webpack_require__(45);
+var logging_1 = __webpack_require__(5);
 /**
  * Queryable Base Class
  *
@@ -496,6 +497,17 @@ var Queryable = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Queryable.prototype, "batch", {
+        /**
+         * The batch currently associated with this query or null
+         *
+         */
+        get: function () {
+            return this.hasBatch ? this._batch : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Queryable.prototype, "parentUrl", {
         /**
          * Gets the parent url used when creating this instance
@@ -569,10 +581,16 @@ var Queryable = (function () {
      *
      */
     Queryable.prototype.toUrlAndQuery = function () {
-        var _this = this;
-        var url = this.toUrl();
-        if (this._query.count() > 0) {
-            url += "?" + this._query.getKeys().map(function (key) { return key + "=" + _this._query.get(key); }).join("&");
+        var aliasedParams = new collections_1.Dictionary();
+        var url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, function (match, labelName, value) {
+            logging_1.Logger.write("Rewriting aliased parameter from match " + match + " to label: " + labelName + " value: " + value, logging_1.LogLevel.Verbose);
+            aliasedParams.add(labelName, "'" + value + "'");
+            return labelName;
+        });
+        // inlude our explicitly set query string params
+        aliasedParams.merge(this._query);
+        if (aliasedParams.count() > 0) {
+            url += "?" + aliasedParams.getKeys().map(function (key) { return key + "=" + aliasedParams.get(key); }).join("&");
         }
         return url;
     };
@@ -581,14 +599,35 @@ var Queryable = (function () {
      *
      * @param factory The contructor for the class to create
      */
-    Queryable.prototype.getParent = function (factory, baseUrl, path) {
+    Queryable.prototype.getParent = function (factory, baseUrl, path, batch) {
         if (baseUrl === void 0) { baseUrl = this.parentUrl; }
         var parent = new factory(baseUrl, path);
         var target = this.query.get("@target");
         if (target !== null) {
             parent.query.add("@target", target);
         }
+        if (typeof batch !== "undefined") {
+            parent = parent.inBatch(batch);
+        }
         return parent;
+    };
+    /**
+     * Clones this queryable into a new queryable instance of T
+     * @param factory Constructor used to create the new instance
+     * @param additionalPath Any additional path to include in the clone
+     * @param includeBatch If true this instance's batch will be added to the cloned instance
+     */
+    Queryable.prototype.clone = function (factory, additionalPath, includeBatch) {
+        if (includeBatch === void 0) { includeBatch = false; }
+        var clone = new factory(this, additionalPath);
+        var target = this.query.get("@target");
+        if (target !== null) {
+            clone.query.add("@target", target);
+        }
+        if (includeBatch && this.hasBatch) {
+            clone = clone.inBatch(this.batch);
+        }
+        return clone;
     };
     /**
      * Executes the currently built request
@@ -678,7 +717,9 @@ var QueryableCollection = (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
         }
-        this._query.add("$select", selects.join(","));
+        if (selects.length > 0) {
+            this._query.add("$select", selects.join(","));
+        }
         return this;
     };
     /**
@@ -691,7 +732,9 @@ var QueryableCollection = (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             expands[_i] = arguments[_i];
         }
-        this._query.add("$expand", expands.join(","));
+        if (expands.length > 0) {
+            this._query.add("$expand", expands.join(","));
+        }
         return this;
     };
     /**
@@ -755,7 +798,9 @@ var QueryableInstance = (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
         }
-        this._query.add("$select", selects.join(","));
+        if (selects.length > 0) {
+            this._query.add("$select", selects.join(","));
+        }
         return this;
     };
     /**
@@ -768,7 +813,9 @@ var QueryableInstance = (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             expands[_i] = arguments[_i];
         }
-        this._query.add("$expand", expands.join(","));
+        if (expands.length > 0) {
+            this._query.add("$expand", expands.join(","));
+        }
         return this;
     };
     return QueryableInstance;
@@ -793,199 +840,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var logging_1 = __webpack_require__(5);
-function defaultLog(error) {
-    logging_1.Logger.log({ data: {}, level: logging_1.LogLevel.Error, message: "[" + error.name + "]::" + error.message });
-}
-/**
- * Represents an exception with an HttpClient request
- *
- */
-var ProcessHttpClientResponseException = (function (_super) {
-    __extends(ProcessHttpClientResponseException, _super);
-    function ProcessHttpClientResponseException(status, statusText, data) {
-        var _this = _super.call(this, "Error making HttpClient request in queryable: [" + status + "] " + statusText) || this;
-        _this.status = status;
-        _this.statusText = statusText;
-        _this.data = data;
-        _this.name = "ProcessHttpClientResponseException";
-        logging_1.Logger.log({ data: _this.data, level: logging_1.LogLevel.Error, message: _this.message });
-        return _this;
-    }
-    return ProcessHttpClientResponseException;
-}(Error));
-exports.ProcessHttpClientResponseException = ProcessHttpClientResponseException;
-var NoCacheAvailableException = (function (_super) {
-    __extends(NoCacheAvailableException, _super);
-    function NoCacheAvailableException(msg) {
-        if (msg === void 0) { msg = "Cannot create a caching configuration provider since cache is not available."; }
-        var _this = _super.call(this, msg) || this;
-        _this.name = "NoCacheAvailableException";
-        defaultLog(_this);
-        return _this;
-    }
-    return NoCacheAvailableException;
-}(Error));
-exports.NoCacheAvailableException = NoCacheAvailableException;
-var APIUrlException = (function (_super) {
-    __extends(APIUrlException, _super);
-    function APIUrlException(msg) {
-        if (msg === void 0) { msg = "Unable to determine API url."; }
-        var _this = _super.call(this, msg) || this;
-        _this.name = "APIUrlException";
-        defaultLog(_this);
-        return _this;
-    }
-    return APIUrlException;
-}(Error));
-exports.APIUrlException = APIUrlException;
-var AuthUrlException = (function (_super) {
-    __extends(AuthUrlException, _super);
-    function AuthUrlException(data, msg) {
-        if (msg === void 0) { msg = "Auth URL Endpoint could not be determined from data. Data logged."; }
-        var _this = _super.call(this, msg) || this;
-        _this.name = "APIUrlException";
-        logging_1.Logger.log({ data: data, level: logging_1.LogLevel.Error, message: _this.message });
-        return _this;
-    }
-    return AuthUrlException;
-}(Error));
-exports.AuthUrlException = AuthUrlException;
-var NodeFetchClientUnsupportedException = (function (_super) {
-    __extends(NodeFetchClientUnsupportedException, _super);
-    function NodeFetchClientUnsupportedException(msg) {
-        if (msg === void 0) { msg = "Using NodeFetchClient in the browser is not supported."; }
-        var _this = _super.call(this, msg) || this;
-        _this.name = "NodeFetchClientUnsupportedException";
-        defaultLog(_this);
-        return _this;
-    }
-    return NodeFetchClientUnsupportedException;
-}(Error));
-exports.NodeFetchClientUnsupportedException = NodeFetchClientUnsupportedException;
-var SPRequestExecutorUndefinedException = (function (_super) {
-    __extends(SPRequestExecutorUndefinedException, _super);
-    function SPRequestExecutorUndefinedException() {
-        var _this = this;
-        var msg = [
-            "SP.RequestExecutor is undefined. ",
-            "Load the SP.RequestExecutor.js library (/_layouts/15/SP.RequestExecutor.js) before loading the PnP JS Core library.",
-        ].join(" ");
-        _this = _super.call(this, msg) || this;
-        _this.name = "SPRequestExecutorUndefinedException";
-        defaultLog(_this);
-        return _this;
-    }
-    return SPRequestExecutorUndefinedException;
-}(Error));
-exports.SPRequestExecutorUndefinedException = SPRequestExecutorUndefinedException;
-var MaxCommentLengthException = (function (_super) {
-    __extends(MaxCommentLengthException, _super);
-    function MaxCommentLengthException(msg) {
-        if (msg === void 0) { msg = "The maximum comment length is 1023 characters."; }
-        var _this = _super.call(this, msg) || this;
-        _this.name = "MaxCommentLengthException";
-        defaultLog(_this);
-        return _this;
-    }
-    return MaxCommentLengthException;
-}(Error));
-exports.MaxCommentLengthException = MaxCommentLengthException;
-var NotSupportedInBatchException = (function (_super) {
-    __extends(NotSupportedInBatchException, _super);
-    function NotSupportedInBatchException(operation) {
-        if (operation === void 0) { operation = "This operation"; }
-        var _this = _super.call(this, operation + " is not supported as part of a batch.") || this;
-        _this.name = "NotSupportedInBatchException";
-        defaultLog(_this);
-        return _this;
-    }
-    return NotSupportedInBatchException;
-}(Error));
-exports.NotSupportedInBatchException = NotSupportedInBatchException;
-var ODataIdException = (function (_super) {
-    __extends(ODataIdException, _super);
-    function ODataIdException(data, msg) {
-        if (msg === void 0) { msg = "Could not extract odata id in object, you may be using nometadata. Object data logged to logger."; }
-        var _this = _super.call(this, msg) || this;
-        _this.name = "ODataIdException";
-        logging_1.Logger.log({ data: data, level: logging_1.LogLevel.Error, message: _this.message });
-        return _this;
-    }
-    return ODataIdException;
-}(Error));
-exports.ODataIdException = ODataIdException;
-var BatchParseException = (function (_super) {
-    __extends(BatchParseException, _super);
-    function BatchParseException(msg) {
-        var _this = _super.call(this, msg) || this;
-        _this.name = "BatchParseException";
-        defaultLog(_this);
-        return _this;
-    }
-    return BatchParseException;
-}(Error));
-exports.BatchParseException = BatchParseException;
-var AlreadyInBatchException = (function (_super) {
-    __extends(AlreadyInBatchException, _super);
-    function AlreadyInBatchException(msg) {
-        if (msg === void 0) { msg = "This query is already part of a batch."; }
-        var _this = _super.call(this, msg) || this;
-        _this.name = "AlreadyInBatchException";
-        defaultLog(_this);
-        return _this;
-    }
-    return AlreadyInBatchException;
-}(Error));
-exports.AlreadyInBatchException = AlreadyInBatchException;
-var FunctionExpectedException = (function (_super) {
-    __extends(FunctionExpectedException, _super);
-    function FunctionExpectedException(msg) {
-        if (msg === void 0) { msg = "This query is already part of a batch."; }
-        var _this = _super.call(this, msg) || this;
-        _this.name = "FunctionExpectedException";
-        defaultLog(_this);
-        return _this;
-    }
-    return FunctionExpectedException;
-}(Error));
-exports.FunctionExpectedException = FunctionExpectedException;
-var UrlException = (function (_super) {
-    __extends(UrlException, _super);
-    function UrlException(msg) {
-        var _this = _super.call(this, msg) || this;
-        _this.name = "UrlException";
-        defaultLog(_this);
-        return _this;
-    }
-    return UrlException;
-}(Error));
-exports.UrlException = UrlException;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var logging_1 = __webpack_require__(5);
-var httpclient_1 = __webpack_require__(10);
+var httpclient_1 = __webpack_require__(15);
 var pnplibconfig_1 = __webpack_require__(4);
-var exceptions_1 = __webpack_require__(2);
-var exceptions_2 = __webpack_require__(2);
+var exceptions_1 = __webpack_require__(3);
+var exceptions_2 = __webpack_require__(3);
 function extractOdataId(candidate) {
     if (candidate.hasOwnProperty("odata.id")) {
         return candidate["odata.id"];
@@ -1009,7 +869,7 @@ var ODataParserBase = (function () {
                     resolve({});
                 }
                 else {
-                    r.json().then(function (json) { return resolve(_this.parseODataJSON(json)); });
+                    r.json().then(function (json) { return resolve(_this.parseODataJSON(json)); }).catch(function (e) { return reject(e); });
                 }
             }
         });
@@ -1020,6 +880,20 @@ var ODataParserBase = (function () {
                 // include the headers as they contain diagnostic information
                 var data = {
                     responseBody: json,
+                    responseHeaders: r.headers,
+                };
+                reject(new exceptions_2.ProcessHttpClientResponseException(r.status, r.statusText, data));
+            }).catch(function (e) {
+                // we failed to read the body - possibly it is empty. Let's report the original status that caused
+                // the request to fail and log the error with parsing the body if anyone needs it for debugging
+                logging_1.Logger.log({
+                    data: e,
+                    level: logging_1.LogLevel.Warning,
+                    message: "There was an error parsing the error response body. See data for details.",
+                });
+                // include the headers as they contain diagnostic information
+                var data = {
+                    responseBody: "[[body not available]]",
                     responseHeaders: r.headers,
                 };
                 reject(new exceptions_2.ProcessHttpClientResponseException(r.status, r.statusText, data));
@@ -1122,6 +996,7 @@ function getEntityUrl(entity) {
         return "";
     }
 }
+exports.getEntityUrl = getEntityUrl;
 exports.ODataRaw = new ODataRawParserImpl();
 function ODataValue() {
     return new ODataValueParserImpl();
@@ -1144,7 +1019,7 @@ var ODataBatch = (function () {
         this.baseUrl = baseUrl;
         this._batchId = _batchId;
         this._requests = [];
-        this._dependencies = Promise.resolve();
+        this._dependencies = [];
     }
     /**
      * Adds a request to a batch (not designed for public use)
@@ -1179,7 +1054,7 @@ var ODataBatch = (function () {
         var promise = new Promise(function (resolve) {
             resolver = resolve;
         });
-        this._dependencies = this._dependencies.then(function () { return promise; });
+        this._dependencies.push(promise);
         return resolver;
     };
     /**
@@ -1189,7 +1064,9 @@ var ODataBatch = (function () {
      */
     ODataBatch.prototype.execute = function () {
         var _this = this;
-        return this._dependencies.then(function () { return _this.executeImpl(); });
+        // we need to check the dependencies twice due to how different engines handle things.
+        // We can get a second set of promises added after the first set resolve
+        return Promise.all(this._dependencies).then(function () { return Promise.all(_this._dependencies); }).then(function () { return _this.executeImpl(); });
     };
     ODataBatch.prototype.executeImpl = function () {
         var _this = this;
@@ -1399,19 +1276,206 @@ exports.BufferFileParser = BufferFileParser;
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var logging_1 = __webpack_require__(5);
+function defaultLog(error) {
+    logging_1.Logger.log({ data: {}, level: logging_1.LogLevel.Error, message: "[" + error.name + "]::" + error.message });
+}
+/**
+ * Represents an exception with an HttpClient request
+ *
+ */
+var ProcessHttpClientResponseException = (function (_super) {
+    __extends(ProcessHttpClientResponseException, _super);
+    function ProcessHttpClientResponseException(status, statusText, data) {
+        var _this = _super.call(this, "Error making HttpClient request in queryable: [" + status + "] " + statusText) || this;
+        _this.status = status;
+        _this.statusText = statusText;
+        _this.data = data;
+        _this.name = "ProcessHttpClientResponseException";
+        logging_1.Logger.log({ data: _this.data, level: logging_1.LogLevel.Error, message: _this.message });
+        return _this;
+    }
+    return ProcessHttpClientResponseException;
+}(Error));
+exports.ProcessHttpClientResponseException = ProcessHttpClientResponseException;
+var NoCacheAvailableException = (function (_super) {
+    __extends(NoCacheAvailableException, _super);
+    function NoCacheAvailableException(msg) {
+        if (msg === void 0) { msg = "Cannot create a caching configuration provider since cache is not available."; }
+        var _this = _super.call(this, msg) || this;
+        _this.name = "NoCacheAvailableException";
+        defaultLog(_this);
+        return _this;
+    }
+    return NoCacheAvailableException;
+}(Error));
+exports.NoCacheAvailableException = NoCacheAvailableException;
+var APIUrlException = (function (_super) {
+    __extends(APIUrlException, _super);
+    function APIUrlException(msg) {
+        if (msg === void 0) { msg = "Unable to determine API url."; }
+        var _this = _super.call(this, msg) || this;
+        _this.name = "APIUrlException";
+        defaultLog(_this);
+        return _this;
+    }
+    return APIUrlException;
+}(Error));
+exports.APIUrlException = APIUrlException;
+var AuthUrlException = (function (_super) {
+    __extends(AuthUrlException, _super);
+    function AuthUrlException(data, msg) {
+        if (msg === void 0) { msg = "Auth URL Endpoint could not be determined from data. Data logged."; }
+        var _this = _super.call(this, msg) || this;
+        _this.name = "APIUrlException";
+        logging_1.Logger.log({ data: data, level: logging_1.LogLevel.Error, message: _this.message });
+        return _this;
+    }
+    return AuthUrlException;
+}(Error));
+exports.AuthUrlException = AuthUrlException;
+var NodeFetchClientUnsupportedException = (function (_super) {
+    __extends(NodeFetchClientUnsupportedException, _super);
+    function NodeFetchClientUnsupportedException(msg) {
+        if (msg === void 0) { msg = "Using NodeFetchClient in the browser is not supported."; }
+        var _this = _super.call(this, msg) || this;
+        _this.name = "NodeFetchClientUnsupportedException";
+        defaultLog(_this);
+        return _this;
+    }
+    return NodeFetchClientUnsupportedException;
+}(Error));
+exports.NodeFetchClientUnsupportedException = NodeFetchClientUnsupportedException;
+var SPRequestExecutorUndefinedException = (function (_super) {
+    __extends(SPRequestExecutorUndefinedException, _super);
+    function SPRequestExecutorUndefinedException() {
+        var _this = this;
+        var msg = [
+            "SP.RequestExecutor is undefined. ",
+            "Load the SP.RequestExecutor.js library (/_layouts/15/SP.RequestExecutor.js) before loading the PnP JS Core library.",
+        ].join(" ");
+        _this = _super.call(this, msg) || this;
+        _this.name = "SPRequestExecutorUndefinedException";
+        defaultLog(_this);
+        return _this;
+    }
+    return SPRequestExecutorUndefinedException;
+}(Error));
+exports.SPRequestExecutorUndefinedException = SPRequestExecutorUndefinedException;
+var MaxCommentLengthException = (function (_super) {
+    __extends(MaxCommentLengthException, _super);
+    function MaxCommentLengthException(msg) {
+        if (msg === void 0) { msg = "The maximum comment length is 1023 characters."; }
+        var _this = _super.call(this, msg) || this;
+        _this.name = "MaxCommentLengthException";
+        defaultLog(_this);
+        return _this;
+    }
+    return MaxCommentLengthException;
+}(Error));
+exports.MaxCommentLengthException = MaxCommentLengthException;
+var NotSupportedInBatchException = (function (_super) {
+    __extends(NotSupportedInBatchException, _super);
+    function NotSupportedInBatchException(operation) {
+        if (operation === void 0) { operation = "This operation"; }
+        var _this = _super.call(this, operation + " is not supported as part of a batch.") || this;
+        _this.name = "NotSupportedInBatchException";
+        defaultLog(_this);
+        return _this;
+    }
+    return NotSupportedInBatchException;
+}(Error));
+exports.NotSupportedInBatchException = NotSupportedInBatchException;
+var ODataIdException = (function (_super) {
+    __extends(ODataIdException, _super);
+    function ODataIdException(data, msg) {
+        if (msg === void 0) { msg = "Could not extract odata id in object, you may be using nometadata. Object data logged to logger."; }
+        var _this = _super.call(this, msg) || this;
+        _this.name = "ODataIdException";
+        logging_1.Logger.log({ data: data, level: logging_1.LogLevel.Error, message: _this.message });
+        return _this;
+    }
+    return ODataIdException;
+}(Error));
+exports.ODataIdException = ODataIdException;
+var BatchParseException = (function (_super) {
+    __extends(BatchParseException, _super);
+    function BatchParseException(msg) {
+        var _this = _super.call(this, msg) || this;
+        _this.name = "BatchParseException";
+        defaultLog(_this);
+        return _this;
+    }
+    return BatchParseException;
+}(Error));
+exports.BatchParseException = BatchParseException;
+var AlreadyInBatchException = (function (_super) {
+    __extends(AlreadyInBatchException, _super);
+    function AlreadyInBatchException(msg) {
+        if (msg === void 0) { msg = "This query is already part of a batch."; }
+        var _this = _super.call(this, msg) || this;
+        _this.name = "AlreadyInBatchException";
+        defaultLog(_this);
+        return _this;
+    }
+    return AlreadyInBatchException;
+}(Error));
+exports.AlreadyInBatchException = AlreadyInBatchException;
+var FunctionExpectedException = (function (_super) {
+    __extends(FunctionExpectedException, _super);
+    function FunctionExpectedException(msg) {
+        if (msg === void 0) { msg = "This query is already part of a batch."; }
+        var _this = _super.call(this, msg) || this;
+        _this.name = "FunctionExpectedException";
+        defaultLog(_this);
+        return _this;
+    }
+    return FunctionExpectedException;
+}(Error));
+exports.FunctionExpectedException = FunctionExpectedException;
+var UrlException = (function (_super) {
+    __extends(UrlException, _super);
+    function UrlException(msg) {
+        var _this = _super.call(this, msg) || this;
+        _this.name = "UrlException";
+        defaultLog(_this);
+        return _this;
+    }
+    return UrlException;
+}(Error));
+exports.UrlException = UrlException;
+
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var fetchclient_1 = __webpack_require__(18);
+var fetchclient_1 = __webpack_require__(21);
 var RuntimeConfigImpl = (function () {
     function RuntimeConfigImpl() {
         // these are our default values for the library
         this._headers = null;
         this._defaultCachingStore = "session";
-        this._defaultCachingTimeoutSeconds = 30;
+        this._defaultCachingTimeoutSeconds = 60;
         this._globalCacheDisable = false;
         this._fetchClientFactory = function () { return new fetchclient_1.FetchClient(); };
         this._baseUrl = null;
@@ -1852,2059 +1916,31 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(3);
+var lists_1 = __webpack_require__(11);
+var fields_1 = __webpack_require__(24);
+var navigation_1 = __webpack_require__(25);
+var sitegroups_1 = __webpack_require__(18);
+var contenttypes_1 = __webpack_require__(16);
+var folders_1 = __webpack_require__(9);
+var roles_1 = __webpack_require__(17);
+var files_1 = __webpack_require__(8);
 var util_1 = __webpack_require__(0);
-var exceptions_1 = __webpack_require__(2);
-var webparts_1 = __webpack_require__(46);
-/**
- * Describes a collection of File objects
- *
- */
-var Files = (function (_super) {
-    __extends(Files, _super);
-    /**
-     * Creates a new instance of the Files class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Files(baseUrl, path) {
-        if (path === void 0) { path = "files"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a File by filename
-     *
-     * @param name The name of the file, including extension.
-     */
-    Files.prototype.getByName = function (name) {
-        var f = new File(this);
-        f.concat("('" + name + "')");
-        return f;
-    };
-    /**
-     * Uploads a file.
-     *
-     * @param url The folder-relative url of the file.
-     * @param content The file contents blob.
-     * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
-     * @returns The new File and the raw response.
-     */
-    Files.prototype.add = function (url, content, shouldOverWrite) {
-        var _this = this;
-        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        return new Files(this, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')")
-            .post({
-            body: content,
-        }).then(function (response) {
-            return {
-                data: response,
-                file: _this.getByName(url),
-            };
-        });
-    };
-    /**
-     * Uploads a file.
-     *
-     * @param url The folder-relative url of the file.
-     * @param content The Blob file content to add
-     * @param progress A callback function which can be used to track the progress of the upload
-     * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
-     * @param chunkSize The size of each file slice, in bytes (default: 10485760)
-     * @returns The new File and the raw response.
-     */
-    Files.prototype.addChunked = function (url, content, progress, shouldOverWrite, chunkSize) {
-        var _this = this;
-        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        if (chunkSize === void 0) { chunkSize = 10485760; }
-        var adder = new Files(this, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')");
-        return adder.post().then(function () { return _this.getByName(url); }).then(function (file) { return file.setContentChunked(content, progress, chunkSize); }).then(function (response) {
-            return {
-                data: response,
-                file: _this.getByName(url),
-            };
-        });
-    };
-    /**
-     * Adds a ghosted file to an existing list or document library.
-     *
-     * @param fileUrl The server-relative url where you want to save the file.
-     * @param templateFileType The type of use to create the file.
-     * @returns The template file that was added and the raw response.
-     */
-    Files.prototype.addTemplateFile = function (fileUrl, templateFileType) {
-        var _this = this;
-        return new Files(this, "addTemplateFile(urloffile='" + fileUrl + "',templatefiletype=" + templateFileType + ")")
-            .post().then(function (response) {
-            return {
-                data: response,
-                file: _this.getByName(fileUrl),
-            };
-        });
-    };
-    return Files;
-}(queryable_1.QueryableCollection));
-exports.Files = Files;
-/**
- * Describes a single File instance
- *
- */
-var File = (function (_super) {
-    __extends(File, _super);
-    /**
-     * Creates a new instance of the File class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     * @param path Optional, if supplied will be appended to the supplied baseUrl
-     */
-    function File(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    Object.defineProperty(File.prototype, "listItemAllFields", {
-        /**
-         * Gets a value that specifies the list item field values for the list item corresponding to the file.
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableCollection(this, "listItemAllFields");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(File.prototype, "versions", {
-        /**
-         * Gets a collection of versions
-         *
-         */
-        get: function () {
-            return new Versions(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Approves the file submitted for content approval with the specified comment.
-     * Only documents in lists that are enabled for content approval can be approved.
-     *
-     * @param comment The comment for the approval.
-     */
-    File.prototype.approve = function (comment) {
-        return new File(this, "approve(comment='" + comment + "')").post();
-    };
-    /**
-     * Stops the chunk upload session without saving the uploaded data.
-     * If the file doesn’t already exist in the library, the partially uploaded file will be deleted.
-     * Use this in response to user action (as in a request to cancel an upload) or an error or exception.
-     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     */
-    File.prototype.cancelUpload = function (uploadId) {
-        return new File(this, "cancelUpload(uploadId=guid'" + uploadId + "')").post();
-    };
-    /**
-     * Checks the file in to a document library based on the check-in type.
-     *
-     * @param comment A comment for the check-in. Its length must be <= 1023.
-     * @param checkinType The check-in type for the file.
-     */
-    File.prototype.checkin = function (comment, checkinType) {
-        if (comment === void 0) { comment = ""; }
-        if (checkinType === void 0) { checkinType = CheckinType.Major; }
-        // TODO: Enforce comment length <= 1023
-        return new File(this, "checkin(comment='" + comment + "',checkintype=" + checkinType + ")").post();
-    };
-    /**
-     * Checks out the file from a document library.
-     */
-    File.prototype.checkout = function () {
-        return new File(this, "checkout").post();
-    };
-    /**
-     * Copies the file to the destination url.
-     *
-     * @param url The absolute url or server relative url of the destination file path to copy to.
-     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
-     */
-    File.prototype.copyTo = function (url, shouldOverWrite) {
-        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        return new File(this, "copyTo(strnewurl='" + url + "',boverwrite=" + shouldOverWrite + ")").post();
-    };
-    /**
-     * Delete this file.
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    File.prototype.delete = function (eTag) {
-        if (eTag === void 0) { eTag = "*"; }
-        return new File(this).post({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    /**
-     * Denies approval for a file that was submitted for content approval.
-     * Only documents in lists that are enabled for content approval can be denied.
-     *
-     * @param comment The comment for the denial.
-     */
-    File.prototype.deny = function (comment) {
-        if (comment === void 0) { comment = ""; }
-        return new File(this, "deny(comment='" + comment + "')").post();
-    };
-    /**
-     * Specifies the control set used to access, modify, or add Web Parts associated with this Web Part Page and view.
-     * An exception is thrown if the file is not an ASPX page.
-     *
-     * @param scope The WebPartsPersonalizationScope view on the Web Parts page.
-     */
-    File.prototype.getLimitedWebPartManager = function (scope) {
-        if (scope === void 0) { scope = WebPartsPersonalizationScope.Shared; }
-        return new webparts_1.LimitedWebPartManager(this, "getLimitedWebPartManager(scope=" + scope + ")");
-    };
-    /**
-     * Moves the file to the specified destination url.
-     *
-     * @param url The absolute url or server relative url of the destination file path to move to.
-     * @param moveOperations The bitwise MoveOperations value for how to move the file.
-     */
-    File.prototype.moveTo = function (url, moveOperations) {
-        if (moveOperations === void 0) { moveOperations = MoveOperations.Overwrite; }
-        return new File(this, "moveTo(newurl='" + url + "',flags=" + moveOperations + ")").post();
-    };
-    /**
-     * Submits the file for content approval with the specified comment.
-     *
-     * @param comment The comment for the published file. Its length must be <= 1023.
-     */
-    File.prototype.publish = function (comment) {
-        if (comment === void 0) { comment = ""; }
-        return new File(this, "publish(comment='" + comment + "')").post();
-    };
-    /**
-     * Moves the file to the Recycle Bin and returns the identifier of the new Recycle Bin item.
-     *
-     * @returns The GUID of the recycled file.
-     */
-    File.prototype.recycle = function () {
-        return new File(this, "recycle").post();
-    };
-    /**
-     * Reverts an existing checkout for the file.
-     *
-     */
-    File.prototype.undoCheckout = function () {
-        return new File(this, "undoCheckout").post();
-    };
-    /**
-     * Removes the file from content approval or unpublish a major version.
-     *
-     * @param comment The comment for the unpublish operation. Its length must be <= 1023.
-     */
-    File.prototype.unpublish = function (comment) {
-        if (comment === void 0) { comment = ""; }
-        if (comment.length > 1023) {
-            throw new exceptions_1.MaxCommentLengthException();
-        }
-        return new File(this, "unpublish(comment='" + comment + "')").post();
-    };
-    /**
-     * Gets the contents of the file as text
-     *
-     */
-    File.prototype.getText = function () {
-        return new File(this, "$value").get(new odata_1.TextFileParser(), { headers: { "binaryStringResponseBody": "true" } });
-    };
-    /**
-     * Gets the contents of the file as a blob, does not work in Node.js
-     *
-     */
-    File.prototype.getBlob = function () {
-        return new File(this, "$value").get(new odata_1.BlobFileParser(), { headers: { "binaryStringResponseBody": "true" } });
-    };
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js
-     */
-    File.prototype.getBuffer = function () {
-        return new File(this, "$value").get(new odata_1.BufferFileParser(), { headers: { "binaryStringResponseBody": "true" } });
-    };
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js
-     */
-    File.prototype.getJSON = function () {
-        return new File(this, "$value").get(new odata_1.JSONFileParser(), { headers: { "binaryStringResponseBody": "true" } });
-    };
-    /**
-     * Sets the content of a file, for large files use setContentChunked
-     *
-     * @param content The file content
-     *
-     */
-    File.prototype.setContent = function (content) {
-        var _this = this;
-        var setter = new File(this, "$value");
-        return setter.post({
-            body: content,
-            headers: {
-                "X-HTTP-Method": "PUT",
-            },
-        }).then(function (_) { return new File(_this); });
-    };
-    /**
-     * Sets the contents of a file using a chunked upload approach
-     *
-     * @param file The file to upload
-     * @param progress A callback function which can be used to track the progress of the upload
-     * @param chunkSize The size of each file slice, in bytes (default: 10485760)
-     */
-    File.prototype.setContentChunked = function (file, progress, chunkSize) {
-        if (chunkSize === void 0) { chunkSize = 10485760; }
-        if (typeof progress === "undefined") {
-            progress = function () { return null; };
-        }
-        var self = this;
-        var fileSize = file.size;
-        var blockCount = parseInt((file.size / chunkSize).toString(), 10) + ((file.size % chunkSize === 0) ? 1 : 0);
-        var uploadId = util_1.Util.getGUID();
-        // start the chain with the first fragment
-        progress({ blockNumber: 1, chunkSize: chunkSize, currentPointer: 0, fileSize: fileSize, stage: "starting", totalBlocks: blockCount });
-        var chain = self.startUpload(uploadId, file.slice(0, chunkSize));
-        var _loop_1 = function (i) {
-            chain = chain.then(function (pointer) {
-                progress({ blockNumber: i, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "continue", totalBlocks: blockCount });
-                return self.continueUpload(uploadId, pointer, file.slice(pointer, pointer + chunkSize));
-            });
-        };
-        // skip the first and last blocks
-        for (var i = 2; i < blockCount; i++) {
-            _loop_1(i);
-        }
-        return chain.then(function (pointer) {
-            progress({ blockNumber: blockCount, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "finishing", totalBlocks: blockCount });
-            return self.finishUpload(uploadId, pointer, file.slice(pointer));
-        }).then(function (_) {
-            return self;
-        });
-    };
-    /**
-     * Starts a new chunk upload session and uploads the first fragment.
-     * The current file content is not changed when this method completes.
-     * The method is idempotent (and therefore does not change the result) as long as you use the same values for uploadId and stream.
-     * The upload session ends either when you use the CancelUpload method or when you successfully
-     * complete the upload session by passing the rest of the file contents through the ContinueUpload and FinishUpload methods.
-     * The StartUpload and ContinueUpload methods return the size of the running total of uploaded data in bytes,
-     * so you can pass those return values to subsequent uses of ContinueUpload and FinishUpload.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     * @param fragment The file contents.
-     * @returns The size of the total uploaded data in bytes.
-     */
-    File.prototype.startUpload = function (uploadId, fragment) {
-        return new File(this, "startUpload(uploadId=guid'" + uploadId + "')").postAs({ body: fragment }).then(function (n) { return parseFloat(n); });
-    };
-    /**
-     * Continues the chunk upload session with an additional fragment.
-     * The current file content is not changed.
-     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     * @param fileOffset The size of the offset into the file where the fragment starts.
-     * @param fragment The file contents.
-     * @returns The size of the total uploaded data in bytes.
-     */
-    File.prototype.continueUpload = function (uploadId, fileOffset, fragment) {
-        return new File(this, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")").postAs({ body: fragment }).then(function (n) { return parseFloat(n); });
-    };
-    /**
-     * Uploads the last file fragment and commits the file. The current file content is changed when this method completes.
-     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     * @param fileOffset The size of the offset into the file where the fragment starts.
-     * @param fragment The file contents.
-     * @returns The newly uploaded file.
-     */
-    File.prototype.finishUpload = function (uploadId, fileOffset, fragment) {
-        return new File(this, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")")
-            .postAs({ body: fragment }).then(function (response) {
-            return {
-                data: response,
-                file: new File(response.ServerRelativeUrl),
-            };
-        });
-    };
-    return File;
-}(queryable_1.QueryableInstance));
-exports.File = File;
-/**
- * Describes a collection of Version objects
- *
- */
-var Versions = (function (_super) {
-    __extends(Versions, _super);
-    /**
-     * Creates a new instance of the File class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Versions(baseUrl, path) {
-        if (path === void 0) { path = "versions"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a version by id
-     *
-     * @param versionId The id of the version to retrieve
-     */
-    Versions.prototype.getById = function (versionId) {
-        var v = new Version(this);
-        v.concat("(" + versionId + ")");
-        return v;
-    };
-    /**
-     * Deletes all the file version objects in the collection.
-     *
-     */
-    Versions.prototype.deleteAll = function () {
-        return new Versions(this, "deleteAll").post();
-    };
-    /**
-     * Deletes the specified version of the file.
-     *
-     * @param versionId The ID of the file version to delete.
-     */
-    Versions.prototype.deleteById = function (versionId) {
-        return new Versions(this, "deleteById(vid=" + versionId + ")").post();
-    };
-    /**
-     * Deletes the file version object with the specified version label.
-     *
-     * @param label The version label of the file version to delete, for example: 1.2
-     */
-    Versions.prototype.deleteByLabel = function (label) {
-        return new Versions(this, "deleteByLabel(versionlabel='" + label + "')").post();
-    };
-    /**
-     * Creates a new file version from the file specified by the version label.
-     *
-     * @param label The version label of the file version to restore, for example: 1.2
-     */
-    Versions.prototype.restoreByLabel = function (label) {
-        return new Versions(this, "restoreByLabel(versionlabel='" + label + "')").post();
-    };
-    return Versions;
-}(queryable_1.QueryableCollection));
-exports.Versions = Versions;
-/**
- * Describes a single Version instance
- *
- */
-var Version = (function (_super) {
-    __extends(Version, _super);
-    /**
-     * Creates a new instance of the Version class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     * @param path Optional, if supplied will be appended to the supplied baseUrl
-     */
-    function Version(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-    * Delete a specific version of a file.
-    *
-    * @param eTag Value used in the IF-Match header, by default "*"
-    */
-    Version.prototype.delete = function (eTag) {
-        if (eTag === void 0) { eTag = "*"; }
-        return this.post({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    return Version;
-}(queryable_1.QueryableInstance));
-exports.Version = Version;
-var CheckinType;
-(function (CheckinType) {
-    CheckinType[CheckinType["Minor"] = 0] = "Minor";
-    CheckinType[CheckinType["Major"] = 1] = "Major";
-    CheckinType[CheckinType["Overwrite"] = 2] = "Overwrite";
-})(CheckinType = exports.CheckinType || (exports.CheckinType = {}));
-var WebPartsPersonalizationScope;
-(function (WebPartsPersonalizationScope) {
-    WebPartsPersonalizationScope[WebPartsPersonalizationScope["User"] = 0] = "User";
-    WebPartsPersonalizationScope[WebPartsPersonalizationScope["Shared"] = 1] = "Shared";
-})(WebPartsPersonalizationScope = exports.WebPartsPersonalizationScope || (exports.WebPartsPersonalizationScope = {}));
-var MoveOperations;
-(function (MoveOperations) {
-    MoveOperations[MoveOperations["Overwrite"] = 1] = "Overwrite";
-    MoveOperations[MoveOperations["AllowBrokenThickets"] = 8] = "AllowBrokenThickets";
-})(MoveOperations = exports.MoveOperations || (exports.MoveOperations = {}));
-var TemplateFileType;
-(function (TemplateFileType) {
-    TemplateFileType[TemplateFileType["StandardPage"] = 0] = "StandardPage";
-    TemplateFileType[TemplateFileType["WikiPage"] = 1] = "WikiPage";
-    TemplateFileType[TemplateFileType["FormPage"] = 2] = "FormPage";
-})(TemplateFileType = exports.TemplateFileType || (exports.TemplateFileType = {}));
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var items_1 = __webpack_require__(23);
-var views_1 = __webpack_require__(45);
-var contenttypes_1 = __webpack_require__(11);
-var fields_1 = __webpack_require__(21);
-var forms_1 = __webpack_require__(40);
-var subscriptions_1 = __webpack_require__(43);
-var queryable_1 = __webpack_require__(1);
-var queryablesecurable_1 = __webpack_require__(12);
-var util_1 = __webpack_require__(0);
-var usercustomactions_1 = __webpack_require__(15);
-var odata_1 = __webpack_require__(3);
-var exceptions_1 = __webpack_require__(2);
-/**
- * Describes a collection of List objects
- *
- */
-var Lists = (function (_super) {
-    __extends(Lists, _super);
-    /**
-     * Creates a new instance of the Lists class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Lists(baseUrl, path) {
-        if (path === void 0) { path = "lists"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a list from the collection by title
-     *
-     * @param title The title of the list
-     */
-    Lists.prototype.getByTitle = function (title) {
-        return new List(this, "getByTitle('" + title + "')");
-    };
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the list (GUID)
-     */
-    Lists.prototype.getById = function (id) {
-        var list = new List(this);
-        list.concat("('" + id + "')");
-        return list;
-    };
-    /**
-     * Adds a new list to the collection
-     *
-     * @param title The new list's title
-     * @param description The new list's description
-     * @param template The list template value
-     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
-     * @param additionalSettings Will be passed as part of the list creation body
-     */
-    Lists.prototype.add = function (title, description, template, enableContentTypes, additionalSettings) {
-        var _this = this;
-        if (description === void 0) { description = ""; }
-        if (template === void 0) { template = 100; }
-        if (enableContentTypes === void 0) { enableContentTypes = false; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        var addSettings = util_1.Util.extend({
-            "AllowContentTypes": enableContentTypes,
-            "BaseTemplate": template,
-            "ContentTypesEnabled": enableContentTypes,
-            "Description": description,
-            "Title": title,
-            "__metadata": { "type": "SP.List" },
-        }, additionalSettings);
-        return this.post({ body: JSON.stringify(addSettings) }).then(function (data) {
-            return { data: data, list: _this.getByTitle(addSettings.Title) };
-        });
-    };
-    /**
-     * Ensures that the specified list exists in the collection (note: this method not supported for batching)
-     *
-     * @param title The new list's title
-     * @param description The new list's description
-     * @param template The list template value
-     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
-     * @param additionalSettings Will be passed as part of the list creation body or used to update an existing list
-     */
-    Lists.prototype.ensure = function (title, description, template, enableContentTypes, additionalSettings) {
-        var _this = this;
-        if (description === void 0) { description = ""; }
-        if (template === void 0) { template = 100; }
-        if (enableContentTypes === void 0) { enableContentTypes = false; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        if (this.hasBatch) {
-            throw new exceptions_1.NotSupportedInBatchException("The ensure list method");
-        }
-        return new Promise(function (resolve, reject) {
-            var addOrUpdateSettings = util_1.Util.extend(additionalSettings, { Title: title, Description: description, ContentTypesEnabled: enableContentTypes }, true);
-            var list = _this.getByTitle(addOrUpdateSettings.Title);
-            list.get().then(function (_) {
-                list.update(addOrUpdateSettings).then(function (d) {
-                    resolve({ created: false, data: d, list: _this.getByTitle(addOrUpdateSettings.Title) });
-                }).catch(function (e) { return reject(e); });
-            }).catch(function (_) {
-                _this.add(title, description, template, enableContentTypes, addOrUpdateSettings).then(function (r) {
-                    resolve({ created: true, data: r.data, list: _this.getByTitle(addOrUpdateSettings.Title) });
-                }).catch(function (e) { return reject(e); });
-            });
-        });
-    };
-    /**
-     * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
-     */
-    Lists.prototype.ensureSiteAssetsLibrary = function () {
-        var q = new Lists(this, "ensuresiteassetslibrary");
-        return q.post().then(function (json) {
-            return new List(odata_1.extractOdataId(json));
-        });
-    };
-    /**
-     * Gets a list that is the default location for wiki pages.
-     */
-    Lists.prototype.ensureSitePagesLibrary = function () {
-        var q = new Lists(this, "ensuresitepageslibrary");
-        return q.post().then(function (json) {
-            return new List(odata_1.extractOdataId(json));
-        });
-    };
-    return Lists;
-}(queryable_1.QueryableCollection));
-exports.Lists = Lists;
-/**
- * Describes a single List instance
- *
- */
-var List = (function (_super) {
-    __extends(List, _super);
-    /**
-     * Creates a new instance of the Lists class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     * @param path Optional, if supplied will be appended to the supplied baseUrl
-     */
-    function List(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    Object.defineProperty(List.prototype, "contentTypes", {
-        /**
-         * Gets the content types in this list
-         *
-         */
-        get: function () {
-            return new contenttypes_1.ContentTypes(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "items", {
-        /**
-         * Gets the items in this list
-         *
-         */
-        get: function () {
-            return new items_1.Items(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "views", {
-        /**
-         * Gets the views in this list
-         *
-         */
-        get: function () {
-            return new views_1.Views(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "fields", {
-        /**
-         * Gets the fields in this list
-         *
-         */
-        get: function () {
-            return new fields_1.Fields(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "forms", {
-        /**
-         * Gets the forms in this list
-         *
-         */
-        get: function () {
-            return new forms_1.Forms(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "defaultView", {
-        /**
-         * Gets the default view of this list
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableInstance(this, "DefaultView");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "userCustomActions", {
-        /**
-         * Get all custom actions on a site collection
-         *
-         */
-        get: function () {
-            return new usercustomactions_1.UserCustomActions(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "effectiveBasePermissions", {
-        /**
-         * Gets the effective base permissions of this list
-         *
-         */
-        get: function () {
-            return new queryable_1.Queryable(this, "EffectiveBasePermissions");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "eventReceivers", {
-        /**
-         * Gets the event receivers attached to this list
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableCollection(this, "EventReceivers");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "relatedFields", {
-        /**
-         * Gets the related fields of this list
-         *
-         */
-        get: function () {
-            return new queryable_1.Queryable(this, "getRelatedFields");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "informationRightsManagementSettings", {
-        /**
-         * Gets the IRM settings for this list
-         *
-         */
-        get: function () {
-            return new queryable_1.Queryable(this, "InformationRightsManagementSettings");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "subscriptions", {
-        /**
-         * Gets the webhook subscriptions of this list
-         *
-         */
-        get: function () {
-            return new subscriptions_1.Subscriptions(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets a view by view guid id
-     *
-     */
-    List.prototype.getView = function (viewId) {
-        return new views_1.View(this, "getView('" + viewId + "')");
-    };
-    /**
-     * Updates this list intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the list
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    /* tslint:disable no-string-literal */
-    List.prototype.update = function (properties, eTag) {
-        var _this = this;
-        if (eTag === void 0) { eTag = "*"; }
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "__metadata": { "type": "SP.List" },
-        }, properties));
-        return this.post({
-            body: postBody,
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            var retList = _this;
-            if (properties.hasOwnProperty("Title")) {
-                retList = _this.getParent(List, _this.parentUrl, "getByTitle('" + properties["Title"] + "')");
-            }
-            return {
-                data: data,
-                list: retList,
-            };
-        });
-    };
-    /* tslint:enable */
-    /**
-     * Delete this list
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    List.prototype.delete = function (eTag) {
-        if (eTag === void 0) { eTag = "*"; }
-        return this.post({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
-     */
-    List.prototype.getChanges = function (query) {
-        var postBody = JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
-        // don't change "this" instance of the List, make a new one
-        var q = new List(this, "getchanges");
-        return q.post({ body: postBody });
-    };
-    /**
-     * Returns a collection of items from the list based on the specified query.
-     *
-     * @param CamlQuery The Query schema of Collaborative Application Markup
-     * Language (CAML) is used in various ways within the context of Microsoft SharePoint Foundation
-     * to define queries against list data.
-     * see:
-     *
-     * https://msdn.microsoft.com/en-us/library/office/ms467521.aspx
-     *
-     * @param expands A URI with a $expand System Query Option indicates that Entries associated with
-     * the Entry or Collection of Entries identified by the Resource Path
-     * section of the URI must be represented inline (i.e. eagerly loaded).
-     * see:
-     *
-     * https://msdn.microsoft.com/en-us/library/office/fp142385.aspx
-     *
-     * http://www.odata.org/documentation/odata-version-2-0/uri-conventions/#ExpandSystemQueryOption
-     */
-    List.prototype.getItemsByCAMLQuery = function (query) {
-        var expands = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            expands[_i - 1] = arguments[_i];
-        }
-        var postBody = JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) });
-        // don't change "this" instance of the List, make a new one
-        var q = new List(this, "getitems");
-        return q.expand.apply(q, expands).post({ body: postBody });
-    };
-    /**
-     * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
-     */
-    List.prototype.getListItemChangesSinceToken = function (query) {
-        var postBody = JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) });
-        // don't change "this" instance of the List, make a new one
-        var q = new List(this, "getlistitemchangessincetoken");
-        // note we are using a custom parser to return text as the response is an xml doc
-        return q.post({ body: postBody }, { parse: function (r) { return r.text(); } });
-    };
-    /**
-     * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
-     */
-    List.prototype.recycle = function () {
-        this.append("recycle");
-        return this.post().then(function (data) {
-            if (data.hasOwnProperty("Recycle")) {
-                return data.Recycle;
-            }
-            else {
-                return data;
-            }
-        });
-    };
-    /**
-     * Renders list data based on the view xml provided
-     */
-    List.prototype.renderListData = function (viewXml) {
-        // don't change "this" instance of the List, make a new one
-        var q = new List(this, "renderlistdata(@viewXml)");
-        q.query.add("@viewXml", "'" + viewXml + "'");
-        return q.post().then(function (data) {
-            // data will be a string, so we parse it again
-            data = JSON.parse(data);
-            if (data.hasOwnProperty("RenderListData")) {
-                return data.RenderListData;
-            }
-            else {
-                return data;
-            }
-        });
-    };
-    /**
-     * Gets the field values and field schema attributes for a list item.
-     */
-    List.prototype.renderListFormData = function (itemId, formId, mode) {
-        // don't change "this" instance of the List, make a new one
-        var q = new List(this, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode=" + mode + ")");
-        return q.post().then(function (data) {
-            // data will be a string, so we parse it again
-            data = JSON.parse(data);
-            if (data.hasOwnProperty("ListData")) {
-                return data.ListData;
-            }
-            else {
-                return data;
-            }
-        });
-    };
-    /**
-     * Reserves a list item ID for idempotent list item creation.
-     */
-    List.prototype.reserveListItemId = function () {
-        // don't change "this" instance of the List, make a new one
-        var q = new List(this, "reservelistitemid");
-        return q.post().then(function (data) {
-            if (data.hasOwnProperty("ReserveListItemId")) {
-                return data.ReserveListItemId;
-            }
-            else {
-                return data;
-            }
-        });
-    };
-    /**
-     * Returns the ListItemEntityTypeFullName for this list, used when adding/updating list items
-     *
-     */
-    List.prototype.getListItemEntityTypeFullName = function () {
-        var q = new queryable_1.QueryableInstance(this);
-        return q.select("ListItemEntityTypeFullName").getAs().then(function (o) { return o.ListItemEntityTypeFullName; });
-    };
-    return List;
-}(queryablesecurable_1.QueryableSecurable));
-exports.List = List;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-/**
- * A wrapper class to provide a consistent interface to browser based storage
- *
- */
-var PnPClientStorageWrapper = (function () {
-    /**
-     * Creates a new instance of the PnPClientStorageWrapper class
-     *
-     * @constructor
-     */
-    function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
-        this.store = store;
-        this.defaultTimeoutMinutes = defaultTimeoutMinutes;
-        this.defaultTimeoutMinutes = (defaultTimeoutMinutes === void 0) ? 5 : defaultTimeoutMinutes;
-        this.enabled = this.test();
-    }
-    /**
-     * Get a value from storage, or null if that value does not exist
-     *
-     * @param key The key whose value we want to retrieve
-     */
-    PnPClientStorageWrapper.prototype.get = function (key) {
-        if (!this.enabled) {
-            return null;
-        }
-        var o = this.store.getItem(key);
-        if (o == null) {
-            return null;
-        }
-        var persistable = JSON.parse(o);
-        if (new Date(persistable.expiration) <= new Date()) {
-            this.delete(key);
-            return null;
-        }
-        else {
-            return persistable.value;
-        }
-    };
-    /**
-     * Adds a value to the underlying storage
-     *
-     * @param key The key to use when storing the provided value
-     * @param o The value to store
-     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-     */
-    PnPClientStorageWrapper.prototype.put = function (key, o, expire) {
-        if (this.enabled) {
-            this.store.setItem(key, this.createPersistable(o, expire));
-        }
-    };
-    /**
-     * Deletes a value from the underlying storage
-     *
-     * @param key The key of the pair we want to remove from storage
-     */
-    PnPClientStorageWrapper.prototype.delete = function (key) {
-        if (this.enabled) {
-            this.store.removeItem(key);
-        }
-    };
-    /**
-     * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
-     *
-     * @param key The key to use when storing the provided value
-     * @param getter A function which will upon execution provide the desired value
-     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-     */
-    PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
-        var _this = this;
-        if (!this.enabled) {
-            return getter();
-        }
-        return new Promise(function (resolve) {
-            var o = _this.get(key);
-            if (o == null) {
-                getter().then(function (d) {
-                    _this.put(key, d, expire);
-                    resolve(d);
-                });
-            }
-            else {
-                resolve(o);
-            }
-        });
-    };
-    /**
-     * Used to determine if the wrapped storage is available currently
-     */
-    PnPClientStorageWrapper.prototype.test = function () {
-        var str = "test";
-        try {
-            this.store.setItem(str, str);
-            this.store.removeItem(str);
-            return true;
-        }
-        catch (e) {
-            return false;
-        }
-    };
-    /**
-     * Creates the persistable to store
-     */
-    PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
-        if (typeof expire === "undefined") {
-            expire = util_1.Util.dateAdd(new Date(), "minute", this.defaultTimeoutMinutes);
-        }
-        return JSON.stringify({ expiration: expire, value: o });
-    };
-    return PnPClientStorageWrapper;
-}());
-exports.PnPClientStorageWrapper = PnPClientStorageWrapper;
-/**
- * A class that will establish wrappers for both local and session storage
- */
-var PnPClientStorage = (function () {
-    /**
-     * Creates a new instance of the PnPClientStorage class
-     *
-     * @constructor
-     */
-    function PnPClientStorage() {
-        this.local = typeof localStorage !== "undefined" ? new PnPClientStorageWrapper(localStorage) : null;
-        this.session = typeof sessionStorage !== "undefined" ? new PnPClientStorageWrapper(sessionStorage) : null;
-    }
-    return PnPClientStorage;
-}());
-exports.PnPClientStorage = PnPClientStorage;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var digestcache_1 = __webpack_require__(36);
-var util_1 = __webpack_require__(0);
-var pnplibconfig_1 = __webpack_require__(4);
-var exceptions_1 = __webpack_require__(2);
-var HttpClient = (function () {
-    function HttpClient() {
-        this._impl = pnplibconfig_1.RuntimeConfig.fetchClientFactory();
-        this._digestCache = new digestcache_1.DigestCache(this);
-    }
-    HttpClient.prototype.fetch = function (url, options) {
-        var _this = this;
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
-        var headers = new Headers();
-        // first we add the global headers so they can be overwritten by any passed in locally to this call
-        this.mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.headers);
-        // second we add the local options so we can overwrite the globals
-        this.mergeHeaders(headers, options.headers);
-        // lastly we apply any default headers we need that may not exist
-        if (!headers.has("Accept")) {
-            headers.append("Accept", "application/json");
-        }
-        if (!headers.has("Content-Type")) {
-            headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
-        }
-        if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:2.0.2");
-        }
-        opts = util_1.Util.extend(opts, { headers: headers });
-        if (opts.method && opts.method.toUpperCase() !== "GET") {
-            if (!headers.has("X-RequestDigest")) {
-                var index = url.indexOf("_api/");
-                if (index < 0) {
-                    throw new exceptions_1.APIUrlException();
-                }
-                var webUrl = url.substr(0, index);
-                return this._digestCache.getDigest(webUrl)
-                    .then(function (digest) {
-                    headers.append("X-RequestDigest", digest);
-                    return _this.fetchRaw(url, opts);
-                });
-            }
-        }
-        return this.fetchRaw(url, opts);
-    };
-    HttpClient.prototype.fetchRaw = function (url, options) {
-        var _this = this;
-        if (options === void 0) { options = {}; }
-        // here we need to normalize the headers
-        var rawHeaders = new Headers();
-        this.mergeHeaders(rawHeaders, options.headers);
-        options = util_1.Util.extend(options, { headers: rawHeaders });
-        var retry = function (ctx) {
-            _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
-                // grab our current delay
-                var delay = ctx.delay;
-                // Check if request was throttled - http status code 429
-                // Check is request failed due to server unavailable - http status code 503
-                if (response.status !== 429 && response.status !== 503) {
-                    ctx.reject(response);
-                }
-                // Increment our counters.
-                ctx.delay *= 2;
-                ctx.attempts++;
-                // If we have exceeded the retry count, reject.
-                if (ctx.retryCount <= ctx.attempts) {
-                    ctx.reject(response);
-                }
-                // Set our retry timeout for {delay} milliseconds.
-                setTimeout(util_1.Util.getCtxCallback(_this, retry, ctx), delay);
-            });
-        };
-        return new Promise(function (resolve, reject) {
-            var retryContext = {
-                attempts: 0,
-                delay: 100,
-                reject: reject,
-                resolve: resolve,
-                retryCount: 7,
-            };
-            retry.call(_this, retryContext);
-        });
-    };
-    HttpClient.prototype.get = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "GET" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.post = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "POST" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.patch = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "PATCH" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.delete = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "DELETE" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.mergeHeaders = function (target, source) {
-        if (typeof source !== "undefined" && source !== null) {
-            var temp = new Request("", { headers: source });
-            temp.headers.forEach(function (value, name) {
-                target.append(name, value);
-            });
-        }
-    };
-    return HttpClient;
-}());
-exports.HttpClient = HttpClient;
-;
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-var queryable_1 = __webpack_require__(1);
-/**
- * Describes a collection of content types
- *
- */
-var ContentTypes = (function (_super) {
-    __extends(ContentTypes, _super);
-    /**
-     * Creates a new instance of the ContentTypes class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this content types collection
-     */
-    function ContentTypes(baseUrl, path) {
-        if (path === void 0) { path = "contenttypes"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a ContentType by content type id
-     */
-    ContentTypes.prototype.getById = function (id) {
-        var ct = new ContentType(this);
-        ct.concat("('" + id + "')");
-        return ct;
-    };
-    /**
-     * Adds an existing contenttype to a content type collection
-     *
-     * @param contentTypeId in the following format, for example: 0x010102
-     */
-    ContentTypes.prototype.addAvailableContentType = function (contentTypeId) {
-        var _this = this;
-        var postBody = JSON.stringify({
-            "contentTypeId": contentTypeId,
-        });
-        return new ContentTypes(this, "addAvailableContentType").postAs({ body: postBody }).then(function (data) {
-            return {
-                contentType: _this.getById(data.id),
-                data: data,
-            };
-        });
-    };
-    /**
-     * Adds a new content type to the collection
-     *
-     * @param id The desired content type id for the new content type (also determines the parent content type)
-     * @param name The name of the content type
-     * @param description The description of the content type
-     * @param group The group in which to add the content type
-     * @param additionalSettings Any additional settings to provide when creating the content type
-     *
-     */
-    ContentTypes.prototype.add = function (id, name, description, group, additionalSettings) {
-        var _this = this;
-        if (description === void 0) { description = ""; }
-        if (group === void 0) { group = "Custom Content Types"; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "Description": description,
-            "Group": group,
-            "Id": { "StringValue": id },
-            "Name": name,
-            "__metadata": { "type": "SP.ContentType" },
-        }, additionalSettings));
-        return this.post({ body: postBody }).then(function (data) {
-            return { contentType: _this.getById(data.id), data: data };
-        });
-    };
-    return ContentTypes;
-}(queryable_1.QueryableCollection));
-exports.ContentTypes = ContentTypes;
-/**
- * Describes a single ContentType instance
- *
- */
-var ContentType = (function (_super) {
-    __extends(ContentType, _super);
-    /**
-     * Creates a new instance of the ContentType class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this content type instance
-     */
-    function ContentType(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    Object.defineProperty(ContentType.prototype, "fieldLinks", {
-        /**
-         * Gets the column (also known as field) references in the content type.
-        */
-        get: function () {
-            return new FieldLinks(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ContentType.prototype, "fields", {
-        /**
-         * Gets a value that specifies the collection of fields for the content type.
-         */
-        get: function () {
-            return new queryable_1.QueryableCollection(this, "fields");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ContentType.prototype, "parent", {
-        /**
-         * Gets the parent content type of the content type.
-         */
-        get: function () {
-            return new ContentType(this, "parent");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ContentType.prototype, "workflowAssociations", {
-        /**
-         * Gets a value that specifies the collection of workflow associations for the content type.
-         */
-        get: function () {
-            return new queryable_1.QueryableCollection(this, "workflowAssociations");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return ContentType;
-}(queryable_1.QueryableInstance));
-exports.ContentType = ContentType;
-/**
- * Represents a collection of field link instances
- */
-var FieldLinks = (function (_super) {
-    __extends(FieldLinks, _super);
-    /**
-     * Creates a new instance of the ContentType class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this content type instance
-     */
-    function FieldLinks(baseUrl, path) {
-        if (path === void 0) { path = "fieldlinks"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a FieldLink by GUID id
-     *
-     * @param id The GUID id of the field link
-     */
-    FieldLinks.prototype.getById = function (id) {
-        var fl = new FieldLink(this);
-        fl.concat("(guid'" + id + "')");
-        return fl;
-    };
-    return FieldLinks;
-}(queryable_1.QueryableCollection));
-exports.FieldLinks = FieldLinks;
-/**
- * Represents a field link instance
- */
-var FieldLink = (function (_super) {
-    __extends(FieldLink, _super);
-    /**
-     * Creates a new instance of the ContentType class
-    *
-    * @param baseUrl The url or Queryable which forms the parent of this content type instance
-    */
-    function FieldLink(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    return FieldLink;
-}(queryable_1.QueryableInstance));
-exports.FieldLink = FieldLink;
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var roles_1 = __webpack_require__(13);
-var queryable_1 = __webpack_require__(1);
-var QueryableSecurable = (function (_super) {
-    __extends(QueryableSecurable, _super);
-    function QueryableSecurable() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(QueryableSecurable.prototype, "roleAssignments", {
-        /**
-         * Gets the set of role assignments for this item
-         *
-         */
-        get: function () {
-            return new roles_1.RoleAssignments(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryableSecurable.prototype, "firstUniqueAncestorSecurableObject", {
-        /**
-         * Gets the closest securable up the security hierarchy whose permissions are applied to this list item
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableInstance(this, "FirstUniqueAncestorSecurableObject");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets the effective permissions for the user supplied
-     *
-     * @param loginName The claims username for the user (ex: i:0#.f|membership|user@domain.com)
-     */
-    QueryableSecurable.prototype.getUserEffectivePermissions = function (loginName) {
-        var perms = new queryable_1.Queryable(this, "getUserEffectivePermissions(@user)");
-        perms.query.add("@user", "'" + encodeURIComponent(loginName) + "'");
-        return perms;
-    };
-    /**
-     * Breaks the security inheritance at this level optinally copying permissions and clearing subscopes
-     *
-     * @param copyRoleAssignments If true the permissions are copied from the current parent scope
-     * @param clearSubscopes Optional. true to make all child securable objects inherit role assignments from the current object
-     */
-    QueryableSecurable.prototype.breakRoleInheritance = function (copyRoleAssignments, clearSubscopes) {
-        if (copyRoleAssignments === void 0) { copyRoleAssignments = false; }
-        if (clearSubscopes === void 0) { clearSubscopes = false; }
-        var Breaker = (function (_super) {
-            __extends(Breaker, _super);
-            function Breaker(baseUrl, copy, clear) {
-                return _super.call(this, baseUrl, "breakroleinheritance(copyroleassignments=" + copy + ", clearsubscopes=" + clear + ")") || this;
-            }
-            Breaker.prototype.break = function () {
-                return this.post();
-            };
-            return Breaker;
-        }(queryable_1.Queryable));
-        var b = new Breaker(this, copyRoleAssignments, clearSubscopes);
-        return b.break();
-    };
-    /**
-     * Removes the local role assignments so that it re-inherit role assignments from the parent object.
-     *
-     */
-    QueryableSecurable.prototype.resetRoleInheritance = function () {
-        var Resetter = (function (_super) {
-            __extends(Resetter, _super);
-            function Resetter(baseUrl) {
-                return _super.call(this, baseUrl, "resetroleinheritance") || this;
-            }
-            Resetter.prototype.reset = function () {
-                return this.post();
-            };
-            return Resetter;
-        }(queryable_1.Queryable));
-        var r = new Resetter(this);
-        return r.reset();
-    };
-    return QueryableSecurable;
-}(queryable_1.QueryableInstance));
-exports.QueryableSecurable = QueryableSecurable;
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var sitegroups_1 = __webpack_require__(14);
-var util_1 = __webpack_require__(0);
-/**
- * Describes a set of role assignments for the current scope
- *
- */
-var RoleAssignments = (function (_super) {
-    __extends(RoleAssignments, _super);
-    /**
-     * Creates a new instance of the RoleAssignments class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function RoleAssignments(baseUrl, path) {
-        if (path === void 0) { path = "roleassignments"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Adds a new role assignment with the specified principal and role definitions to the collection.
-     *
-     * @param principalId The ID of the user or group to assign permissions to
-     * @param roleDefId The ID of the role definition that defines the permissions to assign
-     *
-     */
-    RoleAssignments.prototype.add = function (principalId, roleDefId) {
-        var a = new RoleAssignments(this, "addroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")");
-        return a.post();
-    };
-    /**
-     * Removes the role assignment with the specified principal and role definition from the collection
-     *
-     * @param principalId The ID of the user or group in the role assignment.
-     * @param roleDefId The ID of the role definition in the role assignment
-     *
-     */
-    RoleAssignments.prototype.remove = function (principalId, roleDefId) {
-        var a = new RoleAssignments(this, "removeroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")");
-        return a.post();
-    };
-    /**
-     * Gets the role assignment associated with the specified principal ID from the collection.
-     *
-     * @param id The id of the role assignment
-     */
-    RoleAssignments.prototype.getById = function (id) {
-        var ra = new RoleAssignment(this);
-        ra.concat("(" + id + ")");
-        return ra;
-    };
-    return RoleAssignments;
-}(queryable_1.QueryableCollection));
-exports.RoleAssignments = RoleAssignments;
-var RoleAssignment = (function (_super) {
-    __extends(RoleAssignment, _super);
-    /**
- * Creates a new instance of the RoleAssignment class
- *
- * @param baseUrl The url or Queryable which forms the parent of this fields collection
- */
-    function RoleAssignment(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    Object.defineProperty(RoleAssignment.prototype, "groups", {
-        get: function () {
-            return new sitegroups_1.SiteGroups(this, "groups");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RoleAssignment.prototype, "bindings", {
-        /**
-         * Get the role definition bindings for this role assignment
-         *
-         */
-        get: function () {
-            return new RoleDefinitionBindings(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Delete this role assignment
-     *
-     */
-    RoleAssignment.prototype.delete = function () {
-        return this.post({
-            headers: {
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    return RoleAssignment;
-}(queryable_1.QueryableInstance));
-exports.RoleAssignment = RoleAssignment;
-var RoleDefinitions = (function (_super) {
-    __extends(RoleDefinitions, _super);
-    /**
-     * Creates a new instance of the RoleDefinitions class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     * @param path
-     *
-     */
-    function RoleDefinitions(baseUrl, path) {
-        if (path === void 0) { path = "roledefinitions"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets the role definition with the specified ID from the collection.
-     *
-     * @param id The ID of the role definition.
-     *
-     */
-    RoleDefinitions.prototype.getById = function (id) {
-        return new RoleDefinition(this, "getById(" + id + ")");
-    };
-    /**
-     * Gets the role definition with the specified name.
-     *
-     * @param name The name of the role definition.
-     *
-     */
-    RoleDefinitions.prototype.getByName = function (name) {
-        return new RoleDefinition(this, "getbyname('" + name + "')");
-    };
-    /**
-     * Gets the role definition with the specified type.
-     *
-     * @param name The name of the role definition.
-     *
-     */
-    RoleDefinitions.prototype.getByType = function (roleTypeKind) {
-        return new RoleDefinition(this, "getbytype(" + roleTypeKind + ")");
-    };
-    /**
-     * Create a role definition
-     *
-     * @param name The new role definition's name
-     * @param description The new role definition's description
-     * @param order The order in which the role definition appears
-     * @param basePermissions The permissions mask for this role definition
-     *
-     */
-    RoleDefinitions.prototype.add = function (name, description, order, basePermissions) {
-        var _this = this;
-        var postBody = JSON.stringify({
-            BasePermissions: util_1.Util.extend({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
-            Description: description,
-            Name: name,
-            Order: order,
-            __metadata: { "type": "SP.RoleDefinition" },
-        });
-        return this.post({ body: postBody }).then(function (data) {
-            return {
-                data: data,
-                definition: _this.getById(data.Id),
-            };
-        });
-    };
-    return RoleDefinitions;
-}(queryable_1.QueryableCollection));
-exports.RoleDefinitions = RoleDefinitions;
-var RoleDefinition = (function (_super) {
-    __extends(RoleDefinition, _super);
-    function RoleDefinition(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Updates this web intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the web
-     */
-    /* tslint:disable no-string-literal */
-    RoleDefinition.prototype.update = function (properties) {
-        var _this = this;
-        if (typeof properties.hasOwnProperty("BasePermissions") !== "undefined") {
-            properties["BasePermissions"] = util_1.Util.extend({ __metadata: { type: "SP.BasePermissions" } }, properties["BasePermissions"]);
-        }
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "__metadata": { "type": "SP.RoleDefinition" },
-        }, properties));
-        return this.post({
-            body: postBody,
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            var retDef = _this;
-            if (properties.hasOwnProperty("Name")) {
-                var parent_1 = _this.getParent(RoleDefinitions, _this.parentUrl, "");
-                retDef = parent_1.getByName(properties["Name"]);
-            }
-            return {
-                data: data,
-                definition: retDef,
-            };
-        });
-    };
-    /* tslint:enable */
-    /**
-     * Delete this role definition
-     *
-     */
-    RoleDefinition.prototype.delete = function () {
-        return this.post({
-            headers: {
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    return RoleDefinition;
-}(queryable_1.QueryableInstance));
-exports.RoleDefinition = RoleDefinition;
-var RoleDefinitionBindings = (function (_super) {
-    __extends(RoleDefinitionBindings, _super);
-    function RoleDefinitionBindings(baseUrl, path) {
-        if (path === void 0) { path = "roledefinitionbindings"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    return RoleDefinitionBindings;
-}(queryable_1.QueryableCollection));
-exports.RoleDefinitionBindings = RoleDefinitionBindings;
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var siteusers_1 = __webpack_require__(28);
-var util_1 = __webpack_require__(0);
-/**
- * Principal Type enum
- *
- */
-var PrincipalType;
-(function (PrincipalType) {
-    PrincipalType[PrincipalType["None"] = 0] = "None";
-    PrincipalType[PrincipalType["User"] = 1] = "User";
-    PrincipalType[PrincipalType["DistributionList"] = 2] = "DistributionList";
-    PrincipalType[PrincipalType["SecurityGroup"] = 4] = "SecurityGroup";
-    PrincipalType[PrincipalType["SharePointGroup"] = 8] = "SharePointGroup";
-    PrincipalType[PrincipalType["All"] = 15] = "All";
-})(PrincipalType = exports.PrincipalType || (exports.PrincipalType = {}));
-/**
- * Describes a collection of site users
- *
- */
-var SiteGroups = (function (_super) {
-    __extends(SiteGroups, _super);
-    /**
-     * Creates a new instance of the SiteUsers class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this user collection
-     */
-    function SiteGroups(baseUrl, path) {
-        if (path === void 0) { path = "sitegroups"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Adds a new group to the site collection
-     *
-     * @param props The properties to be updated
-     */
-    SiteGroups.prototype.add = function (properties) {
-        var _this = this;
-        var postBody = JSON.stringify(util_1.Util.extend({ "__metadata": { "type": "SP.Group" } }, properties));
-        return this.post({ body: postBody }).then(function (data) {
-            return {
-                data: data,
-                group: _this.getById(data.Id),
-            };
-        });
-    };
-    /**
-     * Gets a group from the collection by name
-     *
-     * @param email The name of the group
-     */
-    SiteGroups.prototype.getByName = function (groupName) {
-        return new SiteGroup(this, "getByName('" + groupName + "')");
-    };
-    /**
-     * Gets a group from the collection by id
-     *
-     * @param id The id of the group
-     */
-    SiteGroups.prototype.getById = function (id) {
-        var sg = new SiteGroup(this);
-        sg.concat("(" + id + ")");
-        return sg;
-    };
-    /**
-     * Removes the group with the specified member ID from the collection.
-     *
-     * @param id The id of the group to remove
-     */
-    SiteGroups.prototype.removeById = function (id) {
-        var g = new SiteGroups(this, "removeById('" + id + "')");
-        return g.post();
-    };
-    /**
-     * Removes a user from the collection by login name
-     *
-     * @param loginName The login name of the user
-     */
-    SiteGroups.prototype.removeByLoginName = function (loginName) {
-        var g = new SiteGroups(this, "removeByLoginName('" + loginName + "')");
-        return g.post();
-    };
-    return SiteGroups;
-}(queryable_1.QueryableCollection));
-exports.SiteGroups = SiteGroups;
-/**
- * Describes a single group
- *
- */
-var SiteGroup = (function (_super) {
-    __extends(SiteGroup, _super);
-    /**
-     * Creates a new instance of the Group class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this site group
-     * @param path Optional, passes the path to the group
-     */
-    function SiteGroup(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    Object.defineProperty(SiteGroup.prototype, "users", {
-        /**
-         * Get's the users for this group
-         *
-         */
-        get: function () {
-            return new siteusers_1.SiteUsers(this, "users");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-    * Updates this group instance with the supplied properties
-    *
-    * @param properties A GroupWriteableProperties object of property names and values to update for the user
-    */
-    /* tslint:disable no-string-literal */
-    SiteGroup.prototype.update = function (properties) {
-        var _this = this;
-        var postBody = util_1.Util.extend({ "__metadata": { "type": "SP.Group" } }, properties);
-        return this.post({
-            body: JSON.stringify(postBody),
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            var retGroup = _this;
-            if (properties.hasOwnProperty("Title")) {
-                retGroup = _this.getParent(SiteGroup, _this.parentUrl, "getByName('" + properties["Title"] + "')");
-            }
-            return {
-                data: data,
-                group: retGroup,
-            };
-        });
-    };
-    return SiteGroup;
-}(queryable_1.QueryableInstance));
-exports.SiteGroup = SiteGroup;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var util_1 = __webpack_require__(0);
-var UserCustomActions = (function (_super) {
-    __extends(UserCustomActions, _super);
-    function UserCustomActions(baseUrl, path) {
-        if (path === void 0) { path = "usercustomactions"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Returns the custom action with the specified identifier.
-     *
-     * @param id The GUID ID of the user custom action to get.
-     */
-    UserCustomActions.prototype.getById = function (id) {
-        var uca = new UserCustomAction(this);
-        uca.concat("('" + id + "')");
-        return uca;
-    };
-    /**
-     * Create a custom action
-     *
-     * @param creationInfo The information which defines the new custom action
-     *
-     */
-    UserCustomActions.prototype.add = function (properties) {
-        var _this = this;
-        var postBody = JSON.stringify(util_1.Util.extend({ __metadata: { "type": "SP.UserCustomAction" } }, properties));
-        return this.post({ body: postBody }).then(function (data) {
-            return {
-                action: _this.getById(data.Id),
-                data: data,
-            };
-        });
-    };
-    /**
-     * Deletes all custom actions in the collection.
-     *
-     */
-    UserCustomActions.prototype.clear = function () {
-        var a = new UserCustomActions(this, "clear");
-        return a.post();
-    };
-    return UserCustomActions;
-}(queryable_1.QueryableCollection));
-exports.UserCustomActions = UserCustomActions;
-var UserCustomAction = (function (_super) {
-    __extends(UserCustomAction, _super);
-    function UserCustomAction(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    UserCustomAction.prototype.update = function (properties) {
-        var _this = this;
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "__metadata": { "type": "SP.UserCustomAction" },
-        }, properties));
-        return this.post({
-            body: postBody,
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            return {
-                action: _this,
-                data: data,
-            };
-        });
-    };
-    /**
-    * Remove a custom action
-    *
-    */
-    UserCustomAction.prototype.delete = function () {
-        return _super.prototype.delete.call(this);
-    };
-    return UserCustomAction;
-}(queryable_1.QueryableInstance));
-exports.UserCustomAction = UserCustomAction;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var queryablesecurable_1 = __webpack_require__(12);
-var lists_1 = __webpack_require__(8);
-var fields_1 = __webpack_require__(21);
-var navigation_1 = __webpack_require__(24);
-var sitegroups_1 = __webpack_require__(14);
-var contenttypes_1 = __webpack_require__(11);
-var folders_1 = __webpack_require__(22);
-var roles_1 = __webpack_require__(13);
-var files_1 = __webpack_require__(7);
-var util_1 = __webpack_require__(0);
-var lists_2 = __webpack_require__(8);
-var siteusers_1 = __webpack_require__(28);
-var usercustomactions_1 = __webpack_require__(15);
-var odata_1 = __webpack_require__(3);
-var features_1 = __webpack_require__(20);
+var lists_2 = __webpack_require__(11);
+var siteusers_1 = __webpack_require__(30);
+var usercustomactions_1 = __webpack_require__(19);
+var odata_1 = __webpack_require__(2);
+var features_1 = __webpack_require__(23);
+var decorators_1 = __webpack_require__(31);
+var queryableshareable_1 = __webpack_require__(12);
+var relateditems_1 = __webpack_require__(46);
 var Webs = (function (_super) {
     __extends(Webs, _super);
     function Webs(baseUrl, webPath) {
@@ -3941,8 +1977,7 @@ var Webs = (function (_super) {
                 "__metadata": { "type": "SP.WebCreationInformation" },
             }, props),
         });
-        var q = new Webs(this, "add");
-        return q.post({ body: postBody }).then(function (data) {
+        return this.clone(Webs, "add", true).post({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 web: new Web(odata_1.extractOdataId(data).replace(/_api\/web\/?/i, "")),
@@ -3962,6 +1997,23 @@ var Web = (function (_super) {
         if (path === void 0) { path = "_api/web"; }
         return _super.call(this, baseUrl, path) || this;
     }
+    /**
+     * Creates a new web instance from the given url by indexing the location of the /_api/
+     * segment. If this is not found the method creates a new web with the entire string as
+     * supplied.
+     *
+     * @param url
+     */
+    Web.fromUrl = function (url, path) {
+        if (url === null) {
+            return new Web("");
+        }
+        var index = url.indexOf("_api/");
+        if (index > -1) {
+            return new Web(url.substr(0, index), path);
+        }
+        return new Web(url, path);
+    };
     Object.defineProperty(Web.prototype, "webs", {
         get: function () {
             return new Webs(this);
@@ -4100,6 +2152,17 @@ var Web = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Web.prototype, "relatedItems", {
+        /**
+         * Provides an interface to manage related items
+         *
+         */
+        get: function () {
+            return relateditems_1.RelatedItemManagerImpl.FromUrl(this.toUrl());
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Creates a new batch for requests within the context of context this web
      *
@@ -4107,6 +2170,37 @@ var Web = (function (_super) {
     Web.prototype.createBatch = function () {
         return new odata_1.ODataBatch(this.parentUrl);
     };
+    Object.defineProperty(Web.prototype, "rootFolder", {
+        /**
+         * The root folder of the web
+         */
+        get: function () {
+            return new folders_1.Folder(this, "rootFolder");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Web.prototype, "associatedOwnerGroup", {
+        get: function () {
+            return new sitegroups_1.SiteGroup(this, "associatedownergroup");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Web.prototype, "associatedMemberGroup", {
+        get: function () {
+            return new sitegroups_1.SiteGroup(this, "associatedmembergroup");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Web.prototype, "associatedVisitorGroup", {
+        get: function () {
+            return new sitegroups_1.SiteGroup(this, "associatedvisitorgroup");
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Get a folder by server relative url
      *
@@ -4175,8 +2269,7 @@ var Web = (function (_super) {
             fontSchemeUrl: fontSchemeUrl,
             shareGenerated: shareGenerated,
         });
-        var q = new Web(this, "applytheme");
-        return q.post({ body: postBody });
+        return this.clone(Web, "applytheme", true).post({ body: postBody });
     };
     /**
      * Applies the specified site definition or site template to the Web site that has no template applied to it.
@@ -4184,7 +2277,7 @@ var Web = (function (_super) {
      * @param template Name of the site definition or the name of the site template
      */
     Web.prototype.applyWebTemplate = function (template) {
-        var q = new Web(this, "applywebtemplate");
+        var q = this.clone(Web, "applywebtemplate", true);
         q.concat("(@t)");
         q.query.add("@t", template);
         return q.post();
@@ -4195,7 +2288,7 @@ var Web = (function (_super) {
      * @param perms The high and low permission range.
      */
     Web.prototype.doesUserHavePermissions = function (perms) {
-        var q = new Web(this, "doesuserhavepermissions");
+        var q = this.clone(Web, "doesuserhavepermissions", true);
         q.concat("(@p)");
         q.query.add("@p", JSON.stringify(perms));
         return q.get();
@@ -4206,12 +2299,15 @@ var Web = (function (_super) {
      * @param loginName The login name of the user (ex: i:0#.f|membership|user@domain.onmicrosoft.com)
      */
     Web.prototype.ensureUser = function (loginName) {
-        // TODO:: this should resolve to a User
         var postBody = JSON.stringify({
             logonName: loginName,
         });
-        var q = new Web(this, "ensureuser");
-        return q.post({ body: postBody });
+        return this.clone(Web, "ensureuser", true).post({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                user: new siteusers_1.SiteUser(odata_1.extractOdataId(data)),
+            };
+        });
     };
     /**
      * Returns a collection of site templates available for the site.
@@ -4231,9 +2327,7 @@ var Web = (function (_super) {
      * MasterPageCatalog = 116, SolutionCatalog = 121, ThemeCatalog = 123, DesignCatalog = 124, AppDataCatalog = 125
      */
     Web.prototype.getCatalog = function (type) {
-        var q = new Web(this, "getcatalog(" + type + ")");
-        q.select("Id");
-        return q.get().then(function (data) {
+        return this.clone(Web, "getcatalog(" + type + ")", true).select("Id").get().then(function (data) {
             return new lists_2.List(odata_1.extractOdataId(data));
         });
     };
@@ -4242,9 +2336,7 @@ var Web = (function (_super) {
      */
     Web.prototype.getChanges = function (query) {
         var postBody = JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
-        // don't change "this" instance, make a new one
-        var q = new Web(this, "getchanges");
-        return q.post({ body: postBody });
+        return this.clone(Web, "getchanges", true).post({ body: postBody });
     };
     Object.defineProperty(Web.prototype, "customListTemplate", {
         /**
@@ -4275,603 +2367,551 @@ var Web = (function (_super) {
     Web.prototype.mapToIcon = function (filename, size, progId) {
         if (size === void 0) { size = 0; }
         if (progId === void 0) { progId = ""; }
-        var q = new Web(this, "maptoicon(filename='" + filename + "', progid='" + progId + "', size=" + size + ")");
-        return q.get();
+        return this.clone(Web, "maptoicon(filename='" + filename + "', progid='" + progId + "', size=" + size + ")", true).get();
     };
     return Web;
-}(queryablesecurable_1.QueryableSecurable));
+}(queryableshareable_1.QueryableShareableWeb));
+__decorate([
+    decorators_1.deprecated("This method will be removed in future releases. Please use the methods found in queryable securable.")
+], Web.prototype, "doesUserHavePermissions", null);
 exports.Web = Web;
 
 
 /***/ }),
-/* 17 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var storage = __webpack_require__(9);
-var exceptions_1 = __webpack_require__(2);
+var queryable_1 = __webpack_require__(1);
+var odata_1 = __webpack_require__(2);
+var util_1 = __webpack_require__(0);
+var exceptions_1 = __webpack_require__(3);
+var webparts_1 = __webpack_require__(50);
+var items_1 = __webpack_require__(10);
+var queryableshareable_1 = __webpack_require__(12);
+var odata_2 = __webpack_require__(2);
 /**
- * A caching provider which can wrap other non-caching providers
+ * Describes a collection of File objects
  *
  */
-var CachingConfigurationProvider = (function () {
+var Files = (function (_super) {
+    __extends(Files, _super);
     /**
-     * Creates a new caching configuration provider
-     * @constructor
-     * @param {IConfigurationProvider} wrappedProvider Provider which will be used to fetch the configuration
-     * @param {string} cacheKey Key that will be used to store cached items to the cache
-     * @param {IPnPClientStore} cacheStore OPTIONAL storage, which will be used to store cached settings.
+     * Creates a new instance of the Files class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
      */
-    function CachingConfigurationProvider(wrappedProvider, cacheKey, cacheStore) {
-        this.wrappedProvider = wrappedProvider;
-        this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
-        this.cacheKey = "_configcache_" + cacheKey;
+    function Files(baseUrl, path) {
+        if (path === void 0) { path = "files"; }
+        return _super.call(this, baseUrl, path) || this;
     }
     /**
-     * Gets the wrapped configuration providers
+     * Gets a File by filename
      *
-     * @return {IConfigurationProvider} Wrapped configuration provider
+     * @param name The name of the file, including extension.
      */
-    CachingConfigurationProvider.prototype.getWrappedProvider = function () {
-        return this.wrappedProvider;
+    Files.prototype.getByName = function (name) {
+        var f = new File(this);
+        f.concat("('" + name + "')");
+        return f;
     };
     /**
-     * Loads the configuration values either from the cache or from the wrapped provider
+     * Uploads a file. Not supported for batching
      *
-     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
+     * @param url The folder-relative url of the file.
+     * @param content The file contents blob.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
+     * @returns The new File and the raw response.
      */
-    CachingConfigurationProvider.prototype.getConfiguration = function () {
+    Files.prototype.add = function (url, content, shouldOverWrite) {
         var _this = this;
-        // Cache not available, pass control to  the wrapped provider
-        if ((!this.store) || (!this.store.enabled)) {
-            return this.wrappedProvider.getConfiguration();
-        }
-        // Value is found in cache, return it directly
-        var cachedConfig = this.store.get(this.cacheKey);
-        if (cachedConfig) {
-            return new Promise(function (resolve) {
-                resolve(cachedConfig);
-            });
-        }
-        // Get and cache value from the wrapped provider
-        var providerPromise = this.wrappedProvider.getConfiguration();
-        providerPromise.then(function (providedConfig) {
-            _this.store.put(_this.cacheKey, providedConfig);
+        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
+        return new Files(this, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')")
+            .post({
+            body: content,
+        }).then(function (response) {
+            return {
+                data: response,
+                file: _this.getByName(url),
+            };
         });
-        return providerPromise;
     };
-    CachingConfigurationProvider.prototype.selectPnPCache = function () {
-        var pnpCache = new storage.PnPClientStorage();
-        if ((pnpCache.local) && (pnpCache.local.enabled)) {
-            return pnpCache.local;
-        }
-        if ((pnpCache.session) && (pnpCache.session.enabled)) {
-            return pnpCache.session;
-        }
-        throw new exceptions_1.NoCacheAvailableException();
+    /**
+     * Uploads a file. Not supported for batching
+     *
+     * @param url The folder-relative url of the file.
+     * @param content The Blob file content to add
+     * @param progress A callback function which can be used to track the progress of the upload
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
+     * @param chunkSize The size of each file slice, in bytes (default: 10485760)
+     * @returns The new File and the raw response.
+     */
+    Files.prototype.addChunked = function (url, content, progress, shouldOverWrite, chunkSize) {
+        var _this = this;
+        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
+        if (chunkSize === void 0) { chunkSize = 10485760; }
+        var adder = this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')");
+        return adder.post().then(function () { return _this.getByName(url); }).then(function (file) { return file.setContentChunked(content, progress, chunkSize); }).then(function (response) {
+            return {
+                data: response,
+                file: _this.getByName(url),
+            };
+        });
     };
-    return CachingConfigurationProvider;
-}());
-exports.default = CachingConfigurationProvider;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * Adds a ghosted file to an existing list or document library. Not supported for batching.
+     *
+     * @param fileUrl The server-relative url where you want to save the file.
+     * @param templateFileType The type of use to create the file.
+     * @returns The template file that was added and the raw response.
+     */
+    Files.prototype.addTemplateFile = function (fileUrl, templateFileType) {
+        var _this = this;
+        return this.clone(Files, "addTemplateFile(urloffile='" + fileUrl + "',templatefiletype=" + templateFileType + ")")
+            .post().then(function (response) {
+            return {
+                data: response,
+                file: _this.getByName(fileUrl),
+            };
+        });
+    };
+    return Files;
+}(queryable_1.QueryableCollection));
+exports.Files = Files;
 /**
- * Makes requests using the fetch API
+ * Describes a single File instance
+ *
  */
-var FetchClient = (function () {
-    function FetchClient() {
+var File = (function (_super) {
+    __extends(File, _super);
+    function File() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    FetchClient.prototype.fetch = function (url, options) {
-        return global.fetch(url, options);
-    };
-    return FetchClient;
-}());
-exports.FetchClient = FetchClient;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var storage_1 = __webpack_require__(9);
-var util_1 = __webpack_require__(0);
-var pnplibconfig_1 = __webpack_require__(4);
-var CachingOptions = (function () {
-    function CachingOptions(key) {
-        this.key = key;
-        this.expiration = util_1.Util.dateAdd(new Date(), "second", pnplibconfig_1.RuntimeConfig.defaultCachingTimeoutSeconds);
-        this.storeName = pnplibconfig_1.RuntimeConfig.defaultCachingStore;
-    }
-    Object.defineProperty(CachingOptions.prototype, "store", {
+    Object.defineProperty(File.prototype, "listItemAllFields", {
+        /**
+         * Gets a value that specifies the list item field values for the list item corresponding to the file.
+         *
+         */
         get: function () {
-            if (this.storeName === "local") {
-                return CachingOptions.storage.local;
-            }
-            else {
-                return CachingOptions.storage.session;
-            }
+            return new queryable_1.QueryableCollection(this, "listItemAllFields");
         },
         enumerable: true,
         configurable: true
     });
-    return CachingOptions;
-}());
-CachingOptions.storage = new storage_1.PnPClientStorage();
-exports.CachingOptions = CachingOptions;
-var CachingParserWrapper = (function () {
-    function CachingParserWrapper(_parser, _cacheOptions) {
-        this._parser = _parser;
-        this._cacheOptions = _cacheOptions;
-    }
-    CachingParserWrapper.prototype.parse = function (response) {
-        var _this = this;
-        // add this to the cache based on the options
-        return this._parser.parse(response).then(function (data) {
-            if (_this._cacheOptions.store !== null) {
-                _this._cacheOptions.store.put(_this._cacheOptions.key, data, _this._cacheOptions.expiration);
-            }
-            return data;
-        });
-    };
-    return CachingParserWrapper;
-}());
-exports.CachingParserWrapper = CachingParserWrapper;
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-/**
- * Describes a collection of List objects
- *
- */
-var Features = (function (_super) {
-    __extends(Features, _super);
+    Object.defineProperty(File.prototype, "versions", {
+        /**
+         * Gets a collection of versions
+         *
+         */
+        get: function () {
+            return new Versions(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
-     * Creates a new instance of the Lists class
+     * Approves the file submitted for content approval with the specified comment.
+     * Only documents in lists that are enabled for content approval can be approved.
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param comment The comment for the approval.
      */
-    function Features(baseUrl, path) {
-        if (path === void 0) { path = "features"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the feature (GUID)
-     */
-    Features.prototype.getById = function (id) {
-        var feature = new Feature(this);
-        feature.concat("('" + id + "')");
-        return feature;
+    File.prototype.approve = function (comment) {
+        return this.clone(File, "approve(comment='" + comment + "')", true).post();
     };
     /**
-     * Adds a new list to the collection
+     * Stops the chunk upload session without saving the uploaded data. Does not support batching.
+     * If the file doesn’t already exist in the library, the partially uploaded file will be deleted.
+     * Use this in response to user action (as in a request to cancel an upload) or an error or exception.
+     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
+     * This method is currently available only on Office 365.
      *
-     * @param id The Id of the feature (GUID)
-     * @param force If true the feature activation will be forced
+     * @param uploadId The unique identifier of the upload session.
      */
-    Features.prototype.add = function (id, force) {
-        var _this = this;
-        if (force === void 0) { force = false; }
-        var adder = new Features(this, "add");
-        return adder.post({
-            body: JSON.stringify({
-                featdefScope: 0,
-                featureId: id,
-                force: force,
-            }),
-        }).then(function (data) {
-            return {
-                data: data,
-                feature: _this.getById(id),
-            };
-        });
+    File.prototype.cancelUpload = function (uploadId) {
+        return this.clone(File, "cancelUpload(uploadId=guid'" + uploadId + "')", false).post();
     };
     /**
-     * Removes (deactivates) a feature from the collection
+     * Checks the file in to a document library based on the check-in type.
      *
-     * @param id The Id of the feature (GUID)
-     * @param force If true the feature deactivation will be forced
+     * @param comment A comment for the check-in. Its length must be <= 1023.
+     * @param checkinType The check-in type for the file.
      */
-    Features.prototype.remove = function (id, force) {
-        if (force === void 0) { force = false; }
-        var remover = new Features(this, "remove");
-        return remover.post({
-            body: JSON.stringify({
-                featureId: id,
-                force: force,
-            }),
-        });
-    };
-    return Features;
-}(queryable_1.QueryableCollection));
-exports.Features = Features;
-var Feature = (function (_super) {
-    __extends(Feature, _super);
-    /**
-     * Creates a new instance of the Lists class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Feature(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Removes (deactivates) a feature from the collection
-     *
-     * @param force If true the feature deactivation will be forced
-     */
-    Feature.prototype.deactivate = function (force) {
-        var _this = this;
-        if (force === void 0) { force = false; }
-        var removeDependency = this.addBatchDependency();
-        var idGet = new Feature(this).select("DefinitionId");
-        return idGet.getAs().then(function (feature) {
-            var promise = _this.getParent(Features, _this.parentUrl, "").remove(feature.DefinitionId, force);
-            removeDependency();
-            return promise;
-        });
-    };
-    return Feature;
-}(queryable_1.QueryableInstance));
-exports.Feature = Feature;
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var util_1 = __webpack_require__(0);
-var Types = __webpack_require__(29);
-/**
- * Describes a collection of Field objects
- *
- */
-var Fields = (function (_super) {
-    __extends(Fields, _super);
-    /**
-     * Creates a new instance of the Fields class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Fields(baseUrl, path) {
-        if (path === void 0) { path = "fields"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a field from the collection by title
-     *
-     * @param title The case-sensitive title of the field
-     */
-    Fields.prototype.getByTitle = function (title) {
-        return new Field(this, "getByTitle('" + title + "')");
-    };
-    /**
-     * Gets a field from the collection by using internal name or title
-     *
-     * @param name The case-sensitive internal name or title of the field
-     */
-    Fields.prototype.getByInternalNameOrTitle = function (name) {
-        return new Field(this, "getByInternalNameOrTitle('" + name + "')");
-    };
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param title The Id of the list
-     */
-    Fields.prototype.getById = function (id) {
-        var f = new Field(this);
-        f.concat("('" + id + "')");
-        return f;
-    };
-    /**
-     * Creates a field based on the specified schema
-     */
-    Fields.prototype.createFieldAsXml = function (xml) {
-        var _this = this;
-        var info;
-        if (typeof xml === "string") {
-            info = { SchemaXml: xml };
+    File.prototype.checkin = function (comment, checkinType) {
+        if (comment === void 0) { comment = ""; }
+        if (checkinType === void 0) { checkinType = CheckinType.Major; }
+        if (comment.length > 1023) {
+            throw new exceptions_1.MaxCommentLengthException();
         }
-        else {
-            info = xml;
-        }
-        var postBody = JSON.stringify({
-            "parameters": util_1.Util.extend({
-                "__metadata": {
-                    "type": "SP.XmlSchemaFieldCreationInformation",
-                },
-            }, info),
-        });
-        var q = new Fields(this, "createfieldasxml");
-        return q.postAs({ body: postBody }).then(function (data) {
-            return {
-                data: data,
-                field: _this.getById(data.Id),
-            };
-        });
+        return this.clone(File, "checkin(comment='" + comment + "',checkintype=" + checkinType + ")", true).post();
     };
     /**
-     * Adds a new list to the collection
-     *
-     * @param title The new field's title
-     * @param fieldType The new field's type (ex: SP.FieldText)
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     * Checks out the file from a document library.
      */
-    Fields.prototype.add = function (title, fieldType, properties) {
-        var _this = this;
-        if (properties === void 0) { properties = {}; }
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "Title": title,
-            "__metadata": { "type": fieldType },
-        }, properties));
-        return this.postAs({ body: postBody }).then(function (data) {
-            return {
-                data: data,
-                field: _this.getById(data.Id),
-            };
-        });
+    File.prototype.checkout = function () {
+        return this.clone(File, "checkout", true).post();
     };
     /**
-     * Adds a new SP.FieldText to the collection
+     * Copies the file to the destination url.
      *
-     * @param title The field title
-     * @param maxLength The maximum number of characters allowed in the value of the field.
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     * @param url The absolute url or server relative url of the destination file path to copy to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      */
-    Fields.prototype.addText = function (title, maxLength, properties) {
-        if (maxLength === void 0) { maxLength = 255; }
-        var props = {
-            FieldTypeKind: 2,
-            MaxLength: maxLength,
-        };
-        return this.add(title, "SP.FieldText", util_1.Util.extend(props, properties));
+    File.prototype.copyTo = function (url, shouldOverWrite) {
+        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
+        return this.clone(File, "copyTo(strnewurl='" + url + "',boverwrite=" + shouldOverWrite + ")", true).post();
     };
     /**
-     * Adds a new SP.FieldCalculated to the collection
+     * Delete this file.
      *
-     * @param title The field title.
-     * @param formula The formula for the field.
-     * @param dateFormat The date and time format that is displayed in the field.
-     * @param outputType Specifies the output format for the field. Represents a FieldType value.
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     * @param eTag Value used in the IF-Match header, by default "*"
      */
-    Fields.prototype.addCalculated = function (title, formula, dateFormat, outputType, properties) {
-        if (outputType === void 0) { outputType = Types.FieldTypes.Text; }
-        var props = {
-            DateFormat: dateFormat,
-            FieldTypeKind: 17,
-            Formula: formula,
-            OutputType: outputType,
-        };
-        return this.add(title, "SP.FieldCalculated", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldDateTime to the collection
-     *
-     * @param title The field title
-     * @param displayFormat The format of the date and time that is displayed in the field.
-     * @param calendarType Specifies the calendar type of the field.
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     */
-    Fields.prototype.addDateTime = function (title, displayFormat, calendarType, friendlyDisplayFormat, properties) {
-        if (displayFormat === void 0) { displayFormat = Types.DateTimeFieldFormatType.DateOnly; }
-        if (calendarType === void 0) { calendarType = Types.CalendarType.Gregorian; }
-        if (friendlyDisplayFormat === void 0) { friendlyDisplayFormat = 0; }
-        var props = {
-            DateTimeCalendarType: calendarType,
-            DisplayFormat: displayFormat,
-            FieldTypeKind: 4,
-            FriendlyDisplayFormat: friendlyDisplayFormat,
-        };
-        return this.add(title, "SP.FieldDateTime", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldNumber to the collection
-     *
-     * @param title The field title
-     * @param minValue The field's minimum value
-     * @param maxValue The field's maximum value
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     */
-    Fields.prototype.addNumber = function (title, minValue, maxValue, properties) {
-        var props = { FieldTypeKind: 9 };
-        if (typeof minValue !== "undefined") {
-            props = util_1.Util.extend({ MinimumValue: minValue }, props);
-        }
-        if (typeof maxValue !== "undefined") {
-            props = util_1.Util.extend({ MaximumValue: maxValue }, props);
-        }
-        return this.add(title, "SP.FieldNumber", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldCurrency to the collection
-     *
-     * @param title The field title
-     * @param minValue The field's minimum value
-     * @param maxValue The field's maximum value
-     * @param currencyLocalId Specifies the language code identifier (LCID) used to format the value of the field
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     */
-    Fields.prototype.addCurrency = function (title, minValue, maxValue, currencyLocalId, properties) {
-        if (currencyLocalId === void 0) { currencyLocalId = 1033; }
-        var props = {
-            CurrencyLocaleId: currencyLocalId,
-            FieldTypeKind: 10,
-        };
-        if (typeof minValue !== "undefined") {
-            props = util_1.Util.extend({ MinimumValue: minValue }, props);
-        }
-        if (typeof maxValue !== "undefined") {
-            props = util_1.Util.extend({ MaximumValue: maxValue }, props);
-        }
-        return this.add(title, "SP.FieldCurrency", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldMultiLineText to the collection
-     *
-     * @param title The field title
-     * @param numberOfLines Specifies the number of lines of text to display for the field.
-     * @param richText Specifies whether the field supports rich formatting.
-     * @param restrictedMode Specifies whether the field supports a subset of rich formatting.
-     * @param appendOnly Specifies whether all changes to the value of the field are displayed in list forms.
-     * @param allowHyperlink Specifies whether a hyperlink is allowed as a value of the field.
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     *
-     */
-    Fields.prototype.addMultilineText = function (title, numberOfLines, richText, restrictedMode, appendOnly, allowHyperlink, properties) {
-        if (numberOfLines === void 0) { numberOfLines = 6; }
-        if (richText === void 0) { richText = true; }
-        if (restrictedMode === void 0) { restrictedMode = false; }
-        if (appendOnly === void 0) { appendOnly = false; }
-        if (allowHyperlink === void 0) { allowHyperlink = true; }
-        var props = {
-            AllowHyperlink: allowHyperlink,
-            AppendOnly: appendOnly,
-            FieldTypeKind: 3,
-            NumberOfLines: numberOfLines,
-            RestrictedMode: restrictedMode,
-            RichText: richText,
-        };
-        return this.add(title, "SP.FieldMultiLineText", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldUrl to the collection
-     *
-     * @param title The field title
-     */
-    Fields.prototype.addUrl = function (title, displayFormat, properties) {
-        if (displayFormat === void 0) { displayFormat = Types.UrlFieldFormatType.Hyperlink; }
-        var props = {
-            DisplayFormat: displayFormat,
-            FieldTypeKind: 11,
-        };
-        return this.add(title, "SP.FieldUrl", util_1.Util.extend(props, properties));
-    };
-    return Fields;
-}(queryable_1.QueryableCollection));
-exports.Fields = Fields;
-/**
- * Describes a single of Field instance
- *
- */
-var Field = (function (_super) {
-    __extends(Field, _super);
-    /**
-     * Creates a new instance of the Field class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this field instance
-     */
-    function Field(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Updates this field intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the list
-     * @param fieldType The type value, required to update child field type properties
-     */
-    Field.prototype.update = function (properties, fieldType) {
-        var _this = this;
-        if (fieldType === void 0) { fieldType = "SP.Field"; }
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "__metadata": { "type": fieldType },
-        }, properties));
-        return this.post({
-            body: postBody,
+    File.prototype.delete = function (eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return this.clone(File, null, true).post({
             headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            return {
-                data: data,
-                field: _this,
-            };
-        });
-    };
-    /**
-     * Delete this fields
-     *
-     */
-    Field.prototype.delete = function () {
-        return this.post({
-            headers: {
+                "IF-Match": eTag,
                 "X-HTTP-Method": "DELETE",
             },
         });
     };
     /**
-     * Sets the value of the ShowInDisplayForm property for this field.
+     * Denies approval for a file that was submitted for content approval.
+     * Only documents in lists that are enabled for content approval can be denied.
+     *
+     * @param comment The comment for the denial.
      */
-    Field.prototype.setShowInDisplayForm = function (show) {
-        var q = new Field(this, "setshowindisplayform(" + show + ")");
-        return q.post();
+    File.prototype.deny = function (comment) {
+        if (comment === void 0) { comment = ""; }
+        if (comment.length > 1023) {
+            throw new exceptions_1.MaxCommentLengthException();
+        }
+        return this.clone(File, "deny(comment='" + comment + "')", true).post();
     };
     /**
-     * Sets the value of the ShowInEditForm property for this field.
+     * Specifies the control set used to access, modify, or add Web Parts associated with this Web Part Page and view.
+     * An exception is thrown if the file is not an ASPX page.
+     *
+     * @param scope The WebPartsPersonalizationScope view on the Web Parts page.
      */
-    Field.prototype.setShowInEditForm = function (show) {
-        var q = new Field(this, "setshowineditform(" + show + ")");
-        return q.post();
+    File.prototype.getLimitedWebPartManager = function (scope) {
+        if (scope === void 0) { scope = WebPartsPersonalizationScope.Shared; }
+        return new webparts_1.LimitedWebPartManager(this, "getLimitedWebPartManager(scope=" + scope + ")");
     };
     /**
-     * Sets the value of the ShowInNewForm property for this field.
+     * Moves the file to the specified destination url.
+     *
+     * @param url The absolute url or server relative url of the destination file path to move to.
+     * @param moveOperations The bitwise MoveOperations value for how to move the file.
      */
-    Field.prototype.setShowInNewForm = function (show) {
-        var q = new Field(this, "setshowinnewform(" + show + ")");
-        return q.post();
+    File.prototype.moveTo = function (url, moveOperations) {
+        if (moveOperations === void 0) { moveOperations = MoveOperations.Overwrite; }
+        return this.clone(File, "moveTo(newurl='" + url + "',flags=" + moveOperations + ")", true).post();
     };
-    return Field;
+    /**
+     * Submits the file for content approval with the specified comment.
+     *
+     * @param comment The comment for the published file. Its length must be <= 1023.
+     */
+    File.prototype.publish = function (comment) {
+        if (comment === void 0) { comment = ""; }
+        if (comment.length > 1023) {
+            throw new exceptions_1.MaxCommentLengthException();
+        }
+        return this.clone(File, "publish(comment='" + comment + "')", true).post();
+    };
+    /**
+     * Moves the file to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+     *
+     * @returns The GUID of the recycled file.
+     */
+    File.prototype.recycle = function () {
+        return this.clone(File, "recycle", true).post();
+    };
+    /**
+     * Reverts an existing checkout for the file.
+     *
+     */
+    File.prototype.undoCheckout = function () {
+        return this.clone(File, "undoCheckout", true).post();
+    };
+    /**
+     * Removes the file from content approval or unpublish a major version.
+     *
+     * @param comment The comment for the unpublish operation. Its length must be <= 1023.
+     */
+    File.prototype.unpublish = function (comment) {
+        if (comment === void 0) { comment = ""; }
+        if (comment.length > 1023) {
+            throw new exceptions_1.MaxCommentLengthException();
+        }
+        return this.clone(File, "unpublish(comment='" + comment + "')", true).post();
+    };
+    /**
+     * Gets the contents of the file as text. Not supported in batching.
+     *
+     */
+    File.prototype.getText = function () {
+        return this.clone(File, "$value").get(new odata_1.TextFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+    };
+    /**
+     * Gets the contents of the file as a blob, does not work in Node.js. Not supported in batching.
+     *
+     */
+    File.prototype.getBlob = function () {
+        return this.clone(File, "$value").get(new odata_1.BlobFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+    };
+    /**
+     * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
+     */
+    File.prototype.getBuffer = function () {
+        return this.clone(File, "$value").get(new odata_1.BufferFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+    };
+    /**
+     * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
+     */
+    File.prototype.getJSON = function () {
+        return this.clone(File, "$value").get(new odata_1.JSONFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+    };
+    /**
+     * Sets the content of a file, for large files use setContentChunked. Not supported in batching.
+     *
+     * @param content The file content
+     *
+     */
+    File.prototype.setContent = function (content) {
+        var _this = this;
+        return this.clone(File, "$value").post({
+            body: content,
+            headers: {
+                "X-HTTP-Method": "PUT",
+            },
+        }).then(function (_) { return new File(_this); });
+    };
+    /**
+     * Gets the associated list item for this folder, loading the default properties
+     */
+    File.prototype.getItem = function () {
+        var selects = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            selects[_i] = arguments[_i];
+        }
+        var q = this.listItemAllFields;
+        return q.select.apply(q, selects).get().then(function (d) {
+            return util_1.Util.extend(new items_1.Item(odata_2.getEntityUrl(d)), d);
+        });
+    };
+    /**
+     * Sets the contents of a file using a chunked upload approach. Not supported in batching.
+     *
+     * @param file The file to upload
+     * @param progress A callback function which can be used to track the progress of the upload
+     * @param chunkSize The size of each file slice, in bytes (default: 10485760)
+     */
+    File.prototype.setContentChunked = function (file, progress, chunkSize) {
+        if (chunkSize === void 0) { chunkSize = 10485760; }
+        if (typeof progress === "undefined") {
+            progress = function () { return null; };
+        }
+        var self = this;
+        var fileSize = file.size;
+        var blockCount = parseInt((file.size / chunkSize).toString(), 10) + ((file.size % chunkSize === 0) ? 1 : 0);
+        var uploadId = util_1.Util.getGUID();
+        // start the chain with the first fragment
+        progress({ blockNumber: 1, chunkSize: chunkSize, currentPointer: 0, fileSize: fileSize, stage: "starting", totalBlocks: blockCount });
+        var chain = self.startUpload(uploadId, file.slice(0, chunkSize));
+        var _loop_1 = function (i) {
+            chain = chain.then(function (pointer) {
+                progress({ blockNumber: i, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "continue", totalBlocks: blockCount });
+                return self.continueUpload(uploadId, pointer, file.slice(pointer, pointer + chunkSize));
+            });
+        };
+        // skip the first and last blocks
+        for (var i = 2; i < blockCount; i++) {
+            _loop_1(i);
+        }
+        return chain.then(function (pointer) {
+            progress({ blockNumber: blockCount, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "finishing", totalBlocks: blockCount });
+            return self.finishUpload(uploadId, pointer, file.slice(pointer));
+        }).then(function (_) {
+            return self;
+        });
+    };
+    /**
+     * Starts a new chunk upload session and uploads the first fragment.
+     * The current file content is not changed when this method completes.
+     * The method is idempotent (and therefore does not change the result) as long as you use the same values for uploadId and stream.
+     * The upload session ends either when you use the CancelUpload method or when you successfully
+     * complete the upload session by passing the rest of the file contents through the ContinueUpload and FinishUpload methods.
+     * The StartUpload and ContinueUpload methods return the size of the running total of uploaded data in bytes,
+     * so you can pass those return values to subsequent uses of ContinueUpload and FinishUpload.
+     * This method is currently available only on Office 365.
+     *
+     * @param uploadId The unique identifier of the upload session.
+     * @param fragment The file contents.
+     * @returns The size of the total uploaded data in bytes.
+     */
+    File.prototype.startUpload = function (uploadId, fragment) {
+        return this.clone(File, "startUpload(uploadId=guid'" + uploadId + "')").postAs({ body: fragment }).then(function (n) { return parseFloat(n); });
+    };
+    /**
+     * Continues the chunk upload session with an additional fragment.
+     * The current file content is not changed.
+     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
+     * This method is currently available only on Office 365.
+     *
+     * @param uploadId The unique identifier of the upload session.
+     * @param fileOffset The size of the offset into the file where the fragment starts.
+     * @param fragment The file contents.
+     * @returns The size of the total uploaded data in bytes.
+     */
+    File.prototype.continueUpload = function (uploadId, fileOffset, fragment) {
+        return this.clone(File, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")").postAs({ body: fragment }).then(function (n) { return parseFloat(n); });
+    };
+    /**
+     * Uploads the last file fragment and commits the file. The current file content is changed when this method completes.
+     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
+     * This method is currently available only on Office 365.
+     *
+     * @param uploadId The unique identifier of the upload session.
+     * @param fileOffset The size of the offset into the file where the fragment starts.
+     * @param fragment The file contents.
+     * @returns The newly uploaded file.
+     */
+    File.prototype.finishUpload = function (uploadId, fileOffset, fragment) {
+        return this.clone(File, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")")
+            .postAs({ body: fragment }).then(function (response) {
+            return {
+                data: response,
+                file: new File(response.ServerRelativeUrl),
+            };
+        });
+    };
+    return File;
+}(queryableshareable_1.QueryableShareableFile));
+exports.File = File;
+/**
+ * Describes a collection of Version objects
+ *
+ */
+var Versions = (function (_super) {
+    __extends(Versions, _super);
+    /**
+     * Creates a new instance of the File class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function Versions(baseUrl, path) {
+        if (path === void 0) { path = "versions"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a version by id
+     *
+     * @param versionId The id of the version to retrieve
+     */
+    Versions.prototype.getById = function (versionId) {
+        var v = new Version(this);
+        v.concat("(" + versionId + ")");
+        return v;
+    };
+    /**
+     * Deletes all the file version objects in the collection.
+     *
+     */
+    Versions.prototype.deleteAll = function () {
+        return new Versions(this, "deleteAll").post();
+    };
+    /**
+     * Deletes the specified version of the file.
+     *
+     * @param versionId The ID of the file version to delete.
+     */
+    Versions.prototype.deleteById = function (versionId) {
+        return this.clone(Versions, "deleteById(vid=" + versionId + ")", true).post();
+    };
+    /**
+     * Deletes the file version object with the specified version label.
+     *
+     * @param label The version label of the file version to delete, for example: 1.2
+     */
+    Versions.prototype.deleteByLabel = function (label) {
+        return this.clone(Versions, "deleteByLabel(versionlabel='" + label + "')", true).post();
+    };
+    /**
+     * Creates a new file version from the file specified by the version label.
+     *
+     * @param label The version label of the file version to restore, for example: 1.2
+     */
+    Versions.prototype.restoreByLabel = function (label) {
+        return this.clone(Versions, "restoreByLabel(versionlabel='" + label + "')", true).post();
+    };
+    return Versions;
+}(queryable_1.QueryableCollection));
+exports.Versions = Versions;
+/**
+ * Describes a single Version instance
+ *
+ */
+var Version = (function (_super) {
+    __extends(Version, _super);
+    function Version() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+    * Delete a specific version of a file.
+    *
+    * @param eTag Value used in the IF-Match header, by default "*"
+    */
+    Version.prototype.delete = function (eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return this.post({
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    return Version;
 }(queryable_1.QueryableInstance));
-exports.Field = Field;
+exports.Version = Version;
+var CheckinType;
+(function (CheckinType) {
+    CheckinType[CheckinType["Minor"] = 0] = "Minor";
+    CheckinType[CheckinType["Major"] = 1] = "Major";
+    CheckinType[CheckinType["Overwrite"] = 2] = "Overwrite";
+})(CheckinType = exports.CheckinType || (exports.CheckinType = {}));
+var WebPartsPersonalizationScope;
+(function (WebPartsPersonalizationScope) {
+    WebPartsPersonalizationScope[WebPartsPersonalizationScope["User"] = 0] = "User";
+    WebPartsPersonalizationScope[WebPartsPersonalizationScope["Shared"] = 1] = "Shared";
+})(WebPartsPersonalizationScope = exports.WebPartsPersonalizationScope || (exports.WebPartsPersonalizationScope = {}));
+var MoveOperations;
+(function (MoveOperations) {
+    MoveOperations[MoveOperations["Overwrite"] = 1] = "Overwrite";
+    MoveOperations[MoveOperations["AllowBrokenThickets"] = 8] = "AllowBrokenThickets";
+})(MoveOperations = exports.MoveOperations || (exports.MoveOperations = {}));
+var TemplateFileType;
+(function (TemplateFileType) {
+    TemplateFileType[TemplateFileType["StandardPage"] = 0] = "StandardPage";
+    TemplateFileType[TemplateFileType["WikiPage"] = 1] = "WikiPage";
+    TemplateFileType[TemplateFileType["FormPage"] = 2] = "FormPage";
+})(TemplateFileType = exports.TemplateFileType || (exports.TemplateFileType = {}));
 
 
 /***/ }),
-/* 22 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4888,7 +2928,11 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var files_1 = __webpack_require__(7);
+var queryableshareable_1 = __webpack_require__(12);
+var files_1 = __webpack_require__(8);
+var util_1 = __webpack_require__(0);
+var odata_1 = __webpack_require__(2);
+var items_1 = __webpack_require__(10);
 /**
  * Describes a collection of Folder objects
  *
@@ -4921,7 +2965,7 @@ var Folders = (function (_super) {
      */
     Folders.prototype.add = function (url) {
         var _this = this;
-        return new Folders(this, "add('" + url + "')").post().then(function (response) {
+        return this.clone(Folders, "add('" + url + "')", true).post().then(function (response) {
             return {
                 data: response,
                 folder: _this.getByName(url),
@@ -4937,20 +2981,8 @@ exports.Folders = Folders;
  */
 var Folder = (function (_super) {
     __extends(Folder, _super);
-    //
-    // TODO:
-    //      Properties (https://msdn.microsoft.com/en-us/library/office/dn450841.aspx#bk_FolderProperties)
-    //          UniqueContentTypeOrder (setter)
-    //          WelcomePage (setter)
-    //
-    /**
-     * Creates a new instance of the Folder class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     * @param path Optional, if supplied will be appended to the supplied baseUrl
-     */
-    function Folder(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function Folder() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(Folder.prototype, "contentTypeOrder", {
         /**
@@ -5040,6 +3072,23 @@ var Folder = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Folder.prototype.update = function (properties) {
+        var _this = this;
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "__metadata": { "type": "SP.Folder" },
+        }, properties));
+        return this.post({
+            body: postBody,
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            return {
+                data: data,
+                folder: _this,
+            };
+        });
+    };
     /**
     * Delete this folder
     *
@@ -5047,7 +3096,7 @@ var Folder = (function (_super) {
     */
     Folder.prototype.delete = function (eTag) {
         if (eTag === void 0) { eTag = "*"; }
-        return new Folder(this).post({
+        return this.clone(Folder, null, true).post({
             headers: {
                 "IF-Match": eTag,
                 "X-HTTP-Method": "DELETE",
@@ -5058,15 +3107,28 @@ var Folder = (function (_super) {
      * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     Folder.prototype.recycle = function () {
-        return new Folder(this, "recycle").post();
+        return this.clone(Folder, "recycle", true).post();
+    };
+    /**
+     * Gets the associated list item for this folder, loading the default properties
+     */
+    Folder.prototype.getItem = function () {
+        var selects = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            selects[_i] = arguments[_i];
+        }
+        var q = this.listItemAllFields;
+        return q.select.apply(q, selects).get().then(function (d) {
+            return util_1.Util.extend(new items_1.Item(odata_1.getEntityUrl(d)), d);
+        });
     };
     return Folder;
-}(queryable_1.QueryableInstance));
+}(queryableshareable_1.QueryableShareableFolder));
 exports.Folder = Folder;
 
 
 /***/ }),
-/* 23 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5083,14 +3145,14 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var queryablesecurable_1 = __webpack_require__(12);
-var folders_1 = __webpack_require__(22);
-var files_1 = __webpack_require__(7);
-var contenttypes_1 = __webpack_require__(11);
+var queryableshareable_1 = __webpack_require__(12);
+var folders_1 = __webpack_require__(9);
+var files_1 = __webpack_require__(8);
+var contenttypes_1 = __webpack_require__(16);
 var util_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(3);
-var attachmentfiles_1 = __webpack_require__(39);
-var lists_1 = __webpack_require__(8);
+var odata_1 = __webpack_require__(2);
+var attachmentfiles_1 = __webpack_require__(42);
+var lists_1 = __webpack_require__(11);
 /**
  * Describes a collection of Item objects
  *
@@ -5147,7 +3209,7 @@ var Items = (function (_super) {
             var postBody = JSON.stringify(util_1.Util.extend({
                 "__metadata": { "type": listItemEntityType },
             }, properties));
-            var promise = _this.postAs({ body: postBody }).then(function (data) {
+            var promise = _this.clone(Items, null, true).postAs({ body: postBody }).then(function (data) {
                 return {
                     data: data,
                     item: _this.getById(data.Id),
@@ -5163,10 +3225,9 @@ var Items = (function (_super) {
      * @param candidatelistItemEntityTypeFullName The potential type name
      */
     Items.prototype.ensureListItemEntityTypeName = function (candidatelistItemEntityTypeFullName) {
-        if (candidatelistItemEntityTypeFullName) {
-            return Promise.resolve(candidatelistItemEntityTypeFullName);
-        }
-        return this.getParent(lists_1.List).getListItemEntityTypeFullName();
+        return candidatelistItemEntityTypeFullName ?
+            Promise.resolve(candidatelistItemEntityTypeFullName) :
+            this.getParent(lists_1.List).getListItemEntityTypeFullName();
     };
     return Items;
 }(queryable_1.QueryableCollection));
@@ -5177,13 +3238,8 @@ exports.Items = Items;
  */
 var Item = (function (_super) {
     __extends(Item, _super);
-    /**
-     * Creates a new instance of the Items class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Item(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function Item() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(Item.prototype, "attachmentFiles", {
         /**
@@ -5334,8 +3390,7 @@ var Item = (function (_super) {
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     Item.prototype.recycle = function () {
-        var i = new Item(this, "recycle");
-        return i.post();
+        return this.clone(Item, "recycle", true).post();
     };
     /**
      * Gets a string representation of the full URL to the WOPI frame.
@@ -5345,7 +3400,7 @@ var Item = (function (_super) {
      */
     Item.prototype.getWopiFrameUrl = function (action) {
         if (action === void 0) { action = 0; }
-        var i = new Item(this, "getWOPIFrameUrl(@action)");
+        var i = this.clone(Item, "getWOPIFrameUrl(@action)", true);
         i._query.add("@action", action);
         return i.post().then(function (data) {
             return data.GetWOPIFrameUrl;
@@ -5357,15 +3412,14 @@ var Item = (function (_super) {
      * @param formValues The fields to change and their new values.
      * @param newDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
      */
-    /* tslint:disable max-line-length */
     Item.prototype.validateUpdateListItem = function (formValues, newDocumentUpdate) {
         if (newDocumentUpdate === void 0) { newDocumentUpdate = false; }
-        var postBody = JSON.stringify({ "formValues": formValues, bNewDocumentUpdate: newDocumentUpdate });
-        var item = new Item(this, "validateupdatelistitem");
-        return item.post({ body: postBody });
+        return this.clone(Item, "validateupdatelistitem", true).post({
+            body: JSON.stringify({ "formValues": formValues, bNewDocumentUpdate: newDocumentUpdate }),
+        });
     };
     return Item;
-}(queryablesecurable_1.QueryableSecurable));
+}(queryableshareable_1.QueryableShareableItem));
 exports.Item = Item;
 /**
  * Provides paging functionality for list items
@@ -5436,7 +3490,3001 @@ var ItemUpdatedParser = (function (_super) {
 
 
 /***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var items_1 = __webpack_require__(10);
+var views_1 = __webpack_require__(49);
+var contenttypes_1 = __webpack_require__(16);
+var fields_1 = __webpack_require__(24);
+var forms_1 = __webpack_require__(43);
+var subscriptions_1 = __webpack_require__(47);
+var queryable_1 = __webpack_require__(1);
+var queryablesecurable_1 = __webpack_require__(26);
+var util_1 = __webpack_require__(0);
+var usercustomactions_1 = __webpack_require__(19);
+var odata_1 = __webpack_require__(2);
+var exceptions_1 = __webpack_require__(3);
+var folders_1 = __webpack_require__(9);
+/**
+ * Describes a collection of List objects
+ *
+ */
+var Lists = (function (_super) {
+    __extends(Lists, _super);
+    /**
+     * Creates a new instance of the Lists class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function Lists(baseUrl, path) {
+        if (path === void 0) { path = "lists"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a list from the collection by title
+     *
+     * @param title The title of the list
+     */
+    Lists.prototype.getByTitle = function (title) {
+        return new List(this, "getByTitle('" + title + "')");
+    };
+    /**
+     * Gets a list from the collection by guid id
+     *
+     * @param id The Id of the list (GUID)
+     */
+    Lists.prototype.getById = function (id) {
+        var list = new List(this);
+        list.concat("('" + id + "')");
+        return list;
+    };
+    /**
+     * Adds a new list to the collection
+     *
+     * @param title The new list's title
+     * @param description The new list's description
+     * @param template The list template value
+     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
+     * @param additionalSettings Will be passed as part of the list creation body
+     */
+    Lists.prototype.add = function (title, description, template, enableContentTypes, additionalSettings) {
+        var _this = this;
+        if (description === void 0) { description = ""; }
+        if (template === void 0) { template = 100; }
+        if (enableContentTypes === void 0) { enableContentTypes = false; }
+        if (additionalSettings === void 0) { additionalSettings = {}; }
+        var addSettings = util_1.Util.extend({
+            "AllowContentTypes": enableContentTypes,
+            "BaseTemplate": template,
+            "ContentTypesEnabled": enableContentTypes,
+            "Description": description,
+            "Title": title,
+            "__metadata": { "type": "SP.List" },
+        }, additionalSettings);
+        return this.post({ body: JSON.stringify(addSettings) }).then(function (data) {
+            return { data: data, list: _this.getByTitle(addSettings.Title) };
+        });
+    };
+    /**
+     * Ensures that the specified list exists in the collection (note: this method not supported for batching)
+     *
+     * @param title The new list's title
+     * @param description The new list's description
+     * @param template The list template value
+     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
+     * @param additionalSettings Will be passed as part of the list creation body or used to update an existing list
+     */
+    Lists.prototype.ensure = function (title, description, template, enableContentTypes, additionalSettings) {
+        var _this = this;
+        if (description === void 0) { description = ""; }
+        if (template === void 0) { template = 100; }
+        if (enableContentTypes === void 0) { enableContentTypes = false; }
+        if (additionalSettings === void 0) { additionalSettings = {}; }
+        if (this.hasBatch) {
+            throw new exceptions_1.NotSupportedInBatchException("The ensure list method");
+        }
+        return new Promise(function (resolve, reject) {
+            var addOrUpdateSettings = util_1.Util.extend(additionalSettings, { Title: title, Description: description, ContentTypesEnabled: enableContentTypes }, true);
+            var list = _this.getByTitle(addOrUpdateSettings.Title);
+            list.get().then(function (_) {
+                list.update(addOrUpdateSettings).then(function (d) {
+                    resolve({ created: false, data: d, list: _this.getByTitle(addOrUpdateSettings.Title) });
+                }).catch(function (e) { return reject(e); });
+            }).catch(function (_) {
+                _this.add(title, description, template, enableContentTypes, addOrUpdateSettings).then(function (r) {
+                    resolve({ created: true, data: r.data, list: _this.getByTitle(addOrUpdateSettings.Title) });
+                }).catch(function (e) { return reject(e); });
+            });
+        });
+    };
+    /**
+     * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
+     */
+    Lists.prototype.ensureSiteAssetsLibrary = function () {
+        return this.clone(Lists, "ensuresiteassetslibrary", true).post().then(function (json) {
+            return new List(odata_1.extractOdataId(json));
+        });
+    };
+    /**
+     * Gets a list that is the default location for wiki pages.
+     */
+    Lists.prototype.ensureSitePagesLibrary = function () {
+        return this.clone(Lists, "ensuresitepageslibrary", true).post().then(function (json) {
+            return new List(odata_1.extractOdataId(json));
+        });
+    };
+    return Lists;
+}(queryable_1.QueryableCollection));
+exports.Lists = Lists;
+/**
+ * Describes a single List instance
+ *
+ */
+var List = (function (_super) {
+    __extends(List, _super);
+    function List() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(List.prototype, "contentTypes", {
+        /**
+         * Gets the content types in this list
+         *
+         */
+        get: function () {
+            return new contenttypes_1.ContentTypes(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "items", {
+        /**
+         * Gets the items in this list
+         *
+         */
+        get: function () {
+            return new items_1.Items(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "views", {
+        /**
+         * Gets the views in this list
+         *
+         */
+        get: function () {
+            return new views_1.Views(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "fields", {
+        /**
+         * Gets the fields in this list
+         *
+         */
+        get: function () {
+            return new fields_1.Fields(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "forms", {
+        /**
+         * Gets the forms in this list
+         *
+         */
+        get: function () {
+            return new forms_1.Forms(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "defaultView", {
+        /**
+         * Gets the default view of this list
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableInstance(this, "DefaultView");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "userCustomActions", {
+        /**
+         * Get all custom actions on a site collection
+         *
+         */
+        get: function () {
+            return new usercustomactions_1.UserCustomActions(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "effectiveBasePermissions", {
+        /**
+         * Gets the effective base permissions of this list
+         *
+         */
+        get: function () {
+            return new queryable_1.Queryable(this, "EffectiveBasePermissions");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "eventReceivers", {
+        /**
+         * Gets the event receivers attached to this list
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableCollection(this, "EventReceivers");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "relatedFields", {
+        /**
+         * Gets the related fields of this list
+         *
+         */
+        get: function () {
+            return new queryable_1.Queryable(this, "getRelatedFields");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "informationRightsManagementSettings", {
+        /**
+         * Gets the IRM settings for this list
+         *
+         */
+        get: function () {
+            return new queryable_1.Queryable(this, "InformationRightsManagementSettings");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "subscriptions", {
+        /**
+         * Gets the webhook subscriptions of this list
+         *
+         */
+        get: function () {
+            return new subscriptions_1.Subscriptions(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "rootFolder", {
+        /**
+         * The root folder of the list
+         */
+        get: function () {
+            return new folders_1.Folder(this, "rootFolder");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets a view by view guid id
+     *
+     */
+    List.prototype.getView = function (viewId) {
+        return new views_1.View(this, "getView('" + viewId + "')");
+    };
+    /**
+     * Updates this list intance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the list
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    /* tslint:disable no-string-literal */
+    List.prototype.update = function (properties, eTag) {
+        var _this = this;
+        if (eTag === void 0) { eTag = "*"; }
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "__metadata": { "type": "SP.List" },
+        }, properties));
+        return this.post({
+            body: postBody,
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            var retList = _this;
+            if (properties.hasOwnProperty("Title")) {
+                retList = _this.getParent(List, _this.parentUrl, "getByTitle('" + properties["Title"] + "')");
+            }
+            return {
+                data: data,
+                list: retList,
+            };
+        });
+    };
+    /* tslint:enable */
+    /**
+     * Delete this list
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    List.prototype.delete = function (eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return this.post({
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    /**
+     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
+     */
+    List.prototype.getChanges = function (query) {
+        return this.clone(List, "getchanges", true).post({
+            body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
+        });
+    };
+    /**
+     * Returns a collection of items from the list based on the specified query.
+     *
+     * @param CamlQuery The Query schema of Collaborative Application Markup
+     * Language (CAML) is used in various ways within the context of Microsoft SharePoint Foundation
+     * to define queries against list data.
+     * see:
+     *
+     * https://msdn.microsoft.com/en-us/library/office/ms467521.aspx
+     *
+     * @param expands A URI with a $expand System Query Option indicates that Entries associated with
+     * the Entry or Collection of Entries identified by the Resource Path
+     * section of the URI must be represented inline (i.e. eagerly loaded).
+     * see:
+     *
+     * https://msdn.microsoft.com/en-us/library/office/fp142385.aspx
+     *
+     * http://www.odata.org/documentation/odata-version-2-0/uri-conventions/#ExpandSystemQueryOption
+     */
+    List.prototype.getItemsByCAMLQuery = function (query) {
+        var expands = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            expands[_i - 1] = arguments[_i];
+        }
+        var q = this.clone(List, "getitems", true);
+        return q.expand.apply(q, expands).post({
+            body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
+        });
+    };
+    /**
+     * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
+     */
+    List.prototype.getListItemChangesSinceToken = function (query) {
+        return this.clone(List, "getlistitemchangessincetoken", true).post({
+            body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
+        }, { parse: function (r) { return r.text(); } });
+    };
+    /**
+     * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+     */
+    List.prototype.recycle = function () {
+        return this.clone(List, "recycle", true).post().then(function (data) {
+            if (data.hasOwnProperty("Recycle")) {
+                return data.Recycle;
+            }
+            else {
+                return data;
+            }
+        });
+    };
+    /**
+     * Renders list data based on the view xml provided
+     */
+    List.prototype.renderListData = function (viewXml) {
+        var q = this.clone(List, "renderlistdata(@viewXml)");
+        q.query.add("@viewXml", "'" + viewXml + "'");
+        return q.post().then(function (data) {
+            // data will be a string, so we parse it again
+            data = JSON.parse(data);
+            if (data.hasOwnProperty("RenderListData")) {
+                return data.RenderListData;
+            }
+            else {
+                return data;
+            }
+        });
+    };
+    /**
+     * Gets the field values and field schema attributes for a list item.
+     */
+    List.prototype.renderListFormData = function (itemId, formId, mode) {
+        return this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')", true).post().then(function (data) {
+            // data will be a string, so we parse it again
+            data = JSON.parse(data);
+            if (data.hasOwnProperty("ListData")) {
+                return data.ListData;
+            }
+            else {
+                return data;
+            }
+        });
+    };
+    /**
+     * Reserves a list item ID for idempotent list item creation.
+     */
+    List.prototype.reserveListItemId = function () {
+        return this.clone(List, "reservelistitemid", true).post().then(function (data) {
+            if (data.hasOwnProperty("ReserveListItemId")) {
+                return data.ReserveListItemId;
+            }
+            else {
+                return data;
+            }
+        });
+    };
+    /**
+     * Returns the ListItemEntityTypeFullName for this list, used when adding/updating list items. Does not support batching.
+     *
+     */
+    List.prototype.getListItemEntityTypeFullName = function () {
+        return this.clone(List, null).select("ListItemEntityTypeFullName").getAs().then(function (o) { return o.ListItemEntityTypeFullName; });
+    };
+    return List;
+}(queryablesecurable_1.QueryableSecurable));
+exports.List = List;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var webs_1 = __webpack_require__(7);
+var odata_1 = __webpack_require__(2);
+var queryable_1 = __webpack_require__(1);
+var queryablesecurable_1 = __webpack_require__(26);
+var types_1 = __webpack_require__(13);
+/**
+ * Internal helper class used to augment classes to include sharing functionality
+ */
+var QueryableShareable = (function (_super) {
+    __extends(QueryableShareable, _super);
+    function QueryableShareable() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets a sharing link for the supplied
+     *
+     * @param kind The kind of link to share
+     * @param expiration The optional expiration for this link
+     */
+    QueryableShareable.prototype.getShareLink = function (kind, expiration) {
+        if (expiration === void 0) { expiration = null; }
+        // date needs to be an ISO string or null
+        var expString = expiration !== null ? expiration.toISOString() : null;
+        // clone using the factory and send the request
+        return this.clone(QueryableShareable, "shareLink", true).postAs({
+            body: JSON.stringify({
+                request: {
+                    createLink: true,
+                    emailData: null,
+                    settings: {
+                        expiration: expString,
+                        linkKind: kind,
+                    },
+                },
+            }),
+        });
+    };
+    /**
+     * Shares this instance with the supplied users
+     *
+     * @param loginNames Resolved login names to share
+     * @param role The role
+     * @param requireSignin True to require the user is authenticated, otherwise false
+     * @param propagateAcl True to apply this share to all children
+     * @param emailData If supplied an email will be sent with the indicated properties
+     */
+    QueryableShareable.prototype.shareWith = function (loginNames, role, requireSignin, propagateAcl, emailData) {
+        var _this = this;
+        if (requireSignin === void 0) { requireSignin = true; }
+        if (propagateAcl === void 0) { propagateAcl = false; }
+        // handle the multiple input types
+        if (!Array.isArray(loginNames)) {
+            loginNames = [loginNames];
+        }
+        var userStr = JSON.stringify(loginNames.map(function (login) { return { Key: login }; }));
+        var roleFilter = role === types_1.SharingRole.Edit ? types_1.RoleType.Contributor : types_1.RoleType.Reader;
+        // start by looking up the role definition id we need to set the roleValue
+        return webs_1.Web.fromUrl(this.toUrl()).roleDefinitions.select("Id").filter("RoleTypeKind eq " + roleFilter).get().then(function (def) {
+            if (!Array.isArray(def) || def.length < 1) {
+                throw new Error("Could not locate a role defintion with RoleTypeKind " + roleFilter);
+            }
+            var postBody = {
+                includeAnonymousLinkInEmail: requireSignin,
+                peoplePickerInput: userStr,
+                propagateAcl: propagateAcl,
+                roleValue: "role:" + def[0].Id,
+                useSimplifiedRoles: true,
+            };
+            if (typeof emailData !== "undefined") {
+                postBody = util_1.Util.extend(postBody, {
+                    emailBody: emailData.body,
+                    emailSubject: typeof emailData.subject !== "undefined" ? "" : emailData.subject,
+                    sendEmail: true,
+                });
+            }
+            return _this.clone(QueryableShareable, "shareObject", true).postAs({
+                body: JSON.stringify(postBody),
+            });
+        });
+    };
+    /**
+     * Shares an object based on the supplied options
+     *
+     * @param options The set of options to send to the ShareObject method
+     * @param bypass If true any processing is skipped and the options are sent directly to the ShareObject method
+     */
+    QueryableShareable.prototype.shareObject = function (options, bypass) {
+        var _this = this;
+        if (bypass === void 0) { bypass = false; }
+        if (bypass) {
+            // if the bypass flag is set send the supplied parameters directly to the service
+            return this.sendShareObjectRequest(options);
+        }
+        // extend our options with some defaults
+        options = util_1.Util.extend(options, {
+            group: null,
+            includeAnonymousLinkInEmail: false,
+            propagateAcl: false,
+            useSimplifiedRoles: true,
+        }, true);
+        return this.getRoleValue(options.role, options.group).then(function (roleValue) {
+            // handle the multiple input types
+            if (!Array.isArray(options.loginNames)) {
+                options.loginNames = [options.loginNames];
+            }
+            var userStr = JSON.stringify(options.loginNames.map(function (login) { return { Key: login }; }));
+            var postBody = {
+                peoplePickerInput: userStr,
+                roleValue: roleValue,
+                url: options.url,
+            };
+            if (typeof options.emailData !== "undefined" && options.emailData !== null) {
+                postBody = util_1.Util.extend(postBody, {
+                    emailBody: options.emailData.body,
+                    emailSubject: typeof options.emailData.subject !== "undefined" ? "Shared for you." : options.emailData.subject,
+                    sendEmail: true,
+                });
+            }
+            return _this.sendShareObjectRequest(postBody);
+        });
+    };
+    /**
+     * Calls the web's UnshareObject method
+     *
+     * @param url The url of the object to unshare
+     */
+    QueryableShareable.prototype.unshareObjectWeb = function (url) {
+        return this.clone(QueryableShareable, "unshareObject", true).postAs({
+            body: JSON.stringify({
+                url: url,
+            }),
+        });
+    };
+    /**
+     * Checks Permissions on the list of Users and returns back role the users have on the Item.
+     *
+     * @param recipients The array of Entities for which Permissions need to be checked.
+     */
+    QueryableShareable.prototype.checkPermissions = function (recipients) {
+        return this.clone(QueryableShareable, "checkPermissions", true).postAs({
+            body: JSON.stringify({
+                recipients: recipients,
+            }),
+        });
+    };
+    /**
+     * Get Sharing Information.
+     *
+     * @param request The SharingInformationRequest Object.
+     */
+    QueryableShareable.prototype.getSharingInformation = function (request) {
+        if (request === void 0) { request = null; }
+        return this.clone(QueryableShareable, "getSharingInformation", true).postAs({
+            body: JSON.stringify({
+                request: request,
+            }),
+        });
+    };
+    /**
+     * Gets the sharing settings of an item.
+     *
+     * @param useSimplifiedRoles Determines whether to use simplified roles.
+     */
+    QueryableShareable.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
+        if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
+        return this.clone(QueryableShareable, "getObjectSharingSettings", true).postAs({
+            body: JSON.stringify({
+                useSimplifiedRoles: useSimplifiedRoles,
+            }),
+        });
+    };
+    /**
+     * Unshares this object
+     */
+    QueryableShareable.prototype.unshareObject = function () {
+        return this.clone(QueryableShareable, "unshareObject", true).postAs();
+    };
+    /**
+     * Deletes a link by type
+     *
+     * @param kind Deletes a sharing link by the kind of link
+     */
+    QueryableShareable.prototype.deleteLinkByKind = function (kind) {
+        return this.clone(QueryableShareable, "deleteLinkByKind", true).post({
+            body: JSON.stringify({ linkKind: kind }),
+        });
+    };
+    /**
+     * Removes the specified link to the item.
+     *
+     * @param kind The kind of link to be deleted.
+     * @param shareId
+     */
+    QueryableShareable.prototype.unshareLink = function (kind, shareId) {
+        if (shareId === void 0) { shareId = "00000000-0000-0000-0000-000000000000"; }
+        return this.clone(QueryableShareable, "unshareLink", true).post({
+            body: JSON.stringify({ linkKind: kind, shareId: shareId }),
+        });
+    };
+    /**
+     * Calculates the roleValue string used in the sharing query
+     *
+     * @param role The Sharing Role
+     * @param group The Group type
+     */
+    QueryableShareable.prototype.getRoleValue = function (role, group) {
+        // we will give group precedence, because we had to make a choice
+        if (typeof group !== "undefined" && group !== null) {
+            switch (group) {
+                case types_1.RoleType.Contributor:
+                    return webs_1.Web.fromUrl(this.toUrl()).associatedMemberGroup.select("Id").getAs().then(function (g) { return "group: " + g.Id; });
+                case types_1.RoleType.Reader:
+                case types_1.RoleType.Guest:
+                    return webs_1.Web.fromUrl(this.toUrl()).associatedVisitorGroup.select("Id").getAs().then(function (g) { return "group: " + g.Id; });
+                default:
+                    throw new Error("Could not determine role value for supplied value. Contributor, Reader, and Guest are supported");
+            }
+        }
+        else {
+            var roleFilter = role === types_1.SharingRole.Edit ? types_1.RoleType.Contributor : types_1.RoleType.Reader;
+            return webs_1.Web.fromUrl(this.toUrl()).roleDefinitions.select("Id").top(1).filter("RoleTypeKind eq " + roleFilter).getAs().then(function (def) {
+                if (def.length < 1) {
+                    throw new Error("Could not locate associated role definition for supplied role. Edit and View are supported");
+                }
+                return "role: " + def[0].Id;
+            });
+        }
+    };
+    QueryableShareable.prototype.getShareObjectWeb = function (candidate) {
+        return Promise.resolve(webs_1.Web.fromUrl(candidate, "/_api/SP.Web.ShareObject"));
+    };
+    QueryableShareable.prototype.sendShareObjectRequest = function (options) {
+        return this.getShareObjectWeb(this.toUrl()).then(function (web) {
+            return web.expand("UsersWithAccessRequests", "GroupsSharedWith").as(QueryableShareable).post({
+                body: JSON.stringify(options),
+            });
+        });
+    };
+    return QueryableShareable;
+}(queryable_1.Queryable));
+exports.QueryableShareable = QueryableShareable;
+var QueryableShareableWeb = (function (_super) {
+    __extends(QueryableShareableWeb, _super);
+    function QueryableShareableWeb() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Shares this web with the supplied users
+     * @param loginNames The resolved login names to share
+     * @param role The role to share this web
+     * @param emailData Optional email data
+     */
+    QueryableShareableWeb.prototype.shareWith = function (loginNames, role, emailData) {
+        var _this = this;
+        if (role === void 0) { role = types_1.SharingRole.View; }
+        var dependency = this.addBatchDependency();
+        return webs_1.Web.fromUrl(this.toUrl(), "/_api/web/url").get().then(function (url) {
+            dependency();
+            return _this.shareObject(util_1.Util.combinePaths(url, "/_layouts/15/aclinv.aspx?forSharing=1&mbypass=1"), loginNames, role, emailData);
+        });
+    };
+    /**
+     * Provides direct access to the static web.ShareObject method
+     *
+     * @param url The url to share
+     * @param loginNames Resolved loginnames string[] of a single login name string
+     * @param roleValue Role value
+     * @param emailData Optional email data
+     * @param groupId Optional group id
+     * @param propagateAcl
+     * @param includeAnonymousLinkInEmail
+     * @param useSimplifiedRoles
+     */
+    QueryableShareableWeb.prototype.shareObject = function (url, loginNames, role, emailData, group, propagateAcl, includeAnonymousLinkInEmail, useSimplifiedRoles) {
+        if (propagateAcl === void 0) { propagateAcl = false; }
+        if (includeAnonymousLinkInEmail === void 0) { includeAnonymousLinkInEmail = false; }
+        if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
+        return this.clone(QueryableShareable, null, true).shareObject({
+            emailData: emailData,
+            group: group,
+            includeAnonymousLinkInEmail: includeAnonymousLinkInEmail,
+            loginNames: loginNames,
+            propagateAcl: propagateAcl,
+            role: role,
+            url: url,
+            useSimplifiedRoles: useSimplifiedRoles,
+        });
+    };
+    /**
+     * Supplies a method to pass any set of arguments to ShareObject
+     *
+     * @param options The set of options to send to ShareObject
+     */
+    QueryableShareableWeb.prototype.shareObjectRaw = function (options) {
+        return this.clone(QueryableShareable, null, true).shareObject(options, true);
+    };
+    /**
+     * Unshares the object
+     *
+     * @param url The url of the object to stop sharing
+     */
+    QueryableShareableWeb.prototype.unshareObject = function (url) {
+        return this.clone(QueryableShareable, null, true).unshareObjectWeb(url);
+    };
+    return QueryableShareableWeb;
+}(queryablesecurable_1.QueryableSecurable));
+exports.QueryableShareableWeb = QueryableShareableWeb;
+var QueryableShareableItem = (function (_super) {
+    __extends(QueryableShareableItem, _super);
+    function QueryableShareableItem() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets a link suitable for sharing for this item
+     *
+     * @param kind The type of link to share
+     * @param expiration The optional expiration date
+     */
+    QueryableShareableItem.prototype.getShareLink = function (kind, expiration) {
+        if (kind === void 0) { kind = types_1.SharingLinkKind.OrganizationView; }
+        if (expiration === void 0) { expiration = null; }
+        return this.clone(QueryableShareable, null, true).getShareLink(kind, expiration);
+    };
+    /**
+     * Shares this item with one or more users
+     *
+     * @param loginNames string or string[] of resolved login names to which this item will be shared
+     * @param role The role (View | Edit) applied to the share
+     * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
+     */
+    QueryableShareableItem.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
+        if (role === void 0) { role = types_1.SharingRole.View; }
+        if (requireSignin === void 0) { requireSignin = true; }
+        return this.clone(QueryableShareable, null, true).shareWith(loginNames, role, requireSignin, false, emailData);
+    };
+    /**
+     * Checks Permissions on the list of Users and returns back role the users have on the Item.
+     *
+     * @param recipients The array of Entities for which Permissions need to be checked.
+     */
+    QueryableShareableItem.prototype.checkSharingPermissions = function (recipients) {
+        return this.clone(QueryableShareable, null, true).checkPermissions(recipients);
+    };
+    /**
+     * Get Sharing Information.
+     *
+     * @param request The SharingInformationRequest Object.
+     */
+    QueryableShareableItem.prototype.getSharingInformation = function (request) {
+        if (request === void 0) { request = null; }
+        return this.clone(QueryableShareable, null, true).getSharingInformation(request);
+    };
+    /**
+     * Gets the sharing settings of an item.
+     *
+     * @param useSimplifiedRoles Determines whether to use simplified roles.
+     */
+    QueryableShareableItem.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
+        if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
+        return this.clone(QueryableShareable, null, true).getObjectSharingSettings(useSimplifiedRoles);
+    };
+    /**
+     * Unshare this item
+     */
+    QueryableShareableItem.prototype.unshare = function () {
+        return this.clone(QueryableShareable, null, true).unshareObject();
+    };
+    /**
+     * Deletes a sharing link by kind
+     *
+     * @param kind Deletes a sharing link by the kind of link
+     */
+    QueryableShareableItem.prototype.deleteSharingLinkByKind = function (kind) {
+        return this.clone(QueryableShareable, null, true).deleteLinkByKind(kind);
+    };
+    /**
+     * Removes the specified link to the item.
+     *
+     * @param kind The kind of link to be deleted.
+     * @param shareId
+     */
+    QueryableShareableItem.prototype.unshareLink = function (kind, shareId) {
+        return this.clone(QueryableShareable, null, true).unshareLink(kind, shareId);
+    };
+    return QueryableShareableItem;
+}(queryablesecurable_1.QueryableSecurable));
+exports.QueryableShareableItem = QueryableShareableItem;
+var FileFolderShared = (function (_super) {
+    __extends(FileFolderShared, _super);
+    function FileFolderShared() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets a link suitable for sharing
+     *
+     * @param kind The kind of link to get
+     * @param expiration Optional, an expiration for this link
+     */
+    FileFolderShared.prototype.getShareLink = function (kind, expiration) {
+        if (kind === void 0) { kind = types_1.SharingLinkKind.OrganizationView; }
+        if (expiration === void 0) { expiration = null; }
+        var dependency = this.addBatchDependency();
+        return this.getShareable().then(function (shareable) {
+            dependency();
+            return shareable.getShareLink(kind, expiration);
+        });
+    };
+    /**
+         * Checks Permissions on the list of Users and returns back role the users have on the Item.
+         *
+         * @param recipients The array of Entities for which Permissions need to be checked.
+         */
+    FileFolderShared.prototype.checkSharingPermissions = function (recipients) {
+        var dependency = this.addBatchDependency();
+        return this.getShareable().then(function (shareable) {
+            dependency();
+            return shareable.checkPermissions(recipients);
+        });
+    };
+    /**
+     * Get Sharing Information.
+     *
+     * @param request The SharingInformationRequest Object.
+     */
+    FileFolderShared.prototype.getSharingInformation = function (request) {
+        if (request === void 0) { request = null; }
+        var dependency = this.addBatchDependency();
+        return this.getShareable().then(function (shareable) {
+            dependency();
+            return shareable.getSharingInformation(request);
+        });
+    };
+    /**
+     * Gets the sharing settings of an item.
+     *
+     * @param useSimplifiedRoles Determines whether to use simplified roles.
+     */
+    FileFolderShared.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
+        if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
+        var dependency = this.addBatchDependency();
+        return this.getShareable().then(function (shareable) {
+            dependency();
+            return shareable.getObjectSharingSettings(useSimplifiedRoles);
+        });
+    };
+    /**
+     * Unshare this item
+     */
+    FileFolderShared.prototype.unshare = function () {
+        var dependency = this.addBatchDependency();
+        return this.getShareable().then(function (shareable) {
+            dependency();
+            return shareable.unshareObject();
+        });
+    };
+    /**
+     * Deletes a sharing link by the kind of link
+     *
+     * @param kind The kind of link to be deleted.
+     */
+    FileFolderShared.prototype.deleteSharingLinkByKind = function (kind) {
+        var dependency = this.addBatchDependency();
+        return this.getShareable().then(function (shareable) {
+            dependency();
+            return shareable.deleteLinkByKind(kind);
+        });
+    };
+    /**
+     * Removes the specified link to the item.
+     *
+     * @param kind The kind of link to be deleted.
+     * @param shareId The share id to delete
+     */
+    FileFolderShared.prototype.unshareLink = function (kind, shareId) {
+        var dependency = this.addBatchDependency();
+        return this.getShareable().then(function (shareable) {
+            dependency();
+            return shareable.unshareLink(kind, shareId);
+        });
+    };
+    /**
+     * For files and folders we need to use the associated item end point
+     */
+    FileFolderShared.prototype.getShareable = function () {
+        var _this = this;
+        // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
+        return this.clone(QueryableShareableFile, "listItemAllFields", false).select("odata.editlink").get().then(function (d) {
+            var shareable = new QueryableShareable(odata_1.getEntityUrl(d));
+            // we need to handle batching
+            if (_this.hasBatch) {
+                shareable = shareable.inBatch(_this.batch);
+            }
+            return shareable;
+        });
+    };
+    return FileFolderShared;
+}(queryable_1.QueryableInstance));
+exports.FileFolderShared = FileFolderShared;
+var QueryableShareableFile = (function (_super) {
+    __extends(QueryableShareableFile, _super);
+    function QueryableShareableFile() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Shares this item with one or more users
+     *
+     * @param loginNames string or string[] of resolved login names to which this item will be shared
+     * @param role The role (View | Edit) applied to the share
+     * @param shareEverything Share everything in this folder, even items with unique permissions.
+     * @param requireSignin If true the user must signin to view link, otherwise anyone with the link can access the resource
+     * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
+     */
+    QueryableShareableFile.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
+        if (role === void 0) { role = types_1.SharingRole.View; }
+        if (requireSignin === void 0) { requireSignin = true; }
+        var dependency = this.addBatchDependency();
+        return this.getShareable().then(function (shareable) {
+            dependency();
+            return shareable.shareWith(loginNames, role, requireSignin, false, emailData);
+        });
+    };
+    return QueryableShareableFile;
+}(FileFolderShared));
+exports.QueryableShareableFile = QueryableShareableFile;
+var QueryableShareableFolder = (function (_super) {
+    __extends(QueryableShareableFolder, _super);
+    function QueryableShareableFolder() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Shares this item with one or more users
+     *
+     * @param loginNames string or string[] of resolved login names to which this item will be shared
+     * @param role The role (View | Edit) applied to the share
+     * @param shareEverything Share everything in this folder, even items with unique permissions.
+     * @param requireSignin If true the user must signin to view link, otherwise anyone with the link can access the resource
+     * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
+     */
+    QueryableShareableFolder.prototype.shareWith = function (loginNames, role, requireSignin, shareEverything, emailData) {
+        if (role === void 0) { role = types_1.SharingRole.View; }
+        if (requireSignin === void 0) { requireSignin = true; }
+        if (shareEverything === void 0) { shareEverything = false; }
+        var dependency = this.addBatchDependency();
+        return this.getShareable().then(function (shareable) {
+            dependency();
+            return shareable.shareWith(loginNames, role, requireSignin, shareEverything, emailData);
+        });
+    };
+    return QueryableShareableFolder;
+}(FileFolderShared));
+exports.QueryableShareableFolder = QueryableShareableFolder;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// reference: https://msdn.microsoft.com/en-us/library/office/dn600183.aspx
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Determines the display mode of the given control or view
+ */
+var ControlMode;
+(function (ControlMode) {
+    ControlMode[ControlMode["Display"] = 1] = "Display";
+    ControlMode[ControlMode["Edit"] = 2] = "Edit";
+    ControlMode[ControlMode["New"] = 3] = "New";
+})(ControlMode = exports.ControlMode || (exports.ControlMode = {}));
+/**
+ * Specifies the type of the field.
+ */
+var FieldTypes;
+(function (FieldTypes) {
+    FieldTypes[FieldTypes["Invalid"] = 0] = "Invalid";
+    FieldTypes[FieldTypes["Integer"] = 1] = "Integer";
+    FieldTypes[FieldTypes["Text"] = 2] = "Text";
+    FieldTypes[FieldTypes["Note"] = 3] = "Note";
+    FieldTypes[FieldTypes["DateTime"] = 4] = "DateTime";
+    FieldTypes[FieldTypes["Counter"] = 5] = "Counter";
+    FieldTypes[FieldTypes["Choice"] = 6] = "Choice";
+    FieldTypes[FieldTypes["Lookup"] = 7] = "Lookup";
+    FieldTypes[FieldTypes["Boolean"] = 8] = "Boolean";
+    FieldTypes[FieldTypes["Number"] = 9] = "Number";
+    FieldTypes[FieldTypes["Currency"] = 10] = "Currency";
+    FieldTypes[FieldTypes["URL"] = 11] = "URL";
+    FieldTypes[FieldTypes["Computed"] = 12] = "Computed";
+    FieldTypes[FieldTypes["Threading"] = 13] = "Threading";
+    FieldTypes[FieldTypes["Guid"] = 14] = "Guid";
+    FieldTypes[FieldTypes["MultiChoice"] = 15] = "MultiChoice";
+    FieldTypes[FieldTypes["GridChoice"] = 16] = "GridChoice";
+    FieldTypes[FieldTypes["Calculated"] = 17] = "Calculated";
+    FieldTypes[FieldTypes["File"] = 18] = "File";
+    FieldTypes[FieldTypes["Attachments"] = 19] = "Attachments";
+    FieldTypes[FieldTypes["User"] = 20] = "User";
+    FieldTypes[FieldTypes["Recurrence"] = 21] = "Recurrence";
+    FieldTypes[FieldTypes["CrossProjectLink"] = 22] = "CrossProjectLink";
+    FieldTypes[FieldTypes["ModStat"] = 23] = "ModStat";
+    FieldTypes[FieldTypes["Error"] = 24] = "Error";
+    FieldTypes[FieldTypes["ContentTypeId"] = 25] = "ContentTypeId";
+    FieldTypes[FieldTypes["PageSeparator"] = 26] = "PageSeparator";
+    FieldTypes[FieldTypes["ThreadIndex"] = 27] = "ThreadIndex";
+    FieldTypes[FieldTypes["WorkflowStatus"] = 28] = "WorkflowStatus";
+    FieldTypes[FieldTypes["AllDayEvent"] = 29] = "AllDayEvent";
+    FieldTypes[FieldTypes["WorkflowEventType"] = 30] = "WorkflowEventType";
+})(FieldTypes = exports.FieldTypes || (exports.FieldTypes = {}));
+var DateTimeFieldFormatType;
+(function (DateTimeFieldFormatType) {
+    DateTimeFieldFormatType[DateTimeFieldFormatType["DateOnly"] = 0] = "DateOnly";
+    DateTimeFieldFormatType[DateTimeFieldFormatType["DateTime"] = 1] = "DateTime";
+})(DateTimeFieldFormatType = exports.DateTimeFieldFormatType || (exports.DateTimeFieldFormatType = {}));
+/**
+ * Specifies the control settings while adding a field.
+ */
+var AddFieldOptions;
+(function (AddFieldOptions) {
+    /**
+     *  Specify that a new field added to the list must also be added to the default content type in the site collection
+     */
+    AddFieldOptions[AddFieldOptions["DefaultValue"] = 0] = "DefaultValue";
+    /**
+     * Specify that a new field added to the list must also be added to the default content type in the site collection.
+     */
+    AddFieldOptions[AddFieldOptions["AddToDefaultContentType"] = 1] = "AddToDefaultContentType";
+    /**
+     * Specify that a new field must not be added to any other content type
+     */
+    AddFieldOptions[AddFieldOptions["AddToNoContentType"] = 2] = "AddToNoContentType";
+    /**
+     *  Specify that a new field that is added to the specified list must also be added to all content types in the site collection
+     */
+    AddFieldOptions[AddFieldOptions["AddToAllContentTypes"] = 4] = "AddToAllContentTypes";
+    /**
+     * Specify adding an internal field name hint for the purpose of avoiding possible database locking or field renaming operations
+     */
+    AddFieldOptions[AddFieldOptions["AddFieldInternalNameHint"] = 8] = "AddFieldInternalNameHint";
+    /**
+     * Specify that a new field that is added to the specified list must also be added to the default list view
+     */
+    AddFieldOptions[AddFieldOptions["AddFieldToDefaultView"] = 16] = "AddFieldToDefaultView";
+    /**
+     * Specify to confirm that no other field has the same display name
+     */
+    AddFieldOptions[AddFieldOptions["AddFieldCheckDisplayName"] = 32] = "AddFieldCheckDisplayName";
+})(AddFieldOptions = exports.AddFieldOptions || (exports.AddFieldOptions = {}));
+var CalendarType;
+(function (CalendarType) {
+    CalendarType[CalendarType["Gregorian"] = 1] = "Gregorian";
+    CalendarType[CalendarType["Japan"] = 3] = "Japan";
+    CalendarType[CalendarType["Taiwan"] = 4] = "Taiwan";
+    CalendarType[CalendarType["Korea"] = 5] = "Korea";
+    CalendarType[CalendarType["Hijri"] = 6] = "Hijri";
+    CalendarType[CalendarType["Thai"] = 7] = "Thai";
+    CalendarType[CalendarType["Hebrew"] = 8] = "Hebrew";
+    CalendarType[CalendarType["GregorianMEFrench"] = 9] = "GregorianMEFrench";
+    CalendarType[CalendarType["GregorianArabic"] = 10] = "GregorianArabic";
+    CalendarType[CalendarType["GregorianXLITEnglish"] = 11] = "GregorianXLITEnglish";
+    CalendarType[CalendarType["GregorianXLITFrench"] = 12] = "GregorianXLITFrench";
+    CalendarType[CalendarType["KoreaJapanLunar"] = 14] = "KoreaJapanLunar";
+    CalendarType[CalendarType["ChineseLunar"] = 15] = "ChineseLunar";
+    CalendarType[CalendarType["SakaEra"] = 16] = "SakaEra";
+    CalendarType[CalendarType["UmAlQura"] = 23] = "UmAlQura";
+})(CalendarType = exports.CalendarType || (exports.CalendarType = {}));
+var UrlFieldFormatType;
+(function (UrlFieldFormatType) {
+    UrlFieldFormatType[UrlFieldFormatType["Hyperlink"] = 0] = "Hyperlink";
+    UrlFieldFormatType[UrlFieldFormatType["Image"] = 1] = "Image";
+})(UrlFieldFormatType = exports.UrlFieldFormatType || (exports.UrlFieldFormatType = {}));
+var PermissionKind;
+(function (PermissionKind) {
+    /**
+     * Has no permissions on the Site. Not available through the user interface.
+     */
+    PermissionKind[PermissionKind["EmptyMask"] = 0] = "EmptyMask";
+    /**
+     * View items in lists, documents in document libraries, and Web discussion comments.
+     */
+    PermissionKind[PermissionKind["ViewListItems"] = 1] = "ViewListItems";
+    /**
+     * Add items to lists, documents to document libraries, and Web discussion comments.
+     */
+    PermissionKind[PermissionKind["AddListItems"] = 2] = "AddListItems";
+    /**
+     * Edit items in lists, edit documents in document libraries, edit Web discussion comments
+     * in documents, and customize Web Part Pages in document libraries.
+     */
+    PermissionKind[PermissionKind["EditListItems"] = 3] = "EditListItems";
+    /**
+     * Delete items from a list, documents from a document library, and Web discussion
+     * comments in documents.
+     */
+    PermissionKind[PermissionKind["DeleteListItems"] = 4] = "DeleteListItems";
+    /**
+     * Approve a minor version of a list item or document.
+     */
+    PermissionKind[PermissionKind["ApproveItems"] = 5] = "ApproveItems";
+    /**
+     * View the source of documents with server-side file handlers.
+     */
+    PermissionKind[PermissionKind["OpenItems"] = 6] = "OpenItems";
+    /**
+     * View past versions of a list item or document.
+     */
+    PermissionKind[PermissionKind["ViewVersions"] = 7] = "ViewVersions";
+    /**
+     * Delete past versions of a list item or document.
+     */
+    PermissionKind[PermissionKind["DeleteVersions"] = 8] = "DeleteVersions";
+    /**
+     * Discard or check in a document which is checked out to another user.
+     */
+    PermissionKind[PermissionKind["CancelCheckout"] = 9] = "CancelCheckout";
+    /**
+     * Create, change, and delete personal views of lists.
+     */
+    PermissionKind[PermissionKind["ManagePersonalViews"] = 10] = "ManagePersonalViews";
+    /**
+     * Create and delete lists, add or remove columns in a list, and add or remove public views of a list.
+     */
+    PermissionKind[PermissionKind["ManageLists"] = 12] = "ManageLists";
+    /**
+     * View forms, views, and application pages, and enumerate lists.
+     */
+    PermissionKind[PermissionKind["ViewFormPages"] = 13] = "ViewFormPages";
+    /**
+     * Make content of a list or document library retrieveable for anonymous users through SharePoint search.
+     * The list permissions in the site do not change.
+     */
+    PermissionKind[PermissionKind["AnonymousSearchAccessList"] = 14] = "AnonymousSearchAccessList";
+    /**
+     * Allow users to open a Site, list, or folder to access items inside that container.
+     */
+    PermissionKind[PermissionKind["Open"] = 17] = "Open";
+    /**
+     * View pages in a Site.
+     */
+    PermissionKind[PermissionKind["ViewPages"] = 18] = "ViewPages";
+    /**
+     * Add, change, or delete HTML pages or Web Part Pages, and edit the Site using
+     * a Windows SharePoint Services compatible editor.
+     */
+    PermissionKind[PermissionKind["AddAndCustomizePages"] = 19] = "AddAndCustomizePages";
+    /**
+     * Apply a theme or borders to the entire Site.
+     */
+    PermissionKind[PermissionKind["ApplyThemeAndBorder"] = 20] = "ApplyThemeAndBorder";
+    /**
+     * Apply a style sheet (.css file) to the Site.
+     */
+    PermissionKind[PermissionKind["ApplyStyleSheets"] = 21] = "ApplyStyleSheets";
+    /**
+     * View reports on Site usage.
+     */
+    PermissionKind[PermissionKind["ViewUsageData"] = 22] = "ViewUsageData";
+    /**
+     * Create a Site using Self-Service Site Creation.
+     */
+    PermissionKind[PermissionKind["CreateSSCSite"] = 23] = "CreateSSCSite";
+    /**
+     * Create subsites such as team sites, Meeting Workspace sites, and Document Workspace sites.
+     */
+    PermissionKind[PermissionKind["ManageSubwebs"] = 24] = "ManageSubwebs";
+    /**
+     * Create a group of users that can be used anywhere within the site collection.
+     */
+    PermissionKind[PermissionKind["CreateGroups"] = 25] = "CreateGroups";
+    /**
+     * Create and change permission levels on the Site and assign permissions to users
+     * and groups.
+     */
+    PermissionKind[PermissionKind["ManagePermissions"] = 26] = "ManagePermissions";
+    /**
+     * Enumerate files and folders in a Site using Microsoft Office SharePoint Designer
+     * and WebDAV interfaces.
+     */
+    PermissionKind[PermissionKind["BrowseDirectories"] = 27] = "BrowseDirectories";
+    /**
+     * View information about users of the Site.
+     */
+    PermissionKind[PermissionKind["BrowseUserInfo"] = 28] = "BrowseUserInfo";
+    /**
+     * Add or remove personal Web Parts on a Web Part Page.
+     */
+    PermissionKind[PermissionKind["AddDelPrivateWebParts"] = 29] = "AddDelPrivateWebParts";
+    /**
+     * Update Web Parts to display personalized information.
+     */
+    PermissionKind[PermissionKind["UpdatePersonalWebParts"] = 30] = "UpdatePersonalWebParts";
+    /**
+     * Grant the ability to perform all administration tasks for the Site as well as
+     * manage content, activate, deactivate, or edit properties of Site scoped Features
+     * through the object model or through the user interface (UI). When granted on the
+     * root Site of a Site Collection, activate, deactivate, or edit properties of
+     * site collection scoped Features through the object model. To browse to the Site
+     * Collection Features page and activate or deactivate Site Collection scoped Features
+     * through the UI, you must be a Site Collection administrator.
+     */
+    PermissionKind[PermissionKind["ManageWeb"] = 31] = "ManageWeb";
+    /**
+     * Content of lists and document libraries in the Web site will be retrieveable for anonymous users through
+     * SharePoint search if the list or document library has AnonymousSearchAccessList set.
+     */
+    PermissionKind[PermissionKind["AnonymousSearchAccessWebLists"] = 32] = "AnonymousSearchAccessWebLists";
+    /**
+     * Use features that launch client applications. Otherwise, users must work on documents
+     * locally and upload changes.
+     */
+    PermissionKind[PermissionKind["UseClientIntegration"] = 37] = "UseClientIntegration";
+    /**
+     * Use SOAP, WebDAV, or Microsoft Office SharePoint Designer interfaces to access the Site.
+     */
+    PermissionKind[PermissionKind["UseRemoteAPIs"] = 38] = "UseRemoteAPIs";
+    /**
+     * Manage alerts for all users of the Site.
+     */
+    PermissionKind[PermissionKind["ManageAlerts"] = 39] = "ManageAlerts";
+    /**
+     * Create e-mail alerts.
+     */
+    PermissionKind[PermissionKind["CreateAlerts"] = 40] = "CreateAlerts";
+    /**
+     * Allows a user to change his or her user information, such as adding a picture.
+     */
+    PermissionKind[PermissionKind["EditMyUserInfo"] = 41] = "EditMyUserInfo";
+    /**
+     * Enumerate permissions on Site, list, folder, document, or list item.
+     */
+    PermissionKind[PermissionKind["EnumeratePermissions"] = 63] = "EnumeratePermissions";
+    /**
+     * Has all permissions on the Site. Not available through the user interface.
+     */
+    PermissionKind[PermissionKind["FullMask"] = 65] = "FullMask";
+})(PermissionKind = exports.PermissionKind || (exports.PermissionKind = {}));
+var PrincipalType;
+(function (PrincipalType) {
+    PrincipalType[PrincipalType["None"] = 0] = "None";
+    PrincipalType[PrincipalType["User"] = 1] = "User";
+    PrincipalType[PrincipalType["DistributionList"] = 2] = "DistributionList";
+    PrincipalType[PrincipalType["SecurityGroup"] = 4] = "SecurityGroup";
+    PrincipalType[PrincipalType["SharePointGroup"] = 8] = "SharePointGroup";
+    PrincipalType[PrincipalType["All"] = 15] = "All";
+})(PrincipalType = exports.PrincipalType || (exports.PrincipalType = {}));
+var RoleType;
+(function (RoleType) {
+    RoleType[RoleType["None"] = 0] = "None";
+    RoleType[RoleType["Guest"] = 1] = "Guest";
+    RoleType[RoleType["Reader"] = 2] = "Reader";
+    RoleType[RoleType["Contributor"] = 3] = "Contributor";
+    RoleType[RoleType["WebDesigner"] = 4] = "WebDesigner";
+    RoleType[RoleType["Administrator"] = 5] = "Administrator";
+})(RoleType = exports.RoleType || (exports.RoleType = {}));
+var PageType;
+(function (PageType) {
+    PageType[PageType["Invalid"] = -1] = "Invalid";
+    PageType[PageType["DefaultView"] = 0] = "DefaultView";
+    PageType[PageType["NormalView"] = 1] = "NormalView";
+    PageType[PageType["DialogView"] = 2] = "DialogView";
+    PageType[PageType["View"] = 3] = "View";
+    PageType[PageType["DisplayForm"] = 4] = "DisplayForm";
+    PageType[PageType["DisplayFormDialog"] = 5] = "DisplayFormDialog";
+    PageType[PageType["EditForm"] = 6] = "EditForm";
+    PageType[PageType["EditFormDialog"] = 7] = "EditFormDialog";
+    PageType[PageType["NewForm"] = 8] = "NewForm";
+    PageType[PageType["NewFormDialog"] = 9] = "NewFormDialog";
+    PageType[PageType["SolutionForm"] = 10] = "SolutionForm";
+    PageType[PageType["PAGE_MAXITEMS"] = 11] = "PAGE_MAXITEMS";
+})(PageType = exports.PageType || (exports.PageType = {}));
+var SharingLinkKind;
+(function (SharingLinkKind) {
+    /**
+     * Uninitialized link
+     */
+    SharingLinkKind[SharingLinkKind["Uninitialized"] = 0] = "Uninitialized";
+    /**
+     * Direct link to the object being shared
+     */
+    SharingLinkKind[SharingLinkKind["Direct"] = 1] = "Direct";
+    /**
+     * Organization-shareable link to the object being shared with view permissions
+     */
+    SharingLinkKind[SharingLinkKind["OrganizationView"] = 2] = "OrganizationView";
+    /**
+     * Organization-shareable link to the object being shared with edit permissions
+     */
+    SharingLinkKind[SharingLinkKind["OrganizationEdit"] = 3] = "OrganizationEdit";
+    /**
+     * View only anonymous link
+     */
+    SharingLinkKind[SharingLinkKind["AnonymousView"] = 4] = "AnonymousView";
+    /**
+     * Read/Write anonymous link
+     */
+    SharingLinkKind[SharingLinkKind["AnonymousEdit"] = 5] = "AnonymousEdit";
+    /**
+     * Flexible sharing Link where properties can change without affecting link URL
+     */
+    SharingLinkKind[SharingLinkKind["Flexible"] = 6] = "Flexible";
+})(SharingLinkKind = exports.SharingLinkKind || (exports.SharingLinkKind = {}));
+;
+/**
+ * Indicates the role of the sharing link
+ */
+var SharingRole;
+(function (SharingRole) {
+    SharingRole[SharingRole["None"] = 0] = "None";
+    SharingRole[SharingRole["View"] = 1] = "View";
+    SharingRole[SharingRole["Edit"] = 2] = "Edit";
+    SharingRole[SharingRole["Owner"] = 3] = "Owner";
+})(SharingRole = exports.SharingRole || (exports.SharingRole = {}));
+var SharingOperationStatusCode;
+(function (SharingOperationStatusCode) {
+    /**
+     * The share operation completed without errors.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["CompletedSuccessfully"] = 0] = "CompletedSuccessfully";
+    /**
+     * The share operation completed and generated requests for access.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["AccessRequestsQueued"] = 1] = "AccessRequestsQueued";
+    /**
+     * The share operation failed as there were no resolved users.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["NoResolvedUsers"] = -1] = "NoResolvedUsers";
+    /**
+     * The share operation failed due to insufficient permissions.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["AccessDenied"] = -2] = "AccessDenied";
+    /**
+     * The share operation failed when attempting a cross site share, which is not supported.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["CrossSiteRequestNotSupported"] = -3] = "CrossSiteRequestNotSupported";
+    /**
+     * The sharing operation failed due to an unknown error.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["UnknowError"] = -4] = "UnknowError";
+    /**
+     * The text you typed is too long. Please shorten it.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["EmailBodyTooLong"] = -5] = "EmailBodyTooLong";
+    /**
+     * The maximum number of unique scopes in the list has been exceeded.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["ListUniqueScopesExceeded"] = -6] = "ListUniqueScopesExceeded";
+    /**
+     * The share operation failed because a sharing capability is disabled in the site.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["CapabilityDisabled"] = -7] = "CapabilityDisabled";
+    /**
+     * The specified object for the share operation is not supported.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["ObjectNotSupported"] = -8] = "ObjectNotSupported";
+    /**
+     * A SharePoint group cannot contain another SharePoint group.
+     */
+    SharingOperationStatusCode[SharingOperationStatusCode["NestedGroupsNotSupported"] = -9] = "NestedGroupsNotSupported";
+})(SharingOperationStatusCode = exports.SharingOperationStatusCode || (exports.SharingOperationStatusCode = {}));
+var SPSharedObjectType;
+(function (SPSharedObjectType) {
+    SPSharedObjectType[SPSharedObjectType["Unknown"] = 0] = "Unknown";
+    SPSharedObjectType[SPSharedObjectType["File"] = 1] = "File";
+    SPSharedObjectType[SPSharedObjectType["Folder"] = 2] = "Folder";
+    SPSharedObjectType[SPSharedObjectType["Item"] = 3] = "Item";
+    SPSharedObjectType[SPSharedObjectType["List"] = 4] = "List";
+    SPSharedObjectType[SPSharedObjectType["Web"] = 5] = "Web";
+    SPSharedObjectType[SPSharedObjectType["Max"] = 6] = "Max";
+})(SPSharedObjectType = exports.SPSharedObjectType || (exports.SPSharedObjectType = {}));
+var SharingDomainRestrictionMode;
+(function (SharingDomainRestrictionMode) {
+    SharingDomainRestrictionMode[SharingDomainRestrictionMode["None"] = 0] = "None";
+    SharingDomainRestrictionMode[SharingDomainRestrictionMode["AllowList"] = 1] = "AllowList";
+    SharingDomainRestrictionMode[SharingDomainRestrictionMode["BlockList"] = 2] = "BlockList";
+})(SharingDomainRestrictionMode = exports.SharingDomainRestrictionMode || (exports.SharingDomainRestrictionMode = {}));
+;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var collections_1 = __webpack_require__(6);
+var pnplibconfig_1 = __webpack_require__(4);
+/**
+ * A wrapper class to provide a consistent interface to browser based storage
+ *
+ */
+var PnPClientStorageWrapper = (function () {
+    /**
+     * Creates a new instance of the PnPClientStorageWrapper class
+     *
+     * @constructor
+     */
+    function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
+        this.store = store;
+        this.defaultTimeoutMinutes = defaultTimeoutMinutes;
+        this.defaultTimeoutMinutes = (defaultTimeoutMinutes === void 0) ? -1 : defaultTimeoutMinutes;
+        this.enabled = this.test();
+    }
+    /**
+     * Get a value from storage, or null if that value does not exist
+     *
+     * @param key The key whose value we want to retrieve
+     */
+    PnPClientStorageWrapper.prototype.get = function (key) {
+        if (!this.enabled) {
+            return null;
+        }
+        var o = this.store.getItem(key);
+        if (o == null) {
+            return null;
+        }
+        var persistable = JSON.parse(o);
+        if (new Date(persistable.expiration) <= new Date()) {
+            this.delete(key);
+            return null;
+        }
+        else {
+            return persistable.value;
+        }
+    };
+    /**
+     * Adds a value to the underlying storage
+     *
+     * @param key The key to use when storing the provided value
+     * @param o The value to store
+     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+     */
+    PnPClientStorageWrapper.prototype.put = function (key, o, expire) {
+        if (this.enabled) {
+            this.store.setItem(key, this.createPersistable(o, expire));
+        }
+    };
+    /**
+     * Deletes a value from the underlying storage
+     *
+     * @param key The key of the pair we want to remove from storage
+     */
+    PnPClientStorageWrapper.prototype.delete = function (key) {
+        if (this.enabled) {
+            this.store.removeItem(key);
+        }
+    };
+    /**
+     * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
+     *
+     * @param key The key to use when storing the provided value
+     * @param getter A function which will upon execution provide the desired value
+     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+     */
+    PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
+        var _this = this;
+        if (!this.enabled) {
+            return getter();
+        }
+        return new Promise(function (resolve) {
+            var o = _this.get(key);
+            if (o == null) {
+                getter().then(function (d) {
+                    _this.put(key, d, expire);
+                    resolve(d);
+                });
+            }
+            else {
+                resolve(o);
+            }
+        });
+    };
+    /**
+     * Used to determine if the wrapped storage is available currently
+     */
+    PnPClientStorageWrapper.prototype.test = function () {
+        var str = "test";
+        try {
+            this.store.setItem(str, str);
+            this.store.removeItem(str);
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    };
+    /**
+     * Creates the persistable to store
+     */
+    PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
+        if (typeof expire === "undefined") {
+            // ensure we are by default inline with the global library setting
+            var defaultTimeout = pnplibconfig_1.RuntimeConfig.defaultCachingTimeoutSeconds;
+            if (this.defaultTimeoutMinutes > 0) {
+                defaultTimeout = this.defaultTimeoutMinutes * 60;
+            }
+            expire = util_1.Util.dateAdd(new Date(), "second", defaultTimeout);
+        }
+        return JSON.stringify({ expiration: expire, value: o });
+    };
+    return PnPClientStorageWrapper;
+}());
+exports.PnPClientStorageWrapper = PnPClientStorageWrapper;
+/**
+ * A thin implementation of in-memory storage for use in nodejs
+ */
+var MemoryStorage = (function () {
+    function MemoryStorage(_store) {
+        if (_store === void 0) { _store = new collections_1.Dictionary(); }
+        this._store = _store;
+    }
+    Object.defineProperty(MemoryStorage.prototype, "length", {
+        get: function () {
+            return this._store.count();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MemoryStorage.prototype.clear = function () {
+        this._store.clear();
+    };
+    MemoryStorage.prototype.getItem = function (key) {
+        return this._store.get(key);
+    };
+    MemoryStorage.prototype.key = function (index) {
+        return this._store.getKeys()[index];
+    };
+    MemoryStorage.prototype.removeItem = function (key) {
+        this._store.remove(key);
+    };
+    MemoryStorage.prototype.setItem = function (key, data) {
+        this._store.add(key, data);
+    };
+    return MemoryStorage;
+}());
+/**
+ * A class that will establish wrappers for both local and session storage
+ */
+var PnPClientStorage = (function () {
+    /**
+     * Creates a new instance of the PnPClientStorage class
+     *
+     * @constructor
+     */
+    function PnPClientStorage() {
+        this.local = typeof localStorage !== "undefined" ? new PnPClientStorageWrapper(localStorage) : new PnPClientStorageWrapper(new MemoryStorage());
+        this.session = typeof sessionStorage !== "undefined" ? new PnPClientStorageWrapper(sessionStorage) : new PnPClientStorageWrapper(new MemoryStorage());
+    }
+    return PnPClientStorage;
+}());
+exports.PnPClientStorage = PnPClientStorage;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var digestcache_1 = __webpack_require__(38);
+var util_1 = __webpack_require__(0);
+var pnplibconfig_1 = __webpack_require__(4);
+var exceptions_1 = __webpack_require__(3);
+var HttpClient = (function () {
+    function HttpClient() {
+        this._impl = pnplibconfig_1.RuntimeConfig.fetchClientFactory();
+        this._digestCache = new digestcache_1.DigestCache(this);
+    }
+    HttpClient.prototype.fetch = function (url, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
+        var headers = new Headers();
+        // first we add the global headers so they can be overwritten by any passed in locally to this call
+        this.mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.headers);
+        // second we add the local options so we can overwrite the globals
+        this.mergeHeaders(headers, options.headers);
+        // lastly we apply any default headers we need that may not exist
+        if (!headers.has("Accept")) {
+            headers.append("Accept", "application/json");
+        }
+        if (!headers.has("Content-Type")) {
+            headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
+        }
+        if (!headers.has("X-ClientService-ClientTag")) {
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:2.0.3");
+        }
+        opts = util_1.Util.extend(opts, { headers: headers });
+        if (opts.method && opts.method.toUpperCase() !== "GET") {
+            if (!headers.has("X-RequestDigest")) {
+                var index = url.indexOf("_api/");
+                if (index < 0) {
+                    throw new exceptions_1.APIUrlException();
+                }
+                var webUrl = url.substr(0, index);
+                return this._digestCache.getDigest(webUrl)
+                    .then(function (digest) {
+                    headers.append("X-RequestDigest", digest);
+                    return _this.fetchRaw(url, opts);
+                });
+            }
+        }
+        return this.fetchRaw(url, opts);
+    };
+    HttpClient.prototype.fetchRaw = function (url, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        // here we need to normalize the headers
+        var rawHeaders = new Headers();
+        this.mergeHeaders(rawHeaders, options.headers);
+        options = util_1.Util.extend(options, { headers: rawHeaders });
+        var retry = function (ctx) {
+            _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
+                // grab our current delay
+                var delay = ctx.delay;
+                // Check if request was throttled - http status code 429
+                // Check is request failed due to server unavailable - http status code 503
+                if (response.status !== 429 && response.status !== 503) {
+                    ctx.reject(response);
+                }
+                // Increment our counters.
+                ctx.delay *= 2;
+                ctx.attempts++;
+                // If we have exceeded the retry count, reject.
+                if (ctx.retryCount <= ctx.attempts) {
+                    ctx.reject(response);
+                }
+                // Set our retry timeout for {delay} milliseconds.
+                setTimeout(util_1.Util.getCtxCallback(_this, retry, ctx), delay);
+            });
+        };
+        return new Promise(function (resolve, reject) {
+            var retryContext = {
+                attempts: 0,
+                delay: 100,
+                reject: reject,
+                resolve: resolve,
+                retryCount: 7,
+            };
+            retry.call(_this, retryContext);
+        });
+    };
+    HttpClient.prototype.get = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "GET" });
+        return this.fetch(url, opts);
+    };
+    HttpClient.prototype.post = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "POST" });
+        return this.fetch(url, opts);
+    };
+    HttpClient.prototype.patch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "PATCH" });
+        return this.fetch(url, opts);
+    };
+    HttpClient.prototype.delete = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "DELETE" });
+        return this.fetch(url, opts);
+    };
+    HttpClient.prototype.mergeHeaders = function (target, source) {
+        if (typeof source !== "undefined" && source !== null) {
+            var temp = new Request("", { headers: source });
+            temp.headers.forEach(function (value, name) {
+                target.append(name, value);
+            });
+        }
+    };
+    return HttpClient;
+}());
+exports.HttpClient = HttpClient;
+;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var queryable_1 = __webpack_require__(1);
+/**
+ * Describes a collection of content types
+ *
+ */
+var ContentTypes = (function (_super) {
+    __extends(ContentTypes, _super);
+    /**
+     * Creates a new instance of the ContentTypes class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this content types collection
+     */
+    function ContentTypes(baseUrl, path) {
+        if (path === void 0) { path = "contenttypes"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a ContentType by content type id
+     */
+    ContentTypes.prototype.getById = function (id) {
+        var ct = new ContentType(this);
+        ct.concat("('" + id + "')");
+        return ct;
+    };
+    /**
+     * Adds an existing contenttype to a content type collection
+     *
+     * @param contentTypeId in the following format, for example: 0x010102
+     */
+    ContentTypes.prototype.addAvailableContentType = function (contentTypeId) {
+        var _this = this;
+        var postBody = JSON.stringify({
+            "contentTypeId": contentTypeId,
+        });
+        return this.clone(ContentTypes, "addAvailableContentType", true).postAs({ body: postBody }).then(function (data) {
+            return {
+                contentType: _this.getById(data.id),
+                data: data,
+            };
+        });
+    };
+    /**
+     * Adds a new content type to the collection
+     *
+     * @param id The desired content type id for the new content type (also determines the parent content type)
+     * @param name The name of the content type
+     * @param description The description of the content type
+     * @param group The group in which to add the content type
+     * @param additionalSettings Any additional settings to provide when creating the content type
+     *
+     */
+    ContentTypes.prototype.add = function (id, name, description, group, additionalSettings) {
+        var _this = this;
+        if (description === void 0) { description = ""; }
+        if (group === void 0) { group = "Custom Content Types"; }
+        if (additionalSettings === void 0) { additionalSettings = {}; }
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "Description": description,
+            "Group": group,
+            "Id": { "StringValue": id },
+            "Name": name,
+            "__metadata": { "type": "SP.ContentType" },
+        }, additionalSettings));
+        return this.post({ body: postBody }).then(function (data) {
+            return { contentType: _this.getById(data.id), data: data };
+        });
+    };
+    return ContentTypes;
+}(queryable_1.QueryableCollection));
+exports.ContentTypes = ContentTypes;
+/**
+ * Describes a single ContentType instance
+ *
+ */
+var ContentType = (function (_super) {
+    __extends(ContentType, _super);
+    function ContentType() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(ContentType.prototype, "fieldLinks", {
+        /**
+         * Gets the column (also known as field) references in the content type.
+        */
+        get: function () {
+            return new FieldLinks(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ContentType.prototype, "fields", {
+        /**
+         * Gets a value that specifies the collection of fields for the content type.
+         */
+        get: function () {
+            return new queryable_1.QueryableCollection(this, "fields");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ContentType.prototype, "parent", {
+        /**
+         * Gets the parent content type of the content type.
+         */
+        get: function () {
+            return new ContentType(this, "parent");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ContentType.prototype, "workflowAssociations", {
+        /**
+         * Gets a value that specifies the collection of workflow associations for the content type.
+         */
+        get: function () {
+            return new queryable_1.QueryableCollection(this, "workflowAssociations");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Delete this content type
+     */
+    ContentType.prototype.delete = function () {
+        return this.post({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    return ContentType;
+}(queryable_1.QueryableInstance));
+exports.ContentType = ContentType;
+/**
+ * Represents a collection of field link instances
+ */
+var FieldLinks = (function (_super) {
+    __extends(FieldLinks, _super);
+    /**
+     * Creates a new instance of the ContentType class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this content type instance
+     */
+    function FieldLinks(baseUrl, path) {
+        if (path === void 0) { path = "fieldlinks"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a FieldLink by GUID id
+     *
+     * @param id The GUID id of the field link
+     */
+    FieldLinks.prototype.getById = function (id) {
+        var fl = new FieldLink(this);
+        fl.concat("(guid'" + id + "')");
+        return fl;
+    };
+    return FieldLinks;
+}(queryable_1.QueryableCollection));
+exports.FieldLinks = FieldLinks;
+/**
+ * Represents a field link instance
+ */
+var FieldLink = (function (_super) {
+    __extends(FieldLink, _super);
+    function FieldLink() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return FieldLink;
+}(queryable_1.QueryableInstance));
+exports.FieldLink = FieldLink;
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var sitegroups_1 = __webpack_require__(18);
+var util_1 = __webpack_require__(0);
+/**
+ * Describes a set of role assignments for the current scope
+ *
+ */
+var RoleAssignments = (function (_super) {
+    __extends(RoleAssignments, _super);
+    /**
+     * Creates a new instance of the RoleAssignments class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function RoleAssignments(baseUrl, path) {
+        if (path === void 0) { path = "roleassignments"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Adds a new role assignment with the specified principal and role definitions to the collection.
+     *
+     * @param principalId The ID of the user or group to assign permissions to
+     * @param roleDefId The ID of the role definition that defines the permissions to assign
+     *
+     */
+    RoleAssignments.prototype.add = function (principalId, roleDefId) {
+        return this.clone(RoleAssignments, "addroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")", true).post();
+    };
+    /**
+     * Removes the role assignment with the specified principal and role definition from the collection
+     *
+     * @param principalId The ID of the user or group in the role assignment.
+     * @param roleDefId The ID of the role definition in the role assignment
+     *
+     */
+    RoleAssignments.prototype.remove = function (principalId, roleDefId) {
+        return this.clone(RoleAssignments, "removeroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")", true).post();
+    };
+    /**
+     * Gets the role assignment associated with the specified principal ID from the collection.
+     *
+     * @param id The id of the role assignment
+     */
+    RoleAssignments.prototype.getById = function (id) {
+        var ra = new RoleAssignment(this);
+        ra.concat("(" + id + ")");
+        return ra;
+    };
+    return RoleAssignments;
+}(queryable_1.QueryableCollection));
+exports.RoleAssignments = RoleAssignments;
+var RoleAssignment = (function (_super) {
+    __extends(RoleAssignment, _super);
+    function RoleAssignment() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(RoleAssignment.prototype, "groups", {
+        get: function () {
+            return new sitegroups_1.SiteGroups(this, "groups");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RoleAssignment.prototype, "bindings", {
+        /**
+         * Get the role definition bindings for this role assignment
+         *
+         */
+        get: function () {
+            return new RoleDefinitionBindings(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Delete this role assignment
+     *
+     */
+    RoleAssignment.prototype.delete = function () {
+        return this.post({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    return RoleAssignment;
+}(queryable_1.QueryableInstance));
+exports.RoleAssignment = RoleAssignment;
+var RoleDefinitions = (function (_super) {
+    __extends(RoleDefinitions, _super);
+    /**
+     * Creates a new instance of the RoleDefinitions class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param path
+     *
+     */
+    function RoleDefinitions(baseUrl, path) {
+        if (path === void 0) { path = "roledefinitions"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets the role definition with the specified ID from the collection.
+     *
+     * @param id The ID of the role definition.
+     *
+     */
+    RoleDefinitions.prototype.getById = function (id) {
+        return new RoleDefinition(this, "getById(" + id + ")");
+    };
+    /**
+     * Gets the role definition with the specified name.
+     *
+     * @param name The name of the role definition.
+     *
+     */
+    RoleDefinitions.prototype.getByName = function (name) {
+        return new RoleDefinition(this, "getbyname('" + name + "')");
+    };
+    /**
+     * Gets the role definition with the specified type.
+     *
+     * @param name The name of the role definition.
+     *
+     */
+    RoleDefinitions.prototype.getByType = function (roleTypeKind) {
+        return new RoleDefinition(this, "getbytype(" + roleTypeKind + ")");
+    };
+    /**
+     * Create a role definition
+     *
+     * @param name The new role definition's name
+     * @param description The new role definition's description
+     * @param order The order in which the role definition appears
+     * @param basePermissions The permissions mask for this role definition
+     *
+     */
+    RoleDefinitions.prototype.add = function (name, description, order, basePermissions) {
+        var _this = this;
+        var postBody = JSON.stringify({
+            BasePermissions: util_1.Util.extend({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
+            Description: description,
+            Name: name,
+            Order: order,
+            __metadata: { "type": "SP.RoleDefinition" },
+        });
+        return this.post({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                definition: _this.getById(data.Id),
+            };
+        });
+    };
+    return RoleDefinitions;
+}(queryable_1.QueryableCollection));
+exports.RoleDefinitions = RoleDefinitions;
+var RoleDefinition = (function (_super) {
+    __extends(RoleDefinition, _super);
+    function RoleDefinition() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Updates this web intance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the web
+     */
+    /* tslint:disable no-string-literal */
+    RoleDefinition.prototype.update = function (properties) {
+        var _this = this;
+        if (typeof properties.hasOwnProperty("BasePermissions") !== "undefined") {
+            properties["BasePermissions"] = util_1.Util.extend({ __metadata: { type: "SP.BasePermissions" } }, properties["BasePermissions"]);
+        }
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "__metadata": { "type": "SP.RoleDefinition" },
+        }, properties));
+        return this.post({
+            body: postBody,
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            var retDef = _this;
+            if (properties.hasOwnProperty("Name")) {
+                var parent_1 = _this.getParent(RoleDefinitions, _this.parentUrl, "");
+                retDef = parent_1.getByName(properties["Name"]);
+            }
+            return {
+                data: data,
+                definition: retDef,
+            };
+        });
+    };
+    /* tslint:enable */
+    /**
+     * Delete this role definition
+     *
+     */
+    RoleDefinition.prototype.delete = function () {
+        return this.post({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    return RoleDefinition;
+}(queryable_1.QueryableInstance));
+exports.RoleDefinition = RoleDefinition;
+var RoleDefinitionBindings = (function (_super) {
+    __extends(RoleDefinitionBindings, _super);
+    function RoleDefinitionBindings(baseUrl, path) {
+        if (path === void 0) { path = "roledefinitionbindings"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    return RoleDefinitionBindings;
+}(queryable_1.QueryableCollection));
+exports.RoleDefinitionBindings = RoleDefinitionBindings;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var siteusers_1 = __webpack_require__(30);
+var util_1 = __webpack_require__(0);
+/**
+ * Principal Type enum
+ *
+ */
+var PrincipalType;
+(function (PrincipalType) {
+    PrincipalType[PrincipalType["None"] = 0] = "None";
+    PrincipalType[PrincipalType["User"] = 1] = "User";
+    PrincipalType[PrincipalType["DistributionList"] = 2] = "DistributionList";
+    PrincipalType[PrincipalType["SecurityGroup"] = 4] = "SecurityGroup";
+    PrincipalType[PrincipalType["SharePointGroup"] = 8] = "SharePointGroup";
+    PrincipalType[PrincipalType["All"] = 15] = "All";
+})(PrincipalType = exports.PrincipalType || (exports.PrincipalType = {}));
+/**
+ * Describes a collection of site users
+ *
+ */
+var SiteGroups = (function (_super) {
+    __extends(SiteGroups, _super);
+    /**
+     * Creates a new instance of the SiteUsers class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this user collection
+     */
+    function SiteGroups(baseUrl, path) {
+        if (path === void 0) { path = "sitegroups"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Adds a new group to the site collection
+     *
+     * @param props The properties to be updated
+     */
+    SiteGroups.prototype.add = function (properties) {
+        var _this = this;
+        var postBody = JSON.stringify(util_1.Util.extend({ "__metadata": { "type": "SP.Group" } }, properties));
+        return this.post({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                group: _this.getById(data.Id),
+            };
+        });
+    };
+    /**
+     * Gets a group from the collection by name
+     *
+     * @param email The name of the group
+     */
+    SiteGroups.prototype.getByName = function (groupName) {
+        return new SiteGroup(this, "getByName('" + groupName + "')");
+    };
+    /**
+     * Gets a group from the collection by id
+     *
+     * @param id The id of the group
+     */
+    SiteGroups.prototype.getById = function (id) {
+        var sg = new SiteGroup(this);
+        sg.concat("(" + id + ")");
+        return sg;
+    };
+    /**
+     * Removes the group with the specified member ID from the collection.
+     *
+     * @param id The id of the group to remove
+     */
+    SiteGroups.prototype.removeById = function (id) {
+        return this.clone(SiteGroups, "removeById('" + id + "')", true).post();
+    };
+    /**
+     * Removes a user from the collection by login name
+     *
+     * @param loginName The login name of the user
+     */
+    SiteGroups.prototype.removeByLoginName = function (loginName) {
+        return this.clone(SiteGroups, "removeByLoginName('" + loginName + "')", true).post();
+    };
+    return SiteGroups;
+}(queryable_1.QueryableCollection));
+exports.SiteGroups = SiteGroups;
+/**
+ * Describes a single group
+ *
+ */
+var SiteGroup = (function (_super) {
+    __extends(SiteGroup, _super);
+    function SiteGroup() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(SiteGroup.prototype, "users", {
+        /**
+         * Get's the users for this group
+         *
+         */
+        get: function () {
+            return new siteusers_1.SiteUsers(this, "users");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+    * Updates this group instance with the supplied properties
+    *
+    * @param properties A GroupWriteableProperties object of property names and values to update for the user
+    */
+    /* tslint:disable no-string-literal */
+    SiteGroup.prototype.update = function (properties) {
+        var _this = this;
+        var postBody = util_1.Util.extend({ "__metadata": { "type": "SP.Group" } }, properties);
+        return this.post({
+            body: JSON.stringify(postBody),
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            var retGroup = _this;
+            if (properties.hasOwnProperty("Title")) {
+                retGroup = _this.getParent(SiteGroup, _this.parentUrl, "getByName('" + properties["Title"] + "')");
+            }
+            return {
+                data: data,
+                group: retGroup,
+            };
+        });
+    };
+    return SiteGroup;
+}(queryable_1.QueryableInstance));
+exports.SiteGroup = SiteGroup;
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var util_1 = __webpack_require__(0);
+var UserCustomActions = (function (_super) {
+    __extends(UserCustomActions, _super);
+    function UserCustomActions(baseUrl, path) {
+        if (path === void 0) { path = "usercustomactions"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Returns the custom action with the specified identifier.
+     *
+     * @param id The GUID ID of the user custom action to get.
+     */
+    UserCustomActions.prototype.getById = function (id) {
+        var uca = new UserCustomAction(this);
+        uca.concat("('" + id + "')");
+        return uca;
+    };
+    /**
+     * Create a custom action
+     *
+     * @param creationInfo The information which defines the new custom action
+     *
+     */
+    UserCustomActions.prototype.add = function (properties) {
+        var _this = this;
+        var postBody = JSON.stringify(util_1.Util.extend({ __metadata: { "type": "SP.UserCustomAction" } }, properties));
+        return this.post({ body: postBody }).then(function (data) {
+            return {
+                action: _this.getById(data.Id),
+                data: data,
+            };
+        });
+    };
+    /**
+     * Deletes all custom actions in the collection.
+     *
+     */
+    UserCustomActions.prototype.clear = function () {
+        return this.clone(UserCustomActions, "clear", true).post();
+    };
+    return UserCustomActions;
+}(queryable_1.QueryableCollection));
+exports.UserCustomActions = UserCustomActions;
+var UserCustomAction = (function (_super) {
+    __extends(UserCustomAction, _super);
+    function UserCustomAction() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCustomAction.prototype.update = function (properties) {
+        var _this = this;
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "__metadata": { "type": "SP.UserCustomAction" },
+        }, properties));
+        return this.post({
+            body: postBody,
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            return {
+                action: _this,
+                data: data,
+            };
+        });
+    };
+    /**
+    * Remove a custom action
+    *
+    */
+    UserCustomAction.prototype.delete = function () {
+        return _super.prototype.delete.call(this);
+    };
+    return UserCustomAction;
+}(queryable_1.QueryableInstance));
+exports.UserCustomAction = UserCustomAction;
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var storage = __webpack_require__(14);
+var exceptions_1 = __webpack_require__(3);
+/**
+ * A caching provider which can wrap other non-caching providers
+ *
+ */
+var CachingConfigurationProvider = (function () {
+    /**
+     * Creates a new caching configuration provider
+     * @constructor
+     * @param {IConfigurationProvider} wrappedProvider Provider which will be used to fetch the configuration
+     * @param {string} cacheKey Key that will be used to store cached items to the cache
+     * @param {IPnPClientStore} cacheStore OPTIONAL storage, which will be used to store cached settings.
+     */
+    function CachingConfigurationProvider(wrappedProvider, cacheKey, cacheStore) {
+        this.wrappedProvider = wrappedProvider;
+        this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
+        this.cacheKey = "_configcache_" + cacheKey;
+    }
+    /**
+     * Gets the wrapped configuration providers
+     *
+     * @return {IConfigurationProvider} Wrapped configuration provider
+     */
+    CachingConfigurationProvider.prototype.getWrappedProvider = function () {
+        return this.wrappedProvider;
+    };
+    /**
+     * Loads the configuration values either from the cache or from the wrapped provider
+     *
+     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
+     */
+    CachingConfigurationProvider.prototype.getConfiguration = function () {
+        var _this = this;
+        // Cache not available, pass control to  the wrapped provider
+        if ((!this.store) || (!this.store.enabled)) {
+            return this.wrappedProvider.getConfiguration();
+        }
+        // Value is found in cache, return it directly
+        var cachedConfig = this.store.get(this.cacheKey);
+        if (cachedConfig) {
+            return new Promise(function (resolve) {
+                resolve(cachedConfig);
+            });
+        }
+        // Get and cache value from the wrapped provider
+        var providerPromise = this.wrappedProvider.getConfiguration();
+        providerPromise.then(function (providedConfig) {
+            _this.store.put(_this.cacheKey, providedConfig);
+        });
+        return providerPromise;
+    };
+    CachingConfigurationProvider.prototype.selectPnPCache = function () {
+        var pnpCache = new storage.PnPClientStorage();
+        if ((pnpCache.local) && (pnpCache.local.enabled)) {
+            return pnpCache.local;
+        }
+        if ((pnpCache.session) && (pnpCache.session.enabled)) {
+            return pnpCache.session;
+        }
+        throw new exceptions_1.NoCacheAvailableException();
+    };
+    return CachingConfigurationProvider;
+}());
+exports.default = CachingConfigurationProvider;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Makes requests using the fetch API
+ */
+var FetchClient = (function () {
+    function FetchClient() {
+    }
+    FetchClient.prototype.fetch = function (url, options) {
+        return global.fetch(url, options);
+    };
+    return FetchClient;
+}());
+exports.FetchClient = FetchClient;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var storage_1 = __webpack_require__(14);
+var util_1 = __webpack_require__(0);
+var pnplibconfig_1 = __webpack_require__(4);
+var CachingOptions = (function () {
+    function CachingOptions(key) {
+        this.key = key;
+        this.expiration = util_1.Util.dateAdd(new Date(), "second", pnplibconfig_1.RuntimeConfig.defaultCachingTimeoutSeconds);
+        this.storeName = pnplibconfig_1.RuntimeConfig.defaultCachingStore;
+    }
+    Object.defineProperty(CachingOptions.prototype, "store", {
+        get: function () {
+            if (this.storeName === "local") {
+                return CachingOptions.storage.local;
+            }
+            else {
+                return CachingOptions.storage.session;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return CachingOptions;
+}());
+CachingOptions.storage = new storage_1.PnPClientStorage();
+exports.CachingOptions = CachingOptions;
+var CachingParserWrapper = (function () {
+    function CachingParserWrapper(_parser, _cacheOptions) {
+        this._parser = _parser;
+        this._cacheOptions = _cacheOptions;
+    }
+    CachingParserWrapper.prototype.parse = function (response) {
+        var _this = this;
+        // add this to the cache based on the options
+        return this._parser.parse(response).then(function (data) {
+            if (_this._cacheOptions.store !== null) {
+                _this._cacheOptions.store.put(_this._cacheOptions.key, data, _this._cacheOptions.expiration);
+            }
+            return data;
+        });
+    };
+    return CachingParserWrapper;
+}());
+exports.CachingParserWrapper = CachingParserWrapper;
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+/**
+ * Describes a collection of List objects
+ *
+ */
+var Features = (function (_super) {
+    __extends(Features, _super);
+    /**
+     * Creates a new instance of the Lists class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function Features(baseUrl, path) {
+        if (path === void 0) { path = "features"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a list from the collection by guid id
+     *
+     * @param id The Id of the feature (GUID)
+     */
+    Features.prototype.getById = function (id) {
+        var feature = new Feature(this);
+        feature.concat("('" + id + "')");
+        return feature;
+    };
+    /**
+     * Adds a new list to the collection
+     *
+     * @param id The Id of the feature (GUID)
+     * @param force If true the feature activation will be forced
+     */
+    Features.prototype.add = function (id, force) {
+        var _this = this;
+        if (force === void 0) { force = false; }
+        return this.clone(Features, "add", true).post({
+            body: JSON.stringify({
+                featdefScope: 0,
+                featureId: id,
+                force: force,
+            }),
+        }).then(function (data) {
+            return {
+                data: data,
+                feature: _this.getById(id),
+            };
+        });
+    };
+    /**
+     * Removes (deactivates) a feature from the collection
+     *
+     * @param id The Id of the feature (GUID)
+     * @param force If true the feature deactivation will be forced
+     */
+    Features.prototype.remove = function (id, force) {
+        if (force === void 0) { force = false; }
+        return this.clone(Features, "remove", true).post({
+            body: JSON.stringify({
+                featureId: id,
+                force: force,
+            }),
+        });
+    };
+    return Features;
+}(queryable_1.QueryableCollection));
+exports.Features = Features;
+var Feature = (function (_super) {
+    __extends(Feature, _super);
+    function Feature() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Removes (deactivates) a feature from the collection
+     *
+     * @param force If true the feature deactivation will be forced
+     */
+    Feature.prototype.deactivate = function (force) {
+        var _this = this;
+        if (force === void 0) { force = false; }
+        var removeDependency = this.addBatchDependency();
+        var idGet = new Feature(this).select("DefinitionId");
+        return idGet.getAs().then(function (feature) {
+            var promise = _this.getParent(Features, _this.parentUrl, "", _this.batch).remove(feature.DefinitionId, force);
+            removeDependency();
+            return promise;
+        });
+    };
+    return Feature;
+}(queryable_1.QueryableInstance));
+exports.Feature = Feature;
+
+
+/***/ }),
 /* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var util_1 = __webpack_require__(0);
+var types_1 = __webpack_require__(13);
+/**
+ * Describes a collection of Field objects
+ *
+ */
+var Fields = (function (_super) {
+    __extends(Fields, _super);
+    /**
+     * Creates a new instance of the Fields class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function Fields(baseUrl, path) {
+        if (path === void 0) { path = "fields"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a field from the collection by title
+     *
+     * @param title The case-sensitive title of the field
+     */
+    Fields.prototype.getByTitle = function (title) {
+        return new Field(this, "getByTitle('" + title + "')");
+    };
+    /**
+     * Gets a field from the collection by using internal name or title
+     *
+     * @param name The case-sensitive internal name or title of the field
+     */
+    Fields.prototype.getByInternalNameOrTitle = function (name) {
+        return new Field(this, "getByInternalNameOrTitle('" + name + "')");
+    };
+    /**
+     * Gets a list from the collection by guid id
+     *
+     * @param title The Id of the list
+     */
+    Fields.prototype.getById = function (id) {
+        var f = new Field(this);
+        f.concat("('" + id + "')");
+        return f;
+    };
+    /**
+     * Creates a field based on the specified schema
+     */
+    Fields.prototype.createFieldAsXml = function (xml) {
+        var _this = this;
+        var info;
+        if (typeof xml === "string") {
+            info = { SchemaXml: xml };
+        }
+        else {
+            info = xml;
+        }
+        var postBody = JSON.stringify({
+            "parameters": util_1.Util.extend({
+                "__metadata": {
+                    "type": "SP.XmlSchemaFieldCreationInformation",
+                },
+            }, info),
+        });
+        return this.clone(Fields, "createfieldasxml", true).postAs({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                field: _this.getById(data.Id),
+            };
+        });
+    };
+    /**
+     * Adds a new list to the collection
+     *
+     * @param title The new field's title
+     * @param fieldType The new field's type (ex: SP.FieldText)
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.add = function (title, fieldType, properties) {
+        var _this = this;
+        if (properties === void 0) { properties = {}; }
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "Title": title,
+            "__metadata": { "type": fieldType },
+        }, properties));
+        return this.clone(Fields, null, true).postAs({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                field: _this.getById(data.Id),
+            };
+        });
+    };
+    /**
+     * Adds a new SP.FieldText to the collection
+     *
+     * @param title The field title
+     * @param maxLength The maximum number of characters allowed in the value of the field.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addText = function (title, maxLength, properties) {
+        if (maxLength === void 0) { maxLength = 255; }
+        var props = {
+            FieldTypeKind: 2,
+            MaxLength: maxLength,
+        };
+        return this.add(title, "SP.FieldText", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldCalculated to the collection
+     *
+     * @param title The field title.
+     * @param formula The formula for the field.
+     * @param dateFormat The date and time format that is displayed in the field.
+     * @param outputType Specifies the output format for the field. Represents a FieldType value.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addCalculated = function (title, formula, dateFormat, outputType, properties) {
+        if (outputType === void 0) { outputType = types_1.FieldTypes.Text; }
+        var props = {
+            DateFormat: dateFormat,
+            FieldTypeKind: 17,
+            Formula: formula,
+            OutputType: outputType,
+        };
+        return this.add(title, "SP.FieldCalculated", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldDateTime to the collection
+     *
+     * @param title The field title
+     * @param displayFormat The format of the date and time that is displayed in the field.
+     * @param calendarType Specifies the calendar type of the field.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addDateTime = function (title, displayFormat, calendarType, friendlyDisplayFormat, properties) {
+        if (displayFormat === void 0) { displayFormat = types_1.DateTimeFieldFormatType.DateOnly; }
+        if (calendarType === void 0) { calendarType = types_1.CalendarType.Gregorian; }
+        if (friendlyDisplayFormat === void 0) { friendlyDisplayFormat = 0; }
+        var props = {
+            DateTimeCalendarType: calendarType,
+            DisplayFormat: displayFormat,
+            FieldTypeKind: 4,
+            FriendlyDisplayFormat: friendlyDisplayFormat,
+        };
+        return this.add(title, "SP.FieldDateTime", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldNumber to the collection
+     *
+     * @param title The field title
+     * @param minValue The field's minimum value
+     * @param maxValue The field's maximum value
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addNumber = function (title, minValue, maxValue, properties) {
+        var props = { FieldTypeKind: 9 };
+        if (typeof minValue !== "undefined") {
+            props = util_1.Util.extend({ MinimumValue: minValue }, props);
+        }
+        if (typeof maxValue !== "undefined") {
+            props = util_1.Util.extend({ MaximumValue: maxValue }, props);
+        }
+        return this.add(title, "SP.FieldNumber", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldCurrency to the collection
+     *
+     * @param title The field title
+     * @param minValue The field's minimum value
+     * @param maxValue The field's maximum value
+     * @param currencyLocalId Specifies the language code identifier (LCID) used to format the value of the field
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addCurrency = function (title, minValue, maxValue, currencyLocalId, properties) {
+        if (currencyLocalId === void 0) { currencyLocalId = 1033; }
+        var props = {
+            CurrencyLocaleId: currencyLocalId,
+            FieldTypeKind: 10,
+        };
+        if (typeof minValue !== "undefined") {
+            props = util_1.Util.extend({ MinimumValue: minValue }, props);
+        }
+        if (typeof maxValue !== "undefined") {
+            props = util_1.Util.extend({ MaximumValue: maxValue }, props);
+        }
+        return this.add(title, "SP.FieldCurrency", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldMultiLineText to the collection
+     *
+     * @param title The field title
+     * @param numberOfLines Specifies the number of lines of text to display for the field.
+     * @param richText Specifies whether the field supports rich formatting.
+     * @param restrictedMode Specifies whether the field supports a subset of rich formatting.
+     * @param appendOnly Specifies whether all changes to the value of the field are displayed in list forms.
+     * @param allowHyperlink Specifies whether a hyperlink is allowed as a value of the field.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     *
+     */
+    Fields.prototype.addMultilineText = function (title, numberOfLines, richText, restrictedMode, appendOnly, allowHyperlink, properties) {
+        if (numberOfLines === void 0) { numberOfLines = 6; }
+        if (richText === void 0) { richText = true; }
+        if (restrictedMode === void 0) { restrictedMode = false; }
+        if (appendOnly === void 0) { appendOnly = false; }
+        if (allowHyperlink === void 0) { allowHyperlink = true; }
+        var props = {
+            AllowHyperlink: allowHyperlink,
+            AppendOnly: appendOnly,
+            FieldTypeKind: 3,
+            NumberOfLines: numberOfLines,
+            RestrictedMode: restrictedMode,
+            RichText: richText,
+        };
+        return this.add(title, "SP.FieldMultiLineText", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldUrl to the collection
+     *
+     * @param title The field title
+     */
+    Fields.prototype.addUrl = function (title, displayFormat, properties) {
+        if (displayFormat === void 0) { displayFormat = types_1.UrlFieldFormatType.Hyperlink; }
+        var props = {
+            DisplayFormat: displayFormat,
+            FieldTypeKind: 11,
+        };
+        return this.add(title, "SP.FieldUrl", util_1.Util.extend(props, properties));
+    };
+    return Fields;
+}(queryable_1.QueryableCollection));
+exports.Fields = Fields;
+/**
+ * Describes a single of Field instance
+ *
+ */
+var Field = (function (_super) {
+    __extends(Field, _super);
+    function Field() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Updates this field intance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the list
+     * @param fieldType The type value, required to update child field type properties
+     */
+    Field.prototype.update = function (properties, fieldType) {
+        var _this = this;
+        if (fieldType === void 0) { fieldType = "SP.Field"; }
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "__metadata": { "type": fieldType },
+        }, properties));
+        return this.post({
+            body: postBody,
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            return {
+                data: data,
+                field: _this,
+            };
+        });
+    };
+    /**
+     * Delete this fields
+     *
+     */
+    Field.prototype.delete = function () {
+        return this.post({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    /**
+     * Sets the value of the ShowInDisplayForm property for this field.
+     */
+    Field.prototype.setShowInDisplayForm = function (show) {
+        return this.clone(Field, "setshowindisplayform(" + show + ")", true).post();
+    };
+    /**
+     * Sets the value of the ShowInEditForm property for this field.
+     */
+    Field.prototype.setShowInEditForm = function (show) {
+        return this.clone(Field, "setshowineditform(" + show + ")", true).post();
+    };
+    /**
+     * Sets the value of the ShowInNewForm property for this field.
+     */
+    Field.prototype.setShowInNewForm = function (show) {
+        return this.clone(Field, "setshowinnewform(" + show + ")", true).post();
+    };
+    return Field;
+}(queryable_1.QueryableInstance));
+exports.Field = Field;
+
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5460,8 +6508,8 @@ var queryable_1 = __webpack_require__(1);
  */
 var NavigationNodes = (function (_super) {
     __extends(NavigationNodes, _super);
-    function NavigationNodes(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function NavigationNodes() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Gets a navigation node by id
@@ -5489,8 +6537,7 @@ var NavigationNodes = (function (_super) {
             Url: url,
             "__metadata": { "type": "SP.NavigationNode" },
         });
-        var adder = new NavigationNodes(this);
-        return adder.post({ body: postBody }).then(function (data) {
+        return this.clone(NavigationNodes, null, true).post({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 node: _this.getById(data.Id),
@@ -5508,16 +6555,15 @@ var NavigationNodes = (function (_super) {
             nodeId: nodeId,
             previousNodeId: previousNodeId,
         });
-        var mover = new NavigationNodes(this, "MoveAfter");
-        return mover.post({ body: postBody });
+        return this.clone(NavigationNodes, "MoveAfter", true).post({ body: postBody });
     };
     return NavigationNodes;
 }(queryable_1.QueryableCollection));
 exports.NavigationNodes = NavigationNodes;
 var NavigationNode = (function (_super) {
     __extends(NavigationNode, _super);
-    function NavigationNode(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function NavigationNode() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(NavigationNode.prototype, "children", {
         /**
@@ -5603,7 +6649,147 @@ exports.Navigation = Navigation;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var webs_1 = __webpack_require__(7);
+var roles_1 = __webpack_require__(17);
+var types_1 = __webpack_require__(13);
+var queryable_1 = __webpack_require__(1);
+var QueryableSecurable = (function (_super) {
+    __extends(QueryableSecurable, _super);
+    function QueryableSecurable() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(QueryableSecurable.prototype, "roleAssignments", {
+        /**
+         * Gets the set of role assignments for this item
+         *
+         */
+        get: function () {
+            return new roles_1.RoleAssignments(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(QueryableSecurable.prototype, "firstUniqueAncestorSecurableObject", {
+        /**
+         * Gets the closest securable up the security hierarchy whose permissions are applied to this list item
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableInstance(this, "FirstUniqueAncestorSecurableObject");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets the effective permissions for the user supplied
+     *
+     * @param loginName The claims username for the user (ex: i:0#.f|membership|user@domain.com)
+     */
+    QueryableSecurable.prototype.getUserEffectivePermissions = function (loginName) {
+        var q = this.clone(queryable_1.Queryable, "getUserEffectivePermissions(@user)", true);
+        q.query.add("@user", "'" + encodeURIComponent(loginName) + "'");
+        return q.getAs();
+    };
+    /**
+     * Gets the effective permissions for the current user
+     */
+    QueryableSecurable.prototype.getCurrentUserEffectivePermissions = function () {
+        var _this = this;
+        var w = webs_1.Web.fromUrl(this.toUrl());
+        return w.currentUser.select("LoginName").getAs().then(function (user) {
+            return _this.getUserEffectivePermissions(user.LoginName);
+        });
+    };
+    /**
+     * Breaks the security inheritance at this level optinally copying permissions and clearing subscopes
+     *
+     * @param copyRoleAssignments If true the permissions are copied from the current parent scope
+     * @param clearSubscopes Optional. true to make all child securable objects inherit role assignments from the current object
+     */
+    QueryableSecurable.prototype.breakRoleInheritance = function (copyRoleAssignments, clearSubscopes) {
+        if (copyRoleAssignments === void 0) { copyRoleAssignments = false; }
+        if (clearSubscopes === void 0) { clearSubscopes = false; }
+        return this.clone(QueryableSecurable, "breakroleinheritance(copyroleassignments=" + copyRoleAssignments + ", clearsubscopes=" + clearSubscopes + ")", true).post();
+    };
+    /**
+     * Removes the local role assignments so that it re-inherit role assignments from the parent object.
+     *
+     */
+    QueryableSecurable.prototype.resetRoleInheritance = function () {
+        return this.clone(QueryableSecurable, "resetroleinheritance", true).post();
+    };
+    /**
+     * Determines if a given user has the appropriate permissions
+     *
+     * @param loginName The user to check
+     * @param permission The permission being checked
+     */
+    QueryableSecurable.prototype.userHasPermissions = function (loginName, permission) {
+        var _this = this;
+        return this.getUserEffectivePermissions(loginName).then(function (perms) {
+            return _this.hasPermissions(perms, permission);
+        });
+    };
+    /**
+     * Determines if the current user has the requested permissions
+     *
+     * @param permission The permission we wish to check
+     */
+    QueryableSecurable.prototype.currentUserHasPermissions = function (permission) {
+        var _this = this;
+        return this.getCurrentUserEffectivePermissions().then(function (perms) {
+            return _this.hasPermissions(perms, permission);
+        });
+    };
+    /**
+     * Taken from sp.js, checks the supplied permissions against the mask
+     *
+     * @param value The security principal's permissions on the given object
+     * @param perm The permission checked against the value
+     */
+    /* tslint:disable:no-bitwise */
+    QueryableSecurable.prototype.hasPermissions = function (value, perm) {
+        if (!perm) {
+            return true;
+        }
+        if (perm === types_1.PermissionKind.FullMask) {
+            return (value.High & 32767) === 32767 && value.Low === 65535;
+        }
+        perm = perm - 1;
+        var num = 1;
+        if (perm >= 0 && perm < 32) {
+            num = num << perm;
+            return 0 !== (value.Low & num);
+        }
+        else if (perm >= 32 && perm < 64) {
+            num = num << perm - 32;
+            return 0 !== (value.High & num);
+        }
+        return false;
+    };
+    return QueryableSecurable;
+}(queryable_1.QueryableInstance));
+exports.QueryableSecurable = QueryableSecurable;
+
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5767,7 +6953,7 @@ var QueryPropertyValueType;
 
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5850,7 +7036,7 @@ exports.SearchSuggestResult = SearchSuggestResult;
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5867,10 +7053,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var webs_1 = __webpack_require__(16);
-var usercustomactions_1 = __webpack_require__(15);
-var odata_1 = __webpack_require__(3);
-var features_1 = __webpack_require__(20);
+var webs_1 = __webpack_require__(7);
+var usercustomactions_1 = __webpack_require__(19);
+var odata_1 = __webpack_require__(2);
+var features_1 = __webpack_require__(23);
 /**
  * Describes a site collection
  *
@@ -5982,7 +7168,7 @@ exports.Site = Site;
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5999,7 +7185,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var sitegroups_1 = __webpack_require__(14);
+var sitegroups_1 = __webpack_require__(18);
 var util_1 = __webpack_require__(0);
 /**
  * Describes a collection of all site collection users
@@ -6040,7 +7226,7 @@ var SiteUsers = (function (_super) {
     SiteUsers.prototype.getByLoginName = function (loginName) {
         var su = new SiteUser(this);
         su.concat("(@v)");
-        su.query.add("@v", encodeURIComponent(loginName));
+        su.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return su;
     };
     /**
@@ -6049,8 +7235,7 @@ var SiteUsers = (function (_super) {
      * @param id The id of the user
      */
     SiteUsers.prototype.removeById = function (id) {
-        var o = new SiteUsers(this, "removeById(" + id + ")");
-        return o.post();
+        return this.clone(SiteUsers, "removeById(" + id + ")", true).post();
     };
     /**
      * Removes a user from the collection by login name
@@ -6058,8 +7243,8 @@ var SiteUsers = (function (_super) {
      * @param loginName The login name of the user
      */
     SiteUsers.prototype.removeByLoginName = function (loginName) {
-        var o = new SiteUsers(this, "removeByLoginName(@v)");
-        o.query.add("@v", encodeURIComponent(loginName));
+        var o = this.clone(SiteUsers, "removeByLoginName(@v)", true);
+        o.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return o.post();
     };
     /**
@@ -6070,8 +7255,9 @@ var SiteUsers = (function (_super) {
      */
     SiteUsers.prototype.add = function (loginName) {
         var _this = this;
-        var postBody = JSON.stringify({ "__metadata": { "type": "SP.User" }, LoginName: loginName });
-        return this.post({ body: postBody }).then(function () { return _this.getByLoginName(loginName); });
+        return this.clone(SiteUsers, null, true).post({
+            body: JSON.stringify({ "__metadata": { "type": "SP.User" }, LoginName: loginName }),
+        }).then(function () { return _this.getByLoginName(loginName); });
     };
     return SiteUsers;
 }(queryable_1.QueryableCollection));
@@ -6082,14 +7268,8 @@ exports.SiteUsers = SiteUsers;
  */
 var SiteUser = (function (_super) {
     __extends(SiteUser, _super);
-    /**
-     * Creates a new instance of the User class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     * @param path Optional, passes the path to the user
-     */
-    function SiteUser(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function SiteUser() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(SiteUser.prototype, "groups", {
         /**
@@ -6151,150 +7331,39 @@ exports.CurrentUser = CurrentUser;
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// reference: https://msdn.microsoft.com/en-us/library/office/dn600183.aspx
 
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Determines the display mode of the given control or view
- */
-var ControlMode;
-(function (ControlMode) {
-    ControlMode[ControlMode["Display"] = 1] = "Display";
-    ControlMode[ControlMode["Edit"] = 2] = "Edit";
-    ControlMode[ControlMode["New"] = 3] = "New";
-})(ControlMode = exports.ControlMode || (exports.ControlMode = {}));
-/**
- * Specifies the type of the field.
- */
-var FieldTypes;
-(function (FieldTypes) {
-    FieldTypes[FieldTypes["Invalid"] = 0] = "Invalid";
-    FieldTypes[FieldTypes["Integer"] = 1] = "Integer";
-    FieldTypes[FieldTypes["Text"] = 2] = "Text";
-    FieldTypes[FieldTypes["Note"] = 3] = "Note";
-    FieldTypes[FieldTypes["DateTime"] = 4] = "DateTime";
-    FieldTypes[FieldTypes["Counter"] = 5] = "Counter";
-    FieldTypes[FieldTypes["Choice"] = 6] = "Choice";
-    FieldTypes[FieldTypes["Lookup"] = 7] = "Lookup";
-    FieldTypes[FieldTypes["Boolean"] = 8] = "Boolean";
-    FieldTypes[FieldTypes["Number"] = 9] = "Number";
-    FieldTypes[FieldTypes["Currency"] = 10] = "Currency";
-    FieldTypes[FieldTypes["URL"] = 11] = "URL";
-    FieldTypes[FieldTypes["Computed"] = 12] = "Computed";
-    FieldTypes[FieldTypes["Threading"] = 13] = "Threading";
-    FieldTypes[FieldTypes["Guid"] = 14] = "Guid";
-    FieldTypes[FieldTypes["MultiChoice"] = 15] = "MultiChoice";
-    FieldTypes[FieldTypes["GridChoice"] = 16] = "GridChoice";
-    FieldTypes[FieldTypes["Calculated"] = 17] = "Calculated";
-    FieldTypes[FieldTypes["File"] = 18] = "File";
-    FieldTypes[FieldTypes["Attachments"] = 19] = "Attachments";
-    FieldTypes[FieldTypes["User"] = 20] = "User";
-    FieldTypes[FieldTypes["Recurrence"] = 21] = "Recurrence";
-    FieldTypes[FieldTypes["CrossProjectLink"] = 22] = "CrossProjectLink";
-    FieldTypes[FieldTypes["ModStat"] = 23] = "ModStat";
-    FieldTypes[FieldTypes["Error"] = 24] = "Error";
-    FieldTypes[FieldTypes["ContentTypeId"] = 25] = "ContentTypeId";
-    FieldTypes[FieldTypes["PageSeparator"] = 26] = "PageSeparator";
-    FieldTypes[FieldTypes["ThreadIndex"] = 27] = "ThreadIndex";
-    FieldTypes[FieldTypes["WorkflowStatus"] = 28] = "WorkflowStatus";
-    FieldTypes[FieldTypes["AllDayEvent"] = 29] = "AllDayEvent";
-    FieldTypes[FieldTypes["WorkflowEventType"] = 30] = "WorkflowEventType";
-})(FieldTypes = exports.FieldTypes || (exports.FieldTypes = {}));
-var DateTimeFieldFormatType;
-(function (DateTimeFieldFormatType) {
-    DateTimeFieldFormatType[DateTimeFieldFormatType["DateOnly"] = 0] = "DateOnly";
-    DateTimeFieldFormatType[DateTimeFieldFormatType["DateTime"] = 1] = "DateTime";
-})(DateTimeFieldFormatType = exports.DateTimeFieldFormatType || (exports.DateTimeFieldFormatType = {}));
-/**
- * Specifies the control settings while adding a field.
- */
-var AddFieldOptions;
-(function (AddFieldOptions) {
-    /**
-     *  Specify that a new field added to the list must also be added to the default content type in the site collection
-     */
-    AddFieldOptions[AddFieldOptions["DefaultValue"] = 0] = "DefaultValue";
-    /**
-     * Specify that a new field added to the list must also be added to the default content type in the site collection.
-     */
-    AddFieldOptions[AddFieldOptions["AddToDefaultContentType"] = 1] = "AddToDefaultContentType";
-    /**
-     * Specify that a new field must not be added to any other content type
-     */
-    AddFieldOptions[AddFieldOptions["AddToNoContentType"] = 2] = "AddToNoContentType";
-    /**
-     *  Specify that a new field that is added to the specified list must also be added to all content types in the site collection
-     */
-    AddFieldOptions[AddFieldOptions["AddToAllContentTypes"] = 4] = "AddToAllContentTypes";
-    /**
-     * Specify adding an internal field name hint for the purpose of avoiding possible database locking or field renaming operations
-     */
-    AddFieldOptions[AddFieldOptions["AddFieldInternalNameHint"] = 8] = "AddFieldInternalNameHint";
-    /**
-     * Specify that a new field that is added to the specified list must also be added to the default list view
-     */
-    AddFieldOptions[AddFieldOptions["AddFieldToDefaultView"] = 16] = "AddFieldToDefaultView";
-    /**
-     * Specify to confirm that no other field has the same display name
-     */
-    AddFieldOptions[AddFieldOptions["AddFieldCheckDisplayName"] = 32] = "AddFieldCheckDisplayName";
-})(AddFieldOptions = exports.AddFieldOptions || (exports.AddFieldOptions = {}));
-var CalendarType;
-(function (CalendarType) {
-    CalendarType[CalendarType["Gregorian"] = 1] = "Gregorian";
-    CalendarType[CalendarType["Japan"] = 3] = "Japan";
-    CalendarType[CalendarType["Taiwan"] = 4] = "Taiwan";
-    CalendarType[CalendarType["Korea"] = 5] = "Korea";
-    CalendarType[CalendarType["Hijri"] = 6] = "Hijri";
-    CalendarType[CalendarType["Thai"] = 7] = "Thai";
-    CalendarType[CalendarType["Hebrew"] = 8] = "Hebrew";
-    CalendarType[CalendarType["GregorianMEFrench"] = 9] = "GregorianMEFrench";
-    CalendarType[CalendarType["GregorianArabic"] = 10] = "GregorianArabic";
-    CalendarType[CalendarType["GregorianXLITEnglish"] = 11] = "GregorianXLITEnglish";
-    CalendarType[CalendarType["GregorianXLITFrench"] = 12] = "GregorianXLITFrench";
-    CalendarType[CalendarType["KoreaJapanLunar"] = 14] = "KoreaJapanLunar";
-    CalendarType[CalendarType["ChineseLunar"] = 15] = "ChineseLunar";
-    CalendarType[CalendarType["SakaEra"] = 16] = "SakaEra";
-    CalendarType[CalendarType["UmAlQura"] = 23] = "UmAlQura";
-})(CalendarType = exports.CalendarType || (exports.CalendarType = {}));
-var UrlFieldFormatType;
-(function (UrlFieldFormatType) {
-    UrlFieldFormatType[UrlFieldFormatType["Hyperlink"] = 0] = "Hyperlink";
-    UrlFieldFormatType[UrlFieldFormatType["Image"] = 1] = "Image";
-})(UrlFieldFormatType = exports.UrlFieldFormatType || (exports.UrlFieldFormatType = {}));
-var PrincipalType;
-(function (PrincipalType) {
-    PrincipalType[PrincipalType["None"] = 0] = "None";
-    PrincipalType[PrincipalType["User"] = 1] = "User";
-    PrincipalType[PrincipalType["DistributionList"] = 2] = "DistributionList";
-    PrincipalType[PrincipalType["SecurityGroup"] = 4] = "SecurityGroup";
-    PrincipalType[PrincipalType["SharePointGroup"] = 8] = "SharePointGroup";
-    PrincipalType[PrincipalType["All"] = 15] = "All";
-})(PrincipalType = exports.PrincipalType || (exports.PrincipalType = {}));
-var PageType;
-(function (PageType) {
-    PageType[PageType["Invalid"] = -1] = "Invalid";
-    PageType[PageType["DefaultView"] = 0] = "DefaultView";
-    PageType[PageType["NormalView"] = 1] = "NormalView";
-    PageType[PageType["DialogView"] = 2] = "DialogView";
-    PageType[PageType["View"] = 3] = "View";
-    PageType[PageType["DisplayForm"] = 4] = "DisplayForm";
-    PageType[PageType["DisplayFormDialog"] = 5] = "DisplayFormDialog";
-    PageType[PageType["EditForm"] = 6] = "EditForm";
-    PageType[PageType["EditFormDialog"] = 7] = "EditFormDialog";
-    PageType[PageType["NewForm"] = 8] = "NewForm";
-    PageType[PageType["NewFormDialog"] = 9] = "NewFormDialog";
-    PageType[PageType["SolutionForm"] = 10] = "SolutionForm";
-    PageType[PageType["PAGE_MAXITEMS"] = 11] = "PAGE_MAXITEMS";
-})(PageType = exports.PageType || (exports.PageType = {}));
+var logging_1 = __webpack_require__(5);
+function deprecated(message) {
+    return function (target, propertyKey, descriptor) {
+        var method = descriptor.value;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            logging_1.Logger.log({
+                data: {
+                    descriptor: descriptor,
+                    propertyKey: propertyKey,
+                    target: target,
+                },
+                level: logging_1.LogLevel.Warning,
+                message: message,
+            });
+            return method.apply(this, args);
+        };
+    };
+}
+exports.deprecated = deprecated;
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports) {
 
 var g;
@@ -6321,7 +7390,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6420,19 +7489,19 @@ exports.Settings = Settings;
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var search_1 = __webpack_require__(25);
-var searchsuggest_1 = __webpack_require__(26);
-var site_1 = __webpack_require__(27);
-var webs_1 = __webpack_require__(16);
+var search_1 = __webpack_require__(27);
+var searchsuggest_1 = __webpack_require__(28);
+var site_1 = __webpack_require__(29);
+var webs_1 = __webpack_require__(7);
 var util_1 = __webpack_require__(0);
-var userprofiles_1 = __webpack_require__(44);
-var exceptions_1 = __webpack_require__(2);
+var userprofiles_1 = __webpack_require__(48);
+var exceptions_1 = __webpack_require__(3);
 /**
  * Root of the SharePoint REST module
  */
@@ -6553,7 +7622,7 @@ exports.Rest = Rest;
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6562,45 +7631,45 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(41));
-var httpclient_1 = __webpack_require__(10);
+__export(__webpack_require__(44));
+var httpclient_1 = __webpack_require__(15);
 exports.HttpClient = httpclient_1.HttpClient;
-var sprequestexecutorclient_1 = __webpack_require__(38);
+var sprequestexecutorclient_1 = __webpack_require__(40);
 exports.SPRequestExecutorClient = sprequestexecutorclient_1.SPRequestExecutorClient;
-var nodefetchclient_1 = __webpack_require__(37);
+var nodefetchclient_1 = __webpack_require__(39);
 exports.NodeFetchClient = nodefetchclient_1.NodeFetchClient;
-var fetchclient_1 = __webpack_require__(18);
+var fetchclient_1 = __webpack_require__(21);
 exports.FetchClient = fetchclient_1.FetchClient;
-__export(__webpack_require__(34));
+__export(__webpack_require__(36));
 var collections_1 = __webpack_require__(6);
 exports.Dictionary = collections_1.Dictionary;
 var util_1 = __webpack_require__(0);
 exports.Util = util_1.Util;
 __export(__webpack_require__(5));
-__export(__webpack_require__(2));
+__export(__webpack_require__(3));
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var cachingConfigurationProvider_1 = __webpack_require__(17);
+var cachingConfigurationProvider_1 = __webpack_require__(20);
 exports.CachingConfigurationProvider = cachingConfigurationProvider_1.default;
-var spListConfigurationProvider_1 = __webpack_require__(35);
+var spListConfigurationProvider_1 = __webpack_require__(37);
 exports.SPListConfigurationProvider = spListConfigurationProvider_1.default;
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var cachingConfigurationProvider_1 = __webpack_require__(17);
+var cachingConfigurationProvider_1 = __webpack_require__(20);
 /**
  * A configuration provider which loads configuration values from a SharePoint list
  *
@@ -6674,7 +7743,7 @@ exports.default = SPListConfigurationProvider;
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6682,7 +7751,7 @@ exports.default = SPListConfigurationProvider;
 Object.defineProperty(exports, "__esModule", { value: true });
 var collections_1 = __webpack_require__(6);
 var util_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(3);
+var odata_1 = __webpack_require__(2);
 var CachedDigest = (function () {
     function CachedDigest() {
     }
@@ -6738,13 +7807,13 @@ exports.DigestCache = DigestCache;
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var exceptions_1 = __webpack_require__(2);
+var exceptions_1 = __webpack_require__(3);
 /**
  * This module is substituted for the NodeFetchClient.ts during the packaging process. This helps to reduce the pnp.js file size by
  * not including all of the node dependencies
@@ -6764,14 +7833,14 @@ exports.NodeFetchClient = NodeFetchClient;
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var exceptions_1 = __webpack_require__(2);
+var exceptions_1 = __webpack_require__(3);
 /**
  * Makes requests using the SP.RequestExecutor library.
  */
@@ -6844,7 +7913,87 @@ exports.SPRequestExecutorClient = SPRequestExecutorClient;
 
 
 /***/ }),
-/* 39 */
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var storage_1 = __webpack_require__(14);
+var configuration_1 = __webpack_require__(33);
+var logging_1 = __webpack_require__(5);
+var rest_1 = __webpack_require__(34);
+var pnplibconfig_1 = __webpack_require__(4);
+/**
+ * Root class of the Patterns and Practices namespace, provides an entry point to the library
+ */
+/**
+ * Utility methods
+ */
+exports.util = util_1.Util;
+/**
+ * Provides access to the REST interface
+ */
+exports.sp = new rest_1.Rest();
+/**
+ * Provides access to local and session storage
+ */
+exports.storage = new storage_1.PnPClientStorage();
+/**
+ * Global configuration instance to which providers can be added
+ */
+exports.config = new configuration_1.Settings();
+/**
+ * Global logging instance to which subscribers can be registered and messages written
+ */
+exports.log = logging_1.Logger;
+/**
+ * Allows for the configuration of the library
+ */
+exports.setup = pnplibconfig_1.setRuntimeConfig;
+/**
+ * Expose a subset of classes from the library for public consumption
+ */
+__export(__webpack_require__(35));
+// creating this class instead of directly assigning to default fixes issue #116
+var Def = {
+    /**
+     * Global configuration instance to which providers can be added
+     */
+    config: exports.config,
+    /**
+     * Global logging instance to which subscribers can be registered and messages written
+     */
+    log: exports.log,
+    /**
+     * Provides access to local and session storage
+     */
+    setup: exports.setup,
+    /**
+     * Provides access to the REST interface
+     */
+    sp: exports.sp,
+    /**
+     * Provides access to local and session storage
+     */
+    storage: exports.storage,
+    /**
+     * Utility methods
+     */
+    util: exports.util,
+};
+/**
+ * Enables use of the import pnp from syntax
+ */
+exports.default = Def;
+
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6861,7 +8010,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(3);
+var odata_1 = __webpack_require__(2);
 /**
  * Describes a collection of Item objects
  *
@@ -6888,15 +8037,14 @@ var AttachmentFiles = (function (_super) {
         return f;
     };
     /**
-     * Adds a new attachment to the collection
+     * Adds a new attachment to the collection. Not supported for batching.
      *
      * @param name The name of the file, including extension.
      * @param content The Base64 file content.
      */
     AttachmentFiles.prototype.add = function (name, content) {
         var _this = this;
-        return new AttachmentFiles(this, "add(FileName='" + name + "')")
-            .post({
+        return this.clone(AttachmentFiles, "add(FileName='" + name + "')").post({
             body: content,
         }).then(function (response) {
             return {
@@ -6904,6 +8052,18 @@ var AttachmentFiles = (function (_super) {
                 file: _this.getByName(name),
             };
         });
+    };
+    /**
+     * Adds mjultiple new attachment to the collection. Not supported for batching.
+     *
+     * @files name The collection of files to add
+     */
+    AttachmentFiles.prototype.addMultiple = function (files) {
+        var _this = this;
+        // add the files in series so we don't get update conflicts
+        return files.reduce(function (chain, file) { return chain.then(function () { return _this.clone(AttachmentFiles, "add(FileName='" + file.name + "')").post({
+            body: file.content,
+        }); }); }, Promise.resolve());
     };
     return AttachmentFiles;
 }(queryable_1.QueryableCollection));
@@ -6914,49 +8074,43 @@ exports.AttachmentFiles = AttachmentFiles;
  */
 var AttachmentFile = (function (_super) {
     __extends(AttachmentFile, _super);
-    /**
-     * Creates a new instance of the AttachmentFile class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this attachment file
-     */
-    function AttachmentFile(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function AttachmentFile() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Gets the contents of the file as text
      *
      */
     AttachmentFile.prototype.getText = function () {
-        return new AttachmentFile(this, "$value").get(new odata_1.TextFileParser());
+        return this.clone(AttachmentFile, "$value").get(new odata_1.TextFileParser());
     };
     /**
      * Gets the contents of the file as a blob, does not work in Node.js
      *
      */
     AttachmentFile.prototype.getBlob = function () {
-        return new AttachmentFile(this, "$value").get(new odata_1.BlobFileParser());
+        return this.clone(AttachmentFile, "$value").get(new odata_1.BlobFileParser());
     };
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js
      */
     AttachmentFile.prototype.getBuffer = function () {
-        return new AttachmentFile(this, "$value").get(new odata_1.BufferFileParser());
+        return this.clone(AttachmentFile, "$value").get(new odata_1.BufferFileParser());
     };
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js
      */
     AttachmentFile.prototype.getJSON = function () {
-        return new AttachmentFile(this, "$value").get(new odata_1.JSONFileParser());
+        return this.clone(AttachmentFile, "$value").get(new odata_1.JSONFileParser());
     };
     /**
-     * Sets the content of a file
+     * Sets the content of a file. Not supported for batching
      *
      * @param content The value to set for the file contents
      */
     AttachmentFile.prototype.setContent = function (content) {
         var _this = this;
-        var setter = new AttachmentFile(this, "$value");
-        return setter.post({
+        return this.clone(AttachmentFile, "$value").post({
             body: content,
             headers: {
                 "X-HTTP-Method": "PUT",
@@ -6983,7 +8137,7 @@ exports.AttachmentFile = AttachmentFile;
 
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7034,13 +8188,8 @@ exports.Forms = Forms;
  */
 var Form = (function (_super) {
     __extends(Form, _super);
-    /**
-     * Creates a new instance of the Form class
-     *
-     * @param baseUrl The url or Queryable which is the parent of this form instance
-     */
-    function Form(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function Form() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     return Form;
 }(queryable_1.QueryableInstance));
@@ -7048,7 +8197,7 @@ exports.Form = Form;
 
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7057,21 +8206,26 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(19));
-var files_1 = __webpack_require__(7);
+__export(__webpack_require__(22));
+var files_1 = __webpack_require__(8);
 exports.CheckinType = files_1.CheckinType;
 exports.WebPartsPersonalizationScope = files_1.WebPartsPersonalizationScope;
 exports.MoveOperations = files_1.MoveOperations;
 exports.TemplateFileType = files_1.TemplateFileType;
-var items_1 = __webpack_require__(23);
+var folders_1 = __webpack_require__(9);
+exports.Folder = folders_1.Folder;
+exports.Folders = folders_1.Folders;
+var items_1 = __webpack_require__(10);
 exports.Item = items_1.Item;
+exports.Items = items_1.Items;
 exports.PagedItemCollection = items_1.PagedItemCollection;
-var navigation_1 = __webpack_require__(24);
+var navigation_1 = __webpack_require__(25);
 exports.NavigationNodes = navigation_1.NavigationNodes;
 exports.NavigationNode = navigation_1.NavigationNode;
-var lists_1 = __webpack_require__(8);
+var lists_1 = __webpack_require__(11);
 exports.List = lists_1.List;
-var odata_1 = __webpack_require__(3);
+exports.Lists = lists_1.Lists;
+var odata_1 = __webpack_require__(2);
 exports.extractOdataId = odata_1.extractOdataId;
 exports.ODataParserBase = odata_1.ODataParserBase;
 exports.ODataDefaultParser = odata_1.ODataDefaultParser;
@@ -7087,27 +8241,27 @@ var queryable_1 = __webpack_require__(1);
 exports.Queryable = queryable_1.Queryable;
 exports.QueryableInstance = queryable_1.QueryableInstance;
 exports.QueryableCollection = queryable_1.QueryableCollection;
-var roles_1 = __webpack_require__(13);
+var roles_1 = __webpack_require__(17);
 exports.RoleDefinitionBindings = roles_1.RoleDefinitionBindings;
-var search_1 = __webpack_require__(25);
+var search_1 = __webpack_require__(27);
 exports.Search = search_1.Search;
 exports.SearchResult = search_1.SearchResult;
 exports.SearchResults = search_1.SearchResults;
 exports.SortDirection = search_1.SortDirection;
 exports.ReorderingRuleMatchType = search_1.ReorderingRuleMatchType;
 exports.QueryPropertyValueType = search_1.QueryPropertyValueType;
-var searchsuggest_1 = __webpack_require__(26);
+var searchsuggest_1 = __webpack_require__(28);
 exports.SearchSuggest = searchsuggest_1.SearchSuggest;
 exports.SearchSuggestResult = searchsuggest_1.SearchSuggestResult;
-var site_1 = __webpack_require__(27);
+var site_1 = __webpack_require__(29);
 exports.Site = site_1.Site;
-__export(__webpack_require__(29));
-var webs_1 = __webpack_require__(16);
+__export(__webpack_require__(13));
+var webs_1 = __webpack_require__(7);
 exports.Web = webs_1.Web;
 
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7119,8 +8273,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var caching_1 = __webpack_require__(19);
-var httpclient_1 = __webpack_require__(10);
+var caching_1 = __webpack_require__(22);
+var httpclient_1 = __webpack_require__(15);
 var logging_1 = __webpack_require__(5);
 var util_1 = __webpack_require__(0);
 /**
@@ -7306,7 +8460,140 @@ __decorate([
 
 
 /***/ }),
-/* 43 */
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var RelatedItemManagerImpl = (function (_super) {
+    __extends(RelatedItemManagerImpl, _super);
+    function RelatedItemManagerImpl(baseUrl, path) {
+        if (path === void 0) { path = "_api/SP.RelatedItemManager"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    RelatedItemManagerImpl.FromUrl = function (url) {
+        if (url === null) {
+            return new RelatedItemManagerImpl("");
+        }
+        var index = url.indexOf("_api/");
+        if (index > -1) {
+            return new RelatedItemManagerImpl(url.substr(0, index));
+        }
+        return new RelatedItemManagerImpl(url);
+    };
+    RelatedItemManagerImpl.prototype.getRelatedItems = function (sourceListName, sourceItemId) {
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".GetRelatedItems");
+        return query.post({
+            body: JSON.stringify({
+                SourceItemID: sourceItemId,
+                SourceListName: sourceListName,
+            }),
+        });
+    };
+    RelatedItemManagerImpl.prototype.getPageOneRelatedItems = function (sourceListName, sourceItemId) {
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".GetPageOneRelatedItems");
+        return query.post({
+            body: JSON.stringify({
+                SourceItemID: sourceItemId,
+                SourceListName: sourceListName,
+            }),
+        });
+    };
+    RelatedItemManagerImpl.prototype.addSingleLink = function (sourceListName, sourceItemId, sourceWebUrl, targetListName, targetItemID, targetWebUrl, tryAddReverseLink) {
+        if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".AddSingleLink");
+        return query.post({
+            body: JSON.stringify({
+                SourceItemID: sourceItemId,
+                SourceListName: sourceListName,
+                SourceWebUrl: sourceWebUrl,
+                TargetItemID: targetItemID,
+                TargetListName: targetListName,
+                TargetWebUrl: targetWebUrl,
+                TryAddReverseLink: tryAddReverseLink,
+            }),
+        });
+    };
+    /**
+     * Adds a related item link from an item specified by list name and item id, to an item specified by url
+     *
+     * @param sourceListName The source list name or list id
+     * @param sourceItemId The source item id
+     * @param targetItemUrl The target item url
+     * @param tryAddReverseLink If set to true try to add the reverse link (will not return error if it fails)
+     */
+    RelatedItemManagerImpl.prototype.addSingleLinkToUrl = function (sourceListName, sourceItemId, targetItemUrl, tryAddReverseLink) {
+        if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".AddSingleLinkToUrl");
+        return query.post({
+            body: JSON.stringify({
+                SourceItemID: sourceItemId,
+                SourceListName: sourceListName,
+                TargetItemUrl: targetItemUrl,
+                TryAddReverseLink: tryAddReverseLink,
+            }),
+        });
+    };
+    /**
+     * Adds a related item link from an item specified by url, to an item specified by list name and item id
+     *
+     * @param sourceItemUrl The source item url
+     * @param targetListName The target list name or list id
+     * @param targetItemId The target item id
+     * @param tryAddReverseLink If set to true try to add the reverse link (will not return error if it fails)
+     */
+    RelatedItemManagerImpl.prototype.addSingleLinkFromUrl = function (sourceItemUrl, targetListName, targetItemId, tryAddReverseLink) {
+        if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".AddSingleLinkFromUrl");
+        return query.post({
+            body: JSON.stringify({
+                SourceItemUrl: sourceItemUrl,
+                TargetItemID: targetItemId,
+                TargetListName: targetListName,
+                TryAddReverseLink: tryAddReverseLink,
+            }),
+        });
+    };
+    RelatedItemManagerImpl.prototype.deleteSingleLink = function (sourceListName, sourceItemId, sourceWebUrl, targetListName, targetItemId, targetWebUrl, tryDeleteReverseLink) {
+        if (tryDeleteReverseLink === void 0) { tryDeleteReverseLink = false; }
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".DeleteSingleLink");
+        return query.post({
+            body: JSON.stringify({
+                SourceItemID: sourceItemId,
+                SourceListName: sourceListName,
+                SourceWebUrl: sourceWebUrl,
+                TargetItemID: targetItemId,
+                TargetListName: targetListName,
+                TargetWebUrl: targetWebUrl,
+                TryDeleteReverseLink: tryDeleteReverseLink,
+            }),
+        });
+    };
+    return RelatedItemManagerImpl;
+}(queryable_1.Queryable));
+exports.RelatedItemManagerImpl = RelatedItemManagerImpl;
+
+
+/***/ }),
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7372,13 +8659,8 @@ exports.Subscriptions = Subscriptions;
  */
 var Subscription = (function (_super) {
     __extends(Subscription, _super);
-    /**
-     * Creates a new instance of the Subscription class
-     *
-     * @param baseUrl - The url or Queryable which forms the parent of this webhook subscription instance
-     */
-    function Subscription(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function Subscription() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Update a webhook subscription
@@ -7406,7 +8688,7 @@ exports.Subscription = Subscription;
 
 
 /***/ }),
-/* 44 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7423,8 +8705,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var FileUtil = __webpack_require__(48);
-var odata_1 = __webpack_require__(3);
+var files_1 = __webpack_require__(51);
+var odata_1 = __webpack_require__(2);
 var UserProfileQuery = (function (_super) {
     __extends(UserProfileQuery, _super);
     function UserProfileQuery(baseUrl, path) {
@@ -7438,8 +8720,7 @@ var UserProfileQuery = (function (_super) {
          * The URL of the edit profile page for the current user.
          */
         get: function () {
-            var q = new UserProfileQuery(this, "EditProfileLink");
-            return q.getAs(odata_1.ODataValue());
+            return this.clone(UserProfileQuery, "EditProfileLink").getAs(odata_1.ODataValue());
         },
         enumerable: true,
         configurable: true
@@ -7449,8 +8730,7 @@ var UserProfileQuery = (function (_super) {
          * A Boolean value that indicates whether the current user's People I'm Following list is public.
          */
         get: function () {
-            var q = new UserProfileQuery(this, "IsMyPeopleListPublic");
-            return q.getAs(odata_1.ODataValue());
+            return this.clone(UserProfileQuery, "IsMyPeopleListPublic").getAs(odata_1.ODataValue());
         },
         enumerable: true,
         configurable: true
@@ -7461,7 +8741,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user
      */
     UserProfileQuery.prototype.amIFollowedBy = function (loginName) {
-        var q = new UserProfileQuery(this, "amifollowedby(@v)");
+        var q = this.clone(UserProfileQuery, "amifollowedby(@v)", true);
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -7471,7 +8751,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user
      */
     UserProfileQuery.prototype.amIFollowing = function (loginName) {
-        var q = new UserProfileQuery(this, "amifollowing(@v)");
+        var q = this.clone(UserProfileQuery, "amifollowing(@v)", true);
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -7482,8 +8762,7 @@ var UserProfileQuery = (function (_super) {
      */
     UserProfileQuery.prototype.getFollowedTags = function (maxCount) {
         if (maxCount === void 0) { maxCount = 20; }
-        var q = new UserProfileQuery(this, "getfollowedtags(" + maxCount + ")");
-        return q.get();
+        return this.clone(UserProfileQuery, "getfollowedtags(" + maxCount + ")", true).get();
     };
     /**
      * Gets the people who are following the specified user.
@@ -7491,7 +8770,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user.
      */
     UserProfileQuery.prototype.getFollowersFor = function (loginName) {
-        var q = new UserProfileQuery(this, "getfollowersfor(@v)");
+        var q = this.clone(UserProfileQuery, "getfollowersfor(@v)", true);
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -7523,7 +8802,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user.
      */
     UserProfileQuery.prototype.getPeopleFollowedBy = function (loginName) {
-        var q = new UserProfileQuery(this, "getpeoplefollowedby(@v)");
+        var q = this.clone(UserProfileQuery, "getpeoplefollowedby(@v)", true);
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -7533,7 +8812,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user.
      */
     UserProfileQuery.prototype.getPropertiesFor = function (loginName) {
-        var q = new UserProfileQuery(this, "getpropertiesfor(@v)");
+        var q = this.clone(UserProfileQuery, "getpropertiesfor(@v)", true);
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -7543,7 +8822,7 @@ var UserProfileQuery = (function (_super) {
          *
          */
         get: function () {
-            var q = new UserProfileQuery(this, null);
+            var q = this.clone(UserProfileQuery, null, true);
             q.concat(".gettrendingtags");
             return q.get();
         },
@@ -7557,7 +8836,7 @@ var UserProfileQuery = (function (_super) {
      * @param propertyName The case-sensitive name of the property to get.
      */
     UserProfileQuery.prototype.getUserProfilePropertyFor = function (loginName, propertyName) {
-        var q = new UserProfileQuery(this, "getuserprofilepropertyfor(accountname=@v, propertyname='" + propertyName + "')");
+        var q = this.clone(UserProfileQuery, "getuserprofilepropertyfor(accountname=@v, propertyname='" + propertyName + "')", true);
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -7567,7 +8846,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user.
      */
     UserProfileQuery.prototype.hideSuggestion = function (loginName) {
-        var q = new UserProfileQuery(this, "hidesuggestion(@v)");
+        var q = this.clone(UserProfileQuery, "hidesuggestion(@v)", true);
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.post();
     };
@@ -7578,21 +8857,21 @@ var UserProfileQuery = (function (_super) {
      * @param followee The account name of the user who might be followed.
      */
     UserProfileQuery.prototype.isFollowing = function (follower, followee) {
-        var q = new UserProfileQuery(this, null);
+        var q = this.clone(UserProfileQuery, null, true);
         q.concat(".isfollowing(possiblefolloweraccountname=@v, possiblefolloweeaccountname=@y)");
         q.query.add("@v", "'" + encodeURIComponent(follower) + "'");
         q.query.add("@y", "'" + encodeURIComponent(followee) + "'");
         return q.get();
     };
     /**
-     * Uploads and sets the user profile picture
+     * Uploads and sets the user profile picture. Not supported for batching.
      *
      * @param profilePicSource Blob data representing the user's picture
      */
     UserProfileQuery.prototype.setMyProfilePic = function (profilePicSource) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            FileUtil.readBlobAsArrayBuffer(profilePicSource).then(function (buffer) {
+            files_1.readBlobAsArrayBuffer(profilePicSource).then(function (buffer) {
                 var request = new UserProfileQuery(_this, "setmyprofilepicture");
                 request.post({
                     body: String.fromCharCode.apply(null, new Uint16Array(buffer)),
@@ -7665,10 +8944,8 @@ var ProfileLoader = (function (_super) {
      * @param emails The email addresses of the users to provision sites for
      */
     ProfileLoader.prototype.createPersonalSiteEnqueueBulk = function (emails) {
-        var q = new ProfileLoader(this, "createpersonalsiteenqueuebulk");
-        var postBody = JSON.stringify({ "emailIDs": emails });
-        return q.post({
-            body: postBody,
+        return this.clone(ProfileLoader, "createpersonalsiteenqueuebulk").post({
+            body: JSON.stringify({ "emailIDs": emails }),
         });
     };
     Object.defineProperty(ProfileLoader.prototype, "ownerUserProfile", {
@@ -7678,6 +8955,9 @@ var ProfileLoader = (function (_super) {
          */
         get: function () {
             var q = this.getParent(ProfileLoader, this.parentUrl, "_api/sp.userprofiles.profileloader.getowneruserprofile");
+            if (this.hasBatch) {
+                q = q.inBatch(this.batch);
+            }
             return q.postAs();
         },
         enumerable: true,
@@ -7689,8 +8969,7 @@ var ProfileLoader = (function (_super) {
          *
          */
         get: function () {
-            var q = new ProfileLoader(this, "getuserprofile");
-            return q.postAs();
+            return this.clone(ProfileLoader, "getuserprofile", true).postAs();
         },
         enumerable: true,
         configurable: true
@@ -7702,8 +8981,7 @@ var ProfileLoader = (function (_super) {
      */
     ProfileLoader.prototype.createPersonalSite = function (interactiveRequest) {
         if (interactiveRequest === void 0) { interactiveRequest = false; }
-        var q = new ProfileLoader(this, "getuserprofile/createpersonalsiteenque(" + interactiveRequest + ")\",");
-        return q.post();
+        return this.clone(ProfileLoader, "getuserprofile/createpersonalsiteenque(" + interactiveRequest + ")", true).post();
     };
     /**
      * Sets the privacy settings for this profile.
@@ -7711,15 +8989,14 @@ var ProfileLoader = (function (_super) {
      * @param share true to make all social data public; false to make all social data private.
      */
     ProfileLoader.prototype.shareAllSocialData = function (share) {
-        var q = new ProfileLoader(this, "getuserprofile/shareallsocialdata(" + share + ")\",");
-        return q.post();
+        return this.clone(ProfileLoader, "getuserprofile/shareallsocialdata(" + share + ")", true).post();
     };
     return ProfileLoader;
 }(queryable_1.Queryable));
 
 
 /***/ }),
-/* 45 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7748,8 +9025,9 @@ var Views = (function (_super) {
      *
      * @param baseUrl The url or Queryable which forms the parent of this fields collection
      */
-    function Views(baseUrl) {
-        return _super.call(this, baseUrl, "views") || this;
+    function Views(baseUrl, path) {
+        if (path === void 0) { path = "views"; }
+        return _super.call(this, baseUrl, path) || this;
     }
     /**
      * Gets a view by guid id
@@ -7786,7 +9064,7 @@ var Views = (function (_super) {
             "Title": title,
             "__metadata": { "type": "SP.View" },
         }, additionalSettings));
-        return this.postAs({ body: postBody }).then(function (data) {
+        return this.clone(Views, null, true).postAs({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 view: _this.getById(data.Id),
@@ -7802,13 +9080,8 @@ exports.Views = Views;
  */
 var View = (function (_super) {
     __extends(View, _super);
-    /**
-     * Creates a new instance of the View class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function View(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function View() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(View.prototype, "fields", {
         get: function () {
@@ -7855,8 +9128,7 @@ var View = (function (_super) {
      *
      */
     View.prototype.renderAsHtml = function () {
-        var q = new queryable_1.Queryable(this, "renderashtml");
-        return q.get();
+        return this.clone(queryable_1.Queryable, "renderashtml", true).get();
     };
     return View;
 }(queryable_1.QueryableInstance));
@@ -7871,8 +9143,7 @@ var ViewFields = (function (_super) {
      * Gets a value that specifies the XML schema that represents the collection.
      */
     ViewFields.prototype.getSchemaXml = function () {
-        var q = new queryable_1.Queryable(this, "schemaxml");
-        return q.get();
+        return this.clone(queryable_1.Queryable, "schemaxml", true).get();
     };
     /**
      * Adds the field with the specified field internal name or display name to the collection.
@@ -7880,8 +9151,7 @@ var ViewFields = (function (_super) {
      * @param fieldTitleOrInternalName The case-sensitive internal name or display name of the field to add.
      */
     ViewFields.prototype.add = function (fieldTitleOrInternalName) {
-        var q = new ViewFields(this, "addviewfield('" + fieldTitleOrInternalName + "')");
-        return q.post();
+        return this.clone(ViewFields, "addviewfield('" + fieldTitleOrInternalName + "')", true).post();
     };
     /**
      * Moves the field with the specified field internal name to the specified position in the collection.
@@ -7890,16 +9160,15 @@ var ViewFields = (function (_super) {
      * @param index The zero-based index of the new position for the field.
      */
     ViewFields.prototype.move = function (fieldInternalName, index) {
-        var q = new ViewFields(this, "moveviewfieldto");
-        var postBody = JSON.stringify({ "field": fieldInternalName, "index": index });
-        return q.post({ body: postBody });
+        return this.clone(ViewFields, "moveviewfieldto", true).post({
+            body: JSON.stringify({ "field": fieldInternalName, "index": index }),
+        });
     };
     /**
      * Removes all the fields from the collection.
      */
     ViewFields.prototype.removeAll = function () {
-        var q = new ViewFields(this, "removeallviewfields");
-        return q.post();
+        return this.clone(ViewFields, "removeallviewfields", true).post();
     };
     /**
      * Removes the field with the specified field internal name from the collection.
@@ -7907,8 +9176,7 @@ var ViewFields = (function (_super) {
      * @param fieldInternalName The case-sensitive internal name of the field to remove from the view.
      */
     ViewFields.prototype.remove = function (fieldInternalName) {
-        var q = new ViewFields(this, "removeviewfield('" + fieldInternalName + "')");
-        return q.post();
+        return this.clone(ViewFields, "removeviewfield('" + fieldInternalName + "')", true).post();
     };
     return ViewFields;
 }(queryable_1.QueryableCollection));
@@ -7916,7 +9184,7 @@ exports.ViewFields = ViewFields;
 
 
 /***/ }),
-/* 46 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7935,14 +9203,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
 var LimitedWebPartManager = (function (_super) {
     __extends(LimitedWebPartManager, _super);
-    /**
-     * Creates a new instance of the LimitedWebPartManager class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     * @param path Optional, if supplied will be appended to the supplied baseUrl
-     */
-    function LimitedWebPartManager(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function LimitedWebPartManager() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(LimitedWebPartManager.prototype, "webparts", {
         /**
@@ -7961,8 +9223,7 @@ var LimitedWebPartManager = (function (_super) {
      * @param id the GUID id of the definition to export
      */
     LimitedWebPartManager.prototype.export = function (id) {
-        var exporter = new LimitedWebPartManager(this, "ExportWebPart");
-        return exporter.post({
+        return this.clone(LimitedWebPartManager, "ExportWebPart", true).post({
             body: JSON.stringify({ webPartId: id }),
         });
     };
@@ -7972,8 +9233,7 @@ var LimitedWebPartManager = (function (_super) {
      * @param xml webpart definition which must be valid XML in the .dwp or .webpart format
      */
     LimitedWebPartManager.prototype.import = function (xml) {
-        var importer = new LimitedWebPartManager(this, "ImportWebPart");
-        return importer.post({
+        return this.clone(LimitedWebPartManager, "ImportWebPart", true).post({
             body: JSON.stringify({ webPartXml: xml }),
         });
     };
@@ -7982,14 +9242,8 @@ var LimitedWebPartManager = (function (_super) {
 exports.LimitedWebPartManager = LimitedWebPartManager;
 var WebPartDefinitions = (function (_super) {
     __extends(WebPartDefinitions, _super);
-    /**
-     * Creates a new instance of the WebPartDefinitions class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     * @param path Optional, if supplied will be appended to the supplied baseUrl
-     */
-    function WebPartDefinitions(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function WebPartDefinitions() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Gets a web part definition from the collection by id
@@ -8004,14 +9258,8 @@ var WebPartDefinitions = (function (_super) {
 exports.WebPartDefinitions = WebPartDefinitions;
 var WebPartDefinition = (function (_super) {
     __extends(WebPartDefinition, _super);
-    /**
-     * Creates a new instance of the WebPartDefinition class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     * @param path Optional, if supplied will be appended to the supplied baseUrl
-     */
-    function WebPartDefinition(baseUrl, path) {
-        return _super.call(this, baseUrl, path) || this;
+    function WebPartDefinition() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(WebPartDefinition.prototype, "webpart", {
         /**
@@ -8027,8 +9275,7 @@ var WebPartDefinition = (function (_super) {
      * Removes a webpart from a page, all settings will be lost
      */
     WebPartDefinition.prototype.delete = function () {
-        var deleter = new WebPartDefinition(this, "DeleteWebPart");
-        return deleter.post();
+        return this.clone(WebPartDefinition, "DeleteWebPart", true).post();
     };
     return WebPartDefinition;
 }(queryable_1.QueryableInstance));
@@ -8051,39 +9298,7 @@ exports.WebPart = WebPart;
 
 
 /***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var logging_1 = __webpack_require__(5);
-function deprecated(message) {
-    return function (target, propertyKey, descriptor) {
-        var method = descriptor.value;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            logging_1.Logger.log({
-                data: {
-                    descriptor: descriptor,
-                    propertyKey: propertyKey,
-                    target: target,
-                },
-                level: logging_1.LogLevel.Warning,
-                message: message,
-            });
-            return method.apply(this, args);
-        };
-    };
-}
-exports.deprecated = deprecated;
-
-
-/***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8134,86 +9349,6 @@ function readBlobAs(blob, mode) {
         }
     });
 }
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-var storage_1 = __webpack_require__(9);
-var configuration_1 = __webpack_require__(31);
-var logging_1 = __webpack_require__(5);
-var rest_1 = __webpack_require__(32);
-var pnplibconfig_1 = __webpack_require__(4);
-/**
- * Root class of the Patterns and Practices namespace, provides an entry point to the library
- */
-/**
- * Utility methods
- */
-exports.util = util_1.Util;
-/**
- * Provides access to the REST interface
- */
-exports.sp = new rest_1.Rest();
-/**
- * Provides access to local and session storage
- */
-exports.storage = new storage_1.PnPClientStorage();
-/**
- * Global configuration instance to which providers can be added
- */
-exports.config = new configuration_1.Settings();
-/**
- * Global logging instance to which subscribers can be registered and messages written
- */
-exports.log = logging_1.Logger;
-/**
- * Allows for the configuration of the library
- */
-exports.setup = pnplibconfig_1.setRuntimeConfig;
-/**
- * Expose a subset of classes from the library for public consumption
- */
-__export(__webpack_require__(33));
-// creating this class instead of directly assigning to default fixes issue #116
-var Def = {
-    /**
-     * Global configuration instance to which providers can be added
-     */
-    config: exports.config,
-    /**
-     * Global logging instance to which subscribers can be registered and messages written
-     */
-    log: exports.log,
-    /**
-     * Provides access to local and session storage
-     */
-    setup: exports.setup,
-    /**
-     * Provides access to the REST interface
-     */
-    sp: exports.sp,
-    /**
-     * Provides access to local and session storage
-     */
-    storage: exports.storage,
-    /**
-     * Utility methods
-     */
-    util: exports.util,
-};
-/**
- * Enables use of the import pnp from syntax
- */
-exports.default = Def;
 
 
 /***/ })

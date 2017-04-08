@@ -462,6 +462,11 @@ declare module "sharepoint/queryable" {
          */
         protected readonly hasBatch: boolean;
         /**
+         * The batch currently associated with this query or null
+         *
+         */
+        protected readonly batch: ODataBatch;
+        /**
          * Gets the parent url used when creating this instance
          *
          */
@@ -518,7 +523,14 @@ declare module "sharepoint/queryable" {
          *
          * @param factory The contructor for the class to create
          */
-        protected getParent<T extends Queryable>(factory: QueryableConstructor<T>, baseUrl?: string | Queryable, path?: string): T;
+        protected getParent<T extends Queryable>(factory: QueryableConstructor<T>, baseUrl?: string | Queryable, path?: string, batch?: ODataBatch): T;
+        /**
+         * Clones this queryable into a new queryable instance of T
+         * @param factory Constructor used to create the new instance
+         * @param additionalPath Any additional path to include in the clone
+         * @param includeBatch If true this instance's batch will be added to the cloned instance
+         */
+        protected clone<T extends Queryable>(factory: QueryableConstructor<T>, additionalPath?: string, includeBatch?: boolean): T;
         /**
          * Executes the currently built request
          *
@@ -611,6 +623,7 @@ declare module "sharepoint/odata" {
     export class ODataRawParserImpl implements ODataParser<any> {
         parse(r: Response): Promise<any>;
     }
+    export function getEntityUrl(entity: any): string;
     export let ODataRaw: ODataRawParserImpl;
     export function ODataValue<T>(): ODataParser<T>;
     export function ODataEntity<T>(factory: QueryableConstructor<T>): ODataParser<T>;
@@ -1408,13 +1421,6 @@ declare module "sharepoint/siteusers" {
      */
     export class SiteUser extends QueryableInstance {
         /**
-         * Creates a new instance of the User class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         * @param path Optional, passes the path to the user
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
-        /**
          * Get's the groups for this user.
          *
          */
@@ -1436,6 +1442,16 @@ declare module "sharepoint/siteusers" {
      */
     export class CurrentUser extends QueryableInstance {
         constructor(baseUrl: string | Queryable, path?: string);
+    }
+    export interface SiteUserProps {
+        Email: string;
+        Id: number;
+        IsHiddenInUI: boolean;
+        IsShareByEmailGuestUser: boolean;
+        IsSiteAdmin: boolean;
+        LoginName: string;
+        PrincipalType: number;
+        Title: string;
     }
 }
 declare module "sharepoint/sitegroups" {
@@ -1517,13 +1533,6 @@ declare module "sharepoint/sitegroups" {
      *
      */
     export class SiteGroup extends QueryableInstance {
-        /**
-         * Creates a new instance of the Group class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this site group
-         * @param path Optional, passes the path to the group
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Get's the users for this group
          *
@@ -1867,8 +1876,172 @@ declare module "sharepoint/types" {
         Image = 1,
     }
     export interface BasePermissions {
-        Low: string;
-        High: string;
+        Low: number;
+        High: number;
+    }
+    export enum PermissionKind {
+        /**
+         * Has no permissions on the Site. Not available through the user interface.
+         */
+        EmptyMask = 0,
+        /**
+         * View items in lists, documents in document libraries, and Web discussion comments.
+         */
+        ViewListItems = 1,
+        /**
+         * Add items to lists, documents to document libraries, and Web discussion comments.
+         */
+        AddListItems = 2,
+        /**
+         * Edit items in lists, edit documents in document libraries, edit Web discussion comments
+         * in documents, and customize Web Part Pages in document libraries.
+         */
+        EditListItems = 3,
+        /**
+         * Delete items from a list, documents from a document library, and Web discussion
+         * comments in documents.
+         */
+        DeleteListItems = 4,
+        /**
+         * Approve a minor version of a list item or document.
+         */
+        ApproveItems = 5,
+        /**
+         * View the source of documents with server-side file handlers.
+         */
+        OpenItems = 6,
+        /**
+         * View past versions of a list item or document.
+         */
+        ViewVersions = 7,
+        /**
+         * Delete past versions of a list item or document.
+         */
+        DeleteVersions = 8,
+        /**
+         * Discard or check in a document which is checked out to another user.
+         */
+        CancelCheckout = 9,
+        /**
+         * Create, change, and delete personal views of lists.
+         */
+        ManagePersonalViews = 10,
+        /**
+         * Create and delete lists, add or remove columns in a list, and add or remove public views of a list.
+         */
+        ManageLists = 12,
+        /**
+         * View forms, views, and application pages, and enumerate lists.
+         */
+        ViewFormPages = 13,
+        /**
+         * Make content of a list or document library retrieveable for anonymous users through SharePoint search.
+         * The list permissions in the site do not change.
+         */
+        AnonymousSearchAccessList = 14,
+        /**
+         * Allow users to open a Site, list, or folder to access items inside that container.
+         */
+        Open = 17,
+        /**
+         * View pages in a Site.
+         */
+        ViewPages = 18,
+        /**
+         * Add, change, or delete HTML pages or Web Part Pages, and edit the Site using
+         * a Windows SharePoint Services compatible editor.
+         */
+        AddAndCustomizePages = 19,
+        /**
+         * Apply a theme or borders to the entire Site.
+         */
+        ApplyThemeAndBorder = 20,
+        /**
+         * Apply a style sheet (.css file) to the Site.
+         */
+        ApplyStyleSheets = 21,
+        /**
+         * View reports on Site usage.
+         */
+        ViewUsageData = 22,
+        /**
+         * Create a Site using Self-Service Site Creation.
+         */
+        CreateSSCSite = 23,
+        /**
+         * Create subsites such as team sites, Meeting Workspace sites, and Document Workspace sites.
+         */
+        ManageSubwebs = 24,
+        /**
+         * Create a group of users that can be used anywhere within the site collection.
+         */
+        CreateGroups = 25,
+        /**
+         * Create and change permission levels on the Site and assign permissions to users
+         * and groups.
+         */
+        ManagePermissions = 26,
+        /**
+         * Enumerate files and folders in a Site using Microsoft Office SharePoint Designer
+         * and WebDAV interfaces.
+         */
+        BrowseDirectories = 27,
+        /**
+         * View information about users of the Site.
+         */
+        BrowseUserInfo = 28,
+        /**
+         * Add or remove personal Web Parts on a Web Part Page.
+         */
+        AddDelPrivateWebParts = 29,
+        /**
+         * Update Web Parts to display personalized information.
+         */
+        UpdatePersonalWebParts = 30,
+        /**
+         * Grant the ability to perform all administration tasks for the Site as well as
+         * manage content, activate, deactivate, or edit properties of Site scoped Features
+         * through the object model or through the user interface (UI). When granted on the
+         * root Site of a Site Collection, activate, deactivate, or edit properties of
+         * site collection scoped Features through the object model. To browse to the Site
+         * Collection Features page and activate or deactivate Site Collection scoped Features
+         * through the UI, you must be a Site Collection administrator.
+         */
+        ManageWeb = 31,
+        /**
+         * Content of lists and document libraries in the Web site will be retrieveable for anonymous users through
+         * SharePoint search if the list or document library has AnonymousSearchAccessList set.
+         */
+        AnonymousSearchAccessWebLists = 32,
+        /**
+         * Use features that launch client applications. Otherwise, users must work on documents
+         * locally and upload changes.
+         */
+        UseClientIntegration = 37,
+        /**
+         * Use SOAP, WebDAV, or Microsoft Office SharePoint Designer interfaces to access the Site.
+         */
+        UseRemoteAPIs = 38,
+        /**
+         * Manage alerts for all users of the Site.
+         */
+        ManageAlerts = 39,
+        /**
+         * Create e-mail alerts.
+         */
+        CreateAlerts = 40,
+        /**
+         * Allows a user to change his or her user information, such as adding a picture.
+         */
+        EditMyUserInfo = 41,
+        /**
+         * Enumerate permissions on Site, list, folder, document, or list item.
+         */
+        EnumeratePermissions = 63,
+        /**
+         * Has all permissions on the Site. Not available through the user interface.
+         */
+        FullMask = 65,
     }
     export interface FollowedContent {
         FollowedDocumentsUrl: string;
@@ -1957,6 +2130,25 @@ declare module "sharepoint/types" {
         SecurityGroup = 4,
         SharePointGroup = 8,
         All = 15,
+    }
+    export enum RoleType {
+        None = 0,
+        Guest = 1,
+        Reader = 2,
+        Contributor = 3,
+        WebDesigner = 4,
+        Administrator = 5,
+    }
+    export interface PrincipalInfo {
+        email: string;
+        id: number;
+        isActive: boolean;
+        isExternal: boolean;
+        jobTitle: string;
+        loginName: string;
+        name: string;
+        principalType: PrincipalType;
+        userId: UserIdInfo;
     }
     export interface DocumentLibraryInformation {
         AbsoluteUrl?: string;
@@ -2048,6 +2240,529 @@ declare module "sharepoint/types" {
         ItemContentTypeId?: string;
         JSLinks?: string;
     }
+    export enum SharingLinkKind {
+        /**
+         * Uninitialized link
+         */
+        Uninitialized = 0,
+        /**
+         * Direct link to the object being shared
+         */
+        Direct = 1,
+        /**
+         * Organization-shareable link to the object being shared with view permissions
+         */
+        OrganizationView = 2,
+        /**
+         * Organization-shareable link to the object being shared with edit permissions
+         */
+        OrganizationEdit = 3,
+        /**
+         * View only anonymous link
+         */
+        AnonymousView = 4,
+        /**
+         * Read/Write anonymous link
+         */
+        AnonymousEdit = 5,
+        /**
+         * Flexible sharing Link where properties can change without affecting link URL
+         */
+        Flexible = 6,
+    }
+    export interface ShareObjectOptions {
+        url?: string;
+        loginNames?: string | string[];
+        role: SharingRole;
+        emailData?: SharingEmailData;
+        group?: RoleType;
+        propagateAcl?: boolean;
+        includeAnonymousLinkInEmail?: boolean;
+        useSimplifiedRoles?: boolean;
+    }
+    /**
+     * Indicates the role of the sharing link
+     */
+    export enum SharingRole {
+        None = 0,
+        View = 1,
+        Edit = 2,
+        Owner = 3,
+    }
+    /**
+     * Represents email data.
+     */
+    export interface SharingEmailData {
+        /**
+         * The e-mail subject.
+         */
+        subject?: string;
+        /**
+         * The e-mail body.
+         */
+        body: string;
+    }
+    export interface ShareLinkSettings {
+        /**
+         * The optional unique identifier of an existing sharing link to be retrieved and updated if necessary.
+         */
+        shareId?: string;
+        /**
+         * The kind of the sharing link to be created.
+         */
+        linkKind: SharingLinkKind;
+        /**
+         * A date/time string for which the format conforms to the ISO 8601:2004(E) complete representation for calendar date and time of day and
+         * which represents the time and date of expiry for the anonymous link. Both the minutes and hour value must be specified for the
+         * difference between the local and UTC time. Midnight is represented as 00:00:00.
+         */
+        expiration?: string;
+        /**
+         * The role to be used for the sharing link. This is required for Flexible links, and ignored for legacy link kinds.
+         */
+        role?: SharingRole;
+        /**
+         * Indicates if the sharing link, should support anonymous access. This is required for Flexible links, and ignored for legacy link kinds.
+         */
+        allowAnonymousAccess?: boolean;
+    }
+    export interface ShareLinkRequest {
+        /**
+         * A string of JSON representing users in people picker format. Only needed if an e-mail notification should be sent.
+         */
+        peoplePickerInput?: string;
+        /**
+         * Whether to create the link or not if it doesn't exist yet.
+         */
+        createLink: boolean;
+        /**
+         * The e-mail data. Only needed if an e-mail notification should be sent.
+         */
+        emailData?: SharingEmailData;
+        /**
+         * The settings for the sharing link to be created/updated
+         */
+        settings: ShareLinkSettings;
+    }
+    /**
+     * Represents a response for sharing a link
+     */
+    export interface ShareLinkResponse {
+        /**
+         * A SharingLinkInfo that represents the sharing link. Will be populated if sharing operation is returning a sharing link.
+         */
+        sharingLinkInfo: SharingLinkInfo;
+    }
+    export interface SharingLinkInfo {
+        AllowsAnonymousAccess: boolean;
+        Created: string;
+        CreatedBy: PrincipalInfo;
+        Expiration: string;
+        IsActive: boolean;
+        IsEditLink: boolean;
+        IsFormsLink: boolean;
+        IsUnhealthy: boolean;
+        LastModified: string;
+        LastModifiedBy: PrincipalInfo;
+        LinkKind: SharingLinkKind;
+        ShareId: string;
+        Url: string;
+    }
+    export enum SharingOperationStatusCode {
+        /**
+         * The share operation completed without errors.
+         */
+        CompletedSuccessfully = 0,
+        /**
+         * The share operation completed and generated requests for access.
+         */
+        AccessRequestsQueued = 1,
+        /**
+         * The share operation failed as there were no resolved users.
+         */
+        NoResolvedUsers = -1,
+        /**
+         * The share operation failed due to insufficient permissions.
+         */
+        AccessDenied = -2,
+        /**
+         * The share operation failed when attempting a cross site share, which is not supported.
+         */
+        CrossSiteRequestNotSupported = -3,
+        /**
+         * The sharing operation failed due to an unknown error.
+         */
+        UnknowError = -4,
+        /**
+         * The text you typed is too long. Please shorten it.
+         */
+        EmailBodyTooLong = -5,
+        /**
+         * The maximum number of unique scopes in the list has been exceeded.
+         */
+        ListUniqueScopesExceeded = -6,
+        /**
+         * The share operation failed because a sharing capability is disabled in the site.
+         */
+        CapabilityDisabled = -7,
+        /**
+         * The specified object for the share operation is not supported.
+         */
+        ObjectNotSupported = -8,
+        /**
+         * A SharePoint group cannot contain another SharePoint group.
+         */
+        NestedGroupsNotSupported = -9,
+    }
+    export interface SharingResult {
+        /**
+         * The relative URL of a page which can be navigated to, to show permissions.
+         */
+        PermissionsPageRelativeUrl?: string;
+        /**
+         * A collection of users which have new pending access requests as a result of sharing.
+         */
+        UsersWithAccessRequests?: any[];
+        /**
+         * An enumeration which summarizes the result of the sharing operation.
+         */
+        StatusCode?: SharingOperationStatusCode;
+        /**
+         * An error message about the failure if sharing was unsuccessful.
+         */
+        ErrorMessage?: string;
+        /**
+         * A list of UserSharingResults from attempting to share a securable with unique permissions.
+         */
+        UniquelyPermissionedUsers?: UserSharingResult[];
+        /**
+         * Groups which were granted permissions.
+         */
+        GroupsSharedWith?: any[];
+        /**
+         * The SharePoint group users were added to, if any were added to a group.
+         */
+        GroupUsersAddedTo?: any;
+        /**
+         * A list of users being added to a SharePoint permissions goup
+         */
+        UsersAddedToGroup?: UserSharingResult[];
+        /**
+         * A list of SPInvitationCreationResult for external users being invited to have access.
+         */
+        InvitedUsers?: SPInvitationCreationResult[];
+        /**
+         * The name of the securable being shared.
+         */
+        Name?: string;
+        /**
+         * The url of the securable being shared.
+         */
+        Url?: string;
+        /**
+         * IconUrl
+         */
+        IconUrl?: string;
+    }
+    export interface UserSharingResult {
+        IsUserKnown?: boolean;
+        Status?: boolean;
+        Message?: string;
+        User?: string;
+        DisplayName?: string;
+        Email?: string;
+        CurrentRole?: SharingRole;
+        AllowedRoles?: SharingRole[];
+        InvitationLink?: string;
+    }
+    export interface SPInvitationCreationResult {
+        Succeeded?: boolean;
+        Email?: string;
+        InvitationLink?: string;
+    }
+    export interface SharingRecipient {
+        email?: string;
+        alias?: string;
+    }
+    export interface SharingEntityPermission {
+        /**
+         * The Input Entity provided to the Call.
+         */
+        inputEntity: string;
+        /**
+         * The Resolved Entity after resolving using PeoplePicker API.
+         */
+        resolvedEntity: string;
+        /**
+         * Does the Entity have Access to the Securable Object
+         */
+        hasAccess: boolean;
+        /**
+         * Role of the Entity on ListItem
+         */
+        role: SharingRole;
+    }
+    export interface SharingInformationRequest {
+        /**
+         * Max Principal's to return.
+         */
+        maxPrincipalsToReturn: number;
+        /**
+         * Supported Features (For future use by Office Client).
+         */
+        clientSupportedFeatures: string;
+    }
+    export interface ObjectSharingSettings {
+        /**
+         * The URL pointing to the containing SPWeb object
+         */
+        WebUrl: string;
+        /**
+         * The unique ID of the parent list (if applicable)
+         */
+        ListId?: string;
+        /**
+         * The list item ID (if applicable)
+         */
+        ItemId?: string;
+        /**
+         * The object title
+         */
+        ItemName: string;
+        /**
+         * The server relative object URL
+         */
+        ItemUrl: string;
+        /**
+         * Contains information about the sharing state of a shareable object
+         */
+        ObjectSharingInformation: any;
+        /**
+         * Boolean indicating whether the sharing context operates under the access request mode
+         */
+        AccessRequestMode: boolean;
+        /**
+         * Boolean indicating whether the sharing context operates under the permissions only mode
+         * (i.e. adding to a group or hiding the groups dropdown in the SharePoint UI)
+         */
+        PermissionsOnlyMode: boolean;
+        /**
+         * URL of the site from which the shared object inherits permissions
+         */
+        InheritingWebLink: string;
+        /**
+         * Boolean flag denoting if guest users are enabled for the site collection
+         */
+        ShareByEmailEnabled: boolean;
+        /**
+         * Boolean indicating whether the current user is a guest user
+         */
+        IsGuestUser: boolean;
+        /**
+         * Boolean indicating whether the site has the standard "Editor" role
+         */
+        HasEditRole: boolean;
+        /**
+         * Boolean indicating whether the site has the standard "Reader" role
+         */
+        HasReadRole: boolean;
+        /**
+         * Boolean indicating whether the object to share is a picture library
+         */
+        IsPictureLibrary: boolean;
+        /**
+         * Boolean indicating whether the folder object can be shared
+         */
+        CanShareFolder: boolean;
+        /**
+         * Boolean indicating whether email invitations can be sent
+         */
+        CanSendEmail: boolean;
+        /**
+         * Default share link type
+         */
+        DefaultShareLinkType: SharingLinkKind;
+        /**
+         * Boolean indicating whether the object to share supports ACL propagation
+         */
+        SupportsAclPropagation: boolean;
+        /**
+         * Boolean indicating whether the current user can only share within the tenancy
+         */
+        CanCurrentUserShareInternally: boolean;
+        /**
+         * Boolean indicating whether the current user can share outside the tenancy, by inviting external users
+         */
+        CanCurrentUserShareExternally: boolean;
+        /**
+         * Boolean indicating whether the current user can retrieve an anonymous View link, if one has already been created
+         * If one has not been created, the user cannot create one
+         */
+        CanCurrentUserRetrieveReadonlyLink: boolean;
+        /**
+         * Boolean indicating whether the current user can create or disable an anonymous Edit link
+         */
+        CanCurrentUserManageReadonlyLink: boolean;
+        /**
+         * Boolean indicating whether the current user can retrieve an anonymous Edit link, if one has already been created
+         * If one has not been created, the user cannot create one
+         */
+        CanCurrentUserRetrieveReadWriteLink: boolean;
+        /**
+         * Boolean indicating whether the current user can create or disable an anonymous Edit link
+         */
+        CanCurrentUserManageReadWriteLink: boolean;
+        /**
+         * Boolean indicating whether the current user can retrieve an organization View link, if one has already been created
+         * If one has not been created, the user cannot create one
+         */
+        CanCurrentUserRetrieveOrganizationReadonlyLink: boolean;
+        /**
+         * Boolean indicating whether the current user can create or disable an organization Edit link
+         */
+        CanCurrentUserManageOrganizationReadonlyLink: boolean;
+        /**
+         * Boolean indicating whether the current user can retrieve an organization Edit link, if one has already been created
+         * If one has not been created, the user cannot create one
+         */
+        CanCurrentUserRetrieveOrganizationReadWriteLink: boolean;
+        /**
+         * Boolean indicating whether the current user can create or disable an organization Edit link
+         */
+        CanCurrentUserManageOrganizationReadWriteLink: boolean;
+        /**
+         * Boolean indicating whether the current user can make use of Share-By-Link
+         */
+        CanSendLink: boolean;
+        /**
+         * Boolean indicating whether the client logic should warn the user
+         * that they are about to share with external email addresses.
+         */
+        ShowExternalSharingWarning: boolean;
+        /**
+         * A list of SharingPermissionInformation objects that can be used to share
+         */
+        SharingPermissions: any[];
+        /**
+         * A dictionary object that lists the display name and the id of
+         * the SharePoint simplified roles (edit, view)
+         */
+        SimplifiedRoles: {
+            [key: string]: string;
+        };
+        /**
+         * A dictionary object that lists the display name and the id of the SharePoint groups
+         */
+        GroupsList: {
+            [key: string]: string;
+        };
+        /**
+         * A dictionary object that lists the display name and the id of the SharePoint regular roles
+         */
+        Roles: {
+            [key: string]: string;
+        };
+        /**
+         * An object containing the SharePoint UI specific sharing settings.
+         */
+        SharePointSettings: any;
+        /**
+         * Boolean indicating whether the current user is a site collection administrator
+         */
+        IsUserSiteAdmin: boolean;
+        /**
+         * A value that indicates number of days an anonymous link can be valid before it expires
+         */
+        RequiredAnonymousLinkExpirationInDays: number;
+    }
+    export interface SharingInformation {
+        /**
+         * External Sharing.
+         */
+        canAddExternalPrincipal?: boolean;
+        /**
+         * Internal Sharing.
+         */
+        canAddInternalPrincipal?: boolean;
+        /**
+         * Can Send Email.
+         */
+        canSendEmail?: boolean;
+        /**
+         * Can Use Simplified Roles present in Roles Enum.
+         */
+        canUseSimplifiedRoles?: boolean;
+        /**
+         * Has Unique Permissions.
+         */
+        hasUniquePermissions?: boolean;
+        /**
+         * Current Users Role on the Item.
+         */
+        currentRole?: SharingRole;
+        /**
+         * Does the User+Item require Approval from Admin for Sharing.
+         */
+        requiresAccessApproval?: boolean;
+        /**
+         * (Owners only)Whether there are pending access requests for the securable object.
+         */
+        hasPendingAccessRequests?: boolean;
+        /**
+         * (Owners only)The link to the access requests page for the securable object, or an empty string if the link is not available.
+         */
+        pendingAccessRequestsLink?: string;
+        /**
+         * sharedObjectType
+         */
+        sharedObjectType?: SPSharedObjectType;
+        /**
+         * Url for the Securable Object (Encoded).
+         */
+        directUrl?: string;
+        /**
+         * Parent Web Url for the Securable Object (Encoded).
+         */
+        webUrl?: string;
+        /**
+         * Default SharingLinkKind.
+         */
+        defaultLinkKind?: SharingLinkKind;
+        /**
+         * Tenant's SharingDomainRestrictionMode.
+         */
+        domainRestrictionMode?: SharingDomainRestrictionMode;
+        /**
+         * Tenant's RestrictedDomains.
+         */
+        RestrictedDomains?: string;
+        /**
+         * Tenant's Anonymous Link Expiration Restriction in Days.
+         */
+        anonymousLinkExpirationRestrictionDays?: number;
+        /**
+         * The PermissionCollection that are on the Securable Object (Princpals & Links)
+         */
+        permissionsInformation?: any;
+        /**
+         * PickerSettings used by the PeoplePicker Control.
+         */
+        pickerSettings?: any;
+    }
+    export enum SPSharedObjectType {
+        Unknown = 0,
+        File = 1,
+        Folder = 2,
+        Item = 3,
+        List = 4,
+        Web = 5,
+        Max = 6,
+    }
+    export enum SharingDomainRestrictionMode {
+        None = 0,
+        AllowList = 1,
+        BlockList = 2,
+    }
 }
 declare module "sharepoint/roles" {
     import { Queryable, QueryableInstance, QueryableCollection } from "sharepoint/queryable";
@@ -2089,12 +2804,6 @@ declare module "sharepoint/roles" {
         getById(id: number): RoleAssignment;
     }
     export class RoleAssignment extends QueryableInstance {
-        /**
-     * Creates a new instance of the RoleAssignment class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-        constructor(baseUrl: string | Queryable, path?: string);
         readonly groups: SiteGroups;
         /**
          * Get the role definition bindings for this role assignment
@@ -2149,7 +2858,6 @@ declare module "sharepoint/roles" {
         add(name: string, description: string, order: number, basePermissions: BasePermissions): Promise<RoleDefinitionAddResult>;
     }
     export class RoleDefinition extends QueryableInstance {
-        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Updates this web intance with the supplied properties
          *
@@ -2176,7 +2884,8 @@ declare module "sharepoint/roles" {
 }
 declare module "sharepoint/queryablesecurable" {
     import { RoleAssignments } from "sharepoint/roles";
-    import { Queryable, QueryableInstance } from "sharepoint/queryable";
+    import { BasePermissions, PermissionKind } from "sharepoint/types";
+    import { QueryableInstance } from "sharepoint/queryable";
     export class QueryableSecurable extends QueryableInstance {
         /**
          * Gets the set of role assignments for this item
@@ -2193,7 +2902,11 @@ declare module "sharepoint/queryablesecurable" {
          *
          * @param loginName The claims username for the user (ex: i:0#.f|membership|user@domain.com)
          */
-        getUserEffectivePermissions(loginName: string): Queryable;
+        getUserEffectivePermissions(loginName: string): Promise<BasePermissions>;
+        /**
+         * Gets the effective permissions for the current user
+         */
+        getCurrentUserEffectivePermissions(): Promise<BasePermissions>;
         /**
          * Breaks the security inheritance at this level optinally copying permissions and clearing subscopes
          *
@@ -2206,18 +2919,273 @@ declare module "sharepoint/queryablesecurable" {
          *
          */
         resetRoleInheritance(): Promise<any>;
+        /**
+         * Determines if a given user has the appropriate permissions
+         *
+         * @param loginName The user to check
+         * @param permission The permission being checked
+         */
+        userHasPermissions(loginName: string, permission: PermissionKind): Promise<boolean>;
+        /**
+         * Determines if the current user has the requested permissions
+         *
+         * @param permission The permission we wish to check
+         */
+        currentUserHasPermissions(permission: PermissionKind): Promise<boolean>;
+        /**
+         * Taken from sp.js, checks the supplied permissions against the mask
+         *
+         * @param value The security principal's permissions on the given object
+         * @param perm The permission checked against the value
+         */
+        hasPermissions(value: BasePermissions, perm: PermissionKind): boolean;
+    }
+}
+declare module "sharepoint/queryableshareable" {
+    import { Queryable, QueryableInstance } from "sharepoint/queryable";
+    import { QueryableSecurable } from "sharepoint/queryablesecurable";
+    import { RoleType, SharingLinkKind, ShareLinkResponse, SharingRole, SharingEmailData, SharingResult, SharingRecipient, SharingEntityPermission, SharingInformationRequest, ObjectSharingSettings, SharingInformation, ShareObjectOptions } from "sharepoint/types";
+    /**
+     * Internal helper class used to augment classes to include sharing functionality
+     */
+    export class QueryableShareable extends Queryable {
+        /**
+         * Gets a sharing link for the supplied
+         *
+         * @param kind The kind of link to share
+         * @param expiration The optional expiration for this link
+         */
+        getShareLink(kind: SharingLinkKind, expiration?: Date): Promise<ShareLinkResponse>;
+        /**
+         * Shares this instance with the supplied users
+         *
+         * @param loginNames Resolved login names to share
+         * @param role The role
+         * @param requireSignin True to require the user is authenticated, otherwise false
+         * @param propagateAcl True to apply this share to all children
+         * @param emailData If supplied an email will be sent with the indicated properties
+         */
+        shareWith(loginNames: string | string[], role: SharingRole, requireSignin?: boolean, propagateAcl?: boolean, emailData?: SharingEmailData): Promise<SharingResult>;
+        /**
+         * Shares an object based on the supplied options
+         *
+         * @param options The set of options to send to the ShareObject method
+         * @param bypass If true any processing is skipped and the options are sent directly to the ShareObject method
+         */
+        shareObject(options: ShareObjectOptions, bypass?: boolean): Promise<SharingResult>;
+        /**
+         * Calls the web's UnshareObject method
+         *
+         * @param url The url of the object to unshare
+         */
+        unshareObjectWeb(url: string): Promise<SharingResult>;
+        /**
+         * Checks Permissions on the list of Users and returns back role the users have on the Item.
+         *
+         * @param recipients The array of Entities for which Permissions need to be checked.
+         */
+        checkPermissions(recipients: SharingRecipient[]): Promise<SharingEntityPermission[]>;
+        /**
+         * Get Sharing Information.
+         *
+         * @param request The SharingInformationRequest Object.
+         */
+        getSharingInformation(request?: SharingInformationRequest): Promise<SharingInformation>;
+        /**
+         * Gets the sharing settings of an item.
+         *
+         * @param useSimplifiedRoles Determines whether to use simplified roles.
+         */
+        getObjectSharingSettings(useSimplifiedRoles?: boolean): Promise<ObjectSharingSettings>;
+        /**
+         * Unshares this object
+         */
+        unshareObject(): Promise<SharingResult>;
+        /**
+         * Deletes a link by type
+         *
+         * @param kind Deletes a sharing link by the kind of link
+         */
+        deleteLinkByKind(kind: SharingLinkKind): Promise<void>;
+        /**
+         * Removes the specified link to the item.
+         *
+         * @param kind The kind of link to be deleted.
+         * @param shareId
+         */
+        unshareLink(kind: SharingLinkKind, shareId?: string): Promise<void>;
+        /**
+         * Calculates the roleValue string used in the sharing query
+         *
+         * @param role The Sharing Role
+         * @param group The Group type
+         */
+        protected getRoleValue(role: SharingRole, group: RoleType): Promise<string>;
+        private getShareObjectWeb(candidate);
+        private sendShareObjectRequest(options);
+    }
+    export class QueryableShareableWeb extends QueryableSecurable {
+        /**
+         * Shares this web with the supplied users
+         * @param loginNames The resolved login names to share
+         * @param role The role to share this web
+         * @param emailData Optional email data
+         */
+        shareWith(loginNames: string | string[], role?: SharingRole, emailData?: SharingEmailData): Promise<SharingResult>;
+        /**
+         * Provides direct access to the static web.ShareObject method
+         *
+         * @param url The url to share
+         * @param loginNames Resolved loginnames string[] of a single login name string
+         * @param roleValue Role value
+         * @param emailData Optional email data
+         * @param groupId Optional group id
+         * @param propagateAcl
+         * @param includeAnonymousLinkInEmail
+         * @param useSimplifiedRoles
+         */
+        shareObject(url: string, loginNames: string | string[], role: SharingRole, emailData?: SharingEmailData, group?: RoleType, propagateAcl?: boolean, includeAnonymousLinkInEmail?: boolean, useSimplifiedRoles?: boolean): Promise<SharingResult>;
+        /**
+         * Supplies a method to pass any set of arguments to ShareObject
+         *
+         * @param options The set of options to send to ShareObject
+         */
+        shareObjectRaw(options: any): Promise<SharingResult>;
+        /**
+         * Unshares the object
+         *
+         * @param url The url of the object to stop sharing
+         */
+        unshareObject(url: string): Promise<SharingResult>;
+    }
+    export class QueryableShareableItem extends QueryableSecurable {
+        /**
+         * Gets a link suitable for sharing for this item
+         *
+         * @param kind The type of link to share
+         * @param expiration The optional expiration date
+         */
+        getShareLink(kind?: SharingLinkKind, expiration?: Date): Promise<ShareLinkResponse>;
+        /**
+         * Shares this item with one or more users
+         *
+         * @param loginNames string or string[] of resolved login names to which this item will be shared
+         * @param role The role (View | Edit) applied to the share
+         * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
+         */
+        shareWith(loginNames: string | string[], role?: SharingRole, requireSignin?: boolean, emailData?: SharingEmailData): Promise<SharingResult>;
+        /**
+         * Checks Permissions on the list of Users and returns back role the users have on the Item.
+         *
+         * @param recipients The array of Entities for which Permissions need to be checked.
+         */
+        checkSharingPermissions(recipients: SharingRecipient[]): Promise<SharingEntityPermission[]>;
+        /**
+         * Get Sharing Information.
+         *
+         * @param request The SharingInformationRequest Object.
+         */
+        getSharingInformation(request?: SharingInformationRequest): Promise<SharingEntityPermission[]>;
+        /**
+         * Gets the sharing settings of an item.
+         *
+         * @param useSimplifiedRoles Determines whether to use simplified roles.
+         */
+        getObjectSharingSettings(useSimplifiedRoles?: boolean): Promise<ObjectSharingSettings>;
+        /**
+         * Unshare this item
+         */
+        unshare(): Promise<SharingResult>;
+        /**
+         * Deletes a sharing link by kind
+         *
+         * @param kind Deletes a sharing link by the kind of link
+         */
+        deleteSharingLinkByKind(kind: SharingLinkKind): Promise<void>;
+        /**
+         * Removes the specified link to the item.
+         *
+         * @param kind The kind of link to be deleted.
+         * @param shareId
+         */
+        unshareLink(kind: SharingLinkKind, shareId?: string): Promise<void>;
+    }
+    export class FileFolderShared extends QueryableInstance {
+        /**
+         * Gets a link suitable for sharing
+         *
+         * @param kind The kind of link to get
+         * @param expiration Optional, an expiration for this link
+         */
+        getShareLink(kind?: SharingLinkKind, expiration?: Date): Promise<ShareLinkResponse>;
+        /**
+             * Checks Permissions on the list of Users and returns back role the users have on the Item.
+             *
+             * @param recipients The array of Entities for which Permissions need to be checked.
+             */
+        checkSharingPermissions(recipients: SharingRecipient[]): Promise<SharingEntityPermission[]>;
+        /**
+         * Get Sharing Information.
+         *
+         * @param request The SharingInformationRequest Object.
+         */
+        getSharingInformation(request?: SharingInformationRequest): Promise<SharingEntityPermission[]>;
+        /**
+         * Gets the sharing settings of an item.
+         *
+         * @param useSimplifiedRoles Determines whether to use simplified roles.
+         */
+        getObjectSharingSettings(useSimplifiedRoles?: boolean): Promise<ObjectSharingSettings>;
+        /**
+         * Unshare this item
+         */
+        unshare(): Promise<SharingResult>;
+        /**
+         * Deletes a sharing link by the kind of link
+         *
+         * @param kind The kind of link to be deleted.
+         */
+        deleteSharingLinkByKind(kind: SharingLinkKind): Promise<void>;
+        /**
+         * Removes the specified link to the item.
+         *
+         * @param kind The kind of link to be deleted.
+         * @param shareId The share id to delete
+         */
+        unshareLink(kind: SharingLinkKind, shareId?: string): Promise<void>;
+        /**
+         * For files and folders we need to use the associated item end point
+         */
+        protected getShareable(): Promise<QueryableShareable>;
+    }
+    export class QueryableShareableFile extends FileFolderShared {
+        /**
+         * Shares this item with one or more users
+         *
+         * @param loginNames string or string[] of resolved login names to which this item will be shared
+         * @param role The role (View | Edit) applied to the share
+         * @param shareEverything Share everything in this folder, even items with unique permissions.
+         * @param requireSignin If true the user must signin to view link, otherwise anyone with the link can access the resource
+         * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
+         */
+        shareWith(loginNames: string | string[], role?: SharingRole, requireSignin?: boolean, emailData?: SharingEmailData): Promise<SharingResult>;
+    }
+    export class QueryableShareableFolder extends FileFolderShared {
+        /**
+         * Shares this item with one or more users
+         *
+         * @param loginNames string or string[] of resolved login names to which this item will be shared
+         * @param role The role (View | Edit) applied to the share
+         * @param shareEverything Share everything in this folder, even items with unique permissions.
+         * @param requireSignin If true the user must signin to view link, otherwise anyone with the link can access the resource
+         * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
+         */
+        shareWith(loginNames: string | string[], role?: SharingRole, requireSignin?: boolean, shareEverything?: boolean, emailData?: SharingEmailData): Promise<SharingResult>;
     }
 }
 declare module "sharepoint/webparts" {
     import { Queryable, QueryableInstance, QueryableCollection } from "sharepoint/queryable";
     export class LimitedWebPartManager extends Queryable {
-        /**
-         * Creates a new instance of the LimitedWebPartManager class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         * @param path Optional, if supplied will be appended to the supplied baseUrl
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Gets the set of web part definitions contained by this web part manager
          *
@@ -2238,13 +3206,6 @@ declare module "sharepoint/webparts" {
     }
     export class WebPartDefinitions extends QueryableCollection {
         /**
-         * Creates a new instance of the WebPartDefinitions class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         * @param path Optional, if supplied will be appended to the supplied baseUrl
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
-        /**
          * Gets a web part definition from the collection by id
          *
          * @param id GUID id of the web part definition to get
@@ -2252,13 +3213,6 @@ declare module "sharepoint/webparts" {
         getById(id: string): WebPartDefinition;
     }
     export class WebPartDefinition extends QueryableInstance {
-        /**
-         * Creates a new instance of the WebPartDefinition class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         * @param path Optional, if supplied will be appended to the supplied baseUrl
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Gets the webpart information associated with this definition
          */
@@ -2281,6 +3235,8 @@ declare module "sharepoint/webparts" {
 declare module "sharepoint/files" {
     import { Queryable, QueryableCollection, QueryableInstance } from "sharepoint/queryable";
     import { LimitedWebPartManager } from "sharepoint/webparts";
+    import { Item } from "sharepoint/items";
+    import { QueryableShareableFile } from "sharepoint/queryableshareable";
     export interface ChunkedFileUploadProgressData {
         stage: "starting" | "continue" | "finishing";
         blockNumber: number;
@@ -2307,16 +3263,16 @@ declare module "sharepoint/files" {
          */
         getByName(name: string): File;
         /**
-         * Uploads a file.
+         * Uploads a file. Not supported for batching
          *
          * @param url The folder-relative url of the file.
          * @param content The file contents blob.
          * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
          * @returns The new File and the raw response.
          */
-        add(url: string, content: Blob, shouldOverWrite?: boolean): Promise<FileAddResult>;
+        add(url: string, content: string | ArrayBuffer | Blob, shouldOverWrite?: boolean): Promise<FileAddResult>;
         /**
-         * Uploads a file.
+         * Uploads a file. Not supported for batching
          *
          * @param url The folder-relative url of the file.
          * @param content The Blob file content to add
@@ -2325,9 +3281,9 @@ declare module "sharepoint/files" {
          * @param chunkSize The size of each file slice, in bytes (default: 10485760)
          * @returns The new File and the raw response.
          */
-        addChunked(url: string, content: Blob, progress?: (data: ChunkedFileUploadProgressData) => void, shouldOverWrite?: boolean, chunkSize?: number): Promise<FileAddResult>;
+        addChunked(url: string, content: string | ArrayBuffer | Blob, progress?: (data: ChunkedFileUploadProgressData) => void, shouldOverWrite?: boolean, chunkSize?: number): Promise<FileAddResult>;
         /**
-         * Adds a ghosted file to an existing list or document library.
+         * Adds a ghosted file to an existing list or document library. Not supported for batching.
          *
          * @param fileUrl The server-relative url where you want to save the file.
          * @param templateFileType The type of use to create the file.
@@ -2339,14 +3295,7 @@ declare module "sharepoint/files" {
      * Describes a single File instance
      *
      */
-    export class File extends QueryableInstance {
-        /**
-         * Creates a new instance of the File class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         * @param path Optional, if supplied will be appended to the supplied baseUrl
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
+    export class File extends QueryableShareableFile {
         /**
          * Gets a value that specifies the list item field values for the list item corresponding to the file.
          *
@@ -2365,7 +3314,7 @@ declare module "sharepoint/files" {
          */
         approve(comment: string): Promise<void>;
         /**
-         * Stops the chunk upload session without saving the uploaded data.
+         * Stops the chunk upload session without saving the uploaded data. Does not support batching.
          * If the file doesn’t already exist in the library, the partially uploaded file will be deleted.
          * Use this in response to user action (as in a request to cancel an upload) or an error or exception.
          * Use the uploadId value that was passed to the StartUpload method that started the upload session.
@@ -2443,32 +3392,36 @@ declare module "sharepoint/files" {
          */
         unpublish(comment?: string): Promise<void>;
         /**
-         * Gets the contents of the file as text
+         * Gets the contents of the file as text. Not supported in batching.
          *
          */
         getText(): Promise<string>;
         /**
-         * Gets the contents of the file as a blob, does not work in Node.js
+         * Gets the contents of the file as a blob, does not work in Node.js. Not supported in batching.
          *
          */
         getBlob(): Promise<Blob>;
         /**
-         * Gets the contents of a file as an ArrayBuffer, works in Node.js
+         * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
          */
         getBuffer(): Promise<ArrayBuffer>;
         /**
-         * Gets the contents of a file as an ArrayBuffer, works in Node.js
+         * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
          */
         getJSON(): Promise<any>;
         /**
-         * Sets the content of a file, for large files use setContentChunked
+         * Sets the content of a file, for large files use setContentChunked. Not supported in batching.
          *
          * @param content The file content
          *
          */
         setContent(content: string | ArrayBuffer | Blob): Promise<File>;
         /**
-         * Sets the contents of a file using a chunked upload approach
+         * Gets the associated list item for this folder, loading the default properties
+         */
+        getItem<T>(...selects: string[]): Promise<Item & T>;
+        /**
+         * Sets the contents of a file using a chunked upload approach. Not supported in batching.
          *
          * @param file The file to upload
          * @param progress A callback function which can be used to track the progress of the upload
@@ -2561,13 +3514,6 @@ declare module "sharepoint/files" {
      */
     export class Version extends QueryableInstance {
         /**
-         * Creates a new instance of the Version class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         * @param path Optional, if supplied will be appended to the supplied baseUrl
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
-        /**
         * Delete a specific version of a file.
         *
         * @param eTag Value used in the IF-Match header, by default "*"
@@ -2599,7 +3545,10 @@ declare module "sharepoint/files" {
 }
 declare module "sharepoint/folders" {
     import { Queryable, QueryableCollection, QueryableInstance } from "sharepoint/queryable";
+    import { QueryableShareableFolder } from "sharepoint/queryableshareable";
     import { Files } from "sharepoint/files";
+    import { TypedHash } from "collections/collections";
+    import { Item } from "sharepoint/items";
     /**
      * Describes a collection of Folder objects
      *
@@ -2628,14 +3577,7 @@ declare module "sharepoint/folders" {
      * Describes a single Folder instance
      *
      */
-    export class Folder extends QueryableInstance {
-        /**
-         * Creates a new instance of the Folder class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         * @param path Optional, if supplied will be appended to the supplied baseUrl
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
+    export class Folder extends QueryableShareableFolder {
         /**
          * Specifies the sequence in which content types are displayed.
          *
@@ -2676,6 +3618,7 @@ declare module "sharepoint/folders" {
          *
          */
         readonly uniqueContentTypeOrder: QueryableCollection;
+        update(properties: TypedHash<string | number | boolean>): Promise<FolderUpdateResult>;
         /**
         * Delete this folder
         *
@@ -2686,8 +3629,16 @@ declare module "sharepoint/folders" {
          * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
          */
         recycle(): Promise<string>;
+        /**
+         * Gets the associated list item for this folder, loading the default properties
+         */
+        getItem<T>(...selects: string[]): Promise<Item & T>;
     }
     export interface FolderAddResult {
+        folder: Folder;
+        data: any;
+    }
+    export interface FolderUpdateResult {
         folder: Folder;
         data: any;
     }
@@ -2734,12 +3685,6 @@ declare module "sharepoint/contenttypes" {
      */
     export class ContentType extends QueryableInstance {
         /**
-         * Creates a new instance of the ContentType class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this content type instance
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
-        /**
          * Gets the column (also known as field) references in the content type.
         */
         readonly fieldLinks: FieldLinks;
@@ -2755,6 +3700,10 @@ declare module "sharepoint/contenttypes" {
          * Gets a value that specifies the collection of workflow associations for the content type.
          */
         readonly workflowAssociations: QueryableCollection;
+        /**
+         * Delete this content type
+         */
+        delete(): Promise<void>;
     }
     export interface ContentTypeAddResult {
         contentType: ContentType;
@@ -2781,16 +3730,14 @@ declare module "sharepoint/contenttypes" {
      * Represents a field link instance
      */
     export class FieldLink extends QueryableInstance {
-        /**
-         * Creates a new instance of the ContentType class
-        *
-        * @param baseUrl The url or Queryable which forms the parent of this content type instance
-        */
-        constructor(baseUrl: string | Queryable, path?: string);
     }
 }
 declare module "sharepoint/attachmentfiles" {
     import { Queryable, QueryableInstance, QueryableCollection } from "sharepoint/queryable";
+    export interface AttachmentFileInfo {
+        name: string;
+        content: string | Blob | ArrayBuffer;
+    }
     /**
      * Describes a collection of Item objects
      *
@@ -2809,24 +3756,24 @@ declare module "sharepoint/attachmentfiles" {
          */
         getByName(name: string): AttachmentFile;
         /**
-         * Adds a new attachment to the collection
+         * Adds a new attachment to the collection. Not supported for batching.
          *
          * @param name The name of the file, including extension.
          * @param content The Base64 file content.
          */
         add(name: string, content: string | Blob | ArrayBuffer): Promise<AttachmentFileAddResult>;
+        /**
+         * Adds mjultiple new attachment to the collection. Not supported for batching.
+         *
+         * @files name The collection of files to add
+         */
+        addMultiple(files: AttachmentFileInfo[]): Promise<void>;
     }
     /**
      * Describes a single attachment file instance
      *
      */
     export class AttachmentFile extends QueryableInstance {
-        /**
-         * Creates a new instance of the AttachmentFile class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this attachment file
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Gets the contents of the file as text
          *
@@ -2846,7 +3793,7 @@ declare module "sharepoint/attachmentfiles" {
          */
         getJSON(): Promise<any>;
         /**
-         * Sets the content of a file
+         * Sets the content of a file. Not supported for batching
          *
          * @param content The value to set for the file contents
          */
@@ -2865,12 +3812,12 @@ declare module "sharepoint/attachmentfiles" {
 }
 declare module "sharepoint/items" {
     import { Queryable, QueryableCollection, QueryableInstance } from "sharepoint/queryable";
-    import { QueryableSecurable } from "sharepoint/queryablesecurable";
+    import { QueryableShareableItem } from "sharepoint/queryableshareable";
     import { Folder } from "sharepoint/folders";
     import { File } from "sharepoint/files";
     import { ContentType } from "sharepoint/contenttypes";
     import { TypedHash } from "collections/collections";
-    import * as Types from "sharepoint/types";
+    import { ListItemFormUpdateValue } from "sharepoint/types";
     import { AttachmentFiles } from "sharepoint/attachmentfiles";
     /**
      * Describes a collection of Item objects
@@ -2917,13 +3864,7 @@ declare module "sharepoint/items" {
      * Descrines a single Item instance
      *
      */
-    export class Item extends QueryableSecurable {
-        /**
-         * Creates a new instance of the Items class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
+    export class Item extends QueryableShareableItem {
         /**
          * Gets the set of attachments for this item
          *
@@ -2999,7 +3940,7 @@ declare module "sharepoint/items" {
          * @param formValues The fields to change and their new values.
          * @param newDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
          */
-        validateUpdateListItem(formValues: Types.ListItemFormUpdateValue[], newDocumentUpdate?: boolean): Promise<Types.ListItemFormUpdateValue[]>;
+        validateUpdateListItem(formValues: ListItemFormUpdateValue[], newDocumentUpdate?: boolean): Promise<ListItemFormUpdateValue[]>;
     }
     export interface ItemAddResult {
         item: Item;
@@ -3042,7 +3983,7 @@ declare module "sharepoint/views" {
          *
          * @param baseUrl The url or Queryable which forms the parent of this fields collection
          */
-        constructor(baseUrl: string | Queryable);
+        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Gets a view by guid id
          *
@@ -3069,12 +4010,6 @@ declare module "sharepoint/views" {
      *
      */
     export class View extends QueryableInstance {
-        /**
-         * Creates a new instance of the View class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
         readonly fields: ViewFields;
         /**
          * Updates this view intance with the supplied properties
@@ -3135,7 +4070,7 @@ declare module "sharepoint/views" {
 declare module "sharepoint/fields" {
     import { Queryable, QueryableCollection, QueryableInstance } from "sharepoint/queryable";
     import { TypedHash } from "collections/collections";
-    import * as Types from "sharepoint/types";
+    import { XmlSchemaFieldCreationInformation, DateTimeFieldFormatType, FieldTypes, CalendarType, UrlFieldFormatType } from "sharepoint/types";
     /**
      * Describes a collection of Field objects
      *
@@ -3168,7 +4103,7 @@ declare module "sharepoint/fields" {
         /**
          * Creates a field based on the specified schema
          */
-        createFieldAsXml(xml: string | Types.XmlSchemaFieldCreationInformation): Promise<FieldAddResult>;
+        createFieldAsXml(xml: string | XmlSchemaFieldCreationInformation): Promise<FieldAddResult>;
         /**
          * Adds a new list to the collection
          *
@@ -3194,7 +4129,7 @@ declare module "sharepoint/fields" {
          * @param outputType Specifies the output format for the field. Represents a FieldType value.
          * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
          */
-        addCalculated(title: string, formula: string, dateFormat: Types.DateTimeFieldFormatType, outputType?: Types.FieldTypes, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+        addCalculated(title: string, formula: string, dateFormat: DateTimeFieldFormatType, outputType?: FieldTypes, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
         /**
          * Adds a new SP.FieldDateTime to the collection
          *
@@ -3203,7 +4138,7 @@ declare module "sharepoint/fields" {
          * @param calendarType Specifies the calendar type of the field.
          * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
          */
-        addDateTime(title: string, displayFormat?: Types.DateTimeFieldFormatType, calendarType?: Types.CalendarType, friendlyDisplayFormat?: number, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+        addDateTime(title: string, displayFormat?: DateTimeFieldFormatType, calendarType?: CalendarType, friendlyDisplayFormat?: number, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
         /**
          * Adds a new SP.FieldNumber to the collection
          *
@@ -3241,19 +4176,13 @@ declare module "sharepoint/fields" {
          *
          * @param title The field title
          */
-        addUrl(title: string, displayFormat?: Types.UrlFieldFormatType, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+        addUrl(title: string, displayFormat?: UrlFieldFormatType, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
     }
     /**
      * Describes a single of Field instance
      *
      */
     export class Field extends QueryableInstance {
-        /**
-         * Creates a new instance of the Field class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this field instance
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Updates this field intance with the supplied properties
          *
@@ -3316,12 +4245,6 @@ declare module "sharepoint/forms" {
      *
      */
     export class Form extends QueryableInstance {
-        /**
-         * Creates a new instance of the Form class
-         *
-         * @param baseUrl The url or Queryable which is the parent of this form instance
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
     }
 }
 declare module "sharepoint/subscriptions" {
@@ -3353,12 +4276,6 @@ declare module "sharepoint/subscriptions" {
      *
      */
     export class Subscription extends QueryableInstance {
-        /**
-         * Creates a new instance of the Subscription class
-         *
-         * @param baseUrl - The url or Queryable which forms the parent of this webhook subscription instance
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Update a webhook subscription
          *
@@ -3404,7 +4321,6 @@ declare module "sharepoint/usercustomactions" {
         clear(): Promise<void>;
     }
     export class UserCustomAction extends QueryableInstance {
-        constructor(baseUrl: string | Queryable, path?: string);
         update(properties: TypedHash<string | boolean | number>): Promise<UserCustomActionUpdateResult>;
         /**
         * Remove a custom action
@@ -3433,6 +4349,7 @@ declare module "sharepoint/lists" {
     import { TypedHash } from "collections/collections";
     import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData } from "sharepoint/types";
     import { UserCustomActions } from "sharepoint/usercustomactions";
+    import { Folder } from "sharepoint/folders";
     /**
      * Describes a collection of List objects
      *
@@ -3490,13 +4407,6 @@ declare module "sharepoint/lists" {
      *
      */
     export class List extends QueryableSecurable {
-        /**
-         * Creates a new instance of the Lists class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         * @param path Optional, if supplied will be appended to the supplied baseUrl
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Gets the content types in this list
          *
@@ -3557,6 +4467,10 @@ declare module "sharepoint/lists" {
          *
          */
         readonly subscriptions: Subscriptions;
+        /**
+         * The root folder of the list
+         */
+        readonly rootFolder: Folder;
         /**
          * Gets a view by view guid id
          *
@@ -3620,7 +4534,7 @@ declare module "sharepoint/lists" {
          */
         reserveListItemId(): Promise<number>;
         /**
-         * Returns the ListItemEntityTypeFullName for this list, used when adding/updating list items
+         * Returns the ListItemEntityTypeFullName for this list, used when adding/updating list items. Does not support batching.
          *
          */
         getListItemEntityTypeFullName(): Promise<string>;
@@ -3655,7 +4569,6 @@ declare module "sharepoint/navigation" {
      *
      */
     export class NavigationNodes extends QueryableCollection {
-        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Gets a navigation node by id
          *
@@ -3679,7 +4592,6 @@ declare module "sharepoint/navigation" {
         moveAfter(nodeId: number, previousNodeId: number): Promise<void>;
     }
     export class NavigationNode extends QueryableInstance {
-        constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Represents the child nodes of this node
          */
@@ -3754,12 +4666,6 @@ declare module "sharepoint/features" {
     }
     export class Feature extends QueryableInstance {
         /**
-         * Creates a new instance of the Lists class
-         *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
-        /**
          * Removes (deactivates) a feature from the collection
          *
          * @param force If true the feature deactivation will be forced
@@ -3771,24 +4677,86 @@ declare module "sharepoint/features" {
         feature: Feature;
     }
 }
+declare module "sharepoint/relateditems" {
+    import { Queryable } from "sharepoint/queryable";
+    export interface RelatedItem {
+        ListId: string;
+        ItemId: number;
+        Url: string;
+        Title: string;
+        WebId: string;
+        IconUrl: string;
+    }
+    export interface RelatedItemManger {
+        getRelatedItems(sourceListName: string, sourceItemId: number): Promise<RelatedItem[]>;
+        getPageOneRelatedItems(sourceListName: string, sourceItemId: number): Promise<RelatedItem[]>;
+        addSingleLink(sourceListName: string, sourceItemId: number, sourceWebUrl: string, targetListName: string, targetItemID: number, targetWebUrl: string, tryAddReverseLink?: boolean): Promise<void>;
+        /**
+         * Adds a related item link from an item specified by list name and item id, to an item specified by url
+         *
+         * @param sourceListName The source list name or list id
+         * @param sourceItemId The source item id
+         * @param targetItemUrl The target item url
+         * @param tryAddReverseLink If set to true try to add the reverse link (will not return error if it fails)
+         */
+        addSingleLinkToUrl(sourceListName: string, sourceItemId: number, targetItemUrl: string, tryAddReverseLink?: boolean): Promise<void>;
+        /**
+         * Adds a related item link from an item specified by url, to an item specified by list name and item id
+         *
+         * @param sourceItemUrl The source item url
+         * @param targetListName The target list name or list id
+         * @param targetItemId The target item id
+         * @param tryAddReverseLink If set to true try to add the reverse link (will not return error if it fails)
+         */
+        addSingleLinkFromUrl(sourceItemUrl: string, targetListName: string, targetItemId: number, tryAddReverseLink?: boolean): Promise<void>;
+        deleteSingleLink(sourceListName: string, sourceItemId: number, sourceWebUrl: string, targetListName: string, targetItemId: number, targetWebUrl: string, tryDeleteReverseLink?: boolean): Promise<void>;
+    }
+    export class RelatedItemManagerImpl extends Queryable implements RelatedItemManger {
+        static FromUrl(url: string): RelatedItemManagerImpl;
+        constructor(baseUrl: string | Queryable, path?: string);
+        getRelatedItems(sourceListName: string, sourceItemId: number): Promise<RelatedItem[]>;
+        getPageOneRelatedItems(sourceListName: string, sourceItemId: number): Promise<RelatedItem[]>;
+        addSingleLink(sourceListName: string, sourceItemId: number, sourceWebUrl: string, targetListName: string, targetItemID: number, targetWebUrl: string, tryAddReverseLink?: boolean): Promise<void>;
+        /**
+         * Adds a related item link from an item specified by list name and item id, to an item specified by url
+         *
+         * @param sourceListName The source list name or list id
+         * @param sourceItemId The source item id
+         * @param targetItemUrl The target item url
+         * @param tryAddReverseLink If set to true try to add the reverse link (will not return error if it fails)
+         */
+        addSingleLinkToUrl(sourceListName: string, sourceItemId: number, targetItemUrl: string, tryAddReverseLink?: boolean): Promise<void>;
+        /**
+         * Adds a related item link from an item specified by url, to an item specified by list name and item id
+         *
+         * @param sourceItemUrl The source item url
+         * @param targetListName The target list name or list id
+         * @param targetItemId The target item id
+         * @param tryAddReverseLink If set to true try to add the reverse link (will not return error if it fails)
+         */
+        addSingleLinkFromUrl(sourceItemUrl: string, targetListName: string, targetItemId: number, tryAddReverseLink?: boolean): Promise<void>;
+        deleteSingleLink(sourceListName: string, sourceItemId: number, sourceWebUrl: string, targetListName: string, targetItemId: number, targetWebUrl: string, tryDeleteReverseLink?: boolean): Promise<void>;
+    }
+}
 declare module "sharepoint/webs" {
     import { Queryable, QueryableCollection } from "sharepoint/queryable";
-    import { QueryableSecurable } from "sharepoint/queryablesecurable";
     import { Lists } from "sharepoint/lists";
     import { Fields } from "sharepoint/fields";
     import { Navigation } from "sharepoint/navigation";
-    import { SiteGroups } from "sharepoint/sitegroups";
+    import { SiteGroups, SiteGroup } from "sharepoint/sitegroups";
     import { ContentTypes } from "sharepoint/contenttypes";
     import { Folders, Folder } from "sharepoint/folders";
     import { RoleDefinitions } from "sharepoint/roles";
     import { File } from "sharepoint/files";
     import { TypedHash } from "collections/collections";
-    import * as Types from "sharepoint/types";
+    import { BasePermissions, ChangeQuery } from "sharepoint/types";
     import { List } from "sharepoint/lists";
-    import { SiteUsers, SiteUser, CurrentUser } from "sharepoint/siteusers";
+    import { SiteUsers, SiteUser, CurrentUser, SiteUserProps } from "sharepoint/siteusers";
     import { UserCustomActions } from "sharepoint/usercustomactions";
     import { ODataBatch } from "sharepoint/odata";
     import { Features } from "sharepoint/features";
+    import { QueryableShareableWeb } from "sharepoint/queryableshareable";
+    import { RelatedItemManger } from "sharepoint/relateditems";
     export class Webs extends QueryableCollection {
         constructor(baseUrl: string | Queryable, webPath?: string);
         /**
@@ -3808,7 +4776,15 @@ declare module "sharepoint/webs" {
      * Describes a web
      *
      */
-    export class Web extends QueryableSecurable {
+    export class Web extends QueryableShareableWeb {
+        /**
+         * Creates a new web instance from the given url by indexing the location of the /_api/
+         * segment. If this is not found the method creates a new web with the entire string as
+         * supplied.
+         *
+         * @param url
+         */
+        static fromUrl(url: string, path?: string): Web;
         constructor(baseUrl: string | Queryable, path?: string);
         readonly webs: Webs;
         /**
@@ -3871,10 +4847,22 @@ declare module "sharepoint/webs" {
          */
         readonly roleDefinitions: RoleDefinitions;
         /**
+         * Provides an interface to manage related items
+         *
+         */
+        readonly relatedItems: RelatedItemManger;
+        /**
          * Creates a new batch for requests within the context of context this web
          *
          */
         createBatch(): ODataBatch;
+        /**
+         * The root folder of the web
+         */
+        readonly rootFolder: Folder;
+        readonly associatedOwnerGroup: SiteGroup;
+        readonly associatedMemberGroup: SiteGroup;
+        readonly associatedVisitorGroup: SiteGroup;
         /**
          * Get a folder by server relative url
          *
@@ -3924,13 +4912,13 @@ declare module "sharepoint/webs" {
          *
          * @param perms The high and low permission range.
          */
-        doesUserHavePermissions(perms: Types.BasePermissions): Promise<boolean>;
+        doesUserHavePermissions(perms: BasePermissions): Promise<boolean>;
         /**
          * Checks whether the specified login name belongs to a valid user in the site. If the user doesn't exist, adds the user to the site.
          *
          * @param loginName The login name of the user (ex: i:0#.f|membership|user@domain.onmicrosoft.com)
          */
-        ensureUser(loginName: string): Promise<any>;
+        ensureUser(loginName: string): Promise<WebEnsureUserResult>;
         /**
          * Returns a collection of site templates available for the site.
          *
@@ -3948,7 +4936,7 @@ declare module "sharepoint/webs" {
         /**
          * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
          */
-        getChanges(query: Types.ChangeQuery): Promise<any>;
+        getChanges(query: ChangeQuery): Promise<any>;
         /**
          * Gets the custom list templates for the site.
          *
@@ -3980,6 +4968,10 @@ declare module "sharepoint/webs" {
     export interface GetCatalogResult {
         data: any;
         list: List;
+    }
+    export interface WebEnsureUserResult {
+        data: SiteUserProps;
+        user: SiteUser;
     }
 }
 declare module "sharepoint/site" {
@@ -4054,7 +5046,7 @@ declare module "utils/files" {
 }
 declare module "sharepoint/userprofiles" {
     import { Queryable, QueryableInstance, QueryableCollection } from "sharepoint/queryable";
-    import * as Types from "sharepoint/types";
+    import { HashTagCollection, UserProfile } from "sharepoint/types";
     export class UserProfileQuery extends QueryableInstance {
         private profileLoader;
         constructor(baseUrl: string | Queryable, path?: string);
@@ -4116,7 +5108,7 @@ declare module "sharepoint/userprofiles" {
          * Gets the most popular tags.
          *
          */
-        readonly trendingTags: Promise<Types.HashTagCollection>;
+        readonly trendingTags: Promise<HashTagCollection>;
         /**
          * Gets the specified user profile property for the specified user.
          *
@@ -4138,7 +5130,7 @@ declare module "sharepoint/userprofiles" {
          */
         isFollowing(follower: string, followee: string): Promise<boolean>;
         /**
-         * Uploads and sets the user profile picture
+         * Uploads and sets the user profile picture. Not supported for batching.
          *
          * @param profilePicSource Blob data representing the user's picture
          */
@@ -4153,7 +5145,7 @@ declare module "sharepoint/userprofiles" {
          * Gets the user profile of the site owner.
          *
          */
-        readonly ownerUserProfile: Promise<Types.UserProfile>;
+        readonly ownerUserProfile: Promise<UserProfile>;
         /**
          * Gets the user profile that corresponds to the current user.
          */
@@ -4242,27 +5234,28 @@ declare module "sharepoint/rest" {
 }
 declare module "sharepoint/index" {
     export * from "sharepoint/caching";
-    export { AttachmentFileAddResult } from "sharepoint/attachmentfiles";
+    export { AttachmentFileAddResult, AttachmentFileInfo } from "sharepoint/attachmentfiles";
     export { FieldAddResult, FieldUpdateResult } from "sharepoint/fields";
     export { CheckinType, FileAddResult, WebPartsPersonalizationScope, MoveOperations, TemplateFileType, ChunkedFileUploadProgressData } from "sharepoint/files";
     export { FeatureAddResult } from "sharepoint/features";
-    export { FolderAddResult } from "sharepoint/folders";
-    export { Item, ItemAddResult, ItemUpdateResult, ItemUpdateResultData, PagedItemCollection } from "sharepoint/items";
+    export { FolderAddResult, Folder, Folders } from "sharepoint/folders";
+    export { Item, Items, ItemAddResult, ItemUpdateResult, ItemUpdateResultData, PagedItemCollection } from "sharepoint/items";
     export { NavigationNodeAddResult, NavigationNodeUpdateResult, NavigationNodes, NavigationNode } from "sharepoint/navigation";
-    export { List, ListAddResult, ListUpdateResult, ListEnsureResult } from "sharepoint/lists";
+    export { List, Lists, ListAddResult, ListUpdateResult, ListEnsureResult } from "sharepoint/lists";
     export { extractOdataId, ODataParser, ODataParserBase, ODataDefaultParser, ODataRaw, ODataValue, ODataEntity, ODataEntityArray, TextFileParser, BlobFileParser, BufferFileParser, JSONFileParser } from "sharepoint/odata";
     export { Queryable, QueryableInstance, QueryableCollection, QueryableConstructor } from "sharepoint/queryable";
+    export { RelatedItem, RelatedItemManger } from "sharepoint/relateditems";
     export { RoleDefinitionUpdateResult, RoleDefinitionAddResult, RoleDefinitionBindings } from "sharepoint/roles";
     export { Search, SearchProperty, SearchPropertyValue, SearchQuery, SearchResult, SearchResults, Sort, SortDirection, ReorderingRule, ReorderingRuleMatchType, QueryPropertyValueType } from "sharepoint/search";
     export { SearchSuggest, SearchSuggestQuery, SearchSuggestResult, PersonalResultSuggestion } from "sharepoint/searchsuggest";
     export { Site } from "sharepoint/site";
     export { SiteGroupAddResult } from "sharepoint/sitegroups";
-    export { UserUpdateResult } from "sharepoint/siteusers";
+    export { UserUpdateResult, SiteUserProps } from "sharepoint/siteusers";
     export { SubscriptionAddResult, SubscriptionUpdateResult } from "sharepoint/subscriptions";
     export * from "sharepoint/types";
     export { UserCustomActionAddResult, UserCustomActionUpdateResult } from "sharepoint/usercustomactions";
     export { ViewAddResult, ViewUpdateResult } from "sharepoint/views";
-    export { Web, WebAddResult, WebUpdateResult, GetCatalogResult } from "sharepoint/webs";
+    export { Web, WebAddResult, WebUpdateResult, GetCatalogResult, WebEnsureUserResult } from "sharepoint/webs";
 }
 declare module "net/sprequestexecutorclient" {
     import { HttpClientImpl } from "net/httpclient";
