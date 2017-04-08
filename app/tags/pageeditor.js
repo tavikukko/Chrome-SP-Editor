@@ -1,21 +1,21 @@
 riot.tag("pageeditor", `
-        <div id="pageeditor">
-          <div id="webpart-zones-list">
-              <div class="zone" each="{ zone in zones }">
-                <h3>{ zone.id || "WEBPART ZONE" }</h3>
-                <div class="add-new-webpart" data-zone-id="{ zone.id }" onclick="{ addNewWebpart }">Add new</div>
-                <div each="{ wp in zone.webparts }"
-                       class="webpart { wp.id == selectedWp.id ? 'selected' : '' }"
-                       data-id="{ wp.id }"
-                       onclick="{ selectWebpart }">{ wp.title || "Webpart" }</div>
-              </div>
-          </div>
-          <div id="webpart-xml-container"></div>
-          <span if="{ showError }" id="webpart-save-error">{ showError }</span>
-          <span if="{ showSuccess }" id="webpart-save-success">Webpart saved.</span>
-          <a href="" id="webpart-save-button" class="btn btn-default" onclick="{ saveChanges }">Save changes</a>
-          <a href="" id="webpart-delete-button" class="btn btn-danger" onclick="{ deleteWebpart }">Delete webpart</a>
-        </div>`,
+          <div id="pageeditor">
+            <div id="webpart-zones-list">
+                <div class="zone" each="{ zone in zones }">
+                  <h3>{ zone.id || "WEBPART ZONE" }</h3>
+                  <div class="add-new-webpart" data-zone-id="{ zone.id }" onclick="{ addNewWebpart }">Add new</div>
+                  <div each="{ wp in zone.webparts }"
+                        class="webpart { wp.id == selectedWp.id ? 'selected' : '' }"
+                        data-id="{ wp.id }"
+                        onclick="{ selectWebpart }">{ wp.title || "Webpart" }</div>
+                </div>
+            </div>
+            <div id="webpart-xml-container"></div>
+              <span if="{ showError }" id="webpart-save-error">{ showError }</span>
+              <span if="{ showSuccess }" id="webpart-save-success">Webpart saved.</span>
+              <a href="" id="webpart-save-button" class="btn btn-default" onclick="{ saveChanges }">Save changes</a>
+              <a href="" id="webpart-delete-button" class="btn btn-danger" onclick="{ deleteWebpart }">Delete webpart</a>
+            </div>`,
   function (opts) {
 
     var webpartXmlEditor;
