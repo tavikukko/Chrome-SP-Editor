@@ -1,6 +1,6 @@
-var pnp = "var speditorpnp = '" + chrome.extension.getURL('pnp.js') + "';";
-var sj = "var sj = '" + chrome.extension.getURL('system.js') + "';";
-var alertify = "var alertify = '" + chrome.extension.getURL('alertify.js') + "';";
+var pnp = "var speditorpnp = '" + chrome.extension.getURL('app/js/pnp.js') + "';";
+var sj = "var sj = '" + chrome.extension.getURL('app/js/system.js') + "';";
+var alertify = "var alertify = '" + chrome.extension.getURL('app/js/alertify.js') + "';";
 
 // getCustomActions
 var getCustomActions = function getCustomActions() {

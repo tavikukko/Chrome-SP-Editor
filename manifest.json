@@ -4,22 +4,22 @@
 	"version": "1.7.2",
 	"description": "Create and update SharePoint Online/SP2013/SP2016 css/js files, inject files to web, manage web properties and list Webhook",
 	"icons": {
-		"16": "icon16.png",
-		"32": "icon32.png",
-		"48": "icon48.png",
-		"96": "icon96.png",
-		"128": "icon128.png"
+		"16": "icons/icon16.png",
+		"32": "icons/icon32.png",
+		"48": "icons/icon48.png",
+		"96": "icons/icon96.png",
+		"128": "icons/icon128.png"
 	},
 	"web_accessible_resources": [
-    "alertify.js", "pnp.js", "system.js"
+    "app/js/alertify.js", "app/js/pnp.js", "app/js/system.js"
   ],
 	"devtools_page": "devtools.html",
-	"background": { "scripts": [ "background.js"] },
+	"background": { "scripts": [ "app/background.js"] },
 	   "content_scripts": [
         {
 			"run_at": "document_end",
-			"css": ["alertify.css"],
-            "js": ["alertify.js", "content.js", "pnp.js", "system.js"],
+			"css": ["app/css/alertify.css"],
+            "js": ["app/js/alertify.js", "app/content.js", "app/js/pnp.js", "app/js/system.js"],
             "matches": ["<all_urls>"]
         }
     ],

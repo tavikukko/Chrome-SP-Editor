@@ -120,9 +120,9 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 			else script.apply(this, params);
 		}
 
-		var pnp = "var speditorpnp = '" + chrome.extension.getURL('pnp.js') + "';";
-		var alertify = "var alertify = '" + chrome.extension.getURL('alertify.js') + "';";
-		var sj = "var sj = '" + chrome.extension.getURL('system.js') + "';";
+		var pnp = "var speditorpnp = '" + chrome.extension.getURL('app/js/pnp.js') + "';";
+		var alertify = "var alertify = '" + chrome.extension.getURL('app/js/alertify.js') + "';";
+		var sj = "var sj = '" + chrome.extension.getURL('app/js/system.js') + "';";
 
 		var eventUrl = event.url.toLowerCase();
 
@@ -161,7 +161,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 	});
 });
 
-chrome.devtools.panels.create("SharePoint", "", "panel.html",
+chrome.devtools.panels.create("SharePoint", "", "app/panel.html",
 	function (panel) {
 		var port = chrome.runtime.connect();
 		var payload = { "type": "autosavechange", "content": false, "tabId": chrome.devtools.inspectedWindow.tabId };

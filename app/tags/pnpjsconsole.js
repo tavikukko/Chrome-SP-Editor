@@ -1,9 +1,5 @@
 riot.tag("pnpjsconsole", `
-    <div id="pnpjsconsole" >
-      <div id="monaco-container">
-        <div id="pnpjs-container" class="koko"></div>
-      </div>
-    </div>`,
+        <div id="pnpjsconsole"></div>`,
   function (opts) {
 
     this.on("mount", function () {
@@ -54,7 +50,7 @@ riot.tag("pnpjsconsole", `
 
         loadDeclaration().then(function () {
 
-          playground = monaco.editor.create(document.getElementById('pnpjs-container'), {
+          playground = monaco.editor.create(document.getElementById('pnpjsconsole'), {
             value: [
               'import pnp from "pnp";',
               '',
