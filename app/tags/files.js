@@ -1,5 +1,4 @@
 riot.tag("files", `
-        <div>
           <div id="page-content-wrapper">
             <h4>Files</h4>
             <p>Add files to rootsite Style library.
@@ -34,8 +33,7 @@ riot.tag("files", `
                   </div>
                 </div>
               </div>
-          </div>
-        </div>`,
+          </div>`,
   function (opts) {
 
     this.filescriptpath = "";

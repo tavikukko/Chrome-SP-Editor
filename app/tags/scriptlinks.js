@@ -1,5 +1,4 @@
 riot.tag("scriptlinks", `
-        <div id="scriptlinks">
           <div id="page-content-wrapper">
             <div>
               <h4>Scriptlinks</h4>
@@ -26,7 +25,7 @@ riot.tag("scriptlinks", `
                 </div>
             </div>
             <hr>
-            <div id="scriptlinks">
+            <div>
               <ul class="list-group">
                 <li class="list-group-item active">Current web scriptlinks</li>
                 <li class="list-group-item" each="{ link, i in web }">
@@ -44,8 +43,7 @@ riot.tag("scriptlinks", `
                 </li>
               </ul>
             </div>
-          </div>
-        </div>`,
+          </div>`,
   function (opts) {
 
     this.on("mount", function () {

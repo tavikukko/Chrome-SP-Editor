@@ -1,5 +1,4 @@
 riot.tag("webhooks", `
-         <div>
             <div id="page-content-wrapper">
               <div>
                 <h4>WebHooks</h4>
@@ -35,8 +34,7 @@ riot.tag("webhooks", `
                   </li>
                 </ul>
               </div>
-          </div>
-        </div>`,
+          </div>`,
   function (opts) {
 
     this.lists = [];

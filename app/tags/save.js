@@ -1,11 +1,9 @@
 riot.tag("save", `
-        <div id="save">
           <div id="page-content-wrapper">
             <h4>Save to SharePoint</h4>
             <p><label><input onclick="{ autosave }" type="checkbox" /> Update changes to SharePoint</label></p>
             <p><label><input onclick="{ autopublish }" type="checkbox" /> Publish a Major version on save</label></p>
-          </div>
-        </div>`,
+          </div>`,
   function (opts) {
 
     this.on("mount", function () {

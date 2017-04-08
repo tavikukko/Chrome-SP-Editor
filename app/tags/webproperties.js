@@ -1,5 +1,4 @@
 riot.tag("webproperties", `
-        <div>
           <div id="page-content-wrapper">
             <div>
               <h4>Web properties</h4>
@@ -41,8 +40,7 @@ riot.tag("webproperties", `
                 </div>
               </div>
             </div>
-          </div>
-        </div>`,
+          </div>`,
   function (opts) {
 
     this.indexedpropertykeys = null;
