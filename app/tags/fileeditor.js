@@ -49,6 +49,7 @@ riot.tag("fileeditor", `
           var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getFileContent;
           script += " exescript(getFileContent, '" + e.item.item.ServerRelativeUrl + "');";
           chrome.devtools.inspectedWindow.eval(script);
+          scheduleDimmer();
         }
         self.handler(e.item.item)
       }.bind(this);
@@ -136,6 +137,7 @@ riot.tag("fileeditor", `
               if (message.result.type.toLowerCase() == "xsl") language = "xml";
               monaco.editor.setModelLanguage(fileeditoreditor.getModel(), language);
               fileeditoreditor.setValue(message.result.content);
+              hideDimmer();
             }
             break;
         }
