@@ -2,10 +2,10 @@ riot.tag("fileeditor", `
           <ul class="fe-ul" each="{ item in items }">
             <li class="fe-li">
               <div class="treenode { item.selected ? ' selected' : '' }" onclick="{ clicked }" >
-                <span class="fe-icon { item.folder ? item.expanded ? 'fa fa-folder-open-o' : 'fa fa-folder-o' : 'fa fa-file-text-o' }"></span>
+                <span class="{ item.spin ? 'fe-icon fa fa-spinner fa-spin' : item.folder ? item.expanded ? 'fe-icon fa fa-folder-open-o' : 'fe-icon fa fa-folder-o' : 'fe-icon fa fa-file-text-o' }"></span>
                 <span>{ item.label }</span>
               </div> 
-              <i class="{ item.spin ? 'fa fa-spinner fa-spin' : '' }"></i>
+             <!-- <i class="{ item.spin ? 'fa fa-spinner fa-spin' : '' }"></i> -->
               <virtual if="{ item.go }">
                 <fileeditor source="{ item.ServerRelativeUrl }" handler="{ parent.handler }"></fileeditor>
               </virtual>
@@ -113,6 +113,8 @@ riot.tag("fileeditor", `
                 case "xml":
                 case "xaml":
                 case "svg":
+                case "webpart":
+                case "dwp":
                   language = "xml";
                   break;
                 case "json":
