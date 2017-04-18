@@ -17,7 +17,7 @@ riot.tag("fileeditor", `
       require(['vs/editor/editor.main'], function () {
         fileeditoreditor = monaco.editor.create(document.getElementById('file-editor-container'), {
           value: '',
-          language: 'xml',
+          //language: 'xml',
           lineNumbers: true,
           roundedSelection: true,
           scrollBeyondLastLine: false,
@@ -121,20 +121,6 @@ riot.tag("fileeditor", `
                 default: language = "plainText";
                   break;
               }
-
-              // console.log(message.result.type);
-              // if(message.result.type.toLowerCase() == "js") language = "javascript";
-              // if(message.result.type.toLowerCase() == "themedcss") language = "css";
-              // if(message.result.type.toLowerCase() == "preview") language = "css";
-              // if(message.result.type.toLowerCase() == "css") language = "css";
-              // if(message.result.type.toLowerCase() == "html") language = "html";
-              // if(message.result.type.toLowerCase() == "master") language = "html";
-              // if(message.result.type.toLowerCase() == "aspx") language = "html";
-              if (message.result.type.toLowerCase() == "xoml") language = "xml";
-              if (message.result.type.toLowerCase() == "rules") language = "xml";
-              if (message.result.type.toLowerCase() == "spfont") language = "xml";
-              if (message.result.type.toLowerCase() == "spcolor") language = "xml";
-              if (message.result.type.toLowerCase() == "xsl") language = "xml";
               monaco.editor.setModelLanguage(fileeditoreditor.getModel(), language);
               fileeditoreditor.setValue(message.result.content);
               hideDimmer();
