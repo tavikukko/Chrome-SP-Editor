@@ -1248,14 +1248,15 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
   };
 
   var webpartsFromDOM = selectAll(document, '.ms-webpart-zone')
-    .map(zone => ({ webparts: selectAll(zone, '.ms-webpartzone-cell')
-      .filter(cell => {
-        return cell.querySelector('[webpartid]') !== null
-      })
-      .map(cell => ({
-        id: cell.querySelector('[webpartid]').attributes['webpartid'].value,
-        title: (cell.querySelector('.ms-webpart-titleText > nobr > span:first-child') || {}).innerHTML,
-      }))
+    .map(zone => ({
+      webparts: selectAll(zone, '.ms-webpartzone-cell')
+        .filter(cell => {
+          return cell.querySelector('[webpartid]') !== null
+        })
+        .map(cell => ({
+          id: cell.querySelector('[webpartid]').attributes['webpartid'].value,
+          title: (cell.querySelector('.ms-webpart-titleText > nobr > span:first-child') || {}).innerHTML,
+        }))
     }));
 
   window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts', success: true, result: webpartsFromDOM, source: 'chrome-sp-editor' }), '*');
@@ -1409,6 +1410,82 @@ var deleteWebpart = function deleteWebpart() {
   });
 };
 
+var getFolders = function getFolders() {
+
+  var requestor = arguments[1];
+  // var subId = arguments[2];
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    if (requestor == "init") {
+      $pnp.sp.web.rootFolder.expand("Folders, Files").get().then(r => {
+        var joined = [];
+        r.Folders.results.forEach(function (folder) {
+          joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
+        });
+        r.Files.results.forEach(function (file) {
+          joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl });
+        });
+        window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
+      })
+        .catch(function (error) {
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        });
+    }
+    else {
+      $pnp.sp.web.getFolderByServerRelativeUrl(requestor).expand("Folders, Files").get().then(r => {
+        var joined = [];
+        r.Folders.results.forEach(function (folder) {
+          joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
+        });
+        r.Files.results.forEach(function (file) {
+          joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl });
+        });
+        window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
+      })
+        .catch(function (error) {
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        });
+    }
+  });
+};
+
+var getFileContent = function getFileContent() {
+
+  var fileUrl = arguments[1];
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).getText().then(r => {
+      window.postMessage(JSON.stringify({ function: "getFileContent", success: true, result: { content: r, type: fileUrl.substr(fileUrl.lastIndexOf('.') + 1) }, source: 'chrome-sp-editor' }), '*');
+    }).catch(function (error) {
+      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+    });
+
+  });
+};
 
 // helper functions
 function elem(elem) {
@@ -1434,10 +1511,11 @@ function hideDimmer() {
     elem('dimmer').style.display = 'none';
 }
 
-var allElements = ['save', 'scriptlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor'];
+var allElements = ['save', 'scriptlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer'];
+
 function swap(visibleElement) {
-  for (var i = 0; i < allElements.length; i++){
-    if(document.getElementsByTagName(allElements[i]))
+  for (var i = 0; i < allElements.length; i++) {
+    if (document.getElementsByTagName(allElements[i]))
       document.getElementsByTagName(allElements[i])[0].style.display = 'none';
   }
   document.getElementsByTagName(visibleElement)[0].style.display = 'block';

@@ -1,4 +1,52 @@
 
+.fe-icon {
+  color: darkgray;
+  width: 1.1em; 
+}
+.fa-file-o {
+  color: #eee;
+}
+.treenode {
+  border: 1px solid white; 
+  display: inline-block;
+}
+.treenode:hover {
+  border: 1px solid lightgray;
+}
+.selected { 
+  border: 1px solid cornflowerblue; 
+  background-color: aliceblue;
+}
+.fe-ul {
+  list-style: none; 
+  padding-left: 0.6em;
+  margin: 0.25em 0;
+}
+.fe-li {
+  cursor: pointer;
+  margin-top:0.3em;
+}
+fileeditorcontainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 250px;
+}
+.fileeditor {
+  float: left;
+  width: 22%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#file-editor-container {
+  width: 78%;
+  height: 100%;
+  border: 1px solid grey;
+  margin-left: 22%; 
+  overflow-y: hidden;
+}
 #pageeditor {
   position: fixed;
   top: 0;

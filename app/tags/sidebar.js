@@ -29,13 +29,14 @@ riot.tag("sidebar", `
                   <a href="#" onclick="{ btnPageEditor }">Page editor</a>
                 </li>
                 <li>
+                  <a href="#" onclick="{ btnFileEditor }">File editor</a>
+                </li>
+                <li>
                   <a href="#" onclick="{ btnAbout }">About</a>
                 </li>
             </ul>
         </div>`,
   function (opts) {
-    this.tagit = null;
-
     this.on("mount", function () {
       this.init();
     });
@@ -83,6 +84,17 @@ riot.tag("sidebar", `
     this.btnPageEditor = function () {
       swap("pageeditor");
       riot.mount("pageeditor");
+    }.bind(this);
+
+    this.btnFileEditor = function () {
+      swap("fileeditorcontainer");
+      riot.util.tags.unmountAll(fileeditorsubs);
+      fileeditorsubs = [];
+      if(fileeditormain) {
+        fileeditormain[0].unmount(true);
+        fileeditormain = [];
+      }
+      fileeditormain = riot.mount("fileeditor");
     }.bind(this);
 
     this.btnAbout = function () {

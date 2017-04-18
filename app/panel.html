@@ -6,7 +6,8 @@
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/simple-sidebar.css" rel="stylesheet">
- <link href="css/pageeditor.css" rel="stylesheet">
+  <link href="css/awesome.css" rel="stylesheet">
+  <link href="css/pageeditor.css" rel="stylesheet">
 </head>
 
 <body>
@@ -23,13 +24,18 @@
     <webhooks style="display: none;"></webhooks>
     <pnpjsconsole style="display: none;"></pnpjsconsole>
     <pageeditor style="display: none;"></pageeditor>
+    <fileeditorcontainer style="display: none;">
+      <fileeditor class="fileeditor"></fileeditor>
+      <div id="file-editor-container"></div>
+    </fileeditorcontainer>
+    <!-- <div id="editori"></div> -->
     <about style="display: none;"></about>
     <div id="dimmer" style="display: none;"></div>
   </div>
 
   <script src="js/jquery-1.11.0.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  
+
   <!-- Riot Custom Tags -->
   <script src="tags/sidebar.js"></script>
   <script src="tags/save.js"></script>
@@ -40,6 +46,7 @@
   <script src="tags/webhooks.js"></script>
   <script src="tags/pnpjsconsole.js"></script>
   <script src="tags/pageeditor.js"></script>
+  <script src="tags/fileeditor.js"></script>
   <script src="tags/about.js"></script>
 
   <!-- panel js -->
