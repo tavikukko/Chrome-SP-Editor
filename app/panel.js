@@ -13,6 +13,7 @@ var pnpjsconsole = null;
 var fileeditorsubs = [];
 var fileeditormain = null;
 var fileeditoreditor;
+var selectedFile = null;
 // this is called from multiple tabs, so it will be here
 function addscriptlink(scope, scriptsequence, scriptpath) {
 

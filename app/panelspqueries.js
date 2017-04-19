@@ -1487,6 +1487,63 @@ var getFileContent = function getFileContent() {
   });
 };
 
+var updateEditorFile = function updateEditorFile() {
+
+  var fileUrl = arguments[1];
+  var fileContent = unescape(arguments[2]);
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    // todo: add checkin type
+    // todo: figure out why files in Forms folder doent want to checkin, update ok
+
+    $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).get().then(r => {
+      if (r.CheckOutType == 2) {
+        $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkout().then(f => {
+          $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+            console.log(f);
+            $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", 1).then(f => {
+              window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
+            }).catch(function (error) {
+              alert("erroro 1");
+              console.log(error.data);
+            });
+          }).catch(function (error) {
+            alert("erroro 2");
+          });
+        }).catch(function (error) {
+          alert("erroro 3");
+        });
+      } else {
+        $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+          $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", 1).then(f => {
+            window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
+          }).catch(function (error) {
+            alert("erroro 4");
+            console.log(error.data);
+          });
+        }).catch(function (error) {
+          alert("erroro 5");
+        });
+      }
+    }).catch(function (error) {
+      alert("erroro 6");
+    });
+
+  });
+};
+
 // helper functions
 function elem(elem) {
   return document.getElementById(elem);

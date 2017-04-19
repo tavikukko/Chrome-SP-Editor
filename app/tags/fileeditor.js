@@ -13,6 +13,7 @@ riot.tag("fileeditor", `
           </ul>`,
   function (opts) {
 
+
     if (!fileeditoreditor) {
       require(['vs/editor/editor.main'], function () {
         fileeditoreditor = monaco.editor.create(document.getElementById('file-editor-container'), {
@@ -38,8 +39,19 @@ riot.tag("fileeditor", `
           lint: false,
           validate: false
         });
+
+        var fileeditoreditorBinding = fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
+
+          var fileContent = encodeURIComponent(fileeditoreditor.getValue()).replace(/'/g, "%27")
+          var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateEditorFile;
+          script += " exescript(updateEditorFile, '" + selectedFile + "', '" + fileContent + "');";
+          chrome.devtools.inspectedWindow.eval(script);
+          scheduleDimmer();
+        });
+
         window.addEventListener('resize', function () {
           fileeditoreditor.layout();
+
         });
       });
     }
@@ -57,6 +69,7 @@ riot.tag("fileeditor", `
           e.item.item.go = !e.item.item.go;
           e.item.item.spin = e.item.item.expanded;
         } else {
+          selectedFile = e.item.item.ServerRelativeUrl;
           var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getFileContent;
           script += " exescript(getFileContent, '" + e.item.item.ServerRelativeUrl + "');";
           chrome.devtools.inspectedWindow.eval(script);
@@ -139,6 +152,11 @@ riot.tag("fileeditor", `
               monaco.editor.setModelLanguage(fileeditoreditor.getModel(), language);
               fileeditoreditor.setValue(message.result.content);
               fileeditoreditor.setScrollTop(0);
+              hideDimmer();
+            }
+            break;
+            case "updateEditorFile":
+            if (message.success) {
               hideDimmer();
             }
             break;
