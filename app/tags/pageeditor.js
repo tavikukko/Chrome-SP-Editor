@@ -142,6 +142,8 @@ riot.tag("pageeditor", `
       }
       else {
         scheduleDimmer();
+        webpartXmlEditor.setValue("");
+        webpartXmlEditor.setScrollTop(0);
         var script = exescript + ' ' + loadWebpart;
         script += " exescript(loadWebpart, '" + webpart.id + "');";
         chrome.devtools.inspectedWindow.eval(script);

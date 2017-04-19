@@ -31,6 +31,7 @@ margin-bottom: 10px;
     width: 250px;
     left: 250px;
     /*width: 0;*/
+   /* border-right: 1px solid grey;*/
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
@@ -60,6 +61,7 @@ margin-bottom: 10px;
 }
 
 /* Sidebar Styles */
+
 
 .sidebar-nav {
     position: absolute;

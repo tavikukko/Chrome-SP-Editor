@@ -52,6 +52,8 @@ riot.tag("fileeditor", `
           var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getFileContent;
           script += " exescript(getFileContent, '" + e.item.item.ServerRelativeUrl + "');";
           chrome.devtools.inspectedWindow.eval(script);
+          fileeditoreditor.setValue("");
+          fileeditoreditor.setScrollTop(0);
           scheduleDimmer();
         }
         self.handler(e.item.item)
