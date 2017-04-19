@@ -2,12 +2,13 @@ riot.tag("pageeditor", `
           <div id="pageeditor">
             <div id="webpart-zones-list">
                 <div class="zone" each="{ zone in zones }">
-                  <h3>{ zone.id || "WEBPART ZONE" }</h3>
+                 <h3>{ zone.id || "WEBPART ZONE" }</h3>
                   <div class="add-new-webpart" data-zone-id="{ zone.id }" onclick="{ addNewWebpart }">Add new</div>
-                  <div each="{ wp in zone.webparts }"
-                        class="webpart { wp.id == selectedWp.id ? 'selected' : '' }"
+                   <div each="{ wp in zone.webparts }"
+                        class="webpart { selectedWp && wp.id == selectedWp.id ? 'selected' : '' }"
                         data-id="{ wp.id }"
-                        onclick="{ selectWebpart }">{ wp.title || "Webpart" }</div>
+                        onclick="{ selectWebpart }">{ wp.title || "Webpart" }
+                   </div>
                 </div>
             </div>
             <div id="webpart-xml-container"></div>
@@ -24,6 +25,7 @@ riot.tag("pageeditor", `
     this.on("mount", function () {
       this.showError = null;
       this.showSuccess = false;
+      this.selectedWp = null;
       this.init();
     });
 
@@ -92,11 +94,12 @@ riot.tag("pageeditor", `
     // progressive loading of zones and webparts
     this.displayZonesAndWebparts1 = message => {
       if (message.success) {
-        this.zones = message.result;
         this.webpartsById = {};
         message.result.forEach(z => z.webparts.forEach(wp => this.webpartsById[wp.id] = { zone: z, webpart: wp }));
-      }
+        this.zones = message.result;
+        }
     };
+
     this.displayZonesAndWebparts2 = message => {
       if (message.success) {
         for (var wp of message.result) {
