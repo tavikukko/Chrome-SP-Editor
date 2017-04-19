@@ -26,7 +26,10 @@ riot.tag("fileeditor", `
           fontSize: 16,
           renderIndentGuides: true
         });
-
+        monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+          noSemanticValidation: true,
+          noSyntaxValidation: true
+        });
         window.addEventListener('resize', function () {
           fileeditoreditor.layout();
         });
