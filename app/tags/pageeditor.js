@@ -152,6 +152,7 @@ riot.tag("pageeditor", `
         webpart.xml = message.result.xml;
         this.selectedWp = webpart;
         webpartXmlEditor.setValue(webpart.xml);
+        webpartXmlEditor.setScrollTop(0);
       }
     };
 

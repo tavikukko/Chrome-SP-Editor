@@ -128,6 +128,7 @@ riot.tag("fileeditor", `
               }
               monaco.editor.setModelLanguage(fileeditoreditor.getModel(), language);
               fileeditoreditor.setValue(message.result.content);
+              fileeditoreditor.setScrollTop(0);
               hideDimmer();
             }
             break;
