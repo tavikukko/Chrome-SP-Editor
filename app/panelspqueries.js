@@ -1490,7 +1490,7 @@ var getFileContent = function getFileContent() {
 var updateEditorFile = function updateEditorFile() {
 
   var fileUrl = arguments[1];
-  var fileContent = unescape(arguments[2]);
+  var fileContent = decodeURIComponent(arguments[2]);
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
