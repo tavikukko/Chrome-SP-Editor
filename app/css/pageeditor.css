@@ -9,17 +9,23 @@
   border: 1px solid black; 
   display: inline-block;
 }
-.treenode:hover {
- background-color: rgba(255,255,255,0.2);
- left: 0px;
+.treenode:before {
+  content: "";
+  display: inline-block;
+  position: absolute; 
+  left: 0;
+  height: 22px;
+  width: 200%;
+  left: 0;
 }
-.selected { 
- background-color: rgba(255,255,255,0.3);
-  left: 0px;
+.treenode.selected:before {
+  background: rgba(255,255,255,0.3);
 }
-.selected:hover { 
-  background-color: rgba(255,255,255,0.3);
-  left: 0px;
+.treenode:hover:before {
+  background: rgba(255,255,255,0.2);
+}
+.treenode.selected > span {
+    position: relative;
 }
 .fe-ul {
   list-style: none; 
@@ -39,6 +45,7 @@ fileeditorcontainer {
   border-left: 1px solid grey;
 }
 .fileeditor {
+  position: relative;
   float: left;
   width: 22%;
   height: 100%;
