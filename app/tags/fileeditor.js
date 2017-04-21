@@ -2,7 +2,7 @@ riot.tag("fileeditor", `
           <ul class="fe-ul" each="{ item in items }">
             <li class="fe-li">
               <div class="treenode { item.selected ? ' selected' : '' }" onclick="{ clicked }" >
-                <span class="{ item.spin ? 'fe-icon fa fa-spinner fa-spin' : item.folder ? item.expanded ? 'fe-icon fa fa-folder-open-o' : 'fe-icon fa fa-folder-o' : 'fe-icon fa fa-file-text-o' }"></span>
+                <span class="{ item.spin ? 'fe-icon fa fa-spinner fa-spin' : item.folder ? item.expanded ? 'fe-icon fa fa-folder-open-o' : 'fe-icon fa fa-folder-o' : item.CustomizedPageStatus == 1 ? 'fe-icon fa fa-file-text-o ghosted' : item.CustomizedPageStatus == 2 ? 'fe-icon fa fa-file-text-o unghosted' : 'fe-icon fa fa-file-text-o' }"></span>
                 <span>{ item.label }</span>
               </div> 
              <!-- <i class="{ item.spin ? 'fa fa-spinner fa-spin' : '' }"></i> -->
@@ -27,12 +27,12 @@ riot.tag("fileeditor", `
           fontSize: 16,
           renderIndentGuides: true
         });
-        
+
         monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
           noSemanticValidation: true,
           noSyntaxValidation: true
         });
-        
+
         monaco.languages.css.cssDefaults.setDiagnosticsOptions({
           lint: false,
           validate: false
@@ -66,6 +66,7 @@ riot.tag("fileeditor", `
         if (e.item.item.folder) {
           e.item.item.go = !e.item.item.go;
           e.item.item.spin = e.item.item.expanded;
+          self.handler(e.item.item)
         } else {
           selectedFile = e.item.item.ServerRelativeUrl;
           var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getFileContent;
@@ -75,7 +76,7 @@ riot.tag("fileeditor", `
           fileeditoreditor.setScrollTop(0);
           scheduleDimmer();
         }
-        self.handler(e.item.item)
+        
       }.bind(this);
 
       this.handler = opts.handler || function (node) {
@@ -153,10 +154,8 @@ riot.tag("fileeditor", `
               hideDimmer();
             }
             break;
-            case "updateEditorFile":
-            if (message.success) {
+          case "updateEditorFile":
               hideDimmer();
-            }
             break;
         }
 

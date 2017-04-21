@@ -1435,7 +1435,7 @@ var getFolders = function getFolders() {
           joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
         });
         r.Files.results.forEach(function (file) {
-          joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl });
+          joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
         });
         window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
       })
@@ -1450,7 +1450,7 @@ var getFolders = function getFolders() {
           joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
         });
         r.Files.results.forEach(function (file) {
-          joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl });
+          joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
         });
         window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
       })
@@ -1509,12 +1509,13 @@ var updateEditorFile = function updateEditorFile() {
     // todo: figure out why files in Forms folder doent want to checkin, update ok
 
     $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).get().then(r => {
-      if(r.CustomizedPageStatus > 0 ){
-          $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
-             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
-          }).catch(function (error) {
-            // error message here
-          });
+      if (r.CustomizedPageStatus > 0) {
+        $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+          window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
+        }).catch(function (error) {
+          alert(error.data.responseBody.error.message.value);
+          window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
+        });
       }
       else if (r.CheckOutType == 2) {
         $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkout().then(f => {
@@ -1522,27 +1523,33 @@ var updateEditorFile = function updateEditorFile() {
             $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", 1).then(f => {
               window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }).catch(function (error) {
-              // error message here
+              alert(error.data.responseBody.error.message.value);
+              window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
             });
           }).catch(function (error) {
-            // error message here
+            alert(error.data.responseBody.error.message.value);
+            window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
           });
         }).catch(function (error) {
-          // error message here
+          alert(error.data.responseBody.error.message.value);
+          window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
         });
       } else {
         $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
           $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", 1).then(f => {
             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
           }).catch(function (error) {
-            // error message here
+            alert(error.data.responseBody.error.message.value);
+            window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
           });
         }).catch(function (error) {
-          // error message here
+          alert(error.data.responseBody.error.message.value);
+          window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
         });
       }
     }).catch(function (error) {
-      // error message here
+      alert(error.data.responseBody.error.message.value);
+      window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
     });
   });
 };

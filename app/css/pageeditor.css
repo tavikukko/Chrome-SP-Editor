@@ -5,6 +5,12 @@
 .fa-file-o {
   color: #eee;
 }
+.ghosted {
+  color: red;
+}
+.unghosted {
+  color: yellow;
+}
 .treenode {
   border: 1px solid black; 
   display: inline-block;
