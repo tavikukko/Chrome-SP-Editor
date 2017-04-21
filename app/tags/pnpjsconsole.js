@@ -30,7 +30,7 @@ riot.tag("pnpjsconsole", `
         };
 
         // validation settings
-        monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+        monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
           noSemanticValidation: false,
           noSyntaxValidation: false
         });

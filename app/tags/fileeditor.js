@@ -27,14 +27,12 @@ riot.tag("fileeditor", `
           fontSize: 16,
           renderIndentGuides: true
         });
-        monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-          noSemanticValidation: true,
-          noSyntaxValidation: true
-        });
+        
         monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
           noSemanticValidation: true,
           noSyntaxValidation: true
         });
+        
         monaco.languages.css.cssDefaults.setDiagnosticsOptions({
           lint: false,
           validate: false
