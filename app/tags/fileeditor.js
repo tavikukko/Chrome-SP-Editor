@@ -22,7 +22,7 @@ riot.tag("fileeditor", `
           lineNumbers: true,
           roundedSelection: true,
           scrollBeyondLastLine: false,
-          readOnly: false,
+          readOnly: true,
           theme: "vs-dark",
           fontSize: 16,
           renderIndentGuides: true
@@ -38,6 +38,8 @@ riot.tag("fileeditor", `
           validate: false
         });
 
+        /* this needs more testing
+        /* 
         var fileeditoreditorBinding = fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
 
           var fileContent = encodeURIComponent(fileeditoreditor.getValue()).replace(/'/g, "%27")
@@ -45,7 +47,7 @@ riot.tag("fileeditor", `
           script += " exescript(updateEditorFile, '" + selectedFile + "', '" + fileContent + "');";
           chrome.devtools.inspectedWindow.eval(script);
           scheduleDimmer();
-        });
+        }); */
 
         window.addEventListener('resize', function () {
           fileeditoreditor.layout();
