@@ -1509,38 +1509,41 @@ var updateEditorFile = function updateEditorFile() {
     // todo: figure out why files in Forms folder doent want to checkin, update ok
 
     $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).get().then(r => {
-      if (r.CheckOutType == 2) {
+      if(r.CustomizedPageStatus > 0 ){
+          $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
+          }).catch(function (error) {
+            // error message here
+          });
+      }
+      else if (r.CheckOutType == 2) {
         $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkout().then(f => {
           $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
-            console.log(f);
             $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", 1).then(f => {
               window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }).catch(function (error) {
-              alert("erroro 1");
-              console.log(error.data);
+              // error message here
             });
           }).catch(function (error) {
-            alert("erroro 2");
+            // error message here
           });
         }).catch(function (error) {
-          alert("erroro 3");
+          // error message here
         });
       } else {
         $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
           $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", 1).then(f => {
             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
           }).catch(function (error) {
-            alert("erroro 4");
-            console.log(error.data);
+            // error message here
           });
         }).catch(function (error) {
-          alert("erroro 5");
+          // error message here
         });
       }
     }).catch(function (error) {
-      alert("erroro 6");
+      // error message here
     });
-
   });
 };
 
