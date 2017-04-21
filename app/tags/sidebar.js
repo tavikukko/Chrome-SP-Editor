@@ -77,7 +77,7 @@ riot.tag("sidebar", `
 
     this.btnPnPJSConsole = function () {
       swap("pnpjsconsole");
-      if (pnpjsconsole) return;
+      if (pnpjsconsole) {playground.layout();return;}
       pnpjsconsole = riot.mount("pnpjsconsole");
     }.bind(this);
 
@@ -94,6 +94,7 @@ riot.tag("sidebar", `
         fileeditormain[0].unmount(true);
         fileeditormain = [];
       }
+      if(fileeditoreditor) fileeditoreditor.layout();
       fileeditormain = riot.mount("fileeditor");
     }.bind(this);
 
