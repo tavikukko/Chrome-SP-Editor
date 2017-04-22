@@ -22,7 +22,7 @@ riot.tag("fileeditor", `
           lineNumbers: true,
           roundedSelection: true,
           scrollBeyondLastLine: false,
-          readOnly: true,
+          readOnly: false,
           theme: "vs-dark",
           fontSize: 16,
           renderIndentGuides: true
@@ -38,22 +38,26 @@ riot.tag("fileeditor", `
           validate: false
         });
 
-        /* this needs more testing
-        /* 
-        var fileeditoreditorBinding = fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
+        /* this needs more testing */
 
-          var fileContent = encodeURIComponent(fileeditoreditor.getValue()).replace(/'/g, "%27")
-          var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateEditorFile;
-          script += " exescript(updateEditorFile, '" + selectedFile + "', '" + fileContent + "');";
-          chrome.devtools.inspectedWindow.eval(script);
-          scheduleDimmer();
-        }); */
+        var fileeditoreditorBinding = fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
+          if (bgautosave) {
+            port.onMessage.addListener(this.fileeditorlistener);
+
+            var fileContent = encodeURIComponent(fileeditoreditor.getValue()).replace(/'/g, "%27")
+            var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateEditorFile;
+            script += " exescript(updateEditorFile, '" + selectedFile + "', '" + fileContent + "', '" + bgautopublish + "');";
+            chrome.devtools.inspectedWindow.eval(script);
+            scheduleDimmer();
+          }
+          else alert("Please check 'Update changes to SharePoint' to save the changes")
+        }.bind(this));
 
         window.addEventListener('resize', function () {
           fileeditoreditor.layout();
 
         });
-      });
+      }.bind(this));
     }
 
     this.on("mount", function () {
@@ -68,9 +72,9 @@ riot.tag("fileeditor", `
         if (e.item.item.folder) {
           e.item.item.go = !e.item.item.go;
           e.item.item.spin = e.item.item.expanded;
-          self.handler(e.item.item)
         } else {
           selectedFile = e.item.item.ServerRelativeUrl;
+          port.onMessage.addListener(this.fileeditorlistener);
           var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getFileContent;
           script += " exescript(getFileContent, '" + e.item.item.ServerRelativeUrl + "');";
           chrome.devtools.inspectedWindow.eval(script);
@@ -78,7 +82,7 @@ riot.tag("fileeditor", `
           fileeditoreditor.setScrollTop(0);
           scheduleDimmer();
         }
-        
+        self.handler(e.item.item)
       }.bind(this);
 
       this.handler = opts.handler || function (node) {
@@ -89,18 +93,18 @@ riot.tag("fileeditor", `
         self.update();
       }
 
-      // execute cript in the main browser context
+      // execute script in the main browser context
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getFolders;
       script += " exescript(getFolders, '" + opts.source + "');";
       chrome.devtools.inspectedWindow.eval(script);
 
       // listen response from the main browser
-      port.onMessage.addListener(function (message) {
+
+      this.fileeditorlistener = function (message) {
         if (typeof message !== 'object' || message === null ||
           message === undefined || message.source === undefined) {
           return;
         }
-
         // check that message was for this view
         switch (message.function) {
           case this.opts.source:
@@ -114,6 +118,7 @@ riot.tag("fileeditor", `
                 return ((b.folder || false) - (a.folder || false) || a.label.localeCompare(b.label));
               });
               this.update();
+              port.onMessage.removeListener(fileeditorlisteners[this.opts.source]);
             }
             break;
 
@@ -154,13 +159,19 @@ riot.tag("fileeditor", `
               fileeditoreditor.setValue(message.result.content);
               fileeditoreditor.setScrollTop(0);
               hideDimmer();
+              port.onMessage.removeListener(fileeditorlisteners[this.opts.source]);
             }
             break;
           case "updateEditorFile":
-              hideDimmer();
+            hideDimmer();
+            port.onMessage.removeListener(fileeditorlisteners[this.opts.source]);
             break;
         }
 
-      }.bind(this));
+      }.bind(this);
+
+      fileeditorlisteners[this.opts.source] = this.fileeditorlistener;
+      port.onMessage.addListener(this.fileeditorlistener);
+
     }.bind(this));
   });

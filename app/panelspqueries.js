@@ -1491,7 +1491,7 @@ var updateEditorFile = function updateEditorFile() {
 
   var fileUrl = arguments[1];
   var fileContent = decodeURIComponent(arguments[2]);
-
+  var fileCheckinType = (arguments[3] == 'true') ? 1 : 0;
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
@@ -1520,7 +1520,7 @@ var updateEditorFile = function updateEditorFile() {
       else if (r.CheckOutType == 2) {
         $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkout().then(f => {
           $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
-            $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", 1).then(f => {
+            $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
               window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }).catch(function (error) {
               alert(error.data.responseBody.error.message.value);
@@ -1536,7 +1536,7 @@ var updateEditorFile = function updateEditorFile() {
         });
       } else {
         $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
-          $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", 1).then(f => {
+          $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
           }).catch(function (error) {
             alert(error.data.responseBody.error.message.value);

@@ -8,7 +8,6 @@ riot.tag("pnpjsconsole", `
 
     this.init = function () {
 
-     // require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
       require(['vs/editor/editor.main'], function () {
 
         var loadDeclaration = function loadDeclaration() {

@@ -47,7 +47,8 @@ riot.tag("sidebar", `
 
     this.btnSave = function () {
       swap("save");
-      riot.mount("save");
+      if (savetab) return;
+      savetab = riot.mount("save");
     }.bind(this);
 
     this.btnScript = function () {
@@ -77,7 +78,7 @@ riot.tag("sidebar", `
 
     this.btnPnPJSConsole = function () {
       swap("pnpjsconsole");
-      if (pnpjsconsole) {playground.layout();return;}
+      if (pnpjsconsole) { playground.layout(); return; }
       pnpjsconsole = riot.mount("pnpjsconsole");
     }.bind(this);
 
@@ -90,11 +91,11 @@ riot.tag("sidebar", `
       swap("fileeditorcontainer");
       riot.util.tags.unmountAll(fileeditorsubs);
       fileeditorsubs = [];
-      if(fileeditormain) {
+      if (fileeditormain) {
         fileeditormain[0].unmount(true);
         fileeditormain = [];
       }
-      if(fileeditoreditor) fileeditoreditor.layout();
+      if (fileeditoreditor) fileeditoreditor.layout();
       fileeditormain = riot.mount("fileeditor");
     }.bind(this);
 

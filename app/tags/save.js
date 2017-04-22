@@ -15,14 +15,14 @@ riot.tag("save", `
     }.bind(this);
 
     this.autosave = function (e) {
-
+      bgautosave = e.target.checked;
       var payload = { "type": "autosavechange", "content": e.target.checked, "tabId": chrome.devtools.inspectedWindow.tabId };
       port.postMessage(payload);
 
     }.bind(this);
 
     this.autopublish = function (e) {
-
+      bgautopublish = e.target.checked;
       var payload = { "type": "autopublishchange", "content": e.target.checked, "tabId": chrome.devtools.inspectedWindow.tabId };
       port.postMessage(payload);
 

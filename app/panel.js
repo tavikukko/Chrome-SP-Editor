@@ -7,14 +7,19 @@ riot.mount("sidebar"); // mount the left menu
 swap('save'); // show first tab
 riot.mount("save"); // mount the first tab
 
+var bgautosave = false;
+var bgautopuhlish = false;
+
 require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
 
 var pnpjsconsole = null;
+var savetab = null;
 var fileeditorsubs = [];
 var fileeditormain = null;
 var fileeditoreditor;
 var selectedFile = null;
 var pageeditorlisteners = [];
+var fileeditorlisteners = {};
 
 // this is called from multiple tabs, so it will be here
 function addscriptlink(scope, scriptsequence, scriptpath) {
