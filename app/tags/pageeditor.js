@@ -35,7 +35,7 @@ riot.tag("pageeditor", `
       script += " exescript(getZonesAndWebparts);";
       chrome.devtools.inspectedWindow.eval(script);
 
-      port.onMessage.addListener(message => {
+      var pageeditorlistener = function (message) {
 
         if (typeof message !== 'object' || message === null ||
           message === undefined || message.source === undefined) {
@@ -66,10 +66,17 @@ riot.tag("pageeditor", `
         }
 
         this.update();
-      });
+      }.bind(this);
+
+      for (i = 0; i < pageeditorlisteners.length; i++) {
+        port.onMessage.removeListener(pageeditorlisteners[i]);
+      }
+
+      pageeditorlisteners = [];
+      pageeditorlisteners.push(pageeditorlistener)
+      port.onMessage.addListener(pageeditorlistener);
 
       if (!webpartXmlEditor) {
-        require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
         require(['vs/editor/editor.main'], function () {
           webpartXmlEditor = monaco.editor.create(document.getElementById('webpart-xml-container'), {
             value: '',
@@ -97,7 +104,7 @@ riot.tag("pageeditor", `
         this.webpartsById = {};
         message.result.forEach(z => z.webparts.forEach(wp => this.webpartsById[wp.id] = { zone: z, webpart: wp }));
         this.zones = message.result;
-        }
+      }
     };
 
     this.displayZonesAndWebparts2 = message => {

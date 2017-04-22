@@ -14,6 +14,8 @@ var fileeditorsubs = [];
 var fileeditormain = null;
 var fileeditoreditor;
 var selectedFile = null;
+var pageeditorlisteners = [];
+
 // this is called from multiple tabs, so it will be here
 function addscriptlink(scope, scriptsequence, scriptpath) {
 
