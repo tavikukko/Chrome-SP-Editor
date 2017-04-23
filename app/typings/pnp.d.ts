@@ -375,7 +375,7 @@ declare module "utils/exceptions" {
         constructor(msg: string);
     }
 }
-declare module "sharepoint/queryablerequest" {
+declare module "sharepoint/pipeline" {
     import { ODataParser, ODataBatch } from "sharepoint/odata";
     import { ICachingOptions } from "sharepoint/caching";
     import { FetchOptions } from "net/httpclient";
@@ -386,22 +386,53 @@ declare module "sharepoint/queryablerequest" {
         batch: ODataBatch;
         batchDependency: () => void;
         cachingOptions: ICachingOptions;
+        hasResult?: boolean;
         isBatched: boolean;
         isCached: boolean;
-        requestAbsoluteUrl: string;
-        verb: string;
         options: FetchOptions;
         parser: ODataParser<T>;
-        hasResult?: boolean;
-        result?: T;
+        pipeline?: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>;
+        requestAbsoluteUrl: string;
         requestId: string;
+        result?: T;
+        verb: string;
     }
     /**
-     * Processes a given context through the request pipeline
+     * Sets the result on the context
+     */
+    export function setResult<T>(context: RequestContext<T>, value: any): Promise<RequestContext<T>>;
+    /**
+     * Executes the current request context's pipeline
      *
-     * @param context The request context we are processing
+     * @param context Current context
      */
     export function pipe<T>(context: RequestContext<T>): Promise<T>;
+    /**
+     * decorator factory applied to methods in the pipeline to control behavior
+     */
+    export function requestPipelineMethod(alwaysRun?: boolean): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void;
+    /**
+     * Contains the methods used within the request pipeline
+     */
+    export class PipelineMethods {
+        /**
+         * Logs the start of the request
+         */
+        static logStart<T>(context: RequestContext<T>): Promise<RequestContext<T>>;
+        /**
+         * Handles caching of the request
+         */
+        static caching<T>(context: RequestContext<T>): Promise<RequestContext<T>>;
+        /**
+         * Sends the request
+         */
+        static send<T>(context: RequestContext<T>): Promise<RequestContext<T>>;
+        /**
+         * Logs the end of the request
+         */
+        static logEnd<T>(context: RequestContext<T>): Promise<RequestContext<T>>;
+        static readonly default: (<T>(context: RequestContext<T>) => Promise<RequestContext<T>>)[];
+    }
 }
 declare module "sharepoint/queryable" {
     import { Dictionary } from "collections/collections";
@@ -445,7 +476,7 @@ declare module "sharepoint/queryable" {
          *
          * @param pathPart The string to concatonate to the url
          */
-        concat(pathPart: string): void;
+        concat(pathPart: string): this;
         /**
          * Appends the given string and normalizes "/" chars
          *
@@ -543,7 +574,15 @@ declare module "sharepoint/queryable" {
         protected postAs<T>(postOptions?: FetchOptions, parser?: ODataParser<T>): Promise<T>;
         protected patch(patchOptions?: FetchOptions, parser?: ODataParser<any>): Promise<any>;
         protected delete(deleteOptions?: FetchOptions, parser?: ODataParser<any>): Promise<any>;
-        private toRequestContext<T>(verb, options, parser);
+        /**
+         * Converts the current instance to a request context
+         *
+         * @param verb The request verb
+         * @param options The set of supplied request options
+         * @param parser The supplied ODataParser instance
+         * @param pipeline Optional request processing pipeline
+         */
+        private toRequestContext<T>(verb, options, parser, pipeline?);
     }
     /**
      * Represents a REST collection which can be filtered, paged, and selected
@@ -637,6 +676,7 @@ declare module "sharepoint/odata" {
         private _dependencies;
         private _requests;
         constructor(baseUrl: string, _batchId?: string);
+        readonly batchId: string;
         /**
          * Adds a request to a batch (not designed for public use)
          *
@@ -656,7 +696,7 @@ declare module "sharepoint/odata" {
          *
          * @returns A promise which will be resolved once all of the batch's child promises have resolved
          */
-        execute(): Promise<void>;
+        execute(): Promise<any>;
         private executeImpl();
         /**
          * Parses the response from a batch request into an array of Response instances
@@ -1223,10 +1263,13 @@ declare module "sharepoint/search" {
         Value: SearchPropertyValue;
     }
     /**
-     * Defines one search property value
+     * Defines one search property value. Set only one of StrlVal/BoolVal/IntVal/StrArray.
      */
     export interface SearchPropertyValue {
-        StrVal: string;
+        StrVal?: string;
+        BoolVal?: boolean;
+        Intval?: number;
+        StrArray?: string[];
         QueryPropertyValueTypeIndex: QueryPropertyValueType;
     }
     /**
@@ -4003,7 +4046,7 @@ declare module "sharepoint/views" {
          * @param personalView True if this is a personal view, otherwise false, default = false
          * @param additionalSettings Will be passed as part of the view creation body
          */
-        add(title: string, personalView?: boolean, additionalSettings?: TypedHash<string | number | boolean>): Promise<ViewAddResult>;
+        add(title: string, personalView?: boolean, additionalSettings?: TypedHash<any>): Promise<ViewAddResult>;
     }
     /**
      * Describes a single View instance
@@ -4016,7 +4059,7 @@ declare module "sharepoint/views" {
          *
          * @param properties A plain object hash of values to update for the view
          */
-        update(properties: TypedHash<string | number | boolean>): Promise<ViewUpdateResult>;
+        update(properties: TypedHash<any>): Promise<ViewUpdateResult>;
         /**
          * Delete this view
          *
@@ -4772,6 +4815,9 @@ declare module "sharepoint/webs" {
          */
         add(title: string, url: string, description?: string, template?: string, language?: number, inheritPermissions?: boolean, additionalSettings?: TypedHash<string | number | boolean>): Promise<WebAddResult>;
     }
+    export class WebInfos extends QueryableCollection {
+        constructor(baseUrl: string | Queryable, webPath?: string);
+    }
     /**
      * Describes a web
      *
@@ -4787,6 +4833,7 @@ declare module "sharepoint/webs" {
         static fromUrl(url: string, path?: string): Web;
         constructor(baseUrl: string | Queryable, path?: string);
         readonly webs: Webs;
+        readonly webinfos: WebInfos;
         /**
          * Get the content types available in this web
          *

@@ -1,5 +1,5 @@
 /**
- * sp-pnp-js v2.0.3 - A JavaScript library for SharePoint development.
+ * sp-pnp-js v2.0.4 - A JavaScript library for SharePoint development.
  * MIT (https://github.com/SharePoint/PnP-JS-Core/blob/master/LICENSE)
  * Copyright (c) 2017 Microsoft
  * docs: http://officedev.github.io/PnP-JS-Core
@@ -412,8 +412,8 @@ var collections_1 = __webpack_require__(6);
 var odata_1 = __webpack_require__(2);
 var pnplibconfig_1 = __webpack_require__(4);
 var exceptions_1 = __webpack_require__(3);
-var queryablerequest_1 = __webpack_require__(45);
 var logging_1 = __webpack_require__(5);
+var pipeline_1 = __webpack_require__(45);
 /**
  * Queryable Base Class
  *
@@ -468,6 +468,7 @@ var Queryable = (function () {
      */
     Queryable.prototype.concat = function (pathPart) {
         this._url += pathPart;
+        return this;
     };
     /**
      * Appends the given string and normalizes "/" chars
@@ -638,36 +639,45 @@ var Queryable = (function () {
     Queryable.prototype.get = function (parser, getOptions) {
         if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
         if (getOptions === void 0) { getOptions = {}; }
-        return this.toRequestContext("GET", getOptions, parser).then(function (context) { return queryablerequest_1.pipe(context); });
+        return this.toRequestContext("GET", getOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
     };
     Queryable.prototype.getAs = function (parser, getOptions) {
         if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
         if (getOptions === void 0) { getOptions = {}; }
-        return this.toRequestContext("GET", getOptions, parser).then(function (context) { return queryablerequest_1.pipe(context); });
+        return this.toRequestContext("GET", getOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
     };
     Queryable.prototype.post = function (postOptions, parser) {
         if (postOptions === void 0) { postOptions = {}; }
         if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
-        return this.toRequestContext("POST", postOptions, parser).then(function (context) { return queryablerequest_1.pipe(context); });
+        return this.toRequestContext("POST", postOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
     };
     Queryable.prototype.postAs = function (postOptions, parser) {
         if (postOptions === void 0) { postOptions = {}; }
         if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
-        return this.toRequestContext("POST", postOptions, parser).then(function (context) { return queryablerequest_1.pipe(context); });
+        return this.toRequestContext("POST", postOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
     };
     Queryable.prototype.patch = function (patchOptions, parser) {
         if (patchOptions === void 0) { patchOptions = {}; }
         if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
-        return this.toRequestContext("PATCH", patchOptions, parser).then(function (context) { return queryablerequest_1.pipe(context); });
+        return this.toRequestContext("PATCH", patchOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
     };
     Queryable.prototype.delete = function (deleteOptions, parser) {
         if (deleteOptions === void 0) { deleteOptions = {}; }
         if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
-        return this.toRequestContext("DELETE", deleteOptions, parser).then(function (context) { return queryablerequest_1.pipe(context); });
+        return this.toRequestContext("DELETE", deleteOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
     };
-    Queryable.prototype.toRequestContext = function (verb, options, parser) {
+    /**
+     * Converts the current instance to a request context
+     *
+     * @param verb The request verb
+     * @param options The set of supplied request options
+     * @param parser The supplied ODataParser instance
+     * @param pipeline Optional request processing pipeline
+     */
+    Queryable.prototype.toRequestContext = function (verb, options, parser, pipeline) {
         var _this = this;
         if (options === void 0) { options = {}; }
+        if (pipeline === void 0) { pipeline = pipeline_1.PipelineMethods.default; }
         var dependencyDispose = this.hasBatch ? this.addBatchDependency() : function () { return; };
         return util_1.Util.toAbsoluteUrl(this.toUrlAndQuery()).then(function (url) {
             // build our request context
@@ -679,6 +689,7 @@ var Queryable = (function () {
                 isCached: _this._useCaching,
                 options: options,
                 parser: parser,
+                pipeline: pipeline,
                 requestAbsoluteUrl: url,
                 requestId: util_1.Util.getGUID(),
                 verb: verb,
@@ -1021,6 +1032,13 @@ var ODataBatch = (function () {
         this._requests = [];
         this._dependencies = [];
     }
+    Object.defineProperty(ODataBatch.prototype, "batchId", {
+        get: function () {
+            return this._batchId;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Adds a request to a batch (not designed for public use)
      *
@@ -1070,7 +1088,7 @@ var ODataBatch = (function () {
     };
     ODataBatch.prototype.executeImpl = function () {
         var _this = this;
-        logging_1.Logger.write("Executing batch with " + this._requests.length + " requests.", logging_1.LogLevel.Info);
+        logging_1.Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this._requests.length + " requests.", logging_1.LogLevel.Info);
         // if we don't have any requests, don't bother sending anything
         // this could be due to caching further upstream, or just an empty batch
         if (this._requests.length < 1) {
@@ -1087,7 +1105,8 @@ var ODataBatch = (function () {
             // build all the requests, send them, pipe results in order to parsers
             var batchBody = [];
             var currentChangeSetId = "";
-            _this._requests.map(function (reqInfo) {
+            for (var i = 0; i < _this._requests.length; i++) {
+                var reqInfo = _this._requests[i];
                 if (reqInfo.method === "GET") {
                     if (currentChangeSetId.length > 0) {
                         // end an existing change set
@@ -1113,7 +1132,7 @@ var ODataBatch = (function () {
                 };
                 // this is the url of the individual request within the batch
                 var url = util_1.Util.isUrlAbsolute(reqInfo.url) ? reqInfo.url : util_1.Util.combinePaths(absoluteRequestUrl, reqInfo.url);
-                logging_1.Logger.write("Adding request " + reqInfo.method + " " + url + " to batch.", logging_1.LogLevel.Verbose);
+                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", logging_1.LogLevel.Verbose);
                 if (reqInfo.method !== "GET") {
                     var method = reqInfo.method;
                     if (reqInfo.hasOwnProperty("options") && reqInfo.options.hasOwnProperty("headers") && typeof reqInfo.options.headers["X-HTTP-Method"] !== "undefined") {
@@ -1141,7 +1160,7 @@ var ODataBatch = (function () {
                 if (reqInfo.options.body) {
                     batchBody.push(reqInfo.options.body + "\n\n");
                 }
-            });
+            }
             if (currentChangeSetId.length > 0) {
                 // Close the changeset
                 batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
@@ -1155,7 +1174,7 @@ var ODataBatch = (function () {
                 "body": batchBody.join(""),
                 "headers": batchHeaders,
             };
-            logging_1.Logger.write("Sending batch request.", logging_1.LogLevel.Info);
+            logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", logging_1.LogLevel.Info);
             return client.post(util_1.Util.combinePaths(absoluteRequestUrl, "/_api/$batch"), batchOptions)
                 .then(function (r) { return r.text(); })
                 .then(_this._parseResponse)
@@ -1163,10 +1182,10 @@ var ODataBatch = (function () {
                 if (responses.length !== _this._requests.length) {
                     throw new exceptions_1.BatchParseException("Could not properly parse responses to match requests in batch.");
                 }
-                logging_1.Logger.write("Resolving batched requests.", logging_1.LogLevel.Info);
+                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", logging_1.LogLevel.Info);
                 return responses.reduce(function (chain, response, index) {
                     var request = _this._requests[index];
-                    logging_1.Logger.write("Resolving request " + request.method + " " + request.url + ".", logging_1.LogLevel.Verbose);
+                    logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched request " + request.method + " " + request.url + ".", logging_1.LogLevel.Verbose);
                     return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
                 }, Promise.resolve());
             });
@@ -1500,7 +1519,7 @@ var RuntimeConfigImpl = (function () {
         if (config.hasOwnProperty("baseUrl")) {
             this._baseUrl = config.baseUrl;
         }
-        if (config.hasOwnProperty("spFXContext")) {
+        if (config.hasOwnProperty("spfxContext")) {
             this._spfxContext = config.spfxContext;
         }
     };
@@ -1987,6 +2006,15 @@ var Webs = (function (_super) {
     return Webs;
 }(queryable_1.QueryableCollection));
 exports.Webs = Webs;
+var WebInfos = (function (_super) {
+    __extends(WebInfos, _super);
+    function WebInfos(baseUrl, webPath) {
+        if (webPath === void 0) { webPath = "webinfos"; }
+        return _super.call(this, baseUrl, webPath) || this;
+    }
+    return WebInfos;
+}(queryable_1.QueryableCollection));
+exports.WebInfos = WebInfos;
 /**
  * Describes a web
  *
@@ -2017,6 +2045,13 @@ var Web = (function (_super) {
     Object.defineProperty(Web.prototype, "webs", {
         get: function () {
             return new Webs(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Web.prototype, "webinfos", {
+        get: function () {
+            return new WebInfos(this);
         },
         enumerable: true,
         configurable: true
@@ -5151,7 +5186,7 @@ var HttpClient = (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:2.0.3");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:2.0.4");
         }
         opts = util_1.Util.extend(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -8278,20 +8313,48 @@ var httpclient_1 = __webpack_require__(15);
 var logging_1 = __webpack_require__(5);
 var util_1 = __webpack_require__(0);
 /**
- * Processes a given context through the request pipeline
+ * Resolves the context's result value
  *
- * @param context The request context we are processing
+ * @param context The current context
+ */
+function returnResult(context) {
+    logging_1.Logger.log({
+        data: context.result,
+        level: logging_1.LogLevel.Verbose,
+        message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Returning result, see data property for value.",
+    });
+    return Promise.resolve(context.result);
+}
+/**
+ * Sets the result on the context
+ */
+function setResult(context, value) {
+    return new Promise(function (resolve) {
+        context.result = value;
+        context.hasResult = true;
+        resolve(context);
+    });
+}
+exports.setResult = setResult;
+/**
+ * Invokes the next method in the provided context's pipeline
+ *
+ * @param c The current request context
+ */
+function next(c) {
+    if (c.pipeline.length < 1) {
+        return Promise.resolve(c);
+    }
+    return c.pipeline.shift()(c);
+}
+/**
+ * Executes the current request context's pipeline
+ *
+ * @param context Current context
  */
 function pipe(context) {
-    // this is the beginning of the extensible pipeline in future versions
-    var pipeline = [
-        PipelineMethods.logStart,
-        PipelineMethods.caching,
-        PipelineMethods.send,
-        PipelineMethods.logEnd,
-    ];
-    return pipeline.reduce(function (chain, next) { return chain.then(function (c) { return next(c); }); }, Promise.resolve(context))
-        .then(function (ctx) { return PipelineMethods.returnResult(ctx); })
+    return next(context)
+        .then(function (ctx) { return returnResult(ctx); })
         .catch(function (e) {
         logging_1.Logger.log({
             data: e,
@@ -8321,10 +8384,12 @@ function requestPipelineMethod(alwaysRun) {
             }
             // apply the tagged method
             logging_1.Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Calling request pipeline method " + propertyKey + ".", logging_1.LogLevel.Verbose);
-            return method.apply(target, args);
+            // then chain the next method in the context's pipeline - allows for dynamic pipeline
+            return method.apply(target, args).then(function (ctx) { return next(ctx); });
         };
     };
 }
+exports.requestPipelineMethod = requestPipelineMethod;
 /**
  * Contains the methods used within the request pipeline
  */
@@ -8339,7 +8404,7 @@ var PipelineMethods = (function () {
             logging_1.Logger.log({
                 data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : context,
                 level: logging_1.LogLevel.Info,
-                message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Beginning " + context.verb + " request to " + context.requestAbsoluteUrl,
+                message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Beginning " + context.verb + " request (" + context.requestAbsoluteUrl + ")",
             });
             resolve(context);
         });
@@ -8356,7 +8421,7 @@ var PipelineMethods = (function () {
                 if (typeof context.cachingOptions !== "undefined") {
                     cacheOptions = util_1.Util.extend(cacheOptions, context.cachingOptions);
                 }
-                // we may not have a valid store, i.e. on node
+                // we may not have a valid store
                 if (cacheOptions.store !== null) {
                     // check if we have the data in cache and if so resolve the promise and return
                     var data = cacheOptions.store.get(cacheOptions.key);
@@ -8368,7 +8433,7 @@ var PipelineMethods = (function () {
                             message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
                         });
                         context.batchDependency();
-                        return PipelineMethods.setResult(context, data).then(function (ctx) { return resolve(ctx); });
+                        return setResult(context, data).then(function (ctx) { return resolve(ctx); });
                     }
                 }
                 logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Value not found in cache.", logging_1.LogLevel.Info);
@@ -8390,8 +8455,9 @@ var PipelineMethods = (function () {
                 var p = context.batch.add(context.requestAbsoluteUrl, context.verb, context.options, context.parser);
                 // we release the dependency here to ensure the batch does not execute until the request is added to the batch
                 context.batchDependency();
-                logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request.", logging_1.LogLevel.Info);
-                resolve(p.then(function (result) { return PipelineMethods.setResult(context, result); }));
+                logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request in batch " + context.batch.batchId + ".", logging_1.LogLevel.Info);
+                // we set the result as the promise which will be resolved by the batch's execution
+                resolve(setResult(context, p));
             }
             else {
                 logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Sending request.", logging_1.LogLevel.Info);
@@ -8400,7 +8466,7 @@ var PipelineMethods = (function () {
                 var opts = util_1.Util.extend(context.options || {}, { method: context.verb });
                 client.fetch(context.requestAbsoluteUrl, opts)
                     .then(function (response) { return context.parser.parse(response); })
-                    .then(function (result) { return PipelineMethods.setResult(context, result); })
+                    .then(function (result) { return setResult(context, result); })
                     .then(function (ctx) { return resolve(ctx); })
                     .catch(function (e) { return reject(e); });
             }
@@ -8411,35 +8477,35 @@ var PipelineMethods = (function () {
      */
     PipelineMethods.logEnd = function (context) {
         return new Promise(function (resolve) {
-            logging_1.Logger.log({
-                data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : context,
-                level: logging_1.LogLevel.Info,
-                message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Completing " + context.verb + " request to " + context.requestAbsoluteUrl,
-            });
+            if (context.isBatched) {
+                logging_1.Logger.log({
+                    data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : context,
+                    level: logging_1.LogLevel.Info,
+                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") " + context.verb + " request will complete in batch " + context.batch.batchId + ".",
+                });
+            }
+            else {
+                logging_1.Logger.log({
+                    data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : context,
+                    level: logging_1.LogLevel.Info,
+                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Completing " + context.verb + " request.",
+                });
+            }
             resolve(context);
         });
     };
-    /**
-     * At the end of the pipeline resolves the request's result
-     */
-    PipelineMethods.returnResult = function (context) {
-        logging_1.Logger.log({
-            data: context.result,
-            level: logging_1.LogLevel.Verbose,
-            message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Returning, see data property for value.",
-        });
-        return Promise.resolve(context.result);
-    };
-    /**
-     * Sets the result on the context
-     */
-    PipelineMethods.setResult = function (context, value) {
-        return new Promise(function (resolve) {
-            context.result = value;
-            context.hasResult = true;
-            resolve(context);
-        });
-    };
+    Object.defineProperty(PipelineMethods, "default", {
+        get: function () {
+            return [
+                PipelineMethods.logStart,
+                PipelineMethods.caching,
+                PipelineMethods.send,
+                PipelineMethods.logEnd,
+            ];
+        },
+        enumerable: true,
+        configurable: true
+    });
     return PipelineMethods;
 }());
 __decorate([
@@ -8454,9 +8520,7 @@ __decorate([
 __decorate([
     requestPipelineMethod(true)
 ], PipelineMethods, "logEnd", null);
-__decorate([
-    requestPipelineMethod(true)
-], PipelineMethods, "returnResult", null);
+exports.PipelineMethods = PipelineMethods;
 
 
 /***/ }),
