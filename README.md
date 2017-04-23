@@ -4,10 +4,11 @@ A Google Chrome Extension for creating and updating files (js, css) in SharePoin
 
 ## Version history
 - 2.1 New Feature
-    * File editor: View all files and folders on current site
-        * white file icon = added file
-        * red file icon = ghosted file
-        * yellow file icon = unghosted file
+    * File editor: View and edit all files on current site
+        * white file icon = content file
+        * red file icon = ghosted file (Un-Customized)
+        * yellow file icon = unghosted file (Customized)
+    * Updated sp-pnp-js to 2.0.4
 - 2.0 Almost complete re-write
     * Converted all pages to use riot.js ( Thanks [@andrei-markeev](https://github.com/andrei-markeev) )
     * Updated sp-pnp-js to 2.0.3
