@@ -30,7 +30,7 @@ riot.tag("webhooks", `
                   </li>
                   <li class="list-group-item">
                     <span>{ subscription.subNotificationUrl }</span>
-                    <span onclick="{ removesub }" class="sub-remove glyphicon glyphicon-remove pull-right" style="cursor: hand;"></span>
+                    <span onclick="{ removesub }" class="sub-remove glyphicon glyphicon-remove pull-right" style="cursor: pointer;"></span>
                   </li>
                 </ul>
               </div>

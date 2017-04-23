@@ -31,7 +31,7 @@ riot.tag("scriptlinks", `
                 <li class="list-group-item" each="{ link, i in web }">
                   <span class="pull-left" style="width: 10%">{ link.sequence }</span>
                   <span>{ link.scripturl }</span>
-                  <span onclick="{ remove }" data-scope="web" data-id="{ link.id }"class="scriptlinks-remove glyphicon glyphicon-remove pull-right" style="cursor: hand;"></span>
+                  <span onclick="{ remove }" data-scope="web" data-id="{ link.id }"class="scriptlinks-remove glyphicon glyphicon-remove pull-right" style="cursor: pointer;"></span>
                 </li>
               </ul>
               <ul class="list-group">
@@ -39,7 +39,7 @@ riot.tag("scriptlinks", `
                 <li class="list-group-item" each="{ link, i in site }">
                 <span class="pull-left" style="width: 10%">{ link.sequence }</span>
                 <span>{ link.scripturl }</span>
-                <span onclick="{ remove }" data-scope="site" data-id="{ link.id }" class="scriptlinks-remove glyphicon glyphicon-remove pull-right" style="cursor: hand;"></span>
+                <span onclick="{ remove }" data-scope="site" data-id="{ link.id }" class="scriptlinks-remove glyphicon glyphicon-remove pull-right" style="cursor: pointer;"></span>
                 </li>
               </ul>
             </div>
