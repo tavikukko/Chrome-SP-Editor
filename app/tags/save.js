@@ -12,7 +12,9 @@ riot.tag("save", `
 
     this.init = function () {
       // init code here
-    }.bind(this);
+      bgautosave = false;
+      bgautopublish = false;
+    };
 
     this.autosave = function (e) {
       bgautosave = e.target.checked;

@@ -1247,11 +1247,12 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
     return Array.prototype.slice.call(parent.querySelectorAll(selector));
   };
 
-  var webpartsFromDOM = selectAll(document, '.ms-webpart-zone')
+  var webpartsFromDOM = selectAll(document, 'div.ms-webpart-zone')
     .map(zone => ({
       webparts: selectAll(zone, '.ms-webpartzone-cell')
         .filter(cell => {
-          return cell.querySelector('[webpartid]') !== null
+          var wpid = cell.querySelector('[webpartid]');
+          return wpid !== null && wpid.value !== "00000000-0000-0000-0000-000000000000"
         })
         .map(cell => ({
           id: cell.querySelector('[webpartid]').attributes['webpartid'].value,
@@ -1492,6 +1493,7 @@ var updateEditorFile = function updateEditorFile() {
   var fileUrl = arguments[1];
   var fileContent = decodeURIComponent(arguments[2]);
   var fileCheckinType = (arguments[3] == 'true') ? 1 : 0;
+
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];

@@ -110,9 +110,11 @@ riot.tag("pageeditor", `
     this.displayZonesAndWebparts2 = message => {
       if (message.success) {
         for (var wp of message.result) {
-          var { zone, webpart } = this.webpartsById[wp.id];
-          zone.id = wp.zoneId;
-          webpart.title = wp.title;
+          if (this.webpartsById[wp.id]) {
+            var { zone, webpart } = this.webpartsById[wp.id];
+            zone.id = wp.zoneId;
+            webpart.title = wp.title;
+          }
         }
       }
     };

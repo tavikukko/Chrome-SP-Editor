@@ -13,7 +13,6 @@ riot.tag("fileeditor", `
           </ul>`,
   function (opts) {
 
-
     if (!fileeditoreditor) {
       require(['vs/editor/editor.main'], function () {
         fileeditoreditor = monaco.editor.create(document.getElementById('file-editor-container'), {
@@ -44,7 +43,7 @@ riot.tag("fileeditor", `
           if (bgautosave) {
             port.onMessage.addListener(this.fileeditorlistener);
 
-            var fileContent = encodeURIComponent(fileeditoreditor.getValue()).replace(/'/g, "%27")
+            var fileContent = encodeURIComponent(fileeditoreditor.getValue()).replace(/'/g, "%27");
             var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateEditorFile;
             script += " exescript(updateEditorFile, '" + selectedFile + "', '" + fileContent + "', '" + bgautopublish + "');";
             chrome.devtools.inspectedWindow.eval(script);
