@@ -3,6 +3,7 @@ SP Editor
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 
 ## Version history
+
 - 2.1 New Feature
     * File editor: View and edit all files on current site
         * white file icon = content file
@@ -128,6 +129,13 @@ pnp.setup({
 ### Page editor
 * Edit the webpart properties using the the editor.
 * Make sure the page is checked out to be able to save it back with changes.
+
+### File editor
+* View all files and folder of the current web
+* Ctrl + s to save edited file
+    * white file icon = content file
+    * red file icon = ghosted file (Un-Customized)
+    * yellow file icon = unghosted file (Customized) 
 
 ### Chrome Workspaces
 * SP Editor works also when using Chrome workspaces, it saves the file to the disk and also the SharePoint.
