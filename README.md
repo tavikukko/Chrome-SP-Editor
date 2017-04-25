@@ -2,6 +2,8 @@ SP Editor
 ==
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 
+Here's a great [introduction video](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension) by [Jeff Jones](https://github.com/spjeff)
+
 ## Version history
 
 - 2.1 New Feature
@@ -60,8 +62,6 @@ A Google Chrome Extension for creating and updating files (js, css) in SharePoin
 
 Creating and editing js / css files in SharePoint Online from any device which has Chrome desktop browser.
 Also possibility to add local and external js/css resources references with usercustomactions.
-
-Introduction video http://youtu.be/Nk_NZhdpZEo (outdated but you get the idea)
 
 ## Installation
 Install extension from Chrome web store https://chrome.google.com/webstore/detail/sp-editor/ecblfcmjnbbgaojblcpmjoamegpbodhd
@@ -132,7 +132,7 @@ pnp.setup({
 
 ### File editor
 * View all files and folder of the current web
-* Ctrl + s to save edited file
+* Ctrl + s to save edited file (select "Update changes to SharePoint" first)
     * white file icon = content file
     * red file icon = ghosted file (Un-Customized)
     * yellow file icon = unghosted file (Customized) 
