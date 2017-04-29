@@ -2,10 +2,10 @@ SP Editor
 ==
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 
-Here's a great introduction video by [Jeff Jones](https://github.com/spjeff)
+Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension)
 
 
-[![](https://raw.githubusercontent.com/spjeff/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
+[![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
 
