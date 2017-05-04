@@ -167,6 +167,15 @@ fileeditorcontainer {
   cursor: pointer;
 }
 
+.webpart.drag-handler {
+  background-color: #fff;
+}
+
+.webpart.dragging {
+  border: 1px solid #eee;
+  color: #ccc;
+}
+
 .webpart.selected {
   position: relative;
   margin-right: 15px;

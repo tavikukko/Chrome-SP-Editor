@@ -1,13 +1,18 @@
 riot.tag("pageeditor", `
           <div id="pageeditor">
             <div id="webpart-zones-list">
-                <div class="zone" each="{ zone in zones }">
-                 <h3>{ zone.id || "WEBPART ZONE" }</h3>
-                  <div class="add-new-webpart" data-zone-id="{ zone.id }" onclick="{ addNewWebpart }">Add new</div>
+                <div class="zone"
+                     each="{ zone in zones }" 
+                     ondragstart="{ startDraggingWebpart }"
+                     ondragover="{ dragOverWebpart }"
+                     ondragend="{ reorderWebparts }">
+                   <h3>{ zone.id || "WEBPART ZONE" }</h3>
+                   <div class="add-new-webpart" data-zone-id="{ zone.id }" onclick="{ addNewWebpart }">Add new</div>
                    <div each="{ wp in zone.webparts }"
                         class="webpart { selectedWp && wp.id == selectedWp.id ? 'selected' : '' }"
                         data-id="{ wp.id }"
-                        onclick="{ selectWebpart }">{ wp.title || "Webpart" }
+                        onclick="{ selectWebpart }"
+                        draggable="true">{ wp.title || "Webpart" }
                    </div>
                 </div>
             </div>
@@ -248,6 +253,38 @@ riot.tag("pageeditor", `
         this.showError = message.result;
         errorTimeout = setTimeout(function () { this.showError = null; }, 10000);
       }
+    };
+
+
+    this.startDraggingWebpart = e => {
+      this.draggedElement = e.target;
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("Text", e.target.attributes["data-id"]);
+      this.draggedElement.classList.add('drag-handler');
+      setTimeout(() => {
+        this.draggedElement.classList.add('dragging');
+        this.draggedElement.classList.remove('drag-handler');
+      });
+    };
+
+    this.dragOverWebpart = e => {
+      if (!this.draggedElement)
+        return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      var target = e.target;
+      if (target && target !== this.draggedElement && (target.attributes["data-id"] || target.attributes["data-zone-id"])) {
+        var rect = target.getBoundingClientRect();
+        var next = (e.clientY - rect.top)/(rect.bottom - rect.top) > .5;
+        target.parentNode.insertBefore(this.draggedElement, next && target.nextSibling || target);
+      }
+    };
+
+    this.reorderWebparts = e => {
+      if (!this.draggedElement)
+        return;
+      this.draggedElement.classList.remove('dragging');
+      this.draggedElement = null;
     };
 
   });
