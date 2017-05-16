@@ -1510,9 +1510,9 @@ var updateEditorFile = function updateEditorFile() {
     // todo: add checkin type
     // todo: figure out why files in Forms folder doent want to checkin, update ok
 
-    $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).get().then(r => {
+    $pnp.sp.site.rootWeb.getFileByServerRelativeUrl(fileUrl).get().then(r => {
       if (r.CustomizedPageStatus > 0) {
-        $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+        $pnp.sp.site.rootWeb.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
           window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }).catch(function (error) {
           alert(error.data.responseBody.error.message.value);
@@ -1520,9 +1520,9 @@ var updateEditorFile = function updateEditorFile() {
         });
       }
       else if (r.CheckOutType == 2) {
-        $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkout().then(f => {
-          $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
-            $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
+        $pnp.sp.site.rootWeb.getFileByServerRelativeUrl(fileUrl).checkout().then(f => {
+          $pnp.sp.site.rootWeb.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+            $pnp.sp.site.rootWeb.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
               window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }).catch(function (error) {
               alert(error.data.responseBody.error.message.value);
@@ -1537,8 +1537,8 @@ var updateEditorFile = function updateEditorFile() {
           window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
         });
       } else {
-        $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
-          $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
+        $pnp.sp.site.rootWeb.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+          $pnp.sp.site.rootWeb.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
           }).catch(function (error) {
             alert(error.data.responseBody.error.message.value);
