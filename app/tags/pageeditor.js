@@ -19,7 +19,7 @@ riot.tag("pageeditor", `
             <div id="webpart-xml-container"></div>
             <span if="{ showError }" id="webpart-save-error">{ showError }</span>
             <span if="{ showSuccess }" id="webpart-save-success">Webpart saved.</span>
-            <a href="" id="webpart-save-button" class="btn btn-default" onclick="{ saveChanges }">Save changes</a>
+            <a if="{ showSave }" href="" id="webpart-save-button" class="btn btn-default" onclick="{ saveChanges }">Save changes</a>
             <a href="" id="webpart-delete-button" class="btn btn-danger" onclick="{ deleteWebpart }">Delete webpart</a>
           </div>`,
   function (opts) {
@@ -31,6 +31,7 @@ riot.tag("pageeditor", `
       this.showError = null;
       this.showSuccess = false;
       this.selectedWp = null;
+      this.showSave = true;
       this.init();
     });
 
@@ -172,6 +173,16 @@ riot.tag("pageeditor", `
         this.selectedWp = webpart;
         webpartXmlEditor.setValue(webpart.xml);
         webpartXmlEditor.setScrollTop(0);
+
+        // saving XsltListViewWebpart naively resets the view it is bound to
+        // so for now disabling possibility to save changes
+        if (webpart.xml.indexOf('type name="Microsoft.SharePoint.WebPartPages.XsltListViewWebPart, Microsoft.SharePoint') > -1) {
+          this.showSave = false;
+          webpartXmlEditor.updateOptions({ readOnly: true });
+        } else {
+          this.showSave = true;
+          webpartXmlEditor.updateOptions({ readOnly: false });
+        }
       }
     };
 
