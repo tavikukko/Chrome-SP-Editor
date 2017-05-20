@@ -210,8 +210,11 @@ riot.tag("pageeditor", `
       hideDimmer();
 
       if (message.success) {
+        let wpRecord = this.webpartsById[this.selectedWp.id];
+        delete this.webpartsById[this.selectedWp.id];
         this.selectedWp.id = message.result;
         this.selectedWp.xml = webpartXmlEditor.getValue();
+        this.webpartsById[this.selectedWp.id] = wpRecord;
         this.showSuccess = true;
         setTimeout(() => { this.showSuccess = false; this.update(); }, 4000);
       } else {
