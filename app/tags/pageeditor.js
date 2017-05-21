@@ -297,9 +297,9 @@ riot.tag("pageeditor", `
       e.preventDefault();
       e.dataTransfer.dropEffect = "move";
       var target = e.target;
-      if (target && target !== this.draggedElement && target.dataset.id) {
+      if (target && target !== this.draggedElement && (target.dataset.id || target.dataset.zoneId) && target.className.indexOf("webpart") > -1) {
         var rect = target.getBoundingClientRect();
-        var next = (e.clientY - rect.top)/(rect.bottom - rect.top) > .5;
+        var next = target.dataset.zoneId || (e.clientY - rect.top)/(rect.bottom - rect.top) > .5;
         target.parentNode.insertBefore(this.draggedElement, next && target.nextSibling || target);
       }
     };
@@ -316,6 +316,9 @@ riot.tag("pageeditor", `
       var elementIndex = Array.prototype.indexOf.call(this.draggedElement.parentNode.children, this.draggedElement) - 2;
       newZone.webparts.splice(elementIndex, 0, webpart);
 
+      if (zone != newZone)
+          this.draggedElement.parentNode.removeChild(this.draggedElement);
+
       this.webpartsById[wpId] = { zone: newZone, webpart: webpart };
 
       scheduleDimmer();
@@ -330,7 +333,7 @@ riot.tag("pageeditor", `
       hideDimmer();
 
       var wpId = this.draggedElement.dataset.id;
-      this.draggedElement.parentNode.removeChild(this.draggedElement);
+      this.draggedElement.classList.remove('dragging');
       this.draggedElement = null;
 
       if (!message.success) {
