@@ -1275,10 +1275,10 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
     $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath)
       .getLimitedWebPartManager($pnp.WebPartsPersonalizationScope.Shared)
       .webparts.expand("webpart")
-      .select("Id, ZoneId, Title").get().then(webparts => {
+      .select("Id, ZoneId, Title, ZoneIndex").get().then(webparts => {
         var webpartsFromWPM = [];
         webparts.forEach(function (webpart) {
-          webpartsFromWPM.push({ id: webpart.Id, zoneId: webpart.ZoneId, title: webpart.WebPart.Title });
+          webpartsFromWPM.push({ id: webpart.Id, zoneId: webpart.ZoneId, title: webpart.WebPart.Title, zoneIndex: webpart.WebPart.ZoneIndex });
         });
         window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: true, result: webpartsFromWPM, source: 'chrome-sp-editor' }), '*');
       }).catch(function (error) {
@@ -1350,7 +1350,6 @@ var saveWebpart = function saveWebpart() {
   var pageurl = location.protocol + '//' + location.host + _spPageContextInfo.serverRequestPath;
 
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', () => {
-
     var context = SP.ClientContext.get_current();
     var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
     var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
@@ -1409,6 +1408,33 @@ var deleteWebpart = function deleteWebpart() {
         window.postMessage(JSON.stringify({ function: 'deleteWebpart', success: false, result: message, source: 'chrome-sp-editor' }), '*');
       });
   });
+};
+
+var changeWebpartPosition = function changeWebpartPosition() {
+
+  var wpIds = arguments[1];
+  var zoneId = arguments[2];
+
+  console.log("changeWebpartPosition", wpIds, zoneId);
+
+  SP.SOD.executeFunc('sp.js', 'SP.ClientContext', () => {
+    var context = SP.ClientContext.get_current();
+    var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
+    var wpm = page.getLimitedWebPartManager(SP.WebParts.PersonalizationScope.shared);
+    var zoneIndex = 10;
+    for (var wpId of wpIds) {
+      var wpDef = wpm.get_webParts().getById(new SP.Guid(wpId));
+      wpDef.moveWebPartTo(zoneId, zoneIndex);
+      wpDef.saveWebPartChanges();
+      zoneIndex += 10;
+    }
+    context.executeQueryAsync(function () {
+      window.postMessage(JSON.stringify({ function: 'changeWebpartPosition', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+    }, function (sender, args) {
+      window.postMessage(JSON.stringify({ function: 'changeWebpartPosition', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
+    });
+  });
+  
 };
 
 var getFolders = function getFolders() {

@@ -176,6 +176,11 @@ fileeditorcontainer {
   color: #ccc;
 }
 
+.webpart.failed {
+  border: 1px solid #e34;
+  color: #ccc;
+}
+
 .webpart.selected {
   position: relative;
   margin-right: 15px;

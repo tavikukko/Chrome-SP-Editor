@@ -5,7 +5,8 @@ riot.tag("pageeditor", `
                      each="{ zone in zones }" 
                      ondragstart="{ startDraggingWebpart }"
                      ondragover="{ dragOverWebpart }"
-                     ondragend="{ reorderWebparts }">
+                     ondragend="{ reorderWebparts }"
+                     data-zone-id="{ zone.id }">
                    <h3>{ zone.id || "WEBPART ZONE" }</h3>
                    <div class="add-new-webpart" data-zone-id="{ zone.id }" onclick="{ addNewWebpart }">Add new</div>
                    <div each="{ wp in zone.webparts }"
@@ -33,6 +34,11 @@ riot.tag("pageeditor", `
       this.selectedWp = null;
       this.showSave = true;
       this.init();
+      chrome.devtools.network.onNavigated.addListener(() => {
+        setTimeout(() => {
+          this.init();
+        }, 2500); // need to wait a bit until page is loaded
+      });
     });
 
     this.init = () => {
@@ -67,6 +73,9 @@ riot.tag("pageeditor", `
             break;
           case 'deleteWebpart':
             this.webpartDeleted(message);
+            break;
+          case 'changeWebpartPosition':
+            this.webpartPositionChanged(message);
             break;
           default:
         }
@@ -120,6 +129,7 @@ riot.tag("pageeditor", `
             var { zone, webpart } = this.webpartsById[wp.id];
             zone.id = wp.zoneId;
             webpart.title = wp.title;
+            webpart.zoneIndex = wp.zoneIndex;
           }
         }
       }
@@ -273,7 +283,7 @@ riot.tag("pageeditor", `
     this.startDraggingWebpart = e => {
       this.draggedElement = e.target;
       e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("Text", e.target.attributes["data-id"]);
+      e.dataTransfer.setData("Text", e.target.dataset.id);
       this.draggedElement.classList.add('drag-handler');
       setTimeout(() => {
         this.draggedElement.classList.add('dragging');
@@ -287,7 +297,7 @@ riot.tag("pageeditor", `
       e.preventDefault();
       e.dataTransfer.dropEffect = "move";
       var target = e.target;
-      if (target && target !== this.draggedElement && (target.attributes["data-id"] || target.attributes["data-zone-id"])) {
+      if (target && target !== this.draggedElement && target.dataset.id) {
         var rect = target.getBoundingClientRect();
         var next = (e.clientY - rect.top)/(rect.bottom - rect.top) > .5;
         target.parentNode.insertBefore(this.draggedElement, next && target.nextSibling || target);
@@ -297,8 +307,37 @@ riot.tag("pageeditor", `
     this.reorderWebparts = e => {
       if (!this.draggedElement)
         return;
-      this.draggedElement.classList.remove('dragging');
+      var wpId = this.draggedElement.dataset.id;
+      var { zone, webpart } = this.webpartsById[wpId];
+      zone.webparts.splice(zone.webparts.indexOf(webpart), 1);
+
+      var newZoneId = this.draggedElement.parentNode.dataset.zoneId;
+      var newZone = this.zones.filter(z => z.id == newZoneId)[0];
+      var elementIndex = Array.prototype.indexOf.call(this.draggedElement.parentNode.children, this.draggedElement) - 2;
+      newZone.webparts.splice(elementIndex, 0, webpart);
+
+      this.webpartsById[wpId] = { zone: newZone, webpart: webpart };
+
+      scheduleDimmer();
+
+      var script = exescript + ' ' + changeWebpartPosition;
+      script += " exescript(changeWebpartPosition, " + JSON.stringify(newZone.webparts.map(wp => wp.id)) + ", '" + newZoneId + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+
+    };
+
+    this.webpartPositionChanged = message => {
+      hideDimmer();
+
+      var wpId = this.draggedElement.dataset.id;
+      this.draggedElement.parentNode.removeChild(this.draggedElement);
       this.draggedElement = null;
+
+      if (!message.success) {
+        this.showError = message.result;
+        errorTimeout = setTimeout(function () { this.showError = null; }, 10000);
+      }
+
     };
 
   });
