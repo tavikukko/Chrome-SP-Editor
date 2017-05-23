@@ -9,6 +9,11 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 
 ## Version history
 
+- 2.1.2 updates
+    * Enhancements in Page editor: reorder webpart drag&drop by [@andrei-markeev]
+    * Updated sp-pnp-js to 2.0.5
+    * added CDN support for onpremise scripts
+- 2.1.1 small fixes
 - 2.1 New Feature
     * File editor: View and edit all files on current site
         * white file icon = content file

@@ -58,140 +58,6 @@ declare module "collections/collections" {
         count(): number;
     }
 }
-declare module "utils/logging" {
-    /**
-     * A set of logging levels
-     *
-     */
-    export enum LogLevel {
-        Verbose = 0,
-        Info = 1,
-        Warning = 2,
-        Error = 3,
-        Off = 99,
-    }
-    /**
-     * Interface that defines a log entry
-     *
-     */
-    export interface LogEntry {
-        /**
-         * The main message to be logged
-         */
-        message: string;
-        /**
-         * The level of information this message represents
-         */
-        level: LogLevel;
-        /**
-         * Any associated data that a given logging listener may choose to log or ignore
-         */
-        data?: any;
-    }
-    /**
-     * Interface that defines a log listner
-     *
-     */
-    export interface LogListener {
-        /**
-         * Any associated data that a given logging listener may choose to log or ignore
-         *
-         * @param entry The information to be logged
-         */
-        log(entry: LogEntry): void;
-    }
-    /**
-     * Class used to subscribe ILogListener and log messages throughout an application
-     *
-     */
-    export class Logger {
-        private static _instance;
-        static activeLogLevel: LogLevel;
-        private static readonly instance;
-        /**
-         * Adds ILogListener instances to the set of subscribed listeners
-         *
-         * @param listeners One or more listeners to subscribe to this log
-         */
-        static subscribe(...listeners: LogListener[]): void;
-        /**
-         * Clears the subscribers collection, returning the collection before modifiction
-         */
-        static clearSubscribers(): LogListener[];
-        /**
-         * Gets the current subscriber count
-         */
-        static readonly count: number;
-        /**
-         * Writes the supplied string to the subscribed listeners
-         *
-         * @param message The message to write
-         * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Verbose)
-         */
-        static write(message: string, level?: LogLevel): void;
-        /**
-         * Writes the supplied string to the subscribed listeners
-         *
-         * @param json The json object to stringify and write
-         * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Verbose)
-         */
-        static writeJSON(json: any, level?: LogLevel): void;
-        /**
-         * Logs the supplied entry to the subscribed listeners
-         *
-         * @param entry The message to log
-         */
-        static log(entry: LogEntry): void;
-        /**
-         * Logs performance tracking data for the the execution duration of the supplied function using console.profile
-         *
-         * @param name The name of this profile boundary
-         * @param f The function to execute and track within this performance boundary
-         */
-        static measure<T>(name: string, f: () => T): T;
-    }
-    /**
-     * Implementation of ILogListener which logs to the browser console
-     *
-     */
-    export class ConsoleListener implements LogListener {
-        /**
-         * Any associated data that a given logging listener may choose to log or ignore
-         *
-         * @param entry The information to be logged
-         */
-        log(entry: LogEntry): void;
-        /**
-         * Formats the message
-         *
-         * @param entry The information to format into a string
-         */
-        private format(entry);
-    }
-    /**
-     * Implementation of ILogListener which logs to the supplied function
-     *
-     */
-    export class FunctionListener implements LogListener {
-        private method;
-        /**
-         * Creates a new instance of the FunctionListener class
-         *
-         * @constructor
-         * @param  method The method to which any logging data will be passed
-         */
-        constructor(method: (entry: LogEntry) => void);
-        /**
-         * Any associated data that a given logging listener may choose to log or ignore
-         *
-         * @param entry The information to be logged
-         */
-        log(entry: LogEntry): void;
-    }
-}
-declare module "utils/decorators" {
-    export function deprecated(message: string): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void;
-}
 declare module "utils/storage" {
     /**
      * A wrapper class to provide a consistent interface to browser based storage
@@ -325,6 +191,137 @@ declare module "sharepoint/caching" {
         private _cacheOptions;
         constructor(_parser: ODataParser<T>, _cacheOptions: CachingOptions);
         parse(response: Response): Promise<T>;
+    }
+}
+declare module "utils/logging" {
+    /**
+     * A set of logging levels
+     *
+     */
+    export enum LogLevel {
+        Verbose = 0,
+        Info = 1,
+        Warning = 2,
+        Error = 3,
+        Off = 99,
+    }
+    /**
+     * Interface that defines a log entry
+     *
+     */
+    export interface LogEntry {
+        /**
+         * The main message to be logged
+         */
+        message: string;
+        /**
+         * The level of information this message represents
+         */
+        level: LogLevel;
+        /**
+         * Any associated data that a given logging listener may choose to log or ignore
+         */
+        data?: any;
+    }
+    /**
+     * Interface that defines a log listner
+     *
+     */
+    export interface LogListener {
+        /**
+         * Any associated data that a given logging listener may choose to log or ignore
+         *
+         * @param entry The information to be logged
+         */
+        log(entry: LogEntry): void;
+    }
+    /**
+     * Class used to subscribe ILogListener and log messages throughout an application
+     *
+     */
+    export class Logger {
+        private static _instance;
+        static activeLogLevel: LogLevel;
+        private static readonly instance;
+        /**
+         * Adds ILogListener instances to the set of subscribed listeners
+         *
+         * @param listeners One or more listeners to subscribe to this log
+         */
+        static subscribe(...listeners: LogListener[]): void;
+        /**
+         * Clears the subscribers collection, returning the collection before modifiction
+         */
+        static clearSubscribers(): LogListener[];
+        /**
+         * Gets the current subscriber count
+         */
+        static readonly count: number;
+        /**
+         * Writes the supplied string to the subscribed listeners
+         *
+         * @param message The message to write
+         * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Verbose)
+         */
+        static write(message: string, level?: LogLevel): void;
+        /**
+         * Writes the supplied string to the subscribed listeners
+         *
+         * @param json The json object to stringify and write
+         * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Verbose)
+         */
+        static writeJSON(json: any, level?: LogLevel): void;
+        /**
+         * Logs the supplied entry to the subscribed listeners
+         *
+         * @param entry The message to log
+         */
+        static log(entry: LogEntry): void;
+        /**
+         * Logs performance tracking data for the the execution duration of the supplied function using console.profile
+         *
+         * @param name The name of this profile boundary
+         * @param f The function to execute and track within this performance boundary
+         */
+        static measure<T>(name: string, f: () => T): T;
+    }
+    /**
+     * Implementation of ILogListener which logs to the browser console
+     *
+     */
+    export class ConsoleListener implements LogListener {
+        /**
+         * Any associated data that a given logging listener may choose to log or ignore
+         *
+         * @param entry The information to be logged
+         */
+        log(entry: LogEntry): void;
+        /**
+         * Formats the message
+         *
+         * @param entry The information to format into a string
+         */
+        private format(entry);
+    }
+    /**
+     * Implementation of ILogListener which logs to the supplied function
+     *
+     */
+    export class FunctionListener implements LogListener {
+        private method;
+        /**
+         * Creates a new instance of the FunctionListener class
+         *
+         * @constructor
+         * @param  method The method to which any logging data will be passed
+         */
+        constructor(method: (entry: LogEntry) => void);
+        /**
+         * Any associated data that a given logging listener may choose to log or ignore
+         *
+         * @param entry The information to be logged
+         */
+        log(entry: LogEntry): void;
     }
 }
 declare module "utils/exceptions" {
@@ -927,12 +924,6 @@ declare module "utils/util" {
          */
         static isUrlAbsolute(url: string): boolean;
         /**
-         * Attempts to make the supplied relative url absolute based on the _spPageContextInfo object, if available
-         *
-         * @param url The relative url to make absolute
-         */
-        static makeUrlAbsolute(url: string): string;
-        /**
          * Ensures that a given url is absolute for the current web based on context
          *
          * @param candidateUrl The url to make absolute
@@ -1012,6 +1003,109 @@ declare module "configuration/configuration" {
 }
 declare module "sharepoint/search" {
     import { Queryable, QueryableInstance } from "sharepoint/queryable";
+    import { Dictionary } from "collections/collections";
+    /**
+     * Allows for the fluent construction of search queries
+     */
+    export class SearchQueryBuilder {
+        private _query;
+        static create(queryText?: string, queryTemplate?: SearchQuery): SearchQueryBuilder;
+        constructor(queryText?: string, _query?: {});
+        text(queryText: string): this;
+        template(template: string): this;
+        sourceId(id: string): this;
+        readonly enableInterleaving: this;
+        readonly enableStemming: this;
+        readonly trimDuplicates: this;
+        readonly enableNicknames: this;
+        readonly enableFql: this;
+        readonly enablePhonetic: this;
+        readonly bypassResultTypes: this;
+        readonly processBestBets: this;
+        readonly enableQueryRules: this;
+        readonly enableSorting: this;
+        readonly generateBlockRankLog: this;
+        rankingModelId(id: string): this;
+        startRow(id: number): this;
+        rowLimit(id: number): this;
+        rowsPerPage(id: number): this;
+        selectProperties(...properties: string[]): this;
+        culture(culture: number): this;
+        refinementFilters(...filters: string[]): this;
+        refiners(refiners: string): this;
+        hiddenConstraints(constraints: string): this;
+        sortList(...sorts: Sort[]): this;
+        timeout(milliseconds: number): this;
+        hithighlightedProperties(...properties: string[]): this;
+        clientType(clientType: string): this;
+        personalizationData(data: string): this;
+        resultsURL(url: string): this;
+        queryTag(...tags: string[]): this;
+        properties(...properties: SearchProperty[]): this;
+        readonly processPersonalFavorites: this;
+        queryTemplatePropertiesUrl(url: string): this;
+        reorderingRules(...rules: ReorderingRule[]): this;
+        hitHighlightedMultivaluePropertyLimit(limit: number): this;
+        readonly enableOrderingHitHighlightedProperty: this;
+        collapseSpecification(spec: string): this;
+        uiLanguage(lang: number): this;
+        desiredSnippetLength(len: number): this;
+        maxSnippetLength(len: number): this;
+        summaryLength(len: number): this;
+        toSearchQuery(): SearchQuery;
+        private extendQuery(part);
+    }
+    /**
+     * Describes the search API
+     *
+     */
+    export class Search extends QueryableInstance {
+        /**
+         * Creates a new instance of the Search class
+         *
+         * @param baseUrl The url for the search context
+         * @param query The SearchQuery object to execute
+         */
+        constructor(baseUrl: string | Queryable, path?: string);
+        /**
+         * .......
+         * @returns Promise
+         */
+        execute(query: SearchQuery): Promise<SearchResults>;
+    }
+    /**
+     * Describes the SearchResults class, which returns the formatted and raw version of the query response
+     */
+    export class SearchResults {
+        private _url;
+        private _query;
+        private _raw;
+        private _primary;
+        /**
+         * Creates a new instance of the SearchResult class
+         *
+         */
+        constructor(rawResponse: any, _url: string, _query: SearchQuery, _raw?: SearchResponse, _primary?: SearchResult[]);
+        readonly ElapsedTime: number;
+        readonly RowCount: number;
+        readonly TotalRows: number;
+        readonly TotalRowsIncludingDuplicates: number;
+        readonly RawSearchResults: SearchResponse;
+        readonly PrimarySearchResults: SearchResult[];
+        /**
+         * Gets a page of results
+         *
+         * @param pageNumber Index of the page to return. Used to determine StartRow
+         * @param pageSize Optional, items per page (default = 10)
+         */
+        getPage(pageNumber: number, pageSize?: number): Promise<SearchResults>;
+        /**
+         * Formats a search results array
+         *
+         * @param rawResults The array to process
+         */
+        protected formatSearchResults(rawResults: any): SearchResult[];
+    }
     /**
      * Describes the SearchQuery interface
      */
@@ -1019,7 +1113,7 @@ declare module "sharepoint/search" {
         /**
          * A string that contains the text for the search query.
          */
-        Querytext: string;
+        Querytext?: string;
         /**
          * A string that contains the text that replaces the query text, as part of a query transform.
          */
@@ -1193,54 +1287,95 @@ declare module "sharepoint/search" {
         SummaryLength?: number;
     }
     /**
-     * Describes the search API
-     *
+     * Provides hints at the properties which may be available on the result object
      */
-    export class Search extends QueryableInstance {
-        /**
-         * Creates a new instance of the Search class
-         *
-         * @param baseUrl The url for the search context
-         * @param query The SearchQuery object to execute
-         */
-        constructor(baseUrl: string | Queryable, path?: string);
-        /**
-         * .......
-         * @returns Promise
-         */
-        execute(query: SearchQuery): Promise<SearchResults>;
+    export interface SearchResult {
+        Rank?: number;
+        DocId?: number;
+        WorkId?: number;
+        Title?: string;
+        Author?: string;
+        Size?: number;
+        Path?: string;
+        Description?: string;
+        Write?: Date;
+        LastModifiedTime?: Date;
+        CollapsingStatus?: number;
+        HitHighlightedSummary?: string;
+        HitHighlightedProperties?: string;
+        contentclass?: string;
+        PictureThumbnailURL?: string;
+        ServerRedirectedURL?: string;
+        ServerRedirectedEmbedURL?: string;
+        ServerRedirectedPreviewURL?: string;
+        FileExtension?: string;
+        ContentTypeId?: string;
+        ParentLink?: string;
+        ViewsLifeTime?: number;
+        ViewsRecent?: number;
+        SectionNames?: string;
+        SectionIndexes?: string;
+        SiteLogo?: string;
+        SiteDescription?: string;
+        importance?: number;
+        SiteName?: string;
+        IsDocument?: boolean;
+        FileType?: string;
+        IsContainer?: boolean;
+        WebTemplate?: string;
+        SPWebUrl?: string;
+        UniqueId?: string;
+        ProgId?: string;
+        OriginalPath?: string;
+        RenderTemplateId?: string;
+        PartitionId?: string;
+        UrlZone?: number;
+        Culture?: string;
     }
-    /**
-     * Describes the SearchResults class, which returns the formatted and raw version of the query response
-     */
-    export class SearchResults {
-        PrimarySearchResults: any;
-        RawSearchResults: any;
-        RowCount: number;
-        TotalRows: number;
-        TotalRowsIncludingDuplicates: number;
+    export interface SearchResponse {
         ElapsedTime: number;
-        /**
-         * Creates a new instance of the SearchResult class
-         *
-         */
-        constructor(rawResponse: any);
-        /**
-         * Formats a search results array
-         *
-         * @param rawResults The array to process
-         */
-        protected formatSearchResults(rawResults: Array<any> | any): SearchResult[];
+        Properties?: {
+            Key: string;
+            Value: any;
+            ValueType: string;
+        }[];
+        PrimaryQueryResult?: ResultTableCollection;
+        SecondaryQueryResults?: ResultTableCollection;
+        SpellingSuggestion?: string;
+        TriggeredRules?: any[];
     }
-    /**
-     * Describes the SearchResult class
-     */
-    export class SearchResult {
-        /**
-         * Creates a new instance of the SearchResult class
-         *
-         */
-        constructor(rawItem: any);
+    export interface ResultTableCollection {
+        QueryErrors?: Dictionary<any>;
+        QueryId?: string;
+        QueryRuleId?: string;
+        CustomResults?: ResultTable;
+        RefinementResults?: ResultTable;
+        RelevantResults?: ResultTable;
+        SpecialTermResults?: ResultTable;
+    }
+    export interface ResultTable {
+        GroupTemplateId?: string;
+        ItemTemplateId?: string;
+        Properties?: {
+            Key: string;
+            Value: any;
+            ValueType: string;
+        }[];
+        Table: {
+            Rows: {
+                Cells: {
+                    Key: string;
+                    Value: any;
+                    ValueType: string;
+                }[];
+            }[];
+        };
+        ResultTitle?: string;
+        ResultTitleUrl?: string;
+        RowCount?: number;
+        TableType?: string;
+        TotalRows?: number;
+        TotalRowsIncludingDuplicates?: number;
     }
     /**
      * Defines how search results are sorted.
@@ -1321,6 +1456,23 @@ declare module "sharepoint/search" {
         BooleanType = 3,
         StringArrayType = 4,
         UnSupportedType = 5,
+    }
+    export class SearchBuiltInSourceId {
+        static readonly Documents: string;
+        static readonly ItemsMatchingContentType: string;
+        static readonly ItemsMatchingTag: string;
+        static readonly ItemsRelatedToCurrentUser: string;
+        static readonly ItemsWithSameKeywordAsThisItem: string;
+        static readonly LocalPeopleResults: string;
+        static readonly LocalReportsAndDataResults: string;
+        static readonly LocalSharePointResults: string;
+        static readonly LocalVideoResults: string;
+        static readonly Pages: string;
+        static readonly Pictures: string;
+        static readonly Popular: string;
+        static readonly RecentlyChangedItems: string;
+        static readonly RecommendedItems: string;
+        static readonly Wiki: string;
     }
 }
 declare module "sharepoint/searchsuggest" {
@@ -1594,6 +1746,7 @@ declare module "sharepoint/sitegroups" {
     }
 }
 declare module "sharepoint/types" {
+    import { TypedHash } from "collections/collections";
     /**
      * Represents the unique sequential location of a change within the change log.
      */
@@ -2174,6 +2327,14 @@ declare module "sharepoint/types" {
         SharePointGroup = 8,
         All = 15,
     }
+    export enum PrincipalSource {
+        None = 0,
+        UserInfoList = 1,
+        Windows = 2,
+        MembershipProvider = 4,
+        RoleProvider = 8,
+        All = 15,
+    }
     export enum RoleType {
         None = 0,
         Guest = 1,
@@ -2183,15 +2344,15 @@ declare module "sharepoint/types" {
         Administrator = 5,
     }
     export interface PrincipalInfo {
-        email: string;
-        id: number;
-        isActive: boolean;
-        isExternal: boolean;
-        jobTitle: string;
-        loginName: string;
-        name: string;
-        principalType: PrincipalType;
-        userId: UserIdInfo;
+        Department: string;
+        DisplayName: string;
+        Email: string;
+        JobTitle: string;
+        LoginName: string;
+        Mobile: string;
+        PrincipalId: number;
+        PrincipalType: PrincipalType;
+        SIPAddress: string;
     }
     export interface DocumentLibraryInformation {
         AbsoluteUrl?: string;
@@ -2806,6 +2967,25 @@ declare module "sharepoint/types" {
         AllowList = 1,
         BlockList = 2,
     }
+    export interface EmailProperties {
+        To: string[];
+        CC?: string[];
+        BCC?: string[];
+        Subject: string;
+        Body: string;
+        AdditionalHeaders?: TypedHash<string>;
+        From?: string;
+    }
+    export interface WikiPageCreationInformation {
+        /**
+         * The server-relative-url of the wiki page to be created.
+         */
+        ServerRelativeUrl: string;
+        /**
+         * The wiki content to be set in the wiki page.
+         */
+        WikiHtmlContent: string;
+    }
 }
 declare module "sharepoint/roles" {
     import { Queryable, QueryableInstance, QueryableCollection } from "sharepoint/queryable";
@@ -3355,7 +3535,7 @@ declare module "sharepoint/files" {
          *
          * @param comment The comment for the approval.
          */
-        approve(comment: string): Promise<void>;
+        approve(comment?: string): Promise<void>;
         /**
          * Stops the chunk upload session without saving the uploaded data. Does not support batching.
          * If the file doesn’t already exist in the library, the partially uploaded file will be deleted.
@@ -4720,6 +4900,9 @@ declare module "sharepoint/features" {
         feature: Feature;
     }
 }
+declare module "utils/decorators" {
+    export function deprecated(message: string): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void;
+}
 declare module "sharepoint/relateditems" {
     import { Queryable } from "sharepoint/queryable";
     export interface RelatedItem {
@@ -5075,6 +5258,19 @@ declare module "sharepoint/site" {
          *
          */
         createBatch(): ODataBatch;
+        /**
+         * Opens a web by Id (using POST)
+         *
+         * @param webId The GUID id fo the web to open
+         */
+        openWebById(webId: string): Promise<OpenWebByIdResult>;
+    }
+    /**
+     * The result of opening a web by id, contains the data retruned as well as a chainable web instance
+     */
+    export interface OpenWebByIdResult {
+        data: any;
+        web: Web;
     }
 }
 declare module "utils/files" {
@@ -5211,17 +5407,77 @@ declare module "sharepoint/userprofiles" {
         shareAllSocialData(share: boolean): Promise<void>;
     }
 }
+declare module "sharepoint/utilities" {
+    import { Queryable } from "sharepoint/queryable";
+    import { EmailProperties } from "sharepoint/types";
+    import { ODataBatch } from "sharepoint/odata";
+    import { ICachingOptions } from "sharepoint/caching";
+    import { File } from "sharepoint/files";
+    import { PrincipalInfo, PrincipalType, PrincipalSource, WikiPageCreationInformation } from "sharepoint/types";
+    /**
+     * Public interface for the utility methods to limit Queryable method exposure
+     */
+    export interface UtilityMethods {
+        usingCaching(options?: ICachingOptions): this;
+        inBatch(batch: ODataBatch): this;
+        sendEmail(props: EmailProperties): Promise<void>;
+        getCurrentUserEmailAddresses(): Promise<string>;
+        resolvePrincipal(email: string, scopes: PrincipalType, sources: PrincipalSource, inputIsEmailOnly: boolean, addToUserInfoList: boolean, matchUserInfoList?: boolean): Promise<PrincipalInfo>;
+        searchPrincipals(input: string, scopes: PrincipalType, sources: PrincipalSource, groupName: string, maxCount: number): Promise<PrincipalInfo[]>;
+        createEmailBodyForInvitation(pageAddress: string): Promise<string>;
+        expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<PrincipalInfo[]>;
+        createWikiPage(info: WikiPageCreationInformation): Promise<CreateWikiPageResult>;
+    }
+    /**
+     * Allows for calling of the static SP.Utilities.Utility methods by supplying the method name
+     */
+    export class UtilityMethod extends Queryable implements UtilityMethods {
+        private static getBaseUrl(candidate);
+        /**
+         * Creates a new instance of the Utility method class
+         *
+         * @param baseUrl The parent url provider
+         * @param methodName The static method name to call on the utility class
+         */
+        constructor(baseUrl: string | Queryable, methodName: string);
+        excute<T>(props: any): Promise<T>;
+        /**
+         * Clones this queryable into a new queryable instance of T
+         * @param factory Constructor used to create the new instance
+         * @param additionalPath Any additional path to include in the clone
+         * @param includeBatch If true this instance's batch will be added to the cloned instance
+         */
+        protected create(methodName: string, includeBatch: boolean): UtilityMethod;
+        /**
+         * Sends an email based on the supplied properties
+         *
+         * @param props The properties of the email to send
+         */
+        sendEmail(props: EmailProperties): Promise<void>;
+        getCurrentUserEmailAddresses(): Promise<string>;
+        resolvePrincipal(input: string, scopes: PrincipalType, sources: PrincipalSource, inputIsEmailOnly: boolean, addToUserInfoList: boolean, matchUserInfoList?: boolean): Promise<PrincipalInfo>;
+        searchPrincipals(input: string, scopes: PrincipalType, sources: PrincipalSource, groupName: string, maxCount: number): Promise<PrincipalInfo[]>;
+        createEmailBodyForInvitation(pageAddress: string): Promise<string>;
+        expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<PrincipalInfo[]>;
+        createWikiPage(info: WikiPageCreationInformation): Promise<CreateWikiPageResult>;
+    }
+    export interface CreateWikiPageResult {
+        data: any;
+        file: File;
+    }
+}
 declare module "sharepoint/rest" {
-    import { SearchQuery, SearchResults } from "sharepoint/search";
+    import { SearchQuery, SearchResults, SearchQueryBuilder } from "sharepoint/search";
     import { SearchSuggestQuery, SearchSuggestResult } from "sharepoint/searchsuggest";
     import { Site } from "sharepoint/site";
     import { Web } from "sharepoint/webs";
     import { UserProfileQuery } from "sharepoint/userprofiles";
     import { ODataBatch } from "sharepoint/odata";
+    import { UtilityMethods } from "sharepoint/utilities";
     /**
      * Root of the SharePoint REST module
      */
-    export class Rest {
+    export class SPRest {
         /**
          * Executes a search against this web context
          *
@@ -5233,7 +5489,7 @@ declare module "sharepoint/rest" {
          *
          * @param query The SearchQuery definition
          */
-        search(query: string | SearchQuery): Promise<SearchResults>;
+        search(query: string | SearchQuery | SearchQueryBuilder): Promise<SearchResults>;
         /**
          * Begins a site collection scoped REST request
          *
@@ -5254,6 +5510,10 @@ declare module "sharepoint/rest" {
          *
          */
         createBatch(): ODataBatch;
+        /**
+         * Static utilities methods from SP.Utilities.Utility
+         */
+        readonly utility: UtilityMethods;
         /**
          * Begins a cross-domain, host site scoped REST request, for use in add-in webs
          *
@@ -5293,14 +5553,15 @@ declare module "sharepoint/index" {
     export { Queryable, QueryableInstance, QueryableCollection, QueryableConstructor } from "sharepoint/queryable";
     export { RelatedItem, RelatedItemManger } from "sharepoint/relateditems";
     export { RoleDefinitionUpdateResult, RoleDefinitionAddResult, RoleDefinitionBindings } from "sharepoint/roles";
-    export { Search, SearchProperty, SearchPropertyValue, SearchQuery, SearchResult, SearchResults, Sort, SortDirection, ReorderingRule, ReorderingRuleMatchType, QueryPropertyValueType } from "sharepoint/search";
+    export { Search, SearchProperty, SearchPropertyValue, SearchQuery, SearchQueryBuilder, SearchResult, SearchResults, Sort, SortDirection, ReorderingRule, ReorderingRuleMatchType, QueryPropertyValueType, SearchBuiltInSourceId, SearchResponse, ResultTableCollection, ResultTable } from "sharepoint/search";
     export { SearchSuggest, SearchSuggestQuery, SearchSuggestResult, PersonalResultSuggestion } from "sharepoint/searchsuggest";
-    export { Site } from "sharepoint/site";
+    export { Site, OpenWebByIdResult } from "sharepoint/site";
     export { SiteGroupAddResult } from "sharepoint/sitegroups";
     export { UserUpdateResult, SiteUserProps } from "sharepoint/siteusers";
     export { SubscriptionAddResult, SubscriptionUpdateResult } from "sharepoint/subscriptions";
     export * from "sharepoint/types";
     export { UserCustomActionAddResult, UserCustomActionUpdateResult } from "sharepoint/usercustomactions";
+    export { UtilityMethod, CreateWikiPageResult } from "sharepoint/utilities";
     export { ViewAddResult, ViewUpdateResult } from "sharepoint/views";
     export { Web, WebAddResult, WebUpdateResult, GetCatalogResult, WebEnsureUserResult } from "sharepoint/webs";
 }
@@ -5455,7 +5716,7 @@ declare module "pnp" {
     import { PnPClientStorage } from "utils/storage";
     import { Settings } from "configuration/configuration";
     import { Logger } from "utils/logging";
-    import { Rest } from "sharepoint/rest";
+    import { SPRest } from "sharepoint/rest";
     import { LibraryConfiguration } from "configuration/pnplibconfig";
     /**
      * Root class of the Patterns and Practices namespace, provides an entry point to the library
@@ -5467,7 +5728,7 @@ declare module "pnp" {
     /**
      * Provides access to the REST interface
      */
-    export const sp: Rest;
+    export const sp: SPRest;
     /**
      * Provides access to local and session storage
      */
@@ -5492,7 +5753,7 @@ declare module "pnp" {
         config: Settings;
         log: typeof Logger;
         setup: (config: LibraryConfiguration) => void;
-        sp: Rest;
+        sp: SPRest;
         storage: PnPClientStorage;
         util: typeof Util;
     };

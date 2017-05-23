@@ -237,10 +237,10 @@ riot.tag("pageeditor", `
         this.selectedWp.xml = webpartXmlEditor.getValue();
         this.webpartsById[this.selectedWp.id] = wpRecord;
         this.showSuccess = true;
-        setTimeout(() => { this.showSuccess = false; this.update(); }, 4000);
+        setTimeout(function () { this.showSuccess = false; this.update(); }.bind(this), 4000);
       } else {
         this.showError = message.result;
-        errorTimeout = setTimeout(() => { this.showError = null; this.update(); }, 10000);
+        errorTimeout = setTimeout(function () { this.showError = null; this.update(); }.bind(this), 10000);
       }
     };
 
@@ -264,7 +264,6 @@ riot.tag("pageeditor", `
 
     };
 
-
     this.webpartDeleted = message => {
       hideDimmer();
 
@@ -275,10 +274,9 @@ riot.tag("pageeditor", `
         webpartXmlEditor.setValue('');
       } else {
         this.showError = message.result;
-        errorTimeout = setTimeout(function () { this.showError = null; }, 10000);
+        errorTimeout = setTimeout(function () { this.showError = null; this.update(); }.bind(this), 10000);
       }
     };
-
 
     this.startDraggingWebpart = e => {
       this.draggedElement = e.target;
@@ -326,7 +324,6 @@ riot.tag("pageeditor", `
       var script = exescript + ' ' + changeWebpartPosition;
       script += " exescript(changeWebpartPosition, " + JSON.stringify(newZone.webparts.map(wp => wp.id)) + ", '" + newZoneId + "');";
       chrome.devtools.inspectedWindow.eval(script);
-
     };
 
     this.webpartPositionChanged = message => {
@@ -338,9 +335,8 @@ riot.tag("pageeditor", `
 
       if (!message.success) {
         this.showError = message.result;
-        errorTimeout = setTimeout(function () { this.showError = null; }, 10000);
+        errorTimeout = setTimeout(function () { this.showError = null; this.update(); }.bind(this), 10000);
       }
-
     };
-
+    
   });

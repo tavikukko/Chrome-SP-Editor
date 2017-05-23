@@ -105,8 +105,28 @@ var addCustomAction = function addCustomAction() {
       url = url.split("?")[0];
     }
 
-    if (url.match(/.js$/)) {
+    // if url starts with ~ and ends .js we can inject with ScriptSrc (o365 / onprem)
+    // if we are in o365, we can inject anything that ends with .js with ScriptSrc
+    if ( (url.indexOf("~") > -1 && url.match(/.js$/)) || (window.location.href.indexOf(".sharepoint.com") > 0 && url.match(/.js$/)) ) {
       payload.ScriptSrc = url + querystrings;
+    }
+    // if we are in onprem, files from CDN need to be injected using ScriptBlock
+    else if (url.match(/.js$/) && window.location.href.indexOf(".sharepoint.com") == -1) {
+
+      var headID = "";		
+      var newScript = "";		
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";		
+      for( var i=0; i < 5; i++ )		
+          headID += possible.charAt(Math.floor(Math.random() * possible.length));		
+      for( var i=0; i < 5; i++ )		
+          newScript += possible.charAt(Math.floor(Math.random() * possible.length));		
+
+      var jsScriptBlock = "var " + headID + " = document.getElementsByTagName(\"head\")[0]; ";		
+      jsScriptBlock += "var " + newScript + " = document.createElement(\"script\");";		
+      jsScriptBlock += " " + newScript + ".type = \"text/javascript\";";		
+      jsScriptBlock += " " + newScript + ".src = \""+url+querystrings+"\";" ;		
+      jsScriptBlock += " " + headID + ".appendChild(" + newScript + ");";		
+      payload.ScriptBlock = jsScriptBlock;
     }
     else if (url.match(/.css$/)) {
       payload.ScriptBlock = "document.write('<link rel=\"stylesheet\" href=\"" + url + querystrings + "\" />');";
