@@ -10,7 +10,7 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 ## Version history
 
 - 2.1.2 updates
-    * Enhancements in Page editor: reorder webpart drag&drop by [@andrei-markeev]
+    * Enhancements in Page editor: reorder webpart drag&drop by [@andrei-markeev](https://github.com/andrei-markeev)
     * Updated sp-pnp-js to 2.0.5
     * added CDN support for onpremise scripts
 - 2.1.1 small fixes
