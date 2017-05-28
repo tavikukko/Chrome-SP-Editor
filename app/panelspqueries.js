@@ -1125,6 +1125,8 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
 };
 
 var exescript = function exescript(script) {
+  // polyfill for _spPageContextInfo on modern team sites
+  window._spPageContextInfo = window._spPageContextInfo || window.spModuleLoader && Object.entries(Array.from(window.spModuleLoader._bundledComponents.values()).filter(v => v.default && v.default.appPageContext)[0].default.appPageContext.core).reduce((obj, e) => { obj[e[0].slice(1)] = e[1]; return obj },{});
   var params = arguments;
   if (typeof SystemJS == 'undefined') {
     var s = document.createElement('script');
