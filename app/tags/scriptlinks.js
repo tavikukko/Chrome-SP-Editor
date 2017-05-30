@@ -1,4 +1,4 @@
-riot.tag("scriptlinks", `
+riot.tag("scrlinks", `
           <div id="page-content-wrapper">
             <div>
               <h4>Scriptlinks</h4>

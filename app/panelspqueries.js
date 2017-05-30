@@ -107,25 +107,25 @@ var addCustomAction = function addCustomAction() {
 
     // if url starts with ~ and ends .js we can inject with ScriptSrc (o365 / onprem)
     // if we are in o365, we can inject anything that ends with .js with ScriptSrc
-    if ( (url.indexOf("~") > -1 && url.match(/.js$/)) || (window.location.href.indexOf(".sharepoint.com") > 0 && url.match(/.js$/)) ) {
+    if ((url.indexOf("~") > -1 && url.match(/.js$/)) || (window.location.href.indexOf(".sharepoint.com") > 0 && url.match(/.js$/))) {
       payload.ScriptSrc = url + querystrings;
     }
     // if we are in onprem, files from CDN need to be injected using ScriptBlock
     else if (url.match(/.js$/) && window.location.href.indexOf(".sharepoint.com") == -1) {
 
-      var headID = "";		
-      var newScript = "";		
-      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";		
-      for( var i=0; i < 5; i++ )		
-          headID += possible.charAt(Math.floor(Math.random() * possible.length));		
-      for( var i=0; i < 5; i++ )		
-          newScript += possible.charAt(Math.floor(Math.random() * possible.length));		
+      var headID = "";
+      var newScript = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      for (var i = 0; i < 5; i++)
+        headID += possible.charAt(Math.floor(Math.random() * possible.length));
+      for (var i = 0; i < 5; i++)
+        newScript += possible.charAt(Math.floor(Math.random() * possible.length));
 
-      var jsScriptBlock = "var " + headID + " = document.getElementsByTagName(\"head\")[0]; ";		
-      jsScriptBlock += "var " + newScript + " = document.createElement(\"script\");";		
-      jsScriptBlock += " " + newScript + ".type = \"text/javascript\";";		
-      jsScriptBlock += " " + newScript + ".src = \""+url+querystrings+"\";" ;		
-      jsScriptBlock += " " + headID + ".appendChild(" + newScript + ");";		
+      var jsScriptBlock = "var " + headID + " = document.getElementsByTagName(\"head\")[0]; ";
+      jsScriptBlock += "var " + newScript + " = document.createElement(\"script\");";
+      jsScriptBlock += " " + newScript + ".type = \"text/javascript\";";
+      jsScriptBlock += " " + newScript + ".src = \"" + url + querystrings + "\";";
+      jsScriptBlock += " " + headID + ".appendChild(" + newScript + ");";
       payload.ScriptBlock = jsScriptBlock;
     }
     else if (url.match(/.css$/)) {
@@ -1126,8 +1126,9 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
 
 var exescript = function exescript(script) {
   // polyfill for _spPageContextInfo on modern team sites
-  window._spPageContextInfo = window._spPageContextInfo || window.spModuleLoader && Object.entries(Array.from(window.spModuleLoader._bundledComponents.values()).filter(v => v.default && v.default.appPageContext)[0].default.appPageContext.core).reduce((obj, e) => { obj[e[0].slice(1)] = e[1]; return obj },{});
+  window._spPageContextInfo = window._spPageContextInfo || window.spModuleLoader && Object.entries(Array.from(window.spModuleLoader._bundledComponents.values()).filter(v => v.default && v.default.appPageContext)[0].default.appPageContext.core).reduce((obj, e) => { obj[e[0].slice(1)] = e[1]; return obj }, {});
   var params = arguments;
+
   if (typeof SystemJS == 'undefined') {
     var s = document.createElement('script');
     s.src = sj;
@@ -1456,7 +1457,7 @@ var changeWebpartPosition = function changeWebpartPosition() {
       window.postMessage(JSON.stringify({ function: 'changeWebpartPosition', success: false, result: args.get_message(), source: 'chrome-sp-editor' }), '*');
     });
   });
-  
+
 };
 
 var getFolders = function getFolders() {
@@ -1604,6 +1605,58 @@ var updateEditorFile = function updateEditorFile() {
   });
 };
 
+var getApps = function getApps() {
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    $pnp.sp.web.getList(_spPageContextInfo.webServerRelativeUrl + "/appCatalog").items.select("Title,FileLeafRef").get().then(function (apps) {
+      window.postMessage(JSON.stringify({ function: 'getApps', success: true, result: apps, source: 'chrome-sp-editor' }), '*');
+    }).catch(function (error) {
+      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+    });
+  });
+};
+
+var getApp = function getApp() {
+
+  var fileName = arguments[1];
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.webServerRelativeUrl + "/appCatalog/" + fileName).getBuffer().then(function (app) {
+      var data = {
+        data: Array.apply(null, new Uint8Array(app)),
+      };
+      window.postMessage(JSON.stringify({ function: 'getApp', success: true, result: data, source: 'chrome-sp-editor' }), '*');
+    }).catch(function (error) {
+      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+    });
+
+  });
+};
+
 // helper functions
 function elem(elem) {
   return document.getElementById(elem);
@@ -1628,7 +1681,7 @@ function hideDimmer() {
     elem('dimmer').style.display = 'none';
 }
 
-var allElements = ['save', 'scriptlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer'];
+var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer'];
 
 function swap(visibleElement) {
   for (var i = 0; i < allElements.length; i++) {

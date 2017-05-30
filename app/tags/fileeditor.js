@@ -5,7 +5,6 @@ riot.tag("fileeditor", `
                 <span class="{ item.spin ? 'fe-icon fa fa-spinner fa-spin' : item.folder ? item.expanded ? 'fe-icon fa fa-folder-open-o' : 'fe-icon fa fa-folder-o' : item.CustomizedPageStatus == 1 ? 'fe-icon fa fa-file-text-o ghosted' : item.CustomizedPageStatus == 2 ? 'fe-icon fa fa-file-text-o unghosted' : 'fe-icon fa fa-file-text-o' }"></span>
                 <span>{ item.label }</span>
               </div> 
-             <!-- <i class="{ item.spin ? 'fa fa-spinner fa-spin' : '' }"></i> -->
               <virtual if="{ item.go }">
                 <fileeditor source="{ item.ServerRelativeUrl }" handler="{ parent.handler }"></fileeditor>
               </virtual>

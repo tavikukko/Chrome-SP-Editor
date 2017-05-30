@@ -7,12 +7,13 @@ riot.mount("sidebar"); // mount the left menu
 swap('save'); // show first tab
 var savetab = riot.mount("save"); // mount the first tab
 
-require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
+require.config({ paths: { 'vs': 'monaco-editor/min/vs', 'js': 'js' } });
 
 var pnpjsconsole = null;
 var fileeditorsubs = [];
 var fileeditormain = null;
 var fileeditoreditor;
+var appcatalogeditor;
 var selectedFile = null;
 var pageeditorlisteners = [];
 var fileeditorlisteners = {};
