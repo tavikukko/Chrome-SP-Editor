@@ -8,7 +8,7 @@ riot.tag("appcatalog", `
               <virtual if="{ item.go }">
                 <ul class="fe-ul" each="{ file in item.files }">
                   <li class="fe-li">
-                    <span>{ file.relativePath }</span>
+                    <span onclick="{ getContent.bind(this, item, file.relativePath) }">{ file.relativePath }</span>
                   </li>
                 </ul>
              </virtual>
@@ -77,9 +77,9 @@ riot.tag("appcatalog", `
               require(['js/jszip.min'], function (JSZip) {
                 JSZip.loadAsync(app).then(function (zip) {
 
-                  self.me.zip = zip;
+                  self.me.zip = app;
 
-                  self.me.zip.forEach(function (relativePath, file) {
+                  zip.forEach(function (relativePath, file) {
                     self.me.files.push({ relativePath: relativePath });
                   });
 
@@ -116,6 +116,20 @@ riot.tag("appcatalog", `
         chrome.devtools.inspectedWindow.eval(script);
 
       }.bind(this);
+
+      this.getContent = function (item, file) {
+
+        require(['js/jszip.min'], function (JSZip) {
+
+          JSZip.loadAsync(item.zip).then(function (zip) {
+            zip.file(file).async("string").then(function success(text) {
+              appcatalogeditor.setValue(text);
+              appcatalogeditor.setScrollTop(0);
+            });
+          });
+
+        });
+      };
 
     }.bind(this));
   });
