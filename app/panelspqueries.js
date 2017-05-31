@@ -27,8 +27,8 @@ var getCustomActions = function getCustomActions() {
 
             var scripturl = action.ScriptSrc;
             if (!scripturl) {
-              if (action.ScriptBlock.indexOf("href") > -1) {
-                scripturl = action.ScriptBlock.substring(action.ScriptBlock.indexOf("href"));
+              if (action.ScriptBlock.indexOf("href=\"") > -1) {
+                scripturl = action.ScriptBlock.substring(action.ScriptBlock.indexOf("href=\""));
                 scripturl = scripturl.substring(scripturl.indexOf("\"") + 1);
                 scripturl = scripturl.substring(0, scripturl.indexOf("\""));
               }
