@@ -1646,9 +1646,16 @@ var getApp = function getApp() {
     alertify.maxLogItems(2);
 
     $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.webServerRelativeUrl + "/appCatalog/" + fileName).getBuffer().then(function (app) {
+
+      var array = [];
+      var uint8Array = new Uint8Array(app);
+      for (var i = 0; i < uint8Array.byteLength; i++)
+        array[i] = uint8Array[i];
+
       var data = {
-        data: Array.apply(null, new Uint8Array(app)),
+        data: array
       };
+
       window.postMessage(JSON.stringify({ function: 'getApp', success: true, result: data, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
       alertify.delay(10000).error(error.data.responseBody.error.message.value);
