@@ -78,6 +78,8 @@ riot.tag("fileeditor", `
           chrome.devtools.inspectedWindow.eval(script);
           fileeditoreditor.setValue("");
           fileeditoreditor.setScrollTop(0);
+          fileeditoreditor.setScrollLeft(0);
+
           scheduleDimmer();
         }
         self.handler(e.item.item)
@@ -156,6 +158,7 @@ riot.tag("fileeditor", `
               monaco.editor.setModelLanguage(fileeditoreditor.getModel(), language);
               fileeditoreditor.setValue(message.result.content);
               fileeditoreditor.setScrollTop(0);
+              fileeditoreditor.setScrollLeft(0);
               hideDimmer();
               port.onMessage.removeListener(fileeditorlisteners[this.opts.source]);
             }

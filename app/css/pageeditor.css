@@ -11,6 +11,9 @@
 .unghosted {
   color: yellow;
 }
+.edited {
+  color: lightskyblue;
+}
 .treenode {
   border: 1px solid black; 
   display: inline-block;

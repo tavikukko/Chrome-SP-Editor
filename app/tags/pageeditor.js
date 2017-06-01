@@ -164,11 +164,14 @@ riot.tag("pageeditor", `
       if (webpart.xml != null) {
         this.selectedWp = webpart;
         webpartXmlEditor.setValue(webpart.xml);
+        webpartXmlEditor.setScrollTop(0);
+        webpartXmlEditor.setScrollLeft(0);
       }
       else {
         scheduleDimmer();
         webpartXmlEditor.setValue("");
         webpartXmlEditor.setScrollTop(0);
+        webpartXmlEditor.setScrollLeft(0);
         var script = exescript + ' ' + loadWebpart;
         script += " exescript(loadWebpart, '" + webpart.id + "');";
         chrome.devtools.inspectedWindow.eval(script);
@@ -183,6 +186,7 @@ riot.tag("pageeditor", `
         this.selectedWp = webpart;
         webpartXmlEditor.setValue(webpart.xml);
         webpartXmlEditor.setScrollTop(0);
+        webpartXmlEditor.setScrollLeft(0);
 
         // saving XsltListViewWebpart naively resets the view it is bound to
         // so for now disabling possibility to save changes
@@ -272,6 +276,8 @@ riot.tag("pageeditor", `
         zone.webparts.splice(zone.webparts.indexOf(webpart), 1);
         this.selectedWp = null;
         webpartXmlEditor.setValue('');
+        webpartXmlEditor.setScrollTop(0);
+        webpartXmlEditor.setScrollLeft(0);
       } else {
         this.showError = message.result;
         errorTimeout = setTimeout(function () { this.showError = null; this.update(); }.bind(this), 10000);
