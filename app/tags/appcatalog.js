@@ -131,7 +131,14 @@ riot.tag("appcatalog", `
 
             }
           case "updateApp":
+          
               hideDimmer();
+              if (message.success){
+                  this.editorItem.files.forEach(function (file) {
+                    file.edited = false;
+                  });
+                  this.update()
+              } 
             break;
         }
       }.bind(this));
