@@ -50,6 +50,16 @@
   cursor: default;
 }
 
+.fe-li.selected {
+  background: rgba(255,255,255,0.3);
+}
+.fe-li:hover:before {
+  background: rgba(255,255,255,0.2);
+}
+.fe-li.selected > span {
+    position: relative;
+}
+
 fileeditorcontainer {
   position: fixed;
   top: 0;

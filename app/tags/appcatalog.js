@@ -1,13 +1,13 @@
 riot.tag("appcatalog", `
           <ul class="fe-ul" each="{ item in items }">
             <li class="fe-li">
-              <div class="treenode { item.selected ? ' selected' : '' }" onclick="{ clicked }" >
+              <div class="treenode { item.selected ? ' selected' : '' } " onclick="{ clicked }" >
                 <span class="{ item.spin ? 'fe-icon fa fa-spinner fa-spin' : 'fe-icon fa fa-file-archive-o' }"></span>
                 <span>{ item.FileLeafRef }</span>
               </div> 
               <virtual if="{ item.go }">
                 <ul class="fe-ul" each="{ file in item.files }">
-                  <li class="fe-li { file.file.dir ? 'dir' : '' } ">
+                  <li class="fe-li { file.file.dir ? 'dir' : file.selected ? 'selected' : '' } ">
                    <span class="{ file.file.dir ? 'fe-icon fa fa-folder-o' : file.edited ? 'fe-icon fa fa-file-code-o edited' : 'fe-icon fa fa-file-code-o' }"></span>
                    <span if="{ !file.file.dir }" onclick="{ getContent.bind(this, item, file) }">{ file.relativePath }</span>
                    <span if="{ file.file.dir }" >{ file.relativePath }</span>
@@ -67,7 +67,7 @@ riot.tag("appcatalog", `
                   script = script.replace("REPLACE-CONTENT", escape(zipString));
                   chrome.devtools.inspectedWindow.eval(script);
                   scheduleDimmer();
-                  
+
                 }.bind(this));
               }.bind(this));
             }.bind(this));
@@ -151,9 +151,15 @@ riot.tag("appcatalog", `
       this.clicked = function (e) {
 
         this.me = e.item.item;
+
         this.items.map(function (item) {
           item.selected = false;
-          return item;
+          if(item.files)
+          item.files.map(function (file) {
+            file.selected = false;
+            // return item;
+          });
+
         });
 
         e.item.item.selected = true;
@@ -170,6 +176,21 @@ riot.tag("appcatalog", `
       this.getContent = function (item, file) {
         this.editorItem = item;
         this.editorFile = file;
+        
+        this.items.map(function (item) {
+          item.selected = false;
+
+          if(item.files)
+          item.files.map(function (file) {
+            file.selected = false;
+            // return item;
+          });
+
+        });
+        file.selected = true;
+
+        this.update();
+
         require(['js/jszip.min'], function (JSZip) {
 
           JSZip.loadAsync(item.zip).then(function (zip) {
