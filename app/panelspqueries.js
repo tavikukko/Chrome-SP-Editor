@@ -1664,6 +1664,38 @@ var getApp = function getApp() {
   });
 };
 
+var updateApp = function updateApp() {
+
+  var fileName = arguments[1];
+  var fileContent = unescape("REPLACE-CONTENT");
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      headers: {
+        "Accept": "application/json; odata=verbose"
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    var contentBytes = new Uint8Array(fileContent.length);
+    for (var i = 0; i < fileContent.length; i++)
+      contentBytes[i] = fileContent.charCodeAt(i);
+
+    $pnp.sp.web.getFolderByServerRelativeUrl(_spPageContextInfo.webServerRelativeUrl + "/appCatalog").files.add(fileName, contentBytes, true).then(function (app) {
+       window.postMessage(JSON.stringify({ function: 'updateApp', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+    }).catch(function (error) {
+      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      window.postMessage(JSON.stringify({ function: "updateApp", success: false, result: null, source: 'chrome-sp-editor' }), '*');
+    });
+
+  });
+};
+
 // helper functions
 function elem(elem) {
   return document.getElementById(elem);

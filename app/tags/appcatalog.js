@@ -36,7 +36,7 @@ riot.tag("appcatalog", `
             renderIndentGuides: true
           });
 
-          var appcatalogeditorBinding = appcatalogeditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
+          appcatalogeditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
             require(['js/jszip.min'], function (JSZip) {
               JSZip.loadAsync(this.editorItem.zip).then(function (zip) {
                 zip.file(this.editorFile.relativePath, appcatalogeditor.getValue());
@@ -44,6 +44,26 @@ riot.tag("appcatalog", `
                   this.editorItem.zip = zip;
                   this.editorFile.edited = true;
                   this.update();
+                }.bind(this));
+              }.bind(this));
+            }.bind(this));
+          }.bind(this));
+
+          appcatalogeditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
+            require(['js/jszip.min'], function (JSZip) {
+              JSZip.loadAsync(this.editorItem.zip).then(function (zip) {
+                zip.generateAsync({
+                  type: "string",
+                  compressionOptions: { level: 9 },
+                  compression: "DEFLATE",
+                  mimeType: "application/zip"
+                }).then(function (zipString) {
+
+                  var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateApp;
+                  script += " exescript(updateApp, '" + this.editorItem.FileLeafRef + "');";
+                  script = script.replace("REPLACE-CONTENT", escape(zipString));
+                  chrome.devtools.inspectedWindow.eval(script);
+                  scheduleDimmer();
                 }.bind(this));
               }.bind(this));
             }.bind(this));
@@ -110,6 +130,8 @@ riot.tag("appcatalog", `
               }.bind(this));
 
             }
+          case "updateApp":
+              hideDimmer();
             break;
         }
       }.bind(this));
