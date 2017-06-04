@@ -8,7 +8,8 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
-
+- 2.2 New Feature
+    * AppCatalog: View and edit all apps in App Catalog
 - 2.1.2 updates
     * Enhancements in Page editor: reorder webpart drag&drop by [@andrei-markeev](https://github.com/andrei-markeev)
     * Updated sp-pnp-js to 2.0.5
@@ -145,5 +146,9 @@ pnp.setup({
     * red file icon = ghosted file (Un-Customized)
     * yellow file icon = unghosted file (Customized) 
 
+### AppCatalog
+* View and edit all apps in App Catalog
+* Ctrl + s to save locally and Ctrl + D to upload back to appCatalog
+    * blue icon mean that file has been edited locally but not yet uploaded to app catalog
 ### Chrome Workspaces
 * SP Editor works also when using Chrome workspaces, it saves the file to the disk and also the SharePoint.

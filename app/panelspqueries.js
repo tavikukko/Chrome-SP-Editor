@@ -1623,7 +1623,12 @@ var getApps = function getApps() {
     $pnp.sp.web.getList(_spPageContextInfo.webServerRelativeUrl + "/appCatalog").items.select("Title,FileLeafRef").get().then(function (apps) {
       window.postMessage(JSON.stringify({ function: 'getApps', success: true, result: apps, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.error.code == "-2147024894, System.IO.FileNotFoundException")
+        alertify.delay(10000).error("No appCatalog list found, please go to AppCatalog site and try again!");
+      else
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+
+      window.postMessage(JSON.stringify({ function: "getApps", success: false, result: null, source: 'chrome-sp-editor' }), '*');
     });
   });
 };
@@ -1646,19 +1651,21 @@ var getApp = function getApp() {
     alertify.maxLogItems(2);
 
     $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.webServerRelativeUrl + "/appCatalog/" + fileName).getBuffer().then(function (app) {
+      
+        var array = [];
+        var uint8Array = new Uint8Array(app);
+        for (var i = 0; i < uint8Array.byteLength; i++)
+          array[i] = uint8Array[i];
 
-      var array = [];
-      var uint8Array = new Uint8Array(app);
-      for (var i = 0; i < uint8Array.byteLength; i++)
-        array[i] = uint8Array[i];
+        var data = {
+          data: array
+        };
 
-      var data = {
-        data: array
-      };
+        window.postMessage(JSON.stringify({ function: 'getApp', success: true, result: data, source: 'chrome-sp-editor' }), '*');
 
-      window.postMessage(JSON.stringify({ function: 'getApp', success: true, result: data, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
       alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      window.postMessage(JSON.stringify({ function: "getApp", success: false, result: null, source: 'chrome-sp-editor' }), '*');
     });
 
   });
@@ -1687,9 +1694,13 @@ var updateApp = function updateApp() {
       contentBytes[i] = fileContent.charCodeAt(i);
 
     $pnp.sp.web.getFolderByServerRelativeUrl(_spPageContextInfo.webServerRelativeUrl + "/appCatalog").files.add(fileName, contentBytes, true).then(function (app) {
-       window.postMessage(JSON.stringify({ function: 'updateApp', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+      window.postMessage(JSON.stringify({ function: 'updateApp', success: true, result: null, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.error.code == "-2147024894, System.IO.FileNotFoundException")
+        alertify.delay(10000).error("No appCatalog list found, please go to AppCatalog site and try again!");
+      else
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+
       window.postMessage(JSON.stringify({ function: "updateApp", success: false, result: null, source: 'chrome-sp-editor' }), '*');
     });
 

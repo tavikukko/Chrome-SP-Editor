@@ -46,6 +46,10 @@
   margin-top:0.3em;
 }
 
+.dir {
+  cursor: default;
+}
+
 fileeditorcontainer {
   position: fixed;
   top: 0;

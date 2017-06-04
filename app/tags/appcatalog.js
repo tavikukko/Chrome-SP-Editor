@@ -7,9 +7,10 @@ riot.tag("appcatalog", `
               </div> 
               <virtual if="{ item.go }">
                 <ul class="fe-ul" each="{ file in item.files }">
-                  <li class="fe-li">
+                  <li class="fe-li { file.file.dir ? 'dir' : '' } ">
                    <span class="{ file.file.dir ? 'fe-icon fa fa-folder-o' : file.edited ? 'fe-icon fa fa-file-code-o edited' : 'fe-icon fa fa-file-code-o' }"></span>
-                   <span onclick="{ getContent.bind(this, item, file) }">{ file.relativePath }</span>
+                   <span if="{ !file.file.dir }" onclick="{ getContent.bind(this, item, file) }">{ file.relativePath }</span>
+                   <span if="{ file.file.dir }" >{ file.relativePath }</span>
                   </li>
                 </ul>
              </virtual>
@@ -37,6 +38,7 @@ riot.tag("appcatalog", `
           });
 
           appcatalogeditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
+            if (this.editorItem == undefined) return;
             require(['js/jszip.min'], function (JSZip) {
               JSZip.loadAsync(this.editorItem.zip).then(function (zip) {
                 zip.file(this.editorFile.relativePath, appcatalogeditor.getValue());
@@ -50,6 +52,7 @@ riot.tag("appcatalog", `
           }.bind(this));
 
           appcatalogeditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
+            if (this.editorItem == undefined) return;
             require(['js/jszip.min'], function (JSZip) {
               JSZip.loadAsync(this.editorItem.zip).then(function (zip) {
                 zip.generateAsync({
@@ -64,6 +67,7 @@ riot.tag("appcatalog", `
                   script = script.replace("REPLACE-CONTENT", escape(zipString));
                   chrome.devtools.inspectedWindow.eval(script);
                   scheduleDimmer();
+                  
                 }.bind(this));
               }.bind(this));
             }.bind(this));
@@ -130,15 +134,16 @@ riot.tag("appcatalog", `
               }.bind(this));
 
             }
+            break;
           case "updateApp":
-          
-              hideDimmer();
-              if (message.success){
-                  this.editorItem.files.forEach(function (file) {
-                    file.edited = false;
-                  });
-                  this.update()
-              } 
+
+            hideDimmer();
+            if (message.success) {
+              this.editorItem.files.forEach(function (file) {
+                file.edited = false;
+              });
+              this.update()
+            }
             break;
         }
       }.bind(this));
