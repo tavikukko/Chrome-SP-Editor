@@ -23,7 +23,7 @@ riot.tag("sidebar", `
                   <a href="#" onclick="{ btnWebhooks }">Webhooks</a>
                 </li>
                 <li>
-                  <a href="#" onclick="{ btnPnPJSConsole }">PnP JS Console v2.0.5</a>
+                  <a href="#" onclick="{ btnPnPJSConsole }">PnP JS Console v2.0.6</a>
                 </li>
                 <li>
                   <a href="#" onclick="{ btnPageEditor }">Page editor</a>

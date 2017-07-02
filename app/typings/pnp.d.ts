@@ -1072,6 +1072,12 @@ declare module "sharepoint/search" {
          * @returns Promise
          */
         execute(query: SearchQuery): Promise<SearchResults>;
+        /**
+         * Fixes up properties that expect to consist of a "results" collection when needed
+         *
+         * @param prop property to fixup for container struct
+         */
+        private fixupProp(prop);
     }
     /**
      * Describes the SearchResults class, which returns the formatted and raw version of the query response
@@ -1567,7 +1573,7 @@ declare module "sharepoint/siteusers" {
      */
     export class SiteUsers extends QueryableCollection {
         /**
-         * Creates a new instance of the Users class
+         * Creates a new instance of the SiteUsers class
          *
          * @param baseUrl The url or Queryable which forms the parent of this user collection
          */
@@ -1575,35 +1581,35 @@ declare module "sharepoint/siteusers" {
         /**
          * Gets a user from the collection by email
          *
-         * @param email The email of the user
+         * @param email The email address of the user to retrieve
          */
         getByEmail(email: string): SiteUser;
         /**
          * Gets a user from the collection by id
          *
-         * @param id The id of the user
+         * @param id The id of the user to retrieve
          */
         getById(id: number): SiteUser;
         /**
          * Gets a user from the collection by login name
          *
-         * @param loginName The email address of the user
+         * @param loginName The login name of the user to retrieve
          */
         getByLoginName(loginName: string): SiteUser;
         /**
          * Removes a user from the collection by id
          *
-         * @param id The id of the user
+         * @param id The id of the user to remove
          */
         removeById(id: number | Queryable): Promise<any>;
         /**
          * Removes a user from the collection by login name
          *
-         * @param loginName The login name of the user
+         * @param loginName The login name of the user to remove
          */
         removeByLoginName(loginName: string): Promise<any>;
         /**
-         * Add a user to a group
+         * Adds a user to a group
          *
          * @param loginName The login name of the user to add to the group
          *
@@ -1616,7 +1622,7 @@ declare module "sharepoint/siteusers" {
      */
     export class SiteUser extends QueryableInstance {
         /**
-         * Get's the groups for this user.
+         * Gets the groups for this user
          *
          */
         readonly groups: SiteGroups;
@@ -1666,7 +1672,7 @@ declare module "sharepoint/sitegroups" {
         All = 15,
     }
     /**
-     * Result from adding a group.
+     * Results from updating a group
      *
      */
     export interface GroupUpdateResult {
@@ -1674,7 +1680,7 @@ declare module "sharepoint/sitegroups" {
         data: any;
     }
     /**
-     * Results from updating a group
+     * Results from adding a group
      *
      */
     export interface GroupAddResult {
@@ -1682,44 +1688,44 @@ declare module "sharepoint/sitegroups" {
         data: any;
     }
     /**
-     * Describes a collection of site users
+     * Describes a collection of site groups
      *
      */
     export class SiteGroups extends QueryableCollection {
         /**
-         * Creates a new instance of the SiteUsers class
+         * Creates a new instance of the SiteGroups class
          *
-         * @param baseUrl The url or Queryable which forms the parent of this user collection
+         * @param baseUrl The url or Queryable which forms the parent of this group collection
          */
         constructor(baseUrl: string | Queryable, path?: string);
         /**
          * Adds a new group to the site collection
          *
-         * @param props The properties to be updated
+         * @param props The group properties object of property names and values to be set for the group
          */
         add(properties: TypedHash<any>): Promise<GroupAddResult>;
         /**
          * Gets a group from the collection by name
          *
-         * @param email The name of the group
+         * @param groupName The name of the group to retrieve
          */
         getByName(groupName: string): SiteGroup;
         /**
          * Gets a group from the collection by id
          *
-         * @param id The id of the group
+         * @param id The id of the group to retrieve
          */
         getById(id: number): SiteGroup;
         /**
-         * Removes the group with the specified member ID from the collection.
+         * Removes the group with the specified member id from the collection
          *
          * @param id The id of the group to remove
          */
         removeById(id: number): Promise<void>;
         /**
-         * Removes a user from the collection by login name
+         * Removes the cross-site group with the specified name from the collection
          *
-         * @param loginName The login name of the user
+         * @param loginName The name of the group to remove
          */
         removeByLoginName(loginName: string): Promise<any>;
     }
@@ -1729,14 +1735,14 @@ declare module "sharepoint/sitegroups" {
      */
     export class SiteGroup extends QueryableInstance {
         /**
-         * Get's the users for this group
+         * Gets the users for this group
          *
          */
         readonly users: SiteUsers;
         /**
         * Updates this group instance with the supplied properties
         *
-        * @param properties A GroupWriteableProperties object of property names and values to update for the user
+        * @param properties A GroupWriteableProperties object of property names and values to update for the group
         */
         update(properties: TypedHash<any>): Promise<GroupUpdateResult>;
     }
@@ -3000,77 +3006,88 @@ declare module "sharepoint/roles" {
         /**
          * Creates a new instance of the RoleAssignments class
          *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
+         * @param baseUrl The url or Queryable which forms the parent of this role assignments collection
          */
         constructor(baseUrl: string | Queryable, path?: string);
         /**
-         * Adds a new role assignment with the specified principal and role definitions to the collection.
+         * Adds a new role assignment with the specified principal and role definitions to the collection
          *
-         * @param principalId The ID of the user or group to assign permissions to
-         * @param roleDefId The ID of the role definition that defines the permissions to assign
+         * @param principalId The id of the user or group to assign permissions to
+         * @param roleDefId The id of the role definition that defines the permissions to assign
          *
          */
         add(principalId: number, roleDefId: number): Promise<void>;
         /**
          * Removes the role assignment with the specified principal and role definition from the collection
          *
-         * @param principalId The ID of the user or group in the role assignment.
-         * @param roleDefId The ID of the role definition in the role assignment
+         * @param principalId The id of the user or group in the role assignment
+         * @param roleDefId The id of the role definition in the role assignment
          *
          */
         remove(principalId: number, roleDefId: number): Promise<void>;
         /**
-         * Gets the role assignment associated with the specified principal ID from the collection.
+         * Gets the role assignment associated with the specified principal id from the collection.
          *
          * @param id The id of the role assignment
          */
         getById(id: number): RoleAssignment;
     }
+    /**
+     * Describes a role assignment
+     *
+     */
     export class RoleAssignment extends QueryableInstance {
+        /**
+         * Gets the groups that directly belong to the access control list (ACL) for this securable object
+         *
+         */
         readonly groups: SiteGroups;
         /**
-         * Get the role definition bindings for this role assignment
+         * Gets the role definition bindings for this role assignment
          *
          */
         readonly bindings: RoleDefinitionBindings;
         /**
-         * Delete this role assignment
+         * Deletes this role assignment
          *
          */
         delete(): Promise<void>;
     }
+    /**
+     * Describes a collection of role definitions
+     *
+     */
     export class RoleDefinitions extends QueryableCollection {
         /**
          * Creates a new instance of the RoleDefinitions class
          *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
-         * @param path
+         * @param baseUrl The url or Queryable which forms the parent of this role definitions collection
          *
          */
         constructor(baseUrl: string | Queryable, path?: string);
         /**
-         * Gets the role definition with the specified ID from the collection.
+         * Gets the role definition with the specified id from the collection
          *
-         * @param id The ID of the role definition.
+         * @param id The id of the role definition
          *
          */
         getById(id: number): RoleDefinition;
         /**
-         * Gets the role definition with the specified name.
+         * Gets the role definition with the specified name
          *
-         * @param name The name of the role definition.
+         * @param name The name of the role definition
          *
          */
         getByName(name: string): RoleDefinition;
         /**
-         * Gets the role definition with the specified type.
+         * Gets the role definition with the specified role type
          *
-         * @param name The name of the role definition.
+         * @param roleTypeKind The roletypekind of the role definition (None=0, Guest=1, Reader=2, Contributor=3, WebDesigner=4, Administrator=5, Editor=6, System=7)
          *
          */
         getByType(roleTypeKind: number): RoleDefinition;
         /**
-         * Create a role definition
+         * Creates a role definition
          *
          * @param name The new role definition's name
          * @param description The new role definition's description
@@ -3080,28 +3097,49 @@ declare module "sharepoint/roles" {
          */
         add(name: string, description: string, order: number, basePermissions: BasePermissions): Promise<RoleDefinitionAddResult>;
     }
+    /**
+     * Describes a role definition
+     *
+     */
     export class RoleDefinition extends QueryableInstance {
         /**
-         * Updates this web intance with the supplied properties
+         * Updates this role definition with the supplied properties
          *
-         * @param properties A plain object hash of values to update for the web
+         * @param properties A plain object hash of values to update for the role definition
          */
         update(properties: TypedHash<any>): Promise<RoleDefinitionUpdateResult>;
         /**
-         * Delete this role definition
+         * Deletes this role definition
          *
          */
         delete(): Promise<void>;
     }
+    /**
+     * Result from updating a role definition
+     *
+     */
     export interface RoleDefinitionUpdateResult {
         definition: RoleDefinition;
         data: any;
     }
+    /**
+     * Result from adding a role definition
+     *
+     */
     export interface RoleDefinitionAddResult {
         definition: RoleDefinition;
         data: any;
     }
+    /**
+     * Describes the role definitons bound to a role assignment object
+     *
+     */
     export class RoleDefinitionBindings extends QueryableCollection {
+        /**
+         * Creates a new instance of the RoleDefinitionBindings class
+         *
+         * @param baseUrl The url or Queryable which forms the parent of this role definition bindings collection
+         */
         constructor(baseUrl: string | Queryable, path?: string);
     }
 }
@@ -3431,15 +3469,40 @@ declare module "sharepoint/webparts" {
         /**
          * Gets a web part definition from the collection by id
          *
-         * @param id GUID id of the web part definition to get
+         * @param id The storage ID of the SPWebPartDefinition to retrieve
          */
         getById(id: string): WebPartDefinition;
+        /**
+         * Gets a web part definition from the collection by storage id
+         *
+         * @param id The WebPart.ID of the SPWebPartDefinition to retrieve
+         */
+        getByControlId(id: string): WebPartDefinition;
     }
     export class WebPartDefinition extends QueryableInstance {
         /**
          * Gets the webpart information associated with this definition
          */
         readonly webpart: WebPart;
+        /**
+         * Saves changes to the Web Part made using other properties and methods on the SPWebPartDefinition object
+         */
+        saveChanges(): Promise<any>;
+        /**
+         * Moves the Web Part to a different location on a Web Part Page
+         *
+         * @param zoneId The ID of the Web Part Zone to which to move the Web Part
+         * @param zoneIndex A Web Part zone index that specifies the position at which the Web Part is to be moved within the destination Web Part zone
+         */
+        moveTo(zoneId: string, zoneIndex: number): Promise<void>;
+        /**
+         * Closes the Web Part. If the Web Part is already closed, this method does nothing
+         */
+        close(): Promise<void>;
+        /**
+         * Opens the Web Part. If the Web Part is already closed, this method does nothing
+         */
+        open(): Promise<void>;
         /**
          * Removes a webpart from a page, all settings will be lost
          */
@@ -3504,7 +3567,7 @@ declare module "sharepoint/files" {
          * @param chunkSize The size of each file slice, in bytes (default: 10485760)
          * @returns The new File and the raw response.
          */
-        addChunked(url: string, content: string | ArrayBuffer | Blob, progress?: (data: ChunkedFileUploadProgressData) => void, shouldOverWrite?: boolean, chunkSize?: number): Promise<FileAddResult>;
+        addChunked(url: string, content: Blob, progress?: (data: ChunkedFileUploadProgressData) => void, shouldOverWrite?: boolean, chunkSize?: number): Promise<FileAddResult>;
         /**
          * Adds a ghosted file to an existing list or document library. Not supported for batching.
          *
@@ -4486,11 +4549,15 @@ declare module "sharepoint/subscriptions" {
         /**
          * Returns all the webhook subscriptions or the specified webhook subscription
          *
+         * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
          */
         getById(subscriptionId: string): Subscription;
         /**
-         * Create a new webhook subscription
+         * Creates a new webhook subscription
          *
+         * @param notificationUrl The url to receive the notifications
+         * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
+         * @param clientState A client specific string (defaults to pnp-js-core-subscription when omitted)
          */
         add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<SubscriptionAddResult>;
     }
@@ -4500,12 +4567,13 @@ declare module "sharepoint/subscriptions" {
      */
     export class Subscription extends QueryableInstance {
         /**
-         * Update a webhook subscription
+         * Renews this webhook subscription
          *
+         * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
          */
         update(expirationDate: string): Promise<SubscriptionUpdateResult>;
         /**
-         * Remove a webhook subscription
+         * Removes this webhook subscription
          *
          */
         delete(): Promise<void>;
@@ -4522,39 +4590,65 @@ declare module "sharepoint/subscriptions" {
 declare module "sharepoint/usercustomactions" {
     import { Queryable, QueryableInstance, QueryableCollection } from "sharepoint/queryable";
     import { TypedHash } from "collections/collections";
+    /**
+     * Describes a collection of user custom actions
+     *
+     */
     export class UserCustomActions extends QueryableCollection {
+        /**
+         * Creates a new instance of the UserCustomActions class
+         *
+         * @param baseUrl The url or Queryable which forms the parent of this user custom actions collection
+         */
         constructor(baseUrl: string | Queryable, path?: string);
         /**
-         * Returns the custom action with the specified identifier.
+         * Returns the user custom action with the specified id
          *
-         * @param id The GUID ID of the user custom action to get.
+         * @param id The GUID id of the user custom action to retrieve
          */
         getById(id: string): UserCustomAction;
         /**
-         * Create a custom action
+         * Creates a user custom action
          *
-         * @param creationInfo The information which defines the new custom action
+         * @param properties The information object of property names and values which define the new user custom action
          *
          */
         add(properties: TypedHash<string | boolean | number>): Promise<UserCustomActionAddResult>;
         /**
-         * Deletes all custom actions in the collection.
+         * Deletes all user custom actions in the collection
          *
          */
         clear(): Promise<void>;
     }
+    /**
+     * Describes a single user custom action
+     *
+     */
     export class UserCustomAction extends QueryableInstance {
+        /**
+        * Updates this user custom action with the supplied properties
+        *
+        * @param properties An information object of property names and values to update for this user custom action
+        */
         update(properties: TypedHash<string | boolean | number>): Promise<UserCustomActionUpdateResult>;
         /**
-        * Remove a custom action
+        * Removes this user custom action
         *
         */
         delete(): Promise<void>;
     }
+    /**
+     * Result from adding a user custom action
+     *
+     */
     export interface UserCustomActionAddResult {
         data: any;
         action: UserCustomAction;
     }
+    /**
+     * Result from udating a user custom action
+     *
+     */
     export interface UserCustomActionUpdateResult {
         data: any;
         action: UserCustomAction;
@@ -4779,10 +4873,18 @@ declare module "sharepoint/lists" {
 declare module "sharepoint/navigation" {
     import { TypedHash } from "collections/collections";
     import { Queryable, QueryableInstance, QueryableCollection } from "sharepoint/queryable";
+    /**
+     * Result from adding a navigation node
+     *
+     */
     export interface NavigationNodeAddResult {
         data: any;
         node: NavigationNode;
     }
+    /**
+     * Result from udpdating a navigation node
+     *
+     */
     export interface NavigationNodeUpdateResult {
         data: any;
         node: NavigationNode;
@@ -4814,6 +4916,10 @@ declare module "sharepoint/navigation" {
          */
         moveAfter(nodeId: number, previousNodeId: number): Promise<void>;
     }
+    /**
+     * Represents an instance of a navigation node
+     *
+     */
     export class NavigationNode extends QueryableInstance {
         /**
          * Represents the child nodes of this node
@@ -4836,18 +4942,18 @@ declare module "sharepoint/navigation" {
      */
     export class Navigation extends Queryable {
         /**
-         * Creates a new instance of the Lists class
+         * Creates a new instance of the Navigation class
          *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
+         * @param baseUrl The url or Queryable which forms the parent of these navigation components
          */
         constructor(baseUrl: string | Queryable, path?: string);
         /**
-         * Gets the quicklaunch navigation for the current context
+         * Gets the quicklaunch navigation nodes for the current context
          *
          */
         readonly quicklaunch: NavigationNodes;
         /**
-         * Gets the top bar navigation navigation for the current context
+         * Gets the top bar navigation nodes for the current context
          *
          */
         readonly topNavigationBar: NavigationNodes;
@@ -4983,22 +5089,40 @@ declare module "sharepoint/webs" {
     import { Features } from "sharepoint/features";
     import { QueryableShareableWeb } from "sharepoint/queryableshareable";
     import { RelatedItemManger } from "sharepoint/relateditems";
+    /**
+     * Describes a collection of webs
+     *
+     */
     export class Webs extends QueryableCollection {
+        /**
+         * Creates a new instance of the Webs class
+         *
+         * @param baseUrl The url or Queryable which forms the parent of this web collection
+         */
         constructor(baseUrl: string | Queryable, webPath?: string);
         /**
          * Adds a new web to the collection
          *
          * @param title The new web's title
          * @param url The new web's relative url
-         * @param description The web web's description
-         * @param template The web's template
-         * @param language The language code to use for this web
-         * @param inheritPermissions If true permissions will be inherited from the partent web
+         * @param description The new web's description
+         * @param template The new web's template internal name (default = STS)
+         * @param language The locale id that specifies the new web's language (default = 1033 [English, US])
+         * @param inheritPermissions When true, permissions will be inherited from the new web's parent (default = true)
          * @param additionalSettings Will be passed as part of the web creation body
          */
         add(title: string, url: string, description?: string, template?: string, language?: number, inheritPermissions?: boolean, additionalSettings?: TypedHash<string | number | boolean>): Promise<WebAddResult>;
     }
+    /**
+     * Describes a collection of web infos
+     *
+     */
     export class WebInfos extends QueryableCollection {
+        /**
+         * Creates a new instance of the WebInfos class
+         *
+         * @param baseUrl The url or Queryable which forms the parent of this web infos collection
+         */
         constructor(baseUrl: string | Queryable, webPath?: string);
     }
     /**
@@ -5014,16 +5138,29 @@ declare module "sharepoint/webs" {
          * @param url
          */
         static fromUrl(url: string, path?: string): Web;
+        /**
+         * Creates a new instance of the Web class
+         *
+         * @param baseUrl The url or Queryable which forms the parent of this web
+         */
         constructor(baseUrl: string | Queryable, path?: string);
+        /**
+         * Gets this web's subwebs
+         *
+         */
         readonly webs: Webs;
+        /**
+         * Gets a collection of WebInfos for this web's subwebs
+         *
+         */
         readonly webinfos: WebInfos;
         /**
-         * Get the content types available in this web
+         * Gets the content types available in this web
          *
          */
         readonly contentTypes: ContentTypes;
         /**
-         * Get the lists in this web
+         * Gets the lists in this web
          *
          */
         readonly lists: Lists;
@@ -5043,7 +5180,7 @@ declare module "sharepoint/webs" {
          */
         readonly availablefields: Fields;
         /**
-         * Get the navigation options in this web
+         * Gets the navigation options in this web
          *
          */
         readonly navigation: Navigation;
@@ -5062,17 +5199,17 @@ declare module "sharepoint/webs" {
          */
         readonly currentUser: CurrentUser;
         /**
-         * Get the folders in this web
+         * Gets the top-level folders in this web
          *
          */
         readonly folders: Folders;
         /**
-         * Get all custom actions on a site
+         * Gets all user custom actions for this web
          *
          */
         readonly userCustomActions: UserCustomActions;
         /**
-         * Gets the collection of RoleDefinition resources.
+         * Gets the collection of RoleDefinition resources
          *
          */
         readonly roleDefinitions: RoleDefinitions;
@@ -5082,123 +5219,154 @@ declare module "sharepoint/webs" {
          */
         readonly relatedItems: RelatedItemManger;
         /**
-         * Creates a new batch for requests within the context of context this web
+         * Creates a new batch for requests within the context of this web
          *
          */
         createBatch(): ODataBatch;
         /**
-         * The root folder of the web
+         * Gets the root folder of this web
+         *
          */
         readonly rootFolder: Folder;
+        /**
+         * Gets the associated owner group for this web
+         *
+         */
         readonly associatedOwnerGroup: SiteGroup;
+        /**
+         * Gets the associated member group for this web
+         *
+         */
         readonly associatedMemberGroup: SiteGroup;
+        /**
+         * Gets the associated visitor group for this web
+         *
+         */
         readonly associatedVisitorGroup: SiteGroup;
         /**
-         * Get a folder by server relative url
+         * Gets a folder by server relative url
          *
-         * @param folderRelativeUrl the server relative path to the folder (including /sites/ if applicable)
+         * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
          */
         getFolderByServerRelativeUrl(folderRelativeUrl: string): Folder;
         /**
-         * Get a file by server relative url
+         * Gets a file by server relative url
          *
-         * @param fileRelativeUrl the server relative path to the file (including /sites/ if applicable)
+         * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
          */
         getFileByServerRelativeUrl(fileRelativeUrl: string): File;
         /**
-         * Get a list by server relative url (list's root folder)
+         * Gets a list by server relative url (list's root folder)
          *
-         * @param listRelativeUrl the server relative path to the list's root folder (including /sites/ if applicable)
+         * @param listRelativeUrl The server relative path to the list's root folder (including /sites/ if applicable)
          */
         getList(listRelativeUrl: string): List;
         /**
-         * Updates this web intance with the supplied properties
+         * Updates this web instance with the supplied properties
          *
          * @param properties A plain object hash of values to update for the web
          */
         update(properties: TypedHash<string | number | boolean>): Promise<WebUpdateResult>;
         /**
-         * Delete this web
+         * Deletes this web
          *
          */
         delete(): Promise<void>;
         /**
-         * Applies the theme specified by the contents of each of the files specified in the arguments to the site.
+         * Applies the theme specified by the contents of each of the files specified in the arguments to the site
          *
-         * @param colorPaletteUrl Server-relative URL of the color palette file.
-         * @param fontSchemeUrl Server-relative URL of the font scheme.
-         * @param backgroundImageUrl Server-relative URL of the background image.
-         * @param shareGenerated true to store the generated theme files in the root site, or false to store them in this site.
+         * @param colorPaletteUrl The server-relative URL of the color palette file
+         * @param fontSchemeUrl The server-relative URL of the font scheme
+         * @param backgroundImageUrl The server-relative URL of the background image
+         * @param shareGenerated When true, the generated theme files are stored in the root site. When false, they are stored in this web
          */
         applyTheme(colorPaletteUrl: string, fontSchemeUrl: string, backgroundImageUrl: string, shareGenerated: boolean): Promise<void>;
         /**
-         * Applies the specified site definition or site template to the Web site that has no template applied to it.
+         * Applies the specified site definition or site template to the Web site that has no template applied to it
          *
          * @param template Name of the site definition or the name of the site template
          */
         applyWebTemplate(template: string): Promise<void>;
         /**
-         * Returns whether the current user has the given set of permissions.
+         * Returns whether the current user has the given set of permissions
          *
-         * @param perms The high and low permission range.
+         * @param perms The high and low permission range
          */
         doesUserHavePermissions(perms: BasePermissions): Promise<boolean>;
         /**
-         * Checks whether the specified login name belongs to a valid user in the site. If the user doesn't exist, adds the user to the site.
+         * Checks whether the specified login name belongs to a valid user in the web. If the user doesn't exist, adds the user to the web.
          *
          * @param loginName The login name of the user (ex: i:0#.f|membership|user@domain.onmicrosoft.com)
          */
         ensureUser(loginName: string): Promise<WebEnsureUserResult>;
         /**
-         * Returns a collection of site templates available for the site.
+         * Returns a collection of site templates available for the site
          *
-         * @param language The LCID of the site templates to get.
-         * @param true to include language-neutral site templates; otherwise false
+         * @param language The locale id of the site templates to retrieve (default = 1033 [English, US])
+         * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
          */
         availableWebTemplates(language?: number, includeCrossLanugage?: boolean): QueryableCollection;
         /**
-         * Returns the list gallery on the site.
+         * Returns the list gallery on the site
          *
          * @param type The gallery type - WebTemplateCatalog = 111, WebPartCatalog = 113 ListTemplateCatalog = 114,
          * MasterPageCatalog = 116, SolutionCatalog = 121, ThemeCatalog = 123, DesignCatalog = 124, AppDataCatalog = 125
          */
         getCatalog(type: number): Promise<List>;
         /**
-         * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
+         * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+         *
+         * @param query The change query
          */
         getChanges(query: ChangeQuery): Promise<any>;
         /**
-         * Gets the custom list templates for the site.
+         * Gets the custom list templates for the site
          *
          */
         readonly customListTemplate: QueryableCollection;
         /**
-         * Returns the user corresponding to the specified member identifier for the current site.
+         * Returns the user corresponding to the specified member identifier for the current site
          *
-         * @param id The ID of the user.
+         * @param id The id of the user
          */
         getUserById(id: number): SiteUser;
         /**
-         * Returns the name of the image file for the icon that is used to represent the specified file.
+         * Returns the name of the image file for the icon that is used to represent the specified file
          *
-         * @param filename The file name. If this parameter is empty, the server returns an empty string.
-         * @param size The size of the icon: 16x16 pixels = 0, 32x32 pixels = 1.
+         * @param filename The file name. If this parameter is empty, the server returns an empty string
+         * @param size The size of the icon: 16x16 pixels = 0, 32x32 pixels = 1 (default = 0)
          * @param progId The ProgID of the application that was used to create the file, in the form OLEServerName.ObjectName
          */
         mapToIcon(filename: string, size?: number, progId?: string): Promise<string>;
     }
+    /**
+     * Result from adding a web
+     *
+     */
     export interface WebAddResult {
         data: any;
         web: Web;
     }
+    /**
+     * Result from updating a web
+     *
+     */
     export interface WebUpdateResult {
         data: any;
         web: Web;
     }
+    /**
+     * Result from retrieving a catalog
+     *
+     */
     export interface GetCatalogResult {
         data: any;
         list: List;
     }
+    /**
+     * Result from ensuring a user
+     *
+     */
     export interface WebEnsureUserResult {
         data: SiteUserProps;
         user: SiteUser;
@@ -5217,9 +5385,9 @@ declare module "sharepoint/site" {
      */
     export class Site extends QueryableInstance {
         /**
-         * Creates a new instance of the RoleAssignments class
+         * Creates a new instance of the Site class
          *
-         * @param baseUrl The url or Queryable which forms the parent of this fields collection
+         * @param baseUrl The url or Queryable which forms the parent of this site collection
          */
         constructor(baseUrl: string | Queryable, path?: string);
         /**
@@ -5228,17 +5396,17 @@ declare module "sharepoint/site" {
          */
         readonly rootWeb: Web;
         /**
-         * Gets the active features for this site
+         * Gets the active features for this site collection
          *
          */
         readonly features: Features;
         /**
-         * Get all custom actions on a site collection
+         * Gets all custom actions for this site collection
          *
          */
         readonly userCustomActions: UserCustomActions;
         /**
-         * Gets the context information for the site.
+         * Gets the context information for this site collection
          */
         getContextInfo(): Promise<ContextInfo>;
         /**
@@ -5248,25 +5416,25 @@ declare module "sharepoint/site" {
          */
         getDocumentLibraries(absoluteWebUrl: string): Promise<DocumentLibraryInformation[]>;
         /**
-         * Gets the site URL from a page URL.
+         * Gets the site url from a page url
          *
          * @param absolutePageUrl The absolute url of the page
          */
         getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string>;
         /**
-         * Creates a new batch for requests within the context of context this site
+         * Creates a new batch for requests within the context of this site collection
          *
          */
         createBatch(): ODataBatch;
         /**
-         * Opens a web by Id (using POST)
+         * Opens a web by id (using POST)
          *
-         * @param webId The GUID id fo the web to open
+         * @param webId The GUID id of the web to open
          */
         openWebById(webId: string): Promise<OpenWebByIdResult>;
     }
     /**
-     * The result of opening a web by id, contains the data retruned as well as a chainable web instance
+     * The result of opening a web by id: contains the data returned as well as a chainable web instance
      */
     export interface OpenWebByIdResult {
         data: any;
@@ -5292,51 +5460,56 @@ declare module "sharepoint/userprofiles" {
     import { HashTagCollection, UserProfile } from "sharepoint/types";
     export class UserProfileQuery extends QueryableInstance {
         private profileLoader;
+        /**
+         * Creates a new instance of the UserProfileQuery class
+         *
+         * @param baseUrl The url or Queryable which forms the parent of this user profile query
+         */
         constructor(baseUrl: string | Queryable, path?: string);
         /**
-         * The URL of the edit profile page for the current user.
+         * The url of the edit profile page for the current user
          */
         readonly editProfileLink: Promise<string>;
         /**
-         * A Boolean value that indicates whether the current user's People I'm Following list is public.
+         * A boolean value that indicates whether the current user's "People I'm Following" list is public
          */
         readonly isMyPeopleListPublic: Promise<boolean>;
         /**
-         * A Boolean value that indicates whether the current user's People I'm Following list is public.
+         * A boolean value that indicates whether the current user is being followed by the specified user
          *
          * @param loginName The account name of the user
          */
         amIFollowedBy(loginName: string): Promise<boolean>;
         /**
-         * Checks whether the current user is following the specified user.
+         * A boolean value that indicates whether the current user is following the specified user
          *
          * @param loginName The account name of the user
          */
         amIFollowing(loginName: string): Promise<boolean>;
         /**
-         * Gets tags that the user is following.
+         * Gets tags that the current user is following
          *
-         * @param maxCount The maximum number of tags to get.
+         * @param maxCount The maximum number of tags to retrieve (default is 20)
          */
         getFollowedTags(maxCount?: number): Promise<string[]>;
         /**
-         * Gets the people who are following the specified user.
+         * Gets the people who are following the specified user
          *
-         * @param loginName The account name of the user.
+         * @param loginName The account name of the user
          */
         getFollowersFor(loginName: string): Promise<any[]>;
         /**
-         * Gets the people who are following the current user.
+         * Gets the people who are following the current user
          *
          */
         readonly myFollowers: QueryableCollection;
         /**
-         * Gets user properties for the current user.
+         * Gets user properties for the current user
          *
          */
         readonly myProperties: QueryableInstance;
         /**
-         * Gets the people who the specified user is following.
+         * Gets the people who the specified user is following
          *
          * @param loginName The account name of the user.
          */
@@ -5348,34 +5521,34 @@ declare module "sharepoint/userprofiles" {
          */
         getPropertiesFor(loginName: string): Promise<any[]>;
         /**
-         * Gets the most popular tags.
+         * Gets the 20 most popular hash tags over the past week, sorted so that the most popular tag appears first
          *
          */
         readonly trendingTags: Promise<HashTagCollection>;
         /**
-         * Gets the specified user profile property for the specified user.
+         * Gets the specified user profile property for the specified user
          *
-         * @param loginName The account name of the user.
-         * @param propertyName The case-sensitive name of the property to get.
+         * @param loginName The account name of the user
+         * @param propertyName The case-sensitive name of the property to get
          */
         getUserProfilePropertyFor(loginName: string, propertyName: string): Promise<string>;
         /**
-         * Removes the specified user from the user's list of suggested people to follow.
+         * Removes the specified user from the user's list of suggested people to follow
          *
-         * @param loginName The account name of the user.
+         * @param loginName The account name of the user
          */
         hideSuggestion(loginName: string): Promise<void>;
         /**
-         * Checks whether the first user is following the second user.
+         * A boolean values that indicates whether the first user is following the second user
          *
-         * @param follower The account name of the user who might be following followee.
-         * @param followee The account name of the user who might be followed.
+         * @param follower The account name of the user who might be following the followee
+         * @param followee The account name of the user who might be followed by the follower
          */
         isFollowing(follower: string, followee: string): Promise<boolean>;
         /**
-         * Uploads and sets the user profile picture. Not supported for batching.
+         * Uploads and sets the user profile picture (Users can upload a picture to their own profile only). Not supported for batching.
          *
-         * @param profilePicSource Blob data representing the user's picture
+         * @param profilePicSource Blob data representing the user's picture in BMP, JPEG, or PNG format of up to 4.76MB
          */
         setMyProfilePic(profilePicSource: Blob): Promise<void>;
         /**
@@ -5385,24 +5558,24 @@ declare module "sharepoint/userprofiles" {
          */
         createPersonalSiteEnqueueBulk(...emails: string[]): Promise<void>;
         /**
-         * Gets the user profile of the site owner.
+         * Gets the user profile of the site owner
          *
          */
         readonly ownerUserProfile: Promise<UserProfile>;
         /**
-         * Gets the user profile that corresponds to the current user.
+         * Gets the user profile for the current user
          */
         readonly userProfile: Promise<any>;
         /**
-         * Enqueues creating a personal site for this user, which can be used to share documents, web pages, and other files.
+         * Enqueues creating a personal site for this user, which can be used to share documents, web pages, and other files
          *
-         * @param interactiveRequest true if interactively (web) initiated request, or false if non-interactively (client) initiated request
+         * @param interactiveRequest true if interactively (web) initiated request, or false (default) if non-interactively (client) initiated request
          */
         createPersonalSite(interactiveRequest?: boolean): Promise<void>;
         /**
-         * Sets the privacy settings for this profile.
+         * Sets the privacy settings for this profile
          *
-         * @param share true to make all social data public; false to make all social data private.
+         * @param share true to make all social data public; false to make all social data private
          */
         shareAllSocialData(share: boolean): Promise<void>;
     }
@@ -5563,6 +5736,7 @@ declare module "sharepoint/index" {
     export { UserCustomActionAddResult, UserCustomActionUpdateResult } from "sharepoint/usercustomactions";
     export { UtilityMethod, CreateWikiPageResult } from "sharepoint/utilities";
     export { ViewAddResult, ViewUpdateResult } from "sharepoint/views";
+    export { WebPartDefinitions, WebPartDefinition, WebPart } from "sharepoint/webparts";
     export { Web, WebAddResult, WebUpdateResult, GetCatalogResult, WebEnsureUserResult } from "sharepoint/webs";
 }
 declare module "net/sprequestexecutorclient" {
