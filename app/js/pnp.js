@@ -1,5 +1,5 @@
 /**
- * sp-pnp-js v2.0.6 - A JavaScript library for SharePoint development.
+ * sp-pnp-js v2.0.8 - A JavaScript library for SharePoint development.
  * MIT (https://github.com/SharePoint/PnP-JS-Core/blob/master/LICENSE)
  * Copyright (c) 2017 Microsoft
  * docs: http://officedev.github.io/PnP-JS-Core
@@ -51,9 +51,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -81,7 +78,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/assets/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 42);
+/******/ 	return __webpack_require__(__webpack_require__.s = 34);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -92,6 +89,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /* WEBPACK VAR INJECTION */(function(global) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var pnplibconfig_1 = __webpack_require__(4);
+function extractWebUrl(candidateUrl) {
+    if (candidateUrl === null) {
+        return "";
+    }
+    var index = candidateUrl.indexOf("_api/");
+    if (index > -1) {
+        return candidateUrl.substr(0, index);
+    }
+    // if all else fails just give them what they gave us back
+    return candidateUrl;
+}
+exports.extractWebUrl = extractWebUrl;
 var Util = (function () {
     function Util() {
     }
@@ -166,7 +175,7 @@ var Util = (function () {
      * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
      */
     Util.dateAdd = function (date, interval, units) {
-        var ret = new Date(date.toLocaleString()); // don't change original date
+        var ret = new Date(date); // don't change original date
         switch (interval.toLowerCase()) {
             case "year":
                 ret.setFullYear(ret.getFullYear() + units);
@@ -359,7 +368,7 @@ var Util = (function () {
 }());
 exports.Util = Util;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }),
 /* 1 */
@@ -380,11 +389,12 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var collections_1 = __webpack_require__(6);
+var httpclient_1 = __webpack_require__(9);
 var odata_1 = __webpack_require__(2);
 var pnplibconfig_1 = __webpack_require__(4);
 var exceptions_1 = __webpack_require__(3);
 var logging_1 = __webpack_require__(5);
-var pipeline_1 = __webpack_require__(46);
+var pipeline_1 = __webpack_require__(38);
 /**
  * Queryable Base Class
  *
@@ -398,6 +408,7 @@ var Queryable = (function () {
      *
      */
     function Queryable(baseUrl, path) {
+        this._options = {};
         this._query = new collections_1.Dictionary();
         this._batch = null;
         if (typeof baseUrl === "string") {
@@ -425,6 +436,7 @@ var Queryable = (function () {
         else {
             var q = baseUrl;
             this._parentUrl = q._url;
+            this._options = q._options;
             var target = q._query.get("@target");
             if (target !== null) {
                 this._query.add("@target", target);
@@ -503,6 +515,15 @@ var Queryable = (function () {
         configurable: true
     });
     /**
+     * Sets custom options for current object and all derived objects accessible via chaining
+     *
+     * @param options custom options
+     */
+    Queryable.prototype.configure = function (options) {
+        httpclient_1.mergeOptions(this._options, options);
+        return this;
+    };
+    /**
      * Creates a new instance of the supplied factory and extends this into that new instance
      *
      * @param factory constructor for the new queryable
@@ -574,6 +595,7 @@ var Queryable = (function () {
     Queryable.prototype.getParent = function (factory, baseUrl, path, batch) {
         if (baseUrl === void 0) { baseUrl = this.parentUrl; }
         var parent = new factory(baseUrl, path);
+        parent.configure(this._options);
         var target = this.query.get("@target");
         if (target !== null) {
             parent.query.add("@target", target);
@@ -617,22 +639,22 @@ var Queryable = (function () {
         if (getOptions === void 0) { getOptions = {}; }
         return this.toRequestContext("GET", getOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
     };
-    Queryable.prototype.post = function (postOptions, parser) {
+    Queryable.prototype.postCore = function (postOptions, parser) {
         if (postOptions === void 0) { postOptions = {}; }
         if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
         return this.toRequestContext("POST", postOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
     };
-    Queryable.prototype.postAs = function (postOptions, parser) {
+    Queryable.prototype.postAsCore = function (postOptions, parser) {
         if (postOptions === void 0) { postOptions = {}; }
         if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
         return this.toRequestContext("POST", postOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
     };
-    Queryable.prototype.patch = function (patchOptions, parser) {
+    Queryable.prototype.patchCore = function (patchOptions, parser) {
         if (patchOptions === void 0) { patchOptions = {}; }
         if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
         return this.toRequestContext("PATCH", patchOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
     };
-    Queryable.prototype.delete = function (deleteOptions, parser) {
+    Queryable.prototype.deleteCore = function (deleteOptions, parser) {
         if (deleteOptions === void 0) { deleteOptions = {}; }
         if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
         return this.toRequestContext("DELETE", deleteOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
@@ -651,6 +673,7 @@ var Queryable = (function () {
         if (pipeline === void 0) { pipeline = pipeline_1.PipelineMethods.default; }
         var dependencyDispose = this.hasBatch ? this.addBatchDependency() : function () { return; };
         return util_1.Util.toAbsoluteUrl(this.toUrlAndQuery()).then(function (url) {
+            httpclient_1.mergeOptions(options, _this._options);
             // build our request context
             var context = {
                 batch: _this._batch,
@@ -824,10 +847,9 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var logging_1 = __webpack_require__(5);
-var httpclient_1 = __webpack_require__(15);
+var httpclient_1 = __webpack_require__(9);
 var pnplibconfig_1 = __webpack_require__(4);
 var exceptions_1 = __webpack_require__(3);
-var exceptions_2 = __webpack_require__(3);
 function extractOdataId(candidate) {
     if (candidate.hasOwnProperty("odata.id")) {
         return candidate["odata.id"];
@@ -851,7 +873,11 @@ var ODataParserBase = (function () {
                     resolve({});
                 }
                 else {
-                    r.json().then(function (json) { return resolve(_this.parseODataJSON(json)); }).catch(function (e) { return reject(e); });
+                    // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
+                    r.text()
+                        .then(function (txt) { return txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {}; })
+                        .then(function (json) { return resolve(_this.parseODataJSON(json)); })
+                        .catch(function (e) { return reject(e); });
                 }
             }
         });
@@ -864,7 +890,7 @@ var ODataParserBase = (function () {
                     responseBody: json,
                     responseHeaders: r.headers,
                 };
-                reject(new exceptions_2.ProcessHttpClientResponseException(r.status, r.statusText, data));
+                reject(new exceptions_1.ProcessHttpClientResponseException(r.status, r.statusText, data));
             }).catch(function (e) {
                 // we failed to read the body - possibly it is empty. Let's report the original status that caused
                 // the request to fail and log the error with parsing the body if anyone needs it for debugging
@@ -878,7 +904,7 @@ var ODataParserBase = (function () {
                     responseBody: "[[body not available]]",
                     responseHeaders: r.headers,
                 };
-                reject(new exceptions_2.ProcessHttpClientResponseException(r.status, r.statusText, data));
+                reject(new exceptions_1.ProcessHttpClientResponseException(r.status, r.statusText, data));
             });
         }
         return r.ok;
@@ -963,9 +989,9 @@ var ODataEntityArrayParserImpl = (function (_super) {
     return ODataEntityArrayParserImpl;
 }(ODataParserBase));
 function getEntityUrl(entity) {
-    if (entity.hasOwnProperty("odata.editLink")) {
+    if (entity.hasOwnProperty("odata.metadata") && entity.hasOwnProperty("odata.editLink")) {
         // we are dealign with minimal metadata (default)
-        return util_1.Util.combinePaths("_api", entity["odata.editLink"]);
+        return util_1.Util.combinePaths(util_1.extractWebUrl(entity["odata.metadata"]), "_api", entity["odata.editLink"]);
     }
     else if (entity.hasOwnProperty("__metadata")) {
         // we are dealing with verbose, which has an absolute uri
@@ -1098,9 +1124,7 @@ var ODataBatch = (function () {
                 // common batch part prefix
                 batchBody.push("Content-Type: application/http\n");
                 batchBody.push("Content-Transfer-Encoding: binary\n\n");
-                var headers = {
-                    "Accept": "application/json;",
-                };
+                var headers = new Headers();
                 // this is the url of the individual request within the batch
                 var url = util_1.Util.isUrlAbsolute(reqInfo.url) ? reqInfo.url : util_1.Util.combinePaths(absoluteRequestUrl, reqInfo.url);
                 logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", logging_1.LogLevel.Verbose);
@@ -1111,22 +1135,31 @@ var ODataBatch = (function () {
                         delete reqInfo.options.headers["X-HTTP-Method"];
                     }
                     batchBody.push(method + " " + url + " HTTP/1.1\n");
-                    headers = util_1.Util.extend(headers, { "Content-Type": "application/json;odata=verbose;charset=utf-8" });
+                    headers.set("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 else {
                     batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
                 }
-                if (typeof pnplibconfig_1.RuntimeConfig.headers !== "undefined") {
-                    headers = util_1.Util.extend(headers, pnplibconfig_1.RuntimeConfig.headers);
+                // merge global config headers
+                httpclient_1.mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.headers);
+                // merge per-request headers
+                if (reqInfo.options) {
+                    httpclient_1.mergeHeaders(headers, reqInfo.options.headers);
                 }
-                if (reqInfo.options && reqInfo.options.headers) {
-                    headers = util_1.Util.extend(headers, reqInfo.options.headers);
+                // lastly we apply any default headers we need that may not exist
+                if (!headers.has("Accept")) {
+                    headers.append("Accept", "application/json");
                 }
-                for (var name_1 in headers) {
-                    if (headers.hasOwnProperty(name_1)) {
-                        batchBody.push(name_1 + ": " + headers[name_1] + "\n");
-                    }
+                if (!headers.has("Content-Type")) {
+                    headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
+                if (!headers.has("X-ClientService-ClientTag")) {
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:2.0.8");
+                }
+                // write headers into batch body
+                headers.forEach(function (value, name) {
+                    batchBody.push(name + ": " + value + "\n");
+                });
                 batchBody.push("\n");
                 if (reqInfo.options.body) {
                     batchBody.push(reqInfo.options.body + "\n\n");
@@ -1470,6 +1503,8 @@ var RuntimeConfigImpl = (function () {
         this._fetchClientFactory = function () { return new fetchclient_1.FetchClient(); };
         this._baseUrl = null;
         this._spfxContext = null;
+        this._enableCacheExpiration = false;
+        this._cacheExpirationIntervalMilliseconds = 750;
     }
     RuntimeConfigImpl.prototype.set = function (config) {
         if (config.hasOwnProperty("headers")) {
@@ -1492,6 +1527,14 @@ var RuntimeConfigImpl = (function () {
         }
         if (config.hasOwnProperty("spfxContext")) {
             this._spfxContext = config.spfxContext;
+        }
+        if (config.hasOwnProperty("enableCacheExpiration")) {
+            this._enableCacheExpiration = config.enableCacheExpiration;
+        }
+        if (config.hasOwnProperty("cacheExpirationIntervalMilliseconds")) {
+            // we don't let the interval be less than 300 milliseconds
+            var interval = config.cacheExpirationIntervalMilliseconds < 300 ? 300 : config.cacheExpirationIntervalMilliseconds;
+            this._cacheExpirationIntervalMilliseconds = interval;
         }
     };
     Object.defineProperty(RuntimeConfigImpl.prototype, "headers", {
@@ -1538,6 +1581,20 @@ var RuntimeConfigImpl = (function () {
                 return this._spfxContext.pageContext.web.absoluteUrl;
             }
             return null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "enableCacheExpiration", {
+        get: function () {
+            return this._enableCacheExpiration;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "cacheExpirationIntervalMilliseconds", {
+        get: function () {
+            return this._cacheExpirationIntervalMilliseconds;
         },
         enumerable: true,
         configurable: true
@@ -1743,7 +1800,12 @@ var ConsoleListener = (function () {
      * @param entry The information to format into a string
      */
     ConsoleListener.prototype.format = function (entry) {
-        return "Message: " + entry.message + " Data: " + JSON.stringify(entry.data);
+        var msg = [];
+        msg.push("Message: " + entry.message);
+        if (typeof entry.data !== "undefined") {
+            msg.push(" Data: " + JSON.stringify(entry.data));
+        }
+        return msg.join("");
     };
     return ConsoleListener;
 }());
@@ -1908,563 +1970,22 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(2);
+var lists_1 = __webpack_require__(10);
+var fields_1 = __webpack_require__(29);
+var navigation_1 = __webpack_require__(30);
+var sitegroups_1 = __webpack_require__(17);
+var contenttypes_1 = __webpack_require__(18);
+var folders_1 = __webpack_require__(14);
+var roles_1 = __webpack_require__(16);
+var files_1 = __webpack_require__(8);
 var util_1 = __webpack_require__(0);
-var exceptions_1 = __webpack_require__(3);
-var webparts_1 = __webpack_require__(32);
-var items_1 = __webpack_require__(10);
-var queryableshareable_1 = __webpack_require__(12);
-var odata_2 = __webpack_require__(2);
-/**
- * Describes a collection of File objects
- *
- */
-var Files = (function (_super) {
-    __extends(Files, _super);
-    /**
-     * Creates a new instance of the Files class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Files(baseUrl, path) {
-        if (path === void 0) { path = "files"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a File by filename
-     *
-     * @param name The name of the file, including extension.
-     */
-    Files.prototype.getByName = function (name) {
-        var f = new File(this);
-        f.concat("('" + name + "')");
-        return f;
-    };
-    /**
-     * Uploads a file. Not supported for batching
-     *
-     * @param url The folder-relative url of the file.
-     * @param content The file contents blob.
-     * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
-     * @returns The new File and the raw response.
-     */
-    Files.prototype.add = function (url, content, shouldOverWrite) {
-        var _this = this;
-        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        return new Files(this, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')")
-            .post({
-            body: content,
-        }).then(function (response) {
-            return {
-                data: response,
-                file: _this.getByName(url),
-            };
-        });
-    };
-    /**
-     * Uploads a file. Not supported for batching
-     *
-     * @param url The folder-relative url of the file.
-     * @param content The Blob file content to add
-     * @param progress A callback function which can be used to track the progress of the upload
-     * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
-     * @param chunkSize The size of each file slice, in bytes (default: 10485760)
-     * @returns The new File and the raw response.
-     */
-    Files.prototype.addChunked = function (url, content, progress, shouldOverWrite, chunkSize) {
-        var _this = this;
-        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        if (chunkSize === void 0) { chunkSize = 10485760; }
-        var adder = this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')");
-        return adder.post().then(function () { return _this.getByName(url); }).then(function (file) { return file.setContentChunked(content, progress, chunkSize); }).then(function (response) {
-            return {
-                data: response,
-                file: _this.getByName(url),
-            };
-        });
-    };
-    /**
-     * Adds a ghosted file to an existing list or document library. Not supported for batching.
-     *
-     * @param fileUrl The server-relative url where you want to save the file.
-     * @param templateFileType The type of use to create the file.
-     * @returns The template file that was added and the raw response.
-     */
-    Files.prototype.addTemplateFile = function (fileUrl, templateFileType) {
-        var _this = this;
-        return this.clone(Files, "addTemplateFile(urloffile='" + fileUrl + "',templatefiletype=" + templateFileType + ")")
-            .post().then(function (response) {
-            return {
-                data: response,
-                file: _this.getByName(fileUrl),
-            };
-        });
-    };
-    return Files;
-}(queryable_1.QueryableCollection));
-exports.Files = Files;
-/**
- * Describes a single File instance
- *
- */
-var File = (function (_super) {
-    __extends(File, _super);
-    function File() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(File.prototype, "listItemAllFields", {
-        /**
-         * Gets a value that specifies the list item field values for the list item corresponding to the file.
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableCollection(this, "listItemAllFields");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(File.prototype, "versions", {
-        /**
-         * Gets a collection of versions
-         *
-         */
-        get: function () {
-            return new Versions(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Approves the file submitted for content approval with the specified comment.
-     * Only documents in lists that are enabled for content approval can be approved.
-     *
-     * @param comment The comment for the approval.
-     */
-    File.prototype.approve = function (comment) {
-        if (comment === void 0) { comment = ""; }
-        return this.clone(File, "approve(comment='" + comment + "')", true).post();
-    };
-    /**
-     * Stops the chunk upload session without saving the uploaded data. Does not support batching.
-     * If the file doesn’t already exist in the library, the partially uploaded file will be deleted.
-     * Use this in response to user action (as in a request to cancel an upload) or an error or exception.
-     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     */
-    File.prototype.cancelUpload = function (uploadId) {
-        return this.clone(File, "cancelUpload(uploadId=guid'" + uploadId + "')", false).post();
-    };
-    /**
-     * Checks the file in to a document library based on the check-in type.
-     *
-     * @param comment A comment for the check-in. Its length must be <= 1023.
-     * @param checkinType The check-in type for the file.
-     */
-    File.prototype.checkin = function (comment, checkinType) {
-        if (comment === void 0) { comment = ""; }
-        if (checkinType === void 0) { checkinType = CheckinType.Major; }
-        if (comment.length > 1023) {
-            throw new exceptions_1.MaxCommentLengthException();
-        }
-        return this.clone(File, "checkin(comment='" + comment + "',checkintype=" + checkinType + ")", true).post();
-    };
-    /**
-     * Checks out the file from a document library.
-     */
-    File.prototype.checkout = function () {
-        return this.clone(File, "checkout", true).post();
-    };
-    /**
-     * Copies the file to the destination url.
-     *
-     * @param url The absolute url or server relative url of the destination file path to copy to.
-     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
-     */
-    File.prototype.copyTo = function (url, shouldOverWrite) {
-        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        return this.clone(File, "copyTo(strnewurl='" + url + "',boverwrite=" + shouldOverWrite + ")", true).post();
-    };
-    /**
-     * Delete this file.
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    File.prototype.delete = function (eTag) {
-        if (eTag === void 0) { eTag = "*"; }
-        return this.clone(File, null, true).post({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    /**
-     * Denies approval for a file that was submitted for content approval.
-     * Only documents in lists that are enabled for content approval can be denied.
-     *
-     * @param comment The comment for the denial.
-     */
-    File.prototype.deny = function (comment) {
-        if (comment === void 0) { comment = ""; }
-        if (comment.length > 1023) {
-            throw new exceptions_1.MaxCommentLengthException();
-        }
-        return this.clone(File, "deny(comment='" + comment + "')", true).post();
-    };
-    /**
-     * Specifies the control set used to access, modify, or add Web Parts associated with this Web Part Page and view.
-     * An exception is thrown if the file is not an ASPX page.
-     *
-     * @param scope The WebPartsPersonalizationScope view on the Web Parts page.
-     */
-    File.prototype.getLimitedWebPartManager = function (scope) {
-        if (scope === void 0) { scope = WebPartsPersonalizationScope.Shared; }
-        return new webparts_1.LimitedWebPartManager(this, "getLimitedWebPartManager(scope=" + scope + ")");
-    };
-    /**
-     * Moves the file to the specified destination url.
-     *
-     * @param url The absolute url or server relative url of the destination file path to move to.
-     * @param moveOperations The bitwise MoveOperations value for how to move the file.
-     */
-    File.prototype.moveTo = function (url, moveOperations) {
-        if (moveOperations === void 0) { moveOperations = MoveOperations.Overwrite; }
-        return this.clone(File, "moveTo(newurl='" + url + "',flags=" + moveOperations + ")", true).post();
-    };
-    /**
-     * Submits the file for content approval with the specified comment.
-     *
-     * @param comment The comment for the published file. Its length must be <= 1023.
-     */
-    File.prototype.publish = function (comment) {
-        if (comment === void 0) { comment = ""; }
-        if (comment.length > 1023) {
-            throw new exceptions_1.MaxCommentLengthException();
-        }
-        return this.clone(File, "publish(comment='" + comment + "')", true).post();
-    };
-    /**
-     * Moves the file to the Recycle Bin and returns the identifier of the new Recycle Bin item.
-     *
-     * @returns The GUID of the recycled file.
-     */
-    File.prototype.recycle = function () {
-        return this.clone(File, "recycle", true).post();
-    };
-    /**
-     * Reverts an existing checkout for the file.
-     *
-     */
-    File.prototype.undoCheckout = function () {
-        return this.clone(File, "undoCheckout", true).post();
-    };
-    /**
-     * Removes the file from content approval or unpublish a major version.
-     *
-     * @param comment The comment for the unpublish operation. Its length must be <= 1023.
-     */
-    File.prototype.unpublish = function (comment) {
-        if (comment === void 0) { comment = ""; }
-        if (comment.length > 1023) {
-            throw new exceptions_1.MaxCommentLengthException();
-        }
-        return this.clone(File, "unpublish(comment='" + comment + "')", true).post();
-    };
-    /**
-     * Gets the contents of the file as text. Not supported in batching.
-     *
-     */
-    File.prototype.getText = function () {
-        return this.clone(File, "$value").get(new odata_1.TextFileParser(), { headers: { "binaryStringResponseBody": "true" } });
-    };
-    /**
-     * Gets the contents of the file as a blob, does not work in Node.js. Not supported in batching.
-     *
-     */
-    File.prototype.getBlob = function () {
-        return this.clone(File, "$value").get(new odata_1.BlobFileParser(), { headers: { "binaryStringResponseBody": "true" } });
-    };
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
-     */
-    File.prototype.getBuffer = function () {
-        return this.clone(File, "$value").get(new odata_1.BufferFileParser(), { headers: { "binaryStringResponseBody": "true" } });
-    };
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
-     */
-    File.prototype.getJSON = function () {
-        return this.clone(File, "$value").get(new odata_1.JSONFileParser(), { headers: { "binaryStringResponseBody": "true" } });
-    };
-    /**
-     * Sets the content of a file, for large files use setContentChunked. Not supported in batching.
-     *
-     * @param content The file content
-     *
-     */
-    File.prototype.setContent = function (content) {
-        var _this = this;
-        return this.clone(File, "$value").post({
-            body: content,
-            headers: {
-                "X-HTTP-Method": "PUT",
-            },
-        }).then(function (_) { return new File(_this); });
-    };
-    /**
-     * Gets the associated list item for this folder, loading the default properties
-     */
-    File.prototype.getItem = function () {
-        var selects = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            selects[_i] = arguments[_i];
-        }
-        var q = this.listItemAllFields;
-        return q.select.apply(q, selects).get().then(function (d) {
-            return util_1.Util.extend(new items_1.Item(odata_2.getEntityUrl(d)), d);
-        });
-    };
-    /**
-     * Sets the contents of a file using a chunked upload approach. Not supported in batching.
-     *
-     * @param file The file to upload
-     * @param progress A callback function which can be used to track the progress of the upload
-     * @param chunkSize The size of each file slice, in bytes (default: 10485760)
-     */
-    File.prototype.setContentChunked = function (file, progress, chunkSize) {
-        if (chunkSize === void 0) { chunkSize = 10485760; }
-        if (typeof progress === "undefined") {
-            progress = function () { return null; };
-        }
-        var self = this;
-        var fileSize = file.size;
-        var blockCount = parseInt((file.size / chunkSize).toString(), 10) + ((file.size % chunkSize === 0) ? 1 : 0);
-        var uploadId = util_1.Util.getGUID();
-        // start the chain with the first fragment
-        progress({ blockNumber: 1, chunkSize: chunkSize, currentPointer: 0, fileSize: fileSize, stage: "starting", totalBlocks: blockCount });
-        var chain = self.startUpload(uploadId, file.slice(0, chunkSize));
-        var _loop_1 = function (i) {
-            chain = chain.then(function (pointer) {
-                progress({ blockNumber: i, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "continue", totalBlocks: blockCount });
-                return self.continueUpload(uploadId, pointer, file.slice(pointer, pointer + chunkSize));
-            });
-        };
-        // skip the first and last blocks
-        for (var i = 2; i < blockCount; i++) {
-            _loop_1(i);
-        }
-        return chain.then(function (pointer) {
-            progress({ blockNumber: blockCount, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "finishing", totalBlocks: blockCount });
-            return self.finishUpload(uploadId, pointer, file.slice(pointer));
-        }).then(function (_) {
-            return self;
-        });
-    };
-    /**
-     * Starts a new chunk upload session and uploads the first fragment.
-     * The current file content is not changed when this method completes.
-     * The method is idempotent (and therefore does not change the result) as long as you use the same values for uploadId and stream.
-     * The upload session ends either when you use the CancelUpload method or when you successfully
-     * complete the upload session by passing the rest of the file contents through the ContinueUpload and FinishUpload methods.
-     * The StartUpload and ContinueUpload methods return the size of the running total of uploaded data in bytes,
-     * so you can pass those return values to subsequent uses of ContinueUpload and FinishUpload.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     * @param fragment The file contents.
-     * @returns The size of the total uploaded data in bytes.
-     */
-    File.prototype.startUpload = function (uploadId, fragment) {
-        return this.clone(File, "startUpload(uploadId=guid'" + uploadId + "')").postAs({ body: fragment }).then(function (n) { return parseFloat(n); });
-    };
-    /**
-     * Continues the chunk upload session with an additional fragment.
-     * The current file content is not changed.
-     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     * @param fileOffset The size of the offset into the file where the fragment starts.
-     * @param fragment The file contents.
-     * @returns The size of the total uploaded data in bytes.
-     */
-    File.prototype.continueUpload = function (uploadId, fileOffset, fragment) {
-        return this.clone(File, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")").postAs({ body: fragment }).then(function (n) { return parseFloat(n); });
-    };
-    /**
-     * Uploads the last file fragment and commits the file. The current file content is changed when this method completes.
-     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     * @param fileOffset The size of the offset into the file where the fragment starts.
-     * @param fragment The file contents.
-     * @returns The newly uploaded file.
-     */
-    File.prototype.finishUpload = function (uploadId, fileOffset, fragment) {
-        return this.clone(File, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")")
-            .postAs({ body: fragment }).then(function (response) {
-            return {
-                data: response,
-                file: new File(response.ServerRelativeUrl),
-            };
-        });
-    };
-    return File;
-}(queryableshareable_1.QueryableShareableFile));
-exports.File = File;
-/**
- * Describes a collection of Version objects
- *
- */
-var Versions = (function (_super) {
-    __extends(Versions, _super);
-    /**
-     * Creates a new instance of the File class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Versions(baseUrl, path) {
-        if (path === void 0) { path = "versions"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a version by id
-     *
-     * @param versionId The id of the version to retrieve
-     */
-    Versions.prototype.getById = function (versionId) {
-        var v = new Version(this);
-        v.concat("(" + versionId + ")");
-        return v;
-    };
-    /**
-     * Deletes all the file version objects in the collection.
-     *
-     */
-    Versions.prototype.deleteAll = function () {
-        return new Versions(this, "deleteAll").post();
-    };
-    /**
-     * Deletes the specified version of the file.
-     *
-     * @param versionId The ID of the file version to delete.
-     */
-    Versions.prototype.deleteById = function (versionId) {
-        return this.clone(Versions, "deleteById(vid=" + versionId + ")", true).post();
-    };
-    /**
-     * Deletes the file version object with the specified version label.
-     *
-     * @param label The version label of the file version to delete, for example: 1.2
-     */
-    Versions.prototype.deleteByLabel = function (label) {
-        return this.clone(Versions, "deleteByLabel(versionlabel='" + label + "')", true).post();
-    };
-    /**
-     * Creates a new file version from the file specified by the version label.
-     *
-     * @param label The version label of the file version to restore, for example: 1.2
-     */
-    Versions.prototype.restoreByLabel = function (label) {
-        return this.clone(Versions, "restoreByLabel(versionlabel='" + label + "')", true).post();
-    };
-    return Versions;
-}(queryable_1.QueryableCollection));
-exports.Versions = Versions;
-/**
- * Describes a single Version instance
- *
- */
-var Version = (function (_super) {
-    __extends(Version, _super);
-    function Version() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-    * Delete a specific version of a file.
-    *
-    * @param eTag Value used in the IF-Match header, by default "*"
-    */
-    Version.prototype.delete = function (eTag) {
-        if (eTag === void 0) { eTag = "*"; }
-        return this.post({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    return Version;
-}(queryable_1.QueryableInstance));
-exports.Version = Version;
-var CheckinType;
-(function (CheckinType) {
-    CheckinType[CheckinType["Minor"] = 0] = "Minor";
-    CheckinType[CheckinType["Major"] = 1] = "Major";
-    CheckinType[CheckinType["Overwrite"] = 2] = "Overwrite";
-})(CheckinType = exports.CheckinType || (exports.CheckinType = {}));
-var WebPartsPersonalizationScope;
-(function (WebPartsPersonalizationScope) {
-    WebPartsPersonalizationScope[WebPartsPersonalizationScope["User"] = 0] = "User";
-    WebPartsPersonalizationScope[WebPartsPersonalizationScope["Shared"] = 1] = "Shared";
-})(WebPartsPersonalizationScope = exports.WebPartsPersonalizationScope || (exports.WebPartsPersonalizationScope = {}));
-var MoveOperations;
-(function (MoveOperations) {
-    MoveOperations[MoveOperations["Overwrite"] = 1] = "Overwrite";
-    MoveOperations[MoveOperations["AllowBrokenThickets"] = 8] = "AllowBrokenThickets";
-})(MoveOperations = exports.MoveOperations || (exports.MoveOperations = {}));
-var TemplateFileType;
-(function (TemplateFileType) {
-    TemplateFileType[TemplateFileType["StandardPage"] = 0] = "StandardPage";
-    TemplateFileType[TemplateFileType["WikiPage"] = 1] = "WikiPage";
-    TemplateFileType[TemplateFileType["FormPage"] = 2] = "FormPage";
-})(TemplateFileType = exports.TemplateFileType || (exports.TemplateFileType = {}));
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var lists_1 = __webpack_require__(11);
-var fields_1 = __webpack_require__(24);
-var navigation_1 = __webpack_require__(25);
-var sitegroups_1 = __webpack_require__(18);
-var contenttypes_1 = __webpack_require__(16);
-var folders_1 = __webpack_require__(9);
-var roles_1 = __webpack_require__(17);
-var files_1 = __webpack_require__(7);
-var util_1 = __webpack_require__(0);
-var lists_2 = __webpack_require__(11);
-var siteusers_1 = __webpack_require__(30);
+var lists_2 = __webpack_require__(10);
+var siteusers_1 = __webpack_require__(27);
 var usercustomactions_1 = __webpack_require__(19);
 var odata_1 = __webpack_require__(2);
-var features_1 = __webpack_require__(23);
-var decorators_1 = __webpack_require__(51);
+var features_1 = __webpack_require__(31);
 var queryableshareable_1 = __webpack_require__(12);
-var relateditems_1 = __webpack_require__(47);
+var relateditems_1 = __webpack_require__(43);
 /**
  * Describes a collection of webs
  *
@@ -2489,28 +2010,26 @@ var Webs = (function (_super) {
      * @param template The new web's template internal name (default = STS)
      * @param language The locale id that specifies the new web's language (default = 1033 [English, US])
      * @param inheritPermissions When true, permissions will be inherited from the new web's parent (default = true)
-     * @param additionalSettings Will be passed as part of the web creation body
      */
-    Webs.prototype.add = function (title, url, description, template, language, inheritPermissions, additionalSettings) {
+    Webs.prototype.add = function (title, url, description, template, language, inheritPermissions) {
         if (description === void 0) { description = ""; }
         if (template === void 0) { template = "STS"; }
         if (language === void 0) { language = 1033; }
         if (inheritPermissions === void 0) { inheritPermissions = true; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        var props = util_1.Util.extend({
+        var props = {
             Description: description,
             Language: language,
             Title: title,
             Url: url,
             UseSamePermissionsAsParentSite: inheritPermissions,
             WebTemplate: template,
-        }, additionalSettings);
+        };
         var postBody = JSON.stringify({
             "parameters": util_1.Util.extend({
                 "__metadata": { "type": "SP.WebCreationInformation" },
             }, props),
         });
-        return this.clone(Webs, "add", true).post({ body: postBody }).then(function (data) {
+        return this.clone(Webs, "add", true).postCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 web: new Web(odata_1.extractOdataId(data).replace(/_api\/web\/?/i, "")),
@@ -2561,14 +2080,7 @@ var Web = (function (_super) {
      * @param url
      */
     Web.fromUrl = function (url, path) {
-        if (url === null) {
-            return new Web("");
-        }
-        var index = url.indexOf("_api/");
-        if (index > -1) {
-            return new Web(url.substr(0, index), path);
-        }
-        return new Web(url, path);
+        return new Web(util_1.extractWebUrl(url), path);
     };
     Object.defineProperty(Web.prototype, "webs", {
         /**
@@ -2819,7 +2331,7 @@ var Web = (function (_super) {
         var postBody = JSON.stringify(util_1.Util.extend({
             "__metadata": { "type": "SP.Web" },
         }, properties));
-        return this.post({
+        return this.postCore({
             body: postBody,
             headers: {
                 "X-HTTP-Method": "MERGE",
@@ -2836,7 +2348,7 @@ var Web = (function (_super) {
      *
      */
     Web.prototype.delete = function () {
-        return _super.prototype.delete.call(this);
+        return _super.prototype.deleteCore.call(this);
     };
     /**
      * Applies the theme specified by the contents of each of the files specified in the arguments to the site
@@ -2853,7 +2365,7 @@ var Web = (function (_super) {
             fontSchemeUrl: fontSchemeUrl,
             shareGenerated: shareGenerated,
         });
-        return this.clone(Web, "applytheme", true).post({ body: postBody });
+        return this.clone(Web, "applytheme", true).postCore({ body: postBody });
     };
     /**
      * Applies the specified site definition or site template to the Web site that has no template applied to it
@@ -2864,18 +2376,7 @@ var Web = (function (_super) {
         var q = this.clone(Web, "applywebtemplate", true);
         q.concat("(@t)");
         q.query.add("@t", template);
-        return q.post();
-    };
-    /**
-     * Returns whether the current user has the given set of permissions
-     *
-     * @param perms The high and low permission range
-     */
-    Web.prototype.doesUserHavePermissions = function (perms) {
-        var q = this.clone(Web, "doesuserhavepermissions", true);
-        q.concat("(@p)");
-        q.query.add("@p", JSON.stringify(perms));
-        return q.get();
+        return q.postCore();
     };
     /**
      * Checks whether the specified login name belongs to a valid user in the web. If the user doesn't exist, adds the user to the web.
@@ -2886,7 +2387,7 @@ var Web = (function (_super) {
         var postBody = JSON.stringify({
             logonName: loginName,
         });
-        return this.clone(Web, "ensureuser", true).post({ body: postBody }).then(function (data) {
+        return this.clone(Web, "ensureuser", true).postCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 user: new siteusers_1.SiteUser(odata_1.extractOdataId(data)),
@@ -2922,7 +2423,7 @@ var Web = (function (_super) {
      */
     Web.prototype.getChanges = function (query) {
         var postBody = JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
-        return this.clone(Web, "getchanges", true).post({ body: postBody });
+        return this.clone(Web, "getchanges", true).postCore({ body: postBody });
     };
     Object.defineProperty(Web.prototype, "customListTemplate", {
         /**
@@ -2957,14 +2458,11 @@ var Web = (function (_super) {
     };
     return Web;
 }(queryableshareable_1.QueryableShareableWeb));
-__decorate([
-    decorators_1.deprecated("This method will be removed in future releases. Please use the methods found in queryable securable.")
-], Web.prototype, "doesUserHavePermissions", null);
 exports.Web = Web;
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2981,98 +2479,113 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var queryableshareable_1 = __webpack_require__(12);
-var files_1 = __webpack_require__(7);
-var util_1 = __webpack_require__(0);
 var odata_1 = __webpack_require__(2);
-var items_1 = __webpack_require__(10);
+var util_1 = __webpack_require__(0);
+var exceptions_1 = __webpack_require__(3);
+var webparts_1 = __webpack_require__(28);
+var items_1 = __webpack_require__(11);
+var queryableshareable_1 = __webpack_require__(12);
+var odata_2 = __webpack_require__(2);
 /**
- * Describes a collection of Folder objects
+ * Describes a collection of File objects
  *
  */
-var Folders = (function (_super) {
-    __extends(Folders, _super);
+var Files = (function (_super) {
+    __extends(Files, _super);
     /**
-     * Creates a new instance of the Folders class
+     * Creates a new instance of the Files class
      *
      * @param baseUrl The url or Queryable which forms the parent of this fields collection
      */
-    function Folders(baseUrl, path) {
-        if (path === void 0) { path = "folders"; }
+    function Files(baseUrl, path) {
+        if (path === void 0) { path = "files"; }
         return _super.call(this, baseUrl, path) || this;
     }
     /**
-     * Gets a folder by folder name
+     * Gets a File by filename
      *
+     * @param name The name of the file, including extension.
      */
-    Folders.prototype.getByName = function (name) {
-        var f = new Folder(this);
+    Files.prototype.getByName = function (name) {
+        var f = new File(this);
         f.concat("('" + name + "')");
         return f;
     };
     /**
-     * Adds a new folder to the current folder (relative) or any folder (absolute)
+     * Uploads a file. Not supported for batching
      *
-     * @param url The relative or absolute url where the new folder will be created. Urls starting with a forward slash are absolute.
-     * @returns The new Folder and the raw response.
+     * @param url The folder-relative url of the file.
+     * @param content The file contents blob.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
+     * @returns The new File and the raw response.
      */
-    Folders.prototype.add = function (url) {
+    Files.prototype.add = function (url, content, shouldOverWrite) {
         var _this = this;
-        return this.clone(Folders, "add('" + url + "')", true).post().then(function (response) {
+        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
+        return new Files(this, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')")
+            .postCore({
+            body: content,
+        }).then(function (response) {
             return {
                 data: response,
-                folder: _this.getByName(url),
+                file: _this.getByName(url),
             };
         });
     };
-    return Folders;
+    /**
+     * Uploads a file. Not supported for batching
+     *
+     * @param url The folder-relative url of the file.
+     * @param content The Blob file content to add
+     * @param progress A callback function which can be used to track the progress of the upload
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
+     * @param chunkSize The size of each file slice, in bytes (default: 10485760)
+     * @returns The new File and the raw response.
+     */
+    Files.prototype.addChunked = function (url, content, progress, shouldOverWrite, chunkSize) {
+        var _this = this;
+        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
+        if (chunkSize === void 0) { chunkSize = 10485760; }
+        var adder = this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')");
+        return adder.postCore().then(function () { return _this.getByName(url); }).then(function (file) { return file.setContentChunked(content, progress, chunkSize); }).then(function (response) {
+            return {
+                data: response,
+                file: _this.getByName(url),
+            };
+        });
+    };
+    /**
+     * Adds a ghosted file to an existing list or document library. Not supported for batching.
+     *
+     * @param fileUrl The server-relative url where you want to save the file.
+     * @param templateFileType The type of use to create the file.
+     * @returns The template file that was added and the raw response.
+     */
+    Files.prototype.addTemplateFile = function (fileUrl, templateFileType) {
+        var _this = this;
+        return this.clone(Files, "addTemplateFile(urloffile='" + fileUrl + "',templatefiletype=" + templateFileType + ")")
+            .postCore().then(function (response) {
+            return {
+                data: response,
+                file: _this.getByName(fileUrl),
+            };
+        });
+    };
+    return Files;
 }(queryable_1.QueryableCollection));
-exports.Folders = Folders;
+exports.Files = Files;
 /**
- * Describes a single Folder instance
+ * Describes a single File instance
  *
  */
-var Folder = (function (_super) {
-    __extends(Folder, _super);
-    function Folder() {
+var File = (function (_super) {
+    __extends(File, _super);
+    function File() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(Folder.prototype, "contentTypeOrder", {
+    Object.defineProperty(File.prototype, "listItemAllFields", {
         /**
-         * Specifies the sequence in which content types are displayed.
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableCollection(this, "contentTypeOrder");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Folder.prototype, "files", {
-        /**
-         * Gets this folder's files
-         *
-         */
-        get: function () {
-            return new files_1.Files(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Folder.prototype, "folders", {
-        /**
-         * Gets this folder's sub folders
-         *
-         */
-        get: function () {
-            return new Folders(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Folder.prototype, "listItemAllFields", {
-        /**
-         * Gets this folder's list item field values
+         * Gets a value that specifies the list item field values for the list item corresponding to the file.
          *
          */
         get: function () {
@@ -3081,75 +2594,77 @@ var Folder = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Folder.prototype, "parentFolder", {
+    Object.defineProperty(File.prototype, "versions", {
         /**
-         * Gets the parent folder, if available
+         * Gets a collection of versions
          *
          */
         get: function () {
-            return new Folder(this, "parentFolder");
+            return new Versions(this);
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Folder.prototype, "properties", {
-        /**
-         * Gets this folder's properties
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableInstance(this, "properties");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Folder.prototype, "serverRelativeUrl", {
-        /**
-         * Gets this folder's server relative url
-         *
-         */
-        get: function () {
-            return new queryable_1.Queryable(this, "serverRelativeUrl");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Folder.prototype, "uniqueContentTypeOrder", {
-        /**
-         * Gets a value that specifies the content type order.
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableCollection(this, "uniqueContentTypeOrder");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Folder.prototype.update = function (properties) {
-        var _this = this;
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "__metadata": { "type": "SP.Folder" },
-        }, properties));
-        return this.post({
-            body: postBody,
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            return {
-                data: data,
-                folder: _this,
-            };
-        });
+    /**
+     * Approves the file submitted for content approval with the specified comment.
+     * Only documents in lists that are enabled for content approval can be approved.
+     *
+     * @param comment The comment for the approval.
+     */
+    File.prototype.approve = function (comment) {
+        if (comment === void 0) { comment = ""; }
+        return this.clone(File, "approve(comment='" + comment + "')", true).postCore();
     };
     /**
-    * Delete this folder
-    *
-    * @param eTag Value used in the IF-Match header, by default "*"
-    */
-    Folder.prototype.delete = function (eTag) {
+     * Stops the chunk upload session without saving the uploaded data. Does not support batching.
+     * If the file doesn’t already exist in the library, the partially uploaded file will be deleted.
+     * Use this in response to user action (as in a request to cancel an upload) or an error or exception.
+     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
+     * This method is currently available only on Office 365.
+     *
+     * @param uploadId The unique identifier of the upload session.
+     */
+    File.prototype.cancelUpload = function (uploadId) {
+        return this.clone(File, "cancelUpload(uploadId=guid'" + uploadId + "')", false).postCore();
+    };
+    /**
+     * Checks the file in to a document library based on the check-in type.
+     *
+     * @param comment A comment for the check-in. Its length must be <= 1023.
+     * @param checkinType The check-in type for the file.
+     */
+    File.prototype.checkin = function (comment, checkinType) {
+        if (comment === void 0) { comment = ""; }
+        if (checkinType === void 0) { checkinType = CheckinType.Major; }
+        if (comment.length > 1023) {
+            throw new exceptions_1.MaxCommentLengthException();
+        }
+        return this.clone(File, "checkin(comment='" + comment + "',checkintype=" + checkinType + ")", true).postCore();
+    };
+    /**
+     * Checks out the file from a document library.
+     */
+    File.prototype.checkout = function () {
+        return this.clone(File, "checkout", true).postCore();
+    };
+    /**
+     * Copies the file to the destination url.
+     *
+     * @param url The absolute url or server relative url of the destination file path to copy to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
+     */
+    File.prototype.copyTo = function (url, shouldOverWrite) {
+        if (shouldOverWrite === void 0) { shouldOverWrite = true; }
+        return this.clone(File, "copyTo(strnewurl='" + url + "',boverwrite=" + shouldOverWrite + ")", true).postCore();
+    };
+    /**
+     * Delete this file.
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    File.prototype.delete = function (eTag) {
         if (eTag === void 0) { eTag = "*"; }
-        return this.clone(Folder, null, true).post({
+        return this.clone(File, null, true).postCore({
             headers: {
                 "IF-Match": eTag,
                 "X-HTTP-Method": "DELETE",
@@ -3157,27 +2672,459 @@ var Folder = (function (_super) {
         });
     };
     /**
-     * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+     * Denies approval for a file that was submitted for content approval.
+     * Only documents in lists that are enabled for content approval can be denied.
+     *
+     * @param comment The comment for the denial.
      */
-    Folder.prototype.recycle = function () {
-        return this.clone(Folder, "recycle", true).post();
+    File.prototype.deny = function (comment) {
+        if (comment === void 0) { comment = ""; }
+        if (comment.length > 1023) {
+            throw new exceptions_1.MaxCommentLengthException();
+        }
+        return this.clone(File, "deny(comment='" + comment + "')", true).postCore();
+    };
+    /**
+     * Specifies the control set used to access, modify, or add Web Parts associated with this Web Part Page and view.
+     * An exception is thrown if the file is not an ASPX page.
+     *
+     * @param scope The WebPartsPersonalizationScope view on the Web Parts page.
+     */
+    File.prototype.getLimitedWebPartManager = function (scope) {
+        if (scope === void 0) { scope = WebPartsPersonalizationScope.Shared; }
+        return new webparts_1.LimitedWebPartManager(this, "getLimitedWebPartManager(scope=" + scope + ")");
+    };
+    /**
+     * Moves the file to the specified destination url.
+     *
+     * @param url The absolute url or server relative url of the destination file path to move to.
+     * @param moveOperations The bitwise MoveOperations value for how to move the file.
+     */
+    File.prototype.moveTo = function (url, moveOperations) {
+        if (moveOperations === void 0) { moveOperations = MoveOperations.Overwrite; }
+        return this.clone(File, "moveTo(newurl='" + url + "',flags=" + moveOperations + ")", true).postCore();
+    };
+    /**
+     * Submits the file for content approval with the specified comment.
+     *
+     * @param comment The comment for the published file. Its length must be <= 1023.
+     */
+    File.prototype.publish = function (comment) {
+        if (comment === void 0) { comment = ""; }
+        if (comment.length > 1023) {
+            throw new exceptions_1.MaxCommentLengthException();
+        }
+        return this.clone(File, "publish(comment='" + comment + "')", true).postCore();
+    };
+    /**
+     * Moves the file to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+     *
+     * @returns The GUID of the recycled file.
+     */
+    File.prototype.recycle = function () {
+        return this.clone(File, "recycle", true).postCore();
+    };
+    /**
+     * Reverts an existing checkout for the file.
+     *
+     */
+    File.prototype.undoCheckout = function () {
+        return this.clone(File, "undoCheckout", true).postCore();
+    };
+    /**
+     * Removes the file from content approval or unpublish a major version.
+     *
+     * @param comment The comment for the unpublish operation. Its length must be <= 1023.
+     */
+    File.prototype.unpublish = function (comment) {
+        if (comment === void 0) { comment = ""; }
+        if (comment.length > 1023) {
+            throw new exceptions_1.MaxCommentLengthException();
+        }
+        return this.clone(File, "unpublish(comment='" + comment + "')", true).postCore();
+    };
+    /**
+     * Gets the contents of the file as text. Not supported in batching.
+     *
+     */
+    File.prototype.getText = function () {
+        return this.clone(File, "$value").get(new odata_1.TextFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+    };
+    /**
+     * Gets the contents of the file as a blob, does not work in Node.js. Not supported in batching.
+     *
+     */
+    File.prototype.getBlob = function () {
+        return this.clone(File, "$value").get(new odata_1.BlobFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+    };
+    /**
+     * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
+     */
+    File.prototype.getBuffer = function () {
+        return this.clone(File, "$value").get(new odata_1.BufferFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+    };
+    /**
+     * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
+     */
+    File.prototype.getJSON = function () {
+        return this.clone(File, "$value").get(new odata_1.JSONFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+    };
+    /**
+     * Sets the content of a file, for large files use setContentChunked. Not supported in batching.
+     *
+     * @param content The file content
+     *
+     */
+    File.prototype.setContent = function (content) {
+        var _this = this;
+        return this.clone(File, "$value").postCore({
+            body: content,
+            headers: {
+                "X-HTTP-Method": "PUT",
+            },
+        }).then(function (_) { return new File(_this); });
     };
     /**
      * Gets the associated list item for this folder, loading the default properties
      */
-    Folder.prototype.getItem = function () {
+    File.prototype.getItem = function () {
         var selects = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
         }
         var q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then(function (d) {
-            return util_1.Util.extend(new items_1.Item(odata_1.getEntityUrl(d)), d);
+            return util_1.Util.extend(new items_1.Item(odata_2.getEntityUrl(d)), d);
         });
     };
-    return Folder;
-}(queryableshareable_1.QueryableShareableFolder));
-exports.Folder = Folder;
+    /**
+     * Sets the contents of a file using a chunked upload approach. Not supported in batching.
+     *
+     * @param file The file to upload
+     * @param progress A callback function which can be used to track the progress of the upload
+     * @param chunkSize The size of each file slice, in bytes (default: 10485760)
+     */
+    File.prototype.setContentChunked = function (file, progress, chunkSize) {
+        if (chunkSize === void 0) { chunkSize = 10485760; }
+        if (typeof progress === "undefined") {
+            progress = function () { return null; };
+        }
+        var self = this;
+        var fileSize = file.size;
+        var blockCount = parseInt((file.size / chunkSize).toString(), 10) + ((file.size % chunkSize === 0) ? 1 : 0);
+        var uploadId = util_1.Util.getGUID();
+        // start the chain with the first fragment
+        progress({ blockNumber: 1, chunkSize: chunkSize, currentPointer: 0, fileSize: fileSize, stage: "starting", totalBlocks: blockCount });
+        var chain = self.startUpload(uploadId, file.slice(0, chunkSize));
+        var _loop_1 = function (i) {
+            chain = chain.then(function (pointer) {
+                progress({ blockNumber: i, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "continue", totalBlocks: blockCount });
+                return self.continueUpload(uploadId, pointer, file.slice(pointer, pointer + chunkSize));
+            });
+        };
+        // skip the first and last blocks
+        for (var i = 2; i < blockCount; i++) {
+            _loop_1(i);
+        }
+        return chain.then(function (pointer) {
+            progress({ blockNumber: blockCount, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "finishing", totalBlocks: blockCount });
+            return self.finishUpload(uploadId, pointer, file.slice(pointer));
+        }).then(function (_) {
+            return self;
+        });
+    };
+    /**
+     * Starts a new chunk upload session and uploads the first fragment.
+     * The current file content is not changed when this method completes.
+     * The method is idempotent (and therefore does not change the result) as long as you use the same values for uploadId and stream.
+     * The upload session ends either when you use the CancelUpload method or when you successfully
+     * complete the upload session by passing the rest of the file contents through the ContinueUpload and FinishUpload methods.
+     * The StartUpload and ContinueUpload methods return the size of the running total of uploaded data in bytes,
+     * so you can pass those return values to subsequent uses of ContinueUpload and FinishUpload.
+     * This method is currently available only on Office 365.
+     *
+     * @param uploadId The unique identifier of the upload session.
+     * @param fragment The file contents.
+     * @returns The size of the total uploaded data in bytes.
+     */
+    File.prototype.startUpload = function (uploadId, fragment) {
+        return this.clone(File, "startUpload(uploadId=guid'" + uploadId + "')").postAsCore({ body: fragment }).then(function (n) { return parseFloat(n); });
+    };
+    /**
+     * Continues the chunk upload session with an additional fragment.
+     * The current file content is not changed.
+     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
+     * This method is currently available only on Office 365.
+     *
+     * @param uploadId The unique identifier of the upload session.
+     * @param fileOffset The size of the offset into the file where the fragment starts.
+     * @param fragment The file contents.
+     * @returns The size of the total uploaded data in bytes.
+     */
+    File.prototype.continueUpload = function (uploadId, fileOffset, fragment) {
+        return this.clone(File, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")").postAsCore({ body: fragment }).then(function (n) { return parseFloat(n); });
+    };
+    /**
+     * Uploads the last file fragment and commits the file. The current file content is changed when this method completes.
+     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
+     * This method is currently available only on Office 365.
+     *
+     * @param uploadId The unique identifier of the upload session.
+     * @param fileOffset The size of the offset into the file where the fragment starts.
+     * @param fragment The file contents.
+     * @returns The newly uploaded file.
+     */
+    File.prototype.finishUpload = function (uploadId, fileOffset, fragment) {
+        return this.clone(File, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")")
+            .postAsCore({ body: fragment }).then(function (response) {
+            return {
+                data: response,
+                file: new File(response.ServerRelativeUrl),
+            };
+        });
+    };
+    return File;
+}(queryableshareable_1.QueryableShareableFile));
+exports.File = File;
+/**
+ * Describes a collection of Version objects
+ *
+ */
+var Versions = (function (_super) {
+    __extends(Versions, _super);
+    /**
+     * Creates a new instance of the File class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function Versions(baseUrl, path) {
+        if (path === void 0) { path = "versions"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a version by id
+     *
+     * @param versionId The id of the version to retrieve
+     */
+    Versions.prototype.getById = function (versionId) {
+        var v = new Version(this);
+        v.concat("(" + versionId + ")");
+        return v;
+    };
+    /**
+     * Deletes all the file version objects in the collection.
+     *
+     */
+    Versions.prototype.deleteAll = function () {
+        return new Versions(this, "deleteAll").postCore();
+    };
+    /**
+     * Deletes the specified version of the file.
+     *
+     * @param versionId The ID of the file version to delete.
+     */
+    Versions.prototype.deleteById = function (versionId) {
+        return this.clone(Versions, "deleteById(vid=" + versionId + ")", true).postCore();
+    };
+    /**
+     * Deletes the file version object with the specified version label.
+     *
+     * @param label The version label of the file version to delete, for example: 1.2
+     */
+    Versions.prototype.deleteByLabel = function (label) {
+        return this.clone(Versions, "deleteByLabel(versionlabel='" + label + "')", true).postCore();
+    };
+    /**
+     * Creates a new file version from the file specified by the version label.
+     *
+     * @param label The version label of the file version to restore, for example: 1.2
+     */
+    Versions.prototype.restoreByLabel = function (label) {
+        return this.clone(Versions, "restoreByLabel(versionlabel='" + label + "')", true).postCore();
+    };
+    return Versions;
+}(queryable_1.QueryableCollection));
+exports.Versions = Versions;
+/**
+ * Describes a single Version instance
+ *
+ */
+var Version = (function (_super) {
+    __extends(Version, _super);
+    function Version() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+    * Delete a specific version of a file.
+    *
+    * @param eTag Value used in the IF-Match header, by default "*"
+    */
+    Version.prototype.delete = function (eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return this.postCore({
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    return Version;
+}(queryable_1.QueryableInstance));
+exports.Version = Version;
+var CheckinType;
+(function (CheckinType) {
+    CheckinType[CheckinType["Minor"] = 0] = "Minor";
+    CheckinType[CheckinType["Major"] = 1] = "Major";
+    CheckinType[CheckinType["Overwrite"] = 2] = "Overwrite";
+})(CheckinType = exports.CheckinType || (exports.CheckinType = {}));
+var WebPartsPersonalizationScope;
+(function (WebPartsPersonalizationScope) {
+    WebPartsPersonalizationScope[WebPartsPersonalizationScope["User"] = 0] = "User";
+    WebPartsPersonalizationScope[WebPartsPersonalizationScope["Shared"] = 1] = "Shared";
+})(WebPartsPersonalizationScope = exports.WebPartsPersonalizationScope || (exports.WebPartsPersonalizationScope = {}));
+var MoveOperations;
+(function (MoveOperations) {
+    MoveOperations[MoveOperations["Overwrite"] = 1] = "Overwrite";
+    MoveOperations[MoveOperations["AllowBrokenThickets"] = 8] = "AllowBrokenThickets";
+})(MoveOperations = exports.MoveOperations || (exports.MoveOperations = {}));
+var TemplateFileType;
+(function (TemplateFileType) {
+    TemplateFileType[TemplateFileType["StandardPage"] = 0] = "StandardPage";
+    TemplateFileType[TemplateFileType["WikiPage"] = 1] = "WikiPage";
+    TemplateFileType[TemplateFileType["FormPage"] = 2] = "FormPage";
+})(TemplateFileType = exports.TemplateFileType || (exports.TemplateFileType = {}));
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var digestcache_1 = __webpack_require__(37);
+var util_1 = __webpack_require__(0);
+var pnplibconfig_1 = __webpack_require__(4);
+var exceptions_1 = __webpack_require__(3);
+var HttpClient = (function () {
+    function HttpClient() {
+        this._impl = pnplibconfig_1.RuntimeConfig.fetchClientFactory();
+        this._digestCache = new digestcache_1.DigestCache(this);
+    }
+    HttpClient.prototype.fetch = function (url, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
+        var headers = new Headers();
+        // first we add the global headers so they can be overwritten by any passed in locally to this call
+        mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.headers);
+        // second we add the local options so we can overwrite the globals
+        mergeHeaders(headers, options.headers);
+        // lastly we apply any default headers we need that may not exist
+        if (!headers.has("Accept")) {
+            headers.append("Accept", "application/json");
+        }
+        if (!headers.has("Content-Type")) {
+            headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
+        }
+        if (!headers.has("X-ClientService-ClientTag")) {
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:2.0.8");
+        }
+        opts = util_1.Util.extend(opts, { headers: headers });
+        if (opts.method && opts.method.toUpperCase() !== "GET") {
+            // if we have either a request digest or an authorization header we don't need a digest
+            if (!headers.has("X-RequestDigest") && !headers.has("Authorization")) {
+                var index = url.indexOf("_api/");
+                if (index < 0) {
+                    throw new exceptions_1.APIUrlException();
+                }
+                var webUrl = url.substr(0, index);
+                return this._digestCache.getDigest(webUrl)
+                    .then(function (digest) {
+                    headers.append("X-RequestDigest", digest);
+                    return _this.fetchRaw(url, opts);
+                });
+            }
+        }
+        return this.fetchRaw(url, opts);
+    };
+    HttpClient.prototype.fetchRaw = function (url, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        // here we need to normalize the headers
+        var rawHeaders = new Headers();
+        mergeHeaders(rawHeaders, options.headers);
+        options = util_1.Util.extend(options, { headers: rawHeaders });
+        var retry = function (ctx) {
+            _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
+                // grab our current delay
+                var delay = ctx.delay;
+                // Check if request was throttled - http status code 429
+                // Check is request failed due to server unavailable - http status code 503
+                if (response.status !== 429 && response.status !== 503) {
+                    ctx.reject(response);
+                }
+                // Increment our counters.
+                ctx.delay *= 2;
+                ctx.attempts++;
+                // If we have exceeded the retry count, reject.
+                if (ctx.retryCount <= ctx.attempts) {
+                    ctx.reject(response);
+                }
+                // Set our retry timeout for {delay} milliseconds.
+                setTimeout(util_1.Util.getCtxCallback(_this, retry, ctx), delay);
+            });
+        };
+        return new Promise(function (resolve, reject) {
+            var retryContext = {
+                attempts: 0,
+                delay: 100,
+                reject: reject,
+                resolve: resolve,
+                retryCount: 7,
+            };
+            retry.call(_this, retryContext);
+        });
+    };
+    HttpClient.prototype.get = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "GET" });
+        return this.fetch(url, opts);
+    };
+    HttpClient.prototype.post = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "POST" });
+        return this.fetch(url, opts);
+    };
+    HttpClient.prototype.patch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "PATCH" });
+        return this.fetch(url, opts);
+    };
+    HttpClient.prototype.delete = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "DELETE" });
+        return this.fetch(url, opts);
+    };
+    return HttpClient;
+}());
+exports.HttpClient = HttpClient;
+function mergeOptions(target, source) {
+    target.headers = target.headers || {};
+    var headers = util_1.Util.extend(target.headers, source.headers);
+    target = util_1.Util.extend(target, source);
+    target.headers = headers;
+}
+exports.mergeOptions = mergeOptions;
+function mergeHeaders(target, source) {
+    if (typeof source !== "undefined" && source !== null) {
+        var temp = new Request("", { headers: source });
+        temp.headers.forEach(function (value, name) {
+            target.append(name, value);
+        });
+    }
+}
+exports.mergeHeaders = mergeHeaders;
 
 
 /***/ }),
@@ -3197,385 +3144,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var queryableshareable_1 = __webpack_require__(12);
-var folders_1 = __webpack_require__(9);
-var files_1 = __webpack_require__(7);
-var contenttypes_1 = __webpack_require__(16);
-var util_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var attachmentfiles_1 = __webpack_require__(43);
-var lists_1 = __webpack_require__(11);
-/**
- * Describes a collection of Item objects
- *
- */
-var Items = (function (_super) {
-    __extends(Items, _super);
-    /**
-     * Creates a new instance of the Items class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Items(baseUrl, path) {
-        if (path === void 0) { path = "items"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets an Item by id
-     *
-     * @param id The integer id of the item to retrieve
-     */
-    Items.prototype.getById = function (id) {
-        var i = new Item(this);
-        i.concat("(" + id + ")");
-        return i;
-    };
-    /**
-     * Skips the specified number of items (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#sectionSection6)
-     *
-     * @param skip The starting id where the page should start, use with top to specify pages
-     */
-    Items.prototype.skip = function (skip) {
-        this._query.add("$skiptoken", encodeURIComponent("Paged=TRUE&p_ID=" + skip));
-        return this;
-    };
-    /**
-     * Gets a collection designed to aid in paging through data
-     *
-     */
-    Items.prototype.getPaged = function () {
-        return this.getAs(new PagedItemCollectionParser());
-    };
-    //
-    /**
-     * Adds a new item to the collection
-     *
-     * @param properties The new items's properties
-     */
-    Items.prototype.add = function (properties, listItemEntityTypeFullName) {
-        var _this = this;
-        if (properties === void 0) { properties = {}; }
-        if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
-        var removeDependency = this.addBatchDependency();
-        return this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(function (listItemEntityType) {
-            var postBody = JSON.stringify(util_1.Util.extend({
-                "__metadata": { "type": listItemEntityType },
-            }, properties));
-            var promise = _this.clone(Items, null, true).postAs({ body: postBody }).then(function (data) {
-                return {
-                    data: data,
-                    item: _this.getById(data.Id),
-                };
-            });
-            removeDependency();
-            return promise;
-        });
-    };
-    /**
-     * Ensures we have the proper list item entity type name, either from the value provided or from the list
-     *
-     * @param candidatelistItemEntityTypeFullName The potential type name
-     */
-    Items.prototype.ensureListItemEntityTypeName = function (candidatelistItemEntityTypeFullName) {
-        return candidatelistItemEntityTypeFullName ?
-            Promise.resolve(candidatelistItemEntityTypeFullName) :
-            this.getParent(lists_1.List).getListItemEntityTypeFullName();
-    };
-    return Items;
-}(queryable_1.QueryableCollection));
-exports.Items = Items;
-/**
- * Descrines a single Item instance
- *
- */
-var Item = (function (_super) {
-    __extends(Item, _super);
-    function Item() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(Item.prototype, "attachmentFiles", {
-        /**
-         * Gets the set of attachments for this item
-         *
-         */
-        get: function () {
-            return new attachmentfiles_1.AttachmentFiles(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Item.prototype, "contentType", {
-        /**
-         * Gets the content type for this item
-         *
-         */
-        get: function () {
-            return new contenttypes_1.ContentType(this, "ContentType");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Item.prototype, "effectiveBasePermissions", {
-        /**
-         * Gets the effective base permissions for the item
-         *
-         */
-        get: function () {
-            return new queryable_1.Queryable(this, "EffectiveBasePermissions");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Item.prototype, "effectiveBasePermissionsForUI", {
-        /**
-         * Gets the effective base permissions for the item in a UI context
-         *
-         */
-        get: function () {
-            return new queryable_1.Queryable(this, "EffectiveBasePermissionsForUI");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Item.prototype, "fieldValuesAsHTML", {
-        /**
-         * Gets the field values for this list item in their HTML representation
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableInstance(this, "FieldValuesAsHTML");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Item.prototype, "fieldValuesAsText", {
-        /**
-         * Gets the field values for this list item in their text representation
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableInstance(this, "FieldValuesAsText");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Item.prototype, "fieldValuesForEdit", {
-        /**
-         * Gets the field values for this list item for use in editing controls
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableInstance(this, "FieldValuesForEdit");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Item.prototype, "folder", {
-        /**
-         * Gets the folder associated with this list item (if this item represents a folder)
-         *
-         */
-        get: function () {
-            return new folders_1.Folder(this, "folder");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Item.prototype, "file", {
-        /**
-         * Gets the folder associated with this list item (if this item represents a folder)
-         *
-         */
-        get: function () {
-            return new files_1.File(this, "file");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Updates this list intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the list
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    Item.prototype.update = function (properties, eTag) {
-        var _this = this;
-        if (eTag === void 0) { eTag = "*"; }
-        return new Promise(function (resolve, reject) {
-            var removeDependency = _this.addBatchDependency();
-            var parentList = _this.getParent(queryable_1.QueryableInstance, _this.parentUrl.substr(0, _this.parentUrl.lastIndexOf("/")));
-            parentList.select("ListItemEntityTypeFullName").getAs().then(function (d) {
-                var postBody = JSON.stringify(util_1.Util.extend({
-                    "__metadata": { "type": d.ListItemEntityTypeFullName },
-                }, properties));
-                removeDependency();
-                return _this.post({
-                    body: postBody,
-                    headers: {
-                        "IF-Match": eTag,
-                        "X-HTTP-Method": "MERGE",
-                    },
-                }, new ItemUpdatedParser()).then(function (data) {
-                    resolve({
-                        data: data,
-                        item: _this,
-                    });
-                });
-            }).catch(function (e) { return reject(e); });
-        });
-    };
-    /**
-     * Delete this item
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    Item.prototype.delete = function (eTag) {
-        if (eTag === void 0) { eTag = "*"; }
-        return this.post({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    /**
-     * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
-     */
-    Item.prototype.recycle = function () {
-        return this.clone(Item, "recycle", true).post();
-    };
-    /**
-     * Gets a string representation of the full URL to the WOPI frame.
-     * If there is no associated WOPI application, or no associated action, an empty string is returned.
-     *
-     * @param action Display mode: 0: view, 1: edit, 2: mobileView, 3: interactivePreview
-     */
-    Item.prototype.getWopiFrameUrl = function (action) {
-        if (action === void 0) { action = 0; }
-        var i = this.clone(Item, "getWOPIFrameUrl(@action)", true);
-        i._query.add("@action", action);
-        return i.post().then(function (data) {
-            // handle verbose mode
-            if (data.hasOwnProperty("GetWOPIFrameUrl")) {
-                return data.GetWOPIFrameUrl;
-            }
-            return data;
-        });
-    };
-    /**
-     * Validates and sets the values of the specified collection of fields for the list item.
-     *
-     * @param formValues The fields to change and their new values.
-     * @param newDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
-     */
-    Item.prototype.validateUpdateListItem = function (formValues, newDocumentUpdate) {
-        if (newDocumentUpdate === void 0) { newDocumentUpdate = false; }
-        return this.clone(Item, "validateupdatelistitem", true).post({
-            body: JSON.stringify({ "formValues": formValues, bNewDocumentUpdate: newDocumentUpdate }),
-        });
-    };
-    return Item;
-}(queryableshareable_1.QueryableShareableItem));
-exports.Item = Item;
-/**
- * Provides paging functionality for list items
- */
-var PagedItemCollection = (function () {
-    function PagedItemCollection(nextUrl, results) {
-        this.nextUrl = nextUrl;
-        this.results = results;
-    }
-    Object.defineProperty(PagedItemCollection.prototype, "hasNext", {
-        /**
-         * If true there are more results available in the set, otherwise there are not
-         */
-        get: function () {
-            return typeof this.nextUrl === "string" && this.nextUrl.length > 0;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets the next set of results, or resolves to null if no results are available
-     */
-    PagedItemCollection.prototype.getNext = function () {
-        if (this.hasNext) {
-            var items = new Items(this.nextUrl, null);
-            return items.getPaged();
-        }
-        return new Promise(function (r) { return r(null); });
-    };
-    return PagedItemCollection;
-}());
-exports.PagedItemCollection = PagedItemCollection;
-var PagedItemCollectionParser = (function (_super) {
-    __extends(PagedItemCollectionParser, _super);
-    function PagedItemCollectionParser() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    PagedItemCollectionParser.prototype.parse = function (r) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this.handleError(r, reject)) {
-                r.json().then(function (json) {
-                    var nextUrl = json.hasOwnProperty("d") && json.d.hasOwnProperty("__next") ? json.d.__next : json["odata.nextLink"];
-                    resolve(new PagedItemCollection(nextUrl, _this.parseODataJSON(json)));
-                });
-            }
-        });
-    };
-    return PagedItemCollectionParser;
-}(odata_1.ODataParserBase));
-var ItemUpdatedParser = (function (_super) {
-    __extends(ItemUpdatedParser, _super);
-    function ItemUpdatedParser() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    ItemUpdatedParser.prototype.parse = function (r) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this.handleError(r, reject)) {
-                resolve({
-                    "odata.etag": r.headers.get("etag"),
-                });
-            }
-        });
-    };
-    return ItemUpdatedParser;
-}(odata_1.ODataParserBase));
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var items_1 = __webpack_require__(10);
-var views_1 = __webpack_require__(50);
-var contenttypes_1 = __webpack_require__(16);
-var fields_1 = __webpack_require__(24);
-var forms_1 = __webpack_require__(44);
-var subscriptions_1 = __webpack_require__(48);
+var items_1 = __webpack_require__(11);
+var views_1 = __webpack_require__(40);
+var contenttypes_1 = __webpack_require__(18);
+var fields_1 = __webpack_require__(29);
+var forms_1 = __webpack_require__(41);
+var subscriptions_1 = __webpack_require__(42);
 var queryable_1 = __webpack_require__(1);
 var queryablesecurable_1 = __webpack_require__(26);
 var util_1 = __webpack_require__(0);
 var usercustomactions_1 = __webpack_require__(19);
 var odata_1 = __webpack_require__(2);
 var exceptions_1 = __webpack_require__(3);
-var folders_1 = __webpack_require__(9);
+var folders_1 = __webpack_require__(14);
 /**
  * Describes a collection of List objects
  *
@@ -3632,7 +3213,7 @@ var Lists = (function (_super) {
             "Title": title,
             "__metadata": { "type": "SP.List" },
         }, additionalSettings);
-        return this.post({ body: JSON.stringify(addSettings) }).then(function (data) {
+        return this.postCore({ body: JSON.stringify(addSettings) }).then(function (data) {
             return { data: data, list: _this.getByTitle(addSettings.Title) };
         });
     };
@@ -3672,7 +3253,7 @@ var Lists = (function (_super) {
      * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
      */
     Lists.prototype.ensureSiteAssetsLibrary = function () {
-        return this.clone(Lists, "ensuresiteassetslibrary", true).post().then(function (json) {
+        return this.clone(Lists, "ensuresiteassetslibrary", true).postCore().then(function (json) {
             return new List(odata_1.extractOdataId(json));
         });
     };
@@ -3680,7 +3261,7 @@ var Lists = (function (_super) {
      * Gets a list that is the default location for wiki pages.
      */
     Lists.prototype.ensureSitePagesLibrary = function () {
-        return this.clone(Lists, "ensuresitepageslibrary", true).post().then(function (json) {
+        return this.clone(Lists, "ensuresitepageslibrary", true).postCore().then(function (json) {
             return new List(odata_1.extractOdataId(json));
         });
     };
@@ -3858,7 +3439,7 @@ var List = (function (_super) {
         var postBody = JSON.stringify(util_1.Util.extend({
             "__metadata": { "type": "SP.List" },
         }, properties));
-        return this.post({
+        return this.postCore({
             body: postBody,
             headers: {
                 "IF-Match": eTag,
@@ -3883,7 +3464,7 @@ var List = (function (_super) {
      */
     List.prototype.delete = function (eTag) {
         if (eTag === void 0) { eTag = "*"; }
-        return this.post({
+        return this.postCore({
             headers: {
                 "IF-Match": eTag,
                 "X-HTTP-Method": "DELETE",
@@ -3894,7 +3475,7 @@ var List = (function (_super) {
      * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
      */
     List.prototype.getChanges = function (query) {
-        return this.clone(List, "getchanges", true).post({
+        return this.clone(List, "getchanges", true).postCore({
             body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
         });
     };
@@ -3923,7 +3504,7 @@ var List = (function (_super) {
             expands[_i - 1] = arguments[_i];
         }
         var q = this.clone(List, "getitems", true);
-        return q.expand.apply(q, expands).post({
+        return q.expand.apply(q, expands).postCore({
             body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
         });
     };
@@ -3931,7 +3512,7 @@ var List = (function (_super) {
      * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
      */
     List.prototype.getListItemChangesSinceToken = function (query) {
-        return this.clone(List, "getlistitemchangessincetoken", true).post({
+        return this.clone(List, "getlistitemchangessincetoken", true).postCore({
             body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
         }, { parse: function (r) { return r.text(); } });
     };
@@ -3939,7 +3520,7 @@ var List = (function (_super) {
      * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     List.prototype.recycle = function () {
-        return this.clone(List, "recycle", true).post().then(function (data) {
+        return this.clone(List, "recycle", true).postCore().then(function (data) {
             if (data.hasOwnProperty("Recycle")) {
                 return data.Recycle;
             }
@@ -3954,7 +3535,7 @@ var List = (function (_super) {
     List.prototype.renderListData = function (viewXml) {
         var q = this.clone(List, "renderlistdata(@viewXml)");
         q.query.add("@viewXml", "'" + viewXml + "'");
-        return q.post().then(function (data) {
+        return q.postCore().then(function (data) {
             // data will be a string, so we parse it again
             data = JSON.parse(data);
             if (data.hasOwnProperty("RenderListData")) {
@@ -3969,7 +3550,7 @@ var List = (function (_super) {
      * Gets the field values and field schema attributes for a list item.
      */
     List.prototype.renderListFormData = function (itemId, formId, mode) {
-        return this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')", true).post().then(function (data) {
+        return this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')", true).postCore().then(function (data) {
             // data will be a string, so we parse it again
             data = JSON.parse(data);
             if (data.hasOwnProperty("ListData")) {
@@ -3984,7 +3565,7 @@ var List = (function (_super) {
      * Reserves a list item ID for idempotent list item creation.
      */
     List.prototype.reserveListItemId = function () {
-        return this.clone(List, "reservelistitemid", true).post().then(function (data) {
+        return this.clone(List, "reservelistitemid", true).postCore().then(function (data) {
             if (data.hasOwnProperty("ReserveListItemId")) {
                 return data.ReserveListItemId;
             }
@@ -4006,6 +3587,372 @@ exports.List = List;
 
 
 /***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var queryableshareable_1 = __webpack_require__(12);
+var folders_1 = __webpack_require__(14);
+var files_1 = __webpack_require__(8);
+var contenttypes_1 = __webpack_require__(18);
+var util_1 = __webpack_require__(0);
+var odata_1 = __webpack_require__(2);
+var attachmentfiles_1 = __webpack_require__(39);
+var lists_1 = __webpack_require__(10);
+/**
+ * Describes a collection of Item objects
+ *
+ */
+var Items = (function (_super) {
+    __extends(Items, _super);
+    /**
+     * Creates a new instance of the Items class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function Items(baseUrl, path) {
+        if (path === void 0) { path = "items"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets an Item by id
+     *
+     * @param id The integer id of the item to retrieve
+     */
+    Items.prototype.getById = function (id) {
+        var i = new Item(this);
+        i.concat("(" + id + ")");
+        return i;
+    };
+    /**
+     * Skips the specified number of items (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#sectionSection6)
+     *
+     * @param skip The starting id where the page should start, use with top to specify pages
+     */
+    Items.prototype.skip = function (skip) {
+        this._query.add("$skiptoken", encodeURIComponent("Paged=TRUE&p_ID=" + skip));
+        return this;
+    };
+    /**
+     * Gets a collection designed to aid in paging through data
+     *
+     */
+    Items.prototype.getPaged = function () {
+        return this.getAs(new PagedItemCollectionParser());
+    };
+    //
+    /**
+     * Adds a new item to the collection
+     *
+     * @param properties The new items's properties
+     */
+    Items.prototype.add = function (properties, listItemEntityTypeFullName) {
+        var _this = this;
+        if (properties === void 0) { properties = {}; }
+        if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
+        var removeDependency = this.addBatchDependency();
+        return this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(function (listItemEntityType) {
+            var postBody = JSON.stringify(util_1.Util.extend({
+                "__metadata": { "type": listItemEntityType },
+            }, properties));
+            var promise = _this.clone(Items, null, true).postAsCore({ body: postBody }).then(function (data) {
+                return {
+                    data: data,
+                    item: _this.getById(data.Id),
+                };
+            });
+            removeDependency();
+            return promise;
+        });
+    };
+    /**
+     * Ensures we have the proper list item entity type name, either from the value provided or from the list
+     *
+     * @param candidatelistItemEntityTypeFullName The potential type name
+     */
+    Items.prototype.ensureListItemEntityTypeName = function (candidatelistItemEntityTypeFullName) {
+        return candidatelistItemEntityTypeFullName ?
+            Promise.resolve(candidatelistItemEntityTypeFullName) :
+            this.getParent(lists_1.List).getListItemEntityTypeFullName();
+    };
+    return Items;
+}(queryable_1.QueryableCollection));
+exports.Items = Items;
+/**
+ * Descrines a single Item instance
+ *
+ */
+var Item = (function (_super) {
+    __extends(Item, _super);
+    function Item() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Item.prototype, "attachmentFiles", {
+        /**
+         * Gets the set of attachments for this item
+         *
+         */
+        get: function () {
+            return new attachmentfiles_1.AttachmentFiles(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Item.prototype, "contentType", {
+        /**
+         * Gets the content type for this item
+         *
+         */
+        get: function () {
+            return new contenttypes_1.ContentType(this, "ContentType");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Item.prototype, "effectiveBasePermissions", {
+        /**
+         * Gets the effective base permissions for the item
+         *
+         */
+        get: function () {
+            return new queryable_1.Queryable(this, "EffectiveBasePermissions");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Item.prototype, "effectiveBasePermissionsForUI", {
+        /**
+         * Gets the effective base permissions for the item in a UI context
+         *
+         */
+        get: function () {
+            return new queryable_1.Queryable(this, "EffectiveBasePermissionsForUI");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Item.prototype, "fieldValuesAsHTML", {
+        /**
+         * Gets the field values for this list item in their HTML representation
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableInstance(this, "FieldValuesAsHTML");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Item.prototype, "fieldValuesAsText", {
+        /**
+         * Gets the field values for this list item in their text representation
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableInstance(this, "FieldValuesAsText");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Item.prototype, "fieldValuesForEdit", {
+        /**
+         * Gets the field values for this list item for use in editing controls
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableInstance(this, "FieldValuesForEdit");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Item.prototype, "folder", {
+        /**
+         * Gets the folder associated with this list item (if this item represents a folder)
+         *
+         */
+        get: function () {
+            return new folders_1.Folder(this, "folder");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Item.prototype, "file", {
+        /**
+         * Gets the folder associated with this list item (if this item represents a folder)
+         *
+         */
+        get: function () {
+            return new files_1.File(this, "file");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Updates this list intance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the list
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    Item.prototype.update = function (properties, eTag) {
+        var _this = this;
+        if (eTag === void 0) { eTag = "*"; }
+        return new Promise(function (resolve, reject) {
+            var removeDependency = _this.addBatchDependency();
+            var parentList = _this.getParent(queryable_1.QueryableInstance, _this.parentUrl.substr(0, _this.parentUrl.lastIndexOf("/")));
+            parentList.select("ListItemEntityTypeFullName").getAs().then(function (d) {
+                var postBody = JSON.stringify(util_1.Util.extend({
+                    "__metadata": { "type": d.ListItemEntityTypeFullName },
+                }, properties));
+                removeDependency();
+                return _this.postCore({
+                    body: postBody,
+                    headers: {
+                        "IF-Match": eTag,
+                        "X-HTTP-Method": "MERGE",
+                    },
+                }, new ItemUpdatedParser()).then(function (data) {
+                    resolve({
+                        data: data,
+                        item: _this,
+                    });
+                });
+            }).catch(function (e) { return reject(e); });
+        });
+    };
+    /**
+     * Delete this item
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    Item.prototype.delete = function (eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return this.postCore({
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    /**
+     * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+     */
+    Item.prototype.recycle = function () {
+        return this.clone(Item, "recycle", true).postCore();
+    };
+    /**
+     * Gets a string representation of the full URL to the WOPI frame.
+     * If there is no associated WOPI application, or no associated action, an empty string is returned.
+     *
+     * @param action Display mode: 0: view, 1: edit, 2: mobileView, 3: interactivePreview
+     */
+    Item.prototype.getWopiFrameUrl = function (action) {
+        if (action === void 0) { action = 0; }
+        var i = this.clone(Item, "getWOPIFrameUrl(@action)", true);
+        i._query.add("@action", action);
+        return i.postCore().then(function (data) {
+            // handle verbose mode
+            if (data.hasOwnProperty("GetWOPIFrameUrl")) {
+                return data.GetWOPIFrameUrl;
+            }
+            return data;
+        });
+    };
+    /**
+     * Validates and sets the values of the specified collection of fields for the list item.
+     *
+     * @param formValues The fields to change and their new values.
+     * @param newDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
+     */
+    Item.prototype.validateUpdateListItem = function (formValues, newDocumentUpdate) {
+        if (newDocumentUpdate === void 0) { newDocumentUpdate = false; }
+        return this.clone(Item, "validateupdatelistitem", true).postCore({
+            body: JSON.stringify({ "formValues": formValues, bNewDocumentUpdate: newDocumentUpdate }),
+        });
+    };
+    return Item;
+}(queryableshareable_1.QueryableShareableItem));
+exports.Item = Item;
+/**
+ * Provides paging functionality for list items
+ */
+var PagedItemCollection = (function () {
+    function PagedItemCollection(nextUrl, results) {
+        this.nextUrl = nextUrl;
+        this.results = results;
+    }
+    Object.defineProperty(PagedItemCollection.prototype, "hasNext", {
+        /**
+         * If true there are more results available in the set, otherwise there are not
+         */
+        get: function () {
+            return typeof this.nextUrl === "string" && this.nextUrl.length > 0;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets the next set of results, or resolves to null if no results are available
+     */
+    PagedItemCollection.prototype.getNext = function () {
+        if (this.hasNext) {
+            var items = new Items(this.nextUrl, null);
+            return items.getPaged();
+        }
+        return new Promise(function (r) { return r(null); });
+    };
+    return PagedItemCollection;
+}());
+exports.PagedItemCollection = PagedItemCollection;
+var PagedItemCollectionParser = (function (_super) {
+    __extends(PagedItemCollectionParser, _super);
+    function PagedItemCollectionParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    PagedItemCollectionParser.prototype.parse = function (r) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            if (_this.handleError(r, reject)) {
+                r.json().then(function (json) {
+                    var nextUrl = json.hasOwnProperty("d") && json.d.hasOwnProperty("__next") ? json.d.__next : json["odata.nextLink"];
+                    resolve(new PagedItemCollection(nextUrl, _this.parseODataJSON(json)));
+                });
+            }
+        });
+    };
+    return PagedItemCollectionParser;
+}(odata_1.ODataParserBase));
+var ItemUpdatedParser = (function (_super) {
+    __extends(ItemUpdatedParser, _super);
+    function ItemUpdatedParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ItemUpdatedParser.prototype.parse = function (r) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            if (_this.handleError(r, reject)) {
+                resolve({
+                    "odata.etag": r.headers.get("etag"),
+                });
+            }
+        });
+    };
+    return ItemUpdatedParser;
+}(odata_1.ODataParserBase));
+
+
+/***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4023,7 +3970,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var webs_1 = __webpack_require__(8);
+var webs_1 = __webpack_require__(7);
 var odata_1 = __webpack_require__(2);
 var queryable_1 = __webpack_require__(1);
 var queryablesecurable_1 = __webpack_require__(26);
@@ -4047,7 +3994,7 @@ var QueryableShareable = (function (_super) {
         // date needs to be an ISO string or null
         var expString = expiration !== null ? expiration.toISOString() : null;
         // clone using the factory and send the request
-        return this.clone(QueryableShareable, "shareLink", true).postAs({
+        return this.clone(QueryableShareable, "shareLink", true).postAsCore({
             body: JSON.stringify({
                 request: {
                     createLink: true,
@@ -4071,7 +4018,7 @@ var QueryableShareable = (function (_super) {
      */
     QueryableShareable.prototype.shareWith = function (loginNames, role, requireSignin, propagateAcl, emailData) {
         var _this = this;
-        if (requireSignin === void 0) { requireSignin = true; }
+        if (requireSignin === void 0) { requireSignin = false; }
         if (propagateAcl === void 0) { propagateAcl = false; }
         // handle the multiple input types
         if (!Array.isArray(loginNames)) {
@@ -4098,7 +4045,7 @@ var QueryableShareable = (function (_super) {
                     sendEmail: true,
                 });
             }
-            return _this.clone(QueryableShareable, "shareObject", true).postAs({
+            return _this.clone(QueryableShareable, "shareObject", true).postAsCore({
                 body: JSON.stringify(postBody),
             });
         });
@@ -4150,7 +4097,7 @@ var QueryableShareable = (function (_super) {
      * @param url The url of the object to unshare
      */
     QueryableShareable.prototype.unshareObjectWeb = function (url) {
-        return this.clone(QueryableShareable, "unshareObject", true).postAs({
+        return this.clone(QueryableShareable, "unshareObject", true).postAsCore({
             body: JSON.stringify({
                 url: url,
             }),
@@ -4162,7 +4109,7 @@ var QueryableShareable = (function (_super) {
      * @param recipients The array of Entities for which Permissions need to be checked.
      */
     QueryableShareable.prototype.checkPermissions = function (recipients) {
-        return this.clone(QueryableShareable, "checkPermissions", true).postAs({
+        return this.clone(QueryableShareable, "checkPermissions", true).postAsCore({
             body: JSON.stringify({
                 recipients: recipients,
             }),
@@ -4175,7 +4122,7 @@ var QueryableShareable = (function (_super) {
      */
     QueryableShareable.prototype.getSharingInformation = function (request) {
         if (request === void 0) { request = null; }
-        return this.clone(QueryableShareable, "getSharingInformation", true).postAs({
+        return this.clone(QueryableShareable, "getSharingInformation", true).postAsCore({
             body: JSON.stringify({
                 request: request,
             }),
@@ -4188,7 +4135,7 @@ var QueryableShareable = (function (_super) {
      */
     QueryableShareable.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
         if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
-        return this.clone(QueryableShareable, "getObjectSharingSettings", true).postAs({
+        return this.clone(QueryableShareable, "getObjectSharingSettings", true).postAsCore({
             body: JSON.stringify({
                 useSimplifiedRoles: useSimplifiedRoles,
             }),
@@ -4198,7 +4145,7 @@ var QueryableShareable = (function (_super) {
      * Unshares this object
      */
     QueryableShareable.prototype.unshareObject = function () {
-        return this.clone(QueryableShareable, "unshareObject", true).postAs();
+        return this.clone(QueryableShareable, "unshareObject", true).postAsCore();
     };
     /**
      * Deletes a link by type
@@ -4206,7 +4153,7 @@ var QueryableShareable = (function (_super) {
      * @param kind Deletes a sharing link by the kind of link
      */
     QueryableShareable.prototype.deleteLinkByKind = function (kind) {
-        return this.clone(QueryableShareable, "deleteLinkByKind", true).post({
+        return this.clone(QueryableShareable, "deleteLinkByKind", true).postCore({
             body: JSON.stringify({ linkKind: kind }),
         });
     };
@@ -4218,7 +4165,7 @@ var QueryableShareable = (function (_super) {
      */
     QueryableShareable.prototype.unshareLink = function (kind, shareId) {
         if (shareId === void 0) { shareId = "00000000-0000-0000-0000-000000000000"; }
-        return this.clone(QueryableShareable, "unshareLink", true).post({
+        return this.clone(QueryableShareable, "unshareLink", true).postCore({
             body: JSON.stringify({ linkKind: kind, shareId: shareId }),
         });
     };
@@ -4256,7 +4203,7 @@ var QueryableShareable = (function (_super) {
     };
     QueryableShareable.prototype.sendShareObjectRequest = function (options) {
         return this.getShareObjectWeb(this.toUrl()).then(function (web) {
-            return web.expand("UsersWithAccessRequests", "GroupsSharedWith").as(QueryableShareable).post({
+            return web.expand("UsersWithAccessRequests", "GroupsSharedWith").as(QueryableShareable).postCore({
                 body: JSON.stringify(options),
             });
         });
@@ -4355,7 +4302,7 @@ var QueryableShareableItem = (function (_super) {
      */
     QueryableShareableItem.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
         if (role === void 0) { role = types_1.SharingRole.View; }
-        if (requireSignin === void 0) { requireSignin = true; }
+        if (requireSignin === void 0) { requireSignin = false; }
         return this.clone(QueryableShareable, null, true).shareWith(loginNames, role, requireSignin, false, emailData);
     };
     /**
@@ -4537,7 +4484,7 @@ var QueryableShareableFile = (function (_super) {
      */
     QueryableShareableFile.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
         if (role === void 0) { role = types_1.SharingRole.View; }
-        if (requireSignin === void 0) { requireSignin = true; }
+        if (requireSignin === void 0) { requireSignin = false; }
         var dependency = this.addBatchDependency();
         return this.getShareable().then(function (shareable) {
             dependency();
@@ -4563,7 +4510,7 @@ var QueryableShareableFolder = (function (_super) {
      */
     QueryableShareableFolder.prototype.shareWith = function (loginNames, role, requireSignin, shareEverything, emailData) {
         if (role === void 0) { role = types_1.SharingRole.View; }
-        if (requireSignin === void 0) { requireSignin = true; }
+        if (requireSignin === void 0) { requireSignin = false; }
         if (shareEverything === void 0) { shareEverything = false; }
         var dependency = this.addBatchDependency();
         return this.getShareable().then(function (shareable) {
@@ -5012,10 +4959,228 @@ var SharingDomainRestrictionMode;
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var queryableshareable_1 = __webpack_require__(12);
+var files_1 = __webpack_require__(8);
+var util_1 = __webpack_require__(0);
+var odata_1 = __webpack_require__(2);
+var items_1 = __webpack_require__(11);
+/**
+ * Describes a collection of Folder objects
+ *
+ */
+var Folders = (function (_super) {
+    __extends(Folders, _super);
+    /**
+     * Creates a new instance of the Folders class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function Folders(baseUrl, path) {
+        if (path === void 0) { path = "folders"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a folder by folder name
+     *
+     */
+    Folders.prototype.getByName = function (name) {
+        var f = new Folder(this);
+        f.concat("('" + name + "')");
+        return f;
+    };
+    /**
+     * Adds a new folder to the current folder (relative) or any folder (absolute)
+     *
+     * @param url The relative or absolute url where the new folder will be created. Urls starting with a forward slash are absolute.
+     * @returns The new Folder and the raw response.
+     */
+    Folders.prototype.add = function (url) {
+        var _this = this;
+        return this.clone(Folders, "add('" + url + "')", true).postCore().then(function (response) {
+            return {
+                data: response,
+                folder: _this.getByName(url),
+            };
+        });
+    };
+    return Folders;
+}(queryable_1.QueryableCollection));
+exports.Folders = Folders;
+/**
+ * Describes a single Folder instance
+ *
+ */
+var Folder = (function (_super) {
+    __extends(Folder, _super);
+    function Folder() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Folder.prototype, "contentTypeOrder", {
+        /**
+         * Specifies the sequence in which content types are displayed.
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableCollection(this, "contentTypeOrder");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Folder.prototype, "files", {
+        /**
+         * Gets this folder's files
+         *
+         */
+        get: function () {
+            return new files_1.Files(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Folder.prototype, "folders", {
+        /**
+         * Gets this folder's sub folders
+         *
+         */
+        get: function () {
+            return new Folders(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Folder.prototype, "listItemAllFields", {
+        /**
+         * Gets this folder's list item field values
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableCollection(this, "listItemAllFields");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Folder.prototype, "parentFolder", {
+        /**
+         * Gets the parent folder, if available
+         *
+         */
+        get: function () {
+            return new Folder(this, "parentFolder");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Folder.prototype, "properties", {
+        /**
+         * Gets this folder's properties
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableInstance(this, "properties");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Folder.prototype, "serverRelativeUrl", {
+        /**
+         * Gets this folder's server relative url
+         *
+         */
+        get: function () {
+            return new queryable_1.Queryable(this, "serverRelativeUrl");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Folder.prototype, "uniqueContentTypeOrder", {
+        /**
+         * Gets a value that specifies the content type order.
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableCollection(this, "uniqueContentTypeOrder");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Folder.prototype.update = function (properties) {
+        var _this = this;
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "__metadata": { "type": "SP.Folder" },
+        }, properties));
+        return this.postCore({
+            body: postBody,
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            return {
+                data: data,
+                folder: _this,
+            };
+        });
+    };
+    /**
+    * Delete this folder
+    *
+    * @param eTag Value used in the IF-Match header, by default "*"
+    */
+    Folder.prototype.delete = function (eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return this.clone(Folder, null, true).postCore({
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    /**
+     * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+     */
+    Folder.prototype.recycle = function () {
+        return this.clone(Folder, "recycle", true).postCore();
+    };
+    /**
+     * Gets the associated list item for this folder, loading the default properties
+     */
+    Folder.prototype.getItem = function () {
+        var selects = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            selects[_i] = arguments[_i];
+        }
+        var q = this.listItemAllFields;
+        return q.select.apply(q, selects).get().then(function (d) {
+            return util_1.Util.extend(new items_1.Item(odata_1.getEntityUrl(d)), d);
+        });
+    };
+    return Folder;
+}(queryableshareable_1.QueryableShareableFolder));
+exports.Folder = Folder;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var collections_1 = __webpack_require__(6);
 var pnplibconfig_1 = __webpack_require__(4);
+var logging_1 = __webpack_require__(5);
 /**
  * A wrapper class to provide a consistent interface to browser based storage
  *
@@ -5031,6 +5196,12 @@ var PnPClientStorageWrapper = (function () {
         this.defaultTimeoutMinutes = defaultTimeoutMinutes;
         this.defaultTimeoutMinutes = (defaultTimeoutMinutes === void 0) ? -1 : defaultTimeoutMinutes;
         this.enabled = this.test();
+        // if the cache timeout is enabled call the handler
+        // this will clear any expired items and set the timeout function
+        if (pnplibconfig_1.RuntimeConfig.enableCacheExpiration) {
+            logging_1.Logger.write("Enabling cache expiration.", logging_1.LogLevel.Info);
+            this.cacheExpirationHandler();
+        }
     }
     /**
      * Get a value from storage, or null if that value does not exist
@@ -5047,6 +5218,7 @@ var PnPClientStorageWrapper = (function () {
         }
         var persistable = JSON.parse(o);
         if (new Date(persistable.expiration) <= new Date()) {
+            logging_1.Logger.write("Removing item with key '" + key + "' from cache due to expiration.", logging_1.LogLevel.Info);
             this.delete(key);
             return null;
         }
@@ -5102,6 +5274,31 @@ var PnPClientStorageWrapper = (function () {
         });
     };
     /**
+     * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
+     */
+    PnPClientStorageWrapper.prototype.deleteExpired = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            if (!_this.enabled) {
+                resolve();
+            }
+            try {
+                for (var i = 0; i < _this.store.length; i++) {
+                    var key = _this.store.key(i);
+                    // test the stored item to see if we stored it
+                    if (/["|']?pnp["|']? ?: ?1/i.test(_this.store.getItem(key))) {
+                        // get those items as get will delete from cache if they are expired
+                        _this.get(key);
+                    }
+                }
+                resolve();
+            }
+            catch (e) {
+                reject(e);
+            }
+        });
+    };
+    /**
      * Used to determine if the wrapped storage is available currently
      */
     PnPClientStorageWrapper.prototype.test = function () {
@@ -5127,7 +5324,25 @@ var PnPClientStorageWrapper = (function () {
             }
             expire = util_1.Util.dateAdd(new Date(), "second", defaultTimeout);
         }
-        return JSON.stringify({ expiration: expire, value: o });
+        return JSON.stringify({ pnp: 1, expiration: expire, value: o });
+    };
+    /**
+     * Deletes expired items added by this library in this.store and sets a timeout to call itself
+     */
+    PnPClientStorageWrapper.prototype.cacheExpirationHandler = function () {
+        var _this = this;
+        logging_1.Logger.write("Called cache expiration handler.", logging_1.LogLevel.Verbose);
+        this.deleteExpired().then(function (_) {
+            // call ourself in the future
+            setTimeout(util_1.Util.getCtxCallback(_this, _this.cacheExpirationHandler), pnplibconfig_1.RuntimeConfig.cacheExpirationIntervalMilliseconds);
+        }).catch(function (e) {
+            // we've got some error - so just stop the loop and report the error
+            logging_1.Logger.log({
+                data: e,
+                level: logging_1.LogLevel.Error,
+                message: "Error deleting expired cache entries, see data for details. Timeout not reset.",
+            });
+        });
     };
     return PnPClientStorageWrapper;
 }());
@@ -5173,137 +5388,41 @@ var PnPClientStorage = (function () {
      *
      * @constructor
      */
-    function PnPClientStorage() {
-        this.local = typeof localStorage !== "undefined" ? new PnPClientStorageWrapper(localStorage) : new PnPClientStorageWrapper(new MemoryStorage());
-        this.session = typeof sessionStorage !== "undefined" ? new PnPClientStorageWrapper(sessionStorage) : new PnPClientStorageWrapper(new MemoryStorage());
+    function PnPClientStorage(_local, _session) {
+        if (_local === void 0) { _local = null; }
+        if (_session === void 0) { _session = null; }
+        this._local = _local;
+        this._session = _session;
     }
+    Object.defineProperty(PnPClientStorage.prototype, "local", {
+        /**
+         * Provides access to the local storage of the browser
+         */
+        get: function () {
+            if (this._local === null) {
+                this._local = typeof localStorage !== "undefined" ? new PnPClientStorageWrapper(localStorage) : new PnPClientStorageWrapper(new MemoryStorage());
+            }
+            return this._local;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PnPClientStorage.prototype, "session", {
+        /**
+         * Provides access to the session storage of the browser
+         */
+        get: function () {
+            if (this._session === null) {
+                this._session = typeof sessionStorage !== "undefined" ? new PnPClientStorageWrapper(sessionStorage) : new PnPClientStorageWrapper(new MemoryStorage());
+            }
+            return this._session;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return PnPClientStorage;
 }());
 exports.PnPClientStorage = PnPClientStorage;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var digestcache_1 = __webpack_require__(39);
-var util_1 = __webpack_require__(0);
-var pnplibconfig_1 = __webpack_require__(4);
-var exceptions_1 = __webpack_require__(3);
-var HttpClient = (function () {
-    function HttpClient() {
-        this._impl = pnplibconfig_1.RuntimeConfig.fetchClientFactory();
-        this._digestCache = new digestcache_1.DigestCache(this);
-    }
-    HttpClient.prototype.fetch = function (url, options) {
-        var _this = this;
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
-        var headers = new Headers();
-        // first we add the global headers so they can be overwritten by any passed in locally to this call
-        this.mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.headers);
-        // second we add the local options so we can overwrite the globals
-        this.mergeHeaders(headers, options.headers);
-        // lastly we apply any default headers we need that may not exist
-        if (!headers.has("Accept")) {
-            headers.append("Accept", "application/json");
-        }
-        if (!headers.has("Content-Type")) {
-            headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
-        }
-        if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:2.0.6");
-        }
-        opts = util_1.Util.extend(opts, { headers: headers });
-        if (opts.method && opts.method.toUpperCase() !== "GET") {
-            // if we have either a request digest or an authorization header we don't need a digest
-            if (!headers.has("X-RequestDigest") && !headers.has("Authorization")) {
-                var index = url.indexOf("_api/");
-                if (index < 0) {
-                    throw new exceptions_1.APIUrlException();
-                }
-                var webUrl = url.substr(0, index);
-                return this._digestCache.getDigest(webUrl)
-                    .then(function (digest) {
-                    headers.append("X-RequestDigest", digest);
-                    return _this.fetchRaw(url, opts);
-                });
-            }
-        }
-        return this.fetchRaw(url, opts);
-    };
-    HttpClient.prototype.fetchRaw = function (url, options) {
-        var _this = this;
-        if (options === void 0) { options = {}; }
-        // here we need to normalize the headers
-        var rawHeaders = new Headers();
-        this.mergeHeaders(rawHeaders, options.headers);
-        options = util_1.Util.extend(options, { headers: rawHeaders });
-        var retry = function (ctx) {
-            _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
-                // grab our current delay
-                var delay = ctx.delay;
-                // Check if request was throttled - http status code 429
-                // Check is request failed due to server unavailable - http status code 503
-                if (response.status !== 429 && response.status !== 503) {
-                    ctx.reject(response);
-                }
-                // Increment our counters.
-                ctx.delay *= 2;
-                ctx.attempts++;
-                // If we have exceeded the retry count, reject.
-                if (ctx.retryCount <= ctx.attempts) {
-                    ctx.reject(response);
-                }
-                // Set our retry timeout for {delay} milliseconds.
-                setTimeout(util_1.Util.getCtxCallback(_this, retry, ctx), delay);
-            });
-        };
-        return new Promise(function (resolve, reject) {
-            var retryContext = {
-                attempts: 0,
-                delay: 100,
-                reject: reject,
-                resolve: resolve,
-                retryCount: 7,
-            };
-            retry.call(_this, retryContext);
-        });
-    };
-    HttpClient.prototype.get = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "GET" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.post = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "POST" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.patch = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "PATCH" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.delete = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "DELETE" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.mergeHeaders = function (target, source) {
-        if (typeof source !== "undefined" && source !== null) {
-            var temp = new Request("", { headers: source });
-            temp.headers.forEach(function (value, name) {
-                target.append(name, value);
-            });
-        }
-    };
-    return HttpClient;
-}());
-exports.HttpClient = HttpClient;
 
 
 /***/ }),
@@ -5323,198 +5442,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
 var queryable_1 = __webpack_require__(1);
-/**
- * Describes a collection of content types
- *
- */
-var ContentTypes = (function (_super) {
-    __extends(ContentTypes, _super);
-    /**
-     * Creates a new instance of the ContentTypes class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this content types collection
-     */
-    function ContentTypes(baseUrl, path) {
-        if (path === void 0) { path = "contenttypes"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a ContentType by content type id
-     */
-    ContentTypes.prototype.getById = function (id) {
-        var ct = new ContentType(this);
-        ct.concat("('" + id + "')");
-        return ct;
-    };
-    /**
-     * Adds an existing contenttype to a content type collection
-     *
-     * @param contentTypeId in the following format, for example: 0x010102
-     */
-    ContentTypes.prototype.addAvailableContentType = function (contentTypeId) {
-        var _this = this;
-        var postBody = JSON.stringify({
-            "contentTypeId": contentTypeId,
-        });
-        return this.clone(ContentTypes, "addAvailableContentType", true).postAs({ body: postBody }).then(function (data) {
-            return {
-                contentType: _this.getById(data.id),
-                data: data,
-            };
-        });
-    };
-    /**
-     * Adds a new content type to the collection
-     *
-     * @param id The desired content type id for the new content type (also determines the parent content type)
-     * @param name The name of the content type
-     * @param description The description of the content type
-     * @param group The group in which to add the content type
-     * @param additionalSettings Any additional settings to provide when creating the content type
-     *
-     */
-    ContentTypes.prototype.add = function (id, name, description, group, additionalSettings) {
-        var _this = this;
-        if (description === void 0) { description = ""; }
-        if (group === void 0) { group = "Custom Content Types"; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "Description": description,
-            "Group": group,
-            "Id": { "StringValue": id },
-            "Name": name,
-            "__metadata": { "type": "SP.ContentType" },
-        }, additionalSettings));
-        return this.post({ body: postBody }).then(function (data) {
-            return { contentType: _this.getById(data.id), data: data };
-        });
-    };
-    return ContentTypes;
-}(queryable_1.QueryableCollection));
-exports.ContentTypes = ContentTypes;
-/**
- * Describes a single ContentType instance
- *
- */
-var ContentType = (function (_super) {
-    __extends(ContentType, _super);
-    function ContentType() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(ContentType.prototype, "fieldLinks", {
-        /**
-         * Gets the column (also known as field) references in the content type.
-        */
-        get: function () {
-            return new FieldLinks(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ContentType.prototype, "fields", {
-        /**
-         * Gets a value that specifies the collection of fields for the content type.
-         */
-        get: function () {
-            return new queryable_1.QueryableCollection(this, "fields");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ContentType.prototype, "parent", {
-        /**
-         * Gets the parent content type of the content type.
-         */
-        get: function () {
-            return new ContentType(this, "parent");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ContentType.prototype, "workflowAssociations", {
-        /**
-         * Gets a value that specifies the collection of workflow associations for the content type.
-         */
-        get: function () {
-            return new queryable_1.QueryableCollection(this, "workflowAssociations");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Delete this content type
-     */
-    ContentType.prototype.delete = function () {
-        return this.post({
-            headers: {
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    return ContentType;
-}(queryable_1.QueryableInstance));
-exports.ContentType = ContentType;
-/**
- * Represents a collection of field link instances
- */
-var FieldLinks = (function (_super) {
-    __extends(FieldLinks, _super);
-    /**
-     * Creates a new instance of the ContentType class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this content type instance
-     */
-    function FieldLinks(baseUrl, path) {
-        if (path === void 0) { path = "fieldlinks"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a FieldLink by GUID id
-     *
-     * @param id The GUID id of the field link
-     */
-    FieldLinks.prototype.getById = function (id) {
-        var fl = new FieldLink(this);
-        fl.concat("(guid'" + id + "')");
-        return fl;
-    };
-    return FieldLinks;
-}(queryable_1.QueryableCollection));
-exports.FieldLinks = FieldLinks;
-/**
- * Represents a field link instance
- */
-var FieldLink = (function (_super) {
-    __extends(FieldLink, _super);
-    function FieldLink() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return FieldLink;
-}(queryable_1.QueryableInstance));
-exports.FieldLink = FieldLink;
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var sitegroups_1 = __webpack_require__(18);
+var sitegroups_1 = __webpack_require__(17);
 var util_1 = __webpack_require__(0);
 /**
  * Describes a set of role assignments for the current scope
@@ -5539,7 +5468,7 @@ var RoleAssignments = (function (_super) {
      *
      */
     RoleAssignments.prototype.add = function (principalId, roleDefId) {
-        return this.clone(RoleAssignments, "addroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")", true).post();
+        return this.clone(RoleAssignments, "addroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")", true).postCore();
     };
     /**
      * Removes the role assignment with the specified principal and role definition from the collection
@@ -5549,7 +5478,7 @@ var RoleAssignments = (function (_super) {
      *
      */
     RoleAssignments.prototype.remove = function (principalId, roleDefId) {
-        return this.clone(RoleAssignments, "removeroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")", true).post();
+        return this.clone(RoleAssignments, "removeroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")", true).postCore();
     };
     /**
      * Gets the role assignment associated with the specified principal id from the collection.
@@ -5600,7 +5529,7 @@ var RoleAssignment = (function (_super) {
      *
      */
     RoleAssignment.prototype.delete = function () {
-        return this.post({
+        return this.postCore({
             headers: {
                 "X-HTTP-Method": "DELETE",
             },
@@ -5670,7 +5599,7 @@ var RoleDefinitions = (function (_super) {
             Order: order,
             __metadata: { "type": "SP.RoleDefinition" },
         });
-        return this.post({ body: postBody }).then(function (data) {
+        return this.postCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 definition: _this.getById(data.Id),
@@ -5703,7 +5632,7 @@ var RoleDefinition = (function (_super) {
         var postBody = JSON.stringify(util_1.Util.extend({
             "__metadata": { "type": "SP.RoleDefinition" },
         }, properties));
-        return this.post({
+        return this.postCore({
             body: postBody,
             headers: {
                 "X-HTTP-Method": "MERGE",
@@ -5726,7 +5655,7 @@ var RoleDefinition = (function (_super) {
      *
      */
     RoleDefinition.prototype.delete = function () {
-        return this.post({
+        return this.postCore({
             headers: {
                 "X-HTTP-Method": "DELETE",
             },
@@ -5756,7 +5685,7 @@ exports.RoleDefinitionBindings = RoleDefinitionBindings;
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5773,7 +5702,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var siteusers_1 = __webpack_require__(30);
+var siteusers_1 = __webpack_require__(27);
 var util_1 = __webpack_require__(0);
 /**
  * Principal Type enum
@@ -5811,7 +5740,7 @@ var SiteGroups = (function (_super) {
     SiteGroups.prototype.add = function (properties) {
         var _this = this;
         var postBody = JSON.stringify(util_1.Util.extend({ "__metadata": { "type": "SP.Group" } }, properties));
-        return this.post({ body: postBody }).then(function (data) {
+        return this.postCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 group: _this.getById(data.Id),
@@ -5842,7 +5771,7 @@ var SiteGroups = (function (_super) {
      * @param id The id of the group to remove
      */
     SiteGroups.prototype.removeById = function (id) {
-        return this.clone(SiteGroups, "removeById('" + id + "')", true).post();
+        return this.clone(SiteGroups, "removeById('" + id + "')", true).postCore();
     };
     /**
      * Removes the cross-site group with the specified name from the collection
@@ -5850,7 +5779,7 @@ var SiteGroups = (function (_super) {
      * @param loginName The name of the group to remove
      */
     SiteGroups.prototype.removeByLoginName = function (loginName) {
-        return this.clone(SiteGroups, "removeByLoginName('" + loginName + "')", true).post();
+        return this.clone(SiteGroups, "removeByLoginName('" + loginName + "')", true).postCore();
     };
     return SiteGroups;
 }(queryable_1.QueryableCollection));
@@ -5884,7 +5813,7 @@ var SiteGroup = (function (_super) {
     SiteGroup.prototype.update = function (properties) {
         var _this = this;
         var postBody = util_1.Util.extend({ "__metadata": { "type": "SP.Group" } }, properties);
-        return this.post({
+        return this.postCore({
             body: JSON.stringify(postBody),
             headers: {
                 "X-HTTP-Method": "MERGE",
@@ -5903,6 +5832,196 @@ var SiteGroup = (function (_super) {
     return SiteGroup;
 }(queryable_1.QueryableInstance));
 exports.SiteGroup = SiteGroup;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var queryable_1 = __webpack_require__(1);
+/**
+ * Describes a collection of content types
+ *
+ */
+var ContentTypes = (function (_super) {
+    __extends(ContentTypes, _super);
+    /**
+     * Creates a new instance of the ContentTypes class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this content types collection
+     */
+    function ContentTypes(baseUrl, path) {
+        if (path === void 0) { path = "contenttypes"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a ContentType by content type id
+     */
+    ContentTypes.prototype.getById = function (id) {
+        var ct = new ContentType(this);
+        ct.concat("('" + id + "')");
+        return ct;
+    };
+    /**
+     * Adds an existing contenttype to a content type collection
+     *
+     * @param contentTypeId in the following format, for example: 0x010102
+     */
+    ContentTypes.prototype.addAvailableContentType = function (contentTypeId) {
+        var _this = this;
+        var postBody = JSON.stringify({
+            "contentTypeId": contentTypeId,
+        });
+        return this.clone(ContentTypes, "addAvailableContentType", true).postAsCore({ body: postBody }).then(function (data) {
+            return {
+                contentType: _this.getById(data.id),
+                data: data,
+            };
+        });
+    };
+    /**
+     * Adds a new content type to the collection
+     *
+     * @param id The desired content type id for the new content type (also determines the parent content type)
+     * @param name The name of the content type
+     * @param description The description of the content type
+     * @param group The group in which to add the content type
+     * @param additionalSettings Any additional settings to provide when creating the content type
+     *
+     */
+    ContentTypes.prototype.add = function (id, name, description, group, additionalSettings) {
+        var _this = this;
+        if (description === void 0) { description = ""; }
+        if (group === void 0) { group = "Custom Content Types"; }
+        if (additionalSettings === void 0) { additionalSettings = {}; }
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "Description": description,
+            "Group": group,
+            "Id": { "StringValue": id },
+            "Name": name,
+            "__metadata": { "type": "SP.ContentType" },
+        }, additionalSettings));
+        return this.postCore({ body: postBody }).then(function (data) {
+            return { contentType: _this.getById(data.id), data: data };
+        });
+    };
+    return ContentTypes;
+}(queryable_1.QueryableCollection));
+exports.ContentTypes = ContentTypes;
+/**
+ * Describes a single ContentType instance
+ *
+ */
+var ContentType = (function (_super) {
+    __extends(ContentType, _super);
+    function ContentType() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(ContentType.prototype, "fieldLinks", {
+        /**
+         * Gets the column (also known as field) references in the content type.
+        */
+        get: function () {
+            return new FieldLinks(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ContentType.prototype, "fields", {
+        /**
+         * Gets a value that specifies the collection of fields for the content type.
+         */
+        get: function () {
+            return new queryable_1.QueryableCollection(this, "fields");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ContentType.prototype, "parent", {
+        /**
+         * Gets the parent content type of the content type.
+         */
+        get: function () {
+            return new ContentType(this, "parent");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ContentType.prototype, "workflowAssociations", {
+        /**
+         * Gets a value that specifies the collection of workflow associations for the content type.
+         */
+        get: function () {
+            return new queryable_1.QueryableCollection(this, "workflowAssociations");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Delete this content type
+     */
+    ContentType.prototype.delete = function () {
+        return this.postCore({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    return ContentType;
+}(queryable_1.QueryableInstance));
+exports.ContentType = ContentType;
+/**
+ * Represents a collection of field link instances
+ */
+var FieldLinks = (function (_super) {
+    __extends(FieldLinks, _super);
+    /**
+     * Creates a new instance of the ContentType class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this content type instance
+     */
+    function FieldLinks(baseUrl, path) {
+        if (path === void 0) { path = "fieldlinks"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a FieldLink by GUID id
+     *
+     * @param id The GUID id of the field link
+     */
+    FieldLinks.prototype.getById = function (id) {
+        var fl = new FieldLink(this);
+        fl.concat("(guid'" + id + "')");
+        return fl;
+    };
+    return FieldLinks;
+}(queryable_1.QueryableCollection));
+exports.FieldLinks = FieldLinks;
+/**
+ * Represents a field link instance
+ */
+var FieldLink = (function (_super) {
+    __extends(FieldLink, _super);
+    function FieldLink() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return FieldLink;
+}(queryable_1.QueryableInstance));
+exports.FieldLink = FieldLink;
 
 
 /***/ }),
@@ -5958,7 +6077,7 @@ var UserCustomActions = (function (_super) {
     UserCustomActions.prototype.add = function (properties) {
         var _this = this;
         var postBody = JSON.stringify(util_1.Util.extend({ __metadata: { "type": "SP.UserCustomAction" } }, properties));
-        return this.post({ body: postBody }).then(function (data) {
+        return this.postCore({ body: postBody }).then(function (data) {
             return {
                 action: _this.getById(data.Id),
                 data: data,
@@ -5970,7 +6089,7 @@ var UserCustomActions = (function (_super) {
      *
      */
     UserCustomActions.prototype.clear = function () {
-        return this.clone(UserCustomActions, "clear", true).post();
+        return this.clone(UserCustomActions, "clear", true).postCore();
     };
     return UserCustomActions;
 }(queryable_1.QueryableCollection));
@@ -5994,7 +6113,7 @@ var UserCustomAction = (function (_super) {
         var postBody = JSON.stringify(util_1.Util.extend({
             "__metadata": { "type": "SP.UserCustomAction" },
         }, properties));
-        return this.post({
+        return this.postCore({
             body: postBody,
             headers: {
                 "X-HTTP-Method": "MERGE",
@@ -6011,7 +6130,7 @@ var UserCustomAction = (function (_super) {
     *
     */
     UserCustomAction.prototype.delete = function () {
-        return _super.prototype.delete.call(this);
+        return _super.prototype.deleteCore.call(this);
     };
     return UserCustomAction;
 }(queryable_1.QueryableInstance));
@@ -6020,76 +6139,29 @@ exports.UserCustomAction = UserCustomAction;
 
 /***/ }),
 /* 20 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
+var g;
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var storage = __webpack_require__(14);
-var exceptions_1 = __webpack_require__(3);
-/**
- * A caching provider which can wrap other non-caching providers
- *
- */
-var CachingConfigurationProvider = (function () {
-    /**
-     * Creates a new caching configuration provider
-     * @constructor
-     * @param {IConfigurationProvider} wrappedProvider Provider which will be used to fetch the configuration
-     * @param {string} cacheKey Key that will be used to store cached items to the cache
-     * @param {IPnPClientStore} cacheStore OPTIONAL storage, which will be used to store cached settings.
-     */
-    function CachingConfigurationProvider(wrappedProvider, cacheKey, cacheStore) {
-        this.wrappedProvider = wrappedProvider;
-        this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
-        this.cacheKey = "_configcache_" + cacheKey;
-    }
-    /**
-     * Gets the wrapped configuration providers
-     *
-     * @return {IConfigurationProvider} Wrapped configuration provider
-     */
-    CachingConfigurationProvider.prototype.getWrappedProvider = function () {
-        return this.wrappedProvider;
-    };
-    /**
-     * Loads the configuration values either from the cache or from the wrapped provider
-     *
-     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
-     */
-    CachingConfigurationProvider.prototype.getConfiguration = function () {
-        var _this = this;
-        // Cache not available, pass control to  the wrapped provider
-        if ((!this.store) || (!this.store.enabled)) {
-            return this.wrappedProvider.getConfiguration();
-        }
-        // Value is found in cache, return it directly
-        var cachedConfig = this.store.get(this.cacheKey);
-        if (cachedConfig) {
-            return new Promise(function (resolve) {
-                resolve(cachedConfig);
-            });
-        }
-        // Get and cache value from the wrapped provider
-        var providerPromise = this.wrappedProvider.getConfiguration();
-        providerPromise.then(function (providedConfig) {
-            _this.store.put(_this.cacheKey, providedConfig);
-        });
-        return providerPromise;
-    };
-    CachingConfigurationProvider.prototype.selectPnPCache = function () {
-        var pnpCache = new storage.PnPClientStorage();
-        if ((pnpCache.local) && (pnpCache.local.enabled)) {
-            return pnpCache.local;
-        }
-        if ((pnpCache.session) && (pnpCache.session.enabled)) {
-            return pnpCache.session;
-        }
-        throw new exceptions_1.NoCacheAvailableException();
-    };
-    return CachingConfigurationProvider;
-}());
-exports.default = CachingConfigurationProvider;
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
@@ -6112,7 +6184,7 @@ var FetchClient = (function () {
 }());
 exports.FetchClient = FetchClient;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }),
 /* 22 */
@@ -6120,8 +6192,498 @@ exports.FetchClient = FetchClient;
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var storage_1 = __webpack_require__(14);
+var queryable_1 = __webpack_require__(1);
+var util_1 = __webpack_require__(0);
+/**
+ * Allows for the fluent construction of search queries
+ */
+var SearchQueryBuilder = (function () {
+    function SearchQueryBuilder(queryText, _query) {
+        if (queryText === void 0) { queryText = ""; }
+        if (_query === void 0) { _query = {}; }
+        this._query = _query;
+        if (typeof queryText === "string" && queryText.length > 0) {
+            this.extendQuery({ Querytext: queryText });
+        }
+    }
+    SearchQueryBuilder.create = function (queryText, queryTemplate) {
+        if (queryText === void 0) { queryText = ""; }
+        if (queryTemplate === void 0) { queryTemplate = {}; }
+        return new SearchQueryBuilder(queryText, queryTemplate);
+    };
+    SearchQueryBuilder.prototype.text = function (queryText) {
+        return this.extendQuery({ Querytext: queryText });
+    };
+    SearchQueryBuilder.prototype.template = function (template) {
+        return this.extendQuery({ QueryTemplate: template });
+    };
+    SearchQueryBuilder.prototype.sourceId = function (id) {
+        return this.extendQuery({ SourceId: id });
+    };
+    Object.defineProperty(SearchQueryBuilder.prototype, "enableInterleaving", {
+        get: function () {
+            return this.extendQuery({ EnableInterleaving: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchQueryBuilder.prototype, "enableStemming", {
+        get: function () {
+            return this.extendQuery({ EnableStemming: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchQueryBuilder.prototype, "trimDuplicates", {
+        get: function () {
+            return this.extendQuery({ TrimDuplicates: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SearchQueryBuilder.prototype.trimDuplicatesIncludeId = function (n) {
+        return this.extendQuery({ TrimDuplicatesIncludeId: n });
+    };
+    Object.defineProperty(SearchQueryBuilder.prototype, "enableNicknames", {
+        get: function () {
+            return this.extendQuery({ EnableNicknames: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchQueryBuilder.prototype, "enableFql", {
+        get: function () {
+            return this.extendQuery({ EnableFQL: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchQueryBuilder.prototype, "enablePhonetic", {
+        get: function () {
+            return this.extendQuery({ EnablePhonetic: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchQueryBuilder.prototype, "bypassResultTypes", {
+        get: function () {
+            return this.extendQuery({ BypassResultTypes: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchQueryBuilder.prototype, "processBestBets", {
+        get: function () {
+            return this.extendQuery({ ProcessBestBets: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchQueryBuilder.prototype, "enableQueryRules", {
+        get: function () {
+            return this.extendQuery({ EnableQueryRules: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchQueryBuilder.prototype, "enableSorting", {
+        get: function () {
+            return this.extendQuery({ EnableSorting: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchQueryBuilder.prototype, "generateBlockRankLog", {
+        get: function () {
+            return this.extendQuery({ GenerateBlockRankLog: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SearchQueryBuilder.prototype.rankingModelId = function (id) {
+        return this.extendQuery({ RankingModelId: id });
+    };
+    SearchQueryBuilder.prototype.startRow = function (n) {
+        return this.extendQuery({ StartRow: n });
+    };
+    SearchQueryBuilder.prototype.rowLimit = function (n) {
+        return this.extendQuery({ RowLimit: n });
+    };
+    SearchQueryBuilder.prototype.rowsPerPage = function (n) {
+        return this.extendQuery({ RowsPerPage: n });
+    };
+    SearchQueryBuilder.prototype.selectProperties = function () {
+        var properties = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            properties[_i] = arguments[_i];
+        }
+        return this.extendQuery({ SelectProperties: properties });
+    };
+    SearchQueryBuilder.prototype.culture = function (culture) {
+        return this.extendQuery({ Culture: culture });
+    };
+    SearchQueryBuilder.prototype.timeZoneId = function (id) {
+        return this.extendQuery({ TimeZoneId: id });
+    };
+    SearchQueryBuilder.prototype.refinementFilters = function () {
+        var filters = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            filters[_i] = arguments[_i];
+        }
+        return this.extendQuery({ RefinementFilters: filters });
+    };
+    SearchQueryBuilder.prototype.refiners = function (refiners) {
+        return this.extendQuery({ Refiners: refiners });
+    };
+    SearchQueryBuilder.prototype.hiddenConstraints = function (constraints) {
+        return this.extendQuery({ HiddenConstraints: constraints });
+    };
+    SearchQueryBuilder.prototype.sortList = function () {
+        var sorts = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            sorts[_i] = arguments[_i];
+        }
+        return this.extendQuery({ SortList: sorts });
+    };
+    SearchQueryBuilder.prototype.timeout = function (milliseconds) {
+        return this.extendQuery({ Timeout: milliseconds });
+    };
+    SearchQueryBuilder.prototype.hithighlightedProperties = function () {
+        var properties = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            properties[_i] = arguments[_i];
+        }
+        return this.extendQuery({ HitHighlightedProperties: properties });
+    };
+    SearchQueryBuilder.prototype.clientType = function (clientType) {
+        return this.extendQuery({ ClientType: clientType });
+    };
+    SearchQueryBuilder.prototype.personalizationData = function (data) {
+        return this.extendQuery({ PersonalizationData: data });
+    };
+    SearchQueryBuilder.prototype.resultsURL = function (url) {
+        return this.extendQuery({ ResultsUrl: url });
+    };
+    SearchQueryBuilder.prototype.queryTag = function () {
+        var tags = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            tags[_i] = arguments[_i];
+        }
+        return this.extendQuery({ QueryTag: tags });
+    };
+    SearchQueryBuilder.prototype.properties = function () {
+        var properties = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            properties[_i] = arguments[_i];
+        }
+        return this.extendQuery({ Properties: properties });
+    };
+    Object.defineProperty(SearchQueryBuilder.prototype, "processPersonalFavorites", {
+        get: function () {
+            return this.extendQuery({ ProcessPersonalFavorites: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SearchQueryBuilder.prototype.queryTemplatePropertiesUrl = function (url) {
+        return this.extendQuery({ QueryTemplatePropertiesUrl: url });
+    };
+    SearchQueryBuilder.prototype.reorderingRules = function () {
+        var rules = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            rules[_i] = arguments[_i];
+        }
+        return this.extendQuery({ ReorderingRules: rules });
+    };
+    SearchQueryBuilder.prototype.hitHighlightedMultivaluePropertyLimit = function (limit) {
+        return this.extendQuery({ HitHighlightedMultivaluePropertyLimit: limit });
+    };
+    Object.defineProperty(SearchQueryBuilder.prototype, "enableOrderingHitHighlightedProperty", {
+        get: function () {
+            return this.extendQuery({ EnableOrderingHitHighlightedProperty: true });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SearchQueryBuilder.prototype.collapseSpecification = function (spec) {
+        return this.extendQuery({ CollapseSpecification: spec });
+    };
+    SearchQueryBuilder.prototype.uiLanguage = function (lang) {
+        return this.extendQuery({ UILanguage: lang });
+    };
+    SearchQueryBuilder.prototype.desiredSnippetLength = function (len) {
+        return this.extendQuery({ DesiredSnippetLength: len });
+    };
+    SearchQueryBuilder.prototype.maxSnippetLength = function (len) {
+        return this.extendQuery({ MaxSnippetLength: len });
+    };
+    SearchQueryBuilder.prototype.summaryLength = function (len) {
+        return this.extendQuery({ SummaryLength: len });
+    };
+    SearchQueryBuilder.prototype.toSearchQuery = function () {
+        return this._query;
+    };
+    SearchQueryBuilder.prototype.extendQuery = function (part) {
+        this._query = util_1.Util.extend(this._query, part);
+        return this;
+    };
+    return SearchQueryBuilder;
+}());
+exports.SearchQueryBuilder = SearchQueryBuilder;
+/**
+ * Describes the search API
+ *
+ */
+var Search = (function (_super) {
+    __extends(Search, _super);
+    /**
+     * Creates a new instance of the Search class
+     *
+     * @param baseUrl The url for the search context
+     * @param query The SearchQuery object to execute
+     */
+    function Search(baseUrl, path) {
+        if (path === void 0) { path = "_api/search/postquery"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * .......
+     * @returns Promise
+     */
+    Search.prototype.execute = function (query) {
+        var _this = this;
+        var formattedBody;
+        formattedBody = query;
+        if (formattedBody.SelectProperties) {
+            formattedBody.SelectProperties = this.fixupProp(query.SelectProperties);
+        }
+        if (formattedBody.RefinementFilters) {
+            formattedBody.RefinementFilters = this.fixupProp(query.RefinementFilters);
+        }
+        if (formattedBody.SortList) {
+            formattedBody.SortList = this.fixupProp(query.SortList);
+        }
+        if (formattedBody.HithighlightedProperties) {
+            formattedBody.HithighlightedProperties = this.fixupProp(query.HitHighlightedProperties);
+        }
+        if (formattedBody.ReorderingRules) {
+            formattedBody.ReorderingRules = this.fixupProp(query.ReorderingRules);
+        }
+        if (formattedBody.Properties) {
+            formattedBody.Properties = this.fixupProp(query.Properties);
+        }
+        var postBody = JSON.stringify({
+            request: util_1.Util.extend({
+                "__metadata": { "type": "Microsoft.Office.Server.Search.REST.SearchRequest" },
+            }, formattedBody),
+        });
+        return this.postCore({ body: postBody }).then(function (data) { return new SearchResults(data, _this.toUrl(), query); });
+    };
+    /**
+     * Fixes up properties that expect to consist of a "results" collection when needed
+     *
+     * @param prop property to fixup for container struct
+     */
+    Search.prototype.fixupProp = function (prop) {
+        if (prop.hasOwnProperty("results")) {
+            return prop;
+        }
+        return { results: prop };
+    };
+    return Search;
+}(queryable_1.QueryableInstance));
+exports.Search = Search;
+/**
+ * Describes the SearchResults class, which returns the formatted and raw version of the query response
+ */
+var SearchResults = (function () {
+    /**
+     * Creates a new instance of the SearchResult class
+     *
+     */
+    function SearchResults(rawResponse, _url, _query, _raw, _primary) {
+        if (_raw === void 0) { _raw = null; }
+        if (_primary === void 0) { _primary = null; }
+        this._url = _url;
+        this._query = _query;
+        this._raw = _raw;
+        this._primary = _primary;
+        this._raw = rawResponse.postquery ? rawResponse.postquery : rawResponse;
+    }
+    Object.defineProperty(SearchResults.prototype, "ElapsedTime", {
+        get: function () {
+            return this.RawSearchResults.ElapsedTime;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchResults.prototype, "RowCount", {
+        get: function () {
+            return this.RawSearchResults.PrimaryQueryResult.RelevantResults.RowCount;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchResults.prototype, "TotalRows", {
+        get: function () {
+            return this.RawSearchResults.PrimaryQueryResult.RelevantResults.TotalRows;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchResults.prototype, "TotalRowsIncludingDuplicates", {
+        get: function () {
+            return this.RawSearchResults.PrimaryQueryResult.RelevantResults.TotalRowsIncludingDuplicates;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchResults.prototype, "RawSearchResults", {
+        get: function () {
+            return this._raw;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchResults.prototype, "PrimarySearchResults", {
+        get: function () {
+            if (this._primary === null) {
+                this._primary = this.formatSearchResults(this._raw.PrimaryQueryResult.RelevantResults.Table.Rows);
+            }
+            return this._primary;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets a page of results
+     *
+     * @param pageNumber Index of the page to return. Used to determine StartRow
+     * @param pageSize Optional, items per page (default = 10)
+     */
+    SearchResults.prototype.getPage = function (pageNumber, pageSize) {
+        // if we got all the available rows we don't have another page
+        if (this.TotalRows < this.RowCount) {
+            return Promise.resolve(null);
+        }
+        // if pageSize is supplied, then we use that regardless of any previous values
+        // otherwise get the previous RowLimit or default to 10
+        var rows = typeof pageSize !== "undefined" ? pageSize : this._query.hasOwnProperty("RowLimit") ? this._query.RowLimit : 10;
+        var query = util_1.Util.extend(this._query, {
+            RowLimit: rows,
+            StartRow: rows * (pageNumber - 1),
+        });
+        // we have reached the end
+        if (query.StartRow > this.TotalRows) {
+            return Promise.resolve(null);
+        }
+        var search = new Search(this._url, null);
+        return search.execute(query);
+    };
+    /**
+     * Formats a search results array
+     *
+     * @param rawResults The array to process
+     */
+    SearchResults.prototype.formatSearchResults = function (rawResults) {
+        var results = new Array();
+        var tempResults = rawResults.results ? rawResults.results : rawResults;
+        for (var _i = 0, tempResults_1 = tempResults; _i < tempResults_1.length; _i++) {
+            var tempResult = tempResults_1[_i];
+            var cells = tempResult.Cells.results ? tempResult.Cells.results : tempResult.Cells;
+            results.push(cells.reduce(function (res, cell) {
+                Object.defineProperty(res, cell.Key, {
+                    configurable: false,
+                    enumerable: false,
+                    value: cell.Value,
+                    writable: false,
+                });
+                return res;
+            }, {}));
+        }
+        return results;
+    };
+    return SearchResults;
+}());
+exports.SearchResults = SearchResults;
+/**
+ * defines the SortDirection enum
+ */
+var SortDirection;
+(function (SortDirection) {
+    SortDirection[SortDirection["Ascending"] = 0] = "Ascending";
+    SortDirection[SortDirection["Descending"] = 1] = "Descending";
+    SortDirection[SortDirection["FQLFormula"] = 2] = "FQLFormula";
+})(SortDirection = exports.SortDirection || (exports.SortDirection = {}));
+/**
+ * defines the ReorderingRuleMatchType  enum
+ */
+var ReorderingRuleMatchType;
+(function (ReorderingRuleMatchType) {
+    ReorderingRuleMatchType[ReorderingRuleMatchType["ResultContainsKeyword"] = 0] = "ResultContainsKeyword";
+    ReorderingRuleMatchType[ReorderingRuleMatchType["TitleContainsKeyword"] = 1] = "TitleContainsKeyword";
+    ReorderingRuleMatchType[ReorderingRuleMatchType["TitleMatchesKeyword"] = 2] = "TitleMatchesKeyword";
+    ReorderingRuleMatchType[ReorderingRuleMatchType["UrlStartsWith"] = 3] = "UrlStartsWith";
+    ReorderingRuleMatchType[ReorderingRuleMatchType["UrlExactlyMatches"] = 4] = "UrlExactlyMatches";
+    ReorderingRuleMatchType[ReorderingRuleMatchType["ContentTypeIs"] = 5] = "ContentTypeIs";
+    ReorderingRuleMatchType[ReorderingRuleMatchType["FileExtensionMatches"] = 6] = "FileExtensionMatches";
+    ReorderingRuleMatchType[ReorderingRuleMatchType["ResultHasTag"] = 7] = "ResultHasTag";
+    ReorderingRuleMatchType[ReorderingRuleMatchType["ManualCondition"] = 8] = "ManualCondition";
+})(ReorderingRuleMatchType = exports.ReorderingRuleMatchType || (exports.ReorderingRuleMatchType = {}));
+/**
+ * Specifies the type value for the property
+ */
+var QueryPropertyValueType;
+(function (QueryPropertyValueType) {
+    QueryPropertyValueType[QueryPropertyValueType["None"] = 0] = "None";
+    QueryPropertyValueType[QueryPropertyValueType["StringType"] = 1] = "StringType";
+    QueryPropertyValueType[QueryPropertyValueType["Int32TYpe"] = 2] = "Int32TYpe";
+    QueryPropertyValueType[QueryPropertyValueType["BooleanType"] = 3] = "BooleanType";
+    QueryPropertyValueType[QueryPropertyValueType["StringArrayType"] = 4] = "StringArrayType";
+    QueryPropertyValueType[QueryPropertyValueType["UnSupportedType"] = 5] = "UnSupportedType";
+})(QueryPropertyValueType = exports.QueryPropertyValueType || (exports.QueryPropertyValueType = {}));
+var SearchBuiltInSourceId = (function () {
+    function SearchBuiltInSourceId() {
+    }
+    SearchBuiltInSourceId.Documents = "e7ec8cee-ded8-43c9-beb5-436b54b31e84";
+    SearchBuiltInSourceId.ItemsMatchingContentType = "5dc9f503-801e-4ced-8a2c-5d1237132419";
+    SearchBuiltInSourceId.ItemsMatchingTag = "e1327b9c-2b8c-4b23-99c9-3730cb29c3f7";
+    SearchBuiltInSourceId.ItemsRelatedToCurrentUser = "48fec42e-4a92-48ce-8363-c2703a40e67d";
+    SearchBuiltInSourceId.ItemsWithSameKeywordAsThisItem = "5c069288-1d17-454a-8ac6-9c642a065f48";
+    SearchBuiltInSourceId.LocalPeopleResults = "b09a7990-05ea-4af9-81ef-edfab16c4e31";
+    SearchBuiltInSourceId.LocalReportsAndDataResults = "203fba36-2763-4060-9931-911ac8c0583b";
+    SearchBuiltInSourceId.LocalSharePointResults = "8413cd39-2156-4e00-b54d-11efd9abdb89";
+    SearchBuiltInSourceId.LocalVideoResults = "78b793ce-7956-4669-aa3b-451fc5defebf";
+    SearchBuiltInSourceId.Pages = "5e34578e-4d08-4edc-8bf3-002acf3cdbcc";
+    SearchBuiltInSourceId.Pictures = "38403c8c-3975-41a8-826e-717f2d41568a";
+    SearchBuiltInSourceId.Popular = "97c71db1-58ce-4891-8b64-585bc2326c12";
+    SearchBuiltInSourceId.RecentlyChangedItems = "ba63bbae-fa9c-42c0-b027-9a878f16557c";
+    SearchBuiltInSourceId.RecommendedItems = "ec675252-14fa-4fbe-84dd-8d098ed74181";
+    SearchBuiltInSourceId.Wiki = "9479bf85-e257-4318-b5a8-81a180f5faa1";
+    return SearchBuiltInSourceId;
+}());
+exports.SearchBuiltInSourceId = SearchBuiltInSourceId;
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var storage_1 = __webpack_require__(15);
 var util_1 = __webpack_require__(0);
 var pnplibconfig_1 = __webpack_require__(4);
 var CachingOptions = (function () {
@@ -6142,9 +6704,9 @@ var CachingOptions = (function () {
         enumerable: true,
         configurable: true
     });
+    CachingOptions.storage = new storage_1.PnPClientStorage();
     return CachingOptions;
 }());
-CachingOptions.storage = new storage_1.PnPClientStorage();
 exports.CachingOptions = CachingOptions;
 var CachingParserWrapper = (function () {
     function CachingParserWrapper(_parser, _cacheOptions) {
@@ -6167,7 +6729,7 @@ exports.CachingParserWrapper = CachingParserWrapper;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6184,99 +6746,673 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
+var SearchSuggest = (function (_super) {
+    __extends(SearchSuggest, _super);
+    function SearchSuggest(baseUrl, path) {
+        if (path === void 0) { path = "_api/search/suggest"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    SearchSuggest.prototype.execute = function (query) {
+        this.mapQueryToQueryString(query);
+        return this.get().then(function (response) { return new SearchSuggestResult(response); });
+    };
+    SearchSuggest.prototype.mapQueryToQueryString = function (query) {
+        this.query.add("querytext", "'" + query.querytext + "'");
+        if (query.hasOwnProperty("count")) {
+            this.query.add("inumberofquerysuggestions", query.count.toString());
+        }
+        if (query.hasOwnProperty("personalCount")) {
+            this.query.add("inumberofresultsuggestions", query.personalCount.toString());
+        }
+        if (query.hasOwnProperty("preQuery")) {
+            this.query.add("fprequerysuggestions", query.preQuery.toString());
+        }
+        if (query.hasOwnProperty("hitHighlighting")) {
+            this.query.add("fhithighlighting", query.hitHighlighting.toString());
+        }
+        if (query.hasOwnProperty("capitalize")) {
+            this.query.add("fcapitalizefirstletters", query.capitalize.toString());
+        }
+        if (query.hasOwnProperty("culture")) {
+            this.query.add("culture", query.culture.toString());
+        }
+        if (query.hasOwnProperty("stemming")) {
+            this.query.add("enablestemming", query.stemming.toString());
+        }
+        if (query.hasOwnProperty("includePeople")) {
+            this.query.add("showpeoplenamesuggestions", query.includePeople.toString());
+        }
+        if (query.hasOwnProperty("queryRules")) {
+            this.query.add("enablequeryrules", query.queryRules.toString());
+        }
+        if (query.hasOwnProperty("prefixMatch")) {
+            this.query.add("fprefixmatchallterms", query.prefixMatch.toString());
+        }
+    };
+    return SearchSuggest;
+}(queryable_1.QueryableInstance));
+exports.SearchSuggest = SearchSuggest;
+var SearchSuggestResult = (function () {
+    function SearchSuggestResult(json) {
+        if (json.hasOwnProperty("suggest")) {
+            // verbose
+            this.PeopleNames = json.suggest.PeopleNames.results;
+            this.PersonalResults = json.suggest.PersonalResults.results;
+            this.Queries = json.suggest.Queries.results;
+        }
+        else {
+            this.PeopleNames = json.PeopleNames;
+            this.PersonalResults = json.PersonalResults;
+            this.Queries = json.Queries;
+        }
+    }
+    return SearchSuggestResult;
+}());
+exports.SearchSuggestResult = SearchSuggestResult;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var webs_1 = __webpack_require__(7);
+var usercustomactions_1 = __webpack_require__(19);
+var odata_1 = __webpack_require__(2);
+var features_1 = __webpack_require__(31);
 /**
- * Describes a collection of List objects
+ * Describes a site collection
  *
  */
-var Features = (function (_super) {
-    __extends(Features, _super);
+var Site = (function (_super) {
+    __extends(Site, _super);
     /**
-     * Creates a new instance of the Lists class
+     * Creates a new instance of the Site class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or Queryable which forms the parent of this site collection
      */
-    function Features(baseUrl, path) {
-        if (path === void 0) { path = "features"; }
+    function Site(baseUrl, path) {
+        if (path === void 0) { path = "_api/site"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    Object.defineProperty(Site.prototype, "rootWeb", {
+        /**
+         * Gets the root web of the site collection
+         *
+         */
+        get: function () {
+            return new webs_1.Web(this, "rootweb");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Site.prototype, "features", {
+        /**
+         * Gets the active features for this site collection
+         *
+         */
+        get: function () {
+            return new features_1.Features(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Site.prototype, "userCustomActions", {
+        /**
+         * Gets all custom actions for this site collection
+         *
+         */
+        get: function () {
+            return new usercustomactions_1.UserCustomActions(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets the context information for this site collection
+     */
+    Site.prototype.getContextInfo = function () {
+        var q = new Site(this.parentUrl, "_api/contextinfo");
+        return q.postCore().then(function (data) {
+            if (data.hasOwnProperty("GetContextWebInformation")) {
+                var info = data.GetContextWebInformation;
+                info.SupportedSchemaVersions = info.SupportedSchemaVersions.results;
+                return info;
+            }
+            else {
+                return data;
+            }
+        });
+    };
+    /**
+     * Gets the document libraries on a site. Static method. (SharePoint Online only)
+     *
+     * @param absoluteWebUrl The absolute url of the web whose document libraries should be returned
+     */
+    Site.prototype.getDocumentLibraries = function (absoluteWebUrl) {
+        var q = new queryable_1.Queryable("", "_api/sp.web.getdocumentlibraries(@v)");
+        q.query.add("@v", "'" + absoluteWebUrl + "'");
+        return q.get().then(function (data) {
+            if (data.hasOwnProperty("GetDocumentLibraries")) {
+                return data.GetDocumentLibraries;
+            }
+            else {
+                return data;
+            }
+        });
+    };
+    /**
+     * Gets the site url from a page url
+     *
+     * @param absolutePageUrl The absolute url of the page
+     */
+    Site.prototype.getWebUrlFromPageUrl = function (absolutePageUrl) {
+        var q = new queryable_1.Queryable("", "_api/sp.web.getweburlfrompageurl(@v)");
+        q.query.add("@v", "'" + absolutePageUrl + "'");
+        return q.get().then(function (data) {
+            if (data.hasOwnProperty("GetWebUrlFromPageUrl")) {
+                return data.GetWebUrlFromPageUrl;
+            }
+            else {
+                return data;
+            }
+        });
+    };
+    /**
+     * Creates a new batch for requests within the context of this site collection
+     *
+     */
+    Site.prototype.createBatch = function () {
+        return new odata_1.ODataBatch(this.parentUrl);
+    };
+    /**
+     * Opens a web by id (using POST)
+     *
+     * @param webId The GUID id of the web to open
+     */
+    Site.prototype.openWebById = function (webId) {
+        return this.clone(Site, "openWebById('" + webId + "')", true).postCore().then(function (d) {
+            return {
+                data: d,
+                web: webs_1.Web.fromUrl(odata_1.extractOdataId(d)),
+            };
+        });
+    };
+    return Site;
+}(queryable_1.QueryableInstance));
+exports.Site = Site;
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var webs_1 = __webpack_require__(7);
+var roles_1 = __webpack_require__(16);
+var types_1 = __webpack_require__(13);
+var queryable_1 = __webpack_require__(1);
+var QueryableSecurable = (function (_super) {
+    __extends(QueryableSecurable, _super);
+    function QueryableSecurable() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(QueryableSecurable.prototype, "roleAssignments", {
+        /**
+         * Gets the set of role assignments for this item
+         *
+         */
+        get: function () {
+            return new roles_1.RoleAssignments(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(QueryableSecurable.prototype, "firstUniqueAncestorSecurableObject", {
+        /**
+         * Gets the closest securable up the security hierarchy whose permissions are applied to this list item
+         *
+         */
+        get: function () {
+            return new queryable_1.QueryableInstance(this, "FirstUniqueAncestorSecurableObject");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets the effective permissions for the user supplied
+     *
+     * @param loginName The claims username for the user (ex: i:0#.f|membership|user@domain.com)
+     */
+    QueryableSecurable.prototype.getUserEffectivePermissions = function (loginName) {
+        var q = this.clone(queryable_1.Queryable, "getUserEffectivePermissions(@user)", true);
+        q.query.add("@user", "'" + encodeURIComponent(loginName) + "'");
+        return q.get().then(function (r) {
+            // handle verbose mode
+            return r.hasOwnProperty("GetUserEffectivePermissions") ? r.GetUserEffectivePermissions : r;
+        });
+    };
+    /**
+     * Gets the effective permissions for the current user
+     */
+    QueryableSecurable.prototype.getCurrentUserEffectivePermissions = function () {
+        var _this = this;
+        var w = webs_1.Web.fromUrl(this.toUrl());
+        return w.currentUser.select("LoginName").getAs().then(function (user) {
+            return _this.getUserEffectivePermissions(user.LoginName);
+        });
+    };
+    /**
+     * Breaks the security inheritance at this level optinally copying permissions and clearing subscopes
+     *
+     * @param copyRoleAssignments If true the permissions are copied from the current parent scope
+     * @param clearSubscopes Optional. true to make all child securable objects inherit role assignments from the current object
+     */
+    QueryableSecurable.prototype.breakRoleInheritance = function (copyRoleAssignments, clearSubscopes) {
+        if (copyRoleAssignments === void 0) { copyRoleAssignments = false; }
+        if (clearSubscopes === void 0) { clearSubscopes = false; }
+        return this.clone(QueryableSecurable, "breakroleinheritance(copyroleassignments=" + copyRoleAssignments + ", clearsubscopes=" + clearSubscopes + ")", true).postCore();
+    };
+    /**
+     * Removes the local role assignments so that it re-inherit role assignments from the parent object.
+     *
+     */
+    QueryableSecurable.prototype.resetRoleInheritance = function () {
+        return this.clone(QueryableSecurable, "resetroleinheritance", true).postCore();
+    };
+    /**
+     * Determines if a given user has the appropriate permissions
+     *
+     * @param loginName The user to check
+     * @param permission The permission being checked
+     */
+    QueryableSecurable.prototype.userHasPermissions = function (loginName, permission) {
+        var _this = this;
+        return this.getUserEffectivePermissions(loginName).then(function (perms) {
+            return _this.hasPermissions(perms, permission);
+        });
+    };
+    /**
+     * Determines if the current user has the requested permissions
+     *
+     * @param permission The permission we wish to check
+     */
+    QueryableSecurable.prototype.currentUserHasPermissions = function (permission) {
+        var _this = this;
+        return this.getCurrentUserEffectivePermissions().then(function (perms) {
+            return _this.hasPermissions(perms, permission);
+        });
+    };
+    /**
+     * Taken from sp.js, checks the supplied permissions against the mask
+     *
+     * @param value The security principal's permissions on the given object
+     * @param perm The permission checked against the value
+     */
+    /* tslint:disable:no-bitwise */
+    QueryableSecurable.prototype.hasPermissions = function (value, perm) {
+        if (!perm) {
+            return true;
+        }
+        if (perm === types_1.PermissionKind.FullMask) {
+            return (value.High & 32767) === 32767 && value.Low === 65535;
+        }
+        perm = perm - 1;
+        var num = 1;
+        if (perm >= 0 && perm < 32) {
+            num = num << perm;
+            return 0 !== (value.Low & num);
+        }
+        else if (perm >= 32 && perm < 64) {
+            num = num << perm - 32;
+            return 0 !== (value.High & num);
+        }
+        return false;
+    };
+    return QueryableSecurable;
+}(queryable_1.QueryableInstance));
+exports.QueryableSecurable = QueryableSecurable;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var sitegroups_1 = __webpack_require__(17);
+var util_1 = __webpack_require__(0);
+/**
+ * Describes a collection of all site collection users
+ *
+ */
+var SiteUsers = (function (_super) {
+    __extends(SiteUsers, _super);
+    /**
+     * Creates a new instance of the SiteUsers class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this user collection
+     */
+    function SiteUsers(baseUrl, path) {
+        if (path === void 0) { path = "siteusers"; }
         return _super.call(this, baseUrl, path) || this;
     }
     /**
-     * Gets a list from the collection by guid id
+     * Gets a user from the collection by email
      *
-     * @param id The Id of the feature (GUID)
+     * @param email The email address of the user to retrieve
      */
-    Features.prototype.getById = function (id) {
-        var feature = new Feature(this);
-        feature.concat("('" + id + "')");
-        return feature;
+    SiteUsers.prototype.getByEmail = function (email) {
+        return new SiteUser(this, "getByEmail('" + email + "')");
     };
     /**
-     * Adds a new list to the collection
+     * Gets a user from the collection by id
      *
-     * @param id The Id of the feature (GUID)
-     * @param force If true the feature activation will be forced
+     * @param id The id of the user to retrieve
      */
-    Features.prototype.add = function (id, force) {
+    SiteUsers.prototype.getById = function (id) {
+        return new SiteUser(this, "getById(" + id + ")");
+    };
+    /**
+     * Gets a user from the collection by login name
+     *
+     * @param loginName The login name of the user to retrieve
+     */
+    SiteUsers.prototype.getByLoginName = function (loginName) {
+        var su = new SiteUser(this);
+        su.concat("(@v)");
+        su.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
+        return su;
+    };
+    /**
+     * Removes a user from the collection by id
+     *
+     * @param id The id of the user to remove
+     */
+    SiteUsers.prototype.removeById = function (id) {
+        return this.clone(SiteUsers, "removeById(" + id + ")", true).postCore();
+    };
+    /**
+     * Removes a user from the collection by login name
+     *
+     * @param loginName The login name of the user to remove
+     */
+    SiteUsers.prototype.removeByLoginName = function (loginName) {
+        var o = this.clone(SiteUsers, "removeByLoginName(@v)", true);
+        o.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
+        return o.postCore();
+    };
+    /**
+     * Adds a user to a group
+     *
+     * @param loginName The login name of the user to add to the group
+     *
+     */
+    SiteUsers.prototype.add = function (loginName) {
         var _this = this;
-        if (force === void 0) { force = false; }
-        return this.clone(Features, "add", true).post({
-            body: JSON.stringify({
-                featdefScope: 0,
-                featureId: id,
-                force: force,
-            }),
+        return this.clone(SiteUsers, null, true).postCore({
+            body: JSON.stringify({ "__metadata": { "type": "SP.User" }, LoginName: loginName }),
+        }).then(function () { return _this.getByLoginName(loginName); });
+    };
+    return SiteUsers;
+}(queryable_1.QueryableCollection));
+exports.SiteUsers = SiteUsers;
+/**
+ * Describes a single user
+ *
+ */
+var SiteUser = (function (_super) {
+    __extends(SiteUser, _super);
+    function SiteUser() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(SiteUser.prototype, "groups", {
+        /**
+         * Gets the groups for this user
+         *
+         */
+        get: function () {
+            return new sitegroups_1.SiteGroups(this, "groups");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+    * Updates this user instance with the supplied properties
+    *
+    * @param properties A plain object of property names and values to update for the user
+    */
+    SiteUser.prototype.update = function (properties) {
+        var _this = this;
+        var postBody = util_1.Util.extend({ "__metadata": { "type": "SP.User" } }, properties);
+        return this.postCore({
+            body: JSON.stringify(postBody),
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
         }).then(function (data) {
             return {
                 data: data,
-                feature: _this.getById(id),
+                user: _this,
             };
         });
     };
     /**
-     * Removes (deactivates) a feature from the collection
+     * Delete this user
      *
-     * @param id The Id of the feature (GUID)
-     * @param force If true the feature deactivation will be forced
      */
-    Features.prototype.remove = function (id, force) {
-        if (force === void 0) { force = false; }
-        return this.clone(Features, "remove", true).post({
-            body: JSON.stringify({
-                featureId: id,
-                force: force,
-            }),
+    SiteUser.prototype.delete = function () {
+        return this.postCore({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
         });
     };
-    return Features;
-}(queryable_1.QueryableCollection));
-exports.Features = Features;
-var Feature = (function (_super) {
-    __extends(Feature, _super);
-    function Feature() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Removes (deactivates) a feature from the collection
-     *
-     * @param force If true the feature deactivation will be forced
-     */
-    Feature.prototype.deactivate = function (force) {
-        var _this = this;
-        if (force === void 0) { force = false; }
-        var removeDependency = this.addBatchDependency();
-        var idGet = new Feature(this).select("DefinitionId");
-        return idGet.getAs().then(function (feature) {
-            var promise = _this.getParent(Features, _this.parentUrl, "", _this.batch).remove(feature.DefinitionId, force);
-            removeDependency();
-            return promise;
-        });
-    };
-    return Feature;
+    return SiteUser;
 }(queryable_1.QueryableInstance));
-exports.Feature = Feature;
+exports.SiteUser = SiteUser;
+/**
+ * Represents the current user
+ */
+var CurrentUser = (function (_super) {
+    __extends(CurrentUser, _super);
+    function CurrentUser(baseUrl, path) {
+        if (path === void 0) { path = "currentuser"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    return CurrentUser;
+}(queryable_1.QueryableInstance));
+exports.CurrentUser = CurrentUser;
 
 
 /***/ }),
-/* 24 */
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var LimitedWebPartManager = (function (_super) {
+    __extends(LimitedWebPartManager, _super);
+    function LimitedWebPartManager() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(LimitedWebPartManager.prototype, "webparts", {
+        /**
+         * Gets the set of web part definitions contained by this web part manager
+         *
+         */
+        get: function () {
+            return new WebPartDefinitions(this, "webparts");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Exports a webpart definition
+     *
+     * @param id the GUID id of the definition to export
+     */
+    LimitedWebPartManager.prototype.export = function (id) {
+        return this.clone(LimitedWebPartManager, "ExportWebPart", true).postCore({
+            body: JSON.stringify({ webPartId: id }),
+        });
+    };
+    /**
+     * Imports a webpart
+     *
+     * @param xml webpart definition which must be valid XML in the .dwp or .webpart format
+     */
+    LimitedWebPartManager.prototype.import = function (xml) {
+        return this.clone(LimitedWebPartManager, "ImportWebPart", true).postCore({
+            body: JSON.stringify({ webPartXml: xml }),
+        });
+    };
+    return LimitedWebPartManager;
+}(queryable_1.Queryable));
+exports.LimitedWebPartManager = LimitedWebPartManager;
+var WebPartDefinitions = (function (_super) {
+    __extends(WebPartDefinitions, _super);
+    function WebPartDefinitions() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets a web part definition from the collection by id
+     *
+     * @param id The storage ID of the SPWebPartDefinition to retrieve
+     */
+    WebPartDefinitions.prototype.getById = function (id) {
+        return new WebPartDefinition(this, "getbyid('" + id + "')");
+    };
+    /**
+     * Gets a web part definition from the collection by storage id
+     *
+     * @param id The WebPart.ID of the SPWebPartDefinition to retrieve
+     */
+    WebPartDefinitions.prototype.getByControlId = function (id) {
+        return new WebPartDefinition(this, "getByControlId('" + id + "')");
+    };
+    return WebPartDefinitions;
+}(queryable_1.QueryableCollection));
+exports.WebPartDefinitions = WebPartDefinitions;
+var WebPartDefinition = (function (_super) {
+    __extends(WebPartDefinition, _super);
+    function WebPartDefinition() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(WebPartDefinition.prototype, "webpart", {
+        /**
+         * Gets the webpart information associated with this definition
+         */
+        get: function () {
+            return new WebPart(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Saves changes to the Web Part made using other properties and methods on the SPWebPartDefinition object
+     */
+    WebPartDefinition.prototype.saveChanges = function () {
+        return this.clone(WebPartDefinition, "SaveWebPartChanges", true).postCore();
+    };
+    /**
+     * Moves the Web Part to a different location on a Web Part Page
+     *
+     * @param zoneId The ID of the Web Part Zone to which to move the Web Part
+     * @param zoneIndex A Web Part zone index that specifies the position at which the Web Part is to be moved within the destination Web Part zone
+     */
+    WebPartDefinition.prototype.moveTo = function (zoneId, zoneIndex) {
+        return this.clone(WebPartDefinition, "MoveWebPartTo(zoneID='" + zoneId + "', zoneIndex=" + zoneIndex + ")", true).postCore();
+    };
+    /**
+     * Closes the Web Part. If the Web Part is already closed, this method does nothing
+     */
+    WebPartDefinition.prototype.close = function () {
+        return this.clone(WebPartDefinition, "CloseWebPart", true).postCore();
+    };
+    /**
+     * Opens the Web Part. If the Web Part is already closed, this method does nothing
+     */
+    WebPartDefinition.prototype.open = function () {
+        return this.clone(WebPartDefinition, "OpenWebPart", true).postCore();
+    };
+    /**
+     * Removes a webpart from a page, all settings will be lost
+     */
+    WebPartDefinition.prototype.delete = function () {
+        return this.clone(WebPartDefinition, "DeleteWebPart", true).postCore();
+    };
+    return WebPartDefinition;
+}(queryable_1.QueryableInstance));
+exports.WebPartDefinition = WebPartDefinition;
+var WebPart = (function (_super) {
+    __extends(WebPart, _super);
+    /**
+     * Creates a new instance of the WebPart class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param path Optional, if supplied will be appended to the supplied baseUrl
+     */
+    function WebPart(baseUrl, path) {
+        if (path === void 0) { path = "webpart"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    return WebPart;
+}(queryable_1.QueryableInstance));
+exports.WebPart = WebPart;
+
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6355,7 +7491,7 @@ var Fields = (function (_super) {
                 },
             }, info),
         });
-        return this.clone(Fields, "createfieldasxml", true).postAs({ body: postBody }).then(function (data) {
+        return this.clone(Fields, "createfieldasxml", true).postAsCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 field: _this.getById(data.Id),
@@ -6376,7 +7512,7 @@ var Fields = (function (_super) {
             "Title": title,
             "__metadata": { "type": fieldType },
         }, properties));
-        return this.clone(Fields, null, true).postAs({ body: postBody }).then(function (data) {
+        return this.clone(Fields, null, true).postAsCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 field: _this.getById(data.Id),
@@ -6543,7 +7679,7 @@ var Field = (function (_super) {
         var postBody = JSON.stringify(util_1.Util.extend({
             "__metadata": { "type": fieldType },
         }, properties));
-        return this.post({
+        return this.postCore({
             body: postBody,
             headers: {
                 "X-HTTP-Method": "MERGE",
@@ -6560,7 +7696,7 @@ var Field = (function (_super) {
      *
      */
     Field.prototype.delete = function () {
-        return this.post({
+        return this.postCore({
             headers: {
                 "X-HTTP-Method": "DELETE",
             },
@@ -6570,19 +7706,19 @@ var Field = (function (_super) {
      * Sets the value of the ShowInDisplayForm property for this field.
      */
     Field.prototype.setShowInDisplayForm = function (show) {
-        return this.clone(Field, "setshowindisplayform(" + show + ")", true).post();
+        return this.clone(Field, "setshowindisplayform(" + show + ")", true).postCore();
     };
     /**
      * Sets the value of the ShowInEditForm property for this field.
      */
     Field.prototype.setShowInEditForm = function (show) {
-        return this.clone(Field, "setshowineditform(" + show + ")", true).post();
+        return this.clone(Field, "setshowineditform(" + show + ")", true).postCore();
     };
     /**
      * Sets the value of the ShowInNewForm property for this field.
      */
     Field.prototype.setShowInNewForm = function (show) {
-        return this.clone(Field, "setshowinnewform(" + show + ")", true).post();
+        return this.clone(Field, "setshowinnewform(" + show + ")", true).postCore();
     };
     return Field;
 }(queryable_1.QueryableInstance));
@@ -6590,7 +7726,7 @@ exports.Field = Field;
 
 
 /***/ }),
-/* 25 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6643,7 +7779,7 @@ var NavigationNodes = (function (_super) {
             Url: url,
             "__metadata": { "type": "SP.NavigationNode" },
         });
-        return this.clone(NavigationNodes, null, true).post({ body: postBody }).then(function (data) {
+        return this.clone(NavigationNodes, null, true).postCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 node: _this.getById(data.Id),
@@ -6661,7 +7797,7 @@ var NavigationNodes = (function (_super) {
             nodeId: nodeId,
             previousNodeId: previousNodeId,
         });
-        return this.clone(NavigationNodes, "MoveAfter", true).post({ body: postBody });
+        return this.clone(NavigationNodes, "MoveAfter", true).postCore({ body: postBody });
     };
     return NavigationNodes;
 }(queryable_1.QueryableCollection));
@@ -6695,7 +7831,7 @@ var NavigationNode = (function (_super) {
         var postBody = JSON.stringify(util_1.Util.extend({
             "__metadata": { "type": "SP.NavigationNode" },
         }, properties));
-        return this.post({
+        return this.postCore({
             body: postBody,
             headers: {
                 "X-HTTP-Method": "MERGE",
@@ -6711,7 +7847,7 @@ var NavigationNode = (function (_super) {
      * Deletes this node and any child nodes
      */
     NavigationNode.prototype.delete = function () {
-        return _super.prototype.delete.call(this);
+        return _super.prototype.deleteCore.call(this);
     };
     return NavigationNode;
 }(queryable_1.QueryableInstance));
@@ -6759,1021 +7895,6 @@ exports.Navigation = Navigation;
 
 
 /***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var webs_1 = __webpack_require__(8);
-var roles_1 = __webpack_require__(17);
-var types_1 = __webpack_require__(13);
-var queryable_1 = __webpack_require__(1);
-var QueryableSecurable = (function (_super) {
-    __extends(QueryableSecurable, _super);
-    function QueryableSecurable() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(QueryableSecurable.prototype, "roleAssignments", {
-        /**
-         * Gets the set of role assignments for this item
-         *
-         */
-        get: function () {
-            return new roles_1.RoleAssignments(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryableSecurable.prototype, "firstUniqueAncestorSecurableObject", {
-        /**
-         * Gets the closest securable up the security hierarchy whose permissions are applied to this list item
-         *
-         */
-        get: function () {
-            return new queryable_1.QueryableInstance(this, "FirstUniqueAncestorSecurableObject");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets the effective permissions for the user supplied
-     *
-     * @param loginName The claims username for the user (ex: i:0#.f|membership|user@domain.com)
-     */
-    QueryableSecurable.prototype.getUserEffectivePermissions = function (loginName) {
-        var q = this.clone(queryable_1.Queryable, "getUserEffectivePermissions(@user)", true);
-        q.query.add("@user", "'" + encodeURIComponent(loginName) + "'");
-        return q.getAs();
-    };
-    /**
-     * Gets the effective permissions for the current user
-     */
-    QueryableSecurable.prototype.getCurrentUserEffectivePermissions = function () {
-        var _this = this;
-        var w = webs_1.Web.fromUrl(this.toUrl());
-        return w.currentUser.select("LoginName").getAs().then(function (user) {
-            return _this.getUserEffectivePermissions(user.LoginName);
-        });
-    };
-    /**
-     * Breaks the security inheritance at this level optinally copying permissions and clearing subscopes
-     *
-     * @param copyRoleAssignments If true the permissions are copied from the current parent scope
-     * @param clearSubscopes Optional. true to make all child securable objects inherit role assignments from the current object
-     */
-    QueryableSecurable.prototype.breakRoleInheritance = function (copyRoleAssignments, clearSubscopes) {
-        if (copyRoleAssignments === void 0) { copyRoleAssignments = false; }
-        if (clearSubscopes === void 0) { clearSubscopes = false; }
-        return this.clone(QueryableSecurable, "breakroleinheritance(copyroleassignments=" + copyRoleAssignments + ", clearsubscopes=" + clearSubscopes + ")", true).post();
-    };
-    /**
-     * Removes the local role assignments so that it re-inherit role assignments from the parent object.
-     *
-     */
-    QueryableSecurable.prototype.resetRoleInheritance = function () {
-        return this.clone(QueryableSecurable, "resetroleinheritance", true).post();
-    };
-    /**
-     * Determines if a given user has the appropriate permissions
-     *
-     * @param loginName The user to check
-     * @param permission The permission being checked
-     */
-    QueryableSecurable.prototype.userHasPermissions = function (loginName, permission) {
-        var _this = this;
-        return this.getUserEffectivePermissions(loginName).then(function (perms) {
-            return _this.hasPermissions(perms, permission);
-        });
-    };
-    /**
-     * Determines if the current user has the requested permissions
-     *
-     * @param permission The permission we wish to check
-     */
-    QueryableSecurable.prototype.currentUserHasPermissions = function (permission) {
-        var _this = this;
-        return this.getCurrentUserEffectivePermissions().then(function (perms) {
-            return _this.hasPermissions(perms, permission);
-        });
-    };
-    /**
-     * Taken from sp.js, checks the supplied permissions against the mask
-     *
-     * @param value The security principal's permissions on the given object
-     * @param perm The permission checked against the value
-     */
-    /* tslint:disable:no-bitwise */
-    QueryableSecurable.prototype.hasPermissions = function (value, perm) {
-        if (!perm) {
-            return true;
-        }
-        if (perm === types_1.PermissionKind.FullMask) {
-            return (value.High & 32767) === 32767 && value.Low === 65535;
-        }
-        perm = perm - 1;
-        var num = 1;
-        if (perm >= 0 && perm < 32) {
-            num = num << perm;
-            return 0 !== (value.Low & num);
-        }
-        else if (perm >= 32 && perm < 64) {
-            num = num << perm - 32;
-            return 0 !== (value.High & num);
-        }
-        return false;
-    };
-    return QueryableSecurable;
-}(queryable_1.QueryableInstance));
-exports.QueryableSecurable = QueryableSecurable;
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var util_1 = __webpack_require__(0);
-/**
- * Allows for the fluent construction of search queries
- */
-var SearchQueryBuilder = (function () {
-    function SearchQueryBuilder(queryText, _query) {
-        if (queryText === void 0) { queryText = ""; }
-        if (_query === void 0) { _query = {}; }
-        this._query = _query;
-        if (typeof queryText === "string" && queryText.length > 0) {
-            this.extendQuery({ Querytext: queryText });
-        }
-    }
-    SearchQueryBuilder.create = function (queryText, queryTemplate) {
-        if (queryText === void 0) { queryText = ""; }
-        if (queryTemplate === void 0) { queryTemplate = {}; }
-        return new SearchQueryBuilder(queryText, queryTemplate);
-    };
-    SearchQueryBuilder.prototype.text = function (queryText) {
-        return this.extendQuery({ Querytext: queryText });
-    };
-    SearchQueryBuilder.prototype.template = function (template) {
-        return this.extendQuery({ QueryTemplate: template });
-    };
-    SearchQueryBuilder.prototype.sourceId = function (id) {
-        return this.extendQuery({ SourceId: id });
-    };
-    Object.defineProperty(SearchQueryBuilder.prototype, "enableInterleaving", {
-        get: function () {
-            return this.extendQuery({ EnableInterleaving: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchQueryBuilder.prototype, "enableStemming", {
-        get: function () {
-            return this.extendQuery({ EnableStemming: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchQueryBuilder.prototype, "trimDuplicates", {
-        get: function () {
-            return this.extendQuery({ TrimDuplicates: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchQueryBuilder.prototype, "enableNicknames", {
-        get: function () {
-            return this.extendQuery({ EnableNicknames: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchQueryBuilder.prototype, "enableFql", {
-        get: function () {
-            return this.extendQuery({ EnableFql: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchQueryBuilder.prototype, "enablePhonetic", {
-        get: function () {
-            return this.extendQuery({ EnablePhonetic: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchQueryBuilder.prototype, "bypassResultTypes", {
-        get: function () {
-            return this.extendQuery({ BypassResultTypes: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchQueryBuilder.prototype, "processBestBets", {
-        get: function () {
-            return this.extendQuery({ ProcessBestBets: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchQueryBuilder.prototype, "enableQueryRules", {
-        get: function () {
-            return this.extendQuery({ EnableQueryRules: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchQueryBuilder.prototype, "enableSorting", {
-        get: function () {
-            return this.extendQuery({ EnableSorting: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchQueryBuilder.prototype, "generateBlockRankLog", {
-        get: function () {
-            return this.extendQuery({ GenerateBlockRankLog: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    SearchQueryBuilder.prototype.rankingModelId = function (id) {
-        return this.extendQuery({ RankingModelId: id });
-    };
-    SearchQueryBuilder.prototype.startRow = function (id) {
-        return this.extendQuery({ StartRow: id });
-    };
-    SearchQueryBuilder.prototype.rowLimit = function (id) {
-        return this.extendQuery({ RowLimit: id });
-    };
-    SearchQueryBuilder.prototype.rowsPerPage = function (id) {
-        return this.extendQuery({ RowsPerPage: id });
-    };
-    SearchQueryBuilder.prototype.selectProperties = function () {
-        var properties = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            properties[_i] = arguments[_i];
-        }
-        return this.extendQuery({ SelectProperties: properties });
-    };
-    SearchQueryBuilder.prototype.culture = function (culture) {
-        return this.extendQuery({ Culture: culture });
-    };
-    SearchQueryBuilder.prototype.refinementFilters = function () {
-        var filters = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            filters[_i] = arguments[_i];
-        }
-        return this.extendQuery({ RefinementFilters: filters });
-    };
-    SearchQueryBuilder.prototype.refiners = function (refiners) {
-        return this.extendQuery({ Refiners: refiners });
-    };
-    SearchQueryBuilder.prototype.hiddenConstraints = function (constraints) {
-        return this.extendQuery({ HiddenConstraints: constraints });
-    };
-    SearchQueryBuilder.prototype.sortList = function () {
-        var sorts = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            sorts[_i] = arguments[_i];
-        }
-        return this.extendQuery({ SortList: sorts });
-    };
-    SearchQueryBuilder.prototype.timeout = function (milliseconds) {
-        return this.extendQuery({ Timeout: milliseconds });
-    };
-    SearchQueryBuilder.prototype.hithighlightedProperties = function () {
-        var properties = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            properties[_i] = arguments[_i];
-        }
-        return this.extendQuery({ HithighlightedProperties: properties });
-    };
-    SearchQueryBuilder.prototype.clientType = function (clientType) {
-        return this.extendQuery({ ClientType: clientType });
-    };
-    SearchQueryBuilder.prototype.personalizationData = function (data) {
-        return this.extendQuery({ PersonalizationData: data });
-    };
-    SearchQueryBuilder.prototype.resultsURL = function (url) {
-        return this.extendQuery({ ResultsURL: url });
-    };
-    SearchQueryBuilder.prototype.queryTag = function () {
-        var tags = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            tags[_i] = arguments[_i];
-        }
-        return this.extendQuery({ QueryTag: tags });
-    };
-    SearchQueryBuilder.prototype.properties = function () {
-        var properties = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            properties[_i] = arguments[_i];
-        }
-        return this.extendQuery({ Properties: properties });
-    };
-    Object.defineProperty(SearchQueryBuilder.prototype, "processPersonalFavorites", {
-        get: function () {
-            return this.extendQuery({ ProcessPersonalFavorites: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    SearchQueryBuilder.prototype.queryTemplatePropertiesUrl = function (url) {
-        return this.extendQuery({ QueryTemplatePropertiesUrl: url });
-    };
-    SearchQueryBuilder.prototype.reorderingRules = function () {
-        var rules = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            rules[_i] = arguments[_i];
-        }
-        return this.extendQuery({ ReorderingRules: rules });
-    };
-    SearchQueryBuilder.prototype.hitHighlightedMultivaluePropertyLimit = function (limit) {
-        return this.extendQuery({ HitHighlightedMultivaluePropertyLimit: limit });
-    };
-    Object.defineProperty(SearchQueryBuilder.prototype, "enableOrderingHitHighlightedProperty", {
-        get: function () {
-            return this.extendQuery({ EnableOrderingHitHighlightedProperty: true });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    SearchQueryBuilder.prototype.collapseSpecification = function (spec) {
-        return this.extendQuery({ CollapseSpecification: spec });
-    };
-    SearchQueryBuilder.prototype.uiLanguage = function (lang) {
-        return this.extendQuery({ UIlanguage: lang });
-    };
-    SearchQueryBuilder.prototype.desiredSnippetLength = function (len) {
-        return this.extendQuery({ DesiredSnippetLength: len });
-    };
-    SearchQueryBuilder.prototype.maxSnippetLength = function (len) {
-        return this.extendQuery({ MaxSnippetLength: len });
-    };
-    SearchQueryBuilder.prototype.summaryLength = function (len) {
-        return this.extendQuery({ SummaryLength: len });
-    };
-    SearchQueryBuilder.prototype.toSearchQuery = function () {
-        return this._query;
-    };
-    SearchQueryBuilder.prototype.extendQuery = function (part) {
-        this._query = util_1.Util.extend(this._query, part);
-        return this;
-    };
-    return SearchQueryBuilder;
-}());
-exports.SearchQueryBuilder = SearchQueryBuilder;
-/**
- * Describes the search API
- *
- */
-var Search = (function (_super) {
-    __extends(Search, _super);
-    /**
-     * Creates a new instance of the Search class
-     *
-     * @param baseUrl The url for the search context
-     * @param query The SearchQuery object to execute
-     */
-    function Search(baseUrl, path) {
-        if (path === void 0) { path = "_api/search/postquery"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * .......
-     * @returns Promise
-     */
-    Search.prototype.execute = function (query) {
-        var _this = this;
-        var formattedBody;
-        formattedBody = query;
-        if (formattedBody.SelectProperties) {
-            formattedBody.SelectProperties = this.fixupProp(query.SelectProperties);
-        }
-        if (formattedBody.RefinementFilters) {
-            formattedBody.RefinementFilters = this.fixupProp(query.RefinementFilters);
-        }
-        if (formattedBody.SortList) {
-            formattedBody.SortList = this.fixupProp(query.SortList);
-        }
-        if (formattedBody.HithighlightedProperties) {
-            formattedBody.HithighlightedProperties = this.fixupProp(query.HithighlightedProperties);
-        }
-        if (formattedBody.ReorderingRules) {
-            formattedBody.ReorderingRules = this.fixupProp(query.ReorderingRules);
-        }
-        if (formattedBody.Properties) {
-            formattedBody.Properties = this.fixupProp(query.Properties);
-        }
-        var postBody = JSON.stringify({
-            request: util_1.Util.extend({
-                "__metadata": { "type": "Microsoft.Office.Server.Search.REST.SearchRequest" },
-            }, formattedBody),
-        });
-        return this.post({ body: postBody }).then(function (data) { return new SearchResults(data, _this.toUrl(), query); });
-    };
-    /**
-     * Fixes up properties that expect to consist of a "results" collection when needed
-     *
-     * @param prop property to fixup for container struct
-     */
-    Search.prototype.fixupProp = function (prop) {
-        if (prop.hasOwnProperty("results")) {
-            return prop;
-        }
-        return { results: prop };
-    };
-    return Search;
-}(queryable_1.QueryableInstance));
-exports.Search = Search;
-/**
- * Describes the SearchResults class, which returns the formatted and raw version of the query response
- */
-var SearchResults = (function () {
-    /**
-     * Creates a new instance of the SearchResult class
-     *
-     */
-    function SearchResults(rawResponse, _url, _query, _raw, _primary) {
-        if (_raw === void 0) { _raw = null; }
-        if (_primary === void 0) { _primary = null; }
-        this._url = _url;
-        this._query = _query;
-        this._raw = _raw;
-        this._primary = _primary;
-        this._raw = rawResponse.postquery ? rawResponse.postquery : rawResponse;
-    }
-    Object.defineProperty(SearchResults.prototype, "ElapsedTime", {
-        get: function () {
-            return this.RawSearchResults.ElapsedTime;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchResults.prototype, "RowCount", {
-        get: function () {
-            return this.RawSearchResults.PrimaryQueryResult.RelevantResults.RowCount;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchResults.prototype, "TotalRows", {
-        get: function () {
-            return this.RawSearchResults.PrimaryQueryResult.RelevantResults.TotalRows;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchResults.prototype, "TotalRowsIncludingDuplicates", {
-        get: function () {
-            return this.RawSearchResults.PrimaryQueryResult.RelevantResults.TotalRowsIncludingDuplicates;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchResults.prototype, "RawSearchResults", {
-        get: function () {
-            return this._raw;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SearchResults.prototype, "PrimarySearchResults", {
-        get: function () {
-            if (this._primary === null) {
-                this._primary = this.formatSearchResults(this._raw.PrimaryQueryResult.RelevantResults.Table.Rows);
-            }
-            return this._primary;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets a page of results
-     *
-     * @param pageNumber Index of the page to return. Used to determine StartRow
-     * @param pageSize Optional, items per page (default = 10)
-     */
-    SearchResults.prototype.getPage = function (pageNumber, pageSize) {
-        // if we got all the available rows we don't have another page
-        if (this.TotalRows < this.RowCount) {
-            return Promise.resolve(null);
-        }
-        // if pageSize is supplied, then we use that regardless of any previous values
-        // otherwise get the previous RowLimit or default to 10
-        var rows = typeof pageSize !== "undefined" ? pageSize : this._query.hasOwnProperty("RowLimit") ? this._query.RowLimit : 10;
-        var query = util_1.Util.extend(this._query, {
-            RowLimit: rows,
-            StartRow: rows * (pageNumber - 1) + 1,
-        });
-        // we have reached the end
-        if (query.StartRow > this.TotalRows) {
-            return Promise.resolve(null);
-        }
-        var search = new Search(this._url, null);
-        return search.execute(query);
-    };
-    /**
-     * Formats a search results array
-     *
-     * @param rawResults The array to process
-     */
-    SearchResults.prototype.formatSearchResults = function (rawResults) {
-        var results = new Array();
-        var tempResults = rawResults.results ? rawResults.results : rawResults;
-        for (var _i = 0, tempResults_1 = tempResults; _i < tempResults_1.length; _i++) {
-            var tempResult = tempResults_1[_i];
-            var cells = tempResult.Cells.results ? tempResult.Cells.results : tempResult.Cells;
-            results.push(cells.reduce(function (res, cell) {
-                Object.defineProperty(res, cell.Key, {
-                    configurable: false,
-                    enumerable: false,
-                    value: cell.Value,
-                    writable: false,
-                });
-                return res;
-            }, {}));
-        }
-        return results;
-    };
-    return SearchResults;
-}());
-exports.SearchResults = SearchResults;
-/**
- * defines the SortDirection enum
- */
-var SortDirection;
-(function (SortDirection) {
-    SortDirection[SortDirection["Ascending"] = 0] = "Ascending";
-    SortDirection[SortDirection["Descending"] = 1] = "Descending";
-    SortDirection[SortDirection["FQLFormula"] = 2] = "FQLFormula";
-})(SortDirection = exports.SortDirection || (exports.SortDirection = {}));
-/**
- * defines the ReorderingRuleMatchType  enum
- */
-var ReorderingRuleMatchType;
-(function (ReorderingRuleMatchType) {
-    ReorderingRuleMatchType[ReorderingRuleMatchType["ResultContainsKeyword"] = 0] = "ResultContainsKeyword";
-    ReorderingRuleMatchType[ReorderingRuleMatchType["TitleContainsKeyword"] = 1] = "TitleContainsKeyword";
-    ReorderingRuleMatchType[ReorderingRuleMatchType["TitleMatchesKeyword"] = 2] = "TitleMatchesKeyword";
-    ReorderingRuleMatchType[ReorderingRuleMatchType["UrlStartsWith"] = 3] = "UrlStartsWith";
-    ReorderingRuleMatchType[ReorderingRuleMatchType["UrlExactlyMatches"] = 4] = "UrlExactlyMatches";
-    ReorderingRuleMatchType[ReorderingRuleMatchType["ContentTypeIs"] = 5] = "ContentTypeIs";
-    ReorderingRuleMatchType[ReorderingRuleMatchType["FileExtensionMatches"] = 6] = "FileExtensionMatches";
-    ReorderingRuleMatchType[ReorderingRuleMatchType["ResultHasTag"] = 7] = "ResultHasTag";
-    ReorderingRuleMatchType[ReorderingRuleMatchType["ManualCondition"] = 8] = "ManualCondition";
-})(ReorderingRuleMatchType = exports.ReorderingRuleMatchType || (exports.ReorderingRuleMatchType = {}));
-/**
- * Specifies the type value for the property
- */
-var QueryPropertyValueType;
-(function (QueryPropertyValueType) {
-    QueryPropertyValueType[QueryPropertyValueType["None"] = 0] = "None";
-    QueryPropertyValueType[QueryPropertyValueType["StringType"] = 1] = "StringType";
-    QueryPropertyValueType[QueryPropertyValueType["Int32TYpe"] = 2] = "Int32TYpe";
-    QueryPropertyValueType[QueryPropertyValueType["BooleanType"] = 3] = "BooleanType";
-    QueryPropertyValueType[QueryPropertyValueType["StringArrayType"] = 4] = "StringArrayType";
-    QueryPropertyValueType[QueryPropertyValueType["UnSupportedType"] = 5] = "UnSupportedType";
-})(QueryPropertyValueType = exports.QueryPropertyValueType || (exports.QueryPropertyValueType = {}));
-var SearchBuiltInSourceId = (function () {
-    function SearchBuiltInSourceId() {
-    }
-    return SearchBuiltInSourceId;
-}());
-SearchBuiltInSourceId.Documents = "e7ec8cee-ded8-43c9-beb5-436b54b31e84";
-SearchBuiltInSourceId.ItemsMatchingContentType = "5dc9f503-801e-4ced-8a2c-5d1237132419";
-SearchBuiltInSourceId.ItemsMatchingTag = "e1327b9c-2b8c-4b23-99c9-3730cb29c3f7";
-SearchBuiltInSourceId.ItemsRelatedToCurrentUser = "48fec42e-4a92-48ce-8363-c2703a40e67d";
-SearchBuiltInSourceId.ItemsWithSameKeywordAsThisItem = "5c069288-1d17-454a-8ac6-9c642a065f48";
-SearchBuiltInSourceId.LocalPeopleResults = "b09a7990-05ea-4af9-81ef-edfab16c4e31";
-SearchBuiltInSourceId.LocalReportsAndDataResults = "203fba36-2763-4060-9931-911ac8c0583b";
-SearchBuiltInSourceId.LocalSharePointResults = "8413cd39-2156-4e00-b54d-11efd9abdb89";
-SearchBuiltInSourceId.LocalVideoResults = "78b793ce-7956-4669-aa3b-451fc5defebf";
-SearchBuiltInSourceId.Pages = "5e34578e-4d08-4edc-8bf3-002acf3cdbcc";
-SearchBuiltInSourceId.Pictures = "38403c8c-3975-41a8-826e-717f2d41568a";
-SearchBuiltInSourceId.Popular = "97c71db1-58ce-4891-8b64-585bc2326c12";
-SearchBuiltInSourceId.RecentlyChangedItems = "ba63bbae-fa9c-42c0-b027-9a878f16557c";
-SearchBuiltInSourceId.RecommendedItems = "ec675252-14fa-4fbe-84dd-8d098ed74181";
-SearchBuiltInSourceId.Wiki = "9479bf85-e257-4318-b5a8-81a180f5faa1";
-exports.SearchBuiltInSourceId = SearchBuiltInSourceId;
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var SearchSuggest = (function (_super) {
-    __extends(SearchSuggest, _super);
-    function SearchSuggest(baseUrl, path) {
-        if (path === void 0) { path = "_api/search/suggest"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    SearchSuggest.prototype.execute = function (query) {
-        this.mapQueryToQueryString(query);
-        return this.get().then(function (response) { return new SearchSuggestResult(response); });
-    };
-    SearchSuggest.prototype.mapQueryToQueryString = function (query) {
-        this.query.add("querytext", "'" + query.querytext + "'");
-        if (query.hasOwnProperty("count")) {
-            this.query.add("inumberofquerysuggestions", query.count.toString());
-        }
-        if (query.hasOwnProperty("personalCount")) {
-            this.query.add("inumberofresultsuggestions", query.personalCount.toString());
-        }
-        if (query.hasOwnProperty("preQuery")) {
-            this.query.add("fprequerysuggestions", query.preQuery.toString());
-        }
-        if (query.hasOwnProperty("hitHighlighting")) {
-            this.query.add("fhithighlighting", query.hitHighlighting.toString());
-        }
-        if (query.hasOwnProperty("capitalize")) {
-            this.query.add("fcapitalizefirstletters", query.capitalize.toString());
-        }
-        if (query.hasOwnProperty("culture")) {
-            this.query.add("culture", query.culture.toString());
-        }
-        if (query.hasOwnProperty("stemming")) {
-            this.query.add("enablestemming", query.stemming.toString());
-        }
-        if (query.hasOwnProperty("includePeople")) {
-            this.query.add("showpeoplenamesuggestions", query.includePeople.toString());
-        }
-        if (query.hasOwnProperty("queryRules")) {
-            this.query.add("enablequeryrules", query.queryRules.toString());
-        }
-        if (query.hasOwnProperty("prefixMatch")) {
-            this.query.add("fprefixmatchallterms", query.prefixMatch.toString());
-        }
-    };
-    return SearchSuggest;
-}(queryable_1.QueryableInstance));
-exports.SearchSuggest = SearchSuggest;
-var SearchSuggestResult = (function () {
-    function SearchSuggestResult(json) {
-        if (json.hasOwnProperty("suggest")) {
-            // verbose
-            this.PeopleNames = json.suggest.PeopleNames.results;
-            this.PersonalResults = json.suggest.PersonalResults.results;
-            this.Queries = json.suggest.Queries.results;
-        }
-        else {
-            this.PeopleNames = json.PeopleNames;
-            this.PersonalResults = json.PersonalResults;
-            this.Queries = json.Queries;
-        }
-    }
-    return SearchSuggestResult;
-}());
-exports.SearchSuggestResult = SearchSuggestResult;
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var webs_1 = __webpack_require__(8);
-var usercustomactions_1 = __webpack_require__(19);
-var odata_1 = __webpack_require__(2);
-var features_1 = __webpack_require__(23);
-/**
- * Describes a site collection
- *
- */
-var Site = (function (_super) {
-    __extends(Site, _super);
-    /**
-     * Creates a new instance of the Site class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this site collection
-     */
-    function Site(baseUrl, path) {
-        if (path === void 0) { path = "_api/site"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    Object.defineProperty(Site.prototype, "rootWeb", {
-        /**
-         * Gets the root web of the site collection
-         *
-         */
-        get: function () {
-            return new webs_1.Web(this, "rootweb");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Site.prototype, "features", {
-        /**
-         * Gets the active features for this site collection
-         *
-         */
-        get: function () {
-            return new features_1.Features(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Site.prototype, "userCustomActions", {
-        /**
-         * Gets all custom actions for this site collection
-         *
-         */
-        get: function () {
-            return new usercustomactions_1.UserCustomActions(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets the context information for this site collection
-     */
-    Site.prototype.getContextInfo = function () {
-        var q = new Site(this.parentUrl, "_api/contextinfo");
-        return q.post().then(function (data) {
-            if (data.hasOwnProperty("GetContextWebInformation")) {
-                var info = data.GetContextWebInformation;
-                info.SupportedSchemaVersions = info.SupportedSchemaVersions.results;
-                return info;
-            }
-            else {
-                return data;
-            }
-        });
-    };
-    /**
-     * Gets the document libraries on a site. Static method. (SharePoint Online only)
-     *
-     * @param absoluteWebUrl The absolute url of the web whose document libraries should be returned
-     */
-    Site.prototype.getDocumentLibraries = function (absoluteWebUrl) {
-        var q = new queryable_1.Queryable("", "_api/sp.web.getdocumentlibraries(@v)");
-        q.query.add("@v", "'" + absoluteWebUrl + "'");
-        return q.get().then(function (data) {
-            if (data.hasOwnProperty("GetDocumentLibraries")) {
-                return data.GetDocumentLibraries;
-            }
-            else {
-                return data;
-            }
-        });
-    };
-    /**
-     * Gets the site url from a page url
-     *
-     * @param absolutePageUrl The absolute url of the page
-     */
-    Site.prototype.getWebUrlFromPageUrl = function (absolutePageUrl) {
-        var q = new queryable_1.Queryable("", "_api/sp.web.getweburlfrompageurl(@v)");
-        q.query.add("@v", "'" + absolutePageUrl + "'");
-        return q.get().then(function (data) {
-            if (data.hasOwnProperty("GetWebUrlFromPageUrl")) {
-                return data.GetWebUrlFromPageUrl;
-            }
-            else {
-                return data;
-            }
-        });
-    };
-    /**
-     * Creates a new batch for requests within the context of this site collection
-     *
-     */
-    Site.prototype.createBatch = function () {
-        return new odata_1.ODataBatch(this.parentUrl);
-    };
-    /**
-     * Opens a web by id (using POST)
-     *
-     * @param webId The GUID id of the web to open
-     */
-    Site.prototype.openWebById = function (webId) {
-        return this.clone(Site, "openWebById('" + webId + "')", true).post().then(function (d) {
-            return {
-                data: d,
-                web: webs_1.Web.fromUrl(odata_1.extractOdataId(d)),
-            };
-        });
-    };
-    return Site;
-}(queryable_1.QueryableInstance));
-exports.Site = Site;
-
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var sitegroups_1 = __webpack_require__(18);
-var util_1 = __webpack_require__(0);
-/**
- * Describes a collection of all site collection users
- *
- */
-var SiteUsers = (function (_super) {
-    __extends(SiteUsers, _super);
-    /**
-     * Creates a new instance of the SiteUsers class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this user collection
-     */
-    function SiteUsers(baseUrl, path) {
-        if (path === void 0) { path = "siteusers"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a user from the collection by email
-     *
-     * @param email The email address of the user to retrieve
-     */
-    SiteUsers.prototype.getByEmail = function (email) {
-        return new SiteUser(this, "getByEmail('" + email + "')");
-    };
-    /**
-     * Gets a user from the collection by id
-     *
-     * @param id The id of the user to retrieve
-     */
-    SiteUsers.prototype.getById = function (id) {
-        return new SiteUser(this, "getById(" + id + ")");
-    };
-    /**
-     * Gets a user from the collection by login name
-     *
-     * @param loginName The login name of the user to retrieve
-     */
-    SiteUsers.prototype.getByLoginName = function (loginName) {
-        var su = new SiteUser(this);
-        su.concat("(@v)");
-        su.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
-        return su;
-    };
-    /**
-     * Removes a user from the collection by id
-     *
-     * @param id The id of the user to remove
-     */
-    SiteUsers.prototype.removeById = function (id) {
-        return this.clone(SiteUsers, "removeById(" + id + ")", true).post();
-    };
-    /**
-     * Removes a user from the collection by login name
-     *
-     * @param loginName The login name of the user to remove
-     */
-    SiteUsers.prototype.removeByLoginName = function (loginName) {
-        var o = this.clone(SiteUsers, "removeByLoginName(@v)", true);
-        o.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
-        return o.post();
-    };
-    /**
-     * Adds a user to a group
-     *
-     * @param loginName The login name of the user to add to the group
-     *
-     */
-    SiteUsers.prototype.add = function (loginName) {
-        var _this = this;
-        return this.clone(SiteUsers, null, true).post({
-            body: JSON.stringify({ "__metadata": { "type": "SP.User" }, LoginName: loginName }),
-        }).then(function () { return _this.getByLoginName(loginName); });
-    };
-    return SiteUsers;
-}(queryable_1.QueryableCollection));
-exports.SiteUsers = SiteUsers;
-/**
- * Describes a single user
- *
- */
-var SiteUser = (function (_super) {
-    __extends(SiteUser, _super);
-    function SiteUser() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(SiteUser.prototype, "groups", {
-        /**
-         * Gets the groups for this user
-         *
-         */
-        get: function () {
-            return new sitegroups_1.SiteGroups(this, "groups");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-    * Updates this user instance with the supplied properties
-    *
-    * @param properties A plain object of property names and values to update for the user
-    */
-    SiteUser.prototype.update = function (properties) {
-        var _this = this;
-        var postBody = util_1.Util.extend({ "__metadata": { "type": "SP.User" } }, properties);
-        return this.post({
-            body: JSON.stringify(postBody),
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            return {
-                data: data,
-                user: _this,
-            };
-        });
-    };
-    /**
-     * Delete this user
-     *
-     */
-    SiteUser.prototype.delete = function () {
-        return this.post({
-            headers: {
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    return SiteUser;
-}(queryable_1.QueryableInstance));
-exports.SiteUser = SiteUser;
-/**
- * Represents the current user
- */
-var CurrentUser = (function (_super) {
-    __extends(CurrentUser, _super);
-    function CurrentUser(baseUrl, path) {
-        if (path === void 0) { path = "currentuser"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    return CurrentUser;
-}(queryable_1.QueryableInstance));
-exports.CurrentUser = CurrentUser;
-
-
-/***/ }),
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7791,8 +7912,117 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
+/**
+ * Describes a collection of List objects
+ *
+ */
+var Features = (function (_super) {
+    __extends(Features, _super);
+    /**
+     * Creates a new instance of the Lists class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function Features(baseUrl, path) {
+        if (path === void 0) { path = "features"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a list from the collection by guid id
+     *
+     * @param id The Id of the feature (GUID)
+     */
+    Features.prototype.getById = function (id) {
+        var feature = new Feature(this);
+        feature.concat("('" + id + "')");
+        return feature;
+    };
+    /**
+     * Adds a new list to the collection
+     *
+     * @param id The Id of the feature (GUID)
+     * @param force If true the feature activation will be forced
+     */
+    Features.prototype.add = function (id, force) {
+        var _this = this;
+        if (force === void 0) { force = false; }
+        return this.clone(Features, "add", true).postCore({
+            body: JSON.stringify({
+                featdefScope: 0,
+                featureId: id,
+                force: force,
+            }),
+        }).then(function (data) {
+            return {
+                data: data,
+                feature: _this.getById(id),
+            };
+        });
+    };
+    /**
+     * Removes (deactivates) a feature from the collection
+     *
+     * @param id The Id of the feature (GUID)
+     * @param force If true the feature deactivation will be forced
+     */
+    Features.prototype.remove = function (id, force) {
+        if (force === void 0) { force = false; }
+        return this.clone(Features, "remove", true).postCore({
+            body: JSON.stringify({
+                featureId: id,
+                force: force,
+            }),
+        });
+    };
+    return Features;
+}(queryable_1.QueryableCollection));
+exports.Features = Features;
+var Feature = (function (_super) {
+    __extends(Feature, _super);
+    function Feature() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Removes (deactivates) a feature from the collection
+     *
+     * @param force If true the feature deactivation will be forced
+     */
+    Feature.prototype.deactivate = function (force) {
+        var _this = this;
+        if (force === void 0) { force = false; }
+        var removeDependency = this.addBatchDependency();
+        var idGet = new Feature(this).select("DefinitionId");
+        return idGet.getAs().then(function (feature) {
+            var promise = _this.getParent(Features, _this.parentUrl, "", _this.batch).remove(feature.DefinitionId, force);
+            removeDependency();
+            return promise;
+        });
+    };
+    return Feature;
+}(queryable_1.QueryableInstance));
+exports.Feature = Feature;
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
 var util_1 = __webpack_require__(0);
-var files_1 = __webpack_require__(7);
+var files_1 = __webpack_require__(8);
 var odata_1 = __webpack_require__(2);
 /**
  * Allows for calling of the static SP.Utilities.Utility methods by supplying the method name
@@ -7821,7 +8051,7 @@ var UtilityMethod = (function (_super) {
         return url.substr(0, index);
     };
     UtilityMethod.prototype.excute = function (props) {
-        return this.postAs({
+        return this.postAsCore({
             body: JSON.stringify(props),
         });
     };
@@ -7933,183 +8163,161 @@ exports.UtilityMethod = UtilityMethod;
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var LimitedWebPartManager = (function (_super) {
-    __extends(LimitedWebPartManager, _super);
-    function LimitedWebPartManager() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(LimitedWebPartManager.prototype, "webparts", {
-        /**
-         * Gets the set of web part definitions contained by this web part manager
-         *
-         */
-        get: function () {
-            return new WebPartDefinitions(this, "webparts");
-        },
-        enumerable: true,
-        configurable: true
-    });
+var storage = __webpack_require__(15);
+var exceptions_1 = __webpack_require__(3);
+/**
+ * A caching provider which can wrap other non-caching providers
+ *
+ */
+var CachingConfigurationProvider = (function () {
     /**
-     * Exports a webpart definition
-     *
-     * @param id the GUID id of the definition to export
+     * Creates a new caching configuration provider
+     * @constructor
+     * @param {IConfigurationProvider} wrappedProvider Provider which will be used to fetch the configuration
+     * @param {string} cacheKey Key that will be used to store cached items to the cache
+     * @param {IPnPClientStore} cacheStore OPTIONAL storage, which will be used to store cached settings.
      */
-    LimitedWebPartManager.prototype.export = function (id) {
-        return this.clone(LimitedWebPartManager, "ExportWebPart", true).post({
-            body: JSON.stringify({ webPartId: id }),
+    function CachingConfigurationProvider(wrappedProvider, cacheKey, cacheStore) {
+        this.wrappedProvider = wrappedProvider;
+        this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
+        this.cacheKey = "_configcache_" + cacheKey;
+    }
+    /**
+     * Gets the wrapped configuration providers
+     *
+     * @return {IConfigurationProvider} Wrapped configuration provider
+     */
+    CachingConfigurationProvider.prototype.getWrappedProvider = function () {
+        return this.wrappedProvider;
+    };
+    /**
+     * Loads the configuration values either from the cache or from the wrapped provider
+     *
+     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
+     */
+    CachingConfigurationProvider.prototype.getConfiguration = function () {
+        var _this = this;
+        // Cache not available, pass control to  the wrapped provider
+        if ((!this.store) || (!this.store.enabled)) {
+            return this.wrappedProvider.getConfiguration();
+        }
+        // Value is found in cache, return it directly
+        var cachedConfig = this.store.get(this.cacheKey);
+        if (cachedConfig) {
+            return new Promise(function (resolve) {
+                resolve(cachedConfig);
+            });
+        }
+        // Get and cache value from the wrapped provider
+        var providerPromise = this.wrappedProvider.getConfiguration();
+        providerPromise.then(function (providedConfig) {
+            _this.store.put(_this.cacheKey, providedConfig);
         });
+        return providerPromise;
     };
-    /**
-     * Imports a webpart
-     *
-     * @param xml webpart definition which must be valid XML in the .dwp or .webpart format
-     */
-    LimitedWebPartManager.prototype.import = function (xml) {
-        return this.clone(LimitedWebPartManager, "ImportWebPart", true).post({
-            body: JSON.stringify({ webPartXml: xml }),
-        });
+    CachingConfigurationProvider.prototype.selectPnPCache = function () {
+        var pnpCache = new storage.PnPClientStorage();
+        if ((pnpCache.local) && (pnpCache.local.enabled)) {
+            return pnpCache.local;
+        }
+        if ((pnpCache.session) && (pnpCache.session.enabled)) {
+            return pnpCache.session;
+        }
+        throw new exceptions_1.NoCacheAvailableException();
     };
-    return LimitedWebPartManager;
-}(queryable_1.Queryable));
-exports.LimitedWebPartManager = LimitedWebPartManager;
-var WebPartDefinitions = (function (_super) {
-    __extends(WebPartDefinitions, _super);
-    function WebPartDefinitions() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Gets a web part definition from the collection by id
-     *
-     * @param id The storage ID of the SPWebPartDefinition to retrieve
-     */
-    WebPartDefinitions.prototype.getById = function (id) {
-        return new WebPartDefinition(this, "getbyid('" + id + "')");
-    };
-    /**
-     * Gets a web part definition from the collection by storage id
-     *
-     * @param id The WebPart.ID of the SPWebPartDefinition to retrieve
-     */
-    WebPartDefinitions.prototype.getByControlId = function (id) {
-        return new WebPartDefinition(this, "getByControlId('" + id + "')");
-    };
-    return WebPartDefinitions;
-}(queryable_1.QueryableCollection));
-exports.WebPartDefinitions = WebPartDefinitions;
-var WebPartDefinition = (function (_super) {
-    __extends(WebPartDefinition, _super);
-    function WebPartDefinition() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(WebPartDefinition.prototype, "webpart", {
-        /**
-         * Gets the webpart information associated with this definition
-         */
-        get: function () {
-            return new WebPart(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Saves changes to the Web Part made using other properties and methods on the SPWebPartDefinition object
-     */
-    WebPartDefinition.prototype.saveChanges = function () {
-        return this.clone(WebPartDefinition, "SaveWebPartChanges", true).post();
-    };
-    /**
-     * Moves the Web Part to a different location on a Web Part Page
-     *
-     * @param zoneId The ID of the Web Part Zone to which to move the Web Part
-     * @param zoneIndex A Web Part zone index that specifies the position at which the Web Part is to be moved within the destination Web Part zone
-     */
-    WebPartDefinition.prototype.moveTo = function (zoneId, zoneIndex) {
-        return this.clone(WebPartDefinition, "MoveWebPartTo(zoneID='" + zoneId + "', zoneIndex=" + zoneIndex + ")", true).post();
-    };
-    /**
-     * Closes the Web Part. If the Web Part is already closed, this method does nothing
-     */
-    WebPartDefinition.prototype.close = function () {
-        return this.clone(WebPartDefinition, "CloseWebPart", true).post();
-    };
-    /**
-     * Opens the Web Part. If the Web Part is already closed, this method does nothing
-     */
-    WebPartDefinition.prototype.open = function () {
-        return this.clone(WebPartDefinition, "OpenWebPart", true).post();
-    };
-    /**
-     * Removes a webpart from a page, all settings will be lost
-     */
-    WebPartDefinition.prototype.delete = function () {
-        return this.clone(WebPartDefinition, "DeleteWebPart", true).post();
-    };
-    return WebPartDefinition;
-}(queryable_1.QueryableInstance));
-exports.WebPartDefinition = WebPartDefinition;
-var WebPart = (function (_super) {
-    __extends(WebPart, _super);
-    /**
-     * Creates a new instance of the WebPart class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     * @param path Optional, if supplied will be appended to the supplied baseUrl
-     */
-    function WebPart(baseUrl, path) {
-        if (path === void 0) { path = "webpart"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    return WebPart;
-}(queryable_1.QueryableInstance));
-exports.WebPart = WebPart;
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
+    return CachingConfigurationProvider;
+}());
+exports.default = CachingConfigurationProvider;
 
 
 /***/ }),
 /* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var storage_1 = __webpack_require__(15);
+var configuration_1 = __webpack_require__(35);
+var logging_1 = __webpack_require__(5);
+var rest_1 = __webpack_require__(36);
+var pnplibconfig_1 = __webpack_require__(4);
+/**
+ * Root class of the Patterns and Practices namespace, provides an entry point to the library
+ */
+/**
+ * Utility methods
+ */
+exports.util = util_1.Util;
+/**
+ * Provides access to the SharePoint REST interface
+ */
+exports.sp = new rest_1.SPRest();
+/**
+ * Provides access to local and session storage
+ */
+exports.storage = new storage_1.PnPClientStorage();
+/**
+ * Global configuration instance to which providers can be added
+ */
+exports.config = new configuration_1.Settings();
+/**
+ * Global logging instance to which subscribers can be registered and messages written
+ */
+exports.log = logging_1.Logger;
+/**
+ * Allows for the configuration of the library
+ */
+exports.setup = pnplibconfig_1.setRuntimeConfig;
+/**
+ * Expose a subset of classes from the library for public consumption
+ */
+__export(__webpack_require__(46));
+// creating this class instead of directly assigning to default fixes issue #116
+var Def = {
+    /**
+     * Global configuration instance to which providers can be added
+     */
+    config: exports.config,
+    /**
+     * Global logging instance to which subscribers can be registered and messages written
+     */
+    log: exports.log,
+    /**
+     * Provides access to local and session storage
+     */
+    setup: exports.setup,
+    /**
+     * Provides access to the REST interface
+     */
+    sp: exports.sp,
+    /**
+     * Provides access to local and session storage
+     */
+    storage: exports.storage,
+    /**
+     * Utility methods
+     */
+    util: exports.util,
+};
+/**
+ * Enables use of the import pnp from syntax
+ */
+exports.default = Def;
+
+
+/***/ }),
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8208,26 +8416,47 @@ exports.Settings = Settings;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var search_1 = __webpack_require__(27);
-var searchsuggest_1 = __webpack_require__(28);
-var site_1 = __webpack_require__(29);
-var webs_1 = __webpack_require__(8);
+var search_1 = __webpack_require__(22);
+var searchsuggest_1 = __webpack_require__(24);
+var site_1 = __webpack_require__(25);
+var webs_1 = __webpack_require__(7);
 var util_1 = __webpack_require__(0);
-var userprofiles_1 = __webpack_require__(49);
+var userprofiles_1 = __webpack_require__(44);
 var exceptions_1 = __webpack_require__(3);
-var utilities_1 = __webpack_require__(31);
+var utilities_1 = __webpack_require__(32);
 /**
  * Root of the SharePoint REST module
  */
 var SPRest = (function () {
-    function SPRest() {
+    /**
+     * Creates a new instance of the SPRest class
+     *
+     * @param options Additional options
+     * @param baseUrl A string that should form the base part of the url
+     */
+    function SPRest(options, baseUrl) {
+        if (options === void 0) { options = {}; }
+        if (baseUrl === void 0) { baseUrl = ""; }
+        this._options = options;
+        this._baseUrl = baseUrl;
     }
+    /**
+     * Configures instance with additional options and baseUrl.
+     * Provided configuration used by other objects in a chain
+     *
+     * @param options Additional options
+     * @param baseUrl A string that should form the base part of the url
+     */
+    SPRest.prototype.configure = function (options, baseUrl) {
+        if (baseUrl === void 0) { baseUrl = ""; }
+        return new SPRest(options, baseUrl);
+    };
     /**
      * Executes a search against this web context
      *
@@ -8241,7 +8470,7 @@ var SPRest = (function () {
         else {
             finalQuery = query;
         }
-        return new searchsuggest_1.SearchSuggest("").execute(finalQuery);
+        return new searchsuggest_1.SearchSuggest(this._baseUrl).configure(this._options).execute(finalQuery);
     };
     /**
      * Executes a search against this web context
@@ -8259,7 +8488,7 @@ var SPRest = (function () {
         else {
             finalQuery = query;
         }
-        return new search_1.Search("").execute(finalQuery);
+        return new search_1.Search(this._baseUrl).configure(this._options).execute(finalQuery);
     };
     Object.defineProperty(SPRest.prototype, "site", {
         /**
@@ -8267,7 +8496,7 @@ var SPRest = (function () {
          *
          */
         get: function () {
-            return new site_1.Site("");
+            return new site_1.Site(this._baseUrl).configure(this._options);
         },
         enumerable: true,
         configurable: true
@@ -8278,7 +8507,7 @@ var SPRest = (function () {
          *
          */
         get: function () {
-            return new webs_1.Web("");
+            return new webs_1.Web(this._baseUrl).configure(this._options);
         },
         enumerable: true,
         configurable: true
@@ -8289,7 +8518,7 @@ var SPRest = (function () {
          *
          */
         get: function () {
-            return new userprofiles_1.UserProfileQuery("");
+            return new userprofiles_1.UserProfileQuery(this._baseUrl).configure(this._options);
         },
         enumerable: true,
         configurable: true
@@ -8306,7 +8535,7 @@ var SPRest = (function () {
          * Static utilities methods from SP.Utilities.Utility
          */
         get: function () {
-            return new utilities_1.UtilityMethod("", "");
+            return new utilities_1.UtilityMethod(this._baseUrl, "").configure(this._options);
         },
         enumerable: true,
         configurable: true
@@ -8347,7 +8576,7 @@ var SPRest = (function () {
         var url = util_1.Util.combinePaths(addInWebUrl, "_api/SP.AppContextSite(@target)");
         var instance = new factory(url, urlPart);
         instance.query.add("@target", "'" + encodeURIComponent(hostWebUrl) + "'");
-        return instance;
+        return instance.configure(this._options);
     };
     return SPRest;
 }());
@@ -8355,128 +8584,7 @@ exports.SPRest = SPRest;
 
 
 /***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(45));
-var httpclient_1 = __webpack_require__(15);
-exports.HttpClient = httpclient_1.HttpClient;
-var sprequestexecutorclient_1 = __webpack_require__(41);
-exports.SPRequestExecutorClient = sprequestexecutorclient_1.SPRequestExecutorClient;
-var nodefetchclient_1 = __webpack_require__(40);
-exports.NodeFetchClient = nodefetchclient_1.NodeFetchClient;
-var fetchclient_1 = __webpack_require__(21);
-exports.FetchClient = fetchclient_1.FetchClient;
-__export(__webpack_require__(37));
-var collections_1 = __webpack_require__(6);
-exports.Dictionary = collections_1.Dictionary;
-var util_1 = __webpack_require__(0);
-exports.Util = util_1.Util;
-__export(__webpack_require__(5));
-__export(__webpack_require__(3));
-
-
-/***/ }),
 /* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var cachingConfigurationProvider_1 = __webpack_require__(20);
-exports.CachingConfigurationProvider = cachingConfigurationProvider_1.default;
-var spListConfigurationProvider_1 = __webpack_require__(38);
-exports.SPListConfigurationProvider = spListConfigurationProvider_1.default;
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var cachingConfigurationProvider_1 = __webpack_require__(20);
-/**
- * A configuration provider which loads configuration values from a SharePoint list
- *
- */
-var SPListConfigurationProvider = (function () {
-    /**
-     * Creates a new SharePoint list based configuration provider
-     * @constructor
-     * @param {string} webUrl Url of the SharePoint site, where the configuration list is located
-     * @param {string} listTitle Title of the SharePoint list, which contains the configuration settings (optional, default = "config")
-     */
-    function SPListConfigurationProvider(sourceWeb, sourceListTitle) {
-        if (sourceListTitle === void 0) { sourceListTitle = "config"; }
-        this.sourceWeb = sourceWeb;
-        this.sourceListTitle = sourceListTitle;
-    }
-    Object.defineProperty(SPListConfigurationProvider.prototype, "web", {
-        /**
-         * Gets the url of the SharePoint site, where the configuration list is located
-         *
-         * @return {string} Url address of the site
-         */
-        get: function () {
-            return this.sourceWeb;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SPListConfigurationProvider.prototype, "listTitle", {
-        /**
-         * Gets the title of the SharePoint list, which contains the configuration settings
-         *
-         * @return {string} List title
-         */
-        get: function () {
-            return this.sourceListTitle;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Loads the configuration values from the SharePoint list
-     *
-     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
-     */
-    SPListConfigurationProvider.prototype.getConfiguration = function () {
-        return this.web.lists.getByTitle(this.listTitle).items.select("Title", "Value")
-            .getAs().then(function (data) {
-            return data.reduce(function (configuration, item) {
-                return Object.defineProperty(configuration, item.Title, {
-                    configurable: false,
-                    enumerable: false,
-                    value: item.Value,
-                    writable: false,
-                });
-            }, {});
-        });
-    };
-    /**
-     * Wraps the current provider in a cache enabled provider
-     *
-     * @return {CachingConfigurationProvider} Caching providers which wraps the current provider
-     */
-    SPListConfigurationProvider.prototype.asCaching = function () {
-        var cacheKey = "splist_" + this.web.toUrl() + "+" + this.listTitle;
-        return new cachingConfigurationProvider_1.default(this, cacheKey);
-    };
-    return SPListConfigurationProvider;
-}());
-exports.default = SPListConfigurationProvider;
-
-
-/***/ }),
-/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8542,468 +8650,7 @@ exports.DigestCache = DigestCache;
 
 
 /***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var exceptions_1 = __webpack_require__(3);
-/**
- * This module is substituted for the NodeFetchClient.ts during the packaging process. This helps to reduce the pnp.js file size by
- * not including all of the node dependencies
- */
-var NodeFetchClient = (function () {
-    function NodeFetchClient() {
-    }
-    /**
-     * Always throws an error that NodeFetchClient is not supported for use in the browser
-     */
-    NodeFetchClient.prototype.fetch = function () {
-        throw new exceptions_1.NodeFetchClientUnsupportedException();
-    };
-    return NodeFetchClient;
-}());
-exports.NodeFetchClient = NodeFetchClient;
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-var exceptions_1 = __webpack_require__(3);
-/**
- * Makes requests using the SP.RequestExecutor library.
- */
-var SPRequestExecutorClient = (function () {
-    function SPRequestExecutorClient() {
-        /**
-         * Converts a SharePoint REST API response to a fetch API response.
-         */
-        this.convertToResponse = function (spResponse) {
-            var responseHeaders = new Headers();
-            for (var h in spResponse.headers) {
-                if (spResponse.headers[h]) {
-                    responseHeaders.append(h, spResponse.headers[h]);
-                }
-            }
-            // issue #256, Cannot have an empty string body when creating a Response with status 204
-            var body = spResponse.statusCode === 204 ? null : spResponse.body;
-            return new Response(body, {
-                headers: responseHeaders,
-                status: spResponse.statusCode,
-                statusText: spResponse.statusText,
-            });
-        };
-    }
-    /**
-     * Fetches a URL using the SP.RequestExecutor library.
-     */
-    SPRequestExecutorClient.prototype.fetch = function (url, options) {
-        var _this = this;
-        if (typeof SP === "undefined" || typeof SP.RequestExecutor === "undefined") {
-            throw new exceptions_1.SPRequestExecutorUndefinedException();
-        }
-        var addinWebUrl = url.substring(0, url.indexOf("/_api")), executor = new SP.RequestExecutor(addinWebUrl);
-        var headers = {}, iterator, temp;
-        if (options.headers && options.headers instanceof Headers) {
-            iterator = options.headers.entries();
-            temp = iterator.next();
-            while (!temp.done) {
-                headers[temp.value[0]] = temp.value[1];
-                temp = iterator.next();
-            }
-        }
-        else {
-            headers = options.headers;
-        }
-        return new Promise(function (resolve, reject) {
-            var requestOptions = {
-                error: function (error) {
-                    reject(_this.convertToResponse(error));
-                },
-                headers: headers,
-                method: options.method,
-                success: function (response) {
-                    resolve(_this.convertToResponse(response));
-                },
-                url: url,
-            };
-            if (options.body) {
-                requestOptions = util_1.Util.extend(requestOptions, { body: options.body });
-            }
-            else {
-                requestOptions = util_1.Util.extend(requestOptions, { binaryStringRequestBody: true });
-            }
-            executor.executeAsync(requestOptions);
-        });
-    };
-    return SPRequestExecutorClient;
-}());
-exports.SPRequestExecutorClient = SPRequestExecutorClient;
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-var storage_1 = __webpack_require__(14);
-var configuration_1 = __webpack_require__(34);
-var logging_1 = __webpack_require__(5);
-var rest_1 = __webpack_require__(35);
-var pnplibconfig_1 = __webpack_require__(4);
-/**
- * Root class of the Patterns and Practices namespace, provides an entry point to the library
- */
-/**
- * Utility methods
- */
-exports.util = util_1.Util;
-/**
- * Provides access to the REST interface
- */
-exports.sp = new rest_1.SPRest();
-/**
- * Provides access to local and session storage
- */
-exports.storage = new storage_1.PnPClientStorage();
-/**
- * Global configuration instance to which providers can be added
- */
-exports.config = new configuration_1.Settings();
-/**
- * Global logging instance to which subscribers can be registered and messages written
- */
-exports.log = logging_1.Logger;
-/**
- * Allows for the configuration of the library
- */
-exports.setup = pnplibconfig_1.setRuntimeConfig;
-/**
- * Expose a subset of classes from the library for public consumption
- */
-__export(__webpack_require__(36));
-// creating this class instead of directly assigning to default fixes issue #116
-var Def = {
-    /**
-     * Global configuration instance to which providers can be added
-     */
-    config: exports.config,
-    /**
-     * Global logging instance to which subscribers can be registered and messages written
-     */
-    log: exports.log,
-    /**
-     * Provides access to local and session storage
-     */
-    setup: exports.setup,
-    /**
-     * Provides access to the REST interface
-     */
-    sp: exports.sp,
-    /**
-     * Provides access to local and session storage
-     */
-    storage: exports.storage,
-    /**
-     * Utility methods
-     */
-    util: exports.util,
-};
-/**
- * Enables use of the import pnp from syntax
- */
-exports.default = Def;
-
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(2);
-/**
- * Describes a collection of Item objects
- *
- */
-var AttachmentFiles = (function (_super) {
-    __extends(AttachmentFiles, _super);
-    /**
-     * Creates a new instance of the AttachmentFiles class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this attachments collection
-     */
-    function AttachmentFiles(baseUrl, path) {
-        if (path === void 0) { path = "AttachmentFiles"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a Attachment File by filename
-     *
-     * @param name The name of the file, including extension.
-     */
-    AttachmentFiles.prototype.getByName = function (name) {
-        var f = new AttachmentFile(this);
-        f.concat("('" + name + "')");
-        return f;
-    };
-    /**
-     * Adds a new attachment to the collection. Not supported for batching.
-     *
-     * @param name The name of the file, including extension.
-     * @param content The Base64 file content.
-     */
-    AttachmentFiles.prototype.add = function (name, content) {
-        var _this = this;
-        return this.clone(AttachmentFiles, "add(FileName='" + name + "')").post({
-            body: content,
-        }).then(function (response) {
-            return {
-                data: response,
-                file: _this.getByName(name),
-            };
-        });
-    };
-    /**
-     * Adds mjultiple new attachment to the collection. Not supported for batching.
-     *
-     * @files name The collection of files to add
-     */
-    AttachmentFiles.prototype.addMultiple = function (files) {
-        var _this = this;
-        // add the files in series so we don't get update conflicts
-        return files.reduce(function (chain, file) { return chain.then(function () { return _this.clone(AttachmentFiles, "add(FileName='" + file.name + "')").post({
-            body: file.content,
-        }); }); }, Promise.resolve());
-    };
-    return AttachmentFiles;
-}(queryable_1.QueryableCollection));
-exports.AttachmentFiles = AttachmentFiles;
-/**
- * Describes a single attachment file instance
- *
- */
-var AttachmentFile = (function (_super) {
-    __extends(AttachmentFile, _super);
-    function AttachmentFile() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Gets the contents of the file as text
-     *
-     */
-    AttachmentFile.prototype.getText = function () {
-        return this.clone(AttachmentFile, "$value").get(new odata_1.TextFileParser());
-    };
-    /**
-     * Gets the contents of the file as a blob, does not work in Node.js
-     *
-     */
-    AttachmentFile.prototype.getBlob = function () {
-        return this.clone(AttachmentFile, "$value").get(new odata_1.BlobFileParser());
-    };
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js
-     */
-    AttachmentFile.prototype.getBuffer = function () {
-        return this.clone(AttachmentFile, "$value").get(new odata_1.BufferFileParser());
-    };
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js
-     */
-    AttachmentFile.prototype.getJSON = function () {
-        return this.clone(AttachmentFile, "$value").get(new odata_1.JSONFileParser());
-    };
-    /**
-     * Sets the content of a file. Not supported for batching
-     *
-     * @param content The value to set for the file contents
-     */
-    AttachmentFile.prototype.setContent = function (content) {
-        var _this = this;
-        return this.clone(AttachmentFile, "$value").post({
-            body: content,
-            headers: {
-                "X-HTTP-Method": "PUT",
-            },
-        }).then(function (_) { return new AttachmentFile(_this); });
-    };
-    /**
-     * Delete this attachment file
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    AttachmentFile.prototype.delete = function (eTag) {
-        if (eTag === void 0) { eTag = "*"; }
-        return this.post({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    return AttachmentFile;
-}(queryable_1.QueryableInstance));
-exports.AttachmentFile = AttachmentFile;
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-/**
- * Describes a collection of Field objects
- *
- */
-var Forms = (function (_super) {
-    __extends(Forms, _super);
-    /**
-     * Creates a new instance of the Fields class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Forms(baseUrl, path) {
-        if (path === void 0) { path = "forms"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a form by id
-     *
-     * @param id The guid id of the item to retrieve
-     */
-    Forms.prototype.getById = function (id) {
-        var i = new Form(this);
-        i.concat("('" + id + "')");
-        return i;
-    };
-    return Forms;
-}(queryable_1.QueryableCollection));
-exports.Forms = Forms;
-/**
- * Describes a single of Form instance
- *
- */
-var Form = (function (_super) {
-    __extends(Form, _super);
-    function Form() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return Form;
-}(queryable_1.QueryableInstance));
-exports.Form = Form;
-
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(22));
-var files_1 = __webpack_require__(7);
-exports.CheckinType = files_1.CheckinType;
-exports.WebPartsPersonalizationScope = files_1.WebPartsPersonalizationScope;
-exports.MoveOperations = files_1.MoveOperations;
-exports.TemplateFileType = files_1.TemplateFileType;
-var folders_1 = __webpack_require__(9);
-exports.Folder = folders_1.Folder;
-exports.Folders = folders_1.Folders;
-var items_1 = __webpack_require__(10);
-exports.Item = items_1.Item;
-exports.Items = items_1.Items;
-exports.PagedItemCollection = items_1.PagedItemCollection;
-var navigation_1 = __webpack_require__(25);
-exports.NavigationNodes = navigation_1.NavigationNodes;
-exports.NavigationNode = navigation_1.NavigationNode;
-var lists_1 = __webpack_require__(11);
-exports.List = lists_1.List;
-exports.Lists = lists_1.Lists;
-var odata_1 = __webpack_require__(2);
-exports.extractOdataId = odata_1.extractOdataId;
-exports.ODataParserBase = odata_1.ODataParserBase;
-exports.ODataDefaultParser = odata_1.ODataDefaultParser;
-exports.ODataRaw = odata_1.ODataRaw;
-exports.ODataValue = odata_1.ODataValue;
-exports.ODataEntity = odata_1.ODataEntity;
-exports.ODataEntityArray = odata_1.ODataEntityArray;
-exports.TextFileParser = odata_1.TextFileParser;
-exports.BlobFileParser = odata_1.BlobFileParser;
-exports.BufferFileParser = odata_1.BufferFileParser;
-exports.JSONFileParser = odata_1.JSONFileParser;
-var queryable_1 = __webpack_require__(1);
-exports.Queryable = queryable_1.Queryable;
-exports.QueryableInstance = queryable_1.QueryableInstance;
-exports.QueryableCollection = queryable_1.QueryableCollection;
-var roles_1 = __webpack_require__(17);
-exports.RoleDefinitionBindings = roles_1.RoleDefinitionBindings;
-var search_1 = __webpack_require__(27);
-exports.Search = search_1.Search;
-exports.SearchQueryBuilder = search_1.SearchQueryBuilder;
-exports.SearchResults = search_1.SearchResults;
-exports.SortDirection = search_1.SortDirection;
-exports.ReorderingRuleMatchType = search_1.ReorderingRuleMatchType;
-exports.QueryPropertyValueType = search_1.QueryPropertyValueType;
-exports.SearchBuiltInSourceId = search_1.SearchBuiltInSourceId;
-var searchsuggest_1 = __webpack_require__(28);
-exports.SearchSuggest = searchsuggest_1.SearchSuggest;
-exports.SearchSuggestResult = searchsuggest_1.SearchSuggestResult;
-var site_1 = __webpack_require__(29);
-exports.Site = site_1.Site;
-__export(__webpack_require__(13));
-var utilities_1 = __webpack_require__(31);
-exports.UtilityMethod = utilities_1.UtilityMethod;
-var webparts_1 = __webpack_require__(32);
-exports.WebPartDefinitions = webparts_1.WebPartDefinitions;
-exports.WebPartDefinition = webparts_1.WebPartDefinition;
-exports.WebPart = webparts_1.WebPart;
-var webs_1 = __webpack_require__(8);
-exports.Web = webs_1.Web;
-
-
-/***/ }),
-/* 46 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9015,8 +8662,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var caching_1 = __webpack_require__(22);
-var httpclient_1 = __webpack_require__(15);
+var caching_1 = __webpack_require__(23);
+var httpclient_1 = __webpack_require__(9);
 var logging_1 = __webpack_require__(5);
 var util_1 = __webpack_require__(0);
 /**
@@ -9213,25 +8860,25 @@ var PipelineMethods = (function () {
         enumerable: true,
         configurable: true
     });
+    __decorate([
+        requestPipelineMethod(true)
+    ], PipelineMethods, "logStart", null);
+    __decorate([
+        requestPipelineMethod()
+    ], PipelineMethods, "caching", null);
+    __decorate([
+        requestPipelineMethod()
+    ], PipelineMethods, "send", null);
+    __decorate([
+        requestPipelineMethod(true)
+    ], PipelineMethods, "logEnd", null);
     return PipelineMethods;
 }());
-__decorate([
-    requestPipelineMethod(true)
-], PipelineMethods, "logStart", null);
-__decorate([
-    requestPipelineMethod()
-], PipelineMethods, "caching", null);
-__decorate([
-    requestPipelineMethod()
-], PipelineMethods, "send", null);
-__decorate([
-    requestPipelineMethod(true)
-], PipelineMethods, "logEnd", null);
 exports.PipelineMethods = PipelineMethods;
 
 
 /***/ }),
-/* 47 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9248,123 +8895,381 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var RelatedItemManagerImpl = (function (_super) {
-    __extends(RelatedItemManagerImpl, _super);
-    function RelatedItemManagerImpl(baseUrl, path) {
-        if (path === void 0) { path = "_api/SP.RelatedItemManager"; }
+var odata_1 = __webpack_require__(2);
+/**
+ * Describes a collection of Item objects
+ *
+ */
+var AttachmentFiles = (function (_super) {
+    __extends(AttachmentFiles, _super);
+    /**
+     * Creates a new instance of the AttachmentFiles class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this attachments collection
+     */
+    function AttachmentFiles(baseUrl, path) {
+        if (path === void 0) { path = "AttachmentFiles"; }
         return _super.call(this, baseUrl, path) || this;
     }
-    RelatedItemManagerImpl.FromUrl = function (url) {
-        if (url === null) {
-            return new RelatedItemManagerImpl("");
-        }
-        var index = url.indexOf("_api/");
-        if (index > -1) {
-            return new RelatedItemManagerImpl(url.substr(0, index));
-        }
-        return new RelatedItemManagerImpl(url);
+    /**
+     * Gets a Attachment File by filename
+     *
+     * @param name The name of the file, including extension.
+     */
+    AttachmentFiles.prototype.getByName = function (name) {
+        var f = new AttachmentFile(this);
+        f.concat("('" + name + "')");
+        return f;
     };
-    RelatedItemManagerImpl.prototype.getRelatedItems = function (sourceListName, sourceItemId) {
-        var query = this.clone(RelatedItemManagerImpl, null, true);
-        query.concat(".GetRelatedItems");
-        return query.post({
-            body: JSON.stringify({
-                SourceItemID: sourceItemId,
-                SourceListName: sourceListName,
-            }),
-        });
-    };
-    RelatedItemManagerImpl.prototype.getPageOneRelatedItems = function (sourceListName, sourceItemId) {
-        var query = this.clone(RelatedItemManagerImpl, null, true);
-        query.concat(".GetPageOneRelatedItems");
-        return query.post({
-            body: JSON.stringify({
-                SourceItemID: sourceItemId,
-                SourceListName: sourceListName,
-            }),
-        });
-    };
-    RelatedItemManagerImpl.prototype.addSingleLink = function (sourceListName, sourceItemId, sourceWebUrl, targetListName, targetItemID, targetWebUrl, tryAddReverseLink) {
-        if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
-        var query = this.clone(RelatedItemManagerImpl, null, true);
-        query.concat(".AddSingleLink");
-        return query.post({
-            body: JSON.stringify({
-                SourceItemID: sourceItemId,
-                SourceListName: sourceListName,
-                SourceWebUrl: sourceWebUrl,
-                TargetItemID: targetItemID,
-                TargetListName: targetListName,
-                TargetWebUrl: targetWebUrl,
-                TryAddReverseLink: tryAddReverseLink,
-            }),
+    /**
+     * Adds a new attachment to the collection. Not supported for batching.
+     *
+     * @param name The name of the file, including extension.
+     * @param content The Base64 file content.
+     */
+    AttachmentFiles.prototype.add = function (name, content) {
+        var _this = this;
+        return this.clone(AttachmentFiles, "add(FileName='" + name + "')").postCore({
+            body: content,
+        }).then(function (response) {
+            return {
+                data: response,
+                file: _this.getByName(name),
+            };
         });
     };
     /**
-     * Adds a related item link from an item specified by list name and item id, to an item specified by url
+     * Adds mjultiple new attachment to the collection. Not supported for batching.
      *
-     * @param sourceListName The source list name or list id
-     * @param sourceItemId The source item id
-     * @param targetItemUrl The target item url
-     * @param tryAddReverseLink If set to true try to add the reverse link (will not return error if it fails)
+     * @files name The collection of files to add
      */
-    RelatedItemManagerImpl.prototype.addSingleLinkToUrl = function (sourceListName, sourceItemId, targetItemUrl, tryAddReverseLink) {
-        if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
-        var query = this.clone(RelatedItemManagerImpl, null, true);
-        query.concat(".AddSingleLinkToUrl");
-        return query.post({
-            body: JSON.stringify({
-                SourceItemID: sourceItemId,
-                SourceListName: sourceListName,
-                TargetItemUrl: targetItemUrl,
-                TryAddReverseLink: tryAddReverseLink,
-            }),
-        });
+    AttachmentFiles.prototype.addMultiple = function (files) {
+        var _this = this;
+        // add the files in series so we don't get update conflicts
+        return files.reduce(function (chain, file) { return chain.then(function () { return _this.clone(AttachmentFiles, "add(FileName='" + file.name + "')").postCore({
+            body: file.content,
+        }); }); }, Promise.resolve());
+    };
+    return AttachmentFiles;
+}(queryable_1.QueryableCollection));
+exports.AttachmentFiles = AttachmentFiles;
+/**
+ * Describes a single attachment file instance
+ *
+ */
+var AttachmentFile = (function (_super) {
+    __extends(AttachmentFile, _super);
+    function AttachmentFile() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets the contents of the file as text
+     *
+     */
+    AttachmentFile.prototype.getText = function () {
+        return this.clone(AttachmentFile, "$value").get(new odata_1.TextFileParser());
     };
     /**
-     * Adds a related item link from an item specified by url, to an item specified by list name and item id
+     * Gets the contents of the file as a blob, does not work in Node.js
      *
-     * @param sourceItemUrl The source item url
-     * @param targetListName The target list name or list id
-     * @param targetItemId The target item id
-     * @param tryAddReverseLink If set to true try to add the reverse link (will not return error if it fails)
      */
-    RelatedItemManagerImpl.prototype.addSingleLinkFromUrl = function (sourceItemUrl, targetListName, targetItemId, tryAddReverseLink) {
-        if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
-        var query = this.clone(RelatedItemManagerImpl, null, true);
-        query.concat(".AddSingleLinkFromUrl");
-        return query.post({
-            body: JSON.stringify({
-                SourceItemUrl: sourceItemUrl,
-                TargetItemID: targetItemId,
-                TargetListName: targetListName,
-                TryAddReverseLink: tryAddReverseLink,
-            }),
+    AttachmentFile.prototype.getBlob = function () {
+        return this.clone(AttachmentFile, "$value").get(new odata_1.BlobFileParser());
+    };
+    /**
+     * Gets the contents of a file as an ArrayBuffer, works in Node.js
+     */
+    AttachmentFile.prototype.getBuffer = function () {
+        return this.clone(AttachmentFile, "$value").get(new odata_1.BufferFileParser());
+    };
+    /**
+     * Gets the contents of a file as an ArrayBuffer, works in Node.js
+     */
+    AttachmentFile.prototype.getJSON = function () {
+        return this.clone(AttachmentFile, "$value").get(new odata_1.JSONFileParser());
+    };
+    /**
+     * Sets the content of a file. Not supported for batching
+     *
+     * @param content The value to set for the file contents
+     */
+    AttachmentFile.prototype.setContent = function (content) {
+        var _this = this;
+        return this.clone(AttachmentFile, "$value").postCore({
+            body: content,
+            headers: {
+                "X-HTTP-Method": "PUT",
+            },
+        }).then(function (_) { return new AttachmentFile(_this); });
+    };
+    /**
+     * Delete this attachment file
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    AttachmentFile.prototype.delete = function (eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return this.postCore({
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "DELETE",
+            },
         });
     };
-    RelatedItemManagerImpl.prototype.deleteSingleLink = function (sourceListName, sourceItemId, sourceWebUrl, targetListName, targetItemId, targetWebUrl, tryDeleteReverseLink) {
-        if (tryDeleteReverseLink === void 0) { tryDeleteReverseLink = false; }
-        var query = this.clone(RelatedItemManagerImpl, null, true);
-        query.concat(".DeleteSingleLink");
-        return query.post({
-            body: JSON.stringify({
-                SourceItemID: sourceItemId,
-                SourceListName: sourceListName,
-                SourceWebUrl: sourceWebUrl,
-                TargetItemID: targetItemId,
-                TargetListName: targetListName,
-                TargetWebUrl: targetWebUrl,
-                TryDeleteReverseLink: tryDeleteReverseLink,
-            }),
-        });
-    };
-    return RelatedItemManagerImpl;
-}(queryable_1.Queryable));
-exports.RelatedItemManagerImpl = RelatedItemManagerImpl;
+    return AttachmentFile;
+}(queryable_1.QueryableInstance));
+exports.AttachmentFile = AttachmentFile;
 
 
 /***/ }),
-/* 48 */
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var util_1 = __webpack_require__(0);
+/**
+ * Describes the views available in the current context
+ *
+ */
+var Views = (function (_super) {
+    __extends(Views, _super);
+    /**
+     * Creates a new instance of the Views class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function Views(baseUrl, path) {
+        if (path === void 0) { path = "views"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a view by guid id
+     *
+     * @param id The GUID id of the view
+     */
+    Views.prototype.getById = function (id) {
+        var v = new View(this);
+        v.concat("('" + id + "')");
+        return v;
+    };
+    /**
+     * Gets a view by title (case-sensitive)
+     *
+     * @param title The case-sensitive title of the view
+     */
+    Views.prototype.getByTitle = function (title) {
+        return new View(this, "getByTitle('" + title + "')");
+    };
+    /**
+     * Adds a new view to the collection
+     *
+     * @param title The new views's title
+     * @param personalView True if this is a personal view, otherwise false, default = false
+     * @param additionalSettings Will be passed as part of the view creation body
+     */
+    Views.prototype.add = function (title, personalView, additionalSettings) {
+        var _this = this;
+        if (personalView === void 0) { personalView = false; }
+        if (additionalSettings === void 0) { additionalSettings = {}; }
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "PersonalView": personalView,
+            "Title": title,
+            "__metadata": { "type": "SP.View" },
+        }, additionalSettings));
+        return this.clone(Views, null, true).postAsCore({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                view: _this.getById(data.Id),
+            };
+        });
+    };
+    return Views;
+}(queryable_1.QueryableCollection));
+exports.Views = Views;
+/**
+ * Describes a single View instance
+ *
+ */
+var View = (function (_super) {
+    __extends(View, _super);
+    function View() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(View.prototype, "fields", {
+        get: function () {
+            return new ViewFields(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Updates this view intance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the view
+     */
+    View.prototype.update = function (properties) {
+        var _this = this;
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "__metadata": { "type": "SP.View" },
+        }, properties));
+        return this.postCore({
+            body: postBody,
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            return {
+                data: data,
+                view: _this,
+            };
+        });
+    };
+    /**
+     * Delete this view
+     *
+     */
+    View.prototype.delete = function () {
+        return this.postCore({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    /**
+     * Returns the list view as HTML.
+     *
+     */
+    View.prototype.renderAsHtml = function () {
+        return this.clone(queryable_1.Queryable, "renderashtml", true).get();
+    };
+    return View;
+}(queryable_1.QueryableInstance));
+exports.View = View;
+var ViewFields = (function (_super) {
+    __extends(ViewFields, _super);
+    function ViewFields(baseUrl, path) {
+        if (path === void 0) { path = "viewfields"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a value that specifies the XML schema that represents the collection.
+     */
+    ViewFields.prototype.getSchemaXml = function () {
+        return this.clone(queryable_1.Queryable, "schemaxml", true).get();
+    };
+    /**
+     * Adds the field with the specified field internal name or display name to the collection.
+     *
+     * @param fieldTitleOrInternalName The case-sensitive internal name or display name of the field to add.
+     */
+    ViewFields.prototype.add = function (fieldTitleOrInternalName) {
+        return this.clone(ViewFields, "addviewfield('" + fieldTitleOrInternalName + "')", true).postCore();
+    };
+    /**
+     * Moves the field with the specified field internal name to the specified position in the collection.
+     *
+     * @param fieldInternalName The case-sensitive internal name of the field to move.
+     * @param index The zero-based index of the new position for the field.
+     */
+    ViewFields.prototype.move = function (fieldInternalName, index) {
+        return this.clone(ViewFields, "moveviewfieldto", true).postCore({
+            body: JSON.stringify({ "field": fieldInternalName, "index": index }),
+        });
+    };
+    /**
+     * Removes all the fields from the collection.
+     */
+    ViewFields.prototype.removeAll = function () {
+        return this.clone(ViewFields, "removeallviewfields", true).postCore();
+    };
+    /**
+     * Removes the field with the specified field internal name from the collection.
+     *
+     * @param fieldInternalName The case-sensitive internal name of the field to remove from the view.
+     */
+    ViewFields.prototype.remove = function (fieldInternalName) {
+        return this.clone(ViewFields, "removeviewfield('" + fieldInternalName + "')", true).postCore();
+    };
+    return ViewFields;
+}(queryable_1.QueryableCollection));
+exports.ViewFields = ViewFields;
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+/**
+ * Describes a collection of Field objects
+ *
+ */
+var Forms = (function (_super) {
+    __extends(Forms, _super);
+    /**
+     * Creates a new instance of the Fields class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     */
+    function Forms(baseUrl, path) {
+        if (path === void 0) { path = "forms"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a form by id
+     *
+     * @param id The guid id of the item to retrieve
+     */
+    Forms.prototype.getById = function (id) {
+        var i = new Form(this);
+        i.concat("('" + id + "')");
+        return i;
+    };
+    return Forms;
+}(queryable_1.QueryableCollection));
+exports.Forms = Forms;
+/**
+ * Describes a single of Form instance
+ *
+ */
+var Form = (function (_super) {
+    __extends(Form, _super);
+    function Form() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return Form;
+}(queryable_1.QueryableInstance));
+exports.Form = Form;
+
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9421,7 +9326,7 @@ var Subscriptions = (function (_super) {
             "notificationUrl": notificationUrl,
             "resource": this.toUrl(),
         });
-        return this.post({ body: postBody, headers: { "Content-Type": "application/json" } }).then(function (result) {
+        return this.postCore({ body: postBody, headers: { "Content-Type": "application/json" } }).then(function (result) {
             return { data: result, subscription: _this.getById(result.id) };
         });
     };
@@ -9447,7 +9352,7 @@ var Subscription = (function (_super) {
         var postBody = JSON.stringify({
             "expirationDateTime": expirationDate,
         });
-        return this.patch({ body: postBody, headers: { "Content-Type": "application/json" } }).then(function (data) {
+        return this.patchCore({ body: postBody, headers: { "Content-Type": "application/json" } }).then(function (data) {
             return { data: data, subscription: _this };
         });
     };
@@ -9456,7 +9361,7 @@ var Subscription = (function (_super) {
      *
      */
     Subscription.prototype.delete = function () {
-        return _super.prototype.delete.call(this);
+        return _super.prototype.deleteCore.call(this);
     };
     return Subscription;
 }(queryable_1.QueryableInstance));
@@ -9464,7 +9369,7 @@ exports.Subscription = Subscription;
 
 
 /***/ }),
-/* 49 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9481,7 +9386,140 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var queryable_1 = __webpack_require__(1);
-var files_1 = __webpack_require__(52);
+var RelatedItemManagerImpl = (function (_super) {
+    __extends(RelatedItemManagerImpl, _super);
+    function RelatedItemManagerImpl(baseUrl, path) {
+        if (path === void 0) { path = "_api/SP.RelatedItemManager"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    RelatedItemManagerImpl.FromUrl = function (url) {
+        if (url === null) {
+            return new RelatedItemManagerImpl("");
+        }
+        var index = url.indexOf("_api/");
+        if (index > -1) {
+            return new RelatedItemManagerImpl(url.substr(0, index));
+        }
+        return new RelatedItemManagerImpl(url);
+    };
+    RelatedItemManagerImpl.prototype.getRelatedItems = function (sourceListName, sourceItemId) {
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".GetRelatedItems");
+        return query.postCore({
+            body: JSON.stringify({
+                SourceItemID: sourceItemId,
+                SourceListName: sourceListName,
+            }),
+        });
+    };
+    RelatedItemManagerImpl.prototype.getPageOneRelatedItems = function (sourceListName, sourceItemId) {
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".GetPageOneRelatedItems");
+        return query.postCore({
+            body: JSON.stringify({
+                SourceItemID: sourceItemId,
+                SourceListName: sourceListName,
+            }),
+        });
+    };
+    RelatedItemManagerImpl.prototype.addSingleLink = function (sourceListName, sourceItemId, sourceWebUrl, targetListName, targetItemID, targetWebUrl, tryAddReverseLink) {
+        if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".AddSingleLink");
+        return query.postCore({
+            body: JSON.stringify({
+                SourceItemID: sourceItemId,
+                SourceListName: sourceListName,
+                SourceWebUrl: sourceWebUrl,
+                TargetItemID: targetItemID,
+                TargetListName: targetListName,
+                TargetWebUrl: targetWebUrl,
+                TryAddReverseLink: tryAddReverseLink,
+            }),
+        });
+    };
+    /**
+     * Adds a related item link from an item specified by list name and item id, to an item specified by url
+     *
+     * @param sourceListName The source list name or list id
+     * @param sourceItemId The source item id
+     * @param targetItemUrl The target item url
+     * @param tryAddReverseLink If set to true try to add the reverse link (will not return error if it fails)
+     */
+    RelatedItemManagerImpl.prototype.addSingleLinkToUrl = function (sourceListName, sourceItemId, targetItemUrl, tryAddReverseLink) {
+        if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".AddSingleLinkToUrl");
+        return query.postCore({
+            body: JSON.stringify({
+                SourceItemID: sourceItemId,
+                SourceListName: sourceListName,
+                TargetItemUrl: targetItemUrl,
+                TryAddReverseLink: tryAddReverseLink,
+            }),
+        });
+    };
+    /**
+     * Adds a related item link from an item specified by url, to an item specified by list name and item id
+     *
+     * @param sourceItemUrl The source item url
+     * @param targetListName The target list name or list id
+     * @param targetItemId The target item id
+     * @param tryAddReverseLink If set to true try to add the reverse link (will not return error if it fails)
+     */
+    RelatedItemManagerImpl.prototype.addSingleLinkFromUrl = function (sourceItemUrl, targetListName, targetItemId, tryAddReverseLink) {
+        if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".AddSingleLinkFromUrl");
+        return query.postCore({
+            body: JSON.stringify({
+                SourceItemUrl: sourceItemUrl,
+                TargetItemID: targetItemId,
+                TargetListName: targetListName,
+                TryAddReverseLink: tryAddReverseLink,
+            }),
+        });
+    };
+    RelatedItemManagerImpl.prototype.deleteSingleLink = function (sourceListName, sourceItemId, sourceWebUrl, targetListName, targetItemId, targetWebUrl, tryDeleteReverseLink) {
+        if (tryDeleteReverseLink === void 0) { tryDeleteReverseLink = false; }
+        var query = this.clone(RelatedItemManagerImpl, null, true);
+        query.concat(".DeleteSingleLink");
+        return query.postCore({
+            body: JSON.stringify({
+                SourceItemID: sourceItemId,
+                SourceListName: sourceListName,
+                SourceWebUrl: sourceWebUrl,
+                TargetItemID: targetItemId,
+                TargetListName: targetListName,
+                TargetWebUrl: targetWebUrl,
+                TryDeleteReverseLink: tryDeleteReverseLink,
+            }),
+        });
+    };
+    return RelatedItemManagerImpl;
+}(queryable_1.Queryable));
+exports.RelatedItemManagerImpl = RelatedItemManagerImpl;
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var queryable_1 = __webpack_require__(1);
+var files_1 = __webpack_require__(45);
 var odata_1 = __webpack_require__(2);
 var UserProfileQuery = (function (_super) {
     __extends(UserProfileQuery, _super);
@@ -9629,7 +9667,7 @@ var UserProfileQuery = (function (_super) {
     UserProfileQuery.prototype.hideSuggestion = function (loginName) {
         var q = this.clone(UserProfileQuery, "hidesuggestion(@v)", true);
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
-        return q.post();
+        return q.postCore();
     };
     /**
      * A boolean values that indicates whether the first user is following the second user
@@ -9654,7 +9692,7 @@ var UserProfileQuery = (function (_super) {
         return new Promise(function (resolve, reject) {
             files_1.readBlobAsArrayBuffer(profilePicSource).then(function (buffer) {
                 var request = new UserProfileQuery(_this, "setmyprofilepicture");
-                request.post({
+                request.postCore({
                     body: String.fromCharCode.apply(null, new Uint16Array(buffer)),
                 }).then(function (_) { return resolve(); });
             }).catch(function (e) { return reject(e); });
@@ -9730,7 +9768,7 @@ var ProfileLoader = (function (_super) {
      * @param emails The email addresses of the users to provision sites for
      */
     ProfileLoader.prototype.createPersonalSiteEnqueueBulk = function (emails) {
-        return this.clone(ProfileLoader, "createpersonalsiteenqueuebulk").post({
+        return this.clone(ProfileLoader, "createpersonalsiteenqueuebulk").postCore({
             body: JSON.stringify({ "emailIDs": emails }),
         });
     };
@@ -9744,7 +9782,7 @@ var ProfileLoader = (function (_super) {
             if (this.hasBatch) {
                 q = q.inBatch(this.batch);
             }
-            return q.postAs();
+            return q.postAsCore();
         },
         enumerable: true,
         configurable: true
@@ -9755,7 +9793,7 @@ var ProfileLoader = (function (_super) {
          *
          */
         get: function () {
-            return this.clone(ProfileLoader, "getuserprofile", true).postAs();
+            return this.clone(ProfileLoader, "getuserprofile", true).postAsCore();
         },
         enumerable: true,
         configurable: true
@@ -9767,7 +9805,7 @@ var ProfileLoader = (function (_super) {
      */
     ProfileLoader.prototype.createPersonalSite = function (interactiveRequest) {
         if (interactiveRequest === void 0) { interactiveRequest = false; }
-        return this.clone(ProfileLoader, "getuserprofile/createpersonalsiteenque(" + interactiveRequest + ")", true).post();
+        return this.clone(ProfileLoader, "getuserprofile/createpersonalsiteenque(" + interactiveRequest + ")", true).postCore();
     };
     /**
      * Sets the privacy settings for this profile
@@ -9775,234 +9813,14 @@ var ProfileLoader = (function (_super) {
      * @param share true to make all social data public; false to make all social data private.
      */
     ProfileLoader.prototype.shareAllSocialData = function (share) {
-        return this.clone(ProfileLoader, "getuserprofile/shareallsocialdata(" + share + ")", true).post();
+        return this.clone(ProfileLoader, "getuserprofile/shareallsocialdata(" + share + ")", true).postCore();
     };
     return ProfileLoader;
 }(queryable_1.Queryable));
 
 
 /***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var util_1 = __webpack_require__(0);
-/**
- * Describes the views available in the current context
- *
- */
-var Views = (function (_super) {
-    __extends(Views, _super);
-    /**
-     * Creates a new instance of the Views class
-     *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
-     */
-    function Views(baseUrl, path) {
-        if (path === void 0) { path = "views"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a view by guid id
-     *
-     * @param id The GUID id of the view
-     */
-    Views.prototype.getById = function (id) {
-        var v = new View(this);
-        v.concat("('" + id + "')");
-        return v;
-    };
-    /**
-     * Gets a view by title (case-sensitive)
-     *
-     * @param title The case-sensitive title of the view
-     */
-    Views.prototype.getByTitle = function (title) {
-        return new View(this, "getByTitle('" + title + "')");
-    };
-    /**
-     * Adds a new view to the collection
-     *
-     * @param title The new views's title
-     * @param personalView True if this is a personal view, otherwise false, default = false
-     * @param additionalSettings Will be passed as part of the view creation body
-     */
-    /*tslint:disable max-line-length */
-    Views.prototype.add = function (title, personalView, additionalSettings) {
-        var _this = this;
-        if (personalView === void 0) { personalView = false; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "PersonalView": personalView,
-            "Title": title,
-            "__metadata": { "type": "SP.View" },
-        }, additionalSettings));
-        return this.clone(Views, null, true).postAs({ body: postBody }).then(function (data) {
-            return {
-                data: data,
-                view: _this.getById(data.Id),
-            };
-        });
-    };
-    return Views;
-}(queryable_1.QueryableCollection));
-exports.Views = Views;
-/**
- * Describes a single View instance
- *
- */
-var View = (function (_super) {
-    __extends(View, _super);
-    function View() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(View.prototype, "fields", {
-        get: function () {
-            return new ViewFields(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Updates this view intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the view
-     */
-    View.prototype.update = function (properties) {
-        var _this = this;
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "__metadata": { "type": "SP.View" },
-        }, properties));
-        return this.post({
-            body: postBody,
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            return {
-                data: data,
-                view: _this,
-            };
-        });
-    };
-    /**
-     * Delete this view
-     *
-     */
-    View.prototype.delete = function () {
-        return this.post({
-            headers: {
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    /**
-     * Returns the list view as HTML.
-     *
-     */
-    View.prototype.renderAsHtml = function () {
-        return this.clone(queryable_1.Queryable, "renderashtml", true).get();
-    };
-    return View;
-}(queryable_1.QueryableInstance));
-exports.View = View;
-var ViewFields = (function (_super) {
-    __extends(ViewFields, _super);
-    function ViewFields(baseUrl, path) {
-        if (path === void 0) { path = "viewfields"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a value that specifies the XML schema that represents the collection.
-     */
-    ViewFields.prototype.getSchemaXml = function () {
-        return this.clone(queryable_1.Queryable, "schemaxml", true).get();
-    };
-    /**
-     * Adds the field with the specified field internal name or display name to the collection.
-     *
-     * @param fieldTitleOrInternalName The case-sensitive internal name or display name of the field to add.
-     */
-    ViewFields.prototype.add = function (fieldTitleOrInternalName) {
-        return this.clone(ViewFields, "addviewfield('" + fieldTitleOrInternalName + "')", true).post();
-    };
-    /**
-     * Moves the field with the specified field internal name to the specified position in the collection.
-     *
-     * @param fieldInternalName The case-sensitive internal name of the field to move.
-     * @param index The zero-based index of the new position for the field.
-     */
-    ViewFields.prototype.move = function (fieldInternalName, index) {
-        return this.clone(ViewFields, "moveviewfieldto", true).post({
-            body: JSON.stringify({ "field": fieldInternalName, "index": index }),
-        });
-    };
-    /**
-     * Removes all the fields from the collection.
-     */
-    ViewFields.prototype.removeAll = function () {
-        return this.clone(ViewFields, "removeallviewfields", true).post();
-    };
-    /**
-     * Removes the field with the specified field internal name from the collection.
-     *
-     * @param fieldInternalName The case-sensitive internal name of the field to remove from the view.
-     */
-    ViewFields.prototype.remove = function (fieldInternalName) {
-        return this.clone(ViewFields, "removeviewfield('" + fieldInternalName + "')", true).post();
-    };
-    return ViewFields;
-}(queryable_1.QueryableCollection));
-exports.ViewFields = ViewFields;
-
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var logging_1 = __webpack_require__(5);
-function deprecated(message) {
-    return function (target, propertyKey, descriptor) {
-        var method = descriptor.value;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            logging_1.Logger.log({
-                data: {
-                    descriptor: descriptor,
-                    propertyKey: propertyKey,
-                    target: target,
-                },
-                level: logging_1.LogLevel.Warning,
-                message: message,
-            });
-            return method.apply(this, args);
-        };
-    };
-}
-exports.deprecated = deprecated;
-
-
-/***/ }),
-/* 52 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10053,6 +9871,306 @@ function readBlobAs(blob, mode) {
         }
     });
 }
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(47));
+var httpclient_1 = __webpack_require__(9);
+exports.HttpClient = httpclient_1.HttpClient;
+var sprequestexecutorclient_1 = __webpack_require__(48);
+exports.SPRequestExecutorClient = sprequestexecutorclient_1.SPRequestExecutorClient;
+var nodefetchclient_1 = __webpack_require__(49);
+exports.NodeFetchClient = nodefetchclient_1.NodeFetchClient;
+var fetchclient_1 = __webpack_require__(21);
+exports.FetchClient = fetchclient_1.FetchClient;
+__export(__webpack_require__(50));
+var collections_1 = __webpack_require__(6);
+exports.Dictionary = collections_1.Dictionary;
+var util_1 = __webpack_require__(0);
+exports.Util = util_1.Util;
+__export(__webpack_require__(5));
+__export(__webpack_require__(3));
+
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(23));
+var files_1 = __webpack_require__(8);
+exports.CheckinType = files_1.CheckinType;
+exports.WebPartsPersonalizationScope = files_1.WebPartsPersonalizationScope;
+exports.MoveOperations = files_1.MoveOperations;
+exports.TemplateFileType = files_1.TemplateFileType;
+exports.File = files_1.File;
+exports.Files = files_1.Files;
+var folders_1 = __webpack_require__(14);
+exports.Folder = folders_1.Folder;
+exports.Folders = folders_1.Folders;
+var items_1 = __webpack_require__(11);
+exports.Item = items_1.Item;
+exports.Items = items_1.Items;
+exports.PagedItemCollection = items_1.PagedItemCollection;
+var navigation_1 = __webpack_require__(30);
+exports.NavigationNodes = navigation_1.NavigationNodes;
+exports.NavigationNode = navigation_1.NavigationNode;
+var lists_1 = __webpack_require__(10);
+exports.List = lists_1.List;
+exports.Lists = lists_1.Lists;
+var odata_1 = __webpack_require__(2);
+exports.extractOdataId = odata_1.extractOdataId;
+exports.ODataParserBase = odata_1.ODataParserBase;
+exports.ODataDefaultParser = odata_1.ODataDefaultParser;
+exports.ODataRaw = odata_1.ODataRaw;
+exports.ODataValue = odata_1.ODataValue;
+exports.ODataEntity = odata_1.ODataEntity;
+exports.ODataEntityArray = odata_1.ODataEntityArray;
+exports.TextFileParser = odata_1.TextFileParser;
+exports.BlobFileParser = odata_1.BlobFileParser;
+exports.BufferFileParser = odata_1.BufferFileParser;
+exports.JSONFileParser = odata_1.JSONFileParser;
+var queryable_1 = __webpack_require__(1);
+exports.Queryable = queryable_1.Queryable;
+exports.QueryableInstance = queryable_1.QueryableInstance;
+exports.QueryableCollection = queryable_1.QueryableCollection;
+var roles_1 = __webpack_require__(16);
+exports.RoleDefinitionBindings = roles_1.RoleDefinitionBindings;
+var search_1 = __webpack_require__(22);
+exports.Search = search_1.Search;
+exports.SearchQueryBuilder = search_1.SearchQueryBuilder;
+exports.SearchResults = search_1.SearchResults;
+exports.SortDirection = search_1.SortDirection;
+exports.ReorderingRuleMatchType = search_1.ReorderingRuleMatchType;
+exports.QueryPropertyValueType = search_1.QueryPropertyValueType;
+exports.SearchBuiltInSourceId = search_1.SearchBuiltInSourceId;
+var searchsuggest_1 = __webpack_require__(24);
+exports.SearchSuggest = searchsuggest_1.SearchSuggest;
+exports.SearchSuggestResult = searchsuggest_1.SearchSuggestResult;
+var site_1 = __webpack_require__(25);
+exports.Site = site_1.Site;
+__export(__webpack_require__(13));
+var utilities_1 = __webpack_require__(32);
+exports.UtilityMethod = utilities_1.UtilityMethod;
+var webparts_1 = __webpack_require__(28);
+exports.WebPartDefinitions = webparts_1.WebPartDefinitions;
+exports.WebPartDefinition = webparts_1.WebPartDefinition;
+exports.WebPart = webparts_1.WebPart;
+var webs_1 = __webpack_require__(7);
+exports.Web = webs_1.Web;
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var exceptions_1 = __webpack_require__(3);
+/**
+ * Makes requests using the SP.RequestExecutor library.
+ */
+var SPRequestExecutorClient = (function () {
+    function SPRequestExecutorClient() {
+        /**
+         * Converts a SharePoint REST API response to a fetch API response.
+         */
+        this.convertToResponse = function (spResponse) {
+            var responseHeaders = new Headers();
+            for (var h in spResponse.headers) {
+                if (spResponse.headers[h]) {
+                    responseHeaders.append(h, spResponse.headers[h]);
+                }
+            }
+            // issue #256, Cannot have an empty string body when creating a Response with status 204
+            var body = spResponse.statusCode === 204 ? null : spResponse.body;
+            return new Response(body, {
+                headers: responseHeaders,
+                status: spResponse.statusCode,
+                statusText: spResponse.statusText,
+            });
+        };
+    }
+    /**
+     * Fetches a URL using the SP.RequestExecutor library.
+     */
+    SPRequestExecutorClient.prototype.fetch = function (url, options) {
+        var _this = this;
+        if (typeof SP === "undefined" || typeof SP.RequestExecutor === "undefined") {
+            throw new exceptions_1.SPRequestExecutorUndefinedException();
+        }
+        var addinWebUrl = url.substring(0, url.indexOf("/_api")), executor = new SP.RequestExecutor(addinWebUrl);
+        var headers = {}, iterator, temp;
+        if (options.headers && options.headers instanceof Headers) {
+            iterator = options.headers.entries();
+            temp = iterator.next();
+            while (!temp.done) {
+                headers[temp.value[0]] = temp.value[1];
+                temp = iterator.next();
+            }
+        }
+        else {
+            headers = options.headers;
+        }
+        return new Promise(function (resolve, reject) {
+            var requestOptions = {
+                error: function (error) {
+                    reject(_this.convertToResponse(error));
+                },
+                headers: headers,
+                method: options.method,
+                success: function (response) {
+                    resolve(_this.convertToResponse(response));
+                },
+                url: url,
+            };
+            if (options.body) {
+                requestOptions = util_1.Util.extend(requestOptions, { body: options.body });
+            }
+            else {
+                requestOptions = util_1.Util.extend(requestOptions, { binaryStringRequestBody: true });
+            }
+            executor.executeAsync(requestOptions);
+        });
+    };
+    return SPRequestExecutorClient;
+}());
+exports.SPRequestExecutorClient = SPRequestExecutorClient;
+
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var exceptions_1 = __webpack_require__(3);
+/**
+ * This module is substituted for the NodeFetchClient.ts during the packaging process. This helps to reduce the pnp.js file size by
+ * not including all of the node dependencies
+ */
+var NodeFetchClient = (function () {
+    function NodeFetchClient() {
+    }
+    /**
+     * Always throws an error that NodeFetchClient is not supported for use in the browser
+     */
+    NodeFetchClient.prototype.fetch = function () {
+        throw new exceptions_1.NodeFetchClientUnsupportedException();
+    };
+    return NodeFetchClient;
+}());
+exports.NodeFetchClient = NodeFetchClient;
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var cachingConfigurationProvider_1 = __webpack_require__(33);
+exports.CachingConfigurationProvider = cachingConfigurationProvider_1.default;
+var spListConfigurationProvider_1 = __webpack_require__(51);
+exports.SPListConfigurationProvider = spListConfigurationProvider_1.default;
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var cachingConfigurationProvider_1 = __webpack_require__(33);
+/**
+ * A configuration provider which loads configuration values from a SharePoint list
+ *
+ */
+var SPListConfigurationProvider = (function () {
+    /**
+     * Creates a new SharePoint list based configuration provider
+     * @constructor
+     * @param {string} webUrl Url of the SharePoint site, where the configuration list is located
+     * @param {string} listTitle Title of the SharePoint list, which contains the configuration settings (optional, default = "config")
+     */
+    function SPListConfigurationProvider(sourceWeb, sourceListTitle) {
+        if (sourceListTitle === void 0) { sourceListTitle = "config"; }
+        this.sourceWeb = sourceWeb;
+        this.sourceListTitle = sourceListTitle;
+    }
+    Object.defineProperty(SPListConfigurationProvider.prototype, "web", {
+        /**
+         * Gets the url of the SharePoint site, where the configuration list is located
+         *
+         * @return {string} Url address of the site
+         */
+        get: function () {
+            return this.sourceWeb;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SPListConfigurationProvider.prototype, "listTitle", {
+        /**
+         * Gets the title of the SharePoint list, which contains the configuration settings
+         *
+         * @return {string} List title
+         */
+        get: function () {
+            return this.sourceListTitle;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Loads the configuration values from the SharePoint list
+     *
+     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
+     */
+    SPListConfigurationProvider.prototype.getConfiguration = function () {
+        return this.web.lists.getByTitle(this.listTitle).items.select("Title", "Value")
+            .getAs().then(function (data) {
+            return data.reduce(function (configuration, item) {
+                return Object.defineProperty(configuration, item.Title, {
+                    configurable: false,
+                    enumerable: false,
+                    value: item.Value,
+                    writable: false,
+                });
+            }, {});
+        });
+    };
+    /**
+     * Wraps the current provider in a cache enabled provider
+     *
+     * @return {CachingConfigurationProvider} Caching providers which wraps the current provider
+     */
+    SPListConfigurationProvider.prototype.asCaching = function () {
+        var cacheKey = "splist_" + this.web.toUrl() + "+" + this.listTitle;
+        return new cachingConfigurationProvider_1.default(this, cacheKey);
+    };
+    return SPListConfigurationProvider;
+}());
+exports.default = SPListConfigurationProvider;
 
 
 /***/ })

@@ -58,141 +58,6 @@ declare module "collections/collections" {
         count(): number;
     }
 }
-declare module "utils/storage" {
-    /**
-     * A wrapper class to provide a consistent interface to browser based storage
-     *
-     */
-    export class PnPClientStorageWrapper implements PnPClientStore {
-        private store;
-        defaultTimeoutMinutes: number;
-        /**
-         * True if the wrapped storage is available; otherwise, false
-         */
-        enabled: boolean;
-        /**
-         * Creates a new instance of the PnPClientStorageWrapper class
-         *
-         * @constructor
-         */
-        constructor(store: Storage, defaultTimeoutMinutes?: number);
-        /**
-         * Get a value from storage, or null if that value does not exist
-         *
-         * @param key The key whose value we want to retrieve
-         */
-        get<T>(key: string): T;
-        /**
-         * Adds a value to the underlying storage
-         *
-         * @param key The key to use when storing the provided value
-         * @param o The value to store
-         * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-         */
-        put(key: string, o: any, expire?: Date): void;
-        /**
-         * Deletes a value from the underlying storage
-         *
-         * @param key The key of the pair we want to remove from storage
-         */
-        delete(key: string): void;
-        /**
-         * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
-         *
-         * @param key The key to use when storing the provided value
-         * @param getter A function which will upon execution provide the desired value
-         * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-         */
-        getOrPut<T>(key: string, getter: () => Promise<T>, expire?: Date): Promise<T>;
-        /**
-         * Used to determine if the wrapped storage is available currently
-         */
-        private test();
-        /**
-         * Creates the persistable to store
-         */
-        private createPersistable(o, expire?);
-    }
-    /**
-     * Interface which defines the operations provided by a client storage object
-     */
-    export interface PnPClientStore {
-        /**
-         * True if the wrapped storage is available; otherwise, false
-         */
-        enabled: boolean;
-        /**
-         * Get a value from storage, or null if that value does not exist
-         *
-         * @param key The key whose value we want to retrieve
-         */
-        get(key: string): any;
-        /**
-         * Adds a value to the underlying storage
-         *
-         * @param key The key to use when storing the provided value
-         * @param o The value to store
-         * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-         */
-        put(key: string, o: any, expire?: Date): void;
-        /**
-         * Deletes a value from the underlying storage
-         *
-         * @param key The key of the pair we want to remove from storage
-         */
-        delete(key: string): void;
-        /**
-         * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
-         *
-         * @param key The key to use when storing the provided value
-         * @param getter A function which will upon execution provide the desired value
-         * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-         */
-        getOrPut(key: string, getter: Function, expire?: Date): any;
-    }
-    /**
-     * A class that will establish wrappers for both local and session storage
-     */
-    export class PnPClientStorage {
-        /**
-         * Provides access to the local storage of the browser
-         */
-        local: PnPClientStore;
-        /**
-         * Provides access to the session storage of the browser
-         */
-        session: PnPClientStore;
-        /**
-         * Creates a new instance of the PnPClientStorage class
-         *
-         * @constructor
-         */
-        constructor();
-    }
-}
-declare module "sharepoint/caching" {
-    import { ODataParser } from "sharepoint/odata";
-    import { PnPClientStore, PnPClientStorage } from "utils/storage";
-    export interface ICachingOptions {
-        expiration?: Date;
-        storeName?: "session" | "local";
-        key: string;
-    }
-    export class CachingOptions implements ICachingOptions {
-        key: string;
-        protected static storage: PnPClientStorage;
-        expiration: Date;
-        storeName: "session" | "local";
-        constructor(key: string);
-        readonly store: PnPClientStore;
-    }
-    export class CachingParserWrapper<T> implements ODataParser<T> {
-        private _parser;
-        private _cacheOptions;
-        constructor(_parser: ODataParser<T>, _cacheOptions: CachingOptions);
-        parse(response: Response): Promise<T>;
-    }
-}
 declare module "utils/logging" {
     /**
      * A set of logging levels
@@ -324,6 +189,155 @@ declare module "utils/logging" {
         log(entry: LogEntry): void;
     }
 }
+declare module "utils/storage" {
+    /**
+     * A wrapper class to provide a consistent interface to browser based storage
+     *
+     */
+    export class PnPClientStorageWrapper implements PnPClientStore {
+        private store;
+        defaultTimeoutMinutes: number;
+        /**
+         * True if the wrapped storage is available; otherwise, false
+         */
+        enabled: boolean;
+        /**
+         * Creates a new instance of the PnPClientStorageWrapper class
+         *
+         * @constructor
+         */
+        constructor(store: Storage, defaultTimeoutMinutes?: number);
+        /**
+         * Get a value from storage, or null if that value does not exist
+         *
+         * @param key The key whose value we want to retrieve
+         */
+        get<T>(key: string): T;
+        /**
+         * Adds a value to the underlying storage
+         *
+         * @param key The key to use when storing the provided value
+         * @param o The value to store
+         * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+         */
+        put(key: string, o: any, expire?: Date): void;
+        /**
+         * Deletes a value from the underlying storage
+         *
+         * @param key The key of the pair we want to remove from storage
+         */
+        delete(key: string): void;
+        /**
+         * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
+         *
+         * @param key The key to use when storing the provided value
+         * @param getter A function which will upon execution provide the desired value
+         * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+         */
+        getOrPut<T>(key: string, getter: () => Promise<T>, expire?: Date): Promise<T>;
+        /**
+         * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
+         */
+        deleteExpired(): Promise<void>;
+        /**
+         * Used to determine if the wrapped storage is available currently
+         */
+        private test();
+        /**
+         * Creates the persistable to store
+         */
+        private createPersistable(o, expire?);
+        /**
+         * Deletes expired items added by this library in this.store and sets a timeout to call itself
+         */
+        private cacheExpirationHandler();
+    }
+    /**
+     * Interface which defines the operations provided by a client storage object
+     */
+    export interface PnPClientStore {
+        /**
+         * True if the wrapped storage is available; otherwise, false
+         */
+        enabled: boolean;
+        /**
+         * Get a value from storage, or null if that value does not exist
+         *
+         * @param key The key whose value we want to retrieve
+         */
+        get(key: string): any;
+        /**
+         * Adds a value to the underlying storage
+         *
+         * @param key The key to use when storing the provided value
+         * @param o The value to store
+         * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+         */
+        put(key: string, o: any, expire?: Date): void;
+        /**
+         * Deletes a value from the underlying storage
+         *
+         * @param key The key of the pair we want to remove from storage
+         */
+        delete(key: string): void;
+        /**
+         * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
+         *
+         * @param key The key to use when storing the provided value
+         * @param getter A function which will upon execution provide the desired value
+         * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+         */
+        getOrPut(key: string, getter: Function, expire?: Date): any;
+        /**
+         * Removes any expired items placed in the store by the pnp library, leaves other items untouched
+         */
+        deleteExpired(): Promise<void>;
+    }
+    /**
+     * A class that will establish wrappers for both local and session storage
+     */
+    export class PnPClientStorage {
+        private _local;
+        private _session;
+        /**
+         * Creates a new instance of the PnPClientStorage class
+         *
+         * @constructor
+         */
+        constructor(_local?: PnPClientStore, _session?: PnPClientStore);
+        /**
+         * Provides access to the local storage of the browser
+         */
+        readonly local: PnPClientStore;
+        /**
+         * Provides access to the session storage of the browser
+         */
+        readonly session: PnPClientStore;
+    }
+}
+declare module "sharepoint/caching" {
+    import { ODataParser } from "sharepoint/odata";
+    import { PnPClientStore, PnPClientStorage } from "utils/storage";
+    export interface ICachingOptions {
+        expiration?: Date;
+        storeName?: "session" | "local";
+        key: string;
+    }
+    export class CachingOptions implements ICachingOptions {
+        key: string;
+        protected static storage: PnPClientStorage;
+        expiration: Date;
+        storeName: "session" | "local";
+        constructor(key: string);
+        readonly store: PnPClientStore;
+    }
+    export class CachingParserWrapper<T> implements ODataParser<T> {
+        private _parser;
+        private _cacheOptions;
+        constructor(_parser: ODataParser<T>, _cacheOptions: CachingOptions);
+        parse(response: Response): Promise<T>;
+    }
+}
 declare module "utils/exceptions" {
     /**
      * Represents an exception with an HttpClient request
@@ -433,7 +447,7 @@ declare module "sharepoint/pipeline" {
 }
 declare module "sharepoint/queryable" {
     import { Dictionary } from "collections/collections";
-    import { FetchOptions } from "net/httpclient";
+    import { FetchOptions, ConfigOptions } from "net/httpclient";
     import { ODataParser, ODataBatch } from "sharepoint/odata";
     import { ICachingOptions } from "sharepoint/caching";
     export interface QueryableConstructor<T> {
@@ -444,6 +458,10 @@ declare module "sharepoint/queryable" {
      *
      */
     export class Queryable {
+        /**
+         * Additional options to be set before sending actual http request
+         */
+        protected _options: ConfigOptions;
         /**
          * Tracks the query parts of the url
          */
@@ -513,6 +531,12 @@ declare module "sharepoint/queryable" {
          */
         constructor(baseUrl: string | Queryable, path?: string);
         /**
+         * Sets custom options for current object and all derived objects accessible via chaining
+         *
+         * @param options custom options
+         */
+        configure(options: ConfigOptions): this;
+        /**
          * Creates a new instance of the supplied factory and extends this into that new instance
          *
          * @param factory constructor for the new queryable
@@ -567,10 +591,10 @@ declare module "sharepoint/queryable" {
          */
         get(parser?: ODataParser<any>, getOptions?: FetchOptions): Promise<any>;
         getAs<T>(parser?: ODataParser<T>, getOptions?: FetchOptions): Promise<T>;
-        protected post(postOptions?: FetchOptions, parser?: ODataParser<any>): Promise<any>;
-        protected postAs<T>(postOptions?: FetchOptions, parser?: ODataParser<T>): Promise<T>;
-        protected patch(patchOptions?: FetchOptions, parser?: ODataParser<any>): Promise<any>;
-        protected delete(deleteOptions?: FetchOptions, parser?: ODataParser<any>): Promise<any>;
+        protected postCore(postOptions?: FetchOptions, parser?: ODataParser<any>): Promise<any>;
+        protected postAsCore<T>(postOptions?: FetchOptions, parser?: ODataParser<T>): Promise<T>;
+        protected patchCore(patchOptions?: FetchOptions, parser?: ODataParser<any>): Promise<any>;
+        protected deleteCore(deleteOptions?: FetchOptions, parser?: ODataParser<any>): Promise<any>;
         /**
          * Converts the current instance to a request context
          *
@@ -731,15 +755,17 @@ declare module "net/digestcache" {
     }
 }
 declare module "net/httpclient" {
-    export interface FetchOptions {
-        method?: string;
+    export interface ConfigOptions {
         headers?: string[][] | {
             [key: string]: string;
         };
-        body?: any;
         mode?: "navigate" | "same-origin" | "no-cors" | "cors";
         credentials?: "omit" | "same-origin" | "include";
         cache?: "default" | "no-store" | "reload" | "no-cache" | "force-cache" | "only-if-cached";
+    }
+    export interface FetchOptions extends ConfigOptions {
+        method?: string;
+        body?: any;
     }
     export class HttpClient {
         private _digestCache;
@@ -751,8 +777,9 @@ declare module "net/httpclient" {
         post(url: string, options?: FetchOptions): Promise<Response>;
         patch(url: string, options?: FetchOptions): Promise<Response>;
         delete(url: string, options?: FetchOptions): Promise<Response>;
-        private mergeHeaders(target, source);
     }
+    export function mergeOptions(target: ConfigOptions, source: ConfigOptions): void;
+    export function mergeHeaders(target: Headers, source: any): void;
     export interface HttpClientImpl {
         fetch(url: string, options: FetchOptions): Promise<Response>;
     }
@@ -787,6 +814,14 @@ declare module "configuration/pnplibconfig" {
          */
         defaultCachingTimeoutSeconds?: number;
         /**
+         * If true a timeout expired items will be removed from the cache in intervals determined by cacheTimeoutInterval
+         */
+        enableCacheExpiration?: boolean;
+        /**
+         * Determines the interval in milliseconds at which the cache is checked to see if items have expired (min: 100)
+         */
+        cacheExpirationIntervalMilliseconds?: number;
+        /**
          * Defines a factory method used to create fetch clients
          */
         fetchClientFactory?: () => HttpClientImpl;
@@ -807,6 +842,8 @@ declare module "configuration/pnplibconfig" {
         private _fetchClientFactory;
         private _baseUrl;
         private _spfxContext;
+        private _enableCacheExpiration;
+        private _cacheExpirationIntervalMilliseconds;
         constructor();
         set(config: LibraryConfiguration): void;
         readonly headers: TypedHash<string>;
@@ -815,12 +852,15 @@ declare module "configuration/pnplibconfig" {
         readonly globalCacheDisable: boolean;
         readonly fetchClientFactory: () => HttpClientImpl;
         readonly baseUrl: string;
+        readonly enableCacheExpiration: boolean;
+        readonly cacheExpirationIntervalMilliseconds: number;
     }
     export let RuntimeConfig: RuntimeConfigImpl;
     export function setRuntimeConfig(config: LibraryConfiguration): void;
 }
 declare module "utils/util" {
     import { TypedHash } from "collections/collections";
+    export function extractWebUrl(candidateUrl: string): string;
     export class Util {
         /**
          * Gets a callback function which will maintain context across async calls.
@@ -1017,6 +1057,7 @@ declare module "sharepoint/search" {
         readonly enableInterleaving: this;
         readonly enableStemming: this;
         readonly trimDuplicates: this;
+        trimDuplicatesIncludeId(n: number): this;
         readonly enableNicknames: this;
         readonly enableFql: this;
         readonly enablePhonetic: this;
@@ -1026,11 +1067,12 @@ declare module "sharepoint/search" {
         readonly enableSorting: this;
         readonly generateBlockRankLog: this;
         rankingModelId(id: string): this;
-        startRow(id: number): this;
-        rowLimit(id: number): this;
-        rowsPerPage(id: number): this;
+        startRow(n: number): this;
+        rowLimit(n: number): this;
+        rowsPerPage(n: number): this;
         selectProperties(...properties: string[]): this;
         culture(culture: number): this;
+        timeZoneId(id: number): this;
         refinementFilters(...filters: string[]): this;
         refiners(refiners: string): this;
         hiddenConstraints(constraints: string): this;
@@ -1144,7 +1186,7 @@ declare module "sharepoint/search" {
         /**
          * A Boolean value that specifies whether the query uses the FAST Query Language (FQL).
          */
-        EnableFql?: boolean;
+        EnableFQL?: boolean;
         /**
          * A Boolean value that specifies whether the phonetic forms of the query terms are used to find matches.
          */
@@ -1226,7 +1268,7 @@ declare module "sharepoint/search" {
         /**
          * The properties to highlight in the search result summary when the property value matches the search terms entered by the user.
          */
-        HithighlightedProperties?: string[];
+        HitHighlightedProperties?: string[];
         /**
          * The type of the client that issued the query.
          */
@@ -1238,7 +1280,7 @@ declare module "sharepoint/search" {
         /**
          * The URL for the search results page.
          */
-        ResultsURL?: string;
+        ResultsUrl?: string;
         /**
          * Custom tags that identify the query. You can specify multiple query tags
          */
@@ -3346,7 +3388,7 @@ declare module "sharepoint/queryableshareable" {
          *
          * @param request The SharingInformationRequest Object.
          */
-        getSharingInformation(request?: SharingInformationRequest): Promise<SharingEntityPermission[]>;
+        getSharingInformation(request?: SharingInformationRequest): Promise<SharingInformation>;
         /**
          * Gets the sharing settings of an item.
          *
@@ -3390,7 +3432,7 @@ declare module "sharepoint/queryableshareable" {
          *
          * @param request The SharingInformationRequest Object.
          */
-        getSharingInformation(request?: SharingInformationRequest): Promise<SharingEntityPermission[]>;
+        getSharingInformation(request?: SharingInformationRequest): Promise<SharingInformation>;
         /**
          * Gets the sharing settings of an item.
          *
@@ -5006,9 +5048,6 @@ declare module "sharepoint/features" {
         feature: Feature;
     }
 }
-declare module "utils/decorators" {
-    export function deprecated(message: string): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void;
-}
 declare module "sharepoint/relateditems" {
     import { Queryable } from "sharepoint/queryable";
     export interface RelatedItem {
@@ -5081,7 +5120,7 @@ declare module "sharepoint/webs" {
     import { RoleDefinitions } from "sharepoint/roles";
     import { File } from "sharepoint/files";
     import { TypedHash } from "collections/collections";
-    import { BasePermissions, ChangeQuery } from "sharepoint/types";
+    import { ChangeQuery } from "sharepoint/types";
     import { List } from "sharepoint/lists";
     import { SiteUsers, SiteUser, CurrentUser, SiteUserProps } from "sharepoint/siteusers";
     import { UserCustomActions } from "sharepoint/usercustomactions";
@@ -5109,9 +5148,8 @@ declare module "sharepoint/webs" {
          * @param template The new web's template internal name (default = STS)
          * @param language The locale id that specifies the new web's language (default = 1033 [English, US])
          * @param inheritPermissions When true, permissions will be inherited from the new web's parent (default = true)
-         * @param additionalSettings Will be passed as part of the web creation body
          */
-        add(title: string, url: string, description?: string, template?: string, language?: number, inheritPermissions?: boolean, additionalSettings?: TypedHash<string | number | boolean>): Promise<WebAddResult>;
+        add(title: string, url: string, description?: string, template?: string, language?: number, inheritPermissions?: boolean): Promise<WebAddResult>;
     }
     /**
      * Describes a collection of web infos
@@ -5287,12 +5325,6 @@ declare module "sharepoint/webs" {
          * @param template Name of the site definition or the name of the site template
          */
         applyWebTemplate(template: string): Promise<void>;
-        /**
-         * Returns whether the current user has the given set of permissions
-         *
-         * @param perms The high and low permission range
-         */
-        doesUserHavePermissions(perms: BasePermissions): Promise<boolean>;
         /**
          * Checks whether the specified login name belongs to a valid user in the web. If the user doesn't exist, adds the user to the web.
          *
@@ -5647,10 +5679,34 @@ declare module "sharepoint/rest" {
     import { UserProfileQuery } from "sharepoint/userprofiles";
     import { ODataBatch } from "sharepoint/odata";
     import { UtilityMethods } from "sharepoint/utilities";
+    import { ConfigOptions } from "pnp";
     /**
      * Root of the SharePoint REST module
      */
     export class SPRest {
+        /**
+         * Additional options to be set before sending actual http requests
+         */
+        private _options;
+        /**
+         * A string that should form the base part of the url
+         */
+        private _baseUrl;
+        /**
+         * Creates a new instance of the SPRest class
+         *
+         * @param options Additional options
+         * @param baseUrl A string that should form the base part of the url
+         */
+        constructor(options?: ConfigOptions, baseUrl?: string);
+        /**
+         * Configures instance with additional options and baseUrl.
+         * Provided configuration used by other objects in a chain
+         *
+         * @param options Additional options
+         * @param baseUrl A string that should form the base part of the url
+         */
+        configure(options: ConfigOptions, baseUrl?: string): SPRest;
         /**
          * Executes a search against this web context
          *
@@ -5716,7 +5772,7 @@ declare module "sharepoint/index" {
     export * from "sharepoint/caching";
     export { AttachmentFileAddResult, AttachmentFileInfo } from "sharepoint/attachmentfiles";
     export { FieldAddResult, FieldUpdateResult } from "sharepoint/fields";
-    export { CheckinType, FileAddResult, WebPartsPersonalizationScope, MoveOperations, TemplateFileType, ChunkedFileUploadProgressData } from "sharepoint/files";
+    export { CheckinType, FileAddResult, WebPartsPersonalizationScope, MoveOperations, TemplateFileType, ChunkedFileUploadProgressData, File, Files } from "sharepoint/files";
     export { FeatureAddResult } from "sharepoint/features";
     export { FolderAddResult, Folder, Folders } from "sharepoint/folders";
     export { Item, Items, ItemAddResult, ItemUpdateResult, ItemUpdateResultData, PagedItemCollection } from "sharepoint/items";
@@ -5873,7 +5929,7 @@ declare module "configuration/providers/index" {
 }
 declare module "types/index" {
     export * from "sharepoint/index";
-    export { FetchOptions, HttpClient, HttpClientImpl } from "net/httpclient";
+    export { ConfigOptions, FetchOptions, HttpClient, HttpClientImpl } from "net/httpclient";
     export { SPRequestExecutorClient } from "net/sprequestexecutorclient";
     export { NodeFetchClient } from "net/nodefetchclient";
     export { FetchClient } from "net/fetchclient";
@@ -5900,7 +5956,7 @@ declare module "pnp" {
      */
     export const util: typeof Util;
     /**
-     * Provides access to the REST interface
+     * Provides access to the SharePoint REST interface
      */
     export const sp: SPRest;
     /**
@@ -6187,4 +6243,7 @@ declare module "types/locale" {
         Zulu = 1077,
         HIDHumanInterfaceDevice = 1279,
     }
+}
+declare module "utils/decorators" {
+    export function deprecated(deprecationVersion: string, message: string): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void;
 }
