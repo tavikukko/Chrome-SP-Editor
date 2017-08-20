@@ -1125,20 +1125,41 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
 };
 
 var exescript = function exescript(script) {
-  // polyfill for _spPageContextInfo on modern team sites
-  window._spPageContextInfo = window._spPageContextInfo || window.spModuleLoader && Object.entries(Array.from(window.spModuleLoader._bundledComponents.values()).filter(v => v.default && v.default.appPageContext)[0].default.appPageContext.core).reduce((obj, e) => { obj[e[0].slice(1)] = e[1]; return obj }, {});
-  var params = arguments;
 
-  if (typeof SystemJS == 'undefined') {
-    var s = document.createElement('script');
-    s.src = sj;
-    s.onload = function () {
-      script.apply(this, params);
-    };
-    (document.head || document.documentElement).appendChild(s);
+  if ( window._spPageContextInfo ) {
+
+    var params = arguments;
+
+    if (typeof SystemJS == 'undefined') {
+      var s = document.createElement('script');
+      s.src = sj;
+      s.onload = function () {
+        script.apply(this, params);
+      };
+      (document.head || document.documentElement).appendChild(s);
+    }
+    else script.apply(this, params);
   }
-  else script.apply(this, params);
-}
+  else if ( window.moduleLoaderPromise ) {
+    // polyfill for _spPageContextInfo on modern sites
+    window.moduleLoaderPromise.then(function (e) {
+
+      window._spPageContextInfo = e._shell._pageContext._legacyPageContext;
+      var params = arguments;
+
+      if (typeof SystemJS == 'undefined') {
+        var s = document.createElement('script');
+        s.src = sj;
+        s.onload = function () {
+          script.apply(this, params);
+        };
+        (document.head || document.documentElement).appendChild(s);
+      }
+      else script.apply(this, params);
+
+    });
+  }
+};
 
 var alertError = function alertError() {
 
@@ -1651,17 +1672,17 @@ var getApp = function getApp() {
     alertify.maxLogItems(2);
 
     $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.webServerRelativeUrl + "/appCatalog/" + fileName).getBuffer().then(function (app) {
-      
-        var array = [];
-        var uint8Array = new Uint8Array(app);
-        for (var i = 0; i < uint8Array.byteLength; i++)
-          array[i] = uint8Array[i];
 
-        var data = {
-          data: array
-        };
+      var array = [];
+      var uint8Array = new Uint8Array(app);
+      for (var i = 0; i < uint8Array.byteLength; i++)
+        array[i] = uint8Array[i];
 
-        window.postMessage(JSON.stringify({ function: 'getApp', success: true, result: data, source: 'chrome-sp-editor' }), '*');
+      var data = {
+        data: array
+      };
+
+      window.postMessage(JSON.stringify({ function: 'getApp', success: true, result: data, source: 'chrome-sp-editor' }), '*');
 
     }).catch(function (error) {
       alertify.delay(10000).error(error.data.responseBody.error.message.value);
