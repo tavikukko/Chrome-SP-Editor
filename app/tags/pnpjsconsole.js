@@ -74,7 +74,7 @@ riot.tag("pnpjsconsole", `
 
           var playgroundBinding = playground.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
             try {
-              var js = ts.transpileModule(playground.getValue(), { compilerOptions: { module: 1 } });
+              var js = ts.transpileModule(playground.getValue(), { compilerOptions: { module: ts.ModuleKind.None } });
               var prepnp = 'pnp';
 
               var lines = js.outputText.split('\n');
@@ -82,7 +82,7 @@ riot.tag("pnpjsconsole", `
               var prepnp = [];
               lines.forEach(function (line) {
                 // remove imports
-                if (line.toLowerCase().indexOf(' = require') == -1 && line.toLowerCase().indexOf('use strict') == -1) {
+                if (line.toLowerCase().indexOf(' = require') == -1 && line.toLowerCase().indexOf('use strict') == -1 && line.toLowerCase().indexOf('__esmodule') == -1) {
                   code.push(line);
                 }
                 if (line.toLowerCase().indexOf(' = require') > -1) {
