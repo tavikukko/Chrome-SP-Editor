@@ -1125,10 +1125,9 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
 };
 
 var exescript = function exescript(script) {
+  var params = arguments;
 
   if ( window._spPageContextInfo ) {
-
-    var params = arguments;
 
     if (typeof SystemJS == 'undefined') {
       var s = document.createElement('script');
@@ -1145,7 +1144,6 @@ var exescript = function exescript(script) {
     window.moduleLoaderPromise.then(function (e) {
 
       window._spPageContextInfo = e._shell._pageContext._legacyPageContext;
-      var params = arguments;
 
       if (typeof SystemJS == 'undefined') {
         var s = document.createElement('script');
@@ -1459,7 +1457,7 @@ var changeWebpartPosition = function changeWebpartPosition() {
   var wpIds = arguments[1];
   var zoneId = arguments[2];
 
-  console.log("changeWebpartPosition", wpIds, zoneId);
+  //console.log("changeWebpartPosition", wpIds, zoneId);
 
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', () => {
     var context = SP.ClientContext.get_current();

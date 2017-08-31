@@ -8,6 +8,9 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 2.3.1 Small fixes
+    * Fixed issue with PnP JS Console in modern pages
+    * Fixed issue with File editor in modern pages
 - 2.3.0 Upgraded monaco-editor to version 0.10.0
 - 2.2.3 Small fix for modern pages / sites.
 - 2.2.2 Updated sp-pnp-js to 2.0.8
