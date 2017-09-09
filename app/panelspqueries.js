@@ -328,7 +328,7 @@ var addWebProperties = function addWebProperties() {
           return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
         }
 
-        var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+        var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', spHostUrl + '/_api/contextinfo');
@@ -412,7 +412,7 @@ var updateWebProperties = function updateWebProperties() {
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
           }
 
-          var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
           var xhr = new XMLHttpRequest();
           xhr.open('POST', spHostUrl + '/_api/contextinfo');
@@ -500,7 +500,7 @@ var deleteWebProperties = function deleteWebProperties() {
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
           }
 
-          var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
           var xhr = new XMLHttpRequest();
           xhr.open('POST', spHostUrl + '/_api/contextinfo');
@@ -628,7 +628,7 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
           }
 
-          var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
           var xhr = new XMLHttpRequest();
           xhr.open('POST', spHostUrl + '/_api/contextinfo');
@@ -801,7 +801,7 @@ var addListProperties = function addListProperties() {
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
       }
 
-      var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+      var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
       var xhr = new XMLHttpRequest();
       xhr.open('POST', spHostUrl + '/_api/contextinfo');
@@ -876,7 +876,7 @@ var updateListProperties = function updateListProperties() {
           return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
         }
 
-        var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+        var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', spHostUrl + '/_api/contextinfo');
@@ -953,7 +953,7 @@ var deleteListProperties = function deleteListProperties() {
           return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
         }
 
-        var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+        var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', spHostUrl + '/_api/contextinfo');
@@ -1074,7 +1074,7 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
           }
 
-          var spHostUrl = _spPageContextInfo.siteAbsoluteUrl;
+          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
           var xhr = new XMLHttpRequest();
           xhr.open('POST', spHostUrl + '/_api/contextinfo');
