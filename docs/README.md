@@ -1,6 +1,6 @@
 <header>
-SP Editor
-==
+<h1> SP Editor</h1>
+
 A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools
 </header>
 Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension)
