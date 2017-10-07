@@ -1,5 +1,5 @@
 /**
- * sp-pnp-js v2.0.8 - A JavaScript library for SharePoint development.
+ * sp-pnp-js v3.0.1 - A JavaScript library for SharePoint development.
  * MIT (https://github.com/SharePoint/PnP-JS-Core/blob/master/LICENSE)
  * Copyright (c) 2017 Microsoft
  * docs: http://officedev.github.io/PnP-JS-Core
@@ -78,7 +78,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/assets/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 34);
+/******/ 	return __webpack_require__(__webpack_require__.s = 42);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -88,7 +88,7 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {
 Object.defineProperty(exports, "__esModule", { value: true });
-var pnplibconfig_1 = __webpack_require__(4);
+var pnplibconfig_1 = __webpack_require__(3);
 function extractWebUrl(candidateUrl) {
     if (candidateUrl === null) {
         return "";
@@ -101,7 +101,7 @@ function extractWebUrl(candidateUrl) {
     return candidateUrl;
 }
 exports.extractWebUrl = extractWebUrl;
-var Util = (function () {
+var Util = /** @class */ (function () {
     function Util() {
     }
     /**
@@ -338,9 +338,9 @@ var Util = (function () {
                 // if we are already absolute, then just return the url
                 return resolve(candidateUrl);
             }
-            if (pnplibconfig_1.RuntimeConfig.baseUrl !== null) {
+            if (pnplibconfig_1.RuntimeConfig.spBaseUrl !== null) {
                 // base url specified either with baseUrl of spfxContext config property
-                return resolve(Util.combinePaths(pnplibconfig_1.RuntimeConfig.baseUrl, candidateUrl));
+                return resolve(Util.combinePaths(pnplibconfig_1.RuntimeConfig.spBaseUrl, candidateUrl));
             }
             if (typeof global._spPageContextInfo !== "undefined") {
                 // operating in classic pages
@@ -368,7 +368,7 @@ var Util = (function () {
 }());
 exports.Util = Util;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
 
 /***/ }),
 /* 1 */
@@ -388,89 +388,75 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var collections_1 = __webpack_require__(6);
-var httpclient_1 = __webpack_require__(9);
-var odata_1 = __webpack_require__(2);
-var pnplibconfig_1 = __webpack_require__(4);
-var exceptions_1 = __webpack_require__(3);
-var logging_1 = __webpack_require__(5);
-var pipeline_1 = __webpack_require__(38);
+var collections_1 = __webpack_require__(8);
+var utils_1 = __webpack_require__(9);
+var exceptions_1 = __webpack_require__(2);
+var logging_1 = __webpack_require__(4);
+var queryable_1 = __webpack_require__(19);
+var pipeline_1 = __webpack_require__(20);
+var httpclient_1 = __webpack_require__(21);
 /**
- * Queryable Base Class
+ * SharePointQueryable Base Class
  *
  */
-var Queryable = (function () {
+var SharePointQueryable = /** @class */ (function (_super) {
+    __extends(SharePointQueryable, _super);
     /**
-     * Creates a new instance of the Queryable class
+     * Creates a new instance of the SharePointQueryable class
      *
      * @constructor
-     * @param baseUrl A string or Queryable that should form the base part of the url
+     * @param baseUrl A string or SharePointQueryable that should form the base part of the url
      *
      */
-    function Queryable(baseUrl, path) {
-        this._options = {};
-        this._query = new collections_1.Dictionary();
-        this._batch = null;
+    function SharePointQueryable(baseUrl, path) {
+        var _this = _super.call(this) || this;
+        _this._options = {};
+        _this._query = new collections_1.Dictionary();
+        _this._batch = null;
         if (typeof baseUrl === "string") {
             // we need to do some extra parsing to get the parent url correct if we are
             // being created from just a string.
             var urlStr = baseUrl;
             if (util_1.Util.isUrlAbsolute(urlStr) || urlStr.lastIndexOf("/") < 0) {
-                this._parentUrl = urlStr;
-                this._url = util_1.Util.combinePaths(urlStr, path);
+                _this._parentUrl = urlStr;
+                _this._url = util_1.Util.combinePaths(urlStr, path);
             }
             else if (urlStr.lastIndexOf("/") > urlStr.lastIndexOf("(")) {
                 // .../items(19)/fields
                 var index = urlStr.lastIndexOf("/");
-                this._parentUrl = urlStr.slice(0, index);
+                _this._parentUrl = urlStr.slice(0, index);
                 path = util_1.Util.combinePaths(urlStr.slice(index), path);
-                this._url = util_1.Util.combinePaths(this._parentUrl, path);
+                _this._url = util_1.Util.combinePaths(_this._parentUrl, path);
             }
             else {
                 // .../items(19)
                 var index = urlStr.lastIndexOf("(");
-                this._parentUrl = urlStr.slice(0, index);
-                this._url = util_1.Util.combinePaths(urlStr, path);
+                _this._parentUrl = urlStr.slice(0, index);
+                _this._url = util_1.Util.combinePaths(urlStr, path);
             }
         }
         else {
             var q = baseUrl;
-            this._parentUrl = q._url;
-            this._options = q._options;
+            _this._parentUrl = q._url;
+            _this._options = q._options;
             var target = q._query.get("@target");
             if (target !== null) {
-                this._query.add("@target", target);
+                _this._query.add("@target", target);
             }
-            this._url = util_1.Util.combinePaths(this._parentUrl, path);
+            _this._url = util_1.Util.combinePaths(_this._parentUrl, path);
         }
+        return _this;
     }
-    /**
-     * Directly concatonates the supplied string to the current url, not normalizing "/" chars
-     *
-     * @param pathPart The string to concatonate to the url
-     */
-    Queryable.prototype.concat = function (pathPart) {
-        this._url += pathPart;
-        return this;
-    };
-    /**
-     * Appends the given string and normalizes "/" chars
-     *
-     * @param pathPart The string to append
-     */
-    Queryable.prototype.append = function (pathPart) {
-        this._url = util_1.Util.combinePaths(this._url, pathPart);
-    };
     /**
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
      */
-    Queryable.prototype.addBatchDependency = function () {
+    SharePointQueryable.prototype.addBatchDependency = function () {
         if (this.hasBatch) {
             return this._batch.addDependency();
         }
         return function () { return null; };
     };
-    Object.defineProperty(Queryable.prototype, "hasBatch", {
+    Object.defineProperty(SharePointQueryable.prototype, "hasBatch", {
         /**
          * Indicates if the current query has a batch associated
          *
@@ -481,7 +467,7 @@ var Queryable = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Queryable.prototype, "batch", {
+    Object.defineProperty(SharePointQueryable.prototype, "batch", {
         /**
          * The batch currently associated with this query or null
          *
@@ -492,43 +478,12 @@ var Queryable = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Queryable.prototype, "parentUrl", {
-        /**
-         * Gets the parent url used when creating this instance
-         *
-         */
-        get: function () {
-            return this._parentUrl;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Queryable.prototype, "query", {
-        /**
-         * Provides access to the query builder for this url
-         *
-         */
-        get: function () {
-            return this._query;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Sets custom options for current object and all derived objects accessible via chaining
-     *
-     * @param options custom options
-     */
-    Queryable.prototype.configure = function (options) {
-        httpclient_1.mergeOptions(this._options, options);
-        return this;
-    };
     /**
      * Creates a new instance of the supplied factory and extends this into that new instance
      *
-     * @param factory constructor for the new queryable
+     * @param factory constructor for the new SharePointQueryable
      */
-    Queryable.prototype.as = function (factory) {
+    SharePointQueryable.prototype.as = function (factory) {
         var o = new factory(this._url, null);
         return util_1.Util.extend(o, this, true);
     };
@@ -543,7 +498,7 @@ var Queryable = (function () {
      * b.execute().then(...)
      * ```
      */
-    Queryable.prototype.inBatch = function (batch) {
+    SharePointQueryable.prototype.inBatch = function (batch) {
         if (this._batch !== null) {
             throw new exceptions_1.AlreadyInBatchException();
         }
@@ -551,29 +506,10 @@ var Queryable = (function () {
         return this;
     };
     /**
-     * Enables caching for this request
-     *
-     * @param options Defines the options used when caching this request
-     */
-    Queryable.prototype.usingCaching = function (options) {
-        if (!pnplibconfig_1.RuntimeConfig.globalCacheDisable) {
-            this._useCaching = true;
-            this._cachingOptions = options;
-        }
-        return this;
-    };
-    /**
-     * Gets the currentl url, made absolute based on the availability of the _spPageContextInfo object
-     *
-     */
-    Queryable.prototype.toUrl = function () {
-        return this._url;
-    };
-    /**
      * Gets the full url with query information
      *
      */
-    Queryable.prototype.toUrlAndQuery = function () {
+    SharePointQueryable.prototype.toUrlAndQuery = function () {
         var aliasedParams = new collections_1.Dictionary();
         var url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, function (match, labelName, value) {
             logging_1.Logger.write("Rewriting aliased parameter from match " + match + " to label: " + labelName + " value: " + value, logging_1.LogLevel.Verbose);
@@ -592,7 +528,7 @@ var Queryable = (function () {
      *
      * @param factory The contructor for the class to create
      */
-    Queryable.prototype.getParent = function (factory, baseUrl, path, batch) {
+    SharePointQueryable.prototype.getParent = function (factory, baseUrl, path, batch) {
         if (baseUrl === void 0) { baseUrl = this.parentUrl; }
         var parent = new factory(baseUrl, path);
         parent.configure(this._options);
@@ -606,13 +542,13 @@ var Queryable = (function () {
         return parent;
     };
     /**
-     * Clones this queryable into a new queryable instance of T
+     * Clones this SharePointQueryable into a new SharePointQueryable instance of T
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
      */
-    Queryable.prototype.clone = function (factory, additionalPath, includeBatch) {
-        if (includeBatch === void 0) { includeBatch = false; }
+    SharePointQueryable.prototype.clone = function (factory, additionalPath, includeBatch) {
+        if (includeBatch === void 0) { includeBatch = true; }
         var clone = new factory(this, additionalPath);
         var target = this.query.get("@target");
         if (target !== null) {
@@ -624,42 +560,6 @@ var Queryable = (function () {
         return clone;
     };
     /**
-     * Executes the currently built request
-     *
-     * @param parser Allows you to specify a parser to handle the result
-     * @param getOptions The options used for this request
-     */
-    Queryable.prototype.get = function (parser, getOptions) {
-        if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
-        if (getOptions === void 0) { getOptions = {}; }
-        return this.toRequestContext("GET", getOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
-    };
-    Queryable.prototype.getAs = function (parser, getOptions) {
-        if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
-        if (getOptions === void 0) { getOptions = {}; }
-        return this.toRequestContext("GET", getOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
-    };
-    Queryable.prototype.postCore = function (postOptions, parser) {
-        if (postOptions === void 0) { postOptions = {}; }
-        if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
-        return this.toRequestContext("POST", postOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
-    };
-    Queryable.prototype.postAsCore = function (postOptions, parser) {
-        if (postOptions === void 0) { postOptions = {}; }
-        if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
-        return this.toRequestContext("POST", postOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
-    };
-    Queryable.prototype.patchCore = function (patchOptions, parser) {
-        if (patchOptions === void 0) { patchOptions = {}; }
-        if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
-        return this.toRequestContext("PATCH", patchOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
-    };
-    Queryable.prototype.deleteCore = function (deleteOptions, parser) {
-        if (deleteOptions === void 0) { deleteOptions = {}; }
-        if (parser === void 0) { parser = new odata_1.ODataDefaultParser(); }
-        return this.toRequestContext("DELETE", deleteOptions, parser).then(function (context) { return pipeline_1.pipe(context); });
-    };
-    /**
      * Converts the current instance to a request context
      *
      * @param verb The request verb
@@ -667,18 +567,19 @@ var Queryable = (function () {
      * @param parser The supplied ODataParser instance
      * @param pipeline Optional request processing pipeline
      */
-    Queryable.prototype.toRequestContext = function (verb, options, parser, pipeline) {
+    SharePointQueryable.prototype.toRequestContext = function (verb, options, parser, pipeline) {
         var _this = this;
         if (options === void 0) { options = {}; }
         if (pipeline === void 0) { pipeline = pipeline_1.PipelineMethods.default; }
         var dependencyDispose = this.hasBatch ? this.addBatchDependency() : function () { return; };
         return util_1.Util.toAbsoluteUrl(this.toUrlAndQuery()).then(function (url) {
-            httpclient_1.mergeOptions(options, _this._options);
+            utils_1.mergeOptions(options, _this._options);
             // build our request context
             var context = {
                 batch: _this._batch,
                 batchDependency: dependencyDispose,
                 cachingOptions: _this._cachingOptions,
+                clientFactory: function () { return new httpclient_1.HttpClient(); },
                 isBatched: _this.hasBatch,
                 isCached: _this._useCaching,
                 options: options,
@@ -691,16 +592,16 @@ var Queryable = (function () {
             return context;
         });
     };
-    return Queryable;
-}());
-exports.Queryable = Queryable;
+    return SharePointQueryable;
+}(queryable_1.ODataQueryable));
+exports.SharePointQueryable = SharePointQueryable;
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-var QueryableCollection = (function (_super) {
-    __extends(QueryableCollection, _super);
-    function QueryableCollection() {
+var SharePointQueryableCollection = /** @class */ (function (_super) {
+    __extends(SharePointQueryableCollection, _super);
+    function SharePointQueryableCollection() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
@@ -708,7 +609,7 @@ var QueryableCollection = (function (_super) {
      *
      * @param filter The string representing the filter query
      */
-    QueryableCollection.prototype.filter = function (filter) {
+    SharePointQueryableCollection.prototype.filter = function (filter) {
         this._query.add("$filter", filter);
         return this;
     };
@@ -717,7 +618,7 @@ var QueryableCollection = (function (_super) {
      *
      * @param selects One or more fields to return
      */
-    QueryableCollection.prototype.select = function () {
+    SharePointQueryableCollection.prototype.select = function () {
         var selects = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
@@ -732,7 +633,7 @@ var QueryableCollection = (function (_super) {
      *
      * @param expands The Fields for which to expand the values
      */
-    QueryableCollection.prototype.expand = function () {
+    SharePointQueryableCollection.prototype.expand = function () {
         var expands = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             expands[_i] = arguments[_i];
@@ -748,7 +649,7 @@ var QueryableCollection = (function (_super) {
      * @param orderby The name of the field to sort on
      * @param ascending If false DESC is appended, otherwise ASC (default)
      */
-    QueryableCollection.prototype.orderBy = function (orderBy, ascending) {
+    SharePointQueryableCollection.prototype.orderBy = function (orderBy, ascending) {
         if (ascending === void 0) { ascending = true; }
         var keys = this._query.getKeys();
         var query = [];
@@ -768,7 +669,7 @@ var QueryableCollection = (function (_super) {
      *
      * @param skip The number of items to skip
      */
-    QueryableCollection.prototype.skip = function (skip) {
+    SharePointQueryableCollection.prototype.skip = function (skip) {
         this._query.add("$skip", skip.toString());
         return this;
     };
@@ -777,20 +678,20 @@ var QueryableCollection = (function (_super) {
      *
      * @param top The query row limit
      */
-    QueryableCollection.prototype.top = function (top) {
+    SharePointQueryableCollection.prototype.top = function (top) {
         this._query.add("$top", top.toString());
         return this;
     };
-    return QueryableCollection;
-}(Queryable));
-exports.QueryableCollection = QueryableCollection;
+    return SharePointQueryableCollection;
+}(SharePointQueryable));
+exports.SharePointQueryableCollection = SharePointQueryableCollection;
 /**
  * Represents an instance that can be selected
  *
  */
-var QueryableInstance = (function (_super) {
-    __extends(QueryableInstance, _super);
-    function QueryableInstance() {
+var SharePointQueryableInstance = /** @class */ (function (_super) {
+    __extends(SharePointQueryableInstance, _super);
+    function SharePointQueryableInstance() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
@@ -798,7 +699,7 @@ var QueryableInstance = (function (_super) {
      *
      * @param selects One or more fields to return
      */
-    QueryableInstance.prototype.select = function () {
+    SharePointQueryableInstance.prototype.select = function () {
         var selects = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
@@ -813,7 +714,7 @@ var QueryableInstance = (function (_super) {
      *
      * @param expands The Fields for which to expand the values
      */
-    QueryableInstance.prototype.expand = function () {
+    SharePointQueryableInstance.prototype.expand = function () {
         var expands = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             expands[_i] = arguments[_i];
@@ -823,9 +724,9 @@ var QueryableInstance = (function (_super) {
         }
         return this;
     };
-    return QueryableInstance;
-}(Queryable));
-exports.QueryableInstance = QueryableInstance;
+    return SharePointQueryableInstance;
+}(SharePointQueryable));
+exports.SharePointQueryableInstance = SharePointQueryableInstance;
 
 
 /***/ }),
@@ -845,477 +746,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-var logging_1 = __webpack_require__(5);
-var httpclient_1 = __webpack_require__(9);
-var pnplibconfig_1 = __webpack_require__(4);
-var exceptions_1 = __webpack_require__(3);
-function extractOdataId(candidate) {
-    if (candidate.hasOwnProperty("odata.id")) {
-        return candidate["odata.id"];
-    }
-    else if (candidate.hasOwnProperty("__metadata") && candidate.__metadata.hasOwnProperty("id")) {
-        return candidate.__metadata.id;
-    }
-    else {
-        throw new exceptions_1.ODataIdException(candidate);
-    }
-}
-exports.extractOdataId = extractOdataId;
-var ODataParserBase = (function () {
-    function ODataParserBase() {
-    }
-    ODataParserBase.prototype.parse = function (r) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this.handleError(r, reject)) {
-                if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")) === 0) || r.status === 204) {
-                    resolve({});
-                }
-                else {
-                    // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
-                    r.text()
-                        .then(function (txt) { return txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {}; })
-                        .then(function (json) { return resolve(_this.parseODataJSON(json)); })
-                        .catch(function (e) { return reject(e); });
-                }
-            }
-        });
-    };
-    ODataParserBase.prototype.handleError = function (r, reject) {
-        if (!r.ok) {
-            r.json().then(function (json) {
-                // include the headers as they contain diagnostic information
-                var data = {
-                    responseBody: json,
-                    responseHeaders: r.headers,
-                };
-                reject(new exceptions_1.ProcessHttpClientResponseException(r.status, r.statusText, data));
-            }).catch(function (e) {
-                // we failed to read the body - possibly it is empty. Let's report the original status that caused
-                // the request to fail and log the error with parsing the body if anyone needs it for debugging
-                logging_1.Logger.log({
-                    data: e,
-                    level: logging_1.LogLevel.Warning,
-                    message: "There was an error parsing the error response body. See data for details.",
-                });
-                // include the headers as they contain diagnostic information
-                var data = {
-                    responseBody: "[[body not available]]",
-                    responseHeaders: r.headers,
-                };
-                reject(new exceptions_1.ProcessHttpClientResponseException(r.status, r.statusText, data));
-            });
-        }
-        return r.ok;
-    };
-    ODataParserBase.prototype.parseODataJSON = function (json) {
-        var result = json;
-        if (json.hasOwnProperty("d")) {
-            if (json.d.hasOwnProperty("results")) {
-                result = json.d.results;
-            }
-            else {
-                result = json.d;
-            }
-        }
-        else if (json.hasOwnProperty("value")) {
-            result = json.value;
-        }
-        return result;
-    };
-    return ODataParserBase;
-}());
-exports.ODataParserBase = ODataParserBase;
-var ODataDefaultParser = (function (_super) {
-    __extends(ODataDefaultParser, _super);
-    function ODataDefaultParser() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return ODataDefaultParser;
-}(ODataParserBase));
-exports.ODataDefaultParser = ODataDefaultParser;
-var ODataRawParserImpl = (function () {
-    function ODataRawParserImpl() {
-    }
-    ODataRawParserImpl.prototype.parse = function (r) {
-        return r.json();
-    };
-    return ODataRawParserImpl;
-}());
-exports.ODataRawParserImpl = ODataRawParserImpl;
-var ODataValueParserImpl = (function (_super) {
-    __extends(ODataValueParserImpl, _super);
-    function ODataValueParserImpl() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    ODataValueParserImpl.prototype.parse = function (r) {
-        return _super.prototype.parse.call(this, r).then(function (d) { return d; });
-    };
-    return ODataValueParserImpl;
-}(ODataParserBase));
-var ODataEntityParserImpl = (function (_super) {
-    __extends(ODataEntityParserImpl, _super);
-    function ODataEntityParserImpl(factory) {
-        var _this = _super.call(this) || this;
-        _this.factory = factory;
-        return _this;
-    }
-    ODataEntityParserImpl.prototype.parse = function (r) {
-        var _this = this;
-        return _super.prototype.parse.call(this, r).then(function (d) {
-            var o = new _this.factory(getEntityUrl(d), null);
-            return util_1.Util.extend(o, d);
-        });
-    };
-    return ODataEntityParserImpl;
-}(ODataParserBase));
-var ODataEntityArrayParserImpl = (function (_super) {
-    __extends(ODataEntityArrayParserImpl, _super);
-    function ODataEntityArrayParserImpl(factory) {
-        var _this = _super.call(this) || this;
-        _this.factory = factory;
-        return _this;
-    }
-    ODataEntityArrayParserImpl.prototype.parse = function (r) {
-        var _this = this;
-        return _super.prototype.parse.call(this, r).then(function (d) {
-            return d.map(function (v) {
-                var o = new _this.factory(getEntityUrl(v), null);
-                return util_1.Util.extend(o, v);
-            });
-        });
-    };
-    return ODataEntityArrayParserImpl;
-}(ODataParserBase));
-function getEntityUrl(entity) {
-    if (entity.hasOwnProperty("odata.metadata") && entity.hasOwnProperty("odata.editLink")) {
-        // we are dealign with minimal metadata (default)
-        return util_1.Util.combinePaths(util_1.extractWebUrl(entity["odata.metadata"]), "_api", entity["odata.editLink"]);
-    }
-    else if (entity.hasOwnProperty("__metadata")) {
-        // we are dealing with verbose, which has an absolute uri
-        return entity.__metadata.uri;
-    }
-    else {
-        // we are likely dealing with nometadata, so don't error but we won't be able to
-        // chain off these objects
-        logging_1.Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", logging_1.LogLevel.Warning);
-        return "";
-    }
-}
-exports.getEntityUrl = getEntityUrl;
-exports.ODataRaw = new ODataRawParserImpl();
-function ODataValue() {
-    return new ODataValueParserImpl();
-}
-exports.ODataValue = ODataValue;
-function ODataEntity(factory) {
-    return new ODataEntityParserImpl(factory);
-}
-exports.ODataEntity = ODataEntity;
-function ODataEntityArray(factory) {
-    return new ODataEntityArrayParserImpl(factory);
-}
-exports.ODataEntityArray = ODataEntityArray;
-/**
- * Manages a batch of OData operations
- */
-var ODataBatch = (function () {
-    function ODataBatch(baseUrl, _batchId) {
-        if (_batchId === void 0) { _batchId = util_1.Util.getGUID(); }
-        this.baseUrl = baseUrl;
-        this._batchId = _batchId;
-        this._requests = [];
-        this._dependencies = [];
-    }
-    Object.defineProperty(ODataBatch.prototype, "batchId", {
-        get: function () {
-            return this._batchId;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Adds a request to a batch (not designed for public use)
-     *
-     * @param url The full url of the request
-     * @param method The http method GET, POST, etc
-     * @param options Any options to include in the request
-     * @param parser The parser that will hadle the results of the request
-     */
-    ODataBatch.prototype.add = function (url, method, options, parser) {
-        var info = {
-            method: method.toUpperCase(),
-            options: options,
-            parser: parser,
-            reject: null,
-            resolve: null,
-            url: url,
-        };
-        var p = new Promise(function (resolve, reject) {
-            info.resolve = resolve;
-            info.reject = reject;
-        });
-        this._requests.push(info);
-        return p;
-    };
-    /**
-     * Adds a dependency insuring that some set of actions will occur before a batch is processed.
-     * MUST be cleared using the returned resolve delegate to allow batches to run
-     */
-    ODataBatch.prototype.addDependency = function () {
-        var resolver;
-        var promise = new Promise(function (resolve) {
-            resolver = resolve;
-        });
-        this._dependencies.push(promise);
-        return resolver;
-    };
-    /**
-     * Execute the current batch and resolve the associated promises
-     *
-     * @returns A promise which will be resolved once all of the batch's child promises have resolved
-     */
-    ODataBatch.prototype.execute = function () {
-        var _this = this;
-        // we need to check the dependencies twice due to how different engines handle things.
-        // We can get a second set of promises added after the first set resolve
-        return Promise.all(this._dependencies).then(function () { return Promise.all(_this._dependencies); }).then(function () { return _this.executeImpl(); });
-    };
-    ODataBatch.prototype.executeImpl = function () {
-        var _this = this;
-        logging_1.Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this._requests.length + " requests.", logging_1.LogLevel.Info);
-        // if we don't have any requests, don't bother sending anything
-        // this could be due to caching further upstream, or just an empty batch
-        if (this._requests.length < 1) {
-            logging_1.Logger.write("Resolving empty batch.", logging_1.LogLevel.Info);
-            return Promise.resolve();
-        }
-        // creating the client here allows the url to be populated for nodejs client as well as potentially
-        // any other hacks needed for other types of clients. Essentially allows the absoluteRequestUrl
-        // below to be correct
-        var client = new httpclient_1.HttpClient();
-        // due to timing we need to get the absolute url here so we can use it for all the individual requests
-        // and for sending the entire batch
-        return util_1.Util.toAbsoluteUrl(this.baseUrl).then(function (absoluteRequestUrl) {
-            // build all the requests, send them, pipe results in order to parsers
-            var batchBody = [];
-            var currentChangeSetId = "";
-            for (var i = 0; i < _this._requests.length; i++) {
-                var reqInfo = _this._requests[i];
-                if (reqInfo.method === "GET") {
-                    if (currentChangeSetId.length > 0) {
-                        // end an existing change set
-                        batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
-                        currentChangeSetId = "";
-                    }
-                    batchBody.push("--batch_" + _this._batchId + "\n");
-                }
-                else {
-                    if (currentChangeSetId.length < 1) {
-                        // start new change set
-                        currentChangeSetId = util_1.Util.getGUID();
-                        batchBody.push("--batch_" + _this._batchId + "\n");
-                        batchBody.push("Content-Type: multipart/mixed; boundary=\"changeset_" + currentChangeSetId + "\"\n\n");
-                    }
-                    batchBody.push("--changeset_" + currentChangeSetId + "\n");
-                }
-                // common batch part prefix
-                batchBody.push("Content-Type: application/http\n");
-                batchBody.push("Content-Transfer-Encoding: binary\n\n");
-                var headers = new Headers();
-                // this is the url of the individual request within the batch
-                var url = util_1.Util.isUrlAbsolute(reqInfo.url) ? reqInfo.url : util_1.Util.combinePaths(absoluteRequestUrl, reqInfo.url);
-                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", logging_1.LogLevel.Verbose);
-                if (reqInfo.method !== "GET") {
-                    var method = reqInfo.method;
-                    if (reqInfo.hasOwnProperty("options") && reqInfo.options.hasOwnProperty("headers") && typeof reqInfo.options.headers["X-HTTP-Method"] !== "undefined") {
-                        method = reqInfo.options.headers["X-HTTP-Method"];
-                        delete reqInfo.options.headers["X-HTTP-Method"];
-                    }
-                    batchBody.push(method + " " + url + " HTTP/1.1\n");
-                    headers.set("Content-Type", "application/json;odata=verbose;charset=utf-8");
-                }
-                else {
-                    batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
-                }
-                // merge global config headers
-                httpclient_1.mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.headers);
-                // merge per-request headers
-                if (reqInfo.options) {
-                    httpclient_1.mergeHeaders(headers, reqInfo.options.headers);
-                }
-                // lastly we apply any default headers we need that may not exist
-                if (!headers.has("Accept")) {
-                    headers.append("Accept", "application/json");
-                }
-                if (!headers.has("Content-Type")) {
-                    headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
-                }
-                if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:2.0.8");
-                }
-                // write headers into batch body
-                headers.forEach(function (value, name) {
-                    batchBody.push(name + ": " + value + "\n");
-                });
-                batchBody.push("\n");
-                if (reqInfo.options.body) {
-                    batchBody.push(reqInfo.options.body + "\n\n");
-                }
-            }
-            if (currentChangeSetId.length > 0) {
-                // Close the changeset
-                batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
-                currentChangeSetId = "";
-            }
-            batchBody.push("--batch_" + _this._batchId + "--\n");
-            var batchHeaders = {
-                "Content-Type": "multipart/mixed; boundary=batch_" + _this._batchId,
-            };
-            var batchOptions = {
-                "body": batchBody.join(""),
-                "headers": batchHeaders,
-            };
-            logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", logging_1.LogLevel.Info);
-            return client.post(util_1.Util.combinePaths(absoluteRequestUrl, "/_api/$batch"), batchOptions)
-                .then(function (r) { return r.text(); })
-                .then(_this._parseResponse)
-                .then(function (responses) {
-                if (responses.length !== _this._requests.length) {
-                    throw new exceptions_1.BatchParseException("Could not properly parse responses to match requests in batch.");
-                }
-                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", logging_1.LogLevel.Info);
-                return responses.reduce(function (chain, response, index) {
-                    var request = _this._requests[index];
-                    logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched request " + request.method + " " + request.url + ".", logging_1.LogLevel.Verbose);
-                    return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
-                }, Promise.resolve());
-            });
-        });
-    };
-    /**
-     * Parses the response from a batch request into an array of Response instances
-     *
-     * @param body Text body of the response from the batch request
-     */
-    ODataBatch.prototype._parseResponse = function (body) {
-        return new Promise(function (resolve, reject) {
-            var responses = [];
-            var header = "--batchresponse_";
-            // Ex. "HTTP/1.1 500 Internal Server Error"
-            var statusRegExp = new RegExp("^HTTP/[0-9.]+ +([0-9]+) +(.*)", "i");
-            var lines = body.split("\n");
-            var state = "batch";
-            var status;
-            var statusText;
-            for (var i = 0; i < lines.length; ++i) {
-                var line = lines[i];
-                switch (state) {
-                    case "batch":
-                        if (line.substr(0, header.length) === header) {
-                            state = "batchHeaders";
-                        }
-                        else {
-                            if (line.trim() !== "") {
-                                throw new exceptions_1.BatchParseException("Invalid response, line " + i);
-                            }
-                        }
-                        break;
-                    case "batchHeaders":
-                        if (line.trim() === "") {
-                            state = "status";
-                        }
-                        break;
-                    case "status":
-                        var parts = statusRegExp.exec(line);
-                        if (parts.length !== 3) {
-                            throw new exceptions_1.BatchParseException("Invalid status, line " + i);
-                        }
-                        status = parseInt(parts[1], 10);
-                        statusText = parts[2];
-                        state = "statusHeaders";
-                        break;
-                    case "statusHeaders":
-                        if (line.trim() === "") {
-                            state = "body";
-                        }
-                        break;
-                    case "body":
-                        responses.push((status === 204) ? new Response() : new Response(line, { status: status, statusText: statusText }));
-                        state = "batch";
-                        break;
-                }
-            }
-            if (state !== "status") {
-                reject(new exceptions_1.BatchParseException("Unexpected end of input"));
-            }
-            resolve(responses);
-        });
-    };
-    return ODataBatch;
-}());
-exports.ODataBatch = ODataBatch;
-var TextFileParser = (function () {
-    function TextFileParser() {
-    }
-    TextFileParser.prototype.parse = function (r) {
-        return r.text();
-    };
-    return TextFileParser;
-}());
-exports.TextFileParser = TextFileParser;
-var BlobFileParser = (function () {
-    function BlobFileParser() {
-    }
-    BlobFileParser.prototype.parse = function (r) {
-        return r.blob();
-    };
-    return BlobFileParser;
-}());
-exports.BlobFileParser = BlobFileParser;
-var JSONFileParser = (function () {
-    function JSONFileParser() {
-    }
-    JSONFileParser.prototype.parse = function (r) {
-        return r.json();
-    };
-    return JSONFileParser;
-}());
-exports.JSONFileParser = JSONFileParser;
-var BufferFileParser = (function () {
-    function BufferFileParser() {
-    }
-    BufferFileParser.prototype.parse = function (r) {
-        if (util_1.Util.isFunction(r.arrayBuffer)) {
-            return r.arrayBuffer();
-        }
-        return r.buffer();
-    };
-    return BufferFileParser;
-}());
-exports.BufferFileParser = BufferFileParser;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var logging_1 = __webpack_require__(5);
+var logging_1 = __webpack_require__(4);
 function defaultLog(error) {
     logging_1.Logger.log({ data: {}, level: logging_1.LogLevel.Error, message: "[" + error.name + "]::" + error.message });
 }
@@ -1323,7 +754,7 @@ function defaultLog(error) {
  * Represents an exception with an HttpClient request
  *
  */
-var ProcessHttpClientResponseException = (function (_super) {
+var ProcessHttpClientResponseException = /** @class */ (function (_super) {
     __extends(ProcessHttpClientResponseException, _super);
     function ProcessHttpClientResponseException(status, statusText, data) {
         var _this = _super.call(this, "Error making HttpClient request in queryable: [" + status + "] " + statusText) || this;
@@ -1337,7 +768,7 @@ var ProcessHttpClientResponseException = (function (_super) {
     return ProcessHttpClientResponseException;
 }(Error));
 exports.ProcessHttpClientResponseException = ProcessHttpClientResponseException;
-var NoCacheAvailableException = (function (_super) {
+var NoCacheAvailableException = /** @class */ (function (_super) {
     __extends(NoCacheAvailableException, _super);
     function NoCacheAvailableException(msg) {
         if (msg === void 0) { msg = "Cannot create a caching configuration provider since cache is not available."; }
@@ -1349,7 +780,7 @@ var NoCacheAvailableException = (function (_super) {
     return NoCacheAvailableException;
 }(Error));
 exports.NoCacheAvailableException = NoCacheAvailableException;
-var APIUrlException = (function (_super) {
+var APIUrlException = /** @class */ (function (_super) {
     __extends(APIUrlException, _super);
     function APIUrlException(msg) {
         if (msg === void 0) { msg = "Unable to determine API url."; }
@@ -1361,7 +792,7 @@ var APIUrlException = (function (_super) {
     return APIUrlException;
 }(Error));
 exports.APIUrlException = APIUrlException;
-var AuthUrlException = (function (_super) {
+var AuthUrlException = /** @class */ (function (_super) {
     __extends(AuthUrlException, _super);
     function AuthUrlException(data, msg) {
         if (msg === void 0) { msg = "Auth URL Endpoint could not be determined from data. Data logged."; }
@@ -1373,7 +804,7 @@ var AuthUrlException = (function (_super) {
     return AuthUrlException;
 }(Error));
 exports.AuthUrlException = AuthUrlException;
-var NodeFetchClientUnsupportedException = (function (_super) {
+var NodeFetchClientUnsupportedException = /** @class */ (function (_super) {
     __extends(NodeFetchClientUnsupportedException, _super);
     function NodeFetchClientUnsupportedException(msg) {
         if (msg === void 0) { msg = "Using NodeFetchClient in the browser is not supported."; }
@@ -1385,7 +816,7 @@ var NodeFetchClientUnsupportedException = (function (_super) {
     return NodeFetchClientUnsupportedException;
 }(Error));
 exports.NodeFetchClientUnsupportedException = NodeFetchClientUnsupportedException;
-var SPRequestExecutorUndefinedException = (function (_super) {
+var SPRequestExecutorUndefinedException = /** @class */ (function (_super) {
     __extends(SPRequestExecutorUndefinedException, _super);
     function SPRequestExecutorUndefinedException() {
         var _this = this;
@@ -1401,7 +832,7 @@ var SPRequestExecutorUndefinedException = (function (_super) {
     return SPRequestExecutorUndefinedException;
 }(Error));
 exports.SPRequestExecutorUndefinedException = SPRequestExecutorUndefinedException;
-var MaxCommentLengthException = (function (_super) {
+var MaxCommentLengthException = /** @class */ (function (_super) {
     __extends(MaxCommentLengthException, _super);
     function MaxCommentLengthException(msg) {
         if (msg === void 0) { msg = "The maximum comment length is 1023 characters."; }
@@ -1413,7 +844,7 @@ var MaxCommentLengthException = (function (_super) {
     return MaxCommentLengthException;
 }(Error));
 exports.MaxCommentLengthException = MaxCommentLengthException;
-var NotSupportedInBatchException = (function (_super) {
+var NotSupportedInBatchException = /** @class */ (function (_super) {
     __extends(NotSupportedInBatchException, _super);
     function NotSupportedInBatchException(operation) {
         if (operation === void 0) { operation = "This operation"; }
@@ -1425,7 +856,7 @@ var NotSupportedInBatchException = (function (_super) {
     return NotSupportedInBatchException;
 }(Error));
 exports.NotSupportedInBatchException = NotSupportedInBatchException;
-var ODataIdException = (function (_super) {
+var ODataIdException = /** @class */ (function (_super) {
     __extends(ODataIdException, _super);
     function ODataIdException(data, msg) {
         if (msg === void 0) { msg = "Could not extract odata id in object, you may be using nometadata. Object data logged to logger."; }
@@ -1437,7 +868,7 @@ var ODataIdException = (function (_super) {
     return ODataIdException;
 }(Error));
 exports.ODataIdException = ODataIdException;
-var BatchParseException = (function (_super) {
+var BatchParseException = /** @class */ (function (_super) {
     __extends(BatchParseException, _super);
     function BatchParseException(msg) {
         var _this = _super.call(this, msg) || this;
@@ -1448,7 +879,7 @@ var BatchParseException = (function (_super) {
     return BatchParseException;
 }(Error));
 exports.BatchParseException = BatchParseException;
-var AlreadyInBatchException = (function (_super) {
+var AlreadyInBatchException = /** @class */ (function (_super) {
     __extends(AlreadyInBatchException, _super);
     function AlreadyInBatchException(msg) {
         if (msg === void 0) { msg = "This query is already part of a batch."; }
@@ -1460,7 +891,7 @@ var AlreadyInBatchException = (function (_super) {
     return AlreadyInBatchException;
 }(Error));
 exports.AlreadyInBatchException = AlreadyInBatchException;
-var FunctionExpectedException = (function (_super) {
+var FunctionExpectedException = /** @class */ (function (_super) {
     __extends(FunctionExpectedException, _super);
     function FunctionExpectedException(msg) {
         if (msg === void 0) { msg = "This query is already part of a batch."; }
@@ -1472,7 +903,7 @@ var FunctionExpectedException = (function (_super) {
     return FunctionExpectedException;
 }(Error));
 exports.FunctionExpectedException = FunctionExpectedException;
-var UrlException = (function (_super) {
+var UrlException = /** @class */ (function (_super) {
     __extends(UrlException, _super);
     function UrlException(msg) {
         var _this = _super.call(this, msg) || this;
@@ -1486,30 +917,32 @@ exports.UrlException = UrlException;
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var fetchclient_1 = __webpack_require__(21);
-var RuntimeConfigImpl = (function () {
+var fetchclient_1 = __webpack_require__(27);
+var RuntimeConfigImpl = /** @class */ (function () {
     function RuntimeConfigImpl() {
         // these are our default values for the library
-        this._headers = null;
         this._defaultCachingStore = "session";
         this._defaultCachingTimeoutSeconds = 60;
         this._globalCacheDisable = false;
-        this._fetchClientFactory = function () { return new fetchclient_1.FetchClient(); };
-        this._baseUrl = null;
-        this._spfxContext = null;
         this._enableCacheExpiration = false;
         this._cacheExpirationIntervalMilliseconds = 750;
+        this._spfxContext = null;
+        // sharepoint settings
+        this._spFetchClientFactory = function () { return new fetchclient_1.FetchClient(); };
+        this._spBaseUrl = null;
+        this._spHeaders = null;
+        // ms graph settings
+        this._graphHeaders = null;
+        this._graphFetchClientFactory = function () { return null; };
     }
     RuntimeConfigImpl.prototype.set = function (config) {
-        if (config.hasOwnProperty("headers")) {
-            this._headers = config.headers;
-        }
+        var _this = this;
         if (config.hasOwnProperty("globalCacheDisable")) {
             this._globalCacheDisable = config.globalCacheDisable;
         }
@@ -1519,14 +952,31 @@ var RuntimeConfigImpl = (function () {
         if (config.hasOwnProperty("defaultCachingTimeoutSeconds")) {
             this._defaultCachingTimeoutSeconds = config.defaultCachingTimeoutSeconds;
         }
-        if (config.hasOwnProperty("fetchClientFactory")) {
-            this._fetchClientFactory = config.fetchClientFactory;
-        }
-        if (config.hasOwnProperty("baseUrl")) {
-            this._baseUrl = config.baseUrl;
+        if (config.hasOwnProperty("sp")) {
+            if (config.sp.hasOwnProperty("fetchClientFactory")) {
+                this._spFetchClientFactory = config.sp.fetchClientFactory;
+            }
+            if (config.sp.hasOwnProperty("baseUrl")) {
+                this._spBaseUrl = config.sp.baseUrl;
+            }
+            if (config.sp.hasOwnProperty("headers")) {
+                this._spHeaders = config.sp.headers;
+            }
         }
         if (config.hasOwnProperty("spfxContext")) {
             this._spfxContext = config.spfxContext;
+            if (typeof this._spfxContext.graphHttpClient !== "undefined") {
+                this._graphFetchClientFactory = function () { return _this._spfxContext.graphHttpClient; };
+            }
+        }
+        if (config.hasOwnProperty("graph")) {
+            if (config.graph.hasOwnProperty("headers")) {
+                this._graphHeaders = config.graph.headers;
+            }
+            // this comes after the default setting of the _graphFetchClientFactory client so it can be overwritten
+            if (config.graph.hasOwnProperty("fetchClientFactory")) {
+                this._graphFetchClientFactory = config.graph.fetchClientFactory;
+            }
         }
         if (config.hasOwnProperty("enableCacheExpiration")) {
             this._enableCacheExpiration = config.enableCacheExpiration;
@@ -1537,13 +987,6 @@ var RuntimeConfigImpl = (function () {
             this._cacheExpirationIntervalMilliseconds = interval;
         }
     };
-    Object.defineProperty(RuntimeConfigImpl.prototype, "headers", {
-        get: function () {
-            return this._headers;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingStore", {
         get: function () {
             return this._defaultCachingStore;
@@ -1565,22 +1008,29 @@ var RuntimeConfigImpl = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "fetchClientFactory", {
+    Object.defineProperty(RuntimeConfigImpl.prototype, "spFetchClientFactory", {
         get: function () {
-            return this._fetchClientFactory;
+            return this._spFetchClientFactory;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "baseUrl", {
+    Object.defineProperty(RuntimeConfigImpl.prototype, "spBaseUrl", {
         get: function () {
-            if (this._baseUrl !== null) {
-                return this._baseUrl;
+            if (this._spBaseUrl !== null) {
+                return this._spBaseUrl;
             }
             else if (this._spfxContext !== null) {
                 return this._spfxContext.pageContext.web.absoluteUrl;
             }
             return null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "spHeaders", {
+        get: function () {
+            return this._spHeaders;
         },
         enumerable: true,
         configurable: true
@@ -1599,6 +1049,27 @@ var RuntimeConfigImpl = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "spfxContext", {
+        get: function () {
+            return this._spfxContext;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "graphFetchClientFactory", {
+        get: function () {
+            return this._graphFetchClientFactory;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "graphHeaders", {
+        get: function () {
+            return this._graphHeaders;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return RuntimeConfigImpl;
 }());
 exports.RuntimeConfigImpl = RuntimeConfigImpl;
@@ -1611,7 +1082,7 @@ exports.setRuntimeConfig = setRuntimeConfig;
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1633,7 +1104,7 @@ var LogLevel;
  * Class used to subscribe ILogListener and log messages throughout an application
  *
  */
-var Logger = (function () {
+var Logger = /** @class */ (function () {
     function Logger() {
     }
     Object.defineProperty(Logger, "activeLogLevel", {
@@ -1724,7 +1195,7 @@ var Logger = (function () {
     return Logger;
 }());
 exports.Logger = Logger;
-var LoggerImpl = (function () {
+var LoggerImpl = /** @class */ (function () {
     function LoggerImpl(activeLogLevel, subscribers) {
         if (activeLogLevel === void 0) { activeLogLevel = LogLevel.Warning; }
         if (subscribers === void 0) { subscribers = []; }
@@ -1771,7 +1242,7 @@ var LoggerImpl = (function () {
  * Implementation of ILogListener which logs to the browser console
  *
  */
-var ConsoleListener = (function () {
+var ConsoleListener = /** @class */ (function () {
     function ConsoleListener() {
     }
     /**
@@ -1814,7 +1285,7 @@ exports.ConsoleListener = ConsoleListener;
  * Implementation of ILogListener which logs to the supplied function
  *
  */
-var FunctionListener = (function () {
+var FunctionListener = /** @class */ (function () {
     /**
      * Creates a new instance of the FunctionListener class
      *
@@ -1838,7 +1309,479 @@ exports.FunctionListener = FunctionListener;
 
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var collections_1 = __webpack_require__(8);
+var graphclient_1 = __webpack_require__(40);
+var queryable_1 = __webpack_require__(19);
+var pipeline_1 = __webpack_require__(20);
+/**
+ * Queryable Base Class
+ *
+ */
+var GraphQueryable = /** @class */ (function (_super) {
+    __extends(GraphQueryable, _super);
+    /**
+     * Creates a new instance of the Queryable class
+     *
+     * @constructor
+     * @param baseUrl A string or Queryable that should form the base part of the url
+     *
+     */
+    function GraphQueryable(baseUrl, path) {
+        var _this = _super.call(this) || this;
+        _this._query = new collections_1.Dictionary();
+        if (typeof baseUrl === "string") {
+            var urlStr = baseUrl;
+            _this._parentUrl = urlStr;
+            _this._url = util_1.Util.combinePaths(urlStr, path);
+        }
+        else {
+            var q = baseUrl;
+            _this._parentUrl = q._url;
+            _this._url = util_1.Util.combinePaths(_this._parentUrl, path);
+        }
+        return _this;
+    }
+    /**
+     * Creates a new instance of the supplied factory and extends this into that new instance
+     *
+     * @param factory constructor for the new queryable
+     */
+    GraphQueryable.prototype.as = function (factory) {
+        var o = new factory(this._url, null);
+        return util_1.Util.extend(o, this, true);
+    };
+    /**
+     * Gets the full url with query information
+     *
+     */
+    GraphQueryable.prototype.toUrlAndQuery = function () {
+        var _this = this;
+        return this.toUrl() + ("?" + this._query.getKeys().map(function (key) { return key + "=" + _this._query.get(key); }).join("&"));
+    };
+    /**
+     * Gets a parent for this instance as specified
+     *
+     * @param factory The contructor for the class to create
+     */
+    GraphQueryable.prototype.getParent = function (factory, baseUrl, path) {
+        if (baseUrl === void 0) { baseUrl = this.parentUrl; }
+        return new factory(baseUrl, path);
+    };
+    /**
+     * Clones this queryable into a new queryable instance of T
+     * @param factory Constructor used to create the new instance
+     * @param additionalPath Any additional path to include in the clone
+     * @param includeBatch If true this instance's batch will be added to the cloned instance
+     */
+    GraphQueryable.prototype.clone = function (factory, additionalPath, includeBatch) {
+        if (includeBatch === void 0) { includeBatch = true; }
+        // TODO:: include batching info in clone
+        if (includeBatch) {
+            return new factory(this, additionalPath);
+        }
+        return new factory(this, additionalPath);
+    };
+    /**
+     * Converts the current instance to a request context
+     *
+     * @param verb The request verb
+     * @param options The set of supplied request options
+     * @param parser The supplied ODataParser instance
+     * @param pipeline Optional request processing pipeline
+     */
+    GraphQueryable.prototype.toRequestContext = function (verb, options, parser, pipeline) {
+        if (options === void 0) { options = {}; }
+        if (pipeline === void 0) { pipeline = pipeline_1.PipelineMethods.default; }
+        // TODO:: add batch support
+        return Promise.resolve({
+            batch: null,
+            batchDependency: function () { return void (0); },
+            cachingOptions: this._cachingOptions,
+            clientFactory: function () { return new graphclient_1.GraphHttpClient(); },
+            isBatched: false,
+            isCached: this._useCaching,
+            options: options,
+            parser: parser,
+            pipeline: pipeline,
+            requestAbsoluteUrl: this.toUrlAndQuery(),
+            requestId: util_1.Util.getGUID(),
+            verb: verb,
+        });
+    };
+    return GraphQueryable;
+}(queryable_1.ODataQueryable));
+exports.GraphQueryable = GraphQueryable;
+/**
+ * Represents a REST collection which can be filtered, paged, and selected
+ *
+ */
+var GraphQueryableCollection = /** @class */ (function (_super) {
+    __extends(GraphQueryableCollection, _super);
+    function GraphQueryableCollection() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     *
+     * @param filter The string representing the filter query
+     */
+    GraphQueryableCollection.prototype.filter = function (filter) {
+        this._query.add("$filter", filter);
+        return this;
+    };
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    GraphQueryableCollection.prototype.select = function () {
+        var selects = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            selects[_i] = arguments[_i];
+        }
+        if (selects.length > 0) {
+            this._query.add("$select", selects.join(","));
+        }
+        return this;
+    };
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    GraphQueryableCollection.prototype.expand = function () {
+        var expands = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            expands[_i] = arguments[_i];
+        }
+        if (expands.length > 0) {
+            this._query.add("$expand", expands.join(","));
+        }
+        return this;
+    };
+    /**
+     * Orders based on the supplied fields ascending
+     *
+     * @param orderby The name of the field to sort on
+     * @param ascending If false DESC is appended, otherwise ASC (default)
+     */
+    GraphQueryableCollection.prototype.orderBy = function (orderBy, ascending) {
+        if (ascending === void 0) { ascending = true; }
+        var keys = this._query.getKeys();
+        var query = [];
+        var asc = ascending ? " asc" : " desc";
+        for (var i = 0; i < keys.length; i++) {
+            if (keys[i] === "$orderby") {
+                query.push(this._query.get("$orderby"));
+                break;
+            }
+        }
+        query.push("" + orderBy + asc);
+        this._query.add("$orderby", query.join(","));
+        return this;
+    };
+    /**
+     * Limits the query to only return the specified number of items
+     *
+     * @param top The query row limit
+     */
+    GraphQueryableCollection.prototype.top = function (top) {
+        this._query.add("$top", top.toString());
+        return this;
+    };
+    /**
+     * Skips a set number of items in the return set
+     *
+     * @param num Number of items to skip
+     */
+    GraphQueryableCollection.prototype.skip = function (num) {
+        this._query.add("$top", num.toString());
+        return this;
+    };
+    /**
+     * 	To request second and subsequent pages of Graph data
+     */
+    GraphQueryableCollection.prototype.skipToken = function (token) {
+        this._query.add("$skiptoken", token);
+        return this;
+    };
+    Object.defineProperty(GraphQueryableCollection.prototype, "count", {
+        /**
+         * 	Retrieves the total count of matching resources
+         */
+        get: function () {
+            this._query.add("$count", "true");
+            return this;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return GraphQueryableCollection;
+}(GraphQueryable));
+exports.GraphQueryableCollection = GraphQueryableCollection;
+var GraphQueryableSearchableCollection = /** @class */ (function (_super) {
+    __extends(GraphQueryableSearchableCollection, _super);
+    function GraphQueryableSearchableCollection() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * 	To request second and subsequent pages of Graph data
+     */
+    GraphQueryableSearchableCollection.prototype.search = function (query) {
+        this._query.add("$search", query);
+        return this;
+    };
+    return GraphQueryableSearchableCollection;
+}(GraphQueryableCollection));
+exports.GraphQueryableSearchableCollection = GraphQueryableSearchableCollection;
+/**
+ * Represents an instance that can be selected
+ *
+ */
+var GraphQueryableInstance = /** @class */ (function (_super) {
+    __extends(GraphQueryableInstance, _super);
+    function GraphQueryableInstance() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    GraphQueryableInstance.prototype.select = function () {
+        var selects = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            selects[_i] = arguments[_i];
+        }
+        if (selects.length > 0) {
+            this._query.add("$select", selects.join(","));
+        }
+        return this;
+    };
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    GraphQueryableInstance.prototype.expand = function () {
+        var expands = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            expands[_i] = arguments[_i];
+        }
+        if (expands.length > 0) {
+            this._query.add("$expand", expands.join(","));
+        }
+        return this;
+    };
+    return GraphQueryableInstance;
+}(GraphQueryable));
+exports.GraphQueryableInstance = GraphQueryableInstance;
+
+
+/***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var logging_1 = __webpack_require__(4);
+var exceptions_1 = __webpack_require__(2);
+var core_1 = __webpack_require__(12);
+function spExtractODataId(candidate) {
+    if (candidate.hasOwnProperty("odata.id")) {
+        return candidate["odata.id"];
+    }
+    else if (candidate.hasOwnProperty("__metadata") && candidate.__metadata.hasOwnProperty("id")) {
+        return candidate.__metadata.id;
+    }
+    else {
+        throw new exceptions_1.ODataIdException(candidate);
+    }
+}
+exports.spExtractODataId = spExtractODataId;
+var SPODataEntityParserImpl = /** @class */ (function (_super) {
+    __extends(SPODataEntityParserImpl, _super);
+    function SPODataEntityParserImpl(factory) {
+        var _this = _super.call(this) || this;
+        _this.factory = factory;
+        return _this;
+    }
+    SPODataEntityParserImpl.prototype.parse = function (r) {
+        var _this = this;
+        return _super.prototype.parse.call(this, r).then(function (d) {
+            var o = new _this.factory(spGetEntityUrl(d), null);
+            return util_1.Util.extend(o, d);
+        });
+    };
+    return SPODataEntityParserImpl;
+}(core_1.ODataParserBase));
+var SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
+    __extends(SPODataEntityArrayParserImpl, _super);
+    function SPODataEntityArrayParserImpl(factory) {
+        var _this = _super.call(this) || this;
+        _this.factory = factory;
+        return _this;
+    }
+    SPODataEntityArrayParserImpl.prototype.parse = function (r) {
+        var _this = this;
+        return _super.prototype.parse.call(this, r).then(function (d) {
+            return d.map(function (v) {
+                var o = new _this.factory(spGetEntityUrl(v), null);
+                return util_1.Util.extend(o, v);
+            });
+        });
+    };
+    return SPODataEntityArrayParserImpl;
+}(core_1.ODataParserBase));
+function spGetEntityUrl(entity) {
+    if (entity.hasOwnProperty("odata.metadata") && entity.hasOwnProperty("odata.editLink")) {
+        // we are dealign with minimal metadata (default)
+        return util_1.Util.combinePaths(util_1.extractWebUrl(entity["odata.metadata"]), "_api", entity["odata.editLink"]);
+    }
+    else if (entity.hasOwnProperty("__metadata")) {
+        // we are dealing with verbose, which has an absolute uri
+        return entity.__metadata.uri;
+    }
+    else {
+        // we are likely dealing with nometadata, so don't error but we won't be able to
+        // chain off these objects
+        logging_1.Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", logging_1.LogLevel.Warning);
+        return "";
+    }
+}
+exports.spGetEntityUrl = spGetEntityUrl;
+function spODataEntity(factory) {
+    return new SPODataEntityParserImpl(factory);
+}
+exports.spODataEntity = spODataEntity;
+function spODataEntityArray(factory) {
+    return new SPODataEntityArrayParserImpl(factory);
+}
+exports.spODataEntityArray = spODataEntityArray;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(12);
+var util_1 = __webpack_require__(0);
+var ODataDefaultParser = /** @class */ (function (_super) {
+    __extends(ODataDefaultParser, _super);
+    function ODataDefaultParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return ODataDefaultParser;
+}(core_1.ODataParserBase));
+exports.ODataDefaultParser = ODataDefaultParser;
+var ODataValueParserImpl = /** @class */ (function (_super) {
+    __extends(ODataValueParserImpl, _super);
+    function ODataValueParserImpl() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ODataValueParserImpl.prototype.parse = function (r) {
+        return _super.prototype.parse.call(this, r).then(function (d) { return d; });
+    };
+    return ODataValueParserImpl;
+}(core_1.ODataParserBase));
+function ODataValue() {
+    return new ODataValueParserImpl();
+}
+exports.ODataValue = ODataValue;
+var ODataRawParserImpl = /** @class */ (function () {
+    function ODataRawParserImpl() {
+    }
+    ODataRawParserImpl.prototype.parse = function (r) {
+        return r.json();
+    };
+    return ODataRawParserImpl;
+}());
+exports.ODataRawParserImpl = ODataRawParserImpl;
+exports.ODataRaw = new ODataRawParserImpl();
+var TextFileParser = /** @class */ (function () {
+    function TextFileParser() {
+    }
+    TextFileParser.prototype.parse = function (r) {
+        return r.text();
+    };
+    return TextFileParser;
+}());
+exports.TextFileParser = TextFileParser;
+var BlobFileParser = /** @class */ (function () {
+    function BlobFileParser() {
+    }
+    BlobFileParser.prototype.parse = function (r) {
+        return r.blob();
+    };
+    return BlobFileParser;
+}());
+exports.BlobFileParser = BlobFileParser;
+var JSONFileParser = /** @class */ (function () {
+    function JSONFileParser() {
+    }
+    JSONFileParser.prototype.parse = function (r) {
+        return r.json();
+    };
+    return JSONFileParser;
+}());
+exports.JSONFileParser = JSONFileParser;
+var BufferFileParser = /** @class */ (function () {
+    function BufferFileParser() {
+    }
+    BufferFileParser.prototype.parse = function (r) {
+        if (util_1.Util.isFunction(r.arrayBuffer)) {
+            return r.arrayBuffer();
+        }
+        return r.buffer();
+    };
+    return BufferFileParser;
+}());
+exports.BufferFileParser = BufferFileParser;
+
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1847,7 +1790,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Generic dictionary
  */
-var Dictionary = (function () {
+var Dictionary = /** @class */ (function () {
     /**
      * Creates a new instance of the Dictionary<T> class
      *
@@ -1953,7 +1896,33 @@ exports.Dictionary = Dictionary;
 
 
 /***/ }),
-/* 7 */
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+function mergeOptions(target, source) {
+    target.headers = target.headers || {};
+    var headers = util_1.Util.extend(target.headers, source.headers);
+    target = util_1.Util.extend(target, source);
+    target.headers = headers;
+}
+exports.mergeOptions = mergeOptions;
+function mergeHeaders(target, source) {
+    if (typeof source !== "undefined" && source !== null) {
+        var temp = new Request("", { headers: source });
+        temp.headers.forEach(function (value, name) {
+            target.append(name, value);
+        });
+    }
+}
+exports.mergeHeaders = mergeHeaders;
+
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1969,33 +1938,34 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var lists_1 = __webpack_require__(10);
-var fields_1 = __webpack_require__(29);
-var navigation_1 = __webpack_require__(30);
-var sitegroups_1 = __webpack_require__(17);
-var contenttypes_1 = __webpack_require__(18);
-var folders_1 = __webpack_require__(14);
-var roles_1 = __webpack_require__(16);
-var files_1 = __webpack_require__(8);
+var sharepointqueryable_1 = __webpack_require__(1);
+var lists_1 = __webpack_require__(13);
+var fields_1 = __webpack_require__(35);
+var navigation_1 = __webpack_require__(36);
+var sitegroups_1 = __webpack_require__(23);
+var contenttypes_1 = __webpack_require__(24);
+var folders_1 = __webpack_require__(17);
+var roles_1 = __webpack_require__(22);
+var files_1 = __webpack_require__(11);
 var util_1 = __webpack_require__(0);
-var lists_2 = __webpack_require__(10);
-var siteusers_1 = __webpack_require__(27);
-var usercustomactions_1 = __webpack_require__(19);
-var odata_1 = __webpack_require__(2);
-var features_1 = __webpack_require__(31);
-var queryableshareable_1 = __webpack_require__(12);
-var relateditems_1 = __webpack_require__(43);
+var lists_2 = __webpack_require__(13);
+var siteusers_1 = __webpack_require__(33);
+var usercustomactions_1 = __webpack_require__(25);
+var odata_1 = __webpack_require__(6);
+var batch_1 = __webpack_require__(37);
+var features_1 = __webpack_require__(38);
+var sharepointqueryableshareable_1 = __webpack_require__(15);
+var relateditems_1 = __webpack_require__(50);
 /**
  * Describes a collection of webs
  *
  */
-var Webs = (function (_super) {
+var Webs = /** @class */ (function (_super) {
     __extends(Webs, _super);
     /**
      * Creates a new instance of the Webs class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this web collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
      */
     function Webs(baseUrl, webPath) {
         if (webPath === void 0) { webPath = "webs"; }
@@ -2029,44 +1999,44 @@ var Webs = (function (_super) {
                 "__metadata": { "type": "SP.WebCreationInformation" },
             }, props),
         });
-        return this.clone(Webs, "add", true).postCore({ body: postBody }).then(function (data) {
+        return this.clone(Webs, "add").postCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
-                web: new Web(odata_1.extractOdataId(data).replace(/_api\/web\/?/i, "")),
+                web: new Web(odata_1.spExtractODataId(data).replace(/_api\/web\/?/i, "")),
             };
         });
     };
     return Webs;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Webs = Webs;
 /**
  * Describes a collection of web infos
  *
  */
-var WebInfos = (function (_super) {
+var WebInfos = /** @class */ (function (_super) {
     __extends(WebInfos, _super);
     /**
      * Creates a new instance of the WebInfos class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this web infos collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this web infos collection
      */
     function WebInfos(baseUrl, webPath) {
         if (webPath === void 0) { webPath = "webinfos"; }
         return _super.call(this, baseUrl, webPath) || this;
     }
     return WebInfos;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.WebInfos = WebInfos;
 /**
  * Describes a web
  *
  */
-var Web = (function (_super) {
+var Web = /** @class */ (function (_super) {
     __extends(Web, _super);
     /**
      * Creates a new instance of the Web class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this web
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this web
      */
     function Web(baseUrl, path) {
         if (path === void 0) { path = "_api/web"; }
@@ -2093,6 +2063,17 @@ var Web = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    /**
+    * Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
+    *
+    * @param nWebTemplateFilter Specifies the site definition (default = -1)
+    * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
+    */
+    Web.prototype.getSubwebsFilteredForCurrentUser = function (nWebTemplateFilter, nConfigurationFilter) {
+        if (nWebTemplateFilter === void 0) { nWebTemplateFilter = -1; }
+        if (nConfigurationFilter === void 0) { nConfigurationFilter = -1; }
+        return this.clone(Webs, "getSubwebsFilteredForCurrentUser(nWebTemplateFilter=" + nWebTemplateFilter + ",nConfigurationFilter=" + nConfigurationFilter + ")");
+    };
     Object.defineProperty(Web.prototype, "webinfos", {
         /**
          * Gets a collection of WebInfos for this web's subwebs
@@ -2251,7 +2232,7 @@ var Web = (function (_super) {
      *
      */
     Web.prototype.createBatch = function () {
-        return new odata_1.ODataBatch(this.parentUrl);
+        return new batch_1.ODataBatch(this.parentUrl);
     };
     Object.defineProperty(Web.prototype, "rootFolder", {
         /**
@@ -2365,7 +2346,7 @@ var Web = (function (_super) {
             fontSchemeUrl: fontSchemeUrl,
             shareGenerated: shareGenerated,
         });
-        return this.clone(Web, "applytheme", true).postCore({ body: postBody });
+        return this.clone(Web, "applytheme").postCore({ body: postBody });
     };
     /**
      * Applies the specified site definition or site template to the Web site that has no template applied to it
@@ -2373,7 +2354,7 @@ var Web = (function (_super) {
      * @param template Name of the site definition or the name of the site template
      */
     Web.prototype.applyWebTemplate = function (template) {
-        var q = this.clone(Web, "applywebtemplate", true);
+        var q = this.clone(Web, "applywebtemplate");
         q.concat("(@t)");
         q.query.add("@t", template);
         return q.postCore();
@@ -2387,10 +2368,10 @@ var Web = (function (_super) {
         var postBody = JSON.stringify({
             logonName: loginName,
         });
-        return this.clone(Web, "ensureuser", true).postCore({ body: postBody }).then(function (data) {
+        return this.clone(Web, "ensureuser").postCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
-                user: new siteusers_1.SiteUser(odata_1.extractOdataId(data)),
+                user: new siteusers_1.SiteUser(odata_1.spExtractODataId(data)),
             };
         });
     };
@@ -2403,7 +2384,7 @@ var Web = (function (_super) {
     Web.prototype.availableWebTemplates = function (language, includeCrossLanugage) {
         if (language === void 0) { language = 1033; }
         if (includeCrossLanugage === void 0) { includeCrossLanugage = true; }
-        return new queryable_1.QueryableCollection(this, "getavailablewebtemplates(lcid=" + language + ", doincludecrosslanguage=" + includeCrossLanugage + ")");
+        return new sharepointqueryable_1.SharePointQueryableCollection(this, "getavailablewebtemplates(lcid=" + language + ", doincludecrosslanguage=" + includeCrossLanugage + ")");
     };
     /**
      * Returns the list gallery on the site
@@ -2412,8 +2393,8 @@ var Web = (function (_super) {
      * MasterPageCatalog = 116, SolutionCatalog = 121, ThemeCatalog = 123, DesignCatalog = 124, AppDataCatalog = 125
      */
     Web.prototype.getCatalog = function (type) {
-        return this.clone(Web, "getcatalog(" + type + ")", true).select("Id").get().then(function (data) {
-            return new lists_2.List(odata_1.extractOdataId(data));
+        return this.clone(Web, "getcatalog(" + type + ")").select("Id").get().then(function (data) {
+            return new lists_2.List(odata_1.spExtractODataId(data));
         });
     };
     /**
@@ -2423,7 +2404,7 @@ var Web = (function (_super) {
      */
     Web.prototype.getChanges = function (query) {
         var postBody = JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
-        return this.clone(Web, "getchanges", true).postCore({ body: postBody });
+        return this.clone(Web, "getchanges").postCore({ body: postBody });
     };
     Object.defineProperty(Web.prototype, "customListTemplate", {
         /**
@@ -2431,7 +2412,7 @@ var Web = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableCollection(this, "getcustomlisttemplates");
+            return new sharepointqueryable_1.SharePointQueryableCollection(this, "getcustomlisttemplates");
         },
         enumerable: true,
         configurable: true
@@ -2454,15 +2435,15 @@ var Web = (function (_super) {
     Web.prototype.mapToIcon = function (filename, size, progId) {
         if (size === void 0) { size = 0; }
         if (progId === void 0) { progId = ""; }
-        return this.clone(Web, "maptoicon(filename='" + filename + "', progid='" + progId + "', size=" + size + ")", true).get();
+        return this.clone(Web, "maptoicon(filename='" + filename + "', progid='" + progId + "', size=" + size + ")").get();
     };
     return Web;
-}(queryableshareable_1.QueryableShareableWeb));
+}(sharepointqueryableshareable_1.SharePointQueryableShareableWeb));
 exports.Web = Web;
 
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2478,24 +2459,24 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(2);
+var sharepointqueryable_1 = __webpack_require__(1);
+var parsers_1 = __webpack_require__(7);
 var util_1 = __webpack_require__(0);
-var exceptions_1 = __webpack_require__(3);
-var webparts_1 = __webpack_require__(28);
-var items_1 = __webpack_require__(11);
-var queryableshareable_1 = __webpack_require__(12);
-var odata_2 = __webpack_require__(2);
+var exceptions_1 = __webpack_require__(2);
+var webparts_1 = __webpack_require__(34);
+var items_1 = __webpack_require__(14);
+var sharepointqueryableshareable_1 = __webpack_require__(15);
+var odata_1 = __webpack_require__(6);
 /**
  * Describes a collection of File objects
  *
  */
-var Files = (function (_super) {
+var Files = /** @class */ (function (_super) {
     __extends(Files, _super);
     /**
      * Creates a new instance of the Files class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
      */
     function Files(baseUrl, path) {
         if (path === void 0) { path = "files"; }
@@ -2546,7 +2527,7 @@ var Files = (function (_super) {
         var _this = this;
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
         if (chunkSize === void 0) { chunkSize = 10485760; }
-        var adder = this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')");
+        var adder = this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')", false);
         return adder.postCore().then(function () { return _this.getByName(url); }).then(function (file) { return file.setContentChunked(content, progress, chunkSize); }).then(function (response) {
             return {
                 data: response,
@@ -2563,7 +2544,7 @@ var Files = (function (_super) {
      */
     Files.prototype.addTemplateFile = function (fileUrl, templateFileType) {
         var _this = this;
-        return this.clone(Files, "addTemplateFile(urloffile='" + fileUrl + "',templatefiletype=" + templateFileType + ")")
+        return this.clone(Files, "addTemplateFile(urloffile='" + fileUrl + "',templatefiletype=" + templateFileType + ")", false)
             .postCore().then(function (response) {
             return {
                 data: response,
@@ -2572,13 +2553,13 @@ var Files = (function (_super) {
         });
     };
     return Files;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Files = Files;
 /**
  * Describes a single File instance
  *
  */
-var File = (function (_super) {
+var File = /** @class */ (function (_super) {
     __extends(File, _super);
     function File() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -2589,7 +2570,7 @@ var File = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableCollection(this, "listItemAllFields");
+            return new sharepointqueryable_1.SharePointQueryableCollection(this, "listItemAllFields");
         },
         enumerable: true,
         configurable: true
@@ -2613,7 +2594,7 @@ var File = (function (_super) {
      */
     File.prototype.approve = function (comment) {
         if (comment === void 0) { comment = ""; }
-        return this.clone(File, "approve(comment='" + comment + "')", true).postCore();
+        return this.clone(File, "approve(comment='" + comment + "')").postCore();
     };
     /**
      * Stops the chunk upload session without saving the uploaded data. Does not support batching.
@@ -2639,13 +2620,13 @@ var File = (function (_super) {
         if (comment.length > 1023) {
             throw new exceptions_1.MaxCommentLengthException();
         }
-        return this.clone(File, "checkin(comment='" + comment + "',checkintype=" + checkinType + ")", true).postCore();
+        return this.clone(File, "checkin(comment='" + comment + "',checkintype=" + checkinType + ")").postCore();
     };
     /**
      * Checks out the file from a document library.
      */
     File.prototype.checkout = function () {
-        return this.clone(File, "checkout", true).postCore();
+        return this.clone(File, "checkout").postCore();
     };
     /**
      * Copies the file to the destination url.
@@ -2655,7 +2636,7 @@ var File = (function (_super) {
      */
     File.prototype.copyTo = function (url, shouldOverWrite) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        return this.clone(File, "copyTo(strnewurl='" + url + "',boverwrite=" + shouldOverWrite + ")", true).postCore();
+        return this.clone(File, "copyTo(strnewurl='" + url + "',boverwrite=" + shouldOverWrite + ")").postCore();
     };
     /**
      * Delete this file.
@@ -2664,7 +2645,7 @@ var File = (function (_super) {
      */
     File.prototype.delete = function (eTag) {
         if (eTag === void 0) { eTag = "*"; }
-        return this.clone(File, null, true).postCore({
+        return this.clone(File, null).postCore({
             headers: {
                 "IF-Match": eTag,
                 "X-HTTP-Method": "DELETE",
@@ -2682,7 +2663,7 @@ var File = (function (_super) {
         if (comment.length > 1023) {
             throw new exceptions_1.MaxCommentLengthException();
         }
-        return this.clone(File, "deny(comment='" + comment + "')", true).postCore();
+        return this.clone(File, "deny(comment='" + comment + "')").postCore();
     };
     /**
      * Specifies the control set used to access, modify, or add Web Parts associated with this Web Part Page and view.
@@ -2702,7 +2683,7 @@ var File = (function (_super) {
      */
     File.prototype.moveTo = function (url, moveOperations) {
         if (moveOperations === void 0) { moveOperations = MoveOperations.Overwrite; }
-        return this.clone(File, "moveTo(newurl='" + url + "',flags=" + moveOperations + ")", true).postCore();
+        return this.clone(File, "moveTo(newurl='" + url + "',flags=" + moveOperations + ")").postCore();
     };
     /**
      * Submits the file for content approval with the specified comment.
@@ -2714,7 +2695,7 @@ var File = (function (_super) {
         if (comment.length > 1023) {
             throw new exceptions_1.MaxCommentLengthException();
         }
-        return this.clone(File, "publish(comment='" + comment + "')", true).postCore();
+        return this.clone(File, "publish(comment='" + comment + "')").postCore();
     };
     /**
      * Moves the file to the Recycle Bin and returns the identifier of the new Recycle Bin item.
@@ -2722,14 +2703,14 @@ var File = (function (_super) {
      * @returns The GUID of the recycled file.
      */
     File.prototype.recycle = function () {
-        return this.clone(File, "recycle", true).postCore();
+        return this.clone(File, "recycle").postCore();
     };
     /**
      * Reverts an existing checkout for the file.
      *
      */
     File.prototype.undoCheckout = function () {
-        return this.clone(File, "undoCheckout", true).postCore();
+        return this.clone(File, "undoCheckout").postCore();
     };
     /**
      * Removes the file from content approval or unpublish a major version.
@@ -2741,33 +2722,33 @@ var File = (function (_super) {
         if (comment.length > 1023) {
             throw new exceptions_1.MaxCommentLengthException();
         }
-        return this.clone(File, "unpublish(comment='" + comment + "')", true).postCore();
+        return this.clone(File, "unpublish(comment='" + comment + "')").postCore();
     };
     /**
      * Gets the contents of the file as text. Not supported in batching.
      *
      */
     File.prototype.getText = function () {
-        return this.clone(File, "$value").get(new odata_1.TextFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+        return this.clone(File, "$value", false).get(new parsers_1.TextFileParser(), { headers: { "binaryStringResponseBody": "true" } });
     };
     /**
      * Gets the contents of the file as a blob, does not work in Node.js. Not supported in batching.
      *
      */
     File.prototype.getBlob = function () {
-        return this.clone(File, "$value").get(new odata_1.BlobFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+        return this.clone(File, "$value", false).get(new parsers_1.BlobFileParser(), { headers: { "binaryStringResponseBody": "true" } });
     };
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
      */
     File.prototype.getBuffer = function () {
-        return this.clone(File, "$value").get(new odata_1.BufferFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+        return this.clone(File, "$value", false).get(new parsers_1.BufferFileParser(), { headers: { "binaryStringResponseBody": "true" } });
     };
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
      */
     File.prototype.getJSON = function () {
-        return this.clone(File, "$value").get(new odata_1.JSONFileParser(), { headers: { "binaryStringResponseBody": "true" } });
+        return this.clone(File, "$value", false).get(new parsers_1.JSONFileParser(), { headers: { "binaryStringResponseBody": "true" } });
     };
     /**
      * Sets the content of a file, for large files use setContentChunked. Not supported in batching.
@@ -2777,7 +2758,7 @@ var File = (function (_super) {
      */
     File.prototype.setContent = function (content) {
         var _this = this;
-        return this.clone(File, "$value").postCore({
+        return this.clone(File, "$value", false).postCore({
             body: content,
             headers: {
                 "X-HTTP-Method": "PUT",
@@ -2794,7 +2775,7 @@ var File = (function (_super) {
         }
         var q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then(function (d) {
-            return util_1.Util.extend(new items_1.Item(odata_2.getEntityUrl(d)), d);
+            return util_1.Util.extend(new items_1.Item(odata_1.spGetEntityUrl(d)), d);
         });
     };
     /**
@@ -2848,7 +2829,7 @@ var File = (function (_super) {
      * @returns The size of the total uploaded data in bytes.
      */
     File.prototype.startUpload = function (uploadId, fragment) {
-        return this.clone(File, "startUpload(uploadId=guid'" + uploadId + "')").postAsCore({ body: fragment }).then(function (n) { return parseFloat(n); });
+        return this.clone(File, "startUpload(uploadId=guid'" + uploadId + "')", false).postAsCore({ body: fragment }).then(function (n) { return parseFloat(n); });
     };
     /**
      * Continues the chunk upload session with an additional fragment.
@@ -2862,7 +2843,7 @@ var File = (function (_super) {
      * @returns The size of the total uploaded data in bytes.
      */
     File.prototype.continueUpload = function (uploadId, fileOffset, fragment) {
-        return this.clone(File, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")").postAsCore({ body: fragment }).then(function (n) { return parseFloat(n); });
+        return this.clone(File, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false).postAsCore({ body: fragment }).then(function (n) { return parseFloat(n); });
     };
     /**
      * Uploads the last file fragment and commits the file. The current file content is changed when this method completes.
@@ -2875,7 +2856,7 @@ var File = (function (_super) {
      * @returns The newly uploaded file.
      */
     File.prototype.finishUpload = function (uploadId, fileOffset, fragment) {
-        return this.clone(File, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")")
+        return this.clone(File, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false)
             .postAsCore({ body: fragment }).then(function (response) {
             return {
                 data: response,
@@ -2884,18 +2865,18 @@ var File = (function (_super) {
         });
     };
     return File;
-}(queryableshareable_1.QueryableShareableFile));
+}(sharepointqueryableshareable_1.SharePointQueryableShareableFile));
 exports.File = File;
 /**
  * Describes a collection of Version objects
  *
  */
-var Versions = (function (_super) {
+var Versions = /** @class */ (function (_super) {
     __extends(Versions, _super);
     /**
      * Creates a new instance of the File class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
      */
     function Versions(baseUrl, path) {
         if (path === void 0) { path = "versions"; }
@@ -2924,7 +2905,7 @@ var Versions = (function (_super) {
      * @param versionId The ID of the file version to delete.
      */
     Versions.prototype.deleteById = function (versionId) {
-        return this.clone(Versions, "deleteById(vid=" + versionId + ")", true).postCore();
+        return this.clone(Versions, "deleteById(vid=" + versionId + ")").postCore();
     };
     /**
      * Deletes the file version object with the specified version label.
@@ -2932,7 +2913,7 @@ var Versions = (function (_super) {
      * @param label The version label of the file version to delete, for example: 1.2
      */
     Versions.prototype.deleteByLabel = function (label) {
-        return this.clone(Versions, "deleteByLabel(versionlabel='" + label + "')", true).postCore();
+        return this.clone(Versions, "deleteByLabel(versionlabel='" + label + "')").postCore();
     };
     /**
      * Creates a new file version from the file specified by the version label.
@@ -2940,16 +2921,16 @@ var Versions = (function (_super) {
      * @param label The version label of the file version to restore, for example: 1.2
      */
     Versions.prototype.restoreByLabel = function (label) {
-        return this.clone(Versions, "restoreByLabel(versionlabel='" + label + "')", true).postCore();
+        return this.clone(Versions, "restoreByLabel(versionlabel='" + label + "')").postCore();
     };
     return Versions;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Versions = Versions;
 /**
  * Describes a single Version instance
  *
  */
-var Version = (function (_super) {
+var Version = /** @class */ (function (_super) {
     __extends(Version, _super);
     function Version() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -2969,7 +2950,7 @@ var Version = (function (_super) {
         });
     };
     return Version;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.Version = Version;
 var CheckinType;
 (function (CheckinType) {
@@ -2996,139 +2977,83 @@ var TemplateFileType;
 
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var digestcache_1 = __webpack_require__(37);
-var util_1 = __webpack_require__(0);
-var pnplibconfig_1 = __webpack_require__(4);
-var exceptions_1 = __webpack_require__(3);
-var HttpClient = (function () {
-    function HttpClient() {
-        this._impl = pnplibconfig_1.RuntimeConfig.fetchClientFactory();
-        this._digestCache = new digestcache_1.DigestCache(this);
+var exceptions_1 = __webpack_require__(2);
+var logging_1 = __webpack_require__(4);
+var ODataParserBase = /** @class */ (function () {
+    function ODataParserBase() {
     }
-    HttpClient.prototype.fetch = function (url, options) {
+    ODataParserBase.prototype.parse = function (r) {
         var _this = this;
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
-        var headers = new Headers();
-        // first we add the global headers so they can be overwritten by any passed in locally to this call
-        mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.headers);
-        // second we add the local options so we can overwrite the globals
-        mergeHeaders(headers, options.headers);
-        // lastly we apply any default headers we need that may not exist
-        if (!headers.has("Accept")) {
-            headers.append("Accept", "application/json");
-        }
-        if (!headers.has("Content-Type")) {
-            headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
-        }
-        if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:2.0.8");
-        }
-        opts = util_1.Util.extend(opts, { headers: headers });
-        if (opts.method && opts.method.toUpperCase() !== "GET") {
-            // if we have either a request digest or an authorization header we don't need a digest
-            if (!headers.has("X-RequestDigest") && !headers.has("Authorization")) {
-                var index = url.indexOf("_api/");
-                if (index < 0) {
-                    throw new exceptions_1.APIUrlException();
+        return new Promise(function (resolve, reject) {
+            if (_this.handleError(r, reject)) {
+                if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")) === 0) || r.status === 204) {
+                    resolve({});
                 }
-                var webUrl = url.substr(0, index);
-                return this._digestCache.getDigest(webUrl)
-                    .then(function (digest) {
-                    headers.append("X-RequestDigest", digest);
-                    return _this.fetchRaw(url, opts);
+                else {
+                    // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
+                    r.text()
+                        .then(function (txt) { return txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {}; })
+                        .then(function (json) { return resolve(_this.parseODataJSON(json)); })
+                        .catch(function (e) { return reject(e); });
+                }
+            }
+        });
+    };
+    ODataParserBase.prototype.handleError = function (r, reject) {
+        if (!r.ok) {
+            r.json().then(function (json) {
+                // include the headers as they contain diagnostic information
+                var data = {
+                    responseBody: json,
+                    responseHeaders: r.headers,
+                };
+                reject(new exceptions_1.ProcessHttpClientResponseException(r.status, r.statusText, data));
+            }).catch(function (e) {
+                // we failed to read the body - possibly it is empty. Let's report the original status that caused
+                // the request to fail and log the error with parsing the body if anyone needs it for debugging
+                logging_1.Logger.log({
+                    data: e,
+                    level: logging_1.LogLevel.Warning,
+                    message: "There was an error parsing the error response body. See data for details.",
                 });
+                // include the headers as they contain diagnostic information
+                var data = {
+                    responseBody: "[[body not available]]",
+                    responseHeaders: r.headers,
+                };
+                reject(new exceptions_1.ProcessHttpClientResponseException(r.status, r.statusText, data));
+            });
+        }
+        return r.ok;
+    };
+    ODataParserBase.prototype.parseODataJSON = function (json) {
+        var result = json;
+        if (json.hasOwnProperty("d")) {
+            if (json.d.hasOwnProperty("results")) {
+                result = json.d.results;
+            }
+            else {
+                result = json.d;
             }
         }
-        return this.fetchRaw(url, opts);
+        else if (json.hasOwnProperty("value")) {
+            result = json.value;
+        }
+        return result;
     };
-    HttpClient.prototype.fetchRaw = function (url, options) {
-        var _this = this;
-        if (options === void 0) { options = {}; }
-        // here we need to normalize the headers
-        var rawHeaders = new Headers();
-        mergeHeaders(rawHeaders, options.headers);
-        options = util_1.Util.extend(options, { headers: rawHeaders });
-        var retry = function (ctx) {
-            _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
-                // grab our current delay
-                var delay = ctx.delay;
-                // Check if request was throttled - http status code 429
-                // Check is request failed due to server unavailable - http status code 503
-                if (response.status !== 429 && response.status !== 503) {
-                    ctx.reject(response);
-                }
-                // Increment our counters.
-                ctx.delay *= 2;
-                ctx.attempts++;
-                // If we have exceeded the retry count, reject.
-                if (ctx.retryCount <= ctx.attempts) {
-                    ctx.reject(response);
-                }
-                // Set our retry timeout for {delay} milliseconds.
-                setTimeout(util_1.Util.getCtxCallback(_this, retry, ctx), delay);
-            });
-        };
-        return new Promise(function (resolve, reject) {
-            var retryContext = {
-                attempts: 0,
-                delay: 100,
-                reject: reject,
-                resolve: resolve,
-                retryCount: 7,
-            };
-            retry.call(_this, retryContext);
-        });
-    };
-    HttpClient.prototype.get = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "GET" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.post = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "POST" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.patch = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "PATCH" });
-        return this.fetch(url, opts);
-    };
-    HttpClient.prototype.delete = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = util_1.Util.extend(options, { method: "DELETE" });
-        return this.fetch(url, opts);
-    };
-    return HttpClient;
+    return ODataParserBase;
 }());
-exports.HttpClient = HttpClient;
-function mergeOptions(target, source) {
-    target.headers = target.headers || {};
-    var headers = util_1.Util.extend(target.headers, source.headers);
-    target = util_1.Util.extend(target, source);
-    target.headers = headers;
-}
-exports.mergeOptions = mergeOptions;
-function mergeHeaders(target, source) {
-    if (typeof source !== "undefined" && source !== null) {
-        var temp = new Request("", { headers: source });
-        temp.headers.forEach(function (value, name) {
-            target.append(name, value);
-        });
-    }
-}
-exports.mergeHeaders = mergeHeaders;
+exports.ODataParserBase = ODataParserBase;
 
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3144,29 +3069,29 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var items_1 = __webpack_require__(11);
-var views_1 = __webpack_require__(40);
-var contenttypes_1 = __webpack_require__(18);
-var fields_1 = __webpack_require__(29);
-var forms_1 = __webpack_require__(41);
-var subscriptions_1 = __webpack_require__(42);
-var queryable_1 = __webpack_require__(1);
-var queryablesecurable_1 = __webpack_require__(26);
+var items_1 = __webpack_require__(14);
+var views_1 = __webpack_require__(47);
+var contenttypes_1 = __webpack_require__(24);
+var fields_1 = __webpack_require__(35);
+var forms_1 = __webpack_require__(48);
+var subscriptions_1 = __webpack_require__(49);
+var sharepointqueryable_1 = __webpack_require__(1);
+var sharepointqueryablesecurable_1 = __webpack_require__(32);
 var util_1 = __webpack_require__(0);
-var usercustomactions_1 = __webpack_require__(19);
-var odata_1 = __webpack_require__(2);
-var exceptions_1 = __webpack_require__(3);
-var folders_1 = __webpack_require__(14);
+var usercustomactions_1 = __webpack_require__(25);
+var odata_1 = __webpack_require__(6);
+var exceptions_1 = __webpack_require__(2);
+var folders_1 = __webpack_require__(17);
 /**
  * Describes a collection of List objects
  *
  */
-var Lists = (function (_super) {
+var Lists = /** @class */ (function (_super) {
     __extends(Lists, _super);
     /**
      * Creates a new instance of the Lists class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
      */
     function Lists(baseUrl, path) {
         if (path === void 0) { path = "lists"; }
@@ -3253,26 +3178,26 @@ var Lists = (function (_super) {
      * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
      */
     Lists.prototype.ensureSiteAssetsLibrary = function () {
-        return this.clone(Lists, "ensuresiteassetslibrary", true).postCore().then(function (json) {
-            return new List(odata_1.extractOdataId(json));
+        return this.clone(Lists, "ensuresiteassetslibrary").postCore().then(function (json) {
+            return new List(odata_1.spExtractODataId(json));
         });
     };
     /**
      * Gets a list that is the default location for wiki pages.
      */
     Lists.prototype.ensureSitePagesLibrary = function () {
-        return this.clone(Lists, "ensuresitepageslibrary", true).postCore().then(function (json) {
-            return new List(odata_1.extractOdataId(json));
+        return this.clone(Lists, "ensuresitepageslibrary").postCore().then(function (json) {
+            return new List(odata_1.spExtractODataId(json));
         });
     };
     return Lists;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Lists = Lists;
 /**
  * Describes a single List instance
  *
  */
-var List = (function (_super) {
+var List = /** @class */ (function (_super) {
     __extends(List, _super);
     function List() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3338,7 +3263,7 @@ var List = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableInstance(this, "DefaultView");
+            return new sharepointqueryable_1.SharePointQueryableInstance(this, "DefaultView");
         },
         enumerable: true,
         configurable: true
@@ -3360,7 +3285,7 @@ var List = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.Queryable(this, "EffectiveBasePermissions");
+            return new sharepointqueryable_1.SharePointQueryable(this, "EffectiveBasePermissions");
         },
         enumerable: true,
         configurable: true
@@ -3371,7 +3296,7 @@ var List = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableCollection(this, "EventReceivers");
+            return new sharepointqueryable_1.SharePointQueryableCollection(this, "EventReceivers");
         },
         enumerable: true,
         configurable: true
@@ -3382,7 +3307,7 @@ var List = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.Queryable(this, "getRelatedFields");
+            return new sharepointqueryable_1.SharePointQueryable(this, "getRelatedFields");
         },
         enumerable: true,
         configurable: true
@@ -3393,7 +3318,7 @@ var List = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.Queryable(this, "InformationRightsManagementSettings");
+            return new sharepointqueryable_1.SharePointQueryable(this, "InformationRightsManagementSettings");
         },
         enumerable: true,
         configurable: true
@@ -3475,7 +3400,7 @@ var List = (function (_super) {
      * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
      */
     List.prototype.getChanges = function (query) {
-        return this.clone(List, "getchanges", true).postCore({
+        return this.clone(List, "getchanges").postCore({
             body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
         });
     };
@@ -3503,7 +3428,7 @@ var List = (function (_super) {
         for (var _i = 1; _i < arguments.length; _i++) {
             expands[_i - 1] = arguments[_i];
         }
-        var q = this.clone(List, "getitems", true);
+        var q = this.clone(List, "getitems");
         return q.expand.apply(q, expands).postCore({
             body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
         });
@@ -3512,7 +3437,7 @@ var List = (function (_super) {
      * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
      */
     List.prototype.getListItemChangesSinceToken = function (query) {
-        return this.clone(List, "getlistitemchangessincetoken", true).postCore({
+        return this.clone(List, "getlistitemchangessincetoken").postCore({
             body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
         }, { parse: function (r) { return r.text(); } });
     };
@@ -3520,7 +3445,7 @@ var List = (function (_super) {
      * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     List.prototype.recycle = function () {
-        return this.clone(List, "recycle", true).postCore().then(function (data) {
+        return this.clone(List, "recycle").postCore().then(function (data) {
             if (data.hasOwnProperty("Recycle")) {
                 return data.Recycle;
             }
@@ -3547,10 +3472,30 @@ var List = (function (_super) {
         });
     };
     /**
+     * Returns the data for the specified query view
+     *
+     * @param parameters The parameters to be used to render list data as JSON string.
+     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     */
+    List.prototype.renderListDataAsStream = function (parameters, overrideParameters) {
+        if (overrideParameters === void 0) { overrideParameters = null; }
+        var postBody = {
+            overrideParameters: util_1.Util.extend({
+                "__metadata": { "type": "SP.RenderListDataOverrideParameters" },
+            }, overrideParameters),
+            parameters: util_1.Util.extend({
+                "__metadata": { "type": "SP.RenderListDataParameters" },
+            }, parameters),
+        };
+        return this.clone(List, "RenderListDataAsStream", true).postCore({
+            body: JSON.stringify(postBody),
+        });
+    };
+    /**
      * Gets the field values and field schema attributes for a list item.
      */
     List.prototype.renderListFormData = function (itemId, formId, mode) {
-        return this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')", true).postCore().then(function (data) {
+        return this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')").postCore().then(function (data) {
             // data will be a string, so we parse it again
             data = JSON.parse(data);
             if (data.hasOwnProperty("ListData")) {
@@ -3565,7 +3510,7 @@ var List = (function (_super) {
      * Reserves a list item ID for idempotent list item creation.
      */
     List.prototype.reserveListItemId = function () {
-        return this.clone(List, "reservelistitemid", true).postCore().then(function (data) {
+        return this.clone(List, "reservelistitemid").postCore().then(function (data) {
             if (data.hasOwnProperty("ReserveListItemId")) {
                 return data.ReserveListItemId;
             }
@@ -3579,15 +3524,15 @@ var List = (function (_super) {
      *
      */
     List.prototype.getListItemEntityTypeFullName = function () {
-        return this.clone(List, null).select("ListItemEntityTypeFullName").getAs().then(function (o) { return o.ListItemEntityTypeFullName; });
+        return this.clone(List, null, false).select("ListItemEntityTypeFullName").getAs().then(function (o) { return o.ListItemEntityTypeFullName; });
     };
     return List;
-}(queryablesecurable_1.QueryableSecurable));
+}(sharepointqueryablesecurable_1.SharePointQueryableSecurable));
 exports.List = List;
 
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3603,25 +3548,25 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var queryableshareable_1 = __webpack_require__(12);
-var folders_1 = __webpack_require__(14);
-var files_1 = __webpack_require__(8);
-var contenttypes_1 = __webpack_require__(18);
+var sharepointqueryable_1 = __webpack_require__(1);
+var sharepointqueryableshareable_1 = __webpack_require__(15);
+var folders_1 = __webpack_require__(17);
+var files_1 = __webpack_require__(11);
+var contenttypes_1 = __webpack_require__(24);
 var util_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var attachmentfiles_1 = __webpack_require__(39);
-var lists_1 = __webpack_require__(10);
+var core_1 = __webpack_require__(12);
+var attachmentfiles_1 = __webpack_require__(46);
+var lists_1 = __webpack_require__(13);
 /**
  * Describes a collection of Item objects
  *
  */
-var Items = (function (_super) {
+var Items = /** @class */ (function (_super) {
     __extends(Items, _super);
     /**
      * Creates a new instance of the Items class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
      */
     function Items(baseUrl, path) {
         if (path === void 0) { path = "items"; }
@@ -3668,7 +3613,7 @@ var Items = (function (_super) {
             var postBody = JSON.stringify(util_1.Util.extend({
                 "__metadata": { "type": listItemEntityType },
             }, properties));
-            var promise = _this.clone(Items, null, true).postAsCore({ body: postBody }).then(function (data) {
+            var promise = _this.clone(Items, null).postAsCore({ body: postBody }).then(function (data) {
                 return {
                     data: data,
                     item: _this.getById(data.Id),
@@ -3689,13 +3634,13 @@ var Items = (function (_super) {
             this.getParent(lists_1.List).getListItemEntityTypeFullName();
     };
     return Items;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Items = Items;
 /**
  * Descrines a single Item instance
  *
  */
-var Item = (function (_super) {
+var Item = /** @class */ (function (_super) {
     __extends(Item, _super);
     function Item() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3728,7 +3673,7 @@ var Item = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.Queryable(this, "EffectiveBasePermissions");
+            return new sharepointqueryable_1.SharePointQueryable(this, "EffectiveBasePermissions");
         },
         enumerable: true,
         configurable: true
@@ -3739,7 +3684,7 @@ var Item = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.Queryable(this, "EffectiveBasePermissionsForUI");
+            return new sharepointqueryable_1.SharePointQueryable(this, "EffectiveBasePermissionsForUI");
         },
         enumerable: true,
         configurable: true
@@ -3750,7 +3695,7 @@ var Item = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableInstance(this, "FieldValuesAsHTML");
+            return new sharepointqueryable_1.SharePointQueryableInstance(this, "FieldValuesAsHTML");
         },
         enumerable: true,
         configurable: true
@@ -3761,7 +3706,7 @@ var Item = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableInstance(this, "FieldValuesAsText");
+            return new sharepointqueryable_1.SharePointQueryableInstance(this, "FieldValuesAsText");
         },
         enumerable: true,
         configurable: true
@@ -3772,7 +3717,7 @@ var Item = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableInstance(this, "FieldValuesForEdit");
+            return new sharepointqueryable_1.SharePointQueryableInstance(this, "FieldValuesForEdit");
         },
         enumerable: true,
         configurable: true
@@ -3805,15 +3750,15 @@ var Item = (function (_super) {
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
      */
-    Item.prototype.update = function (properties, eTag) {
+    Item.prototype.update = function (properties, eTag, listItemEntityTypeFullName) {
         var _this = this;
         if (eTag === void 0) { eTag = "*"; }
+        if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
         return new Promise(function (resolve, reject) {
             var removeDependency = _this.addBatchDependency();
-            var parentList = _this.getParent(queryable_1.QueryableInstance, _this.parentUrl.substr(0, _this.parentUrl.lastIndexOf("/")));
-            parentList.select("ListItemEntityTypeFullName").getAs().then(function (d) {
+            return _this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(function (listItemEntityType) {
                 var postBody = JSON.stringify(util_1.Util.extend({
-                    "__metadata": { "type": d.ListItemEntityTypeFullName },
+                    "__metadata": { "type": listItemEntityType },
                 }, properties));
                 removeDependency();
                 return _this.postCore({
@@ -3849,7 +3794,7 @@ var Item = (function (_super) {
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     Item.prototype.recycle = function () {
-        return this.clone(Item, "recycle", true).postCore();
+        return this.clone(Item, "recycle").postCore();
     };
     /**
      * Gets a string representation of the full URL to the WOPI frame.
@@ -3859,7 +3804,7 @@ var Item = (function (_super) {
      */
     Item.prototype.getWopiFrameUrl = function (action) {
         if (action === void 0) { action = 0; }
-        var i = this.clone(Item, "getWOPIFrameUrl(@action)", true);
+        var i = this.clone(Item, "getWOPIFrameUrl(@action)");
         i._query.add("@action", action);
         return i.postCore().then(function (data) {
             // handle verbose mode
@@ -3877,17 +3822,27 @@ var Item = (function (_super) {
      */
     Item.prototype.validateUpdateListItem = function (formValues, newDocumentUpdate) {
         if (newDocumentUpdate === void 0) { newDocumentUpdate = false; }
-        return this.clone(Item, "validateupdatelistitem", true).postCore({
+        return this.clone(Item, "validateupdatelistitem").postCore({
             body: JSON.stringify({ "formValues": formValues, bNewDocumentUpdate: newDocumentUpdate }),
         });
     };
+    /**
+     * Ensures we have the proper list item entity type name, either from the value provided or from the list
+     *
+     * @param candidatelistItemEntityTypeFullName The potential type name
+     */
+    Item.prototype.ensureListItemEntityTypeName = function (candidatelistItemEntityTypeFullName) {
+        return candidatelistItemEntityTypeFullName ?
+            Promise.resolve(candidatelistItemEntityTypeFullName) :
+            this.getParent(lists_1.List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/"))).getListItemEntityTypeFullName();
+    };
     return Item;
-}(queryableshareable_1.QueryableShareableItem));
+}(sharepointqueryableshareable_1.SharePointQueryableShareableItem));
 exports.Item = Item;
 /**
  * Provides paging functionality for list items
  */
-var PagedItemCollection = (function () {
+var PagedItemCollection = /** @class */ (function () {
     function PagedItemCollection(nextUrl, results) {
         this.nextUrl = nextUrl;
         this.results = results;
@@ -3915,7 +3870,7 @@ var PagedItemCollection = (function () {
     return PagedItemCollection;
 }());
 exports.PagedItemCollection = PagedItemCollection;
-var PagedItemCollectionParser = (function (_super) {
+var PagedItemCollectionParser = /** @class */ (function (_super) {
     __extends(PagedItemCollectionParser, _super);
     function PagedItemCollectionParser() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3932,8 +3887,8 @@ var PagedItemCollectionParser = (function (_super) {
         });
     };
     return PagedItemCollectionParser;
-}(odata_1.ODataParserBase));
-var ItemUpdatedParser = (function (_super) {
+}(core_1.ODataParserBase));
+var ItemUpdatedParser = /** @class */ (function (_super) {
     __extends(ItemUpdatedParser, _super);
     function ItemUpdatedParser() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3949,11 +3904,11 @@ var ItemUpdatedParser = (function (_super) {
         });
     };
     return ItemUpdatedParser;
-}(odata_1.ODataParserBase));
+}(core_1.ODataParserBase));
 
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3970,17 +3925,17 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var webs_1 = __webpack_require__(7);
-var odata_1 = __webpack_require__(2);
-var queryable_1 = __webpack_require__(1);
-var queryablesecurable_1 = __webpack_require__(26);
-var types_1 = __webpack_require__(13);
+var webs_1 = __webpack_require__(10);
+var odata_1 = __webpack_require__(6);
+var sharepointqueryable_1 = __webpack_require__(1);
+var sharepointqueryablesecurable_1 = __webpack_require__(32);
+var types_1 = __webpack_require__(16);
 /**
  * Internal helper class used to augment classes to include sharing functionality
  */
-var QueryableShareable = (function (_super) {
-    __extends(QueryableShareable, _super);
-    function QueryableShareable() {
+var SharePointQueryableShareable = /** @class */ (function (_super) {
+    __extends(SharePointQueryableShareable, _super);
+    function SharePointQueryableShareable() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
@@ -3989,12 +3944,12 @@ var QueryableShareable = (function (_super) {
      * @param kind The kind of link to share
      * @param expiration The optional expiration for this link
      */
-    QueryableShareable.prototype.getShareLink = function (kind, expiration) {
+    SharePointQueryableShareable.prototype.getShareLink = function (kind, expiration) {
         if (expiration === void 0) { expiration = null; }
         // date needs to be an ISO string or null
         var expString = expiration !== null ? expiration.toISOString() : null;
         // clone using the factory and send the request
-        return this.clone(QueryableShareable, "shareLink", true).postAsCore({
+        return this.clone(SharePointQueryableShareable, "shareLink").postAsCore({
             body: JSON.stringify({
                 request: {
                     createLink: true,
@@ -4016,7 +3971,7 @@ var QueryableShareable = (function (_super) {
      * @param propagateAcl True to apply this share to all children
      * @param emailData If supplied an email will be sent with the indicated properties
      */
-    QueryableShareable.prototype.shareWith = function (loginNames, role, requireSignin, propagateAcl, emailData) {
+    SharePointQueryableShareable.prototype.shareWith = function (loginNames, role, requireSignin, propagateAcl, emailData) {
         var _this = this;
         if (requireSignin === void 0) { requireSignin = false; }
         if (propagateAcl === void 0) { propagateAcl = false; }
@@ -4045,7 +4000,7 @@ var QueryableShareable = (function (_super) {
                     sendEmail: true,
                 });
             }
-            return _this.clone(QueryableShareable, "shareObject", true).postAsCore({
+            return _this.clone(SharePointQueryableShareable, "shareObject").postAsCore({
                 body: JSON.stringify(postBody),
             });
         });
@@ -4056,7 +4011,7 @@ var QueryableShareable = (function (_super) {
      * @param options The set of options to send to the ShareObject method
      * @param bypass If true any processing is skipped and the options are sent directly to the ShareObject method
      */
-    QueryableShareable.prototype.shareObject = function (options, bypass) {
+    SharePointQueryableShareable.prototype.shareObject = function (options, bypass) {
         var _this = this;
         if (bypass === void 0) { bypass = false; }
         if (bypass) {
@@ -4096,8 +4051,8 @@ var QueryableShareable = (function (_super) {
      *
      * @param url The url of the object to unshare
      */
-    QueryableShareable.prototype.unshareObjectWeb = function (url) {
-        return this.clone(QueryableShareable, "unshareObject", true).postAsCore({
+    SharePointQueryableShareable.prototype.unshareObjectWeb = function (url) {
+        return this.clone(SharePointQueryableShareable, "unshareObject").postAsCore({
             body: JSON.stringify({
                 url: url,
             }),
@@ -4108,8 +4063,8 @@ var QueryableShareable = (function (_super) {
      *
      * @param recipients The array of Entities for which Permissions need to be checked.
      */
-    QueryableShareable.prototype.checkPermissions = function (recipients) {
-        return this.clone(QueryableShareable, "checkPermissions", true).postAsCore({
+    SharePointQueryableShareable.prototype.checkPermissions = function (recipients) {
+        return this.clone(SharePointQueryableShareable, "checkPermissions").postAsCore({
             body: JSON.stringify({
                 recipients: recipients,
             }),
@@ -4120,9 +4075,9 @@ var QueryableShareable = (function (_super) {
      *
      * @param request The SharingInformationRequest Object.
      */
-    QueryableShareable.prototype.getSharingInformation = function (request) {
+    SharePointQueryableShareable.prototype.getSharingInformation = function (request) {
         if (request === void 0) { request = null; }
-        return this.clone(QueryableShareable, "getSharingInformation", true).postAsCore({
+        return this.clone(SharePointQueryableShareable, "getSharingInformation").postAsCore({
             body: JSON.stringify({
                 request: request,
             }),
@@ -4133,9 +4088,9 @@ var QueryableShareable = (function (_super) {
      *
      * @param useSimplifiedRoles Determines whether to use simplified roles.
      */
-    QueryableShareable.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
+    SharePointQueryableShareable.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
         if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
-        return this.clone(QueryableShareable, "getObjectSharingSettings", true).postAsCore({
+        return this.clone(SharePointQueryableShareable, "getObjectSharingSettings").postAsCore({
             body: JSON.stringify({
                 useSimplifiedRoles: useSimplifiedRoles,
             }),
@@ -4144,16 +4099,16 @@ var QueryableShareable = (function (_super) {
     /**
      * Unshares this object
      */
-    QueryableShareable.prototype.unshareObject = function () {
-        return this.clone(QueryableShareable, "unshareObject", true).postAsCore();
+    SharePointQueryableShareable.prototype.unshareObject = function () {
+        return this.clone(SharePointQueryableShareable, "unshareObject").postAsCore();
     };
     /**
      * Deletes a link by type
      *
      * @param kind Deletes a sharing link by the kind of link
      */
-    QueryableShareable.prototype.deleteLinkByKind = function (kind) {
-        return this.clone(QueryableShareable, "deleteLinkByKind", true).postCore({
+    SharePointQueryableShareable.prototype.deleteLinkByKind = function (kind) {
+        return this.clone(SharePointQueryableShareable, "deleteLinkByKind").postCore({
             body: JSON.stringify({ linkKind: kind }),
         });
     };
@@ -4163,9 +4118,9 @@ var QueryableShareable = (function (_super) {
      * @param kind The kind of link to be deleted.
      * @param shareId
      */
-    QueryableShareable.prototype.unshareLink = function (kind, shareId) {
+    SharePointQueryableShareable.prototype.unshareLink = function (kind, shareId) {
         if (shareId === void 0) { shareId = "00000000-0000-0000-0000-000000000000"; }
-        return this.clone(QueryableShareable, "unshareLink", true).postCore({
+        return this.clone(SharePointQueryableShareable, "unshareLink").postCore({
             body: JSON.stringify({ linkKind: kind, shareId: shareId }),
         });
     };
@@ -4175,7 +4130,7 @@ var QueryableShareable = (function (_super) {
      * @param role The Sharing Role
      * @param group The Group type
      */
-    QueryableShareable.prototype.getRoleValue = function (role, group) {
+    SharePointQueryableShareable.prototype.getRoleValue = function (role, group) {
         // we will give group precedence, because we had to make a choice
         if (typeof group !== "undefined" && group !== null) {
             switch (group) {
@@ -4198,22 +4153,22 @@ var QueryableShareable = (function (_super) {
             });
         }
     };
-    QueryableShareable.prototype.getShareObjectWeb = function (candidate) {
+    SharePointQueryableShareable.prototype.getShareObjectWeb = function (candidate) {
         return Promise.resolve(webs_1.Web.fromUrl(candidate, "/_api/SP.Web.ShareObject"));
     };
-    QueryableShareable.prototype.sendShareObjectRequest = function (options) {
+    SharePointQueryableShareable.prototype.sendShareObjectRequest = function (options) {
         return this.getShareObjectWeb(this.toUrl()).then(function (web) {
-            return web.expand("UsersWithAccessRequests", "GroupsSharedWith").as(QueryableShareable).postCore({
+            return web.expand("UsersWithAccessRequests", "GroupsSharedWith").as(SharePointQueryableShareable).postCore({
                 body: JSON.stringify(options),
             });
         });
     };
-    return QueryableShareable;
-}(queryable_1.Queryable));
-exports.QueryableShareable = QueryableShareable;
-var QueryableShareableWeb = (function (_super) {
-    __extends(QueryableShareableWeb, _super);
-    function QueryableShareableWeb() {
+    return SharePointQueryableShareable;
+}(sharepointqueryable_1.SharePointQueryable));
+exports.SharePointQueryableShareable = SharePointQueryableShareable;
+var SharePointQueryableShareableWeb = /** @class */ (function (_super) {
+    __extends(SharePointQueryableShareableWeb, _super);
+    function SharePointQueryableShareableWeb() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
@@ -4222,7 +4177,7 @@ var QueryableShareableWeb = (function (_super) {
      * @param role The role to share this web
      * @param emailData Optional email data
      */
-    QueryableShareableWeb.prototype.shareWith = function (loginNames, role, emailData) {
+    SharePointQueryableShareableWeb.prototype.shareWith = function (loginNames, role, emailData) {
         var _this = this;
         if (role === void 0) { role = types_1.SharingRole.View; }
         var dependency = this.addBatchDependency();
@@ -4243,11 +4198,11 @@ var QueryableShareableWeb = (function (_super) {
      * @param includeAnonymousLinkInEmail
      * @param useSimplifiedRoles
      */
-    QueryableShareableWeb.prototype.shareObject = function (url, loginNames, role, emailData, group, propagateAcl, includeAnonymousLinkInEmail, useSimplifiedRoles) {
+    SharePointQueryableShareableWeb.prototype.shareObject = function (url, loginNames, role, emailData, group, propagateAcl, includeAnonymousLinkInEmail, useSimplifiedRoles) {
         if (propagateAcl === void 0) { propagateAcl = false; }
         if (includeAnonymousLinkInEmail === void 0) { includeAnonymousLinkInEmail = false; }
         if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
-        return this.clone(QueryableShareable, null, true).shareObject({
+        return this.clone(SharePointQueryableShareable, null).shareObject({
             emailData: emailData,
             group: group,
             includeAnonymousLinkInEmail: includeAnonymousLinkInEmail,
@@ -4263,23 +4218,23 @@ var QueryableShareableWeb = (function (_super) {
      *
      * @param options The set of options to send to ShareObject
      */
-    QueryableShareableWeb.prototype.shareObjectRaw = function (options) {
-        return this.clone(QueryableShareable, null, true).shareObject(options, true);
+    SharePointQueryableShareableWeb.prototype.shareObjectRaw = function (options) {
+        return this.clone(SharePointQueryableShareable, null).shareObject(options, true);
     };
     /**
      * Unshares the object
      *
      * @param url The url of the object to stop sharing
      */
-    QueryableShareableWeb.prototype.unshareObject = function (url) {
-        return this.clone(QueryableShareable, null, true).unshareObjectWeb(url);
+    SharePointQueryableShareableWeb.prototype.unshareObject = function (url) {
+        return this.clone(SharePointQueryableShareable, null).unshareObjectWeb(url);
     };
-    return QueryableShareableWeb;
-}(queryablesecurable_1.QueryableSecurable));
-exports.QueryableShareableWeb = QueryableShareableWeb;
-var QueryableShareableItem = (function (_super) {
-    __extends(QueryableShareableItem, _super);
-    function QueryableShareableItem() {
+    return SharePointQueryableShareableWeb;
+}(sharepointqueryablesecurable_1.SharePointQueryableSecurable));
+exports.SharePointQueryableShareableWeb = SharePointQueryableShareableWeb;
+var SharePointQueryableShareableItem = /** @class */ (function (_super) {
+    __extends(SharePointQueryableShareableItem, _super);
+    function SharePointQueryableShareableItem() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
@@ -4288,10 +4243,10 @@ var QueryableShareableItem = (function (_super) {
      * @param kind The type of link to share
      * @param expiration The optional expiration date
      */
-    QueryableShareableItem.prototype.getShareLink = function (kind, expiration) {
+    SharePointQueryableShareableItem.prototype.getShareLink = function (kind, expiration) {
         if (kind === void 0) { kind = types_1.SharingLinkKind.OrganizationView; }
         if (expiration === void 0) { expiration = null; }
-        return this.clone(QueryableShareable, null, true).getShareLink(kind, expiration);
+        return this.clone(SharePointQueryableShareable, null).getShareLink(kind, expiration);
     };
     /**
      * Shares this item with one or more users
@@ -4300,50 +4255,50 @@ var QueryableShareableItem = (function (_super) {
      * @param role The role (View | Edit) applied to the share
      * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
      */
-    QueryableShareableItem.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
+    SharePointQueryableShareableItem.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
         if (role === void 0) { role = types_1.SharingRole.View; }
         if (requireSignin === void 0) { requireSignin = false; }
-        return this.clone(QueryableShareable, null, true).shareWith(loginNames, role, requireSignin, false, emailData);
+        return this.clone(SharePointQueryableShareable, null).shareWith(loginNames, role, requireSignin, false, emailData);
     };
     /**
      * Checks Permissions on the list of Users and returns back role the users have on the Item.
      *
      * @param recipients The array of Entities for which Permissions need to be checked.
      */
-    QueryableShareableItem.prototype.checkSharingPermissions = function (recipients) {
-        return this.clone(QueryableShareable, null, true).checkPermissions(recipients);
+    SharePointQueryableShareableItem.prototype.checkSharingPermissions = function (recipients) {
+        return this.clone(SharePointQueryableShareable, null).checkPermissions(recipients);
     };
     /**
      * Get Sharing Information.
      *
      * @param request The SharingInformationRequest Object.
      */
-    QueryableShareableItem.prototype.getSharingInformation = function (request) {
+    SharePointQueryableShareableItem.prototype.getSharingInformation = function (request) {
         if (request === void 0) { request = null; }
-        return this.clone(QueryableShareable, null, true).getSharingInformation(request);
+        return this.clone(SharePointQueryableShareable, null).getSharingInformation(request);
     };
     /**
      * Gets the sharing settings of an item.
      *
      * @param useSimplifiedRoles Determines whether to use simplified roles.
      */
-    QueryableShareableItem.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
+    SharePointQueryableShareableItem.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
         if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
-        return this.clone(QueryableShareable, null, true).getObjectSharingSettings(useSimplifiedRoles);
+        return this.clone(SharePointQueryableShareable, null).getObjectSharingSettings(useSimplifiedRoles);
     };
     /**
      * Unshare this item
      */
-    QueryableShareableItem.prototype.unshare = function () {
-        return this.clone(QueryableShareable, null, true).unshareObject();
+    SharePointQueryableShareableItem.prototype.unshare = function () {
+        return this.clone(SharePointQueryableShareable, null).unshareObject();
     };
     /**
      * Deletes a sharing link by kind
      *
      * @param kind Deletes a sharing link by the kind of link
      */
-    QueryableShareableItem.prototype.deleteSharingLinkByKind = function (kind) {
-        return this.clone(QueryableShareable, null, true).deleteLinkByKind(kind);
+    SharePointQueryableShareableItem.prototype.deleteSharingLinkByKind = function (kind) {
+        return this.clone(SharePointQueryableShareable, null).deleteLinkByKind(kind);
     };
     /**
      * Removes the specified link to the item.
@@ -4351,13 +4306,13 @@ var QueryableShareableItem = (function (_super) {
      * @param kind The kind of link to be deleted.
      * @param shareId
      */
-    QueryableShareableItem.prototype.unshareLink = function (kind, shareId) {
-        return this.clone(QueryableShareable, null, true).unshareLink(kind, shareId);
+    SharePointQueryableShareableItem.prototype.unshareLink = function (kind, shareId) {
+        return this.clone(SharePointQueryableShareable, null).unshareLink(kind, shareId);
     };
-    return QueryableShareableItem;
-}(queryablesecurable_1.QueryableSecurable));
-exports.QueryableShareableItem = QueryableShareableItem;
-var FileFolderShared = (function (_super) {
+    return SharePointQueryableShareableItem;
+}(sharepointqueryablesecurable_1.SharePointQueryableSecurable));
+exports.SharePointQueryableShareableItem = SharePointQueryableShareableItem;
+var FileFolderShared = /** @class */ (function (_super) {
     __extends(FileFolderShared, _super);
     function FileFolderShared() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4456,8 +4411,8 @@ var FileFolderShared = (function (_super) {
     FileFolderShared.prototype.getShareable = function () {
         var _this = this;
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
-        return this.clone(QueryableShareableFile, "listItemAllFields", false).select("odata.editlink").get().then(function (d) {
-            var shareable = new QueryableShareable(odata_1.getEntityUrl(d));
+        return this.clone(SharePointQueryableShareableFile, "listItemAllFields", false).select("odata.editlink").get().then(function (d) {
+            var shareable = new SharePointQueryableShareable(odata_1.spGetEntityUrl(d));
             // we need to handle batching
             if (_this.hasBatch) {
                 shareable = shareable.inBatch(_this.batch);
@@ -4466,11 +4421,11 @@ var FileFolderShared = (function (_super) {
         });
     };
     return FileFolderShared;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.FileFolderShared = FileFolderShared;
-var QueryableShareableFile = (function (_super) {
-    __extends(QueryableShareableFile, _super);
-    function QueryableShareableFile() {
+var SharePointQueryableShareableFile = /** @class */ (function (_super) {
+    __extends(SharePointQueryableShareableFile, _super);
+    function SharePointQueryableShareableFile() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
@@ -4482,7 +4437,7 @@ var QueryableShareableFile = (function (_super) {
      * @param requireSignin If true the user must signin to view link, otherwise anyone with the link can access the resource
      * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
      */
-    QueryableShareableFile.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
+    SharePointQueryableShareableFile.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
         if (role === void 0) { role = types_1.SharingRole.View; }
         if (requireSignin === void 0) { requireSignin = false; }
         var dependency = this.addBatchDependency();
@@ -4491,12 +4446,12 @@ var QueryableShareableFile = (function (_super) {
             return shareable.shareWith(loginNames, role, requireSignin, false, emailData);
         });
     };
-    return QueryableShareableFile;
+    return SharePointQueryableShareableFile;
 }(FileFolderShared));
-exports.QueryableShareableFile = QueryableShareableFile;
-var QueryableShareableFolder = (function (_super) {
-    __extends(QueryableShareableFolder, _super);
-    function QueryableShareableFolder() {
+exports.SharePointQueryableShareableFile = SharePointQueryableShareableFile;
+var SharePointQueryableShareableFolder = /** @class */ (function (_super) {
+    __extends(SharePointQueryableShareableFolder, _super);
+    function SharePointQueryableShareableFolder() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
@@ -4508,7 +4463,7 @@ var QueryableShareableFolder = (function (_super) {
      * @param requireSignin If true the user must signin to view link, otherwise anyone with the link can access the resource
      * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
      */
-    QueryableShareableFolder.prototype.shareWith = function (loginNames, role, requireSignin, shareEverything, emailData) {
+    SharePointQueryableShareableFolder.prototype.shareWith = function (loginNames, role, requireSignin, shareEverything, emailData) {
         if (role === void 0) { role = types_1.SharingRole.View; }
         if (requireSignin === void 0) { requireSignin = false; }
         if (shareEverything === void 0) { shareEverything = false; }
@@ -4518,18 +4473,17 @@ var QueryableShareableFolder = (function (_super) {
             return shareable.shareWith(loginNames, role, requireSignin, shareEverything, emailData);
         });
     };
-    return QueryableShareableFolder;
+    return SharePointQueryableShareableFolder;
 }(FileFolderShared));
-exports.QueryableShareableFolder = QueryableShareableFolder;
+exports.SharePointQueryableShareableFolder = SharePointQueryableShareableFolder;
 
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-// reference: https://msdn.microsoft.com/en-us/library/office/dn600183.aspx
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Determines the display mode of the given control or view
@@ -4951,10 +4905,18 @@ var SharingDomainRestrictionMode;
     SharingDomainRestrictionMode[SharingDomainRestrictionMode["AllowList"] = 1] = "AllowList";
     SharingDomainRestrictionMode[SharingDomainRestrictionMode["BlockList"] = 2] = "BlockList";
 })(SharingDomainRestrictionMode = exports.SharingDomainRestrictionMode || (exports.SharingDomainRestrictionMode = {}));
+var RenderListDataOptions;
+(function (RenderListDataOptions) {
+    RenderListDataOptions[RenderListDataOptions["None"] = 0] = "None";
+    RenderListDataOptions[RenderListDataOptions["ContextInfo"] = 1] = "ContextInfo";
+    RenderListDataOptions[RenderListDataOptions["ListData"] = 2] = "ListData";
+    RenderListDataOptions[RenderListDataOptions["ListSchema"] = 4] = "ListSchema";
+    RenderListDataOptions[RenderListDataOptions["MenuView"] = 8] = "MenuView";
+})(RenderListDataOptions = exports.RenderListDataOptions || (exports.RenderListDataOptions = {}));
 
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4970,22 +4932,22 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var queryableshareable_1 = __webpack_require__(12);
-var files_1 = __webpack_require__(8);
+var sharepointqueryable_1 = __webpack_require__(1);
+var sharepointqueryableshareable_1 = __webpack_require__(15);
+var files_1 = __webpack_require__(11);
 var util_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var items_1 = __webpack_require__(11);
+var odata_1 = __webpack_require__(6);
+var items_1 = __webpack_require__(14);
 /**
  * Describes a collection of Folder objects
  *
  */
-var Folders = (function (_super) {
+var Folders = /** @class */ (function (_super) {
     __extends(Folders, _super);
     /**
      * Creates a new instance of the Folders class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
      */
     function Folders(baseUrl, path) {
         if (path === void 0) { path = "folders"; }
@@ -5008,7 +4970,7 @@ var Folders = (function (_super) {
      */
     Folders.prototype.add = function (url) {
         var _this = this;
-        return this.clone(Folders, "add('" + url + "')", true).postCore().then(function (response) {
+        return this.clone(Folders, "add('" + url + "')").postCore().then(function (response) {
             return {
                 data: response,
                 folder: _this.getByName(url),
@@ -5016,13 +4978,13 @@ var Folders = (function (_super) {
         });
     };
     return Folders;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Folders = Folders;
 /**
  * Describes a single Folder instance
  *
  */
-var Folder = (function (_super) {
+var Folder = /** @class */ (function (_super) {
     __extends(Folder, _super);
     function Folder() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5033,7 +4995,7 @@ var Folder = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableCollection(this, "contentTypeOrder");
+            return new sharepointqueryable_1.SharePointQueryableCollection(this, "contentTypeOrder");
         },
         enumerable: true,
         configurable: true
@@ -5066,7 +5028,7 @@ var Folder = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableCollection(this, "listItemAllFields");
+            return new sharepointqueryable_1.SharePointQueryableCollection(this, "listItemAllFields");
         },
         enumerable: true,
         configurable: true
@@ -5088,7 +5050,7 @@ var Folder = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableInstance(this, "properties");
+            return new sharepointqueryable_1.SharePointQueryableInstance(this, "properties");
         },
         enumerable: true,
         configurable: true
@@ -5099,7 +5061,7 @@ var Folder = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.Queryable(this, "serverRelativeUrl");
+            return new sharepointqueryable_1.SharePointQueryable(this, "serverRelativeUrl");
         },
         enumerable: true,
         configurable: true
@@ -5110,7 +5072,7 @@ var Folder = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableCollection(this, "uniqueContentTypeOrder");
+            return new sharepointqueryable_1.SharePointQueryableCollection(this, "uniqueContentTypeOrder");
         },
         enumerable: true,
         configurable: true
@@ -5139,7 +5101,7 @@ var Folder = (function (_super) {
     */
     Folder.prototype.delete = function (eTag) {
         if (eTag === void 0) { eTag = "*"; }
-        return this.clone(Folder, null, true).postCore({
+        return this.clone(Folder, null).postCore({
             headers: {
                 "IF-Match": eTag,
                 "X-HTTP-Method": "DELETE",
@@ -5150,7 +5112,7 @@ var Folder = (function (_super) {
      * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     Folder.prototype.recycle = function () {
-        return this.clone(Folder, "recycle", true).postCore();
+        return this.clone(Folder, "recycle").postCore();
     };
     /**
      * Gets the associated list item for this folder, loading the default properties
@@ -5162,30 +5124,30 @@ var Folder = (function (_super) {
         }
         var q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then(function (d) {
-            return util_1.Util.extend(new items_1.Item(odata_1.getEntityUrl(d)), d);
+            return util_1.Util.extend(new items_1.Item(odata_1.spGetEntityUrl(d)), d);
         });
     };
     return Folder;
-}(queryableshareable_1.QueryableShareableFolder));
+}(sharepointqueryableshareable_1.SharePointQueryableShareableFolder));
 exports.Folder = Folder;
 
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var collections_1 = __webpack_require__(6);
-var pnplibconfig_1 = __webpack_require__(4);
-var logging_1 = __webpack_require__(5);
+var collections_1 = __webpack_require__(8);
+var pnplibconfig_1 = __webpack_require__(3);
+var logging_1 = __webpack_require__(4);
 /**
  * A wrapper class to provide a consistent interface to browser based storage
  *
  */
-var PnPClientStorageWrapper = (function () {
+var PnPClientStorageWrapper = /** @class */ (function () {
     /**
      * Creates a new instance of the PnPClientStorageWrapper class
      *
@@ -5350,7 +5312,7 @@ exports.PnPClientStorageWrapper = PnPClientStorageWrapper;
 /**
  * A thin implementation of in-memory storage for use in nodejs
  */
-var MemoryStorage = (function () {
+var MemoryStorage = /** @class */ (function () {
     function MemoryStorage(_store) {
         if (_store === void 0) { _store = new collections_1.Dictionary(); }
         this._store = _store;
@@ -5382,7 +5344,7 @@ var MemoryStorage = (function () {
 /**
  * A class that will establish wrappers for both local and session storage
  */
-var PnPClientStorage = (function () {
+var PnPClientStorage = /** @class */ (function () {
     /**
      * Creates a new instance of the PnPClientStorage class
      *
@@ -5426,7 +5388,474 @@ exports.PnPClientStorage = PnPClientStorage;
 
 
 /***/ }),
-/* 16 */
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var utils_1 = __webpack_require__(9);
+var parsers_1 = __webpack_require__(7);
+var pnplibconfig_1 = __webpack_require__(3);
+var pipeline_1 = __webpack_require__(20);
+var ODataQueryable = /** @class */ (function () {
+    function ODataQueryable() {
+    }
+    /**
+     * Directly concatonates the supplied string to the current url, not normalizing "/" chars
+     *
+     * @param pathPart The string to concatonate to the url
+     */
+    ODataQueryable.prototype.concat = function (pathPart) {
+        this._url += pathPart;
+        return this;
+    };
+    /**
+     * Appends the given string and normalizes "/" chars
+     *
+     * @param pathPart The string to append
+     */
+    ODataQueryable.prototype.append = function (pathPart) {
+        this._url = util_1.Util.combinePaths(this._url, pathPart);
+    };
+    Object.defineProperty(ODataQueryable.prototype, "parentUrl", {
+        /**
+         * Gets the parent url used when creating this instance
+         *
+         */
+        get: function () {
+            return this._parentUrl;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ODataQueryable.prototype, "query", {
+        /**
+         * Provides access to the query builder for this url
+         *
+         */
+        get: function () {
+            return this._query;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Sets custom options for current object and all derived objects accessible via chaining
+     *
+     * @param options custom options
+     */
+    ODataQueryable.prototype.configure = function (options) {
+        utils_1.mergeOptions(this._options, options);
+        return this;
+    };
+    /**
+     * Enables caching for this request
+     *
+     * @param options Defines the options used when caching this request
+     */
+    ODataQueryable.prototype.usingCaching = function (options) {
+        if (!pnplibconfig_1.RuntimeConfig.globalCacheDisable) {
+            this._useCaching = true;
+            this._cachingOptions = options;
+        }
+        return this;
+    };
+    /**
+     * Gets the currentl url, made absolute based on the availability of the _spPageContextInfo object
+     *
+     */
+    ODataQueryable.prototype.toUrl = function () {
+        return this._url;
+    };
+    /**
+     * Executes the currently built request
+     *
+     * @param parser Allows you to specify a parser to handle the result
+     * @param getOptions The options used for this request
+     */
+    ODataQueryable.prototype.get = function (parser, options) {
+        if (parser === void 0) { parser = new parsers_1.ODataDefaultParser(); }
+        if (options === void 0) { options = {}; }
+        return this.toRequestContext("GET", options, parser, pipeline_1.PipelineMethods.default).then(function (context) { return pipeline_1.pipe(context); });
+    };
+    ODataQueryable.prototype.getAs = function (parser, options) {
+        if (parser === void 0) { parser = new parsers_1.ODataDefaultParser(); }
+        if (options === void 0) { options = {}; }
+        return this.toRequestContext("GET", options, parser, pipeline_1.PipelineMethods.default).then(function (context) { return pipeline_1.pipe(context); });
+    };
+    ODataQueryable.prototype.postCore = function (options, parser) {
+        if (options === void 0) { options = {}; }
+        if (parser === void 0) { parser = new parsers_1.ODataDefaultParser(); }
+        return this.toRequestContext("POST", options, parser, pipeline_1.PipelineMethods.default).then(function (context) { return pipeline_1.pipe(context); });
+    };
+    ODataQueryable.prototype.postAsCore = function (options, parser) {
+        if (options === void 0) { options = {}; }
+        if (parser === void 0) { parser = new parsers_1.ODataDefaultParser(); }
+        return this.toRequestContext("POST", options, parser, pipeline_1.PipelineMethods.default).then(function (context) { return pipeline_1.pipe(context); });
+    };
+    ODataQueryable.prototype.patchCore = function (options, parser) {
+        if (options === void 0) { options = {}; }
+        if (parser === void 0) { parser = new parsers_1.ODataDefaultParser(); }
+        return this.toRequestContext("PATCH", options, parser, pipeline_1.PipelineMethods.default).then(function (context) { return pipeline_1.pipe(context); });
+    };
+    ODataQueryable.prototype.deleteCore = function (options, parser) {
+        if (options === void 0) { options = {}; }
+        if (parser === void 0) { parser = new parsers_1.ODataDefaultParser(); }
+        return this.toRequestContext("DELETE", options, parser, pipeline_1.PipelineMethods.default).then(function (context) { return pipeline_1.pipe(context); });
+    };
+    return ODataQueryable;
+}());
+exports.ODataQueryable = ODataQueryable;
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var caching_1 = __webpack_require__(29);
+var logging_1 = __webpack_require__(4);
+var util_1 = __webpack_require__(0);
+/**
+ * Resolves the context's result value
+ *
+ * @param context The current context
+ */
+function returnResult(context) {
+    logging_1.Logger.log({
+        data: context.result,
+        level: logging_1.LogLevel.Verbose,
+        message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Returning result, see data property for value.",
+    });
+    return Promise.resolve(context.result);
+}
+/**
+ * Sets the result on the context
+ */
+function setResult(context, value) {
+    return new Promise(function (resolve) {
+        context.result = value;
+        context.hasResult = true;
+        resolve(context);
+    });
+}
+exports.setResult = setResult;
+/**
+ * Invokes the next method in the provided context's pipeline
+ *
+ * @param c The current request context
+ */
+function next(c) {
+    if (c.pipeline.length < 1) {
+        return Promise.resolve(c);
+    }
+    return c.pipeline.shift()(c);
+}
+/**
+ * Executes the current request context's pipeline
+ *
+ * @param context Current context
+ */
+function pipe(context) {
+    return next(context)
+        .then(function (ctx) { return returnResult(ctx); })
+        .catch(function (e) {
+        logging_1.Logger.log({
+            data: e,
+            level: logging_1.LogLevel.Error,
+            message: "Error in request pipeline: " + e.message,
+        });
+        throw e;
+    });
+}
+exports.pipe = pipe;
+/**
+ * decorator factory applied to methods in the pipeline to control behavior
+ */
+function requestPipelineMethod(alwaysRun) {
+    if (alwaysRun === void 0) { alwaysRun = false; }
+    return function (target, propertyKey, descriptor) {
+        var method = descriptor.value;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            // if we have a result already in the pipeline, pass it along and don't call the tagged method
+            if (!alwaysRun && args.length > 0 && args[0].hasOwnProperty("hasResult") && args[0].hasResult) {
+                logging_1.Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Skipping request pipeline method " + propertyKey + ", existing result in pipeline.", logging_1.LogLevel.Verbose);
+                return Promise.resolve(args[0]);
+            }
+            // apply the tagged method
+            logging_1.Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Calling request pipeline method " + propertyKey + ".", logging_1.LogLevel.Verbose);
+            // then chain the next method in the context's pipeline - allows for dynamic pipeline
+            return method.apply(target, args).then(function (ctx) { return next(ctx); });
+        };
+    };
+}
+exports.requestPipelineMethod = requestPipelineMethod;
+/**
+ * Contains the methods used within the request pipeline
+ */
+var PipelineMethods = /** @class */ (function () {
+    function PipelineMethods() {
+    }
+    /**
+     * Logs the start of the request
+     */
+    PipelineMethods.logStart = function (context) {
+        return new Promise(function (resolve) {
+            logging_1.Logger.log({
+                data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : context,
+                level: logging_1.LogLevel.Info,
+                message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Beginning " + context.verb + " request (" + context.requestAbsoluteUrl + ")",
+            });
+            resolve(context);
+        });
+    };
+    /**
+     * Handles caching of the request
+     */
+    PipelineMethods.caching = function (context) {
+        return new Promise(function (resolve) {
+            // handle caching, if applicable
+            if (context.verb === "GET" && context.isCached) {
+                logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Caching is enabled for request, checking cache...", logging_1.LogLevel.Info);
+                var cacheOptions = new caching_1.CachingOptions(context.requestAbsoluteUrl.toLowerCase());
+                if (typeof context.cachingOptions !== "undefined") {
+                    cacheOptions = util_1.Util.extend(cacheOptions, context.cachingOptions);
+                }
+                // we may not have a valid store
+                if (cacheOptions.store !== null) {
+                    // check if we have the data in cache and if so resolve the promise and return
+                    var data = cacheOptions.store.get(cacheOptions.key);
+                    if (data !== null) {
+                        // ensure we clear any help batch dependency we are resolving from the cache
+                        logging_1.Logger.log({
+                            data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : data,
+                            level: logging_1.LogLevel.Info,
+                            message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
+                        });
+                        context.batchDependency();
+                        return setResult(context, data).then(function (ctx) { return resolve(ctx); });
+                    }
+                }
+                logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Value not found in cache.", logging_1.LogLevel.Info);
+                // if we don't then wrap the supplied parser in the caching parser wrapper
+                // and send things on their way
+                context.parser = new caching_1.CachingParserWrapper(context.parser, cacheOptions);
+            }
+            return resolve(context);
+        });
+    };
+    /**
+     * Sends the request
+     */
+    PipelineMethods.send = function (context) {
+        return new Promise(function (resolve, reject) {
+            // send or batch the request
+            if (context.isBatched) {
+                // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
+                var p = context.batch.add(context.requestAbsoluteUrl, context.verb, context.options, context.parser);
+                // we release the dependency here to ensure the batch does not execute until the request is added to the batch
+                context.batchDependency();
+                logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request in batch " + context.batch.batchId + ".", logging_1.LogLevel.Info);
+                // we set the result as the promise which will be resolved by the batch's execution
+                resolve(setResult(context, p));
+            }
+            else {
+                logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Sending request.", logging_1.LogLevel.Info);
+                // we are not part of a batch, so proceed as normal
+                var client = context.clientFactory();
+                var opts = util_1.Util.extend(context.options || {}, { method: context.verb });
+                client.fetch(context.requestAbsoluteUrl, opts)
+                    .then(function (response) { return context.parser.parse(response); })
+                    .then(function (result) { return setResult(context, result); })
+                    .then(function (ctx) { return resolve(ctx); })
+                    .catch(function (e) { return reject(e); });
+            }
+        });
+    };
+    /**
+     * Logs the end of the request
+     */
+    PipelineMethods.logEnd = function (context) {
+        return new Promise(function (resolve) {
+            if (context.isBatched) {
+                logging_1.Logger.log({
+                    data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : context,
+                    level: logging_1.LogLevel.Info,
+                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") " + context.verb + " request will complete in batch " + context.batch.batchId + ".",
+                });
+            }
+            else {
+                logging_1.Logger.log({
+                    data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : context,
+                    level: logging_1.LogLevel.Info,
+                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Completing " + context.verb + " request.",
+                });
+            }
+            resolve(context);
+        });
+    };
+    Object.defineProperty(PipelineMethods, "default", {
+        get: function () {
+            return [
+                PipelineMethods.logStart,
+                PipelineMethods.caching,
+                PipelineMethods.send,
+                PipelineMethods.logEnd,
+            ];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    __decorate([
+        requestPipelineMethod(true)
+    ], PipelineMethods, "logStart", null);
+    __decorate([
+        requestPipelineMethod()
+    ], PipelineMethods, "caching", null);
+    __decorate([
+        requestPipelineMethod()
+    ], PipelineMethods, "send", null);
+    __decorate([
+        requestPipelineMethod(true)
+    ], PipelineMethods, "logEnd", null);
+    return PipelineMethods;
+}());
+exports.PipelineMethods = PipelineMethods;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var digestcache_1 = __webpack_require__(45);
+var util_1 = __webpack_require__(0);
+var pnplibconfig_1 = __webpack_require__(3);
+var exceptions_1 = __webpack_require__(2);
+var utils_1 = __webpack_require__(9);
+var HttpClient = /** @class */ (function () {
+    function HttpClient() {
+        this._impl = pnplibconfig_1.RuntimeConfig.spFetchClientFactory();
+        this._digestCache = new digestcache_1.DigestCache(this);
+    }
+    HttpClient.prototype.fetch = function (url, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
+        var headers = new Headers();
+        // first we add the global headers so they can be overwritten by any passed in locally to this call
+        utils_1.mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.spHeaders);
+        // second we add the local options so we can overwrite the globals
+        utils_1.mergeHeaders(headers, options.headers);
+        // lastly we apply any default headers we need that may not exist
+        if (!headers.has("Accept")) {
+            headers.append("Accept", "application/json");
+        }
+        if (!headers.has("Content-Type")) {
+            headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
+        }
+        if (!headers.has("X-ClientService-ClientTag")) {
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:3.0.1");
+        }
+        opts = util_1.Util.extend(opts, { headers: headers });
+        if (opts.method && opts.method.toUpperCase() !== "GET") {
+            // if we have either a request digest or an authorization header we don't need a digest
+            if (!headers.has("X-RequestDigest") && !headers.has("Authorization")) {
+                var index = url.indexOf("_api/");
+                if (index < 0) {
+                    throw new exceptions_1.APIUrlException();
+                }
+                var webUrl = url.substr(0, index);
+                return this._digestCache.getDigest(webUrl)
+                    .then(function (digest) {
+                    headers.append("X-RequestDigest", digest);
+                    return _this.fetchRaw(url, opts);
+                });
+            }
+        }
+        return this.fetchRaw(url, opts);
+    };
+    HttpClient.prototype.fetchRaw = function (url, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        // here we need to normalize the headers
+        var rawHeaders = new Headers();
+        utils_1.mergeHeaders(rawHeaders, options.headers);
+        options = util_1.Util.extend(options, { headers: rawHeaders });
+        var retry = function (ctx) {
+            _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
+                // Check if request was throttled - http status code 429
+                // Check if request failed due to server unavailable - http status code 503
+                if (response.status !== 429 && response.status !== 503) {
+                    ctx.reject(response);
+                }
+                // grab our current delay
+                var delay = ctx.delay;
+                // Increment our counters.
+                ctx.delay *= 2;
+                ctx.attempts++;
+                // If we have exceeded the retry count, reject.
+                if (ctx.retryCount <= ctx.attempts) {
+                    ctx.reject(response);
+                }
+                // Set our retry timeout for {delay} milliseconds.
+                setTimeout(util_1.Util.getCtxCallback(_this, retry, ctx), delay);
+            });
+        };
+        return new Promise(function (resolve, reject) {
+            var retryContext = {
+                attempts: 0,
+                delay: 100,
+                reject: reject,
+                resolve: resolve,
+                retryCount: 7,
+            };
+            retry.call(_this, retryContext);
+        });
+    };
+    HttpClient.prototype.get = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "GET" });
+        return this.fetch(url, opts);
+    };
+    HttpClient.prototype.post = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "POST" });
+        return this.fetch(url, opts);
+    };
+    HttpClient.prototype.patch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "PATCH" });
+        return this.fetch(url, opts);
+    };
+    HttpClient.prototype.delete = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "DELETE" });
+        return this.fetch(url, opts);
+    };
+    return HttpClient;
+}());
+exports.HttpClient = HttpClient;
+
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5442,19 +5871,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var sitegroups_1 = __webpack_require__(17);
+var sharepointqueryable_1 = __webpack_require__(1);
+var sitegroups_1 = __webpack_require__(23);
 var util_1 = __webpack_require__(0);
 /**
  * Describes a set of role assignments for the current scope
  *
  */
-var RoleAssignments = (function (_super) {
+var RoleAssignments = /** @class */ (function (_super) {
     __extends(RoleAssignments, _super);
     /**
      * Creates a new instance of the RoleAssignments class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this role assignments collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this role assignments collection
      */
     function RoleAssignments(baseUrl, path) {
         if (path === void 0) { path = "roleassignments"; }
@@ -5468,7 +5897,7 @@ var RoleAssignments = (function (_super) {
      *
      */
     RoleAssignments.prototype.add = function (principalId, roleDefId) {
-        return this.clone(RoleAssignments, "addroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")", true).postCore();
+        return this.clone(RoleAssignments, "addroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")").postCore();
     };
     /**
      * Removes the role assignment with the specified principal and role definition from the collection
@@ -5478,7 +5907,7 @@ var RoleAssignments = (function (_super) {
      *
      */
     RoleAssignments.prototype.remove = function (principalId, roleDefId) {
-        return this.clone(RoleAssignments, "removeroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")", true).postCore();
+        return this.clone(RoleAssignments, "removeroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")").postCore();
     };
     /**
      * Gets the role assignment associated with the specified principal id from the collection.
@@ -5491,13 +5920,13 @@ var RoleAssignments = (function (_super) {
         return ra;
     };
     return RoleAssignments;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.RoleAssignments = RoleAssignments;
 /**
  * Describes a role assignment
  *
  */
-var RoleAssignment = (function (_super) {
+var RoleAssignment = /** @class */ (function (_super) {
     __extends(RoleAssignment, _super);
     function RoleAssignment() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5536,18 +5965,18 @@ var RoleAssignment = (function (_super) {
         });
     };
     return RoleAssignment;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.RoleAssignment = RoleAssignment;
 /**
  * Describes a collection of role definitions
  *
  */
-var RoleDefinitions = (function (_super) {
+var RoleDefinitions = /** @class */ (function (_super) {
     __extends(RoleDefinitions, _super);
     /**
      * Creates a new instance of the RoleDefinitions class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this role definitions collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this role definitions collection
      *
      */
     function RoleDefinitions(baseUrl, path) {
@@ -5607,13 +6036,13 @@ var RoleDefinitions = (function (_super) {
         });
     };
     return RoleDefinitions;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.RoleDefinitions = RoleDefinitions;
 /**
  * Describes a role definition
  *
  */
-var RoleDefinition = (function (_super) {
+var RoleDefinition = /** @class */ (function (_super) {
     __extends(RoleDefinition, _super);
     function RoleDefinition() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5662,30 +6091,30 @@ var RoleDefinition = (function (_super) {
         });
     };
     return RoleDefinition;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.RoleDefinition = RoleDefinition;
 /**
  * Describes the role definitons bound to a role assignment object
  *
  */
-var RoleDefinitionBindings = (function (_super) {
+var RoleDefinitionBindings = /** @class */ (function (_super) {
     __extends(RoleDefinitionBindings, _super);
     /**
      * Creates a new instance of the RoleDefinitionBindings class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this role definition bindings collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this role definition bindings collection
      */
     function RoleDefinitionBindings(baseUrl, path) {
         if (path === void 0) { path = "roledefinitionbindings"; }
         return _super.call(this, baseUrl, path) || this;
     }
     return RoleDefinitionBindings;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.RoleDefinitionBindings = RoleDefinitionBindings;
 
 
 /***/ }),
-/* 17 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5701,8 +6130,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var siteusers_1 = __webpack_require__(27);
+var sharepointqueryable_1 = __webpack_require__(1);
+var siteusers_1 = __webpack_require__(33);
 var util_1 = __webpack_require__(0);
 /**
  * Principal Type enum
@@ -5721,12 +6150,12 @@ var PrincipalType;
  * Describes a collection of site groups
  *
  */
-var SiteGroups = (function (_super) {
+var SiteGroups = /** @class */ (function (_super) {
     __extends(SiteGroups, _super);
     /**
      * Creates a new instance of the SiteGroups class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this group collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this group collection
      */
     function SiteGroups(baseUrl, path) {
         if (path === void 0) { path = "sitegroups"; }
@@ -5771,7 +6200,7 @@ var SiteGroups = (function (_super) {
      * @param id The id of the group to remove
      */
     SiteGroups.prototype.removeById = function (id) {
-        return this.clone(SiteGroups, "removeById('" + id + "')", true).postCore();
+        return this.clone(SiteGroups, "removeById('" + id + "')").postCore();
     };
     /**
      * Removes the cross-site group with the specified name from the collection
@@ -5779,16 +6208,16 @@ var SiteGroups = (function (_super) {
      * @param loginName The name of the group to remove
      */
     SiteGroups.prototype.removeByLoginName = function (loginName) {
-        return this.clone(SiteGroups, "removeByLoginName('" + loginName + "')", true).postCore();
+        return this.clone(SiteGroups, "removeByLoginName('" + loginName + "')").postCore();
     };
     return SiteGroups;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.SiteGroups = SiteGroups;
 /**
  * Describes a single group
  *
  */
-var SiteGroup = (function (_super) {
+var SiteGroup = /** @class */ (function (_super) {
     __extends(SiteGroup, _super);
     function SiteGroup() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5830,12 +6259,12 @@ var SiteGroup = (function (_super) {
         });
     };
     return SiteGroup;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.SiteGroup = SiteGroup;
 
 
 /***/ }),
-/* 18 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5852,17 +6281,17 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var queryable_1 = __webpack_require__(1);
+var sharepointqueryable_1 = __webpack_require__(1);
 /**
  * Describes a collection of content types
  *
  */
-var ContentTypes = (function (_super) {
+var ContentTypes = /** @class */ (function (_super) {
     __extends(ContentTypes, _super);
     /**
      * Creates a new instance of the ContentTypes class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this content types collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this content types collection
      */
     function ContentTypes(baseUrl, path) {
         if (path === void 0) { path = "contenttypes"; }
@@ -5886,7 +6315,7 @@ var ContentTypes = (function (_super) {
         var postBody = JSON.stringify({
             "contentTypeId": contentTypeId,
         });
-        return this.clone(ContentTypes, "addAvailableContentType", true).postAsCore({ body: postBody }).then(function (data) {
+        return this.clone(ContentTypes, "addAvailableContentType").postAsCore({ body: postBody }).then(function (data) {
             return {
                 contentType: _this.getById(data.id),
                 data: data,
@@ -5920,13 +6349,13 @@ var ContentTypes = (function (_super) {
         });
     };
     return ContentTypes;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.ContentTypes = ContentTypes;
 /**
  * Describes a single ContentType instance
  *
  */
-var ContentType = (function (_super) {
+var ContentType = /** @class */ (function (_super) {
     __extends(ContentType, _super);
     function ContentType() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5946,7 +6375,7 @@ var ContentType = (function (_super) {
          * Gets a value that specifies the collection of fields for the content type.
          */
         get: function () {
-            return new queryable_1.QueryableCollection(this, "fields");
+            return new sharepointqueryable_1.SharePointQueryableCollection(this, "fields");
         },
         enumerable: true,
         configurable: true
@@ -5966,7 +6395,7 @@ var ContentType = (function (_super) {
          * Gets a value that specifies the collection of workflow associations for the content type.
          */
         get: function () {
-            return new queryable_1.QueryableCollection(this, "workflowAssociations");
+            return new sharepointqueryable_1.SharePointQueryableCollection(this, "workflowAssociations");
         },
         enumerable: true,
         configurable: true
@@ -5982,17 +6411,17 @@ var ContentType = (function (_super) {
         });
     };
     return ContentType;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.ContentType = ContentType;
 /**
  * Represents a collection of field link instances
  */
-var FieldLinks = (function (_super) {
+var FieldLinks = /** @class */ (function (_super) {
     __extends(FieldLinks, _super);
     /**
      * Creates a new instance of the ContentType class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this content type instance
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this content type instance
      */
     function FieldLinks(baseUrl, path) {
         if (path === void 0) { path = "fieldlinks"; }
@@ -6009,23 +6438,23 @@ var FieldLinks = (function (_super) {
         return fl;
     };
     return FieldLinks;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.FieldLinks = FieldLinks;
 /**
  * Represents a field link instance
  */
-var FieldLink = (function (_super) {
+var FieldLink = /** @class */ (function (_super) {
     __extends(FieldLink, _super);
     function FieldLink() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return FieldLink;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.FieldLink = FieldLink;
 
 
 /***/ }),
-/* 19 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6041,18 +6470,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
+var sharepointqueryable_1 = __webpack_require__(1);
 var util_1 = __webpack_require__(0);
 /**
  * Describes a collection of user custom actions
  *
  */
-var UserCustomActions = (function (_super) {
+var UserCustomActions = /** @class */ (function (_super) {
     __extends(UserCustomActions, _super);
     /**
      * Creates a new instance of the UserCustomActions class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this user custom actions collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this user custom actions collection
      */
     function UserCustomActions(baseUrl, path) {
         if (path === void 0) { path = "usercustomactions"; }
@@ -6089,16 +6518,16 @@ var UserCustomActions = (function (_super) {
      *
      */
     UserCustomActions.prototype.clear = function () {
-        return this.clone(UserCustomActions, "clear", true).postCore();
+        return this.clone(UserCustomActions, "clear").postCore();
     };
     return UserCustomActions;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.UserCustomActions = UserCustomActions;
 /**
  * Describes a single user custom action
  *
  */
-var UserCustomAction = (function (_super) {
+var UserCustomAction = /** @class */ (function (_super) {
     __extends(UserCustomAction, _super);
     function UserCustomAction() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -6133,12 +6562,12 @@ var UserCustomAction = (function (_super) {
         return _super.prototype.deleteCore.call(this);
     };
     return UserCustomAction;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.UserCustomAction = UserCustomAction;
 
 
 /***/ }),
-/* 20 */
+/* 26 */
 /***/ (function(module, exports) {
 
 var g;
@@ -6165,7 +6594,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 21 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6174,7 +6603,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Makes requests using the fetch API
  */
-var FetchClient = (function () {
+var FetchClient = /** @class */ (function () {
     function FetchClient() {
     }
     FetchClient.prototype.fetch = function (url, options) {
@@ -6184,10 +6613,10 @@ var FetchClient = (function () {
 }());
 exports.FetchClient = FetchClient;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
 
 /***/ }),
-/* 22 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6203,12 +6632,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
+var sharepointqueryable_1 = __webpack_require__(1);
 var util_1 = __webpack_require__(0);
 /**
  * Allows for the fluent construction of search queries
  */
-var SearchQueryBuilder = (function () {
+var SearchQueryBuilder = /** @class */ (function () {
     function SearchQueryBuilder(queryText, _query) {
         if (queryText === void 0) { queryText = ""; }
         if (_query === void 0) { _query = {}; }
@@ -6445,7 +6874,7 @@ exports.SearchQueryBuilder = SearchQueryBuilder;
  * Describes the search API
  *
  */
-var Search = (function (_super) {
+var Search = /** @class */ (function (_super) {
     __extends(Search, _super);
     /**
      * Creates a new instance of the Search class
@@ -6502,12 +6931,12 @@ var Search = (function (_super) {
         return { results: prop };
     };
     return Search;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.Search = Search;
 /**
  * Describes the SearchResults class, which returns the formatted and raw version of the query response
  */
-var SearchResults = (function () {
+var SearchResults = /** @class */ (function () {
     /**
      * Creates a new instance of the SearchResult class
      *
@@ -6653,7 +7082,7 @@ var QueryPropertyValueType;
     QueryPropertyValueType[QueryPropertyValueType["StringArrayType"] = 4] = "StringArrayType";
     QueryPropertyValueType[QueryPropertyValueType["UnSupportedType"] = 5] = "UnSupportedType";
 })(QueryPropertyValueType = exports.QueryPropertyValueType || (exports.QueryPropertyValueType = {}));
-var SearchBuiltInSourceId = (function () {
+var SearchBuiltInSourceId = /** @class */ (function () {
     function SearchBuiltInSourceId() {
     }
     SearchBuiltInSourceId.Documents = "e7ec8cee-ded8-43c9-beb5-436b54b31e84";
@@ -6677,16 +7106,16 @@ exports.SearchBuiltInSourceId = SearchBuiltInSourceId;
 
 
 /***/ }),
-/* 23 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var storage_1 = __webpack_require__(15);
+var storage_1 = __webpack_require__(18);
 var util_1 = __webpack_require__(0);
-var pnplibconfig_1 = __webpack_require__(4);
-var CachingOptions = (function () {
+var pnplibconfig_1 = __webpack_require__(3);
+var CachingOptions = /** @class */ (function () {
     function CachingOptions(key) {
         this.key = key;
         this.expiration = util_1.Util.dateAdd(new Date(), "second", pnplibconfig_1.RuntimeConfig.defaultCachingTimeoutSeconds);
@@ -6708,7 +7137,7 @@ var CachingOptions = (function () {
     return CachingOptions;
 }());
 exports.CachingOptions = CachingOptions;
-var CachingParserWrapper = (function () {
+var CachingParserWrapper = /** @class */ (function () {
     function CachingParserWrapper(_parser, _cacheOptions) {
         this._parser = _parser;
         this._cacheOptions = _cacheOptions;
@@ -6729,7 +7158,7 @@ exports.CachingParserWrapper = CachingParserWrapper;
 
 
 /***/ }),
-/* 24 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6745,8 +7174,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var SearchSuggest = (function (_super) {
+var sharepointqueryable_1 = __webpack_require__(1);
+var SearchSuggest = /** @class */ (function (_super) {
     __extends(SearchSuggest, _super);
     function SearchSuggest(baseUrl, path) {
         if (path === void 0) { path = "_api/search/suggest"; }
@@ -6790,9 +7219,9 @@ var SearchSuggest = (function (_super) {
         }
     };
     return SearchSuggest;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.SearchSuggest = SearchSuggest;
-var SearchSuggestResult = (function () {
+var SearchSuggestResult = /** @class */ (function () {
     function SearchSuggestResult(json) {
         if (json.hasOwnProperty("suggest")) {
             // verbose
@@ -6812,7 +7241,7 @@ exports.SearchSuggestResult = SearchSuggestResult;
 
 
 /***/ }),
-/* 25 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6828,21 +7257,22 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var webs_1 = __webpack_require__(7);
-var usercustomactions_1 = __webpack_require__(19);
-var odata_1 = __webpack_require__(2);
-var features_1 = __webpack_require__(31);
+var sharepointqueryable_1 = __webpack_require__(1);
+var webs_1 = __webpack_require__(10);
+var usercustomactions_1 = __webpack_require__(25);
+var odata_1 = __webpack_require__(6);
+var batch_1 = __webpack_require__(37);
+var features_1 = __webpack_require__(38);
 /**
  * Describes a site collection
  *
  */
-var Site = (function (_super) {
+var Site = /** @class */ (function (_super) {
     __extends(Site, _super);
     /**
      * Creates a new instance of the Site class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this site collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this site collection
      */
     function Site(baseUrl, path) {
         if (path === void 0) { path = "_api/site"; }
@@ -6903,7 +7333,7 @@ var Site = (function (_super) {
      * @param absoluteWebUrl The absolute url of the web whose document libraries should be returned
      */
     Site.prototype.getDocumentLibraries = function (absoluteWebUrl) {
-        var q = new queryable_1.Queryable("", "_api/sp.web.getdocumentlibraries(@v)");
+        var q = new sharepointqueryable_1.SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)");
         q.query.add("@v", "'" + absoluteWebUrl + "'");
         return q.get().then(function (data) {
             if (data.hasOwnProperty("GetDocumentLibraries")) {
@@ -6920,7 +7350,7 @@ var Site = (function (_super) {
      * @param absolutePageUrl The absolute url of the page
      */
     Site.prototype.getWebUrlFromPageUrl = function (absolutePageUrl) {
-        var q = new queryable_1.Queryable("", "_api/sp.web.getweburlfrompageurl(@v)");
+        var q = new sharepointqueryable_1.SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)");
         q.query.add("@v", "'" + absolutePageUrl + "'");
         return q.get().then(function (data) {
             if (data.hasOwnProperty("GetWebUrlFromPageUrl")) {
@@ -6936,7 +7366,7 @@ var Site = (function (_super) {
      *
      */
     Site.prototype.createBatch = function () {
-        return new odata_1.ODataBatch(this.parentUrl);
+        return new batch_1.ODataBatch(this.parentUrl);
     };
     /**
      * Opens a web by id (using POST)
@@ -6944,20 +7374,20 @@ var Site = (function (_super) {
      * @param webId The GUID id of the web to open
      */
     Site.prototype.openWebById = function (webId) {
-        return this.clone(Site, "openWebById('" + webId + "')", true).postCore().then(function (d) {
+        return this.clone(Site, "openWebById('" + webId + "')").postCore().then(function (d) {
             return {
                 data: d,
-                web: webs_1.Web.fromUrl(odata_1.extractOdataId(d)),
+                web: webs_1.Web.fromUrl(odata_1.spExtractODataId(d)),
             };
         });
     };
     return Site;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.Site = Site;
 
 
 /***/ }),
-/* 26 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6973,16 +7403,16 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var webs_1 = __webpack_require__(7);
-var roles_1 = __webpack_require__(16);
-var types_1 = __webpack_require__(13);
-var queryable_1 = __webpack_require__(1);
-var QueryableSecurable = (function (_super) {
-    __extends(QueryableSecurable, _super);
-    function QueryableSecurable() {
+var webs_1 = __webpack_require__(10);
+var roles_1 = __webpack_require__(22);
+var types_1 = __webpack_require__(16);
+var sharepointqueryable_1 = __webpack_require__(1);
+var SharePointQueryableSecurable = /** @class */ (function (_super) {
+    __extends(SharePointQueryableSecurable, _super);
+    function SharePointQueryableSecurable() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(QueryableSecurable.prototype, "roleAssignments", {
+    Object.defineProperty(SharePointQueryableSecurable.prototype, "roleAssignments", {
         /**
          * Gets the set of role assignments for this item
          *
@@ -6993,13 +7423,13 @@ var QueryableSecurable = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(QueryableSecurable.prototype, "firstUniqueAncestorSecurableObject", {
+    Object.defineProperty(SharePointQueryableSecurable.prototype, "firstUniqueAncestorSecurableObject", {
         /**
          * Gets the closest securable up the security hierarchy whose permissions are applied to this list item
          *
          */
         get: function () {
-            return new queryable_1.QueryableInstance(this, "FirstUniqueAncestorSecurableObject");
+            return new sharepointqueryable_1.SharePointQueryableInstance(this, "FirstUniqueAncestorSecurableObject");
         },
         enumerable: true,
         configurable: true
@@ -7009,8 +7439,8 @@ var QueryableSecurable = (function (_super) {
      *
      * @param loginName The claims username for the user (ex: i:0#.f|membership|user@domain.com)
      */
-    QueryableSecurable.prototype.getUserEffectivePermissions = function (loginName) {
-        var q = this.clone(queryable_1.Queryable, "getUserEffectivePermissions(@user)", true);
+    SharePointQueryableSecurable.prototype.getUserEffectivePermissions = function (loginName) {
+        var q = this.clone(sharepointqueryable_1.SharePointQueryable, "getUserEffectivePermissions(@user)");
         q.query.add("@user", "'" + encodeURIComponent(loginName) + "'");
         return q.get().then(function (r) {
             // handle verbose mode
@@ -7020,7 +7450,7 @@ var QueryableSecurable = (function (_super) {
     /**
      * Gets the effective permissions for the current user
      */
-    QueryableSecurable.prototype.getCurrentUserEffectivePermissions = function () {
+    SharePointQueryableSecurable.prototype.getCurrentUserEffectivePermissions = function () {
         var _this = this;
         var w = webs_1.Web.fromUrl(this.toUrl());
         return w.currentUser.select("LoginName").getAs().then(function (user) {
@@ -7033,17 +7463,17 @@ var QueryableSecurable = (function (_super) {
      * @param copyRoleAssignments If true the permissions are copied from the current parent scope
      * @param clearSubscopes Optional. true to make all child securable objects inherit role assignments from the current object
      */
-    QueryableSecurable.prototype.breakRoleInheritance = function (copyRoleAssignments, clearSubscopes) {
+    SharePointQueryableSecurable.prototype.breakRoleInheritance = function (copyRoleAssignments, clearSubscopes) {
         if (copyRoleAssignments === void 0) { copyRoleAssignments = false; }
         if (clearSubscopes === void 0) { clearSubscopes = false; }
-        return this.clone(QueryableSecurable, "breakroleinheritance(copyroleassignments=" + copyRoleAssignments + ", clearsubscopes=" + clearSubscopes + ")", true).postCore();
+        return this.clone(SharePointQueryableSecurable, "breakroleinheritance(copyroleassignments=" + copyRoleAssignments + ", clearsubscopes=" + clearSubscopes + ")").postCore();
     };
     /**
      * Removes the local role assignments so that it re-inherit role assignments from the parent object.
      *
      */
-    QueryableSecurable.prototype.resetRoleInheritance = function () {
-        return this.clone(QueryableSecurable, "resetroleinheritance", true).postCore();
+    SharePointQueryableSecurable.prototype.resetRoleInheritance = function () {
+        return this.clone(SharePointQueryableSecurable, "resetroleinheritance").postCore();
     };
     /**
      * Determines if a given user has the appropriate permissions
@@ -7051,7 +7481,7 @@ var QueryableSecurable = (function (_super) {
      * @param loginName The user to check
      * @param permission The permission being checked
      */
-    QueryableSecurable.prototype.userHasPermissions = function (loginName, permission) {
+    SharePointQueryableSecurable.prototype.userHasPermissions = function (loginName, permission) {
         var _this = this;
         return this.getUserEffectivePermissions(loginName).then(function (perms) {
             return _this.hasPermissions(perms, permission);
@@ -7062,7 +7492,7 @@ var QueryableSecurable = (function (_super) {
      *
      * @param permission The permission we wish to check
      */
-    QueryableSecurable.prototype.currentUserHasPermissions = function (permission) {
+    SharePointQueryableSecurable.prototype.currentUserHasPermissions = function (permission) {
         var _this = this;
         return this.getCurrentUserEffectivePermissions().then(function (perms) {
             return _this.hasPermissions(perms, permission);
@@ -7075,7 +7505,7 @@ var QueryableSecurable = (function (_super) {
      * @param perm The permission checked against the value
      */
     /* tslint:disable:no-bitwise */
-    QueryableSecurable.prototype.hasPermissions = function (value, perm) {
+    SharePointQueryableSecurable.prototype.hasPermissions = function (value, perm) {
         if (!perm) {
             return true;
         }
@@ -7094,13 +7524,13 @@ var QueryableSecurable = (function (_super) {
         }
         return false;
     };
-    return QueryableSecurable;
-}(queryable_1.QueryableInstance));
-exports.QueryableSecurable = QueryableSecurable;
+    return SharePointQueryableSecurable;
+}(sharepointqueryable_1.SharePointQueryableInstance));
+exports.SharePointQueryableSecurable = SharePointQueryableSecurable;
 
 
 /***/ }),
-/* 27 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7116,19 +7546,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var sitegroups_1 = __webpack_require__(17);
+var sharepointqueryable_1 = __webpack_require__(1);
+var sitegroups_1 = __webpack_require__(23);
 var util_1 = __webpack_require__(0);
 /**
  * Describes a collection of all site collection users
  *
  */
-var SiteUsers = (function (_super) {
+var SiteUsers = /** @class */ (function (_super) {
     __extends(SiteUsers, _super);
     /**
      * Creates a new instance of the SiteUsers class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this user collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this user collection
      */
     function SiteUsers(baseUrl, path) {
         if (path === void 0) { path = "siteusers"; }
@@ -7157,8 +7587,7 @@ var SiteUsers = (function (_super) {
      */
     SiteUsers.prototype.getByLoginName = function (loginName) {
         var su = new SiteUser(this);
-        su.concat("(@v)");
-        su.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
+        su.concat("('!@v::" + encodeURIComponent(loginName) + "')");
         return su;
     };
     /**
@@ -7167,7 +7596,7 @@ var SiteUsers = (function (_super) {
      * @param id The id of the user to remove
      */
     SiteUsers.prototype.removeById = function (id) {
-        return this.clone(SiteUsers, "removeById(" + id + ")", true).postCore();
+        return this.clone(SiteUsers, "removeById(" + id + ")").postCore();
     };
     /**
      * Removes a user from the collection by login name
@@ -7175,7 +7604,7 @@ var SiteUsers = (function (_super) {
      * @param loginName The login name of the user to remove
      */
     SiteUsers.prototype.removeByLoginName = function (loginName) {
-        var o = this.clone(SiteUsers, "removeByLoginName(@v)", true);
+        var o = this.clone(SiteUsers, "removeByLoginName(@v)");
         o.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return o.postCore();
     };
@@ -7187,18 +7616,18 @@ var SiteUsers = (function (_super) {
      */
     SiteUsers.prototype.add = function (loginName) {
         var _this = this;
-        return this.clone(SiteUsers, null, true).postCore({
+        return this.clone(SiteUsers, null).postCore({
             body: JSON.stringify({ "__metadata": { "type": "SP.User" }, LoginName: loginName }),
         }).then(function () { return _this.getByLoginName(loginName); });
     };
     return SiteUsers;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.SiteUsers = SiteUsers;
 /**
  * Describes a single user
  *
  */
-var SiteUser = (function (_super) {
+var SiteUser = /** @class */ (function (_super) {
     __extends(SiteUser, _super);
     function SiteUser() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -7246,24 +7675,24 @@ var SiteUser = (function (_super) {
         });
     };
     return SiteUser;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.SiteUser = SiteUser;
 /**
  * Represents the current user
  */
-var CurrentUser = (function (_super) {
+var CurrentUser = /** @class */ (function (_super) {
     __extends(CurrentUser, _super);
     function CurrentUser(baseUrl, path) {
         if (path === void 0) { path = "currentuser"; }
         return _super.call(this, baseUrl, path) || this;
     }
     return CurrentUser;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.CurrentUser = CurrentUser;
 
 
 /***/ }),
-/* 28 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7279,8 +7708,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var LimitedWebPartManager = (function (_super) {
+var sharepointqueryable_1 = __webpack_require__(1);
+var LimitedWebPartManager = /** @class */ (function (_super) {
     __extends(LimitedWebPartManager, _super);
     function LimitedWebPartManager() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -7302,7 +7731,7 @@ var LimitedWebPartManager = (function (_super) {
      * @param id the GUID id of the definition to export
      */
     LimitedWebPartManager.prototype.export = function (id) {
-        return this.clone(LimitedWebPartManager, "ExportWebPart", true).postCore({
+        return this.clone(LimitedWebPartManager, "ExportWebPart").postCore({
             body: JSON.stringify({ webPartId: id }),
         });
     };
@@ -7312,14 +7741,14 @@ var LimitedWebPartManager = (function (_super) {
      * @param xml webpart definition which must be valid XML in the .dwp or .webpart format
      */
     LimitedWebPartManager.prototype.import = function (xml) {
-        return this.clone(LimitedWebPartManager, "ImportWebPart", true).postCore({
+        return this.clone(LimitedWebPartManager, "ImportWebPart").postCore({
             body: JSON.stringify({ webPartXml: xml }),
         });
     };
     return LimitedWebPartManager;
-}(queryable_1.Queryable));
+}(sharepointqueryable_1.SharePointQueryable));
 exports.LimitedWebPartManager = LimitedWebPartManager;
-var WebPartDefinitions = (function (_super) {
+var WebPartDefinitions = /** @class */ (function (_super) {
     __extends(WebPartDefinitions, _super);
     function WebPartDefinitions() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -7341,9 +7770,9 @@ var WebPartDefinitions = (function (_super) {
         return new WebPartDefinition(this, "getByControlId('" + id + "')");
     };
     return WebPartDefinitions;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.WebPartDefinitions = WebPartDefinitions;
-var WebPartDefinition = (function (_super) {
+var WebPartDefinition = /** @class */ (function (_super) {
     __extends(WebPartDefinition, _super);
     function WebPartDefinition() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -7362,7 +7791,7 @@ var WebPartDefinition = (function (_super) {
      * Saves changes to the Web Part made using other properties and methods on the SPWebPartDefinition object
      */
     WebPartDefinition.prototype.saveChanges = function () {
-        return this.clone(WebPartDefinition, "SaveWebPartChanges", true).postCore();
+        return this.clone(WebPartDefinition, "SaveWebPartChanges").postCore();
     };
     /**
      * Moves the Web Part to a different location on a Web Part Page
@@ -7371,35 +7800,35 @@ var WebPartDefinition = (function (_super) {
      * @param zoneIndex A Web Part zone index that specifies the position at which the Web Part is to be moved within the destination Web Part zone
      */
     WebPartDefinition.prototype.moveTo = function (zoneId, zoneIndex) {
-        return this.clone(WebPartDefinition, "MoveWebPartTo(zoneID='" + zoneId + "', zoneIndex=" + zoneIndex + ")", true).postCore();
+        return this.clone(WebPartDefinition, "MoveWebPartTo(zoneID='" + zoneId + "', zoneIndex=" + zoneIndex + ")").postCore();
     };
     /**
      * Closes the Web Part. If the Web Part is already closed, this method does nothing
      */
     WebPartDefinition.prototype.close = function () {
-        return this.clone(WebPartDefinition, "CloseWebPart", true).postCore();
+        return this.clone(WebPartDefinition, "CloseWebPart").postCore();
     };
     /**
      * Opens the Web Part. If the Web Part is already closed, this method does nothing
      */
     WebPartDefinition.prototype.open = function () {
-        return this.clone(WebPartDefinition, "OpenWebPart", true).postCore();
+        return this.clone(WebPartDefinition, "OpenWebPart").postCore();
     };
     /**
      * Removes a webpart from a page, all settings will be lost
      */
     WebPartDefinition.prototype.delete = function () {
-        return this.clone(WebPartDefinition, "DeleteWebPart", true).postCore();
+        return this.clone(WebPartDefinition, "DeleteWebPart").postCore();
     };
     return WebPartDefinition;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.WebPartDefinition = WebPartDefinition;
-var WebPart = (function (_super) {
+var WebPart = /** @class */ (function (_super) {
     __extends(WebPart, _super);
     /**
      * Creates a new instance of the WebPart class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
      * @param path Optional, if supplied will be appended to the supplied baseUrl
      */
     function WebPart(baseUrl, path) {
@@ -7407,12 +7836,12 @@ var WebPart = (function (_super) {
         return _super.call(this, baseUrl, path) || this;
     }
     return WebPart;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.WebPart = WebPart;
 
 
 /***/ }),
-/* 29 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7428,19 +7857,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
+var sharepointqueryable_1 = __webpack_require__(1);
 var util_1 = __webpack_require__(0);
-var types_1 = __webpack_require__(13);
+var types_1 = __webpack_require__(16);
 /**
  * Describes a collection of Field objects
  *
  */
-var Fields = (function (_super) {
+var Fields = /** @class */ (function (_super) {
     __extends(Fields, _super);
     /**
      * Creates a new instance of the Fields class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
      */
     function Fields(baseUrl, path) {
         if (path === void 0) { path = "fields"; }
@@ -7491,7 +7920,7 @@ var Fields = (function (_super) {
                 },
             }, info),
         });
-        return this.clone(Fields, "createfieldasxml", true).postAsCore({ body: postBody }).then(function (data) {
+        return this.clone(Fields, "createfieldasxml").postAsCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 field: _this.getById(data.Id),
@@ -7512,7 +7941,7 @@ var Fields = (function (_super) {
             "Title": title,
             "__metadata": { "type": fieldType },
         }, properties));
-        return this.clone(Fields, null, true).postAsCore({ body: postBody }).then(function (data) {
+        return this.clone(Fields, null).postAsCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 field: _this.getById(data.Id),
@@ -7656,13 +8085,13 @@ var Fields = (function (_super) {
         return this.add(title, "SP.FieldUrl", util_1.Util.extend(props, properties));
     };
     return Fields;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Fields = Fields;
 /**
  * Describes a single of Field instance
  *
  */
-var Field = (function (_super) {
+var Field = /** @class */ (function (_super) {
     __extends(Field, _super);
     function Field() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -7706,27 +8135,27 @@ var Field = (function (_super) {
      * Sets the value of the ShowInDisplayForm property for this field.
      */
     Field.prototype.setShowInDisplayForm = function (show) {
-        return this.clone(Field, "setshowindisplayform(" + show + ")", true).postCore();
+        return this.clone(Field, "setshowindisplayform(" + show + ")").postCore();
     };
     /**
      * Sets the value of the ShowInEditForm property for this field.
      */
     Field.prototype.setShowInEditForm = function (show) {
-        return this.clone(Field, "setshowineditform(" + show + ")", true).postCore();
+        return this.clone(Field, "setshowineditform(" + show + ")").postCore();
     };
     /**
      * Sets the value of the ShowInNewForm property for this field.
      */
     Field.prototype.setShowInNewForm = function (show) {
-        return this.clone(Field, "setshowinnewform(" + show + ")", true).postCore();
+        return this.clone(Field, "setshowinnewform(" + show + ")").postCore();
     };
     return Field;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.Field = Field;
 
 
 /***/ }),
-/* 30 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7743,12 +8172,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var queryable_1 = __webpack_require__(1);
+var sharepointqueryable_1 = __webpack_require__(1);
 /**
  * Represents a collection of navigation nodes
  *
  */
-var NavigationNodes = (function (_super) {
+var NavigationNodes = /** @class */ (function (_super) {
     __extends(NavigationNodes, _super);
     function NavigationNodes() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -7779,7 +8208,7 @@ var NavigationNodes = (function (_super) {
             Url: url,
             "__metadata": { "type": "SP.NavigationNode" },
         });
-        return this.clone(NavigationNodes, null, true).postCore({ body: postBody }).then(function (data) {
+        return this.clone(NavigationNodes, null).postCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 node: _this.getById(data.Id),
@@ -7797,16 +8226,16 @@ var NavigationNodes = (function (_super) {
             nodeId: nodeId,
             previousNodeId: previousNodeId,
         });
-        return this.clone(NavigationNodes, "MoveAfter", true).postCore({ body: postBody });
+        return this.clone(NavigationNodes, "MoveAfter").postCore({ body: postBody });
     };
     return NavigationNodes;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.NavigationNodes = NavigationNodes;
 /**
  * Represents an instance of a navigation node
  *
  */
-var NavigationNode = (function (_super) {
+var NavigationNode = /** @class */ (function (_super) {
     __extends(NavigationNode, _super);
     function NavigationNode() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -7850,18 +8279,18 @@ var NavigationNode = (function (_super) {
         return _super.prototype.deleteCore.call(this);
     };
     return NavigationNode;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.NavigationNode = NavigationNode;
 /**
  * Exposes the navigation components
  *
  */
-var Navigation = (function (_super) {
+var Navigation = /** @class */ (function (_super) {
     __extends(Navigation, _super);
     /**
      * Creates a new instance of the Navigation class
      *
-     * @param baseUrl The url or Queryable which forms the parent of these navigation components
+     * @param baseUrl The url or SharePointQueryable which forms the parent of these navigation components
      */
     function Navigation(baseUrl, path) {
         if (path === void 0) { path = "navigation"; }
@@ -7890,12 +8319,267 @@ var Navigation = (function (_super) {
         configurable: true
     });
     return Navigation;
-}(queryable_1.Queryable));
+}(sharepointqueryable_1.SharePointQueryable));
 exports.Navigation = Navigation;
 
 
 /***/ }),
-/* 31 */
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var logging_1 = __webpack_require__(4);
+var httpclient_1 = __webpack_require__(21);
+var utils_1 = __webpack_require__(9);
+var pnplibconfig_1 = __webpack_require__(3);
+var exceptions_1 = __webpack_require__(2);
+/**
+ * Manages a batch of OData operations
+ */
+var ODataBatch = /** @class */ (function () {
+    function ODataBatch(baseUrl, _batchId) {
+        if (_batchId === void 0) { _batchId = util_1.Util.getGUID(); }
+        this.baseUrl = baseUrl;
+        this._batchId = _batchId;
+        this._requests = [];
+        this._dependencies = [];
+    }
+    Object.defineProperty(ODataBatch.prototype, "batchId", {
+        get: function () {
+            return this._batchId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Adds a request to a batch (not designed for public use)
+     *
+     * @param url The full url of the request
+     * @param method The http method GET, POST, etc
+     * @param options Any options to include in the request
+     * @param parser The parser that will hadle the results of the request
+     */
+    ODataBatch.prototype.add = function (url, method, options, parser) {
+        var info = {
+            method: method.toUpperCase(),
+            options: options,
+            parser: parser,
+            reject: null,
+            resolve: null,
+            url: url,
+        };
+        var p = new Promise(function (resolve, reject) {
+            info.resolve = resolve;
+            info.reject = reject;
+        });
+        this._requests.push(info);
+        return p;
+    };
+    /**
+     * Adds a dependency insuring that some set of actions will occur before a batch is processed.
+     * MUST be cleared using the returned resolve delegate to allow batches to run
+     */
+    ODataBatch.prototype.addDependency = function () {
+        var resolver;
+        var promise = new Promise(function (resolve) {
+            resolver = resolve;
+        });
+        this._dependencies.push(promise);
+        return resolver;
+    };
+    /**
+     * Execute the current batch and resolve the associated promises
+     *
+     * @returns A promise which will be resolved once all of the batch's child promises have resolved
+     */
+    ODataBatch.prototype.execute = function () {
+        var _this = this;
+        // we need to check the dependencies twice due to how different engines handle things.
+        // We can get a second set of promises added after the first set resolve
+        return Promise.all(this._dependencies).then(function () { return Promise.all(_this._dependencies); }).then(function () { return _this.executeImpl(); });
+    };
+    ODataBatch.prototype.executeImpl = function () {
+        var _this = this;
+        logging_1.Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this._requests.length + " requests.", logging_1.LogLevel.Info);
+        // if we don't have any requests, don't bother sending anything
+        // this could be due to caching further upstream, or just an empty batch
+        if (this._requests.length < 1) {
+            logging_1.Logger.write("Resolving empty batch.", logging_1.LogLevel.Info);
+            return Promise.resolve();
+        }
+        // creating the client here allows the url to be populated for nodejs client as well as potentially
+        // any other hacks needed for other types of clients. Essentially allows the absoluteRequestUrl
+        // below to be correct
+        var client = new httpclient_1.HttpClient();
+        // due to timing we need to get the absolute url here so we can use it for all the individual requests
+        // and for sending the entire batch
+        return util_1.Util.toAbsoluteUrl(this.baseUrl).then(function (absoluteRequestUrl) {
+            // build all the requests, send them, pipe results in order to parsers
+            var batchBody = [];
+            var currentChangeSetId = "";
+            for (var i = 0; i < _this._requests.length; i++) {
+                var reqInfo = _this._requests[i];
+                if (reqInfo.method === "GET") {
+                    if (currentChangeSetId.length > 0) {
+                        // end an existing change set
+                        batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
+                        currentChangeSetId = "";
+                    }
+                    batchBody.push("--batch_" + _this._batchId + "\n");
+                }
+                else {
+                    if (currentChangeSetId.length < 1) {
+                        // start new change set
+                        currentChangeSetId = util_1.Util.getGUID();
+                        batchBody.push("--batch_" + _this._batchId + "\n");
+                        batchBody.push("Content-Type: multipart/mixed; boundary=\"changeset_" + currentChangeSetId + "\"\n\n");
+                    }
+                    batchBody.push("--changeset_" + currentChangeSetId + "\n");
+                }
+                // common batch part prefix
+                batchBody.push("Content-Type: application/http\n");
+                batchBody.push("Content-Transfer-Encoding: binary\n\n");
+                var headers = new Headers();
+                // this is the url of the individual request within the batch
+                var url = util_1.Util.isUrlAbsolute(reqInfo.url) ? reqInfo.url : util_1.Util.combinePaths(absoluteRequestUrl, reqInfo.url);
+                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", logging_1.LogLevel.Verbose);
+                if (reqInfo.method !== "GET") {
+                    var method = reqInfo.method;
+                    if (reqInfo.hasOwnProperty("options") && reqInfo.options.hasOwnProperty("headers") && typeof reqInfo.options.headers["X-HTTP-Method"] !== "undefined") {
+                        method = reqInfo.options.headers["X-HTTP-Method"];
+                        delete reqInfo.options.headers["X-HTTP-Method"];
+                    }
+                    batchBody.push(method + " " + url + " HTTP/1.1\n");
+                    headers.set("Content-Type", "application/json;odata=verbose;charset=utf-8");
+                }
+                else {
+                    batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
+                }
+                // merge global config headers
+                utils_1.mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.spHeaders);
+                // merge per-request headers
+                if (reqInfo.options) {
+                    utils_1.mergeHeaders(headers, reqInfo.options.headers);
+                }
+                // lastly we apply any default headers we need that may not exist
+                if (!headers.has("Accept")) {
+                    headers.append("Accept", "application/json");
+                }
+                if (!headers.has("Content-Type")) {
+                    headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
+                }
+                if (!headers.has("X-ClientService-ClientTag")) {
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:3.0.1");
+                }
+                // write headers into batch body
+                headers.forEach(function (value, name) {
+                    batchBody.push(name + ": " + value + "\n");
+                });
+                batchBody.push("\n");
+                if (reqInfo.options.body) {
+                    batchBody.push(reqInfo.options.body + "\n\n");
+                }
+            }
+            if (currentChangeSetId.length > 0) {
+                // Close the changeset
+                batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
+                currentChangeSetId = "";
+            }
+            batchBody.push("--batch_" + _this._batchId + "--\n");
+            var batchHeaders = {
+                "Content-Type": "multipart/mixed; boundary=batch_" + _this._batchId,
+            };
+            var batchOptions = {
+                "body": batchBody.join(""),
+                "headers": batchHeaders,
+                "method": "POST",
+            };
+            logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", logging_1.LogLevel.Info);
+            return client.fetch(util_1.Util.combinePaths(absoluteRequestUrl, "/_api/$batch"), batchOptions)
+                .then(function (r) { return r.text(); })
+                .then(_this._parseResponse)
+                .then(function (responses) {
+                if (responses.length !== _this._requests.length) {
+                    throw new exceptions_1.BatchParseException("Could not properly parse responses to match requests in batch.");
+                }
+                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", logging_1.LogLevel.Info);
+                return responses.reduce(function (chain, response, index) {
+                    var request = _this._requests[index];
+                    logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched request " + request.method + " " + request.url + ".", logging_1.LogLevel.Verbose);
+                    return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
+                }, Promise.resolve());
+            });
+        });
+    };
+    /**
+     * Parses the response from a batch request into an array of Response instances
+     *
+     * @param body Text body of the response from the batch request
+     */
+    ODataBatch.prototype._parseResponse = function (body) {
+        return new Promise(function (resolve, reject) {
+            var responses = [];
+            var header = "--batchresponse_";
+            // Ex. "HTTP/1.1 500 Internal Server Error"
+            var statusRegExp = new RegExp("^HTTP/[0-9.]+ +([0-9]+) +(.*)", "i");
+            var lines = body.split("\n");
+            var state = "batch";
+            var status;
+            var statusText;
+            for (var i = 0; i < lines.length; ++i) {
+                var line = lines[i];
+                switch (state) {
+                    case "batch":
+                        if (line.substr(0, header.length) === header) {
+                            state = "batchHeaders";
+                        }
+                        else {
+                            if (line.trim() !== "") {
+                                throw new exceptions_1.BatchParseException("Invalid response, line " + i);
+                            }
+                        }
+                        break;
+                    case "batchHeaders":
+                        if (line.trim() === "") {
+                            state = "status";
+                        }
+                        break;
+                    case "status":
+                        var parts = statusRegExp.exec(line);
+                        if (parts.length !== 3) {
+                            throw new exceptions_1.BatchParseException("Invalid status, line " + i);
+                        }
+                        status = parseInt(parts[1], 10);
+                        statusText = parts[2];
+                        state = "statusHeaders";
+                        break;
+                    case "statusHeaders":
+                        if (line.trim() === "") {
+                            state = "body";
+                        }
+                        break;
+                    case "body":
+                        responses.push((status === 204) ? new Response() : new Response(line, { status: status, statusText: statusText }));
+                        state = "batch";
+                        break;
+                }
+            }
+            if (state !== "status") {
+                reject(new exceptions_1.BatchParseException("Unexpected end of input"));
+            }
+            resolve(responses);
+        });
+    };
+    return ODataBatch;
+}());
+exports.ODataBatch = ODataBatch;
+
+
+/***/ }),
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7911,17 +8595,17 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
+var sharepointqueryable_1 = __webpack_require__(1);
 /**
  * Describes a collection of List objects
  *
  */
-var Features = (function (_super) {
+var Features = /** @class */ (function (_super) {
     __extends(Features, _super);
     /**
      * Creates a new instance of the Lists class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
      */
     function Features(baseUrl, path) {
         if (path === void 0) { path = "features"; }
@@ -7946,7 +8630,7 @@ var Features = (function (_super) {
     Features.prototype.add = function (id, force) {
         var _this = this;
         if (force === void 0) { force = false; }
-        return this.clone(Features, "add", true).postCore({
+        return this.clone(Features, "add").postCore({
             body: JSON.stringify({
                 featdefScope: 0,
                 featureId: id,
@@ -7967,7 +8651,7 @@ var Features = (function (_super) {
      */
     Features.prototype.remove = function (id, force) {
         if (force === void 0) { force = false; }
-        return this.clone(Features, "remove", true).postCore({
+        return this.clone(Features, "remove").postCore({
             body: JSON.stringify({
                 featureId: id,
                 force: force,
@@ -7975,9 +8659,9 @@ var Features = (function (_super) {
         });
     };
     return Features;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Features = Features;
-var Feature = (function (_super) {
+var Feature = /** @class */ (function (_super) {
     __extends(Feature, _super);
     function Feature() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -7999,12 +8683,12 @@ var Feature = (function (_super) {
         });
     };
     return Feature;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.Feature = Feature;
 
 
 /***/ }),
-/* 32 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8020,14 +8704,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
+var sharepointqueryable_1 = __webpack_require__(1);
 var util_1 = __webpack_require__(0);
-var files_1 = __webpack_require__(8);
-var odata_1 = __webpack_require__(2);
+var files_1 = __webpack_require__(11);
+var odata_1 = __webpack_require__(6);
 /**
  * Allows for calling of the static SP.Utilities.Utility methods by supplying the method name
  */
-var UtilityMethod = (function (_super) {
+var UtilityMethod = /** @class */ (function (_super) {
     __extends(UtilityMethod, _super);
     /**
      * Creates a new instance of the Utility method class
@@ -8056,7 +8740,7 @@ var UtilityMethod = (function (_super) {
         });
     };
     /**
-     * Clones this queryable into a new queryable instance of T
+     * Clones this SharePointQueryable into a new SharePointQueryable instance of T
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
@@ -8153,29 +8837,118 @@ var UtilityMethod = (function (_super) {
         }).then(function (r) {
             return {
                 data: r,
-                file: new files_1.File(odata_1.extractOdataId(r)),
+                file: new files_1.File(odata_1.spExtractODataId(r)),
             };
         });
     };
     return UtilityMethod;
-}(queryable_1.Queryable));
+}(sharepointqueryable_1.SharePointQueryable));
 exports.UtilityMethod = UtilityMethod;
 
 
 /***/ }),
-/* 33 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var storage = __webpack_require__(15);
-var exceptions_1 = __webpack_require__(3);
+var util_1 = __webpack_require__(0);
+var pnplibconfig_1 = __webpack_require__(3);
+var utils_1 = __webpack_require__(9);
+// import { APIUrlException } from "../utils/exceptions";
+var GraphHttpClient = /** @class */ (function () {
+    function GraphHttpClient() {
+        this._impl = pnplibconfig_1.RuntimeConfig.graphFetchClientFactory();
+    }
+    GraphHttpClient.prototype.fetch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var headers = new Headers();
+        // first we add the global headers so they can be overwritten by any passed in locally to this call
+        utils_1.mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.graphHeaders);
+        // second we add the local options so we can overwrite the globals
+        utils_1.mergeHeaders(headers, options.headers);
+        var opts = util_1.Util.extend(options, { headers: headers });
+        // TODO: we could process auth here
+        return this.fetchRaw(url, opts);
+    };
+    GraphHttpClient.prototype.fetchRaw = function (url, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        // here we need to normalize the headers
+        var rawHeaders = new Headers();
+        utils_1.mergeHeaders(rawHeaders, options.headers);
+        options = util_1.Util.extend(options, { headers: rawHeaders });
+        var retry = function (ctx) {
+            _this._impl.fetch(url, {}, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
+                // Check if request was throttled - http status code 429
+                // Check if request failed due to server unavailable - http status code 503
+                if (response.status !== 429 && response.status !== 503) {
+                    ctx.reject(response);
+                }
+                // grab our current delay
+                var delay = ctx.delay;
+                // Increment our counters.
+                ctx.delay *= 2;
+                ctx.attempts++;
+                // If we have exceeded the retry count, reject.
+                if (ctx.retryCount <= ctx.attempts) {
+                    ctx.reject(response);
+                }
+                // Set our retry timeout for {delay} milliseconds.
+                setTimeout(util_1.Util.getCtxCallback(_this, retry, ctx), delay);
+            });
+        };
+        return new Promise(function (resolve, reject) {
+            var retryContext = {
+                attempts: 0,
+                delay: 100,
+                reject: reject,
+                resolve: resolve,
+                retryCount: 7,
+            };
+            retry.call(_this, retryContext);
+        });
+    };
+    GraphHttpClient.prototype.get = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "GET" });
+        return this.fetch(url, opts);
+    };
+    GraphHttpClient.prototype.post = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "POST" });
+        return this.fetch(url, opts);
+    };
+    GraphHttpClient.prototype.patch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "PATCH" });
+        return this.fetch(url, opts);
+    };
+    GraphHttpClient.prototype.delete = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_1.Util.extend(options, { method: "DELETE" });
+        return this.fetch(url, opts);
+    };
+    return GraphHttpClient;
+}());
+exports.GraphHttpClient = GraphHttpClient;
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var storage = __webpack_require__(18);
+var exceptions_1 = __webpack_require__(2);
 /**
  * A caching provider which can wrap other non-caching providers
  *
  */
-var CachingConfigurationProvider = (function () {
+var CachingConfigurationProvider = /** @class */ (function () {
     /**
      * Creates a new caching configuration provider
      * @constructor
@@ -8237,7 +9010,7 @@ exports.default = CachingConfigurationProvider;
 
 
 /***/ }),
-/* 34 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8247,11 +9020,12 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var storage_1 = __webpack_require__(15);
-var configuration_1 = __webpack_require__(35);
-var logging_1 = __webpack_require__(5);
-var rest_1 = __webpack_require__(36);
-var pnplibconfig_1 = __webpack_require__(4);
+var storage_1 = __webpack_require__(18);
+var configuration_1 = __webpack_require__(43);
+var logging_1 = __webpack_require__(4);
+var rest_1 = __webpack_require__(44);
+var pnplibconfig_1 = __webpack_require__(3);
+var rest_2 = __webpack_require__(53);
 /**
  * Root class of the Patterns and Practices namespace, provides an entry point to the library
  */
@@ -8263,6 +9037,10 @@ exports.util = util_1.Util;
  * Provides access to the SharePoint REST interface
  */
 exports.sp = new rest_1.SPRest();
+/**
+ * Provides access to the Microsoft Graph REST interface
+ */
+exports.graph = new rest_2.GraphRest();
 /**
  * Provides access to local and session storage
  */
@@ -8280,15 +9058,26 @@ exports.log = logging_1.Logger;
  */
 exports.setup = pnplibconfig_1.setRuntimeConfig;
 /**
- * Expose a subset of classes from the library for public consumption
+ * Export everything back to the top level so it can be properly bundled
  */
-__export(__webpack_require__(46));
+__export(__webpack_require__(62));
+__export(__webpack_require__(65));
+__export(__webpack_require__(67));
+__export(__webpack_require__(70));
+__export(__webpack_require__(71));
+// /**
+//  * Expose a subset of classes from the library for public consumption
+//  */
 // creating this class instead of directly assigning to default fixes issue #116
 var Def = {
     /**
      * Global configuration instance to which providers can be added
      */
     config: exports.config,
+    /**
+     * Provides access to the Microsoft Graph REST interface
+     */
+    graph: exports.graph,
     /**
      * Global logging instance to which subscribers can be registered and messages written
      */
@@ -8317,18 +9106,18 @@ exports.default = Def;
 
 
 /***/ }),
-/* 35 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var collections_1 = __webpack_require__(6);
+var collections_1 = __webpack_require__(8);
 /**
  * Class used to manage the current application settings
  *
  */
-var Settings = (function () {
+var Settings = /** @class */ (function () {
     /**
      * Creates a new instance of the settings class
      *
@@ -8416,24 +9205,24 @@ exports.Settings = Settings;
 
 
 /***/ }),
-/* 36 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var search_1 = __webpack_require__(22);
-var searchsuggest_1 = __webpack_require__(24);
-var site_1 = __webpack_require__(25);
-var webs_1 = __webpack_require__(7);
+var search_1 = __webpack_require__(28);
+var searchsuggest_1 = __webpack_require__(30);
+var site_1 = __webpack_require__(31);
+var webs_1 = __webpack_require__(10);
 var util_1 = __webpack_require__(0);
-var userprofiles_1 = __webpack_require__(44);
-var exceptions_1 = __webpack_require__(3);
-var utilities_1 = __webpack_require__(32);
+var userprofiles_1 = __webpack_require__(51);
+var exceptions_1 = __webpack_require__(2);
+var utilities_1 = __webpack_require__(39);
 /**
  * Root of the SharePoint REST module
  */
-var SPRest = (function () {
+var SPRest = /** @class */ (function () {
     /**
      * Creates a new instance of the SPRest class
      *
@@ -8524,7 +9313,7 @@ var SPRest = (function () {
         configurable: true
     });
     /**
-     * Creates a new batch object for use with the Queryable.addToBatch method
+     * Creates a new batch object for use with the SharePointQueryable.addToBatch method
      *
      */
     SPRest.prototype.createBatch = function () {
@@ -8584,17 +9373,17 @@ exports.SPRest = SPRest;
 
 
 /***/ }),
-/* 37 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var collections_1 = __webpack_require__(6);
+var collections_1 = __webpack_require__(8);
 var util_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var pnplibconfig_1 = __webpack_require__(4);
-var CachedDigest = (function () {
+var parsers_1 = __webpack_require__(7);
+var pnplibconfig_1 = __webpack_require__(3);
+var CachedDigest = /** @class */ (function () {
     function CachedDigest() {
     }
     return CachedDigest;
@@ -8602,7 +9391,7 @@ var CachedDigest = (function () {
 exports.CachedDigest = CachedDigest;
 // allows for the caching of digests across all HttpClient's which each have their own DigestCache wrapper.
 var digests = new collections_1.Dictionary();
-var DigestCache = (function () {
+var DigestCache = /** @class */ (function () {
     function DigestCache(_httpClient, _digests) {
         if (_digests === void 0) { _digests = digests; }
         this._httpClient = _httpClient;
@@ -8625,10 +9414,10 @@ var DigestCache = (function () {
         return this._httpClient.fetchRaw(url, {
             cache: "no-cache",
             credentials: "same-origin",
-            headers: util_1.Util.extend(headers, pnplibconfig_1.RuntimeConfig.headers, true),
+            headers: util_1.Util.extend(headers, pnplibconfig_1.RuntimeConfig.spHeaders, true),
             method: "POST",
         }).then(function (response) {
-            var parser = new odata_1.ODataDefaultParser();
+            var parser = new parsers_1.ODataDefaultParser();
             return parser.parse(response).then(function (d) { return d.GetContextWebInformation; });
         }).then(function (data) {
             var newCachedDigest = new CachedDigest();
@@ -8650,235 +9439,7 @@ exports.DigestCache = DigestCache;
 
 
 /***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var caching_1 = __webpack_require__(23);
-var httpclient_1 = __webpack_require__(9);
-var logging_1 = __webpack_require__(5);
-var util_1 = __webpack_require__(0);
-/**
- * Resolves the context's result value
- *
- * @param context The current context
- */
-function returnResult(context) {
-    logging_1.Logger.log({
-        data: context.result,
-        level: logging_1.LogLevel.Verbose,
-        message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Returning result, see data property for value.",
-    });
-    return Promise.resolve(context.result);
-}
-/**
- * Sets the result on the context
- */
-function setResult(context, value) {
-    return new Promise(function (resolve) {
-        context.result = value;
-        context.hasResult = true;
-        resolve(context);
-    });
-}
-exports.setResult = setResult;
-/**
- * Invokes the next method in the provided context's pipeline
- *
- * @param c The current request context
- */
-function next(c) {
-    if (c.pipeline.length < 1) {
-        return Promise.resolve(c);
-    }
-    return c.pipeline.shift()(c);
-}
-/**
- * Executes the current request context's pipeline
- *
- * @param context Current context
- */
-function pipe(context) {
-    return next(context)
-        .then(function (ctx) { return returnResult(ctx); })
-        .catch(function (e) {
-        logging_1.Logger.log({
-            data: e,
-            level: logging_1.LogLevel.Error,
-            message: "Error in request pipeline: " + e.message,
-        });
-        throw e;
-    });
-}
-exports.pipe = pipe;
-/**
- * decorator factory applied to methods in the pipeline to control behavior
- */
-function requestPipelineMethod(alwaysRun) {
-    if (alwaysRun === void 0) { alwaysRun = false; }
-    return function (target, propertyKey, descriptor) {
-        var method = descriptor.value;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            // if we have a result already in the pipeline, pass it along and don't call the tagged method
-            if (!alwaysRun && args.length > 0 && args[0].hasOwnProperty("hasResult") && args[0].hasResult) {
-                logging_1.Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Skipping request pipeline method " + propertyKey + ", existing result in pipeline.", logging_1.LogLevel.Verbose);
-                return Promise.resolve(args[0]);
-            }
-            // apply the tagged method
-            logging_1.Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Calling request pipeline method " + propertyKey + ".", logging_1.LogLevel.Verbose);
-            // then chain the next method in the context's pipeline - allows for dynamic pipeline
-            return method.apply(target, args).then(function (ctx) { return next(ctx); });
-        };
-    };
-}
-exports.requestPipelineMethod = requestPipelineMethod;
-/**
- * Contains the methods used within the request pipeline
- */
-var PipelineMethods = (function () {
-    function PipelineMethods() {
-    }
-    /**
-     * Logs the start of the request
-     */
-    PipelineMethods.logStart = function (context) {
-        return new Promise(function (resolve) {
-            logging_1.Logger.log({
-                data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : context,
-                level: logging_1.LogLevel.Info,
-                message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Beginning " + context.verb + " request (" + context.requestAbsoluteUrl + ")",
-            });
-            resolve(context);
-        });
-    };
-    /**
-     * Handles caching of the request
-     */
-    PipelineMethods.caching = function (context) {
-        return new Promise(function (resolve) {
-            // handle caching, if applicable
-            if (context.verb === "GET" && context.isCached) {
-                logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Caching is enabled for request, checking cache...", logging_1.LogLevel.Info);
-                var cacheOptions = new caching_1.CachingOptions(context.requestAbsoluteUrl.toLowerCase());
-                if (typeof context.cachingOptions !== "undefined") {
-                    cacheOptions = util_1.Util.extend(cacheOptions, context.cachingOptions);
-                }
-                // we may not have a valid store
-                if (cacheOptions.store !== null) {
-                    // check if we have the data in cache and if so resolve the promise and return
-                    var data = cacheOptions.store.get(cacheOptions.key);
-                    if (data !== null) {
-                        // ensure we clear any help batch dependency we are resolving from the cache
-                        logging_1.Logger.log({
-                            data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : data,
-                            level: logging_1.LogLevel.Info,
-                            message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
-                        });
-                        context.batchDependency();
-                        return setResult(context, data).then(function (ctx) { return resolve(ctx); });
-                    }
-                }
-                logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Value not found in cache.", logging_1.LogLevel.Info);
-                // if we don't then wrap the supplied parser in the caching parser wrapper
-                // and send things on their way
-                context.parser = new caching_1.CachingParserWrapper(context.parser, cacheOptions);
-            }
-            return resolve(context);
-        });
-    };
-    /**
-     * Sends the request
-     */
-    PipelineMethods.send = function (context) {
-        return new Promise(function (resolve, reject) {
-            // send or batch the request
-            if (context.isBatched) {
-                // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
-                var p = context.batch.add(context.requestAbsoluteUrl, context.verb, context.options, context.parser);
-                // we release the dependency here to ensure the batch does not execute until the request is added to the batch
-                context.batchDependency();
-                logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request in batch " + context.batch.batchId + ".", logging_1.LogLevel.Info);
-                // we set the result as the promise which will be resolved by the batch's execution
-                resolve(setResult(context, p));
-            }
-            else {
-                logging_1.Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Sending request.", logging_1.LogLevel.Info);
-                // we are not part of a batch, so proceed as normal
-                var client = new httpclient_1.HttpClient();
-                var opts = util_1.Util.extend(context.options || {}, { method: context.verb });
-                client.fetch(context.requestAbsoluteUrl, opts)
-                    .then(function (response) { return context.parser.parse(response); })
-                    .then(function (result) { return setResult(context, result); })
-                    .then(function (ctx) { return resolve(ctx); })
-                    .catch(function (e) { return reject(e); });
-            }
-        });
-    };
-    /**
-     * Logs the end of the request
-     */
-    PipelineMethods.logEnd = function (context) {
-        return new Promise(function (resolve) {
-            if (context.isBatched) {
-                logging_1.Logger.log({
-                    data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : context,
-                    level: logging_1.LogLevel.Info,
-                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") " + context.verb + " request will complete in batch " + context.batch.batchId + ".",
-                });
-            }
-            else {
-                logging_1.Logger.log({
-                    data: logging_1.Logger.activeLogLevel === logging_1.LogLevel.Info ? {} : context,
-                    level: logging_1.LogLevel.Info,
-                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Completing " + context.verb + " request.",
-                });
-            }
-            resolve(context);
-        });
-    };
-    Object.defineProperty(PipelineMethods, "default", {
-        get: function () {
-            return [
-                PipelineMethods.logStart,
-                PipelineMethods.caching,
-                PipelineMethods.send,
-                PipelineMethods.logEnd,
-            ];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    __decorate([
-        requestPipelineMethod(true)
-    ], PipelineMethods, "logStart", null);
-    __decorate([
-        requestPipelineMethod()
-    ], PipelineMethods, "caching", null);
-    __decorate([
-        requestPipelineMethod()
-    ], PipelineMethods, "send", null);
-    __decorate([
-        requestPipelineMethod(true)
-    ], PipelineMethods, "logEnd", null);
-    return PipelineMethods;
-}());
-exports.PipelineMethods = PipelineMethods;
-
-
-/***/ }),
-/* 39 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8894,18 +9455,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(2);
+var sharepointqueryable_1 = __webpack_require__(1);
+var parsers_1 = __webpack_require__(7);
 /**
  * Describes a collection of Item objects
  *
  */
-var AttachmentFiles = (function (_super) {
+var AttachmentFiles = /** @class */ (function (_super) {
     __extends(AttachmentFiles, _super);
     /**
      * Creates a new instance of the AttachmentFiles class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this attachments collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this attachments collection
      */
     function AttachmentFiles(baseUrl, path) {
         if (path === void 0) { path = "AttachmentFiles"; }
@@ -8929,7 +9490,7 @@ var AttachmentFiles = (function (_super) {
      */
     AttachmentFiles.prototype.add = function (name, content) {
         var _this = this;
-        return this.clone(AttachmentFiles, "add(FileName='" + name + "')").postCore({
+        return this.clone(AttachmentFiles, "add(FileName='" + name + "')", false).postCore({
             body: content,
         }).then(function (response) {
             return {
@@ -8946,18 +9507,18 @@ var AttachmentFiles = (function (_super) {
     AttachmentFiles.prototype.addMultiple = function (files) {
         var _this = this;
         // add the files in series so we don't get update conflicts
-        return files.reduce(function (chain, file) { return chain.then(function () { return _this.clone(AttachmentFiles, "add(FileName='" + file.name + "')").postCore({
+        return files.reduce(function (chain, file) { return chain.then(function () { return _this.clone(AttachmentFiles, "add(FileName='" + file.name + "')", false).postCore({
             body: file.content,
         }); }); }, Promise.resolve());
     };
     return AttachmentFiles;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.AttachmentFiles = AttachmentFiles;
 /**
  * Describes a single attachment file instance
  *
  */
-var AttachmentFile = (function (_super) {
+var AttachmentFile = /** @class */ (function (_super) {
     __extends(AttachmentFile, _super);
     function AttachmentFile() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -8967,26 +9528,26 @@ var AttachmentFile = (function (_super) {
      *
      */
     AttachmentFile.prototype.getText = function () {
-        return this.clone(AttachmentFile, "$value").get(new odata_1.TextFileParser());
+        return this.clone(AttachmentFile, "$value", false).get(new parsers_1.TextFileParser());
     };
     /**
      * Gets the contents of the file as a blob, does not work in Node.js
      *
      */
     AttachmentFile.prototype.getBlob = function () {
-        return this.clone(AttachmentFile, "$value").get(new odata_1.BlobFileParser());
+        return this.clone(AttachmentFile, "$value", false).get(new parsers_1.BlobFileParser());
     };
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js
      */
     AttachmentFile.prototype.getBuffer = function () {
-        return this.clone(AttachmentFile, "$value").get(new odata_1.BufferFileParser());
+        return this.clone(AttachmentFile, "$value", false).get(new parsers_1.BufferFileParser());
     };
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js
      */
     AttachmentFile.prototype.getJSON = function () {
-        return this.clone(AttachmentFile, "$value").get(new odata_1.JSONFileParser());
+        return this.clone(AttachmentFile, "$value", false).get(new parsers_1.JSONFileParser());
     };
     /**
      * Sets the content of a file. Not supported for batching
@@ -8995,7 +9556,7 @@ var AttachmentFile = (function (_super) {
      */
     AttachmentFile.prototype.setContent = function (content) {
         var _this = this;
-        return this.clone(AttachmentFile, "$value").postCore({
+        return this.clone(AttachmentFile, "$value", false).postCore({
             body: content,
             headers: {
                 "X-HTTP-Method": "PUT",
@@ -9017,12 +9578,12 @@ var AttachmentFile = (function (_super) {
         });
     };
     return AttachmentFile;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.AttachmentFile = AttachmentFile;
 
 
 /***/ }),
-/* 40 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9038,18 +9599,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
+var sharepointqueryable_1 = __webpack_require__(1);
 var util_1 = __webpack_require__(0);
 /**
  * Describes the views available in the current context
  *
  */
-var Views = (function (_super) {
+var Views = /** @class */ (function (_super) {
     __extends(Views, _super);
     /**
      * Creates a new instance of the Views class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
      */
     function Views(baseUrl, path) {
         if (path === void 0) { path = "views"; }
@@ -9089,7 +9650,7 @@ var Views = (function (_super) {
             "Title": title,
             "__metadata": { "type": "SP.View" },
         }, additionalSettings));
-        return this.clone(Views, null, true).postAsCore({ body: postBody }).then(function (data) {
+        return this.clone(Views, null).postAsCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
                 view: _this.getById(data.Id),
@@ -9097,13 +9658,13 @@ var Views = (function (_super) {
         });
     };
     return Views;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Views = Views;
 /**
  * Describes a single View instance
  *
  */
-var View = (function (_super) {
+var View = /** @class */ (function (_super) {
     __extends(View, _super);
     function View() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -9153,12 +9714,12 @@ var View = (function (_super) {
      *
      */
     View.prototype.renderAsHtml = function () {
-        return this.clone(queryable_1.Queryable, "renderashtml", true).get();
+        return this.clone(sharepointqueryable_1.SharePointQueryable, "renderashtml").get();
     };
     return View;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.View = View;
-var ViewFields = (function (_super) {
+var ViewFields = /** @class */ (function (_super) {
     __extends(ViewFields, _super);
     function ViewFields(baseUrl, path) {
         if (path === void 0) { path = "viewfields"; }
@@ -9168,7 +9729,7 @@ var ViewFields = (function (_super) {
      * Gets a value that specifies the XML schema that represents the collection.
      */
     ViewFields.prototype.getSchemaXml = function () {
-        return this.clone(queryable_1.Queryable, "schemaxml", true).get();
+        return this.clone(sharepointqueryable_1.SharePointQueryable, "schemaxml").get();
     };
     /**
      * Adds the field with the specified field internal name or display name to the collection.
@@ -9176,7 +9737,7 @@ var ViewFields = (function (_super) {
      * @param fieldTitleOrInternalName The case-sensitive internal name or display name of the field to add.
      */
     ViewFields.prototype.add = function (fieldTitleOrInternalName) {
-        return this.clone(ViewFields, "addviewfield('" + fieldTitleOrInternalName + "')", true).postCore();
+        return this.clone(ViewFields, "addviewfield('" + fieldTitleOrInternalName + "')").postCore();
     };
     /**
      * Moves the field with the specified field internal name to the specified position in the collection.
@@ -9185,7 +9746,7 @@ var ViewFields = (function (_super) {
      * @param index The zero-based index of the new position for the field.
      */
     ViewFields.prototype.move = function (fieldInternalName, index) {
-        return this.clone(ViewFields, "moveviewfieldto", true).postCore({
+        return this.clone(ViewFields, "moveviewfieldto").postCore({
             body: JSON.stringify({ "field": fieldInternalName, "index": index }),
         });
     };
@@ -9193,7 +9754,7 @@ var ViewFields = (function (_super) {
      * Removes all the fields from the collection.
      */
     ViewFields.prototype.removeAll = function () {
-        return this.clone(ViewFields, "removeallviewfields", true).postCore();
+        return this.clone(ViewFields, "removeallviewfields").postCore();
     };
     /**
      * Removes the field with the specified field internal name from the collection.
@@ -9201,15 +9762,15 @@ var ViewFields = (function (_super) {
      * @param fieldInternalName The case-sensitive internal name of the field to remove from the view.
      */
     ViewFields.prototype.remove = function (fieldInternalName) {
-        return this.clone(ViewFields, "removeviewfield('" + fieldInternalName + "')", true).postCore();
+        return this.clone(ViewFields, "removeviewfield('" + fieldInternalName + "')").postCore();
     };
     return ViewFields;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.ViewFields = ViewFields;
 
 
 /***/ }),
-/* 41 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9225,17 +9786,17 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
+var sharepointqueryable_1 = __webpack_require__(1);
 /**
  * Describes a collection of Field objects
  *
  */
-var Forms = (function (_super) {
+var Forms = /** @class */ (function (_super) {
     __extends(Forms, _super);
     /**
      * Creates a new instance of the Fields class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
      */
     function Forms(baseUrl, path) {
         if (path === void 0) { path = "forms"; }
@@ -9252,24 +9813,24 @@ var Forms = (function (_super) {
         return i;
     };
     return Forms;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Forms = Forms;
 /**
  * Describes a single of Form instance
  *
  */
-var Form = (function (_super) {
+var Form = /** @class */ (function (_super) {
     __extends(Form, _super);
     function Form() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return Form;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.Form = Form;
 
 
 /***/ }),
-/* 42 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9285,17 +9846,17 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
+var sharepointqueryable_1 = __webpack_require__(1);
 /**
  * Describes a collection of webhook subscriptions
  *
  */
-var Subscriptions = (function (_super) {
+var Subscriptions = /** @class */ (function (_super) {
     __extends(Subscriptions, _super);
     /**
      * Creates a new instance of the Subscriptions class
      *
-     * @param baseUrl - The url or Queryable which forms the parent of this webhook subscriptions collection
+     * @param baseUrl - The url or SharePointQueryable which forms the parent of this webhook subscriptions collection
      */
     function Subscriptions(baseUrl, path) {
         if (path === void 0) { path = "subscriptions"; }
@@ -9331,13 +9892,13 @@ var Subscriptions = (function (_super) {
         });
     };
     return Subscriptions;
-}(queryable_1.QueryableCollection));
+}(sharepointqueryable_1.SharePointQueryableCollection));
 exports.Subscriptions = Subscriptions;
 /**
  * Describes a single webhook subscription instance
  *
  */
-var Subscription = (function (_super) {
+var Subscription = /** @class */ (function (_super) {
     __extends(Subscription, _super);
     function Subscription() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -9364,12 +9925,12 @@ var Subscription = (function (_super) {
         return _super.prototype.deleteCore.call(this);
     };
     return Subscription;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.Subscription = Subscription;
 
 
 /***/ }),
-/* 43 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9385,8 +9946,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var RelatedItemManagerImpl = (function (_super) {
+var sharepointqueryable_1 = __webpack_require__(1);
+var RelatedItemManagerImpl = /** @class */ (function (_super) {
     __extends(RelatedItemManagerImpl, _super);
     function RelatedItemManagerImpl(baseUrl, path) {
         if (path === void 0) { path = "_api/SP.RelatedItemManager"; }
@@ -9403,7 +9964,7 @@ var RelatedItemManagerImpl = (function (_super) {
         return new RelatedItemManagerImpl(url);
     };
     RelatedItemManagerImpl.prototype.getRelatedItems = function (sourceListName, sourceItemId) {
-        var query = this.clone(RelatedItemManagerImpl, null, true);
+        var query = this.clone(RelatedItemManagerImpl, null);
         query.concat(".GetRelatedItems");
         return query.postCore({
             body: JSON.stringify({
@@ -9413,7 +9974,7 @@ var RelatedItemManagerImpl = (function (_super) {
         });
     };
     RelatedItemManagerImpl.prototype.getPageOneRelatedItems = function (sourceListName, sourceItemId) {
-        var query = this.clone(RelatedItemManagerImpl, null, true);
+        var query = this.clone(RelatedItemManagerImpl, null);
         query.concat(".GetPageOneRelatedItems");
         return query.postCore({
             body: JSON.stringify({
@@ -9424,7 +9985,7 @@ var RelatedItemManagerImpl = (function (_super) {
     };
     RelatedItemManagerImpl.prototype.addSingleLink = function (sourceListName, sourceItemId, sourceWebUrl, targetListName, targetItemID, targetWebUrl, tryAddReverseLink) {
         if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
-        var query = this.clone(RelatedItemManagerImpl, null, true);
+        var query = this.clone(RelatedItemManagerImpl, null);
         query.concat(".AddSingleLink");
         return query.postCore({
             body: JSON.stringify({
@@ -9448,7 +10009,7 @@ var RelatedItemManagerImpl = (function (_super) {
      */
     RelatedItemManagerImpl.prototype.addSingleLinkToUrl = function (sourceListName, sourceItemId, targetItemUrl, tryAddReverseLink) {
         if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
-        var query = this.clone(RelatedItemManagerImpl, null, true);
+        var query = this.clone(RelatedItemManagerImpl, null);
         query.concat(".AddSingleLinkToUrl");
         return query.postCore({
             body: JSON.stringify({
@@ -9469,7 +10030,7 @@ var RelatedItemManagerImpl = (function (_super) {
      */
     RelatedItemManagerImpl.prototype.addSingleLinkFromUrl = function (sourceItemUrl, targetListName, targetItemId, tryAddReverseLink) {
         if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
-        var query = this.clone(RelatedItemManagerImpl, null, true);
+        var query = this.clone(RelatedItemManagerImpl, null);
         query.concat(".AddSingleLinkFromUrl");
         return query.postCore({
             body: JSON.stringify({
@@ -9482,7 +10043,7 @@ var RelatedItemManagerImpl = (function (_super) {
     };
     RelatedItemManagerImpl.prototype.deleteSingleLink = function (sourceListName, sourceItemId, sourceWebUrl, targetListName, targetItemId, targetWebUrl, tryDeleteReverseLink) {
         if (tryDeleteReverseLink === void 0) { tryDeleteReverseLink = false; }
-        var query = this.clone(RelatedItemManagerImpl, null, true);
+        var query = this.clone(RelatedItemManagerImpl, null);
         query.concat(".DeleteSingleLink");
         return query.postCore({
             body: JSON.stringify({
@@ -9497,12 +10058,12 @@ var RelatedItemManagerImpl = (function (_super) {
         });
     };
     return RelatedItemManagerImpl;
-}(queryable_1.Queryable));
+}(sharepointqueryable_1.SharePointQueryable));
 exports.RelatedItemManagerImpl = RelatedItemManagerImpl;
 
 
 /***/ }),
-/* 44 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9518,15 +10079,15 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var queryable_1 = __webpack_require__(1);
-var files_1 = __webpack_require__(45);
-var odata_1 = __webpack_require__(2);
-var UserProfileQuery = (function (_super) {
+var sharepointqueryable_1 = __webpack_require__(1);
+var files_1 = __webpack_require__(52);
+var parsers_1 = __webpack_require__(7);
+var UserProfileQuery = /** @class */ (function (_super) {
     __extends(UserProfileQuery, _super);
     /**
      * Creates a new instance of the UserProfileQuery class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this user profile query
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this user profile query
      */
     function UserProfileQuery(baseUrl, path) {
         if (path === void 0) { path = "_api/sp.userprofiles.peoplemanager"; }
@@ -9539,7 +10100,7 @@ var UserProfileQuery = (function (_super) {
          * The url of the edit profile page for the current user
          */
         get: function () {
-            return this.clone(UserProfileQuery, "EditProfileLink").getAs(odata_1.ODataValue());
+            return this.clone(UserProfileQuery, "EditProfileLink").getAs(parsers_1.ODataValue());
         },
         enumerable: true,
         configurable: true
@@ -9549,7 +10110,7 @@ var UserProfileQuery = (function (_super) {
          * A boolean value that indicates whether the current user's "People I'm Following" list is public
          */
         get: function () {
-            return this.clone(UserProfileQuery, "IsMyPeopleListPublic").getAs(odata_1.ODataValue());
+            return this.clone(UserProfileQuery, "IsMyPeopleListPublic").getAs(parsers_1.ODataValue());
         },
         enumerable: true,
         configurable: true
@@ -9560,7 +10121,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user
      */
     UserProfileQuery.prototype.amIFollowedBy = function (loginName) {
-        var q = this.clone(UserProfileQuery, "amifollowedby(@v)", true);
+        var q = this.clone(UserProfileQuery, "amifollowedby(@v)");
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -9570,7 +10131,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user
      */
     UserProfileQuery.prototype.amIFollowing = function (loginName) {
-        var q = this.clone(UserProfileQuery, "amifollowing(@v)", true);
+        var q = this.clone(UserProfileQuery, "amifollowing(@v)");
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -9581,7 +10142,7 @@ var UserProfileQuery = (function (_super) {
      */
     UserProfileQuery.prototype.getFollowedTags = function (maxCount) {
         if (maxCount === void 0) { maxCount = 20; }
-        return this.clone(UserProfileQuery, "getfollowedtags(" + maxCount + ")", true).get();
+        return this.clone(UserProfileQuery, "getfollowedtags(" + maxCount + ")").get();
     };
     /**
      * Gets the people who are following the specified user
@@ -9589,7 +10150,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user
      */
     UserProfileQuery.prototype.getFollowersFor = function (loginName) {
-        var q = this.clone(UserProfileQuery, "getfollowersfor(@v)", true);
+        var q = this.clone(UserProfileQuery, "getfollowersfor(@v)");
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -9599,7 +10160,7 @@ var UserProfileQuery = (function (_super) {
          *
          */
         get: function () {
-            return new queryable_1.QueryableCollection(this, "getmyfollowers");
+            return new sharepointqueryable_1.SharePointQueryableCollection(this, "getmyfollowers");
         },
         enumerable: true,
         configurable: true
@@ -9621,7 +10182,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user.
      */
     UserProfileQuery.prototype.getPeopleFollowedBy = function (loginName) {
-        var q = this.clone(UserProfileQuery, "getpeoplefollowedby(@v)", true);
+        var q = this.clone(UserProfileQuery, "getpeoplefollowedby(@v)");
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -9631,7 +10192,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user.
      */
     UserProfileQuery.prototype.getPropertiesFor = function (loginName) {
-        var q = this.clone(UserProfileQuery, "getpropertiesfor(@v)", true);
+        var q = this.clone(UserProfileQuery, "getpropertiesfor(@v)");
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -9641,7 +10202,7 @@ var UserProfileQuery = (function (_super) {
          *
          */
         get: function () {
-            var q = this.clone(UserProfileQuery, null, true);
+            var q = this.clone(UserProfileQuery, null);
             q.concat(".gettrendingtags");
             return q.get();
         },
@@ -9655,7 +10216,7 @@ var UserProfileQuery = (function (_super) {
      * @param propertyName The case-sensitive name of the property to get
      */
     UserProfileQuery.prototype.getUserProfilePropertyFor = function (loginName, propertyName) {
-        var q = this.clone(UserProfileQuery, "getuserprofilepropertyfor(accountname=@v, propertyname='" + propertyName + "')", true);
+        var q = this.clone(UserProfileQuery, "getuserprofilepropertyfor(accountname=@v, propertyname='" + propertyName + "')");
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.get();
     };
@@ -9665,7 +10226,7 @@ var UserProfileQuery = (function (_super) {
      * @param loginName The account name of the user
      */
     UserProfileQuery.prototype.hideSuggestion = function (loginName) {
-        var q = this.clone(UserProfileQuery, "hidesuggestion(@v)", true);
+        var q = this.clone(UserProfileQuery, "hidesuggestion(@v)");
         q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
         return q.postCore();
     };
@@ -9676,7 +10237,7 @@ var UserProfileQuery = (function (_super) {
      * @param followee The account name of the user who might be followed by the follower
      */
     UserProfileQuery.prototype.isFollowing = function (follower, followee) {
-        var q = this.clone(UserProfileQuery, null, true);
+        var q = this.clone(UserProfileQuery, null);
         q.concat(".isfollowing(possiblefolloweraccountname=@v, possiblefolloweeaccountname=@y)");
         q.query.add("@v", "'" + encodeURIComponent(follower) + "'");
         q.query.add("@y", "'" + encodeURIComponent(followee) + "'");
@@ -9749,26 +10310,26 @@ var UserProfileQuery = (function (_super) {
         return this.profileLoader.shareAllSocialData(share);
     };
     return UserProfileQuery;
-}(queryable_1.QueryableInstance));
+}(sharepointqueryable_1.SharePointQueryableInstance));
 exports.UserProfileQuery = UserProfileQuery;
-var ProfileLoader = (function (_super) {
+var ProfileLoader = /** @class */ (function (_super) {
     __extends(ProfileLoader, _super);
     /**
    * Creates a new instance of the ProfileLoader class
    *
-   * @param baseUrl The url or Queryable which forms the parent of this profile loader
+   * @param baseUrl The url or SharePointQueryable which forms the parent of this profile loader
    */
     function ProfileLoader(baseUrl, path) {
         if (path === void 0) { path = "_api/sp.userprofiles.profileloader.getprofileloader"; }
         return _super.call(this, baseUrl, path) || this;
     }
     /**
-     * Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only)
+     * Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only) Doesn't support batching
      *
      * @param emails The email addresses of the users to provision sites for
      */
     ProfileLoader.prototype.createPersonalSiteEnqueueBulk = function (emails) {
-        return this.clone(ProfileLoader, "createpersonalsiteenqueuebulk").postCore({
+        return this.clone(ProfileLoader, "createpersonalsiteenqueuebulk", false).postCore({
             body: JSON.stringify({ "emailIDs": emails }),
         });
     };
@@ -9793,7 +10354,7 @@ var ProfileLoader = (function (_super) {
          *
          */
         get: function () {
-            return this.clone(ProfileLoader, "getuserprofile", true).postAsCore();
+            return this.clone(ProfileLoader, "getuserprofile").postAsCore();
         },
         enumerable: true,
         configurable: true
@@ -9805,7 +10366,7 @@ var ProfileLoader = (function (_super) {
      */
     ProfileLoader.prototype.createPersonalSite = function (interactiveRequest) {
         if (interactiveRequest === void 0) { interactiveRequest = false; }
-        return this.clone(ProfileLoader, "getuserprofile/createpersonalsiteenque(" + interactiveRequest + ")", true).postCore();
+        return this.clone(ProfileLoader, "getuserprofile/createpersonalsiteenque(" + interactiveRequest + ")").postCore();
     };
     /**
      * Sets the privacy settings for this profile
@@ -9813,14 +10374,14 @@ var ProfileLoader = (function (_super) {
      * @param share true to make all social data public; false to make all social data private.
      */
     ProfileLoader.prototype.shareAllSocialData = function (share) {
-        return this.clone(ProfileLoader, "getuserprofile/shareallsocialdata(" + share + ")", true).postCore();
+        return this.clone(ProfileLoader, "getuserprofile/shareallsocialdata(" + share + ")").postCore();
     };
     return ProfileLoader;
-}(queryable_1.Queryable));
+}(sharepointqueryable_1.SharePointQueryable));
 
 
 /***/ }),
-/* 45 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9874,7 +10435,917 @@ function readBlobAs(blob, mode) {
 
 
 /***/ }),
-/* 46 */
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var v1_1 = __webpack_require__(54);
+var GraphRest = /** @class */ (function () {
+    function GraphRest() {
+    }
+    Object.defineProperty(GraphRest.prototype, "v1", {
+        get: function () {
+            return new v1_1.V1("");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return GraphRest;
+}());
+exports.GraphRest = GraphRest;
+
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var graphqueryable_1 = __webpack_require__(5);
+var groups_1 = __webpack_require__(55);
+// import { Me } from "./me";
+/**
+ * Root object wrapping v1 functionality for MS Graph
+ *
+ */
+var V1 = /** @class */ (function (_super) {
+    __extends(V1, _super);
+    /**
+     * Creates a new instance of the V1 class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param path Optional additional path
+     */
+    function V1(baseUrl, path) {
+        if (path === void 0) { path = "v1.0"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    Object.defineProperty(V1.prototype, "groups", {
+        get: function () {
+            return new groups_1.Groups(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return V1;
+}(graphqueryable_1.GraphQueryable));
+exports.V1 = V1;
+
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var graphqueryable_1 = __webpack_require__(5);
+var members_1 = __webpack_require__(56);
+var util_1 = __webpack_require__(0);
+var calendars_1 = __webpack_require__(57);
+var conversations_1 = __webpack_require__(58);
+var plans_1 = __webpack_require__(60);
+var photos_1 = __webpack_require__(61);
+var GroupType;
+(function (GroupType) {
+    /**
+     * Office 365 (aka unified group)
+     */
+    GroupType[GroupType["Office365"] = 0] = "Office365";
+    /**
+     * Dynamic membership
+     */
+    GroupType[GroupType["Dynamic"] = 1] = "Dynamic";
+    /**
+     * Security
+     */
+    GroupType[GroupType["Security"] = 2] = "Security";
+})(GroupType = exports.GroupType || (exports.GroupType = {}));
+/**
+ * Describes a collection of Field objects
+ *
+ */
+var Groups = /** @class */ (function (_super) {
+    __extends(Groups, _super);
+    function Groups(baseUrl, path) {
+        if (path === void 0) { path = "groups"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a group from the collection using the specified id
+     *
+     * @param id Id of the group to get from this collection
+     */
+    Groups.prototype.getById = function (id) {
+        return new Group(this, id);
+    };
+    /**
+     * Create a new group as specified in the request body.
+     *
+     * @param name Name to display in the address book for the group
+     * @param mailNickname Mail alias for the group
+     * @param groupType Type of group being created
+     * @param additionalProperties A plain object collection of additional properties you want to set on the new group
+     */
+    Groups.prototype.add = function (name, mailNickname, groupType, additionalProperties) {
+        var _this = this;
+        if (additionalProperties === void 0) { additionalProperties = {}; }
+        var postBody = util_1.Util.extend({
+            displayName: name,
+            mailEnabled: groupType === GroupType.Office365,
+            mailNickname: mailNickname,
+            securityEnabled: groupType !== GroupType.Office365,
+        }, additionalProperties);
+        // include a group type if required
+        if (groupType !== GroupType.Security) {
+            postBody = util_1.Util.extend(postBody, {
+                groupTypes: [groupType === GroupType.Office365 ? "Unified" : "DynamicMembership"],
+            });
+        }
+        return this.postCore({
+            body: JSON.stringify(postBody),
+        }).then(function (r) {
+            return {
+                data: r,
+                group: _this.getById(r.id),
+            };
+        });
+    };
+    return Groups;
+}(graphqueryable_1.GraphQueryableCollection));
+exports.Groups = Groups;
+/**
+ * Represents a group entity
+ */
+var Group = /** @class */ (function (_super) {
+    __extends(Group, _super);
+    function Group() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Group.prototype, "caldendar", {
+        /**
+         * The calendar associated with this group
+         */
+        get: function () {
+            return new calendars_1.Calendar(this, "calendar");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Group.prototype, "events", {
+        /**
+         * Retrieve a list of event objects
+         */
+        get: function () {
+            return new calendars_1.Events(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Group.prototype, "owners", {
+        /**
+         * Gets the collection of owners for this group
+         */
+        get: function () {
+            return new members_1.Owners(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Group.prototype, "plans", {
+        /**
+         * The collection of plans for this group
+         */
+        get: function () {
+            return new plans_1.Plans(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Group.prototype, "members", {
+        /**
+         * Gets the collection of members for this group
+         */
+        get: function () {
+            return new members_1.Members(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Group.prototype, "conversations", {
+        /**
+         * Gets the conversations collection for this group
+         */
+        get: function () {
+            return new conversations_1.Conversations(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Group.prototype, "acceptedSenders", {
+        /**
+         * Gets the collection of accepted senders for this group
+         */
+        get: function () {
+            return new conversations_1.Senders(this, "acceptedsenders");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Group.prototype, "rejectedSenders", {
+        /**
+         * Gets the collection of rejected senders for this group
+         */
+        get: function () {
+            return new conversations_1.Senders(this, "rejectedsenders");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Group.prototype, "photo", {
+        /**
+         * The photo associated with the group
+         */
+        get: function () {
+            return new photos_1.Photo(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
+     */
+    Group.prototype.addFavorite = function () {
+        return this.clone(Group, "addFavorite").postCore();
+    };
+    /**
+     * Return all the groups that the specified group is a member of. The check is transitive
+     *
+     * @param securityEnabledOnly
+     */
+    Group.prototype.getMemberGroups = function (securityEnabledOnly) {
+        if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
+        return this.clone(Group, "getMemberGroups").postCore({
+            body: JSON.stringify({
+                securityEnabledOnly: securityEnabledOnly,
+            }),
+        });
+    };
+    /**
+     * Deletes this group
+     */
+    Group.prototype.delete = function () {
+        return this.deleteCore();
+    };
+    /**
+     * Update the properties of a group object
+     *
+     * @param properties Set of properties of this group to update
+     */
+    Group.prototype.update = function (properties) {
+        return this.patchCore({
+            body: JSON.stringify(properties),
+        });
+    };
+    /**
+     * Remove the group from the list of the current user's favorite groups. Supported for only Office 365 groups
+     */
+    Group.prototype.removeFavorite = function () {
+        return this.clone(Group, "removeFavorite").postCore();
+    };
+    /**
+     * Reset the unseenCount of all the posts that the current user has not seen since their last visit
+     */
+    Group.prototype.resetUnseenCount = function () {
+        return this.clone(Group, "resetUnseenCount").postCore();
+    };
+    /**
+     * Calling this method will enable the current user to receive email notifications for this group,
+     * about new posts, events, and files in that group. Supported for only Office 365 groups
+     */
+    Group.prototype.subscribeByMail = function () {
+        return this.clone(Group, "subscribeByMail").postCore();
+    };
+    /**
+     * Calling this method will prevent the current user from receiving email notifications for this group
+     * about new posts, events, and files in that group. Supported for only Office 365 groups
+     */
+    Group.prototype.unsubscribeByMail = function () {
+        return this.clone(Group, "unsubscribeByMail").postCore();
+    };
+    /**
+     * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group
+     *
+     * @param start Start date and time of the time range
+     * @param end End date and time of the time range
+     */
+    Group.prototype.getCalendarView = function (start, end) {
+        var view = this.clone(Group, "calendarView");
+        view.query.add("startDateTime", start.toISOString());
+        view.query.add("endDateTime", end.toISOString());
+        return view.get();
+    };
+    return Group;
+}(graphqueryable_1.GraphQueryableInstance));
+exports.Group = Group;
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var graphqueryable_1 = __webpack_require__(5);
+var Members = /** @class */ (function (_super) {
+    __extends(Members, _super);
+    function Members(baseUrl, path) {
+        if (path === void 0) { path = "members"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through
+     * the members navigation property. You can add users or other groups.
+     * Important: You can add only users to Office 365 groups.
+     *
+     * @param id Full @odata.id of the directoryObject, user, or group object you want to add (ex: https://graph.microsoft.com/v1.0/directoryObjects/${id})
+     */
+    Members.prototype.add = function (id) {
+        return this.clone(Members, "$ref").postCore({
+            body: JSON.stringify({
+                "@odata.id": id,
+            }),
+        });
+    };
+    /**
+     * Gets a member of the group by id
+     *
+     * @param id Group member's id
+     */
+    Members.prototype.getById = function (id) {
+        return new Member(this, id);
+    };
+    return Members;
+}(graphqueryable_1.GraphQueryableCollection));
+exports.Members = Members;
+var Member = /** @class */ (function (_super) {
+    __extends(Member, _super);
+    function Member() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return Member;
+}(graphqueryable_1.GraphQueryableInstance));
+exports.Member = Member;
+var Owners = /** @class */ (function (_super) {
+    __extends(Owners, _super);
+    function Owners(baseUrl, path) {
+        if (path === void 0) { path = "owners"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    return Owners;
+}(Members));
+exports.Owners = Owners;
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var graphqueryable_1 = __webpack_require__(5);
+// import { Attachments } from "./attachments";
+var Calendars = /** @class */ (function (_super) {
+    __extends(Calendars, _super);
+    function Calendars(baseUrl, path) {
+        if (path === void 0) { path = "calendars"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    return Calendars;
+}(graphqueryable_1.GraphQueryableCollection));
+exports.Calendars = Calendars;
+var Calendar = /** @class */ (function (_super) {
+    __extends(Calendar, _super);
+    function Calendar() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Calendar.prototype, "events", {
+        get: function () {
+            return new Events(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Calendar;
+}(graphqueryable_1.GraphQueryableInstance));
+exports.Calendar = Calendar;
+var Events = /** @class */ (function (_super) {
+    __extends(Events, _super);
+    function Events(baseUrl, path) {
+        if (path === void 0) { path = "events"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    Events.prototype.getById = function (id) {
+        return new Event(this, id);
+    };
+    /**
+     * Adds a new event to the collection
+     *
+     * @param properties The set of properties used to create the event
+     */
+    Events.prototype.add = function (properties) {
+        var _this = this;
+        return this.postCore({
+            body: JSON.stringify(properties),
+        }).then(function (r) {
+            return {
+                data: r,
+                event: _this.getById(r.id),
+            };
+        });
+    };
+    return Events;
+}(graphqueryable_1.GraphQueryableCollection));
+exports.Events = Events;
+var Event = /** @class */ (function (_super) {
+    __extends(Event, _super);
+    function Event() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    // TODO:: when supported
+    // /**
+    //  * Gets the collection of attachments for this event
+    //  */
+    // public get attachments(): Attachments {
+    //     return new Attachments(this);
+    // }
+    /**
+     * Update the properties of an event object
+     *
+     * @param properties Set of properties of this event to update
+     */
+    Event.prototype.update = function (properties) {
+        return this.patchCore({
+            body: JSON.stringify(properties),
+        });
+    };
+    /**
+     * Deletes this event
+     */
+    Event.prototype.delete = function () {
+        return this.deleteCore();
+    };
+    return Event;
+}(graphqueryable_1.GraphQueryableInstance));
+exports.Event = Event;
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var graphqueryable_1 = __webpack_require__(5);
+var attachments_1 = __webpack_require__(59);
+var Conversations = /** @class */ (function (_super) {
+    __extends(Conversations, _super);
+    function Conversations(baseUrl, path) {
+        if (path === void 0) { path = "conversations"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Create a new conversation by including a thread and a post.
+     *
+     * @param properties Properties used to create the new conversation
+     */
+    Conversations.prototype.add = function (properties) {
+        return this.postCore({
+            body: JSON.stringify(properties),
+        });
+    };
+    /**
+     * Gets a conversation from this collection by id
+     *
+     * @param id Group member's id
+     */
+    Conversations.prototype.getById = function (id) {
+        return new Conversation(this, id);
+    };
+    return Conversations;
+}(graphqueryable_1.GraphQueryableCollection));
+exports.Conversations = Conversations;
+var Threads = /** @class */ (function (_super) {
+    __extends(Threads, _super);
+    function Threads(baseUrl, path) {
+        if (path === void 0) { path = "threads"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a thread from this collection by id
+     *
+     * @param id Group member's id
+     */
+    Threads.prototype.getById = function (id) {
+        return new Thread(this, id);
+    };
+    /**
+     * Adds a new thread to this collection
+     *
+     * @param properties properties used to create the new thread
+     * @returns Id of the new thread
+     */
+    Threads.prototype.add = function (properties) {
+        return this.postCore({
+            body: JSON.stringify(properties),
+        });
+    };
+    return Threads;
+}(graphqueryable_1.GraphQueryableCollection));
+exports.Threads = Threads;
+var Posts = /** @class */ (function (_super) {
+    __extends(Posts, _super);
+    function Posts(baseUrl, path) {
+        if (path === void 0) { path = "posts"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a thread from this collection by id
+     *
+     * @param id Group member's id
+     */
+    Posts.prototype.getById = function (id) {
+        return new Post(this, id);
+    };
+    /**
+     * Adds a new thread to this collection
+     *
+     * @param properties properties used to create the new thread
+     * @returns Id of the new thread
+     */
+    Posts.prototype.add = function (properties) {
+        return this.postCore({
+            body: JSON.stringify(properties),
+        });
+    };
+    return Posts;
+}(graphqueryable_1.GraphQueryableCollection));
+exports.Posts = Posts;
+var Conversation = /** @class */ (function (_super) {
+    __extends(Conversation, _super);
+    function Conversation() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Conversation.prototype, "threads", {
+        /**
+         * Get all the threads in a group conversation.
+         */
+        get: function () {
+            return new Threads(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Updates this conversation
+     */
+    Conversation.prototype.update = function (properties) {
+        return this.patchCore({
+            body: JSON.stringify(properties),
+        });
+    };
+    /**
+     * Deletes this member from the group
+     */
+    Conversation.prototype.delete = function () {
+        return this.deleteCore();
+    };
+    return Conversation;
+}(graphqueryable_1.GraphQueryableInstance));
+exports.Conversation = Conversation;
+var Thread = /** @class */ (function (_super) {
+    __extends(Thread, _super);
+    function Thread() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Thread.prototype, "posts", {
+        /**
+         * Get all the threads in a group conversation.
+         */
+        get: function () {
+            return new Posts(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Reply to a thread in a group conversation and add a new post to it
+     *
+     * @param post Contents of the post
+     */
+    Thread.prototype.reply = function (post) {
+        return this.clone(Thread, "reply").postCore({
+            body: JSON.stringify({
+                post: post,
+            }),
+        });
+    };
+    /**
+     * Deletes this member from the group
+     */
+    Thread.prototype.delete = function () {
+        return this.deleteCore();
+    };
+    return Thread;
+}(graphqueryable_1.GraphQueryableInstance));
+exports.Thread = Thread;
+var Post = /** @class */ (function (_super) {
+    __extends(Post, _super);
+    function Post() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Post.prototype, "attachments", {
+        get: function () {
+            return new attachments_1.Attachments(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Deletes this post
+     */
+    Post.prototype.delete = function () {
+        return this.deleteCore();
+    };
+    /**
+     * Forward a post to a recipient
+     */
+    Post.prototype.forward = function (info) {
+        return this.clone(Post, "forward").postCore({
+            body: JSON.stringify(info),
+        });
+    };
+    /**
+     * Reply to a thread in a group conversation and add a new post to it
+     *
+     * @param post Contents of the post
+     */
+    Post.prototype.reply = function (post) {
+        return this.clone(Post, "reply").postCore({
+            body: JSON.stringify({
+                post: post,
+            }),
+        });
+    };
+    return Post;
+}(graphqueryable_1.GraphQueryableInstance));
+exports.Post = Post;
+var Senders = /** @class */ (function (_super) {
+    __extends(Senders, _super);
+    function Senders(baseUrl, path) {
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Add a new user or group to this senders collection
+     * @param id The full @odata.id value to add (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
+     */
+    Senders.prototype.add = function (id) {
+        return this.clone(Senders, "$ref").postCore({
+            body: JSON.stringify({
+                "@odata.id": id,
+            }),
+        });
+    };
+    /**
+     * Removes the entity from the collection
+     *
+     * @param id The full @odata.id value to remove (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
+     */
+    Senders.prototype.remove = function (id) {
+        var remover = this.clone(Senders, "$ref");
+        remover.query.add("$id", id);
+        return remover.deleteCore();
+    };
+    return Senders;
+}(graphqueryable_1.GraphQueryableCollection));
+exports.Senders = Senders;
+
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var graphqueryable_1 = __webpack_require__(5);
+var Attachments = /** @class */ (function (_super) {
+    __extends(Attachments, _super);
+    function Attachments(baseUrl, path) {
+        if (path === void 0) { path = "attachments"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a member of the group by id
+     *
+     * @param id Attachment id
+     */
+    Attachments.prototype.getById = function (id) {
+        return new Attachment(this, id);
+    };
+    /**
+     * Add attachment to this collection
+     *
+     * @param name Name given to the attachment file
+     * @param bytes File content
+     */
+    Attachments.prototype.addFile = function (name, bytes) {
+        return this.postCore({
+            body: JSON.stringify({
+                "@odata.type": "#microsoft.graph.fileAttachment",
+                contentBytes: bytes,
+                name: name,
+            }),
+        });
+    };
+    return Attachments;
+}(graphqueryable_1.GraphQueryableCollection));
+exports.Attachments = Attachments;
+var Attachment = /** @class */ (function (_super) {
+    __extends(Attachment, _super);
+    function Attachment() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return Attachment;
+}(graphqueryable_1.GraphQueryableInstance));
+exports.Attachment = Attachment;
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var graphqueryable_1 = __webpack_require__(5);
+var Plans = /** @class */ (function (_super) {
+    __extends(Plans, _super);
+    function Plans(baseUrl, path) {
+        if (path === void 0) { path = "planner/plans"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a plan from this collection by id
+     *
+     * @param id Plan's id
+     */
+    Plans.prototype.getById = function (id) {
+        return new Plan(this, id);
+    };
+    return Plans;
+}(graphqueryable_1.GraphQueryableCollection));
+exports.Plans = Plans;
+var Plan = /** @class */ (function (_super) {
+    __extends(Plan, _super);
+    function Plan() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return Plan;
+}(graphqueryable_1.GraphQueryableInstance));
+exports.Plan = Plan;
+
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var graphqueryable_1 = __webpack_require__(5);
+var parsers_1 = __webpack_require__(7);
+var Photo = /** @class */ (function (_super) {
+    __extends(Photo, _super);
+    function Photo(baseUrl, path) {
+        if (path === void 0) { path = "photo"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets the image bytes as a blob (browser)
+     */
+    Photo.prototype.getBlob = function () {
+        return this.clone(Photo, "$value", false).get(new parsers_1.BlobFileParser());
+    };
+    /**
+     * Gets the image file byets as a Buffer (node.js)
+     */
+    Photo.prototype.getBuffer = function () {
+        return this.clone(Photo, "$value", false).get(new parsers_1.BufferFileParser());
+    };
+    /**
+     * Sets the file bytes
+     *
+     * @param content Image file contents, max 4 MB
+     */
+    Photo.prototype.setContent = function (content) {
+        return this.clone(Photo, "$value", false).patchCore({
+            body: content,
+        });
+    };
+    return Photo;
+}(graphqueryable_1.GraphQueryableInstance));
+exports.Photo = Photo;
+
+
+/***/ }),
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9883,229 +11354,41 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(47));
-var httpclient_1 = __webpack_require__(9);
-exports.HttpClient = httpclient_1.HttpClient;
-var sprequestexecutorclient_1 = __webpack_require__(48);
-exports.SPRequestExecutorClient = sprequestexecutorclient_1.SPRequestExecutorClient;
-var nodefetchclient_1 = __webpack_require__(49);
-exports.NodeFetchClient = nodefetchclient_1.NodeFetchClient;
-var fetchclient_1 = __webpack_require__(21);
-exports.FetchClient = fetchclient_1.FetchClient;
-__export(__webpack_require__(50));
-var collections_1 = __webpack_require__(6);
+__export(__webpack_require__(63));
+var collections_1 = __webpack_require__(8);
 exports.Dictionary = collections_1.Dictionary;
 var util_1 = __webpack_require__(0);
 exports.Util = util_1.Util;
-__export(__webpack_require__(5));
-__export(__webpack_require__(3));
+__export(__webpack_require__(4));
+__export(__webpack_require__(2));
 
 
 /***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(23));
-var files_1 = __webpack_require__(8);
-exports.CheckinType = files_1.CheckinType;
-exports.WebPartsPersonalizationScope = files_1.WebPartsPersonalizationScope;
-exports.MoveOperations = files_1.MoveOperations;
-exports.TemplateFileType = files_1.TemplateFileType;
-exports.File = files_1.File;
-exports.Files = files_1.Files;
-var folders_1 = __webpack_require__(14);
-exports.Folder = folders_1.Folder;
-exports.Folders = folders_1.Folders;
-var items_1 = __webpack_require__(11);
-exports.Item = items_1.Item;
-exports.Items = items_1.Items;
-exports.PagedItemCollection = items_1.PagedItemCollection;
-var navigation_1 = __webpack_require__(30);
-exports.NavigationNodes = navigation_1.NavigationNodes;
-exports.NavigationNode = navigation_1.NavigationNode;
-var lists_1 = __webpack_require__(10);
-exports.List = lists_1.List;
-exports.Lists = lists_1.Lists;
-var odata_1 = __webpack_require__(2);
-exports.extractOdataId = odata_1.extractOdataId;
-exports.ODataParserBase = odata_1.ODataParserBase;
-exports.ODataDefaultParser = odata_1.ODataDefaultParser;
-exports.ODataRaw = odata_1.ODataRaw;
-exports.ODataValue = odata_1.ODataValue;
-exports.ODataEntity = odata_1.ODataEntity;
-exports.ODataEntityArray = odata_1.ODataEntityArray;
-exports.TextFileParser = odata_1.TextFileParser;
-exports.BlobFileParser = odata_1.BlobFileParser;
-exports.BufferFileParser = odata_1.BufferFileParser;
-exports.JSONFileParser = odata_1.JSONFileParser;
-var queryable_1 = __webpack_require__(1);
-exports.Queryable = queryable_1.Queryable;
-exports.QueryableInstance = queryable_1.QueryableInstance;
-exports.QueryableCollection = queryable_1.QueryableCollection;
-var roles_1 = __webpack_require__(16);
-exports.RoleDefinitionBindings = roles_1.RoleDefinitionBindings;
-var search_1 = __webpack_require__(22);
-exports.Search = search_1.Search;
-exports.SearchQueryBuilder = search_1.SearchQueryBuilder;
-exports.SearchResults = search_1.SearchResults;
-exports.SortDirection = search_1.SortDirection;
-exports.ReorderingRuleMatchType = search_1.ReorderingRuleMatchType;
-exports.QueryPropertyValueType = search_1.QueryPropertyValueType;
-exports.SearchBuiltInSourceId = search_1.SearchBuiltInSourceId;
-var searchsuggest_1 = __webpack_require__(24);
-exports.SearchSuggest = searchsuggest_1.SearchSuggest;
-exports.SearchSuggestResult = searchsuggest_1.SearchSuggestResult;
-var site_1 = __webpack_require__(25);
-exports.Site = site_1.Site;
-__export(__webpack_require__(13));
-var utilities_1 = __webpack_require__(32);
-exports.UtilityMethod = utilities_1.UtilityMethod;
-var webparts_1 = __webpack_require__(28);
-exports.WebPartDefinitions = webparts_1.WebPartDefinitions;
-exports.WebPartDefinition = webparts_1.WebPartDefinition;
-exports.WebPart = webparts_1.WebPart;
-var webs_1 = __webpack_require__(7);
-exports.Web = webs_1.Web;
-
-
-/***/ }),
-/* 48 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-var exceptions_1 = __webpack_require__(3);
-/**
- * Makes requests using the SP.RequestExecutor library.
- */
-var SPRequestExecutorClient = (function () {
-    function SPRequestExecutorClient() {
-        /**
-         * Converts a SharePoint REST API response to a fetch API response.
-         */
-        this.convertToResponse = function (spResponse) {
-            var responseHeaders = new Headers();
-            for (var h in spResponse.headers) {
-                if (spResponse.headers[h]) {
-                    responseHeaders.append(h, spResponse.headers[h]);
-                }
-            }
-            // issue #256, Cannot have an empty string body when creating a Response with status 204
-            var body = spResponse.statusCode === 204 ? null : spResponse.body;
-            return new Response(body, {
-                headers: responseHeaders,
-                status: spResponse.statusCode,
-                statusText: spResponse.statusText,
-            });
-        };
-    }
-    /**
-     * Fetches a URL using the SP.RequestExecutor library.
-     */
-    SPRequestExecutorClient.prototype.fetch = function (url, options) {
-        var _this = this;
-        if (typeof SP === "undefined" || typeof SP.RequestExecutor === "undefined") {
-            throw new exceptions_1.SPRequestExecutorUndefinedException();
-        }
-        var addinWebUrl = url.substring(0, url.indexOf("/_api")), executor = new SP.RequestExecutor(addinWebUrl);
-        var headers = {}, iterator, temp;
-        if (options.headers && options.headers instanceof Headers) {
-            iterator = options.headers.entries();
-            temp = iterator.next();
-            while (!temp.done) {
-                headers[temp.value[0]] = temp.value[1];
-                temp = iterator.next();
-            }
-        }
-        else {
-            headers = options.headers;
-        }
-        return new Promise(function (resolve, reject) {
-            var requestOptions = {
-                error: function (error) {
-                    reject(_this.convertToResponse(error));
-                },
-                headers: headers,
-                method: options.method,
-                success: function (response) {
-                    resolve(_this.convertToResponse(response));
-                },
-                url: url,
-            };
-            if (options.body) {
-                requestOptions = util_1.Util.extend(requestOptions, { body: options.body });
-            }
-            else {
-                requestOptions = util_1.Util.extend(requestOptions, { binaryStringRequestBody: true });
-            }
-            executor.executeAsync(requestOptions);
-        });
-    };
-    return SPRequestExecutorClient;
-}());
-exports.SPRequestExecutorClient = SPRequestExecutorClient;
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var exceptions_1 = __webpack_require__(3);
-/**
- * This module is substituted for the NodeFetchClient.ts during the packaging process. This helps to reduce the pnp.js file size by
- * not including all of the node dependencies
- */
-var NodeFetchClient = (function () {
-    function NodeFetchClient() {
-    }
-    /**
-     * Always throws an error that NodeFetchClient is not supported for use in the browser
-     */
-    NodeFetchClient.prototype.fetch = function () {
-        throw new exceptions_1.NodeFetchClientUnsupportedException();
-    };
-    return NodeFetchClient;
-}());
-exports.NodeFetchClient = NodeFetchClient;
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var cachingConfigurationProvider_1 = __webpack_require__(33);
+var cachingConfigurationProvider_1 = __webpack_require__(41);
 exports.CachingConfigurationProvider = cachingConfigurationProvider_1.default;
-var spListConfigurationProvider_1 = __webpack_require__(51);
+var spListConfigurationProvider_1 = __webpack_require__(64);
 exports.SPListConfigurationProvider = spListConfigurationProvider_1.default;
 
 
 /***/ }),
-/* 51 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var cachingConfigurationProvider_1 = __webpack_require__(33);
+var cachingConfigurationProvider_1 = __webpack_require__(41);
 /**
  * A configuration provider which loads configuration values from a SharePoint list
  *
  */
-var SPListConfigurationProvider = (function () {
+var SPListConfigurationProvider = /** @class */ (function () {
     /**
      * Creates a new SharePoint list based configuration provider
      * @constructor
@@ -10171,6 +11454,262 @@ var SPListConfigurationProvider = (function () {
     return SPListConfigurationProvider;
 }());
 exports.default = SPListConfigurationProvider;
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(66));
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var graphqueryable_1 = __webpack_require__(5);
+exports.GraphQueryable = graphqueryable_1.GraphQueryable;
+exports.GraphQueryableCollection = graphqueryable_1.GraphQueryableCollection;
+exports.GraphQueryableInstance = graphqueryable_1.GraphQueryableInstance;
+exports.GraphQueryableSearchableCollection = graphqueryable_1.GraphQueryableSearchableCollection;
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var httpclient_1 = __webpack_require__(21);
+exports.HttpClient = httpclient_1.HttpClient;
+var sprequestexecutorclient_1 = __webpack_require__(68);
+exports.SPRequestExecutorClient = sprequestexecutorclient_1.SPRequestExecutorClient;
+var nodefetchclient_1 = __webpack_require__(69);
+exports.NodeFetchClient = nodefetchclient_1.NodeFetchClient;
+var fetchclient_1 = __webpack_require__(27);
+exports.FetchClient = fetchclient_1.FetchClient;
+var graphclient_1 = __webpack_require__(40);
+exports.GraphHttpClient = graphclient_1.GraphHttpClient;
+
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var exceptions_1 = __webpack_require__(2);
+/**
+ * Makes requests using the SP.RequestExecutor library.
+ */
+var SPRequestExecutorClient = /** @class */ (function () {
+    function SPRequestExecutorClient() {
+        /**
+         * Converts a SharePoint REST API response to a fetch API response.
+         */
+        this.convertToResponse = function (spResponse) {
+            var responseHeaders = new Headers();
+            for (var h in spResponse.headers) {
+                if (spResponse.headers[h]) {
+                    responseHeaders.append(h, spResponse.headers[h]);
+                }
+            }
+            // issue #256, Cannot have an empty string body when creating a Response with status 204
+            var body = spResponse.statusCode === 204 ? null : spResponse.body;
+            return new Response(body, {
+                headers: responseHeaders,
+                status: spResponse.statusCode,
+                statusText: spResponse.statusText,
+            });
+        };
+    }
+    /**
+     * Fetches a URL using the SP.RequestExecutor library.
+     */
+    SPRequestExecutorClient.prototype.fetch = function (url, options) {
+        var _this = this;
+        if (typeof SP === "undefined" || typeof SP.RequestExecutor === "undefined") {
+            throw new exceptions_1.SPRequestExecutorUndefinedException();
+        }
+        var addinWebUrl = url.substring(0, url.indexOf("/_api")), executor = new SP.RequestExecutor(addinWebUrl);
+        var headers = {}, iterator, temp;
+        if (options.headers && options.headers instanceof Headers) {
+            iterator = options.headers.entries();
+            temp = iterator.next();
+            while (!temp.done) {
+                headers[temp.value[0]] = temp.value[1];
+                temp = iterator.next();
+            }
+        }
+        else {
+            headers = options.headers;
+        }
+        // this is a way to determine if we need to set the binaryStringRequestBody by testing what method we are calling
+        // and if they would normally have a binary body. This addresses issue #565.
+        var paths = [
+            "files\/add",
+            "files\/addTemplateFile",
+            "file\/startUpload",
+            "file\/continueUpload",
+            "file\/finishUpload",
+            "attachmentfiles\/add",
+        ];
+        var isBinaryRequest = (new RegExp(paths.join("|"), "i")).test(url);
+        return new Promise(function (resolve, reject) {
+            var requestOptions = {
+                error: function (error) {
+                    reject(_this.convertToResponse(error));
+                },
+                headers: headers,
+                method: options.method,
+                success: function (response) {
+                    resolve(_this.convertToResponse(response));
+                },
+                url: url,
+            };
+            if (options.body) {
+                requestOptions = util_1.Util.extend(requestOptions, { body: options.body });
+                if (isBinaryRequest) {
+                    requestOptions = util_1.Util.extend(requestOptions, { binaryStringRequestBody: true });
+                }
+            }
+            executor.executeAsync(requestOptions);
+        });
+    };
+    return SPRequestExecutorClient;
+}());
+exports.SPRequestExecutorClient = SPRequestExecutorClient;
+
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var exceptions_1 = __webpack_require__(2);
+/**
+ * This module is substituted for the NodeFetchClient.ts during the packaging process. This helps to reduce the pnp.js file size by
+ * not including all of the node dependencies
+ */
+var NodeFetchClient = /** @class */ (function () {
+    function NodeFetchClient() {
+    }
+    /**
+     * Always throws an error that NodeFetchClient is not supported for use in the browser
+     */
+    NodeFetchClient.prototype.fetch = function () {
+        throw new exceptions_1.NodeFetchClientUnsupportedException();
+    };
+    return NodeFetchClient;
+}());
+exports.NodeFetchClient = NodeFetchClient;
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(12));
+__export(__webpack_require__(7));
+__export(__webpack_require__(29));
+__export(__webpack_require__(19));
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(72));
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var files_1 = __webpack_require__(11);
+exports.CheckinType = files_1.CheckinType;
+exports.WebPartsPersonalizationScope = files_1.WebPartsPersonalizationScope;
+exports.MoveOperations = files_1.MoveOperations;
+exports.TemplateFileType = files_1.TemplateFileType;
+exports.File = files_1.File;
+exports.Files = files_1.Files;
+var folders_1 = __webpack_require__(17);
+exports.Folder = folders_1.Folder;
+exports.Folders = folders_1.Folders;
+var items_1 = __webpack_require__(14);
+exports.Item = items_1.Item;
+exports.Items = items_1.Items;
+exports.PagedItemCollection = items_1.PagedItemCollection;
+var navigation_1 = __webpack_require__(36);
+exports.NavigationNodes = navigation_1.NavigationNodes;
+exports.NavigationNode = navigation_1.NavigationNode;
+var lists_1 = __webpack_require__(13);
+exports.List = lists_1.List;
+exports.Lists = lists_1.Lists;
+var odata_1 = __webpack_require__(6);
+exports.spExtractODataId = odata_1.spExtractODataId;
+exports.spODataEntity = odata_1.spODataEntity;
+exports.spODataEntityArray = odata_1.spODataEntityArray;
+var sharepointqueryable_1 = __webpack_require__(1);
+exports.SharePointQueryable = sharepointqueryable_1.SharePointQueryable;
+exports.SharePointQueryableInstance = sharepointqueryable_1.SharePointQueryableInstance;
+exports.SharePointQueryableCollection = sharepointqueryable_1.SharePointQueryableCollection;
+var roles_1 = __webpack_require__(22);
+exports.RoleDefinitionBindings = roles_1.RoleDefinitionBindings;
+var search_1 = __webpack_require__(28);
+exports.Search = search_1.Search;
+exports.SearchQueryBuilder = search_1.SearchQueryBuilder;
+exports.SearchResults = search_1.SearchResults;
+exports.SortDirection = search_1.SortDirection;
+exports.ReorderingRuleMatchType = search_1.ReorderingRuleMatchType;
+exports.QueryPropertyValueType = search_1.QueryPropertyValueType;
+exports.SearchBuiltInSourceId = search_1.SearchBuiltInSourceId;
+var searchsuggest_1 = __webpack_require__(30);
+exports.SearchSuggest = searchsuggest_1.SearchSuggest;
+exports.SearchSuggestResult = searchsuggest_1.SearchSuggestResult;
+var site_1 = __webpack_require__(31);
+exports.Site = site_1.Site;
+__export(__webpack_require__(16));
+var utilities_1 = __webpack_require__(39);
+exports.UtilityMethod = utilities_1.UtilityMethod;
+var webparts_1 = __webpack_require__(34);
+exports.WebPartDefinitions = webparts_1.WebPartDefinitions;
+exports.WebPartDefinition = webparts_1.WebPartDefinition;
+exports.WebPart = webparts_1.WebPart;
+var webs_1 = __webpack_require__(10);
+exports.Web = webs_1.Web;
 
 
 /***/ })

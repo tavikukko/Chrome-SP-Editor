@@ -1196,8 +1196,8 @@ var getSubscriptions = function getSubscriptions() {
 
       lists.forEach(function (list) {
         weblists.push({ listTitle: list.Title, listId: list.Id });
-        if (list.Subscriptions.results.length > 0) {
-          list.Subscriptions.results.forEach(function (subscription) {
+        if (list.Subscriptions.length > 0) {
+          list.Subscriptions.forEach(function (subscription) {
             webHookSubscriptions.push({
               listTitle: list.Title,
               listId: list.Id,
@@ -1457,8 +1457,6 @@ var changeWebpartPosition = function changeWebpartPosition() {
   var wpIds = arguments[1];
   var zoneId = arguments[2];
 
-  //console.log("changeWebpartPosition", wpIds, zoneId);
-
   SP.SOD.executeFunc('sp.js', 'SP.ClientContext', () => {
     var context = SP.ClientContext.get_current();
     var page = context.get_web().getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath);
@@ -1500,10 +1498,10 @@ var getFolders = function getFolders() {
     if (requestor == "init") {
       $pnp.sp.web.rootFolder.expand("Folders, Files").get().then(r => {
         var joined = [];
-        r.Folders.results.forEach(function (folder) {
+        r.Folders.forEach(function (folder) {
           joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
         });
-        r.Files.results.forEach(function (file) {
+        r.Files.forEach(function (file) {
           joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
         });
         window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
@@ -1515,10 +1513,10 @@ var getFolders = function getFolders() {
     else {
       $pnp.sp.web.getFolderByServerRelativeUrl(requestor).expand("Folders, Files").get().then(r => {
         var joined = [];
-        r.Folders.results.forEach(function (folder) {
+        r.Folders.forEach(function (folder) {
           joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
         });
-        r.Files.results.forEach(function (file) {
+        r.Files.forEach(function (file) {
           joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
         });
         window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
