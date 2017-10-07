@@ -143,7 +143,10 @@ var addCustomAction = function addCustomAction() {
           alertify.delay(5000).success("ScriptLink added successfully!");
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }).catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
     else
@@ -152,7 +155,10 @@ var addCustomAction = function addCustomAction() {
           alertify.delay(5000).success("ScriptLink added successfully!");
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }).catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
   });
@@ -185,7 +191,10 @@ var removeCustomAction = function removeCustomAction() {
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 
         }).catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: false, result: error, source: 'chrome-sp-editor' }), '*');
 
         });
@@ -196,7 +205,10 @@ var removeCustomAction = function removeCustomAction() {
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 
         }).catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: false, result: error, source: 'chrome-sp-editor' }), '*');
 
         });
@@ -233,7 +245,11 @@ var addFile = function addFile() {
       alertify.delay(5000).success("File added successfully!");
       window.postMessage(JSON.stringify({ function: 'addFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.hasOwnProperty('error'))
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      else
+        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+
       window.postMessage(JSON.stringify({ function: 'addFile', success: false, result: error, source: 'chrome-sp-editor' }), '*');
     });
   });
@@ -365,11 +381,17 @@ var addWebProperties = function addWebProperties() {
         xhr.send();
 
       }).catch(function (error) {
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        if (error.data.responseBody.hasOwnProperty('error'))
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        else
+          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
     }).catch(function (error) {
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.hasOwnProperty('error'))
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      else
+        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
       window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
     });
 
@@ -449,7 +471,10 @@ var updateWebProperties = function updateWebProperties() {
           xhr.send();
 
         }).catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
       }).catch(function (error) {
@@ -539,11 +564,17 @@ var deleteWebProperties = function deleteWebProperties() {
           xhr.send();
 
         }).catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
       }).catch(function (error) {
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        if (error.data.responseBody.hasOwnProperty('error'))
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        else
+          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
     }, function () {
@@ -668,15 +699,23 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
           xhr.send();
 
         }).catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
-          window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);          window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
       }).catch(function (error) {
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        if (error.data.responseBody.hasOwnProperty('error'))
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        else
+          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
     }).catch(function (error) {
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.hasOwnProperty('error'))
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      else
+        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
       window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: error, source: 'chrome-sp-editor' }), '*');
     });
   });
@@ -766,7 +805,10 @@ var getLists = function getLists() {
 
       window.postMessage(JSON.stringify({ function: 'getLists', success: true, result: weblists, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.hasOwnProperty('error'))
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      else
+        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
     });
   });
 };
@@ -838,7 +880,10 @@ var addListProperties = function addListProperties() {
       xhr.send();
 
     }).catch(function (error) {
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.hasOwnProperty('error'))
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      else
+        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
       window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
     });
   });
@@ -913,7 +958,10 @@ var updateListProperties = function updateListProperties() {
         xhr.send();
 
       }).catch(function (error) {
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        if (error.data.responseBody.hasOwnProperty('error'))
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        else
+          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
     }, function () {
@@ -992,7 +1040,10 @@ var deleteListProperties = function deleteListProperties() {
         xhr.send();
 
       }).catch(function (error) {
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        if (error.data.responseBody.hasOwnProperty('error'))
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        else
+          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
     }, function () {
@@ -1114,11 +1165,17 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
           xhr.send();
 
         }).catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
       }).catch(function (error) {
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        if (error.data.responseBody.hasOwnProperty('error'))
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        else
+          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
   });
@@ -1211,7 +1268,10 @@ var getSubscriptions = function getSubscriptions() {
 
       window.postMessage(JSON.stringify({ function: 'getSubscriptions', success: true, result: webHookSubscriptions, lists: weblists, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.hasOwnProperty('error'))
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      else
+        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
     });
   });
 };
@@ -1244,7 +1304,10 @@ var addSubscriptions = function addSubscriptions() {
       window.postMessage(JSON.stringify({ function: 'addSubscriptions', success: true, result: null, source: 'chrome-sp-editor' }), '*');
     })
       .catch(function (error) {
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        if (error.data.responseBody.hasOwnProperty('error'))
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        else
+          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
       });
   });
 };
@@ -1276,7 +1339,10 @@ var removeSubscription = function removeSubscription() {
         window.postMessage(JSON.stringify({ function: 'removeSubscription', success: true, result: null, source: 'chrome-sp-editor' }), '*');
       })
         .catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         });
     }, function () {
       // user clicked "cancel"
@@ -1324,7 +1390,12 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
         });
         window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: true, result: webpartsFromWPM, source: 'chrome-sp-editor' }), '*');
       }).catch(function (error) {
-        window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: error.data.responseBody.error.message.value, source: 'chrome-sp-editor' }), '*');
+        var err = "";
+        if (error.data.responseBody.hasOwnProperty('error'))
+          err = error.data.responseBody.error.message.value;
+        else
+          err = error.data.responseBody['odata.error'].message.value;
+        window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: err, source: 'chrome-sp-editor' }), '*');
       });
 
     var getFileContent = function (serverRelativeUrl) {
@@ -1446,8 +1517,12 @@ var deleteWebpart = function deleteWebpart() {
         wpCellInDOM.parentNode.removeChild(wpCellInDOM);
         window.postMessage(JSON.stringify({ function: 'deleteWebpart', success: true, result: null, source: 'chrome-sp-editor' }), '*');
       }).catch(function (error) {
-        var message = error.data.responseBody.error.message.value;
-        window.postMessage(JSON.stringify({ function: 'deleteWebpart', success: false, result: message, source: 'chrome-sp-editor' }), '*');
+        var err = "";
+        if (error.data.responseBody.hasOwnProperty('error'))
+          err = error.data.responseBody.error.message.value;
+        else
+          err = error.data.responseBody['odata.error'].message.value;
+        window.postMessage(JSON.stringify({ function: 'deleteWebpart', success: false, result: err, source: 'chrome-sp-editor' }), '*');
       });
   });
 };
@@ -1507,7 +1582,10 @@ var getFolders = function getFolders() {
         window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
       })
         .catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         });
     }
     else {
@@ -1522,7 +1600,10 @@ var getFolders = function getFolders() {
         window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
       })
         .catch(function (error) {
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         });
     }
   });
@@ -1548,7 +1629,10 @@ var getFileContent = function getFileContent() {
     $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).getText().then(r => {
       window.postMessage(JSON.stringify({ function: "getFileContent", success: true, result: { content: r, type: fileUrl.substr(fileUrl.lastIndexOf('.') + 1) }, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.hasOwnProperty('error'))
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      else
+        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
     });
 
   });
@@ -1581,7 +1665,10 @@ var updateEditorFile = function updateEditorFile() {
         $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
           window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }).catch(function (error) {
-          alert(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alert(error.data.responseBody.error.message.value);
+          else
+            alert(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
         });
       }
@@ -1591,15 +1678,24 @@ var updateEditorFile = function updateEditorFile() {
             $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
               window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }).catch(function (error) {
-              alert(error.data.responseBody.error.message.value);
+              if (error.data.responseBody.hasOwnProperty('error'))
+                alert(error.data.responseBody.error.message.value);
+              else
+                alert(error.data.responseBody['odata.error'].message.value);
               window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
             });
           }).catch(function (error) {
-            alert(error.data.responseBody.error.message.value);
+            if (error.data.responseBody.hasOwnProperty('error'))
+              alert(error.data.responseBody.error.message.value);
+            else
+              alert(error.data.responseBody['odata.error'].message.value);
             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
           });
         }).catch(function (error) {
-          alert(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alert(error.data.responseBody.error.message.value);
+          else
+            alert(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
         });
       } else {
@@ -1607,16 +1703,25 @@ var updateEditorFile = function updateEditorFile() {
           $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
           }).catch(function (error) {
-            alert(error.data.responseBody.error.message.value);
+            if (error.data.responseBody.hasOwnProperty('error'))
+              alert(error.data.responseBody.error.message.value);
+            else
+              alert(error.data.responseBody['odata.error'].message.value);
             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
           });
         }).catch(function (error) {
-          alert(error.data.responseBody.error.message.value);
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alert(error.data.responseBody.error.message.value);
+          else
+            alert(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
         });
       }
     }).catch(function (error) {
-      alert(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.hasOwnProperty('error'))
+        alert(error.data.responseBody.error.message.value);
+      else
+        alert(error.data.responseBody['odata.error'].message.value);
       window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
     });
   });
@@ -1640,10 +1745,16 @@ var getApps = function getApps() {
     $pnp.sp.web.getList(_spPageContextInfo.webServerRelativeUrl + "/appCatalog").items.select("Title,FileLeafRef").get().then(function (apps) {
       window.postMessage(JSON.stringify({ function: 'getApps', success: true, result: apps, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
-      if (error.data.responseBody.error.code == "-2147024894, System.IO.FileNotFoundException")
+      var err;
+      if (error.data.responseBody.hasOwnProperty('error'))
+        err = error.data.responseBody.error;
+      else
+        err = error.data.responseBody['odata.error'];
+
+      if (err.code == "-2147024894, System.IO.FileNotFoundException")
         alertify.delay(10000).error("No appCatalog list found, please go to AppCatalog site and try again!");
       else
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        alertify.delay(10000).error(err.message.value);
 
       window.postMessage(JSON.stringify({ function: "getApps", success: false, result: null, source: 'chrome-sp-editor' }), '*');
     });
@@ -1681,7 +1792,11 @@ var getApp = function getApp() {
       window.postMessage(JSON.stringify({ function: 'getApp', success: true, result: data, source: 'chrome-sp-editor' }), '*');
 
     }).catch(function (error) {
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      if (error.data.responseBody.hasOwnProperty('error'))
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      else
+        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+
       window.postMessage(JSON.stringify({ function: "getApp", success: false, result: null, source: 'chrome-sp-editor' }), '*');
     });
 

@@ -72,6 +72,10 @@ riot.tag("pnpjsconsole", `
             showTypeScriptWarnings: false
           });
 
+          document.getElementById('pnpjsconsole').onclick = function(){
+            window.focus()
+          };
+
           var playgroundBinding = playground.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
             try {
               var js = ts.transpileModule(playground.getValue(), { compilerOptions: { module: ts.ModuleKind.None } });
