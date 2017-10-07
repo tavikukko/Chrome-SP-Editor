@@ -1409,8 +1409,11 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
           if (executor.get_statusCode() != "200")
             window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: false, result: "" + executor.get_statusCode(), source: 'chrome-sp-editor' }), '*');
           else {
-            var zones = executor.get_responseData().replace(/[\r\n]/g, '').match(/<[A-Za-z0-9]+:WebPartZone(?:\s(?:%>|[^>])*)?\sID=['"][A-Za-z0-9_\-]+['"]/gi).map(s => s.match(/\sID=['"]([A-Za-z0-9_\-]+)['"]/i)[1]);
-            window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: true, result: zones, source: 'chrome-sp-editor' }), '*');
+            var match = executor.get_responseData().replace(/[\r\n]/g, '').match(/<[A-Za-z0-9]+:WebPartZone(?:\s(?:%>|[^>])*)?\sID=['"][A-Za-z0-9_\-]+['"]/gi);
+            if (match){
+              var zones = match.map(s => s.match(/\sID=['"]([A-Za-z0-9_\-]+)['"]/i)[1]);
+              window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: true, result: zones, source: 'chrome-sp-editor' }), '*');
+            }
           }
         }
         else {
