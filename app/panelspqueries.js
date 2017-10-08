@@ -1379,7 +1379,7 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
         "Accept": "application/json; odata=verbose"
       }
     });
-
+    if(_spPageContextInfo.serverRequestPath.toLowerCase().indexOf("_layouts/") == -1)
     $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath)
       .getLimitedWebPartManager($pnp.WebPartsPersonalizationScope.Shared)
       .webparts.expand("webpart")
@@ -1397,6 +1397,10 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
           err = error.data.responseBody['odata.error'].message.value;
         window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: err, source: 'chrome-sp-editor' }), '*');
       });
+      else {
+        window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+        return;
+      }
 
     var getFileContent = function (serverRelativeUrl) {
       var absolutePart = location.protocol + '//' + location.host;

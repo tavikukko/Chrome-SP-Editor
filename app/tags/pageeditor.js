@@ -2,7 +2,7 @@ riot.tag("pageeditor", `
           <div id="pageeditor">
             <div id="webpart-zones-list">
                 <div class="zone"
-                     each="{ zone in zones }" 
+                     each="{ zone in zones }"
                      ondragstart="{ startDraggingWebpart }"
                      ondragover="{ dragOverWebpart }"
                      ondragend="{ reorderWebparts }"
@@ -34,11 +34,11 @@ riot.tag("pageeditor", `
       this.selectedWp = null;
       this.showSave = true;
       this.init();
-      chrome.devtools.network.onNavigated.addListener(() => {
+     /* chrome.devtools.network.onNavigated.addListener(() => {
         setTimeout(() => {
           this.init();
         }, 2500); // need to wait a bit until page is loaded
-      });
+      });*/
     });
 
     this.init = () => {
@@ -344,5 +344,5 @@ riot.tag("pageeditor", `
         errorTimeout = setTimeout(function () { this.showError = null; this.update(); }.bind(this), 10000);
       }
     };
-    
+
   });

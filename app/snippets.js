@@ -2,7 +2,7 @@ function createDependencyProposals() {
   return [
     // web snippets
     {
-      label: 'pnp-web-get',
+      label: 'snip-web-get',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Get current web.",
       insertText: {
@@ -14,7 +14,7 @@ function createDependencyProposals() {
       }
     },
     {
-      label: 'pnp-web-get-select',
+      label: 'snip-web-get-select',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Get current web with selected properties.",
       insertText: {
@@ -26,7 +26,7 @@ function createDependencyProposals() {
       }
     },
     {
-      label: 'pnp-web-get-allproperties',
+      label: 'snip-web-get-allproperties',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Get AllProperties from current web.",
       insertText: {
@@ -38,7 +38,7 @@ function createDependencyProposals() {
       }
     },
     {
-      label: 'pnp-web-open',
+      label: 'snip-web-open',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Open web from url.",
       insertText: {
@@ -52,7 +52,7 @@ function createDependencyProposals() {
       }
     },
     {
-      label: 'pnp-web-open-delete',
+      label: 'snip-web-open-delete',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Open web from url and delete it.",
       insertText: {
@@ -66,7 +66,7 @@ function createDependencyProposals() {
       }
     },
     {
-      label: 'pnp-web-update',
+      label: 'snip-web-update',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Update current web properties.",
       insertText: {
