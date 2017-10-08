@@ -8,6 +8,7 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 2.4.3 Snippets update
 - 2.4.2 Changed snippet prefix to "snip"
 - 2.4.1 Small fixes
     * error messages fix

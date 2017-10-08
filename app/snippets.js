@@ -80,5 +80,52 @@ function createDependencyProposals() {
         ].join('\n')
       }
     },
+    {
+      label: 'snip-get-group-data',
+      kind: monaco.languages.CompletionItemKind.Snippet,
+      documentation: "Get office groups data from graph.microsoft.com",
+      insertText: {
+        value: [
+          "getGroupData('${1:https://graph.microsoft.com/v1.0/groups}')",
+          "\t.then(data => {",
+          "\t\tconsole.log(data);",
+          "});\n",
+          "// Gets the accesstoken and fetches the desired url",
+          "// Scope: Group.ReadWrite.All, Reports.Read.All",
+          "async function getGroupData(url: string, method?: string) {",
+            "\tlet rspCtx = await fetch(`${(window as any)._spPageContextInfo.webAbsoluteUrl}/_api/contextinfo`, {",
+              "\t\tmethod: 'POST',",
+              "\t\tcredentials: 'include',",
+              "\t\theaders: new Headers({",
+                "\t\t\t'Accept': 'application/json; odata=verbose'",
+              "\t\t})",
+            "\t});\n",
+            "\tlet data = await rspCtx.json();",
+            "\tlet payload = { 'resource': 'https://graph.microsoft.com' };",
+            "\tlet token = await fetch(`${(window as any)._spPageContextInfo.webAbsoluteUrl}/_api/SP.OAuth.Token/Acquire`, {",
+              "\t\tmethod: 'POST',",
+              "\t\tcredentials: 'include',",
+              "\t\tbody: JSON.stringify(payload),",
+              "\t\theaders: new Headers({",
+                "\t\t\t'Accept': 'application/json; odata=verbose',",
+                "\t\t\t'Content-Type': 'application/json;odata=nometadata',",
+                "\t\t\t'X-RequestDigest': data.d.GetContextWebInformation.FormDigestValue",
+              "\t\t})",
+            "\t});\n",
+            "\tlet rspToken = await token.json();",
+            "\tlet reqData = await fetch(url, {",
+              "\t\tmethod: method ? method : 'GET',",
+              "\t\theaders: new Headers({",
+                "\t\t\t'Accept': 'application/json',",
+                "\t\t\t'Authorization': 'Bearer ' + rspToken.d.access_token",
+              "\t\t})",
+            "\t});\n",
+            "\treturn reqData.json();",
+          "}",
+        ].join('\n')
+      }
+    },
   ];
 }
+
+
