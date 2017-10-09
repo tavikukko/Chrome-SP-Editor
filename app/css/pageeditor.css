@@ -1,6 +1,6 @@
 .fe-icon {
   color: #fff;
-  width: 1.1em; 
+  width: 1.1em;
 }
 .fa-file-o {
   color: #eee;
@@ -15,13 +15,13 @@
   color: lightskyblue;
 }
 .treenode {
-  border: 1px solid black; 
+  border: 1px solid black;
   display: inline-block;
 }
 .treenode:before {
   content: "";
   display: inline-block;
-  position: absolute; 
+  position: absolute;
   left: 0;
   height: 22px;
   width: 200%;
@@ -37,7 +37,7 @@
     position: relative;
 }
 .fe-ul {
-  list-style: none; 
+  list-style: none;
   padding-left: 0.6em;
   margin: 0.25em 0;
 }
@@ -89,7 +89,7 @@ fileeditorcontainer {
   width: 78%;
   height: 100%;
   border-left: 1px solid grey;
-  margin-left: 22%; 
+  margin-left: 22%;
   overflow-y: hidden;
 }
 
@@ -122,7 +122,7 @@ appcatalogcontainer {
   width: 78%;
   height: 100%;
   border-left: 1px solid grey;
-  margin-left: 22%; 
+  margin-left: 22%;
   overflow-y: hidden;
 }
 
@@ -265,4 +265,11 @@ appcatalogcontainer {
   cursor: pointer;
   color: #ccc;
   border: 1px dashed #999;
+}
+
+#ms-signin-button {
+  max-width: 215px;
+  cursor: pointer;
+  display: inline-block;
+  border:1px solid #021a40;
 }

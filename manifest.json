@@ -1,32 +1,50 @@
 {
-	"name": "SP Editor",
-	"homepage_url": "https://github.com/tavikukko/Chrome-SP-Editor",
-	"version": "2.4.3",
-	"description": "Create and update SharePoint Online/SP2013/SP2016 css/js files, inject files to web, manage web properties and list Webhook",
-	"icons": {
-		"16": "icons/icon16.png",
-		"32": "icons/icon32.png",
-		"48": "icons/icon48.png",
-		"96": "icons/icon96.png",
-		"128": "icons/icon128.png"
-	},
-	"web_accessible_resources": [
-    "app/js/alertify.js", "app/js/pnp.js", "app/js/system.js"
+  "name": "SP Editor",
+  "homepage_url": "https://github.com/tavikukko/Chrome-SP-Editor",
+  "version": "2.4.3",
+  "description": "Create and update SharePoint Online/SP2013/SP2016 css/js files, inject files to web, manage web properties and list Webhook",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    "app/js/alertify.js",
+    "app/js/pnp.js",
+    "app/js/system.js"
   ],
-	"devtools_page": "devtools.html",
-	"background": { "scripts": [ "app/background.js"] },
-	   "content_scripts": [
-        {
-			"run_at": "document_end",
-			"css": ["app/css/alertify.css"],
-			"js": ["app/content.js"],
-            "matches": ["<all_urls>"]
-        }
-    ],
-	"permissions": ["webRequest",
-        "webRequestBlocking",
-        "tabs",
-        "storage","https://*/*", "http://*/*", "tabs"],
-	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-	"manifest_version": 2
+  "devtools_page": "devtools.html",
+  "background": {
+    "scripts": [
+      "app/background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "run_at": "document_end",
+      "all_frames": true,
+      "css": [
+        "app/css/alertify.css"
+      ],
+      "js": [
+        "app/content.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "tabs",
+    "storage",
+    "https://*/*",
+    "http://*/*",
+    "tabs"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "manifest_version": 2
 }

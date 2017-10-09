@@ -1,3 +1,11 @@
+var userAgentApplication = new Msal.UserAgentApplication('20d34c96-396e-4bf0-a008-472ef10a5099', null, function (errorDes, token, error, tokenType) {
+  // this callback is called after loginRedirect OR acquireTokenRedirect. It's not used with loginPopup,  acquireTokenPopup.
+  if (error)
+      console.log(error + ": " + errorDes);
+  else
+      console.log("Token type = " + tokenType);
+});
+
 var port = chrome.runtime.connect();
 
 var payload = { "type": "autosavechange", "content": false };

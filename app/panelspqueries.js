@@ -1870,7 +1870,7 @@ function hideDimmer() {
     elem('dimmer').style.display = 'none';
 }
 
-var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer'];
+var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman'];
 
 function swap(visibleElement) {
   for (var i = 0; i < allElements.length; i++) {
