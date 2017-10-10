@@ -90,7 +90,8 @@ riot.tag("sidebar", `
 
     this.btnGraphMan = function () {
       swap("graphman");
-      riot.mount("graphman");
+      if (graphman) return;
+      graphman = riot.mount("graphman");
     }.bind(this);
 
     this.btnPageEditor = function () {

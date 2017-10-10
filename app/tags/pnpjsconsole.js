@@ -140,7 +140,7 @@ riot.tag("pnpjsconsole", `
                 '\t\t// #####################',
                 '\t\t// Your code ends here',
                 '\t});',
-                '};'].join('\n');
+                '};'].join('\n').replace(/GraphManToken/g, graphmantoken);
 
               var script = pnp + '\n' + sj + '\n\n' + exescript + '\n\n' + execme + '\n\n';
 

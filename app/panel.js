@@ -17,6 +17,8 @@ var savetab = riot.mount("save"); // mount the first tab
 
 require.config({ paths: { 'vs': 'monaco-editor/min/vs', 'js': 'js' } });
 
+var graphman = null;
+var graphmantoken = "";
 var pnpjsconsole = null;
 var fileeditorsubs = [];
 var fileeditormain = null;

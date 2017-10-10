@@ -2,18 +2,31 @@ riot.tag("graphman", `
 <div id="page-content-wrapper">
   <h4>Graph Man</h4>
   <hr>
-    <img onclick="{ login }" id="ms-signin-button" src="img/MSSignInButton.svg"></img>
-    <span>{ this.user.name } { this.user.displayableId }</span>
-    <button onclick="{ acquireTokenPopup }">acquireTokenPopup</button>
+  <img if="{ user.name.length < 1 }" onclick="{ login }" id="ms-signin-button" src="img/MSSignInButton.svg"></img>
+  <div if="{ user.name.length > 0 }">
+    <div><i class="fa fa-user-md"></i> { this.user.name }</div>
+    <div><i class="fa fa-envelope"></i>  { this.user.displayableId }</div>
+  </div>
+  <!-- <button if="{ user.name.length > 0 }" onclick="{ acquireTokenPopup }">acquireTokenPopup</button> -->
   <hr>
-  <label for="usr">Token:</label>
-  <input type="text" class="form-control" id="usr" value="{ token }">
-  <div>
-    <label title="{ permission.longDescription }" onchange="{ select }" each="{ permission in permissionScope }" class="checkbox-inline"><input type="checkbox" value="{ permission.name }">{ permission.name }</label>
+  <div if="{ user.name.length > 0 }">
+    <div if="{ this.token }">
+      <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#token">Show token</button>
+      <input id="token" type="text" class="form-control collapse" value="{ token }">
+    </div>
+    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Scopes</button>
+    <button if="{ selectedPermissions.length > 0 }" type="button" class="btn btn-info" onclick="{ acquireTokenPopup }">acquire token</button>
+    <div id="demo" class="collapse">
+      <div class="col-sm-6" each="{ permission, index in permissionScope }" >
+        <label title="{ permission.longDescription }" onchange="{ select }" class="checkbox"><input type="checkbox" value="{ permission.name }"> { permission.name }</label>
+      </div>
+    </div>
   </div>
 </div>`,
   function (opts) {
 
+// make graph explorer clone :)
+// add monaco editor to show results of query
     this.user = {
       name: ""
     };
@@ -28,13 +41,14 @@ riot.tag("graphman", `
       const index = this.selectedPermissions.indexOf(e.item.permission.name);
       if (index !== -1) this.selectedPermissions.splice(index, 1);
       else this.selectedPermissions.push(e.item.permission.name)
+      this.update();
     }.bind(this);
 
     this.init = function () {
     }.bind(this);
 
     this.login = function (e) {
-      userAgentApplication.loginPopup(["user.read"]).then(function (token) {
+      userAgentApplication.loginPopup().then(function (token) {
         this.user = userAgentApplication.getUser();
         this.update();
       }.bind(this));
@@ -47,6 +61,7 @@ riot.tag("graphman", `
       }
       userAgentApplication.acquireTokenPopup(this.selectedPermissions).then(function (token) {
         this.token = token;
+        graphmantoken = token;
         this.update();
       }.bind(this), function (error) {
         console.log("Failure acquiring token: " + error);
@@ -59,7 +74,7 @@ riot.tag("graphman", `
             method: 'GET',
             headers: new Headers({
               'Accept': 'application/json',
-              'Authorization': 'Bearer ' + token
+              'Authorization': 'Bearer GraphManToken'
             })
           })
             .then((resp) => resp.json()) // Transform the data into json
