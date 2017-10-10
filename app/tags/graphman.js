@@ -9,7 +9,7 @@ riot.tag("graphman", `
   <label for="usr">Token:</label>
   <input type="text" class="form-control" id="usr" value="{ token }">
   <div>
-  <label title="{ permission.longDescription }" onchange="{ select }" each="{ permission in permissionScope }" class="checkbox-inline"><input type="checkbox" value="{ permission.name }">{ permission.name }</label>
+    <label title="{ permission.longDescription }" onchange="{ select }" each="{ permission in permissionScope }" class="checkbox-inline"><input type="checkbox" value="{ permission.name }">{ permission.name }</label>
   </div>
 </div>`,
   function (opts) {
