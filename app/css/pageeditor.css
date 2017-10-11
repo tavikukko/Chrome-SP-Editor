@@ -1,3 +1,13 @@
+body {
+  overflow: hidden;
+}
+
+listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer, scrlinks, files, pageeditor {
+  overflow-y: auto;
+  height: 100%;
+  position: fixed;
+}
+
 .fe-icon {
   color: #fff;
   width: 1.1em;
