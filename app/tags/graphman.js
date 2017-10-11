@@ -7,26 +7,26 @@ riot.tag("graphman", `
     <div><i class="fa fa-user-md"></i> { this.user.name }</div>
     <div><i class="fa fa-envelope"></i>  { this.user.displayableId }</div>
   </div>
-  <!-- <button if="{ user.name.length > 0 }" onclick="{ acquireTokenPopup }">acquireTokenPopup</button> -->
+  <!-- <button if="{ user.name.length > 0 }" onclick="{ acquireTokenPopup }">acquireTokenPopup</button>-->
   <hr>
   <div if="{ user.name.length > 0 }">
-    <div if="{ this.token }">
-      <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#token">Show token</button>
-      <input id="token" type="text" class="form-control collapse" value="{ token }">
-    </div>
+
     <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Scopes</button>
-    <button if="{ selectedPermissions.length > 0 }" type="button" class="btn btn-info" onclick="{ acquireTokenPopup }">acquire token</button>
+    <button type="button" class="btn btn-info" if="{ selectedPermissions.length > 0 }" onclick="{ acquireTokenPopup }">acquire token</button>&nbsp;
+    <button type="button" class="btn btn-info" data-toggle="collapse" if="{ this.token }" data-target="#token">Show token</button>
+    <input id="token" type="text" class="form-control collapse" value="{ token }">
+
     <div id="demo" class="collapse">
       <div class="col-sm-6" each="{ permission, index in permissionScope }" >
-        <label title="{ permission.longDescription }" onchange="{ select }" class="checkbox"><input type="checkbox" value="{ permission.name }"> { permission.name }</label>
+        <label title="{ permission.longDescription }" onchange="{ select }" class="checkbox"><input type="checkbox" value="{ permission.name }"><i class="fa { permission.admin ? ' fa-minus-circle permission-no' : ' fa-check-circle permission-yes' }"></i> { permission.name }</label>
       </div>
     </div>
   </div>
 </div>`,
   function (opts) {
 
-// make graph explorer clone :)
-// add monaco editor to show results of query
+    // make graph explorer clone :)
+    // add monaco editor to show results of query
     this.user = {
       name: ""
     };
@@ -520,5 +520,86 @@ riot.tag("graphman", `
         preview: true,
         admin: true
       }
-    ]
+    ];
+
+    // POST here --> https://apps.dev.microsoft.com/api/permissionsForResource
+    var ScopesFromPortal = [
+      { description: "Allows the app to read and write the properties re…Intune Role-Based Access Control (RBAC) settings.", id: "0c5e8a55-87a6-4556-93ab-adc52c4d862d", name: "DeviceManagementRBAC.ReadWrite.All", type: "Admin" },
+      { description: "Allows the app to have the same access to information in the directory as the signed-in user.", id: "0e263e50-5827-48a4-b97c-d940288653c7", name: "Directory.AccessAsUser.All", type: "Admin" },
+      { description: "Allows the app to create, read, update, and delete events in user calendars. ", id: "1ec239c2-d7c9-4623-a91a-a9775856bb36", name: "Calendars.ReadWrite", type: "User" },
+      { description: "Allows an app to read all service usage reports on…ts include Office 365 and Azure Active Directory.", id: "02e97553-ed7b-43d0-ab3c-f8bace0d040c", name: "Reports.Read.All", type: "Admin" },
+      { description: "Allows the app to read events in all calendars tha… access, including delegate and shared calendars.", id: "2b9c4092-424d-4249-948d-b43879977640", name: "Calendars.Read.Shared", type: "User" },
+      { description: "Allows the app to read and write assignments without grades on behalf of the user.", id: "2ef770a1-622a-47c4-93ee-28d6adbed3a0", name: "EduAssignments.ReadWriteBasic", type: "Admin" },
+      { description: "Allows the app to read and write assignments and their grades on behalf of the user.", id: "2f233e90-164b-4501-8bce-31af2559a2d3", name: "EduAssignments.ReadWrite", type: "Admin" },
+      { description: "Allows the app to create groups and read all group…and allows group members to update group content.", id: "4e46008b-f24c-477d-8fff-7bb4ec7aafe0", name: "Group.ReadWrite.All", type: "Admin" },
+      { description: "Allows the app to read the properties, group assig… protection policies managed by Microsoft Intune.", id: "4edf5f54-4666-44af-9de9-0144fb4b6e8c", name: "DeviceManagementApps.Read.All", type: "Admin" },
+      { description: "Allows the app to read, create, update and delete the signed-in user's files.", id: "5c28f0bf-8a70-41f1-8ab2-9032436ddb65", name: "Files.ReadWrite", type: "User" },
+      { description: "Allows the app to read a limited subset of the pro… status, education role, email address and photo.", id: "5d186531-d1bf-4f07-8cea-7c42119e1bd9", name: "EduRoster.ReadBasic", type: "Admin" },
+      { description: "Allows the app to create, read, update, and delete…d mail. Does not include permission to send mail.", id: "5df07973-7d5d-46ed-9847-1271055cbd51", name: "Mail.ReadWrite.Shared", type: "User" },
+      { description: "Allows the app to list groups, and to read their p…nt for all groups the signed-in user can access. ", id: "5f8c59db-677d-491f-a6b8-5f174b11ec1d", name: "Group.Read.All", type: "Admin" },
+      { description: "Allows the app to read data in your organization's directory, such as users, groups and apps.", id: "06da0dbc-49e2-44d2-8312-53f166ab848a", name: "Directory.Read.All", type: "Admin" },
+      { description: "Allows the app to read and write the properties, g… protection policies managed by Microsoft Intune.", id: "7b3f05d5-f68c-4b8d-8c59-a2ecd12f24af", name: "DeviceManagementApps.ReadWrite.All", type: "Admin" },
+      { description: "Allows the app to read mail a user can access, including their own and shared mail.", id: "7b9103a5-4610-446b-9670-80643382c1fa", name: "Mail.Read.Shared", type: "User" },
+      { description: "Allows the app to read identity risk event informa…ur organization on behalf of the signed-in user. ", id: "8f6a01e7-0391-4ee5-aa22-a3af122cef27", name: "IdentityRiskEvent.Read.All", type: "Admin" },
+      { description: "Allows the app to read the titles of OneNote noteb…ks, and sections on behalf of the signed-in user.", id: "9d822255-d64d-4b7a-afdb-833b9a97ed02", name: "Notes.Create", type: "User" },
+      { description: "Allows the app to read a user's list of devices on behalf of the signed-in user.", id: "11d4cd79-5ba5-460f-803f-e22c8ab85ccd", name: "Device.Read", type: "User" },
+      { description: "Allows the app to see your users' basic profile (name, picture, user name)", id: "14dad69e-099b-42c9-810b-d002981feec1", name: "profile", type: "User" },
+      { description: "(Preview) Allows the app to read and write files t… for several hours after the user selects a file.", id: "17dde5bd-8c17-420f-a486-969730c1b827", name: "Files.ReadWrite.Selected", type: "User" },
+      { description: "Allows the app to create, read, update, and delete…boxes. Does not include permission to send mail. ", id: "024d486e-b451-40bb-833d-3e66d98c5c73", name: "Mail.ReadWrite", type: "User" },
+      { description: "Allows users to sign in to the app with their work…ws the app to see basic user profile information.", id: "37f7f235-527c-4136-accd-4a02d197296e", name: "openid", type: "User" },
+      { description: "Allows the app to read the properties relating to …Intune Role-Based Access Control (RBAC) settings.", id: "49f0cc30-024c-4dfd-ab3e-82e137ee5431", name: "DeviceManagementRBAC.Read.All", type: "Admin" },
+      { description: "Allows the app to invite guest users to the organization, on behalf of the signed-in user.", id: "63dd7cd9-b489-4adf-a28c-ac38b9a0f962", name: "User.Invite.All", type: "Admin" },
+      { description: "Allows the app to read your users' primary email address", id: "64a6cdd6-aab1-4aaf-94b8-3cc8405e90d0", name: "email", type: "User" },
+      { description: "Allows the app to read, share, and modify OneNote …signed-in user has access to in the organization.", id: "64ac0503-b4fa-45d9-b544-71a463f05da0", name: "Notes.ReadWrite.All", type: "User" },
+      { description: "Allows the app to the read user's mailbox settings. Does not include permission to send mail.", id: "87f447af-9fa4-4c32-9dfa-4a57a73d18ce", name: "MailboxSettings.Read", type: "User" },
+      { description: "Allows the app to read tasks a user has permissions to access, including their own and shared tasks.", id: "88d21fd4-8e5a-4c32-b5e2-4a1c95f34f72", name: "Tasks.Read.Shared", type: "User" },
+      { description: "Allows the application to edit or delete documents…site collections on behalf of the signed-in user.", id: "89fe6a52-be36-487e-b7d8-d061c450a026", name: "Sites.ReadWrite.All", type: "User" },
+      { description: "Allows the app to read and write the full set of p…ur organization, on behalf of the signed-in user.", id: "204e0828-b5ca-4ad8-b9f3-f32a958e7cc4", name: "User.ReadWrite.All", type: "Admin" },
+      { description: "Allows the application to read documents and list … site collections on behalf of the signed-in user", id: "205e70e5-aba6-4c52-a976-6d2d46c48043", name: "Sites.Read.All", type: "User" },
+      { description: "Allows the app to read contacts a user has permiss… access, including their own and shared contacts.", id: "242b9d9e-ed24-4d09-9a52-f43769beb9d4", name: "Contacts.Read.Shared", type: "User" },
+      { description: "Allows the app to read and write the structure of …ers to be read and written on behalf of the user.", id: "359e19a6-e3fa-4d7f-bcab-d28ec592b51e", name: "EduRoster.ReadWrite", type: "Admin" },
+      { description: "Allows the app to read events in user calendars . ", id: "465a38f9-76ea-45b9-9f34-9e8b0d4b0b42", name: "Calendars.Read", type: "User" },
+      { description: "Allows the app to read, share, and modify OneNote notebooks on behalf of the signed-in user.", id: "615e26af-c38a-4150-ae3e-c3b0d4cb1d6a", name: "Notes.ReadWrite", type: "User" },
+      { description: "Allows the app to read and write Microsoft Intune …and third party service connection configuration.", id: "662ed50a-ac44-4eef-ad86-62eed9be2a29", name: "DeviceManagementServiceConfig.ReadWrite.All", type: "Admin" },
+      { description: "Allows the app to create, read, update, and delete…ttings. Does not include permission to send mail.", id: "818c620a-27a9-40bd-a6a5-d96f7d610b4b", name: "MailboxSettings.ReadWrite", type: "User" },
+      { description: "Allows the app to read and write properties of Mic…mpliance policies and their assignment to groups.", id: "0883f392-0a7a-443d-8c76-16a6d39c7b63", name: "DeviceManagementConfiguration.ReadWrite.All", type: "Admin" },
+      { description: "Allows the app to perform remote high impact actio… passcode on devices managed by Microsoft Intune.", id: "3404d2bf-2b13-457e-a330-c24615765193", name: "DeviceManagementManagedDevices.PrivilegedOperations.All", type: "Admin" },
+      { description: "(Preview) Allows the app to read files that the us… for several hours after the user selects a file.", id: "5447fe39-cb82-4c1a-b977-520e67e724eb", name: "Files.Read.Selected", type: "User" },
+      { description: "Allows the app to read and update user data, even when they are not currently using the app.", id: "7427e0e9-2fba-42fe-b0c0-848c9e6a8182", name: "offline_access", type: "User" },
+      { description: "(Preview) Allows the app to read, create, update and delete files in the application's folder.", id: "8019c312-3263-48e6-825e-2b833497195b", name: "Files.ReadWrite.AppFolder", type: "User" },
+      { description: "Allows the app to read Microsoft Intune service pr…and third party service connection configuration.", id: "8696daa5-bce5-4b2e-83f9-51b6defc4e1e", name: "DeviceManagementServiceConfig.Read.All", type: "Admin" },
+      { description: "Allows the app to read and write the properties of…te wipe and password reset on the device’s owner.", id: "44642bfe-8385-4adc-8fc6-fe3cb2c375c3", name: "DeviceManagementManagedDevices.ReadWrite.All", type: "Admin" },
+      { description: "Allows the app to read assignments and their grades on behalf of the user.", id: "091460c9-9c4a-49b2-81ef-1f3d852acce2", name: "EduAssignments.Read", type: "Admin" },
+      { description: "Allows the app to read the properties of devices managed by Microsoft Intune.", id: "314874da-47d6-4978-88dc-cf0d37f0bb82", name: "DeviceManagementManagedDevices.Read.All", type: "Admin" },
+      { description: "Allows the app to report the signed-in user's app activity information to Microsoft Timeline.", id: "367492fc-594d-4972-a9b5-0d58c622c91c", name: "UserTimelineActivity.Write.CreatedByApp", type: "User" },
+      { description: "Allows the app to read OneNote notebooks on behalf of the signed-in user.", id: "371361e4-b9e2-4a3f-8315-2a301a3b0a3d", name: "Notes.Read", type: "User" },
+      { description: "Allows the app to read email in user mailboxes. ", id: "570282fd-fa5c-430d-a7fd-fc8dc98a9dca", name: "Mail.Read", type: "User" },
+      { description: "Allows the app to read, create, update and delete all files the signed-in user can access.", id: "863451e7-0667-486c-a5d6-d135439485f0", name: "Files.ReadWrite.All", type: "User" },
+      { description: "Allows the app to create, read, update and delete …re assigned to or shared with the signed-in user.", id: "2219042f-cab5-40cc-b0d2-16b1540b4c5f", name: "Tasks.ReadWrite", type: "User" },
+      { description: "Read the state and settings of all Microsoft education apps on behalf of the user.", id: "8523895c-6081-45bf-8a5d-f062a2f12c9f", name: "EduAdministration.Read", type: "Admin" },
+      { description: "Allows the app to read the signed-in user's files.", id: "10465720-29dd-4523-a11a-6a75c743c9d9", name: "Files.Read", type: "User" },
+      { description: "Allows the app to create, read, update and delete …ess. This includes delegate and shared calendars.", id: "12466101-c9b8-439a-8589-dd09ee67e8e9", name: "Calendars.ReadWrite.Shared", type: "User" },
+      { description: "Manage the state and settings of all Microsoft education apps on behalf of the user.", id: "63589852-04e3-46b4-bae9-15d5b1050748", name: "EduAdministration.ReadWrite", type: "Admin" },
+      { description: "Allows the app to read the full set of profile pro…ur organization, on behalf of the signed-in user.", id: "a154be20-db9c-4678-8ab7-66f6cc099a59", name: "User.Read.All", type: "Admin" },
+      { description: "Allows the app to send mail as the signed-in user, including sending on-behalf of others.", id: "a367ab51-6b49-43bf-a716-a1fb06d2a174", name: "Mail.Send.Shared", type: "User" },
+      { description: "Allows the app to read the structure of schools an…ion about users to be read on behalf of the user.", id: "a4389601-22d9-4096-ac18-36a927199112", name: "EduRoster.Read", type: "Admin" },
+      { description: "Allows the app to create, read, update, and delete…ions to, including their own and shared contacts.", id: "afb6c84b-06be-49af-80bb-8f3f77004eab", name: "Contacts.ReadWrite.Shared", type: "User" },
+      { description: "Allows the app to read your profile. It also allow…o update your profile information on your behalf.", id: "b4e74841-8e56-480b-be8b-910348b18b4c", name: "User.ReadWrite", type: "User" },
+      { description: "Allows the app to read a scored list of relevant p… recent communications (such as email and Skype).", id: "b89f9189-71a5-4e70-b041-9887f0bc7e4a", name: "People.Read.All", type: "Admin" },
+      { description: "Allows the app to read a basic set of profile prop…me, first and last name, email address and photo.", id: "b340eb25-3456-403f-be2f-af7a0d370277", name: "User.ReadBasic.All", type: "User" },
+      { description: "Allows the app to read a ranked list of relevant p… recent communications (such as email and Skype).", id: "ba47897c-39ec-4d83-8086-ee8256fa737d", name: "People.Read", type: "User" },
+      { description: "Allows the app to launch another app or communicat… a user's device on behalf of the signed-in user.", id: "bac3b9c2-b516-4ef4-bd3b-c2ef73d8d804", name: "Device.Command", type: "User" },
+      { description: "Allows the app to read assignments without grades on behalf of the user.", id: "c0b0103b-c053-4b2e-9973-9f3a544ec9b8", name: "EduAssignments.ReadBasic", type: "Admin" },
+      { description: "Allows the app to create, read, update, and delete…issions to, including their own and shared tasks.", id: "c5ddf11b-c114-4886-8558-8a4e557cd52b", name: "Tasks.ReadWrite.Shared", type: "User" },
+      { description: "Allows the app to read and write data in your orga… delete users or groups, or reset user passwords.", id: "c5366453-9fb0-48a5-a156-24f0c49a4b84", name: "Directory.ReadWrite.All", type: "Admin" },
+      { description: "Allows the app to create, read, update, and delete user contacts. ", id: "d56682ec-c09e-4743-aaf4-1a3aac4caa21", name: "Contacts.ReadWrite", type: "User" },
+      { description: "Allows the app to read all files the signed-in user can access.", id: "df85f4d6-205c-4ac5-a5ea-6bf408dba283", name: "Files.Read.All", type: "User" },
+      { description: "Allows the app to read OneNote notebooks that the signed-in user has access to in the organization.", id: "dfabfca6-ee36-4db2-8208-7a28381419b3", name: "Notes.Read.All", type: "User" },
+      { description: "Allows users to sign-in to the app, and allows the…ead basic company information of signed-in users.", id: "e1fe6dd8-ba31-4d61-89e7-88639da4683d", name: "User.Read", type: "User" },
+      { description: "Allows the app to send mail as users in the organization. ", id: "e383f46e-2787-4529-855e-0e479a3ffac0", name: "Mail.Send", type: "User" },
+      { description: "This is deprecated!  Do not use! This permission n…additional privileges will be granted to the app.", id: "ed68249d-017c-4df5-9113-e684c7f8760b", name: "Notes.ReadWrite.CreatedByApp", type: "User" },
+      { description: "Allows the app to read user tasks", id: "f45671fb-e0fe-4b4b-be20-3d3ce43f1bcb", name: "Tasks.Read", type: "User" },
+      { description: "Allows the app to read properties of Microsoft Int…mpliance policies and their assignment to groups.", id: "f1493658-876a-4c87-8fa7-edb559b3476a", name: "DeviceManagementConfiguration.Read.All", type: "Admin" },
+      { description: "Allows the app to read user contacts.  ", id: "ff74d97f-43af-4b68-9f2a-b77ee6968c5d", name: "Contacts.Read", type: "User" }];
   });
+

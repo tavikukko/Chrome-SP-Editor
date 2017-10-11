@@ -7,6 +7,12 @@ listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer,
   height: 100%;
   position: fixed;
 }
+.permission-yes{
+  color: #009e49;
+}
+.permission-no {
+  color: #e81123;
+}
 
 .fe-icon {
   color: #fff;
@@ -276,9 +282,12 @@ appcatalogcontainer {
   color: #ccc;
   border: 1px dashed #999;
 }
-
+graphman {
+  width: 100%;
+}
 #ms-signin-button {
   max-width: 215px;
+  height: 45px;
   cursor: pointer;
   display: inline-block;
   border:1px solid #021a40;
