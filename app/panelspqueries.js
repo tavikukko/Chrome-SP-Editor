@@ -11,7 +11,6 @@ var getCustomActions = function getCustomActions() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -100,7 +99,6 @@ var addCustomAction = function addCustomAction() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -182,7 +180,6 @@ var removeCustomAction = function removeCustomAction() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -238,11 +235,11 @@ var addFile = function addFile() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
     });
+
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
@@ -275,7 +272,6 @@ var getWebProperties = function getWebProperties() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -337,7 +333,6 @@ var addWebProperties = function addWebProperties() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -428,7 +423,6 @@ var updateWebProperties = function updateWebProperties() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -521,7 +515,6 @@ var deleteWebProperties = function deleteWebProperties() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -618,7 +611,6 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -759,7 +751,6 @@ var getListProperties = function getListProperties() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -818,7 +809,6 @@ var getLists = function getLists() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -859,7 +849,6 @@ var addListProperties = function addListProperties() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -938,7 +927,6 @@ var updateListProperties = function updateListProperties() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1021,7 +1009,6 @@ var deleteListProperties = function deleteListProperties() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1106,7 +1093,6 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1284,7 +1270,6 @@ var getSubscriptions = function getSubscriptions() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1335,7 +1320,6 @@ var addSubscriptions = function addSubscriptions() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1374,7 +1358,6 @@ var removeSubscription = function removeSubscription() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1430,7 +1413,6 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1571,7 +1553,6 @@ var deleteWebpart = function deleteWebpart() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1631,7 +1612,6 @@ var getFolders = function getFolders() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1690,7 +1670,6 @@ var getFileContent = function getFileContent() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1724,7 +1703,6 @@ var updateEditorFile = function updateEditorFile() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1812,7 +1790,6 @@ var getApps = function getApps() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1851,7 +1828,6 @@ var getApp = function getApp() {
     $pnp.setup({
       sp: {
         headers: {
-
           "Accept": "application/json; odata=verbose"
         }
       }
@@ -1895,15 +1871,6 @@ var updateApp = function updateApp() {
     var alertify = modules[1];
 
     $pnp.setup({
-      sp: {
-        headers: {
-
-          "Accept": "application/json; odata=verbose"
-        }
-      }
-    });
-    pnp.setup({
-
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose"
