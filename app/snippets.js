@@ -125,6 +125,22 @@ function createDependencyProposals() {
         ].join('\n')
       }
     },
+    {
+      label: 'snip-headers',
+      kind: monaco.languages.CompletionItemKind.Snippet,
+      documentation: "Include request headers for SP2013",
+      insertText: {
+        value: [
+          "pnp.setup({",
+          "\tsp:{",
+          "\t\theaders: {",
+          "\t\t\t\"Accept\": \"application/json; odata=verbose\"",
+          "\t\t}",
+          "\t}",
+          "});"
+        ].join('\n')
+      }
+    },
   ];
 }
 
