@@ -146,8 +146,10 @@ Go to your SharePoint site and open Chrome developer tools.
 * for sp2013 change the headers of the request:
 ```
 pnp.setup({
-    headers: {
-        "Accept": "application/json;odata=verbose",
+    sp: {
+        headers: {            
+            "Accept": "application/json;odata=verbose",
+        }
     }
 });
 ```
