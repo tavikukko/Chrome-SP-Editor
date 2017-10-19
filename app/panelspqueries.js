@@ -1623,10 +1623,10 @@ var getFolders = function getFolders() {
     if (requestor == "init") {
       $pnp.sp.web.rootFolder.expand("Folders, Files").get().then(r => {
         var joined = [];
-        r.Folders.forEach(function (folder) {
+        r.Folders.results.forEach(function (folder) {
           joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
         });
-        r.Files.forEach(function (file) {
+        r.Files.results.forEach(function (file) {
           joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
         });
         window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
@@ -1641,10 +1641,10 @@ var getFolders = function getFolders() {
     else {
       $pnp.sp.web.getFolderByServerRelativeUrl(requestor).expand("Folders, Files").get().then(r => {
         var joined = [];
-        r.Folders.forEach(function (folder) {
+        r.Folders.results.forEach(function (folder) {
           joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
         });
-        r.Files.forEach(function (file) {
+        r.Files.results.forEach(function (file) {
           joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
         });
         window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
