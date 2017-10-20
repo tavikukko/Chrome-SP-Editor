@@ -8,6 +8,8 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 2.4.5 bug fix and new snippet, thanks [@ytterstrom](https://github.com/ytterstrom)
+- 2.4.4 SP2013 headers fix, thanks [@ytterstrom](https://github.com/ytterstrom)
 - 2.4.3 Snippets update
 - 2.4.2 Changed snippet prefix to "snip"
 - 2.4.1 Small fixes
@@ -145,8 +147,10 @@ Go to your SharePoint site and open Chrome developer tools.
 * for sp2013 change the headers of the request:
 ```
 pnp.setup({
-    headers: {
-        "Accept": "application/json;odata=verbose",
+    sp: {
+        headers: {            
+            "Accept": "application/json;odata=verbose",
+        }
     }
 });
 ```

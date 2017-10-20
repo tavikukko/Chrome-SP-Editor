@@ -9,8 +9,10 @@ var getCustomActions = function getCustomActions() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -95,8 +97,10 @@ var addCustomAction = function addCustomAction() {
     alertify.maxLogItems(2);
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -174,8 +178,10 @@ var removeCustomAction = function removeCustomAction() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -227,8 +233,10 @@ var addFile = function addFile() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -262,8 +270,10 @@ var getWebProperties = function getWebProperties() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -321,8 +331,10 @@ var addWebProperties = function addWebProperties() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -409,8 +421,10 @@ var updateWebProperties = function updateWebProperties() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -499,8 +513,10 @@ var deleteWebProperties = function deleteWebProperties() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -593,8 +609,10 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -702,7 +720,7 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
           if (error.data.responseBody.hasOwnProperty('error'))
             alertify.delay(10000).error(error.data.responseBody.error.message.value);
           else
-            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);          window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value); window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
       }).catch(function (error) {
         if (error.data.responseBody.hasOwnProperty('error'))
@@ -731,8 +749,10 @@ var getListProperties = function getListProperties() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -787,8 +807,10 @@ var getLists = function getLists() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -825,8 +847,10 @@ var addListProperties = function addListProperties() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -901,8 +925,10 @@ var updateListProperties = function updateListProperties() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -981,8 +1007,10 @@ var deleteListProperties = function deleteListProperties() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1063,8 +1091,10 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1184,7 +1214,7 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
 var exescript = function exescript(script) {
   var params = arguments;
 
-  if ( window._spPageContextInfo ) {
+  if (window._spPageContextInfo) {
 
     if (typeof SystemJS == 'undefined') {
       var s = document.createElement('script');
@@ -1196,7 +1226,7 @@ var exescript = function exescript(script) {
     }
     else script.apply(this, params);
   }
-  else if ( window.moduleLoaderPromise ) {
+  else if (window.moduleLoaderPromise) {
     // polyfill for _spPageContextInfo on modern sites
     window.moduleLoaderPromise.then(function (e) {
 
@@ -1238,8 +1268,10 @@ var getSubscriptions = function getSubscriptions() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1286,8 +1318,10 @@ var addSubscriptions = function addSubscriptions() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1322,8 +1356,10 @@ var removeSubscription = function removeSubscription() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1375,32 +1411,35 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
-    if(_spPageContextInfo.serverRequestPath.toLowerCase().indexOf("_layouts/") == -1)
-    $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath)
-      .getLimitedWebPartManager($pnp.WebPartsPersonalizationScope.Shared)
-      .webparts.expand("webpart")
-      .select("Id, ZoneId, Title, ZoneIndex").get().then(webparts => {
-        var webpartsFromWPM = [];
-        webparts.forEach(function (webpart) {
-          webpartsFromWPM.push({ id: webpart.Id, zoneId: webpart.ZoneId, title: webpart.WebPart.Title, zoneIndex: webpart.WebPart.ZoneIndex });
+
+    if (_spPageContextInfo.serverRequestPath.toLowerCase().indexOf("_layouts/") == -1)
+      $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath)
+        .getLimitedWebPartManager($pnp.WebPartsPersonalizationScope.Shared)
+        .webparts.expand("webpart")
+        .select("Id, ZoneId, Title, ZoneIndex").get().then(webparts => {
+          var webpartsFromWPM = [];
+          webparts.forEach(function (webpart) {
+            webpartsFromWPM.push({ id: webpart.Id, zoneId: webpart.ZoneId, title: webpart.WebPart.Title, zoneIndex: webpart.WebPart.ZoneIndex });
+          });
+          window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: true, result: webpartsFromWPM, source: 'chrome-sp-editor' }), '*');
+        }).catch(function (error) {
+          var err = "";
+          if (error.data.responseBody.hasOwnProperty('error'))
+            err = error.data.responseBody.error.message.value;
+          else
+            err = error.data.responseBody['odata.error'].message.value;
+          window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: err, source: 'chrome-sp-editor' }), '*');
         });
-        window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: true, result: webpartsFromWPM, source: 'chrome-sp-editor' }), '*');
-      }).catch(function (error) {
-        var err = "";
-        if (error.data.responseBody.hasOwnProperty('error'))
-          err = error.data.responseBody.error.message.value;
-        else
-          err = error.data.responseBody['odata.error'].message.value;
-        window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: err, source: 'chrome-sp-editor' }), '*');
-      });
-      else {
-        window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-        return;
-      }
+    else {
+      window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts2', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+      return;
+    }
 
     var getFileContent = function (serverRelativeUrl) {
       var absolutePart = location.protocol + '//' + location.host;
@@ -1414,7 +1453,7 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
             window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: false, result: "" + executor.get_statusCode(), source: 'chrome-sp-editor' }), '*');
           else {
             var match = executor.get_responseData().replace(/[\r\n]/g, '').match(/<[A-Za-z0-9]+:WebPartZone(?:\s(?:%>|[^>])*)?\sID=['"][A-Za-z0-9_\-]+['"]/gi);
-            if (match){
+            if (match) {
               var zones = match.map(s => s.match(/\sID=['"]([A-Za-z0-9_\-]+)['"]/i)[1]);
               window.postMessage(JSON.stringify({ function: 'getZonesAndWebparts3', success: true, result: zones, source: 'chrome-sp-editor' }), '*');
             }
@@ -1512,8 +1551,10 @@ var deleteWebpart = function deleteWebpart() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1569,8 +1610,10 @@ var getFolders = function getFolders() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1580,10 +1623,10 @@ var getFolders = function getFolders() {
     if (requestor == "init") {
       $pnp.sp.web.rootFolder.expand("Folders, Files").get().then(r => {
         var joined = [];
-        r.Folders.forEach(function (folder) {
+        r.Folders.results.forEach(function (folder) {
           joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
         });
-        r.Files.forEach(function (file) {
+        r.Files.results.forEach(function (file) {
           joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
         });
         window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
@@ -1598,10 +1641,10 @@ var getFolders = function getFolders() {
     else {
       $pnp.sp.web.getFolderByServerRelativeUrl(requestor).expand("Folders, Files").get().then(r => {
         var joined = [];
-        r.Folders.forEach(function (folder) {
+        r.Folders.results.forEach(function (folder) {
           joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
         });
-        r.Files.forEach(function (file) {
+        r.Files.results.forEach(function (file) {
           joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
         });
         window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
@@ -1625,8 +1668,10 @@ var getFileContent = function getFileContent() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1656,8 +1701,10 @@ var updateEditorFile = function updateEditorFile() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1741,8 +1788,10 @@ var getApps = function getApps() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1777,8 +1826,10 @@ var getApp = function getApp() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
@@ -1820,8 +1871,10 @@ var updateApp = function updateApp() {
     var alertify = modules[1];
 
     $pnp.setup({
-      headers: {
-        "Accept": "application/json; odata=verbose"
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
       }
     });
 
