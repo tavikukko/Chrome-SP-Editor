@@ -1,28 +1,64 @@
 riot.tag("graphman", `
 <div id="page-content-wrapper">
   <h4>Graph Man</h4>
-  <hr>
+
   <img if="{ user.name.length < 1 }" onclick="{ login }" id="ms-signin-button" src="img/MSSignInButton.svg"></img>
-  <div if="{ user.name.length > 0 }">
-    <div><i class="fa fa-user-md"></i> { this.user.name }</div>
-    <div><i class="fa fa-envelope"></i>  { this.user.displayableId }</div>
-  </div>
-  <!-- <button if="{ user.name.length > 0 }" onclick="{ acquireTokenPopup }">acquireTokenPopup</button>-->
-  <hr>
-  <div if="{ user.name.length > 0 }">
 
-    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Scopes</button>
-    <button type="button" class="btn btn-info" if="{ selectedPermissions.length > 0 }" onclick="{ acquireTokenPopup }">acquire token</button>&nbsp;
-    <button type="button" class="btn btn-info" data-toggle="collapse" if="{ this.token }" data-target="#token">Show token</button>
-    <input id="token" type="text" class="form-control collapse" value="{ token }">
-
-    <div id="demo" class="collapse">
-      <div class="col-sm-6" each="{ permission, index in permissionScope }" >
-        <label title="{ permission.longDescription }" onchange="{ select }" class="checkbox"><input type="checkbox" value="{ permission.name }"><i class="fa { permission.admin ? ' fa-minus-circle permission-no' : ' fa-check-circle permission-yes' }"></i> { permission.name }</label>
+  <div if="{ user.name.length > 0 }">
+    <div>
+      <i class="fa fa-user-md"></i> { this.user.name }
       </div>
+      <div>
+      <i class="fa fa-envelope"></i>  { this.user.displayableId }
+    </div>
+    <hr>
+
+    <div class="signout">
+      <span class="faa-parent animated-hover" style="cursor: pointer;" onclick="{ logout }">
+        <i class="fa fa-sign-out fa-2x permission-no faa-pulse" style="vertical-align: middle;"></i>&nbsp;&nbsp;Sign out
+      </span>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <span class="faa-parent animated-hover" style="cursor: pointer;" onclick="{ openDlg }">
+        <i if="{ user.name.length > 0 }" class="fa fa-check-square-o fa-2x permission-yes faa-pulse" style=" vertical-align: middle;"></i>&nbsp;&nbsp;Modify permissions
+      </span>
     </div>
   </div>
-</div>`,
+
+<!-- modal -->
+<div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			<h3 class="modal-title" id="lineModalLabel">Scopes</h3>
+		</div>
+		<div class="modal-body">
+      <form>
+        <div class="form-group">
+          <div class="checkbox" each="{ permission, index in permissionScope }">
+            <label title="{ permission.longDescription }" onchange="{ select }" class="checkbox"><input type="checkbox" value="{ permission.name }"><i class="fa { permission.admin ? ' fa-minus-circle permission-no' : ' fa-check-circle permission-yes' }"></i> { permission.name }</label>
+          </div>
+        </div>
+      </form>
+		</div>
+		<div class="modal-footer">
+			<div class="btn-group btn-group-justified" role="group" aria-label="group button">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+				</div>
+				<div class="btn-group btn-delete hidden" role="group">
+					<button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Delete</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" id="saveImage" class="btn btn-default btn-hover-green" onclick="{ acquireTokenPopup }" role="button">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+  </div>
+</div>
+<!-- /modal -->
+`,
   function (opts) {
 
     // make graph explorer clone :)
@@ -32,10 +68,15 @@ riot.tag("graphman", `
     };
     this.token = "";
     this.selectedPermissions = [];
+    this.grantedPermissions = [];
 
     this.on("mount", function () {
       this.init();
     });
+
+    this.openDlg = function (){
+      $('#squarespaceModal').modal('show');
+    }
 
     this.select = function (e) {
       const index = this.selectedPermissions.indexOf(e.item.permission.name);
@@ -47,6 +88,12 @@ riot.tag("graphman", `
     this.init = function () {
     }.bind(this);
 
+    this.logout = function (e) {
+      userAgentApplication.clearCache();
+        this.user = { name: "" };
+        this.update();
+    }.bind(this);
+
     this.login = function (e) {
       userAgentApplication.loginPopup().then(function (token) {
         this.user = userAgentApplication.getUser();
@@ -54,12 +101,13 @@ riot.tag("graphman", `
       }.bind(this));
     }.bind(this);
 
-    this.acquireTokenPopup = function (scopes) {
+    this.acquireTokenPopup = function () {
       if (this.selectedPermissions.length < 1) {
         alert("Select at least 1 permission scope!")
         return
       }
       userAgentApplication.acquireTokenPopup(this.selectedPermissions).then(function (token) {
+        $('#squarespaceModal').modal('hide');
         this.token = token;
         graphmantoken = token;
         this.update();

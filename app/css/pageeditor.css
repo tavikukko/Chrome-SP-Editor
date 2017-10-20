@@ -292,3 +292,33 @@ graphman {
   display: inline-block;
   border:1px solid #021a40;
 }
+.signout {
+  display: inline-block;
+}
+.modal-backdrop.fade.in {
+  z-index: -1;
+}
+/*
+.center {
+  margin-top:50px;
+}
+
+.modal-header {
+padding-bottom: 5px;
+}
+
+.modal-footer {
+    padding: 0;
+}
+
+.modal-footer .btn-group button {
+height:40px;
+border-top-left-radius : 0;
+border-top-right-radius : 0;
+border: none;
+border-right: 1px solid #ddd;
+}
+
+.modal-footer .btn-group:last-child > button {
+border-right: 0;
+}*/
