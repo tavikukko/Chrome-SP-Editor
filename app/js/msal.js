@@ -1234,7 +1234,7 @@ var Msal;
                   return;
               }
               _this.authorityInstance.ResolveEndpointsAsync().then(function () {
-                  var authenticationRequest = new Msal.AuthenticationRequestParameters(_this.authorityInstance, _this.clientId, scopes, ResponseTypes.id_token, _this._redirectUri);
+                  var authenticationRequest = new Msal.AuthenticationRequestParameters(_this.authorityInstance, _this.clientId, scopes, ResponseTypes.id_token_token, _this._redirectUri);
                   if (extraQueryParameters) {
                       authenticationRequest.extraQueryParameters = extraQueryParameters;
                   }

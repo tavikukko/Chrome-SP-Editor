@@ -36,7 +36,7 @@ riot.tag("graphman", `
       <form>
         <div class="form-group">
           <div class="checkbox" each="{ permission, index in permissionScope }">
-            <label title="{ permission.longDescription }" onchange="{ select }" class="checkbox"><input type="checkbox" value="{ permission.name }"><i class="fa { permission.admin ? ' fa-minus-circle permission-no' : ' fa-check-circle permission-yes' }"></i> { permission.name }</label>
+            <label title="{ permission.longDescription }" onchange="{ select }" class="checkbox"><input type="checkbox" disabled="{ permission.granted }" checked="{ permission.granted }" value="{ permission.name }"><i class="fa { permission.admin ? ' fa-minus-circle permission-no' : ' fa-check-circle permission-yes' }"></i> { permission.name }</label>
           </div>
         </div>
       </form>
@@ -64,8 +64,10 @@ riot.tag("graphman", `
     // make graph explorer clone :)
     // add monaco editor to show results of query
     this.user = {
-      name: ""
+      name: "",
+      displayableId: ""
     };
+
     this.token = "";
     this.selectedPermissions = [];
     this.grantedPermissions = [];
@@ -74,7 +76,7 @@ riot.tag("graphman", `
       this.init();
     });
 
-    this.openDlg = function (){
+    this.openDlg = function () {
       $('#squarespaceModal').modal('show');
     }
 
@@ -89,14 +91,34 @@ riot.tag("graphman", `
     }.bind(this);
 
     this.logout = function (e) {
-      userAgentApplication.clearCache();
-        this.user = { name: "" };
-        this.update();
+      userAgentApplication.logoutPupup();
+      this.user = { name: "" };
+      this.token = token;
+      graphmantoken = token;
+      this.update();
     }.bind(this);
 
     this.login = function (e) {
-      userAgentApplication.loginPopup().then(function (token) {
-        this.user = userAgentApplication.getUser();
+      userAgentApplication.loginPopup(["User.Read"]).then(function (token) {
+
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace('-', '+').replace('_', '/');
+        var decodedToken = JSON.parse(window.atob(base64));
+        this.user.name = decodedToken.name;
+        this.user.displayableId = decodedToken.upn;
+        this.token = token;
+        graphmantoken = token;
+
+        var grantedScopes = decodedToken.scp.split(' ');
+        grantedScopes.forEach(function (granted) {
+          this.permissionScope.forEach(function (scope) {
+            if (!scope.granted) {
+              if (scope.name == granted) scope.granted = true;
+              else scope.granted = false;
+            }
+          }.bind(this))
+        }.bind(this));
+
         this.update();
       }.bind(this));
     }.bind(this);
@@ -106,32 +128,32 @@ riot.tag("graphman", `
         alert("Select at least 1 permission scope!")
         return
       }
-      userAgentApplication.acquireTokenPopup(this.selectedPermissions).then(function (token) {
+      userAgentApplication.loginPopup(this.selectedPermissions).then(function (token) {
+        //console.log(userAgentApplication);
         $('#squarespaceModal').modal('hide');
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace('-', '+').replace('_', '/');
+        var decodedToken = JSON.parse(window.atob(base64));
+        this.user.name = decodedToken.name;
+        this.user.displayableId = decodedToken.upn;
         this.token = token;
         graphmantoken = token;
+
+        var grantedScopes = decodedToken.scp.split(' ');
+        grantedScopes.forEach(function (granted) {
+          this.permissionScope.forEach(function (scope) {
+            if (!scope.granted) {
+              if (scope.name == granted) scope.granted = true;
+              else scope.granted = false;
+            }
+          }.bind(this))
+        }.bind(this));
+
         this.update();
       }.bind(this), function (error) {
         console.log("Failure acquiring token: " + error);
       }.bind(this));
     }.bind(this);
-
-    /*
-        this.getLoginData = function (token) {
-          fetch('https://graph.microsoft.com/v1.0/me', {
-            method: 'GET',
-            headers: new Headers({
-              'Accept': 'application/json',
-              'Authorization': 'Bearer GraphManToken'
-            })
-          })
-            .then((resp) => resp.json()) // Transform the data into json
-            .then(function (data) {
-              console.log(data)
-              alert("all good :)")
-            })
-        }.bind(this);
-    */
 
     this.permissionScope = [
       {

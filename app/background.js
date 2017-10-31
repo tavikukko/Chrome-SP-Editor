@@ -4,7 +4,8 @@ var activeSaveTabs = [];
 var activePublishTabs = [];
 
 chrome.runtime.onConnect.addListener(function (port) {
-    port.onMessage.addListener(function (req) {
+if(port.sender.url.indexOf("access_token") < 0){
+  port.onMessage.addListener(function (req) {
       if (req.type == 'save') {
 	    	var hash = req.content;
 		    if (hash != lastHash && activeSaveTabs.indexOf(req.tabId) > -1){
@@ -35,6 +36,7 @@ chrome.runtime.onConnect.addListener(function (port) {
         }
       }
     });
+  }
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
