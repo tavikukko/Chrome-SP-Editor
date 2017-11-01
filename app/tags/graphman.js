@@ -47,7 +47,7 @@ riot.tag("graphman", `
 					<button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
 				</div>
 				<div class="btn-group btn-delete hidden" role="group">
-					<button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Delete</button>
+					<button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal" onclick="{ logout }" role="button">Delete</button>
 				</div>
 				<div class="btn-group" role="group">
 					<button type="button" id="saveImage" class="btn btn-default btn-hover-green" onclick="{ acquireTokenPopup }" role="button">Save</button>
@@ -91,10 +91,11 @@ riot.tag("graphman", `
     }.bind(this);
 
     this.logout = function (e) {
-      userAgentApplication.logoutPupup();
-      this.user = { name: "" };
-      this.token = token;
-      graphmantoken = token;
+      userAgentApplication.clearCache();
+      this.user.name = "";
+      this.user.displayableId = "";
+      this.token = "";
+      graphmantoken = "";
       this.update();
     }.bind(this);
 
