@@ -105,6 +105,11 @@ riot.tag("graphman", `
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace('-', '+').replace('_', '/');
         var decodedToken = JSON.parse(window.atob(base64));
+
+        // we could add exp time here too
+        // var expdate = decodedToken.exp
+        // this expire = new Date(expdate*1000);
+
         this.user.name = decodedToken.name;
         this.user.displayableId = decodedToken.upn;
         this.token = token;
@@ -130,7 +135,6 @@ riot.tag("graphman", `
         return
       }
       userAgentApplication.loginPopup(this.selectedPermissions).then(function (token) {
-        //console.log(userAgentApplication);
         $('#squarespaceModal').modal('hide');
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace('-', '+').replace('_', '/');

@@ -1282,11 +1282,10 @@ var getSubscriptions = function getSubscriptions() {
 
       var webHookSubscriptions = [];
       var weblists = [];
-
       lists.forEach(function (list) {
         weblists.push({ listTitle: list.Title, listId: list.Id });
-        if (list.Subscriptions.length > 0) {
-          list.Subscriptions.forEach(function (subscription) {
+        if (list.Subscriptions.results.length > 0) {
+          list.Subscriptions.results.forEach(function (subscription) {
             webHookSubscriptions.push({
               listTitle: list.Title,
               listId: list.Id,

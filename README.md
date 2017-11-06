@@ -8,6 +8,8 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 3.0.1 bug fix
+    * List webhooks did not show
 - 3.0.0 New feature
     * Graph Man: query graph.microsoft.com api from PnP JS Console
 - 2.4.5 bug fix and new snippet, thanks [@ytterstrom](https://github.com/ytterstrom)
