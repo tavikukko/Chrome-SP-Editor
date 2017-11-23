@@ -1962,20 +1962,18 @@ var getSiteCollections = function getSiteCollections() {
               xhr2.onload = function () {
                 if (xhr2.status === 200) {
                   var error = JSON.parse(xhr2.responseText)[0];
-                  console.log(JSON.parse(xhr2.responseText)[6]._Child_Items_);
-                  var koko = JSON.parse(xhr2.responseText)[6]._Child_Items_;
                   if (error.ErrorInfo) {
                     alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                   // window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                    window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
                   }
                   else {
-                  //alertify.delay(5000).success("received webs");
-                  window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: koko, source: 'chrome-sp-editor' }), '*');
+                    var webs = JSON.parse(xhr2.responseText)[6]._Child_Items_;
+                    window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: webs, source: 'chrome-sp-editor' }), '*');
                   }
                 }
                 else {
                   alertify.delay(10000).error(xhr2.responseText);
-                 // window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                  window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
                 }
               }
                 ;
@@ -2030,16 +2028,15 @@ var updateSiteCollection = function updateSiteCollection() {
 
                     if (error.ErrorInfo) {
                       alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                     // window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                      window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: false, result: null, source: 'chrome-sp-editor' }), '*');
                     }
                     else {
-                   // alertify.delay(5000).success("updated property");
                     window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: true, result: null, source: 'chrome-sp-editor' }), '*');
                     }
                   }
                   else {
                     alertify.delay(10000).error(xhr2.responseText);
-                   // window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                    window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: false, result: null, source: 'chrome-sp-editor' }), '*');
                   }
                 };
                   var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName=".NET Library" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><SetProperty Id="7" ObjectPathId="3" Name="DenyAddAndCustomizePages"><Parameter Type="Enum">'+value+'</Parameter></SetProperty><ObjectPath Id="9" ObjectPathId="8" /><ObjectIdentityQuery Id="10" ObjectPathId="3" /><Query Id="11" ObjectPathId="8"><Query SelectAllProperties="true"><Properties><Property Name="IsComplete" ScalarProperty="true" /><Property Name="PollingInterval" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="3" Name="'+web+'" /><Method Id="8" ParentId="3" Name="Update" /></ObjectPaths></Request>';

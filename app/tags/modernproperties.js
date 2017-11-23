@@ -39,29 +39,31 @@ riot.tag("modernproperties", `
 
         switch (message.function) {
           case 'getSiteCollections':
+            hideDimmer();
             if (message.success) {
+              var compare = function compare(a, b) {
+                if (a.Title.toLowerCase() < b.Title.toLowerCase())
+                  return -1;
+                if (a.Title.toLowerCase() > b.Title.toLowerCase())
+                  return 1;
+                return 0;
+              }
+
               this.webs = message.result.filter(function (el) {
                 return el.Template == "SITEPAGEPUBLISHING#0" || el.Template == "GROUP#0";
-              });
+              }).sort(compare);
+
               this.update();
-              hideDimmer();
-            }
-            else {
-              var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
-              script += " exescript(alertError, '" + message.result + "');";
-              chrome.devtools.inspectedWindow.eval(script);
             }
             break;
             case 'updateSiteCollection':
               hideDimmer();
-              //alert("yeah!")
             break;
         }
       }.bind(this));
     }.bind(this);
 
     this.toggleScripts = function (e) {
-      //console.log(e);
       var value = e.target.checked ? '1' : '2';
       var web = e.item.web._ObjectIdentity_.replace(/\n/g, "&#xA;");
 
