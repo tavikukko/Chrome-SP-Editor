@@ -35,8 +35,11 @@ riot.tag("sidebar", `
                   <a href="#" onclick="{ btnFileEditor }">File editor</a>
                 </li>
                 <li>
-                  <a href="#" onclick="{ btnAppCatalog }">AppCatalog</a>
+                  <a href="#" onclick="{ btnModernProperties }">Modern properties</a>
                 </li>
+                <li>
+                <a href="#" onclick="{ btnAppCatalog }">AppCatalog</a>
+              </li>
                 <li>
                   <a href="#" onclick="{ btnAbout }">About</a>
                 </li>
@@ -108,12 +111,17 @@ riot.tag("sidebar", `
         fileeditormain = [];
       }
       if (fileeditoreditor) fileeditoreditor.layout();
-        fileeditormain = riot.mount("fileeditor");
+      fileeditormain = riot.mount("fileeditor");
     }.bind(this);
 
     this.btnAppCatalog = function () {
       swap("appcatalogcontainer");
       riot.mount("appcatalog");
+    }.bind(this);
+
+    this.btnModernProperties = function () {
+      swap("modernproperties");
+      riot.mount("modernproperties");
     }.bind(this);
 
     this.btnAbout = function () {

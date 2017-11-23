@@ -8,6 +8,9 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 3.1.0 new feature
+    * Modern properties: enable/disable scripts in modern team & communication sites
+    * Webhooks will now show hidden lists
 - 3.0.1 bug fix
     * List webhooks did not show
 - 3.0.0 New feature
