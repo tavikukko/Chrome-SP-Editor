@@ -121,7 +121,9 @@ riot.tag("sidebar", `
 
     this.btnModernProperties = function () {
       swap("modernproperties");
-      riot.mount("modernproperties");
+      if(!modernpropertiesmain)
+        modernpropertiesmain = riot.mount("modernproperties");
+      else modernpropertiesmain[0].remount();
     }.bind(this);
 
     this.btnAbout = function () {

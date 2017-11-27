@@ -2,65 +2,132 @@ riot.tag("modernproperties", `
 <div id="page-content-wrapper">
   <div>
     <h4>Modern properties</h4>
-    <p><b>Enable</b> or <b>disable</b> running <b>scripts</b> of modern team / communication sites ( <b>GROUP#0</b> / <b>SITEPAGEPUBLISHING#0</b> )</p>
     <p>You need to be in the SharePoint admin site eg. https://tenant-admin.sharepoint.com</p>
   </div>
   <hr>
-  <ul class="list-group" style="margin-bottom: 4px;" each="{ web in webs }">
-  <span><b>{ web.Title }</b> - { web.Template }</span>
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-info">
+      <span>O365 Public CDN</span>
+      <span class="scriptlinks-remove pull-right" style="margin-top: -7px;" data-id="e294bfd5-8baf-4074-8c30-ea46f2e2c9e6">
+        <label class="switch">
+          <input type="checkbox" checked="{ publicCDNEnable }" onclick="{ togglePublicCDN }" >
+          <span class="slider round"></span>
+        </label>
+      </span>
+    </li>
+    <virtual if="{ publicCDNEnable }">
+    <li class="list-group-item" each="{ origin in publicCDNOrigins }">
+      <span>{ origin }</span>
+    </li>
+    </virtual>
+  </ul>
+  <ul class="list-group">
+  <li class="list-group-item list-group-item-info">
+    <span>O365 Private CDN</span>
+    <span class="scriptlinks-remove pull-right" style="margin-top: -7px;" data-id="e294bfd5-8baf-4074-8c30-ea46f2e2c9e6">
+      <label class="switch">
+        <input type="checkbox" checked="{ privateCDNEnable }" onclick="{ togglePrivateCDN }" >
+        <span class="slider round"></span>
+      </label>
+    </span>
+  </li>
+  <virtual if="{ privateCDNEnable }">
+  <li class="list-group-item" each="{ origin in privateCDNOrigins }">
+    <span>{ origin }</span>
+  </li>
+  </virtual>
+</ul>
+  <ul class="list-group">
+   <li class="list-group-item list-group-item-info">Enable or disable running scripts of modern team / communication sites ( GROUP#0 / SITEPAGEPUBLISHING#0 )</li>
+   <li class="list-group-item list-group-item-info">
+    <input keyup="{ filterprops }" id="modernfilterprops" style="width: 30%;" type="text" class="form-control" placeholder="Search by title, url and template">
+   </li>
+   <virtual each="{ web in filtered() }">
     <li class="list-group-item">
-      <span>{ web.Url }</span>
-      <span  class="scriptlinks-remove pull-right" style="margin-top: -7px;" data-id="e294bfd5-8baf-4074-8c30-ea46f2e2c9e6">
+    <h5 class="list-group-item-heading"><b>{ web.Title }</b> - { web.Template }</h5 >
+      <span >{ web.Url }</span>
+      <span class="scriptlinks-remove pull-right" style="margin-top: -7px;" data-id="e294bfd5-8baf-4074-8c30-ea46f2e2c9e6">
         <label class="switch">
           <input type="checkbox" checked="{ web.DenyAddAndCustomizePages != 2 }" onclick="{ toggleScripts }">
           <span class="slider round"></span>
         </label>
       </span>
+    </li>
+    </virtual>
   </ul>
 </div`,
   function (opts) {
 
+    this.filterstr = "";
+    this.webs = [];
+    this.publicCDNEnable = false;
+    this.publicCDNOrigins = [];
+    this.tenantObjectId = "";
+    this.privateCDNEnable = false;
+    this.privateCDNOrigins = [];
+
     this.on("mount", function () {
       this.init();
     });
+
+    this.filterprops = function (e) {
+      this.filterstr = e.target.value.toLowerCase();
+    }.bind(this);
+
+    this.remount = function () {
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSiteCollections;
+      script += " exescript(getSiteCollections);";
+      chrome.devtools.inspectedWindow.eval(script);
+      scheduleDimmer();
+    }.bind(this);
 
     this.init = function () {
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSiteCollections;
       script += " exescript(getSiteCollections);";
       chrome.devtools.inspectedWindow.eval(script);
       scheduleDimmer();
+      if (!modernpropertiesinitialized) {
+        port.onMessage.addListener(function (message) {
 
-      port.onMessage.addListener(function (message) {
+          if (typeof message !== 'object' || message === null ||
+            message === undefined || message.source === undefined) {
+            return;
+          }
 
-        if (typeof message !== 'object' || message === null ||
-          message === undefined || message.source === undefined) {
-          return;
-        }
-
-        switch (message.function) {
-          case 'getSiteCollections':
-            hideDimmer();
-            if (message.success) {
-              var compare = function compare(a, b) {
-                if (a.Title.toLowerCase() < b.Title.toLowerCase())
-                  return -1;
-                if (a.Title.toLowerCase() > b.Title.toLowerCase())
-                  return 1;
-                return 0;
-              }
-
-              this.webs = message.result.filter(function (el) {
-                return el.Template == "SITEPAGEPUBLISHING#0" || el.Template == "GROUP#0";
-              }).sort(compare);
-
-              this.update();
-            }
-            break;
-            case 'updateSiteCollection':
+          switch (message.function) {
+            case 'getSiteCollections':
               hideDimmer();
-            break;
-        }
-      }.bind(this));
+              if (message.success) {
+                var compare = function compare(a, b) {
+                  if (a.Title.toLowerCase() < b.Title.toLowerCase())
+                    return -1;
+                  if (a.Title.toLowerCase() > b.Title.toLowerCase())
+                    return 1;
+                  return 0;
+                }
+
+                this.webs = message.result.webs.filter(function (el) {
+                  return el.Template == "SITEPAGEPUBLISHING#0" || el.Template == "GROUP#0";
+                }).sort(compare);
+
+                this.publicCDNEnable = message.result.publicCDN;
+                this.publicCDNOrigins = message.result.publicCDNOrigins;
+                this.tenantObjectId = message.result.tenantObjectId;
+                this.privateCDNEnable = message.result.privateCDN;
+                this.privateCDNOrigins = message.result.privateCDNOrigins;
+
+                this.update();
+              }
+              break;
+            case 'updateSiteCollection':
+            case 'enableDisableCDN':
+              this.remount();
+              break;
+          }
+        }.bind(this));
+        modernpropertiesinitialized = true;
+      }
+
     }.bind(this);
 
     this.toggleScripts = function (e) {
@@ -71,6 +138,32 @@ riot.tag("modernproperties", `
       script += " exescript(updateSiteCollection, '" + web + "', '" + value + "');";
       chrome.devtools.inspectedWindow.eval(script);
       scheduleDimmer();
+    }.bind(this);
+
+    this.togglePublicCDN = function (e) {
+      var value = e.target.checked;
+
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + enableDisableCDN;
+      script += " exescript(enableDisableCDN, 'Public', '" + value + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+      scheduleDimmer();
+
+    }.bind(this);
+
+    this.togglePrivateCDN = function (e) {
+      var value = e.target.checked;
+
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + enableDisableCDN;
+      script += " exescript(enableDisableCDN, 'Private', '" + value + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+      scheduleDimmer();
+
+    }.bind(this);
+
+    this.filtered = function () {
+      return this.webs.filter(function (t) {
+        return ~t.Url.toLowerCase().indexOf(this.filterstr) || ~t.Title.toLowerCase().indexOf(this.filterstr) || ~t.Template.toLowerCase().indexOf(this.filterstr);
+      }.bind(this));
     }.bind(this);
 
   });

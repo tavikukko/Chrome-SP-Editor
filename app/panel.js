@@ -29,6 +29,8 @@ var pageeditorlisteners = [];
 var fileeditorlisteners = {};
 var bgautosave = false;
 var bgautopublish = false;
+var modernpropertiesinitialized = false;
+var modernpropertiesmain;
 // this is called from multiple tabs, so it will be here
 function addscriptlink(scope, scriptsequence, scriptpath) {
 
