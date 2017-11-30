@@ -11,7 +11,7 @@ riot.tag("modernproperties", `
       <span class="scriptlinks-remove pull-right" style="margin-top: -7px;" data-id="e294bfd5-8baf-4074-8c30-ea46f2e2c9e6">
         <label class="switch">
           <input type="checkbox" checked="{ publicCDNEnable }" onclick="{ togglePublicCDN }" >
-          <span class="slider round"></span>
+          <span class="mslider round"></span>
         </label>
       </span>
     </li>
@@ -27,7 +27,7 @@ riot.tag("modernproperties", `
     <span class="scriptlinks-remove pull-right" style="margin-top: -7px;" data-id="e294bfd5-8baf-4074-8c30-ea46f2e2c9e6">
       <label class="switch">
         <input type="checkbox" checked="{ privateCDNEnable }" onclick="{ togglePrivateCDN }" >
-        <span class="slider round"></span>
+        <span class="mslider round"></span>
       </label>
     </span>
   </li>
@@ -49,7 +49,7 @@ riot.tag("modernproperties", `
       <span class="scriptlinks-remove pull-right" style="margin-top: -7px;" data-id="e294bfd5-8baf-4074-8c30-ea46f2e2c9e6">
         <label class="switch">
           <input type="checkbox" checked="{ web.DenyAddAndCustomizePages != 2 }" onclick="{ toggleScripts }">
-          <span class="slider round"></span>
+          <span class="mslider round"></span>
         </label>
       </span>
     </li>

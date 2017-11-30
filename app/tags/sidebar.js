@@ -3,9 +3,13 @@ riot.tag("sidebar", `
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                   <p>Chrome SharePoint Editor</p>
+                <li style="line-height: 14px;">
+                  <p><input onclick="{ autosave }" type="checkbox" />&nbsp;&nbsp;&nbsp;Save changes</p>
+                  <p><input onclick="{ autopublish }" type="checkbox" />&nbsp;&nbsp;&nbsp;Publish major</p>
+                </li>
                 </li>
                 <li>
-                  <a href="#" onclick="{ btnSave }">Save to SharePoint</a>
+                  <a href="#" onclick="{ btnSave }">Instructions</a>
                 </li>
                 <li>
                   <a href="#" onclick="{ btnScript }">Scriptlinks</a>
@@ -51,6 +55,22 @@ riot.tag("sidebar", `
     });
 
     this.init = function () {
+      bgautosave = false;
+      bgautopublish = false;
+    }.bind(this);
+
+
+    this.autosave = function (e) {
+      bgautosave = e.target.checked;
+      var payload = { "type": "autosavechange", "content": e.target.checked, "tabId": chrome.devtools.inspectedWindow.tabId };
+      port.postMessage(payload);
+
+    }.bind(this);
+
+    this.autopublish = function (e) {
+      bgautopublish = e.target.checked;
+      var payload = { "type": "autopublishchange", "content": e.target.checked, "tabId": chrome.devtools.inspectedWindow.tabId };
+      port.postMessage(payload);
 
     }.bind(this);
 
@@ -121,7 +141,7 @@ riot.tag("sidebar", `
 
     this.btnModernProperties = function () {
       swap("modernproperties");
-      if(!modernpropertiesmain)
+      if (!modernpropertiesmain)
         modernpropertiesmain = riot.mount("modernproperties");
       else modernpropertiesmain[0].remount();
     }.bind(this);
