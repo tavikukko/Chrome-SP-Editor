@@ -2,11 +2,11 @@ riot.tag("fileeditor", `
           <ul class="fe-ul" each="{ item in items }">
             <li class="fe-li">
               <div class="treenode { item.selected ? ' selected' : '' }" onclick="{ clicked }" >
-                <span class="{ item.spin ? 'fe-icon fa fa-spinner fa-spin' : item.folder ? item.expanded ? 'fe-icon fa fa-folder-open-o' : 'fe-icon fa fa-folder-o' : item.CustomizedPageStatus == 1 ? 'fe-icon fa fa-file-text-o ghosted' : item.CustomizedPageStatus == 2 ? 'fe-icon fa fa-file-text-o unghosted' : 'fe-icon fa fa-file-text-o' }"></span>
+                <span class="{ item.spin ? 'fe-icon fa fa-spinner fa-spin' : ( item.folder || item.web ) ? (item.expanded && item.folder) ? 'fe-icon fa fa-folder-open-o' : item.folder ? 'fe-icon fa fa-folder-o' : item.expanded ? 'fe-icon fa fa-sitemap fa-rotate-45' : 'fe-icon fa fa-sitemap' : item.CustomizedPageStatus == 1 ? 'fe-icon fa fa-file-text-o ghosted' : item.CustomizedPageStatus == 2 ? 'fe-icon fa fa-file-text-o unghosted' : 'fe-icon fa fa-file-text-o' }"></span>
                 <span>{ item.label }</span>
-              </div> 
+              </div>
               <virtual if="{ item.go }">
-                <fileeditor source="{ item.ServerRelativeUrl }" handler="{ parent.handler }"></fileeditor>
+                <fileeditor source="{ item.ServerRelativeUrl }" webId="{ item.webId }" isWeb="{ item.web }" handler="{ parent.handler }"></fileeditor>
               </virtual>
             </li>
           </ul>`,
@@ -44,7 +44,7 @@ riot.tag("fileeditor", `
 
             var fileContent = encodeURIComponent(fileeditoreditor.getValue()).replace(/'/g, "%27");
             var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateEditorFile;
-            script += " exescript(updateEditorFile, '" + selectedFile + "', '" + fileContent + "', '" + bgautopublish + "');";
+            script += " exescript(updateEditorFile, '" + selectedFile + "', '" + fileContent + "', '" + bgautopublish + "','" + selectedWebId + "');";
             chrome.devtools.inspectedWindow.eval(script);
             scheduleDimmer();
           }
@@ -67,14 +67,15 @@ riot.tag("fileeditor", `
 
       this.clicked = function (e) {
         e.item.item.expanded = !e.item.item.expanded;
-        if (e.item.item.folder) {
+        if (e.item.item.folder || e.item.item.web) {
           e.item.item.go = !e.item.item.go;
           e.item.item.spin = e.item.item.expanded;
         } else {
           selectedFile = e.item.item.ServerRelativeUrl;
+          selectedWebId = e.item.item.webId;
           port.onMessage.addListener(this.fileeditorlistener);
           var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getFileContent;
-          script += " exescript(getFileContent, '" + e.item.item.ServerRelativeUrl + "');";
+          script += " exescript(getFileContent, '" + e.item.item.ServerRelativeUrl + "','" + opts.webid + "');";
           chrome.devtools.inspectedWindow.eval(script);
           fileeditoreditor.setValue("");
           fileeditoreditor.setScrollTop(0);
@@ -95,7 +96,7 @@ riot.tag("fileeditor", `
 
       // execute script in the main browser context
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getFolders;
-      script += " exescript(getFolders, '" + opts.source + "');";
+      script += " exescript(getFolders, '" + opts.source + "','" + opts.webid + "','" + opts.isweb + "');";
       chrome.devtools.inspectedWindow.eval(script);
 
       // listen response from the main browser
@@ -115,7 +116,7 @@ riot.tag("fileeditor", `
                 this.parent.update();
               }
               this.items.sort(function (a, b) {
-                return ((b.folder || false) - (a.folder || false) || a.label.localeCompare(b.label));
+                return ((b.web || false) - (a.web || false) || (b.folder || false) - (a.folder || false) || a.label.localeCompare(b.label));
               });
               this.update();
               port.onMessage.removeListener(fileeditorlisteners[this.opts.source]);

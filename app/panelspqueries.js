@@ -1269,6 +1269,8 @@ var exescript = function exescript(script) {
 
     });
   }
+  else { alert("Could not get _spPageContextInfo, propably because this ain't SHarePoint site..")}
+
 };
 
 var alertError = function alertError() {
@@ -1627,7 +1629,8 @@ var changeWebpartPosition = function changeWebpartPosition() {
 var getFolders = function getFolders() {
 
   var requestor = arguments[1];
-  // var subId = arguments[2];
+  var webId = arguments[2];
+  var isWeb = (arguments[3] != 'undefined') ? 1 : 0;
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
@@ -1645,16 +1648,20 @@ var getFolders = function getFolders() {
     alertify.maxLogItems(2);
 
     if (requestor == "init") {
-      $pnp.sp.web.rootFolder.expand("Folders, Files").get().then(r => {
-        var joined = [];
-        r.Folders.results.forEach(function (folder) {
-          joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
-        });
-        r.Files.results.forEach(function (file) {
-          joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
-        });
-        window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
-      })
+      $pnp.sp.web.expand("Webs, Folders, RootFolder/Files")
+        .select("Webs/Id, Webs/Title, Webs/ServerRelativeUrl, Folders/Name, Folders/ServerRelativeUrl, RootFolder/Files/ServerRelativeUrl, RootFolder/Files/Name, RootFolder/Files/CustomizedPageStatus").get().then(r => {
+          var joined = [];
+          r.Folders.results.forEach(function (folder) {
+            joined.push({ webId: _spPageContextInfo.webId, label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
+          });
+          r.RootFolder.Files.results.forEach(function (file) {
+            joined.push({ webId: _spPageContextInfo.webId, label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
+          });
+          r.Webs.results.forEach(function (web) {
+            joined.push({ webId: web.Id, label: web.Title, ServerRelativeUrl: web.ServerRelativeUrl, web: true, expanded: false });
+          });
+          window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
+        })
         .catch(function (error) {
           if (error.data.responseBody.hasOwnProperty('error'))
             alertify.delay(10000).error(error.data.responseBody.error.message.value);
@@ -1662,23 +1669,54 @@ var getFolders = function getFolders() {
             alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         });
     }
+    else if (isWeb) {
+      $pnp.sp.site.openWebById(webId).then(w => {
+
+        w.web.expand("Webs, Folders, RootFolder/Files")
+          .select("Webs/Id, Webs/Title, Webs/ServerRelativeUrl, Folders/Name, Folders/ServerRelativeUrl, RootFolder/Files/Name, RootFolder/Files/ServerRelativeUrl, RootFolder/Files/CustomizedPageStatus").get().then(r => {
+
+            var joined = [];
+            r.Folders.results.forEach(function (folder) {
+              joined.push({ webId: w.data.Id, label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
+            });
+            r.RootFolder.Files.results.forEach(function (file) {
+              joined.push({ webId: w.data.Id, label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
+            });
+            r.Webs.results.forEach(function (web) {
+              joined.push({ webId: web.Id, label: web.Title, ServerRelativeUrl: web.ServerRelativeUrl, web: true, expanded: false });
+            });
+            window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
+          })
+          .catch(function (error) {
+            if (error.data.responseBody.hasOwnProperty('error'))
+              alertify.delay(10000).error(error.data.responseBody.error.message.value);
+            else
+              alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+          });
+      });
+
+    }
     else {
-      $pnp.sp.web.getFolderByServerRelativeUrl(requestor).expand("Folders, Files").get().then(r => {
-        var joined = [];
-        r.Folders.results.forEach(function (folder) {
-          joined.push({ label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
-        });
-        r.Files.results.forEach(function (file) {
-          joined.push({ label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
-        });
-        window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
-      })
-        .catch(function (error) {
-          if (error.data.responseBody.hasOwnProperty('error'))
-            alertify.delay(10000).error(error.data.responseBody.error.message.value);
-          else
-            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-        });
+
+      $pnp.sp.site.openWebById(webId).then(w => {
+
+        w.web.getFolderByServerRelativeUrl(requestor).expand("Folders, Files").get().then(r => {
+          var joined = [];
+          r.Folders.results.forEach(function (folder) {
+            joined.push({ webId: w.data.Id, label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
+          });
+          r.Files.results.forEach(function (file) {
+            joined.push({ webId: w.data.Id, label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
+          });
+          window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
+        })
+          .catch(function (error) {
+            if (error.data.responseBody.hasOwnProperty('error'))
+              alertify.delay(10000).error(error.data.responseBody.error.message.value);
+            else
+              alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+          });
+      });
     }
   });
 };
@@ -1686,6 +1724,7 @@ var getFolders = function getFolders() {
 var getFileContent = function getFileContent() {
 
   var fileUrl = arguments[1];
+  var webId = arguments[2];
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
@@ -1702,13 +1741,17 @@ var getFileContent = function getFileContent() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).getText().then(r => {
-      window.postMessage(JSON.stringify({ function: "getFileContent", success: true, result: { content: r, type: fileUrl.substr(fileUrl.lastIndexOf('.') + 1) }, source: 'chrome-sp-editor' }), '*');
-    }).catch(function (error) {
-      if (error.data.responseBody.hasOwnProperty('error'))
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
-      else
-        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+    if(webId == 'undefined') webId = _spPageContextInfo.webId;
+
+    $pnp.sp.site.openWebById(webId).then(w => {
+      w.web.getFileByServerRelativeUrl(fileUrl).getText().then(r => {
+        window.postMessage(JSON.stringify({ function: "getFileContent", success: true, result: { content: r, type: fileUrl.substr(fileUrl.lastIndexOf('.') + 1) }, source: 'chrome-sp-editor' }), '*');
+      }).catch(function (error) {
+        if (error.data.responseBody.hasOwnProperty('error'))
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        else
+          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+      });
     });
 
   });
@@ -1719,6 +1762,7 @@ var updateEditorFile = function updateEditorFile() {
   var fileUrl = arguments[1];
   var fileContent = decodeURIComponent(arguments[2]);
   var fileCheckinType = (arguments[3] == 'true') ? 1 : 0;
+  var webId = arguments[4];
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
@@ -1737,10 +1781,11 @@ var updateEditorFile = function updateEditorFile() {
 
     // todo: add checkin type
     // todo: figure out why files in Forms folder doent want to checkin, update ok
+    $pnp.sp.site.openWebById(webId).then(w => {
 
-    $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).get().then(r => {
+    w.web.getFileByServerRelativeUrl(fileUrl).get().then(r => {
       if (r.CustomizedPageStatus > 0) {
-        $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+        w.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
           window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }).catch(function (error) {
           if (error.data.responseBody.hasOwnProperty('error'))
@@ -1751,9 +1796,9 @@ var updateEditorFile = function updateEditorFile() {
         });
       }
       else if (r.CheckOutType == 2) {
-        $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkout().then(f => {
-          $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
-            $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
+        w.web.getFileByServerRelativeUrl(fileUrl).checkout().then(f => {
+          w.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+            w.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
               window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }).catch(function (error) {
               if (error.data.responseBody.hasOwnProperty('error'))
@@ -1777,8 +1822,8 @@ var updateEditorFile = function updateEditorFile() {
           window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
         });
       } else {
-        $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
-          $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
+        w.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+          w.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
           }).catch(function (error) {
             if (error.data.responseBody.hasOwnProperty('error'))
@@ -1802,6 +1847,7 @@ var updateEditorFile = function updateEditorFile() {
         alert(error.data.responseBody['odata.error'].message.value);
       window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
     });
+  });
   });
 };
 
@@ -1940,7 +1986,6 @@ var getSiteCollections = function getSiteCollections() {
     alertify.maxLogItems(2);
 
     var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
-
     var xhr = new XMLHttpRequest();
     xhr.open('POST', spHostUrl + '/_api/contextinfo');
     xhr.setRequestHeader('Accept', 'application/json; odata=verbose');

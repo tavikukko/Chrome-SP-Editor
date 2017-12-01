@@ -29,6 +29,7 @@ var fileeditormain = null;
 var fileeditoreditor;
 var appcatalogeditor;
 var selectedFile = null;
+var selectedWebId = null;
 var pageeditorlisteners = [];
 var fileeditorlisteners = {};
 var bgautosave = false;
