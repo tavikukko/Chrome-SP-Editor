@@ -8,8 +8,12 @@ var userAgentApplication = new Msal.UserAgentApplication('20d34c96-396e-4bf0-a00
 
 var port = chrome.runtime.connect();
 
-var payload = { "type": "autosavechange", "content": false };
-port.postMessage(payload);
+port.postMessage( { type: "init", tabId: chrome.devtools.inspectedWindow.tabId } );
+
+port.postMessage({ type: "autosavechange", content: false, tabId: chrome.devtools.inspectedWindow.tabId });
+
+port.postMessage( { type: "autopublishchange", content: false, tabId: chrome.devtools.inspectedWindow.tabId });
+
 
 riot.mount("sidebar"); // mount the left menu
 swap('save'); // show first tab
@@ -25,6 +29,7 @@ var fileeditormain = null;
 var fileeditoreditor;
 var appcatalogeditor;
 var selectedFile = null;
+var selectedWebId = null;
 var pageeditorlisteners = [];
 var fileeditorlisteners = {};
 var bgautosave = false;
