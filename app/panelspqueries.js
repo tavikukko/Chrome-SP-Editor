@@ -1649,13 +1649,13 @@ var getFolders = function getFolders() {
 
     if (requestor == "init") {
       $pnp.sp.web.expand("Webs, Folders, RootFolder/Files")
-        .select("Webs/Id, Webs/Title, Webs/ServerRelativeUrl, Folders/Name, Folders/ServerRelativeUrl, RootFolder/Files/ServerRelativeUrl, RootFolder/Files/Name, RootFolder/Files/CustomizedPageStatus").get().then(r => {
+        .select("Id, Webs/Id, Webs/Title, Webs/ServerRelativeUrl, Folders/Name, Folders/ServerRelativeUrl, RootFolder/Files/ServerRelativeUrl, RootFolder/Files/Name, RootFolder/Files/CustomizedPageStatus").get().then(r => {
           var joined = [];
           r.Folders.results.forEach(function (folder) {
-            joined.push({ webId: _spPageContextInfo.webId, label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
+            joined.push({ webId: r.Id, label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
           });
           r.RootFolder.Files.results.forEach(function (file) {
-            joined.push({ webId: _spPageContextInfo.webId, label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
+            joined.push({ webId: r.Id, label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
           });
           r.Webs.results.forEach(function (web) {
             joined.push({ webId: web.Id, label: web.Title, ServerRelativeUrl: web.ServerRelativeUrl, web: true, expanded: false });
@@ -1741,10 +1741,19 @@ var getFileContent = function getFileContent() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    if(webId == 'undefined') webId = _spPageContextInfo.webId;
-
-    $pnp.sp.site.openWebById(webId).then(w => {
-      w.web.getFileByServerRelativeUrl(fileUrl).getText().then(r => {
+    if(webId != 'undefined')
+      $pnp.sp.site.openWebById(webId).then(w => {
+        w.web.getFileByServerRelativeUrl(fileUrl).getText().then(r => {
+          window.postMessage(JSON.stringify({ function: "getFileContent", success: true, result: { content: r, type: fileUrl.substr(fileUrl.lastIndexOf('.') + 1) }, source: 'chrome-sp-editor' }), '*');
+        }).catch(function (error) {
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+        });
+      });
+    else
+      $pnp.sp.web.getFileByServerRelativeUrl(fileUrl).getText().then(r => {
         window.postMessage(JSON.stringify({ function: "getFileContent", success: true, result: { content: r, type: fileUrl.substr(fileUrl.lastIndexOf('.') + 1) }, source: 'chrome-sp-editor' }), '*');
       }).catch(function (error) {
         if (error.data.responseBody.hasOwnProperty('error'))
@@ -1752,7 +1761,6 @@ var getFileContent = function getFileContent() {
         else
           alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
       });
-    });
 
   });
 };
