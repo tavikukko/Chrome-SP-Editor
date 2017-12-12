@@ -1255,7 +1255,7 @@ var exescript = function exescript(script) {
     // polyfill for _spPageContextInfo on modern sites
     window.moduleLoaderPromise.then(function (e) {
 
-      window._spPageContextInfo = e._shell._pageContext._legacyPageContext;
+      window._spPageContextInfo = e.context._pageContext._legacyPageContext;
 
       if (typeof SystemJS == 'undefined') {
         var s = document.createElement('script');

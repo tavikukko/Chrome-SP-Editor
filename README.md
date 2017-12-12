@@ -8,6 +8,7 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 3.3.2 _legacyPageContext bug fix (modern)
 - 3.3.1 File editor bug fix (on-prem)
 - 3.3.0 File editor update
     * Browse subsites

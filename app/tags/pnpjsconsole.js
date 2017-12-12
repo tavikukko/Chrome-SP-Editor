@@ -115,7 +115,7 @@ riot.tag("pnpjsconsole", `
                 '\t }',
                 '\t else if ( window.moduleLoaderPromise ) {',
                 '\t\t window.moduleLoaderPromise.then(function (e) {',
-                '\t\t\t window._spPageContextInfo = e._shell._pageContext._legacyPageContext;',
+                '\t\t\t window._spPageContextInfo = e.context._pageContext._legacyPageContext;',
                 '\t\t\t if (typeof SystemJS == "undefined") {',
                 '\t\t\t\t var s = document.createElement("script");',
                 '\t\t\t\t s.src = sj;',
