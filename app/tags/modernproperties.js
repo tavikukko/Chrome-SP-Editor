@@ -19,6 +19,18 @@ riot.tag("modernproperties", `
     <li class="list-group-item" each="{ origin in publicCDNOrigins }">
       <span>{ origin }</span>
     </li>
+    <li class="list-group-item list-group-item-info">
+    <span>Add origin</span>
+    </li><li class="list-group-item list-group-item-info">
+    <div class="row">
+    <div class="col-lg-6">
+    <div class="input-group">
+    <input id="inputOrigin" type="text" class="form-control" placeholder="Add new origin">
+    <span class="input-group-btn">
+    <button id="buttonOrigin" type="button" class="btn btn-default" onclick="{ addNewOrigin }">Add</button> 
+    </span>
+    </div></div></div>
+    </li>
     </virtual>
   </ul>
   <ul class="list-group">
@@ -123,6 +135,9 @@ riot.tag("modernproperties", `
             case 'enableDisableCDN':
               this.remount();
               break;
+            case 'addOrigin':
+              this.remount();
+              break;
           }
         }.bind(this));
         modernpropertiesinitialized = true;
@@ -164,6 +179,15 @@ riot.tag("modernproperties", `
       return this.webs.filter(function (t) {
         return ~t.Url.toLowerCase().indexOf(this.filterstr) || ~t.Title.toLowerCase().indexOf(this.filterstr) || ~t.Template.toLowerCase().indexOf(this.filterstr);
       }.bind(this));
+    }.bind(this);
+
+    this.addNewOrigin = function () {
+      var value = document.getElementById('inputOrigin').value;
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addOrigin;
+      // script += " exescript(addOrigin, '" + value + "');";
+      script += " exescript(addOrigin, '" + value + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+      scheduleDimmer();
     }.bind(this);
 
   });
