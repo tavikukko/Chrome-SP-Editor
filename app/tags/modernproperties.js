@@ -18,6 +18,22 @@ riot.tag("modernproperties", `
     <virtual if="{ publicCDNEnable }">
     <li class="list-group-item" each="{ origin in publicCDNOrigins }">
       <span>{ origin }</span>
+      <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-black public" onclick="{removeOrigin}" id="{origin}" ></i></a> 
+    </li>
+    <li class="list-group-item list-group-item-info">
+      <span>Add origin</span>
+    </li>
+    <li class="list-group-item list-group-item-info">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input id="inputPublicOrigin" type="text" class="form-control" placeholder="Add new origin">
+                    <span class="input-group-btn">
+                        <button id="buttonPublicOrigin" type="button" class="btn btn-default" onclick="{ addNewOrigin }">Add</button> 
+                    </span>
+                </div>
+            </div>
+        </div>
     </li>
     </virtual>
   </ul>
@@ -34,6 +50,22 @@ riot.tag("modernproperties", `
   <virtual if="{ privateCDNEnable }">
   <li class="list-group-item" each="{ origin in privateCDNOrigins }">
     <span>{ origin }</span>
+    <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-black private" onclick="{removeOrigin}" id="{origin}" ></i></a> 
+  </li>
+  <li class="list-group-item list-group-item-info">
+  <span>Add origin</span>
+  </li>
+  <li class="list-group-item list-group-item-info">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input id="inputPrivateOrigin" type="text" class="form-control" placeholder="Add new origin">
+                <span class="input-group-btn">
+                    <button id="buttonPrivateOrigin" type="button" class="btn btn-default" onclick="{ addNewOrigin }">Add</button> 
+                </span>
+            </div>
+        </div>
+    </div>
   </li>
   </virtual>
 </ul>
@@ -82,6 +114,7 @@ riot.tag("modernproperties", `
     }.bind(this);
 
     this.init = function () {
+      debugger;
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSiteCollections;
       script += " exescript(getSiteCollections);";
       chrome.devtools.inspectedWindow.eval(script);
@@ -121,8 +154,11 @@ riot.tag("modernproperties", `
               break;
             case 'updateSiteCollection':
             case 'enableDisableCDN':
+            case 'addOrigin':
+            case 'removeOrigin':
               this.remount();
               break;
+
           }
         }.bind(this));
         modernpropertiesinitialized = true;
@@ -164,6 +200,24 @@ riot.tag("modernproperties", `
       return this.webs.filter(function (t) {
         return ~t.Url.toLowerCase().indexOf(this.filterstr) || ~t.Title.toLowerCase().indexOf(this.filterstr) || ~t.Template.toLowerCase().indexOf(this.filterstr);
       }.bind(this));
+    }.bind(this);
+
+    this.addNewOrigin = function (e) {
+      var type = e.target.id === 'buttonPublicOrigin' ? 'Public' : 'Private';
+      var value = type === 'Public' ? document.getElementById('inputPublicOrigin').value : document.getElementById('inputPrivateOrigin').value;
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addOrigin;
+      script += " exescript(addOrigin, '"+ type+"', '" + value + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+      scheduleDimmer();
+    }.bind(this);
+    
+    this.removeOrigin = function (e) {
+      var type =  e.target.classList.contains('public') ? 'Public' : 'Private';
+      var value = e.target.id;
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + removeOrigin;
+      script += " exescript(removeOrigin, '"+ type+"', '" + value + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+      scheduleDimmer();
     }.bind(this);
 
   });
