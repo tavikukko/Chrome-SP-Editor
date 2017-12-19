@@ -1269,7 +1269,7 @@ var exescript = function exescript(script) {
 
     });
   }
-  else { alert("Could not get _spPageContextInfo, propably because this ain't a SharePoint site..")}
+  else { alert("Could not get _spPageContextInfo, propably because this ain't a SharePoint site..") }
 
 };
 
@@ -1741,7 +1741,7 @@ var getFileContent = function getFileContent() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    if(webId == 'undefined') webId = _spPageContextInfo.webId;
+    if (webId == 'undefined') webId = _spPageContextInfo.webId;
 
     $pnp.sp.site.openWebById(webId).then(w => {
       w.web.getFileByServerRelativeUrl(fileUrl).getText().then(r => {
@@ -1783,20 +1783,45 @@ var updateEditorFile = function updateEditorFile() {
     // todo: figure out why files in Forms folder doent want to checkin, update ok
     $pnp.sp.site.openWebById(webId).then(w => {
 
-    w.web.getFileByServerRelativeUrl(fileUrl).get().then(r => {
-      if (r.CustomizedPageStatus > 0) {
-        w.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
-          window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
-        }).catch(function (error) {
-          if (error.data.responseBody.hasOwnProperty('error'))
-            alert(error.data.responseBody.error.message.value);
-          else
-            alert(error.data.responseBody['odata.error'].message.value);
-          window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
-        });
-      }
-      else if (r.CheckOutType == 2) {
-        w.web.getFileByServerRelativeUrl(fileUrl).checkout().then(f => {
+      w.web.getFileByServerRelativeUrl(fileUrl).get().then(r => {
+        if (r.CustomizedPageStatus > 0) {
+          w.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+            window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
+          }).catch(function (error) {
+            if (error.data.responseBody.hasOwnProperty('error'))
+              alert(error.data.responseBody.error.message.value);
+            else
+              alert(error.data.responseBody['odata.error'].message.value);
+            window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          });
+        }
+        else if (r.CheckOutType == 2) {
+          w.web.getFileByServerRelativeUrl(fileUrl).checkout().then(f => {
+            w.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
+              w.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
+                window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
+              }).catch(function (error) {
+                if (error.data.responseBody.hasOwnProperty('error'))
+                  alert(error.data.responseBody.error.message.value);
+                else
+                  alert(error.data.responseBody['odata.error'].message.value);
+                window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
+              });
+            }).catch(function (error) {
+              if (error.data.responseBody.hasOwnProperty('error'))
+                alert(error.data.responseBody.error.message.value);
+              else
+                alert(error.data.responseBody['odata.error'].message.value);
+              window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
+            });
+          }).catch(function (error) {
+            if (error.data.responseBody.hasOwnProperty('error'))
+              alert(error.data.responseBody.error.message.value);
+            else
+              alert(error.data.responseBody['odata.error'].message.value);
+            window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          });
+        } else {
           w.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
             w.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
               window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
@@ -1814,40 +1839,15 @@ var updateEditorFile = function updateEditorFile() {
               alert(error.data.responseBody['odata.error'].message.value);
             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
           });
-        }).catch(function (error) {
-          if (error.data.responseBody.hasOwnProperty('error'))
-            alert(error.data.responseBody.error.message.value);
-          else
-            alert(error.data.responseBody['odata.error'].message.value);
-          window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
-        });
-      } else {
-        w.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
-          w.web.getFileByServerRelativeUrl(fileUrl).checkin("Updated from SP Editor", fileCheckinType).then(f => {
-            window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
-          }).catch(function (error) {
-            if (error.data.responseBody.hasOwnProperty('error'))
-              alert(error.data.responseBody.error.message.value);
-            else
-              alert(error.data.responseBody['odata.error'].message.value);
-            window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          });
-        }).catch(function (error) {
-          if (error.data.responseBody.hasOwnProperty('error'))
-            alert(error.data.responseBody.error.message.value);
-          else
-            alert(error.data.responseBody['odata.error'].message.value);
-          window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
-        });
-      }
-    }).catch(function (error) {
-      if (error.data.responseBody.hasOwnProperty('error'))
-        alert(error.data.responseBody.error.message.value);
-      else
-        alert(error.data.responseBody['odata.error'].message.value);
-      window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
+        }
+      }).catch(function (error) {
+        if (error.data.responseBody.hasOwnProperty('error'))
+          alert(error.data.responseBody.error.message.value);
+        else
+          alert(error.data.responseBody['odata.error'].message.value);
+        window.postMessage(JSON.stringify({ function: "updateEditorFile", success: false, result: null, source: 'chrome-sp-editor' }), '*');
+      });
     });
-  });
   });
 };
 
@@ -2177,10 +2177,8 @@ var enableDisableCDN = function enableDisableCDN() {
 };
 //addOrigin
 var addOrigin = function addOrigin() {
-  console.log('test');
-  debugger;
-  var origin = arguments[0];
-  
+  var private = arguments[1] === 'Private' ? 1 : 0;
+  var origin = arguments[2];
   Promise.all([SystemJS.import(alertify)]).then(function (modules) {
     var alertify = modules[0];
 
@@ -2192,16 +2190,16 @@ var addOrigin = function addOrigin() {
     }
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
-
     var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', spHostUrl + '/_api/contextinfo');
     xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-    var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="54" ObjectPathId="53" /><Method Name="AddTenantCdnOrigin" Id="55" ObjectPathId="53"><Parameters><Parameter Type="string">Public</Parameter><Parameter Type="String">'+origin+'</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>'
 
     xhr.onload = function () {
       if (xhr.status === 200) {
+
+        var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="54" ObjectPathId="53" /><Method Name="AddTenantCdnOrigin" Id="55" ObjectPathId="53"><Parameters><Parameter Type="Enum">' + private + '</Parameter><Parameter Type="String">' + origin + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>'
         var uuid = guid();
         var data = JSON.parse(xhr.responseText);
 
@@ -2222,21 +2220,79 @@ var addOrigin = function addOrigin() {
               window.postMessage(JSON.stringify({ function: 'addOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
             }
             else {
-              window.postMessage(JSON.stringify({ function: 'addOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+             window.postMessage(JSON.stringify({ function: 'addOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }
           }
           else {
             alertify.delay(10000).error(xhr2.responseText);
             window.postMessage(JSON.stringify({ function: 'addOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
-        };           
-        
+        };
+
         xhr2.send(payload);
       }
-     xhr.send();
     };
+    xhr.send();
   });
-}
+};
+var removeOrigin = function removeOrigin() {
+  var private = arguments[1] === 'Private' ? 1 : 0;
+  var origin = arguments[2];
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+
+    var guid = function () {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+      }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    }
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', spHostUrl + '/_api/contextinfo');
+    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="54" ObjectPathId="53" /><Method Name="RemoveTenantCdnOrigin" Id="55" ObjectPathId="53"><Parameters><Parameter Type="Enum">' + private + '</Parameter><Parameter Type="String">' + origin + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>'
+        var uuid = guid();
+        var data = JSON.parse(xhr.responseText);
+
+        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
+        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+
+        var xhr2 = new XMLHttpRequest();
+        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
+        xhr2.setRequestHeader('Content-Type', 'application/xml');
+        xhr2.setRequestHeader('SPRequestGuid', uuid);
+        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
+        xhr2.onload = function () {
+          if (xhr2.status === 200) {
+            var error = JSON.parse(xhr2.responseText)[0];
+
+            if (error.ErrorInfo) {
+              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
+              window.postMessage(JSON.stringify({ function: 'removeOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+            }
+            else {
+              window.postMessage(JSON.stringify({ function: 'removeOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+            }
+          }
+          else {
+            alertify.delay(10000).error(xhr2.responseText);
+            console.log(xhr2.responseText);
+            window.postMessage(JSON.stringify({ function: 'removeOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
+        };
+        xhr2.send(payload);
+      }
+    };
+    xhr.send();
+  });
+};
 
 
 // helper functions
