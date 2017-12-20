@@ -200,16 +200,18 @@ riot.tag("modernproperties", `
       var type = e.target.id === 'buttonPublicOrigin' ? 'Public' : 'Private';
       var value = type === 'Public' ? document.getElementById('inputPublicOrigin').value : document.getElementById('inputPrivateOrigin').value;
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addOrigin;
-      script += " exescript(addOrigin, '"+ type+"', '" + value + "');";
+      script += " exescript(addOrigin, '" + type + "', '" + value + "');";
       chrome.devtools.inspectedWindow.eval(script);
       scheduleDimmer();
     }.bind(this);
 
     this.removeOrigin = function (e) {
-      var type =  e.target.classList.contains('public') ? 'Public' : 'Private';
+      var type = e.target.classList.contains('public') ? 'Public' : 'Private';
       var value = e.target.id;
+      if (!confirm('Are you sure want to delete "' + value + '" origin?'))
+        return;
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + removeOrigin;
-      script += " exescript(removeOrigin, '"+ type+"', '" + value + "');";
+      script += " exescript(removeOrigin, '" + type + "', '" + value + "');";
       chrome.devtools.inspectedWindow.eval(script);
       scheduleDimmer();
     }.bind(this);
