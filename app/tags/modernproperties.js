@@ -18,18 +18,15 @@ riot.tag("modernproperties", `
     <virtual if="{ publicCDNEnable }">
     <li class="list-group-item" each="{ origin in publicCDNOrigins }">
       <span>{ origin }</span>
-      <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-black public" onclick="{removeOrigin}" id="{origin}" ></i></a> 
-    </li>
-    <li class="list-group-item list-group-item-info">
-      <span>Add origin</span>
+      <a><i class="remove glyphicon glyphicon-remove pull-right public" style="cursor: pointer; color: black;" onclick="{removeOrigin}" id="{origin}" ></i></a>
     </li>
     <li class="list-group-item list-group-item-info">
         <div class="row">
             <div class="col-lg-6">
-                <div class="input-group">
-                    <input id="inputPublicOrigin" type="text" class="form-control" placeholder="Add new origin">
+                <div class="input-group" style="z-index: 0;">
+                    <input id="inputPublicOrigin" type="text" class="form-control" placeholder="Add new public origin">
                     <span class="input-group-btn">
-                        <button id="buttonPublicOrigin" type="button" class="btn btn-default" onclick="{ addNewOrigin }">Add</button> 
+                        <button id="buttonPublicOrigin" type="button" class="btn btn-default" onclick="{ addNewOrigin }">Add</button>
                     </span>
                 </div>
             </div>
@@ -50,18 +47,15 @@ riot.tag("modernproperties", `
   <virtual if="{ privateCDNEnable }">
   <li class="list-group-item" each="{ origin in privateCDNOrigins }">
     <span>{ origin }</span>
-    <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-black private" onclick="{removeOrigin}" id="{origin}" ></i></a> 
-  </li>
-  <li class="list-group-item list-group-item-info">
-  <span>Add origin</span>
-  </li>
+    <a><i class="remove glyphicon glyphicon-remove pull-right private" style="cursor: pointer; color: black;" onclick="{removeOrigin}" id="{origin}" ></i></a>
+    </li>
   <li class="list-group-item list-group-item-info">
     <div class="row">
         <div class="col-lg-6">
-            <div class="input-group">
-                <input id="inputPrivateOrigin" type="text" class="form-control" placeholder="Add new origin">
+            <div class="input-group" style="z-index: 0;">
+                <input id="inputPrivateOrigin" type="text" class="form-control" placeholder="Add new private origin">
                 <span class="input-group-btn">
-                    <button id="buttonPrivateOrigin" type="button" class="btn btn-default" onclick="{ addNewOrigin }">Add</button> 
+                    <button id="buttonPrivateOrigin" type="button" class="btn btn-default" onclick="{ addNewOrigin }">Add</button>
                 </span>
             </div>
         </div>
@@ -210,7 +204,7 @@ riot.tag("modernproperties", `
       chrome.devtools.inspectedWindow.eval(script);
       scheduleDimmer();
     }.bind(this);
-    
+
     this.removeOrigin = function (e) {
       var type =  e.target.classList.contains('public') ? 'Public' : 'Private';
       var value = e.target.id;
