@@ -239,6 +239,7 @@ declare module "utils/exceptions" {
 }
 declare module "odata/core" {
   export interface ODataParser<T> {
+      hydrate?: (d: any) => T;
       parse(r: Response): Promise<T>;
   }
   export abstract class ODataParserBase<T> implements ODataParser<T> {
@@ -3152,6 +3153,47 @@ declare module "sharepoint/types" {
       FolderServerRelativeUrl?: string;
       RenderOptions?: RenderListDataOptions;
   }
+  export interface AppData {
+      AppCatalogVersion?: string;
+      CanUpgrade?: boolean;
+      CurrentVersionDeployed?: boolean;
+      Deployed?: boolean;
+      ID?: string;
+      InstalledVersion?: string;
+      IsClientSideSolution?: boolean;
+      Title?: string;
+  }
+  export interface RegionalSettingsProps {
+      AdjustHijriDays: number;
+      AlternateCalendarType: number;
+      AM: string;
+      CalendarType: number;
+      Collation: number;
+      CollationLCID: number;
+      DateFormat: number;
+      DateSeparator: string;
+      DecimalSeparator: string;
+      DigitGrouping: string;
+      FirstDayOfWeek: number;
+      FirstWeekOfYear: number;
+      IsEastAsia: boolean;
+      IsRightToLeft: boolean;
+      IsUIRightToLeft: boolean;
+      ListSeparator: string;
+      LocaleId: number;
+      NegativeSign: string;
+      NegNumberMode: number;
+      PM: string;
+      PositiveSign: string;
+      ShowWeeks: boolean;
+      ThousandSeparator: string;
+      Time24: boolean;
+      TimeMarkerPosition: number;
+      TimeSeparator: string;
+      WorkDayEndHour: number;
+      WorkDays: number;
+      WorkDayStartHour: number;
+  }
 }
 declare module "sharepoint/roles" {
   import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "sharepoint/sharepointqueryable";
@@ -3942,11 +3984,23 @@ declare module "sharepoint/files" {
        */
       deleteById(versionId: number): Promise<void>;
       /**
+       * Recycles the specified version of the file.
+       *
+       * @param versionId The ID of the file version to delete.
+       */
+      recycleByID(versionId: number): Promise<void>;
+      /**
        * Deletes the file version object with the specified version label.
        *
        * @param label The version label of the file version to delete, for example: 1.2
        */
       deleteByLabel(label: string): Promise<void>;
+      /**
+       * REcycles the file version object with the specified version label.
+       *
+       * @param label The version label of the file version to delete, for example: 1.2
+       */
+      recycleByLabel(label: string): Promise<void>;
       /**
        * Creates a new file version from the file specified by the version label.
        *
@@ -3965,6 +4019,10 @@ declare module "sharepoint/files" {
       * @param eTag Value used in the IF-Match header, by default "*"
       */
       delete(eTag?: string): Promise<void>;
+      /**
+       * Opens the file as a stream.
+       */
+      openBinaryStream(): Promise<string>;
   }
   export enum CheckinType {
       Minor = 0,
@@ -4209,11 +4267,17 @@ declare module "sharepoint/attachmentfiles" {
        */
       add(name: string, content: string | Blob | ArrayBuffer): Promise<AttachmentFileAddResult>;
       /**
-       * Adds mjultiple new attachment to the collection. Not supported for batching.
+       * Adds multiple new attachment to the collection. Not supported for batching.
        *
        * @files name The collection of files to add
        */
       addMultiple(files: AttachmentFileInfo[]): Promise<void>;
+      /**
+       * Delete multiple attachments from the collection. Not supported for batching.
+       *
+       * @files name The collection of files to delete
+       */
+      deleteMultiple(...files: string[]): Promise<void>;
   }
   /**
    * Describes a single attachment file instance
@@ -4282,6 +4346,12 @@ declare module "sharepoint/items" {
        * @param id The integer id of the item to retrieve
        */
       getById(id: number): Item;
+      /**
+       * Gets BCS Item by string id
+       *
+       * @param stringId The string id of the BCS item to retrieve
+       */
+      getItemByStringId(stringId: string): Item;
       /**
        * Skips the specified number of items (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#sectionSection6)
        *
@@ -4357,6 +4427,10 @@ declare module "sharepoint/items" {
        */
       readonly file: File;
       /**
+       * Gets the collection of versions associated with this item
+       */
+      readonly versions: ItemVersions;
+      /**
        * Updates this list intance with the supplied properties
        *
        * @param properties A plain object hash of values to update for the list
@@ -4420,6 +4494,36 @@ declare module "sharepoint/items" {
        * Gets the next set of results, or resolves to null if no results are available
        */
       getNext(): Promise<PagedItemCollection<any>>;
+  }
+  /**
+   * Describes a collection of Version objects
+   *
+   */
+  export class ItemVersions extends SharePointQueryableCollection {
+      /**
+       * Creates a new instance of the File class
+       *
+       * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
+       */
+      constructor(baseUrl: string | SharePointQueryable, path?: string);
+      /**
+       * Gets a version by id
+       *
+       * @param versionId The id of the version to retrieve
+       */
+      getById(versionId: number): ItemVersion;
+  }
+  /**
+   * Describes a single Version instance
+   *
+   */
+  export class ItemVersion extends SharePointQueryableInstance {
+      /**
+      * Delete a specific version of a file.
+      *
+      * @param eTag Value used in the IF-Match header, by default "*"
+      */
+      delete(): Promise<void>;
   }
 }
 declare module "sharepoint/views" {
@@ -4549,7 +4653,7 @@ declare module "sharepoint/fields" {
       /**
        * Gets a list from the collection by guid id
        *
-       * @param title The Id of the list
+       * @param id The Id of the list
        */
       getById(id: string): Field;
       /**
@@ -5132,6 +5236,72 @@ declare module "sharepoint/navigation" {
       readonly topNavigationBar: NavigationNodes;
   }
 }
+declare module "sharepoint/regionalsettings" {
+  import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "sharepoint/sharepointqueryable";
+  /**
+   * Describes regional settings ODada object
+   */
+  export class RegionalSettings extends SharePointQueryableInstance {
+      /**
+       * Creates a new instance of the RegionalSettings class
+       *
+       * @param baseUrl The url or SharePointQueryable which forms the parent of this regional settings collection
+       */
+      constructor(baseUrl: string | SharePointQueryable, path?: string);
+      /**
+       * Gets the collection of languages used in a server farm.
+       */
+      readonly installedLanguages: InstalledLanguages;
+      /**
+       * Gets the collection of language packs that are installed on the server.
+       */
+      readonly globalInstalledLanguages: InstalledLanguages;
+      /**
+       * Gets time zone
+       */
+      readonly timeZone: TimeZone;
+      /**
+       * Gets time zones
+       */
+      readonly timeZones: TimeZones;
+  }
+  /**
+   * Describes installed languages ODada queriable collection
+   */
+  export class InstalledLanguages extends SharePointQueryableCollection {
+      constructor(baseUrl: string | SharePointQueryable, path?: string);
+  }
+  /**
+   * Describes TimeZone ODada object
+   */
+  export class TimeZone extends SharePointQueryableInstance {
+      constructor(baseUrl: string | SharePointQueryable, path?: string);
+      /**
+       * Gets an Local Time by UTC Time
+       *
+       * @param utcTime UTC Time as Date or ISO String
+       */
+      utcToLocalTime(utcTime: string | Date): Promise<string>;
+      /**
+       * Gets an UTC Time by Local Time
+       *
+       * @param localTime Local Time as Date or ISO String
+       */
+      localTimeToUTC(localTime: string | Date): Promise<string>;
+  }
+  /**
+   * Describes time zones queriable collection
+   */
+  export class TimeZones extends SharePointQueryableCollection {
+      constructor(baseUrl: string | SharePointQueryable, path?: string);
+      /**
+       * Gets an TimeZone by id
+       *
+       * @param id The integer id of the timezone to retrieve
+       */
+      getById(id: number): Promise<TimeZone>;
+  }
+}
 declare module "sharepoint/features" {
   import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "sharepoint/sharepointqueryable";
   /**
@@ -5240,6 +5410,66 @@ declare module "sharepoint/relateditems" {
       deleteSingleLink(sourceListName: string, sourceItemId: number, sourceWebUrl: string, targetListName: string, targetItemId: number, targetWebUrl: string, tryDeleteReverseLink?: boolean): Promise<void>;
   }
 }
+declare module "sharepoint/appcatalog" {
+  import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "sharepoint/sharepointqueryable";
+  import { File } from "sharepoint/files";
+  /**
+   * Represents an app catalog
+   */
+  export class AppCatalog extends SharePointQueryableCollection {
+      constructor(baseUrl: string | SharePointQueryable, path?: string);
+      /**
+       * Get details of specific app from the app catalog
+       * @param id - Specify the guid of the app
+       */
+      getAppById(id: string): App;
+      /**
+       * Uploads an app package. Not supported for batching
+       *
+       * @param filename Filename to create.
+       * @param content app package data (eg: the .app or .sppkg file).
+       * @param shouldOverWrite Should an app with the same name in the same location be overwritten? (default: true)
+       * @returns Promise<AppAddResult>
+       */
+      add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite?: boolean): Promise<AppAddResult>;
+  }
+  /**
+   * Represents the actions you can preform on a given app within the catalog
+   */
+  export class App extends SharePointQueryableInstance {
+      /**
+       * This method deploys an app on the app catalog.  It must be called in the context
+       * of the tenant app catalog web or it will fail.
+       */
+      deploy(): Promise<void>;
+      /**
+       * This method retracts a deployed app on the app catalog.  It must be called in the context
+       * of the tenant app catalog web or it will fail.
+       */
+      retract(): Promise<void>;
+      /**
+       * This method allows an app which is already deployed to be installed on a web
+       */
+      install(): Promise<void>;
+      /**
+       * This method allows an app which is already insatlled to be uninstalled on a web
+       */
+      uninstall(): Promise<void>;
+      /**
+       * This method allows an app which is already insatlled to be upgraded on a web
+       */
+      upgrade(): Promise<void>;
+      /**
+       * This method removes an app from the app catalog.  It must be called in the context
+       * of the tenant app catalog web or it will fail.
+       */
+      remove(): Promise<void>;
+  }
+  export interface AppAddResult {
+      data: any;
+      file: File;
+  }
+}
 declare module "sharepoint/webs" {
   import { SharePointQueryable, SharePointQueryableCollection } from "sharepoint/sharepointqueryable";
   import { Lists } from "sharepoint/lists";
@@ -5247,6 +5477,7 @@ declare module "sharepoint/webs" {
   import { Navigation } from "sharepoint/navigation";
   import { SiteGroups, SiteGroup } from "sharepoint/sitegroups";
   import { ContentTypes } from "sharepoint/contenttypes";
+  import { RegionalSettings } from "sharepoint/regionalsettings";
   import { Folders, Folder } from "sharepoint/folders";
   import { RoleDefinitions } from "sharepoint/roles";
   import { File } from "sharepoint/files";
@@ -5259,6 +5490,7 @@ declare module "sharepoint/webs" {
   import { Features } from "sharepoint/features";
   import { SharePointQueryableShareableWeb } from "sharepoint/sharepointqueryableshareable";
   import { RelatedItemManger } from "sharepoint/relateditems";
+  import { AppCatalog } from "sharepoint/appcatalog";
   /**
    * Describes a collection of webs
    *
@@ -5371,6 +5603,16 @@ declare module "sharepoint/webs" {
        */
       readonly siteGroups: SiteGroups;
       /**
+       * Gets site user info list
+       *
+       */
+      readonly siteUserInfoList: List;
+      /**
+       * Gets regional settings
+       *
+       */
+      readonly regionalSettings: RegionalSettings;
+      /**
        * Gets the current user
        */
       readonly currentUser: CurrentUser;
@@ -5384,6 +5626,11 @@ declare module "sharepoint/webs" {
        *
        */
       readonly userCustomActions: UserCustomActions;
+      /**
+       * Gets the effective base permissions of this web
+       *
+       */
+      readonly effectiveBasePermissions: SharePointQueryable;
       /**
        * Gets the collection of RoleDefinition resources
        *
@@ -5508,6 +5755,18 @@ declare module "sharepoint/webs" {
        * @param progId The ProgID of the application that was used to create the file, in the form OLEServerName.ObjectName
        */
       mapToIcon(filename: string, size?: number, progId?: string): Promise<string>;
+      /**
+       * Returns the tenant property corresponding to the specified key in the app catalog site
+       *
+       * @param key
+       */
+      getStorageEntity(key: string): Promise<string>;
+      /**
+       * Gets the app catalog for this web
+       *
+       * @param url Optional url or web containing the app catalog (default: current web)
+       */
+      getAppCatalog(url?: string | Web): AppCatalog;
   }
   /**
    * Result from adding a web
@@ -5689,7 +5948,7 @@ declare module "sharepoint/userprofiles" {
        *
        * @param loginName The account name of the user.
        */
-      getPropertiesFor(loginName: string): Promise<any[]>;
+      getPropertiesFor(loginName: string): Promise<any>;
       /**
        * Gets the 20 most popular hash tags over the past week, sorted so that the most popular tag appears first
        *
@@ -5784,13 +6043,6 @@ declare module "sharepoint/utilities" {
        */
       constructor(baseUrl: string | SharePointQueryable, methodName: string);
       excute<T>(props: any): Promise<T>;
-      /**
-       * Clones this SharePointQueryable into a new SharePointQueryable instance of T
-       * @param factory Constructor used to create the new instance
-       * @param additionalPath Any additional path to include in the clone
-       * @param includeBatch If true this instance's batch will be added to the cloned instance
-       */
-      protected create(methodName: string, includeBatch: boolean): UtilityMethod;
       /**
        * Sends an email based on the supplied properties
        *
@@ -6533,6 +6785,7 @@ declare module "exports/core" {
   export { Util } from "utils/util";
   export * from "utils/logging";
   export * from "utils/exceptions";
+  export * from "utils/storage";
 }
 declare module "graph/index" {
   export { GroupAddResult } from "graph/groups";
@@ -6604,12 +6857,13 @@ declare module "exports/odata" {
   export * from "odata/queryable";
 }
 declare module "sharepoint/index" {
+  export { AppCatalog, AppAddResult, App } from "sharepoint/appcatalog";
   export { AttachmentFileAddResult, AttachmentFileInfo } from "sharepoint/attachmentfiles";
   export { FieldAddResult, FieldUpdateResult } from "sharepoint/fields";
   export { CheckinType, FileAddResult, WebPartsPersonalizationScope, MoveOperations, TemplateFileType, ChunkedFileUploadProgressData, File, Files } from "sharepoint/files";
   export { FeatureAddResult } from "sharepoint/features";
   export { FolderAddResult, Folder, Folders } from "sharepoint/folders";
-  export { Item, Items, ItemAddResult, ItemUpdateResult, ItemUpdateResultData, PagedItemCollection } from "sharepoint/items";
+  export { Item, Items, ItemVersion, ItemVersions, ItemAddResult, ItemUpdateResult, ItemUpdateResultData, PagedItemCollection } from "sharepoint/items";
   export { NavigationNodeAddResult, NavigationNodeUpdateResult, NavigationNodes, NavigationNode } from "sharepoint/navigation";
   export { List, Lists, ListAddResult, ListUpdateResult, ListEnsureResult } from "sharepoint/lists";
   export { spExtractODataId, spODataEntity, spODataEntityArray } from "sharepoint/odata";
