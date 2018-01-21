@@ -777,6 +777,12 @@ declare module "sharepoint/batch" {
       private _batchId;
       private _dependencies;
       private _requests;
+      /**
+       * Parses the response from a batch request into an array of Response instances
+       *
+       * @param body Text body of the response from the batch request
+       */
+      static ParseResponse(body: string): Promise<Response[]>;
       constructor(baseUrl: string, _batchId?: string);
       readonly batchId: string;
       /**
@@ -800,12 +806,6 @@ declare module "sharepoint/batch" {
        */
       execute(): Promise<any>;
       private executeImpl();
-      /**
-       * Parses the response from a batch request into an array of Response instances
-       *
-       * @param body Text body of the response from the batch request
-       */
-      private _parseResponse(body);
   }
 }
 declare module "odata/caching" {
@@ -1507,7 +1507,7 @@ declare module "sharepoint/search" {
           Value: any;
           ValueType: string;
       }[];
-      Table: {
+      Table?: {
           Rows: {
               Cells: {
                   Key: string;
@@ -1516,6 +1516,14 @@ declare module "sharepoint/search" {
               }[];
           }[];
       };
+      Refiners?: {
+          Entries: {
+              RefinementCount: string;
+              RefinementName: string;
+              RefinementToken: string;
+              RefinementValue: string;
+          }[];
+      }[];
       ResultTitle?: string;
       ResultTitleUrl?: string;
       RowCount?: number;
@@ -2226,8 +2234,8 @@ declare module "sharepoint/types" {
       Image = 1,
   }
   export interface BasePermissions {
-      Low: number;
-      High: number;
+      Low: string;
+      High: string;
   }
   export enum PermissionKind {
       /**
@@ -3193,6 +3201,27 @@ declare module "sharepoint/types" {
       WorkDayEndHour: number;
       WorkDays: number;
       WorkDayStartHour: number;
+  }
+  export interface MenuNode {
+      CustomProperties: any[];
+      FriendlyUrlSegment: string;
+      IsDeleted: boolean;
+      IsHidden: boolean;
+      Key: string;
+      Nodes: MenuNode[];
+      NodeType: number;
+      SimpleUrl: string;
+      Title: string;
+  }
+  export interface MenuNodeCollection {
+      FriendlyUrlPrefix: string;
+      Nodes: MenuNode[];
+      SimpleUrl: string;
+      SPSitePrefix: string;
+      SPWebPrefix: string;
+      StartingNodeKey: string;
+      StartingNodeTitle: string;
+      Version: Date;
   }
 }
 declare module "sharepoint/roles" {
@@ -4278,6 +4307,12 @@ declare module "sharepoint/attachmentfiles" {
        * @files name The collection of files to delete
        */
       deleteMultiple(...files: string[]): Promise<void>;
+      /**
+       * Delete multiple attachments from the collection and sends it to recycle bin. Not supported for batching.
+       *
+       * @files name The collection of files to delete
+       */
+      recycleMultiple(...files: string[]): Promise<void>;
   }
   /**
    * Describes a single attachment file instance
@@ -4314,6 +4349,12 @@ declare module "sharepoint/attachmentfiles" {
        * @param eTag Value used in the IF-Match header, by default "*"
        */
       delete(eTag?: string): Promise<void>;
+      /**
+       * Delete this attachment file and send it to Recycle Bin
+       *
+       * @param eTag Value used in the IF-Match header, by default "*"
+       */
+      recycle(eTag?: string): Promise<void>;
   }
   export interface AttachmentFileAddResult {
       file: AttachmentFile;
@@ -5148,21 +5189,13 @@ declare module "sharepoint/lists" {
   }
 }
 declare module "sharepoint/navigation" {
-  import { TypedHash } from "collections/collections";
   import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "sharepoint/sharepointqueryable";
+  import { MenuNodeCollection } from "sharepoint/types";
   /**
    * Result from adding a navigation node
    *
    */
   export interface NavigationNodeAddResult {
-      data: any;
-      node: NavigationNode;
-  }
-  /**
-   * Result from udpdating a navigation node
-   *
-   */
-  export interface NavigationNodeUpdateResult {
       data: any;
       node: NavigationNode;
   }
@@ -5203,12 +5236,6 @@ declare module "sharepoint/navigation" {
        */
       readonly children: NavigationNodes;
       /**
-       * Updates this node based on the supplied properties
-       *
-       * @param properties The hash of key/value pairs to update
-       */
-      update(properties: TypedHash<boolean | string | number>): Promise<NavigationNodeUpdateResult>;
-      /**
        * Deletes this node and any child nodes
        */
       delete(): Promise<void>;
@@ -5234,6 +5261,32 @@ declare module "sharepoint/navigation" {
        *
        */
       readonly topNavigationBar: NavigationNodes;
+  }
+  export interface INavigationService {
+      getMenuState(menuNodeKey?: string, depth?: number, mapProviderName?: string, customProperties?: string): Promise<MenuNodeCollection>;
+      getMenuNodeKey(currentUrl: string, mapProviderName?: string): Promise<string>;
+  }
+  /**
+   * Represents the top level navigation service
+   */
+  export class NavigationService extends SharePointQueryable implements INavigationService {
+      constructor(path?: string);
+      /**
+       * The MenuState service operation returns a Menu-State (dump) of a SiteMapProvider on a site.
+       *
+       * @param menuNodeKey MenuNode.Key of the start node within the SiteMapProvider If no key is provided the SiteMapProvider.RootNode will be the root of the menu state.
+       * @param depth Depth of the dump. If no value is provided a dump with the depth of 10 is returned
+       * @param mapProviderName The name identifying the SiteMapProvider to be used
+       * @param customProperties comma seperated list of custom properties to be returned.
+       */
+      getMenuState(menuNodeKey?: string, depth?: number, mapProviderName?: string, customProperties?: string): Promise<MenuNodeCollection>;
+      /**
+       * Tries to get a SiteMapNode.Key for a given URL within a site collection.
+       *
+       * @param currentUrl A url representing the SiteMapNode
+       * @param mapProviderName The name identifying the SiteMapProvider to be used
+       */
+      getMenuNodeKey(currentUrl: string, mapProviderName?: string): Promise<string>;
   }
 }
 declare module "sharepoint/regionalsettings" {
@@ -5557,6 +5610,10 @@ declare module "sharepoint/webs" {
       * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
       */
       getSubwebsFilteredForCurrentUser(nWebTemplateFilter?: number, nConfigurationFilter?: number): Webs;
+      /**
+       * Gets the set of all web properties from the read-only collection.
+       */
+      readonly allProperties: SharePointQueryableCollection;
       /**
        * Gets a collection of WebInfos for this web's subwebs
        *
@@ -6067,6 +6124,7 @@ declare module "sharepoint/rest" {
   import { Site } from "sharepoint/site";
   import { Web } from "sharepoint/webs";
   import { UserProfileQuery } from "sharepoint/userprofiles";
+  import { INavigationService } from "sharepoint/navigation";
   import { ODataBatch } from "sharepoint/batch";
   import { UtilityMethods } from "sharepoint/utilities";
   import { ConfigOptions } from "net/utils";
@@ -6121,9 +6179,12 @@ declare module "sharepoint/rest" {
       readonly web: Web;
       /**
        * Access to user profile methods
-       *
        */
       readonly profiles: UserProfileQuery;
+      /**
+       * Access to the site collection level navigation service
+       */
+      readonly navigation: INavigationService;
       /**
        * Creates a new batch object for use with the SharePointQueryable.addToBatch method
        *
@@ -6859,12 +6920,13 @@ declare module "exports/odata" {
 declare module "sharepoint/index" {
   export { AppCatalog, AppAddResult, App } from "sharepoint/appcatalog";
   export { AttachmentFileAddResult, AttachmentFileInfo } from "sharepoint/attachmentfiles";
+  export { ODataBatch } from "sharepoint/batch";
   export { FieldAddResult, FieldUpdateResult } from "sharepoint/fields";
   export { CheckinType, FileAddResult, WebPartsPersonalizationScope, MoveOperations, TemplateFileType, ChunkedFileUploadProgressData, File, Files } from "sharepoint/files";
   export { FeatureAddResult } from "sharepoint/features";
   export { FolderAddResult, Folder, Folders } from "sharepoint/folders";
   export { Item, Items, ItemVersion, ItemVersions, ItemAddResult, ItemUpdateResult, ItemUpdateResultData, PagedItemCollection } from "sharepoint/items";
-  export { NavigationNodeAddResult, NavigationNodeUpdateResult, NavigationNodes, NavigationNode } from "sharepoint/navigation";
+  export { NavigationNodeAddResult, NavigationNodes, NavigationNode } from "sharepoint/navigation";
   export { List, Lists, ListAddResult, ListUpdateResult, ListEnsureResult } from "sharepoint/lists";
   export { spExtractODataId, spODataEntity, spODataEntityArray } from "sharepoint/odata";
   export { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection, SharePointQueryableConstructor } from "sharepoint/sharepointqueryable";

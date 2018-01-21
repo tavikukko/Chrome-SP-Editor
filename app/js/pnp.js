@@ -1,5 +1,5 @@
 /**
- * sp-pnp-js v3.0.3 - A JavaScript library for SharePoint development.
+ * sp-pnp-js v3.0.4 - A JavaScript library for SharePoint development.
  * MIT (https://github.com/SharePoint/PnP-JS-Core/blob/master/LICENSE)
  * Copyright (c) 2017 Microsoft
  * docs: http://officedev.github.io/PnP-JS-Core
@@ -15,7 +15,7 @@
 		exports["$pnp"] = factory();
 	else
 		root["$pnp"] = factory();
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -368,7 +368,7 @@ var Util = /** @class */ (function () {
 }());
 exports.Util = Util;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)))
 
 /***/ }),
 /* 1 */
@@ -1027,7 +1027,7 @@ exports.spODataEntityArray = spODataEntityArray;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var fetchclient_1 = __webpack_require__(27);
+var fetchclient_1 = __webpack_require__(29);
 var RuntimeConfigImpl = /** @class */ (function () {
     function RuntimeConfigImpl() {
         // these are our default values for the library
@@ -1926,7 +1926,7 @@ var sharepointqueryable_1 = __webpack_require__(1);
 var parsers_1 = __webpack_require__(7);
 var util_1 = __webpack_require__(0);
 var exceptions_1 = __webpack_require__(2);
-var webparts_1 = __webpack_require__(34);
+var webparts_1 = __webpack_require__(36);
 var items_1 = __webpack_require__(15);
 var sharepointqueryableshareable_1 = __webpack_require__(16);
 var odata_1 = __webpack_require__(3);
@@ -2506,8 +2506,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
 var lists_1 = __webpack_require__(14);
-var fields_1 = __webpack_require__(35);
-var navigation_1 = __webpack_require__(36);
+var fields_1 = __webpack_require__(37);
+var navigation_1 = __webpack_require__(26);
 var sitegroups_1 = __webpack_require__(23);
 var contenttypes_1 = __webpack_require__(24);
 var regionalsettings_1 = __webpack_require__(51);
@@ -2516,10 +2516,10 @@ var roles_1 = __webpack_require__(22);
 var files_1 = __webpack_require__(9);
 var util_1 = __webpack_require__(0);
 var lists_2 = __webpack_require__(14);
-var siteusers_1 = __webpack_require__(33);
+var siteusers_1 = __webpack_require__(35);
 var usercustomactions_1 = __webpack_require__(25);
 var odata_1 = __webpack_require__(3);
-var batch_1 = __webpack_require__(37);
+var batch_1 = __webpack_require__(27);
 var features_1 = __webpack_require__(38);
 var sharepointqueryableshareable_1 = __webpack_require__(16);
 var relateditems_1 = __webpack_require__(52);
@@ -2642,6 +2642,16 @@ var Web = /** @class */ (function (_super) {
         if (nConfigurationFilter === void 0) { nConfigurationFilter = -1; }
         return this.clone(Webs, "getSubwebsFilteredForCurrentUser(nWebTemplateFilter=" + nWebTemplateFilter + ",nConfigurationFilter=" + nConfigurationFilter + ")");
     };
+    Object.defineProperty(Web.prototype, "allProperties", {
+        /**
+         * Gets the set of all web properties from the read-only collection.
+         */
+        get: function () {
+            return this.clone(sharepointqueryable_1.SharePointQueryableCollection, "allproperties");
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Web.prototype, "webinfos", {
         /**
          * Gets a collection of WebInfos for this web's subwebs
@@ -3410,11 +3420,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var items_1 = __webpack_require__(15);
 var views_1 = __webpack_require__(48);
 var contenttypes_1 = __webpack_require__(24);
-var fields_1 = __webpack_require__(35);
+var fields_1 = __webpack_require__(37);
 var forms_1 = __webpack_require__(49);
 var subscriptions_1 = __webpack_require__(50);
 var sharepointqueryable_1 = __webpack_require__(1);
-var sharepointqueryablesecurable_1 = __webpack_require__(32);
+var sharepointqueryablesecurable_1 = __webpack_require__(34);
 var util_1 = __webpack_require__(0);
 var usercustomactions_1 = __webpack_require__(25);
 var odata_1 = __webpack_require__(3);
@@ -3799,14 +3809,10 @@ var List = /** @class */ (function (_super) {
         var q = this.clone(List, "renderlistdata(@viewXml)");
         q.query.add("@viewXml", "'" + viewXml + "'");
         return q.postCore().then(function (data) {
-            // data will be a string, so we parse it again
-            data = JSON.parse(data);
             if (data.hasOwnProperty("RenderListData")) {
-                return data.RenderListData;
+                return JSON.parse(data.RenderListData);
             }
-            else {
-                return data;
-            }
+            return JSON.parse(data);
         });
     };
     /**
@@ -4338,7 +4344,7 @@ var util_1 = __webpack_require__(0);
 var webs_1 = __webpack_require__(11);
 var odata_1 = __webpack_require__(3);
 var sharepointqueryable_1 = __webpack_require__(1);
-var sharepointqueryablesecurable_1 = __webpack_require__(32);
+var sharepointqueryablesecurable_1 = __webpack_require__(34);
 var types_1 = __webpack_require__(17);
 /**
  * Internal helper class used to augment classes to include sharing functionality
@@ -5678,7 +5684,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var caching_1 = __webpack_require__(29);
+var caching_1 = __webpack_require__(31);
 var logging_1 = __webpack_require__(5);
 var util_1 = __webpack_require__(0);
 /**
@@ -5930,11 +5936,11 @@ var HttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:3.0.3");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:3.0.4");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/3.0.3");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/3.0.4");
         }
         opts = util_1.Util.extend(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -6294,7 +6300,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
-var siteusers_1 = __webpack_require__(33);
+var siteusers_1 = __webpack_require__(35);
 var util_1 = __webpack_require__(0);
 /**
  * Principal Type enum
@@ -6731,6 +6737,456 @@ exports.UserCustomAction = UserCustomAction;
 
 /***/ }),
 /* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var sharepointqueryable_1 = __webpack_require__(1);
+/**
+ * Represents a collection of navigation nodes
+ *
+ */
+var NavigationNodes = /** @class */ (function (_super) {
+    __extends(NavigationNodes, _super);
+    function NavigationNodes() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets a navigation node by id
+     *
+     * @param id The id of the node
+     */
+    NavigationNodes.prototype.getById = function (id) {
+        var node = new NavigationNode(this);
+        node.concat("(" + id + ")");
+        return node;
+    };
+    /**
+     * Adds a new node to the collection
+     *
+     * @param title Display name of the node
+     * @param url The url of the node
+     * @param visible If true the node is visible, otherwise it is hidden (default: true)
+     */
+    NavigationNodes.prototype.add = function (title, url, visible) {
+        var _this = this;
+        if (visible === void 0) { visible = true; }
+        var postBody = JSON.stringify({
+            IsVisible: visible,
+            Title: title,
+            Url: url,
+            "__metadata": { "type": "SP.NavigationNode" },
+        });
+        return this.clone(NavigationNodes, null).postCore({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                node: _this.getById(data.Id),
+            };
+        });
+    };
+    /**
+     * Moves a node to be after another node in the navigation
+     *
+     * @param nodeId Id of the node to move
+     * @param previousNodeId Id of the node after which we move the node specified by nodeId
+     */
+    NavigationNodes.prototype.moveAfter = function (nodeId, previousNodeId) {
+        var postBody = JSON.stringify({
+            nodeId: nodeId,
+            previousNodeId: previousNodeId,
+        });
+        return this.clone(NavigationNodes, "MoveAfter").postCore({ body: postBody });
+    };
+    return NavigationNodes;
+}(sharepointqueryable_1.SharePointQueryableCollection));
+exports.NavigationNodes = NavigationNodes;
+/**
+ * Represents an instance of a navigation node
+ *
+ */
+var NavigationNode = /** @class */ (function (_super) {
+    __extends(NavigationNode, _super);
+    function NavigationNode() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(NavigationNode.prototype, "children", {
+        /**
+         * Represents the child nodes of this node
+         */
+        get: function () {
+            return new NavigationNodes(this, "Children");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Deletes this node and any child nodes
+     */
+    NavigationNode.prototype.delete = function () {
+        return _super.prototype.deleteCore.call(this);
+    };
+    return NavigationNode;
+}(sharepointqueryable_1.SharePointQueryableInstance));
+exports.NavigationNode = NavigationNode;
+/**
+ * Exposes the navigation components
+ *
+ */
+var Navigation = /** @class */ (function (_super) {
+    __extends(Navigation, _super);
+    /**
+     * Creates a new instance of the Navigation class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of these navigation components
+     */
+    function Navigation(baseUrl, path) {
+        if (path === void 0) { path = "navigation"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    Object.defineProperty(Navigation.prototype, "quicklaunch", {
+        /**
+         * Gets the quicklaunch navigation nodes for the current context
+         *
+         */
+        get: function () {
+            return new NavigationNodes(this, "quicklaunch");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Navigation.prototype, "topNavigationBar", {
+        /**
+         * Gets the top bar navigation nodes for the current context
+         *
+         */
+        get: function () {
+            return new NavigationNodes(this, "topnavigationbar");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Navigation;
+}(sharepointqueryable_1.SharePointQueryable));
+exports.Navigation = Navigation;
+/**
+ * Represents the top level navigation service
+ */
+var NavigationService = /** @class */ (function (_super) {
+    __extends(NavigationService, _super);
+    function NavigationService(path) {
+        if (path === void 0) { path = null; }
+        return _super.call(this, "_api/navigation", path) || this;
+    }
+    /**
+     * The MenuState service operation returns a Menu-State (dump) of a SiteMapProvider on a site.
+     *
+     * @param menuNodeKey MenuNode.Key of the start node within the SiteMapProvider If no key is provided the SiteMapProvider.RootNode will be the root of the menu state.
+     * @param depth Depth of the dump. If no value is provided a dump with the depth of 10 is returned
+     * @param mapProviderName The name identifying the SiteMapProvider to be used
+     * @param customProperties comma seperated list of custom properties to be returned.
+     */
+    NavigationService.prototype.getMenuState = function (menuNodeKey, depth, mapProviderName, customProperties) {
+        if (menuNodeKey === void 0) { menuNodeKey = null; }
+        if (depth === void 0) { depth = 10; }
+        if (mapProviderName === void 0) { mapProviderName = null; }
+        if (customProperties === void 0) { customProperties = null; }
+        return (new NavigationService("MenuState")).postCore({
+            body: JSON.stringify({
+                customProperties: customProperties,
+                depth: depth,
+                mapProviderName: mapProviderName,
+                menuNodeKey: menuNodeKey,
+            }),
+        });
+    };
+    /**
+     * Tries to get a SiteMapNode.Key for a given URL within a site collection.
+     *
+     * @param currentUrl A url representing the SiteMapNode
+     * @param mapProviderName The name identifying the SiteMapProvider to be used
+     */
+    NavigationService.prototype.getMenuNodeKey = function (currentUrl, mapProviderName) {
+        if (mapProviderName === void 0) { mapProviderName = null; }
+        return (new NavigationService("MenuNodeKey")).postCore({
+            body: JSON.stringify({
+                currentUrl: currentUrl,
+                mapProviderName: mapProviderName,
+            }),
+        });
+    };
+    return NavigationService;
+}(sharepointqueryable_1.SharePointQueryable));
+exports.NavigationService = NavigationService;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var logging_1 = __webpack_require__(5);
+var httpclient_1 = __webpack_require__(21);
+var utils_1 = __webpack_require__(10);
+var pnplibconfig_1 = __webpack_require__(4);
+var exceptions_1 = __webpack_require__(2);
+/**
+ * Manages a batch of OData operations
+ */
+var ODataBatch = /** @class */ (function () {
+    function ODataBatch(baseUrl, _batchId) {
+        if (_batchId === void 0) { _batchId = util_1.Util.getGUID(); }
+        this.baseUrl = baseUrl;
+        this._batchId = _batchId;
+        this._requests = [];
+        this._dependencies = [];
+    }
+    /**
+     * Parses the response from a batch request into an array of Response instances
+     *
+     * @param body Text body of the response from the batch request
+     */
+    ODataBatch.ParseResponse = function (body) {
+        return new Promise(function (resolve, reject) {
+            var responses = [];
+            var header = "--batchresponse_";
+            // Ex. "HTTP/1.1 500 Internal Server Error"
+            var statusRegExp = new RegExp("^HTTP/[0-9.]+ +([0-9]+) +(.*)", "i");
+            var lines = body.split("\n");
+            var state = "batch";
+            var status;
+            var statusText;
+            for (var i = 0; i < lines.length; ++i) {
+                var line = lines[i];
+                switch (state) {
+                    case "batch":
+                        if (line.substr(0, header.length) === header) {
+                            state = "batchHeaders";
+                        }
+                        else {
+                            if (line.trim() !== "") {
+                                throw new exceptions_1.BatchParseException("Invalid response, line " + i);
+                            }
+                        }
+                        break;
+                    case "batchHeaders":
+                        if (line.trim() === "") {
+                            state = "status";
+                        }
+                        break;
+                    case "status":
+                        var parts = statusRegExp.exec(line);
+                        if (parts.length !== 3) {
+                            throw new exceptions_1.BatchParseException("Invalid status, line " + i);
+                        }
+                        status = parseInt(parts[1], 10);
+                        statusText = parts[2];
+                        state = "statusHeaders";
+                        break;
+                    case "statusHeaders":
+                        if (line.trim() === "") {
+                            state = "body";
+                        }
+                        break;
+                    case "body":
+                        responses.push((status === 204) ? new Response() : new Response(line, { status: status, statusText: statusText }));
+                        state = "batch";
+                        break;
+                }
+            }
+            if (state !== "status") {
+                reject(new exceptions_1.BatchParseException("Unexpected end of input"));
+            }
+            resolve(responses);
+        });
+    };
+    Object.defineProperty(ODataBatch.prototype, "batchId", {
+        get: function () {
+            return this._batchId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Adds a request to a batch (not designed for public use)
+     *
+     * @param url The full url of the request
+     * @param method The http method GET, POST, etc
+     * @param options Any options to include in the request
+     * @param parser The parser that will hadle the results of the request
+     */
+    ODataBatch.prototype.add = function (url, method, options, parser) {
+        var info = {
+            method: method.toUpperCase(),
+            options: options,
+            parser: parser,
+            reject: null,
+            resolve: null,
+            url: url,
+        };
+        var p = new Promise(function (resolve, reject) {
+            info.resolve = resolve;
+            info.reject = reject;
+        });
+        this._requests.push(info);
+        return p;
+    };
+    /**
+     * Adds a dependency insuring that some set of actions will occur before a batch is processed.
+     * MUST be cleared using the returned resolve delegate to allow batches to run
+     */
+    ODataBatch.prototype.addDependency = function () {
+        var resolver;
+        var promise = new Promise(function (resolve) {
+            resolver = resolve;
+        });
+        this._dependencies.push(promise);
+        return resolver;
+    };
+    /**
+     * Execute the current batch and resolve the associated promises
+     *
+     * @returns A promise which will be resolved once all of the batch's child promises have resolved
+     */
+    ODataBatch.prototype.execute = function () {
+        var _this = this;
+        // we need to check the dependencies twice due to how different engines handle things.
+        // We can get a second set of promises added after the first set resolve
+        return Promise.all(this._dependencies).then(function () { return Promise.all(_this._dependencies); }).then(function () { return _this.executeImpl(); });
+    };
+    ODataBatch.prototype.executeImpl = function () {
+        var _this = this;
+        logging_1.Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this._requests.length + " requests.", logging_1.LogLevel.Info);
+        // if we don't have any requests, don't bother sending anything
+        // this could be due to caching further upstream, or just an empty batch
+        if (this._requests.length < 1) {
+            logging_1.Logger.write("Resolving empty batch.", logging_1.LogLevel.Info);
+            return Promise.resolve();
+        }
+        // creating the client here allows the url to be populated for nodejs client as well as potentially
+        // any other hacks needed for other types of clients. Essentially allows the absoluteRequestUrl
+        // below to be correct
+        var client = new httpclient_1.HttpClient();
+        // due to timing we need to get the absolute url here so we can use it for all the individual requests
+        // and for sending the entire batch
+        return util_1.Util.toAbsoluteUrl(this.baseUrl).then(function (absoluteRequestUrl) {
+            // build all the requests, send them, pipe results in order to parsers
+            var batchBody = [];
+            var currentChangeSetId = "";
+            for (var i = 0; i < _this._requests.length; i++) {
+                var reqInfo = _this._requests[i];
+                if (reqInfo.method === "GET") {
+                    if (currentChangeSetId.length > 0) {
+                        // end an existing change set
+                        batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
+                        currentChangeSetId = "";
+                    }
+                    batchBody.push("--batch_" + _this._batchId + "\n");
+                }
+                else {
+                    if (currentChangeSetId.length < 1) {
+                        // start new change set
+                        currentChangeSetId = util_1.Util.getGUID();
+                        batchBody.push("--batch_" + _this._batchId + "\n");
+                        batchBody.push("Content-Type: multipart/mixed; boundary=\"changeset_" + currentChangeSetId + "\"\n\n");
+                    }
+                    batchBody.push("--changeset_" + currentChangeSetId + "\n");
+                }
+                // common batch part prefix
+                batchBody.push("Content-Type: application/http\n");
+                batchBody.push("Content-Transfer-Encoding: binary\n\n");
+                var headers = new Headers();
+                // this is the url of the individual request within the batch
+                var url = util_1.Util.isUrlAbsolute(reqInfo.url) ? reqInfo.url : util_1.Util.combinePaths(absoluteRequestUrl, reqInfo.url);
+                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", logging_1.LogLevel.Verbose);
+                if (reqInfo.method !== "GET") {
+                    var method = reqInfo.method;
+                    if (reqInfo.hasOwnProperty("options") && reqInfo.options.hasOwnProperty("headers") && typeof reqInfo.options.headers["X-HTTP-Method"] !== "undefined") {
+                        method = reqInfo.options.headers["X-HTTP-Method"];
+                        delete reqInfo.options.headers["X-HTTP-Method"];
+                    }
+                    batchBody.push(method + " " + url + " HTTP/1.1\n");
+                    headers.set("Content-Type", "application/json;odata=verbose;charset=utf-8");
+                }
+                else {
+                    batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
+                }
+                // merge global config headers
+                utils_1.mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.spHeaders);
+                // merge per-request headers
+                if (reqInfo.options) {
+                    utils_1.mergeHeaders(headers, reqInfo.options.headers);
+                }
+                // lastly we apply any default headers we need that may not exist
+                if (!headers.has("Accept")) {
+                    headers.append("Accept", "application/json");
+                }
+                if (!headers.has("Content-Type")) {
+                    headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
+                }
+                if (!headers.has("X-ClientService-ClientTag")) {
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:3.0.4");
+                }
+                // write headers into batch body
+                headers.forEach(function (value, name) {
+                    batchBody.push(name + ": " + value + "\n");
+                });
+                batchBody.push("\n");
+                if (reqInfo.options.body) {
+                    batchBody.push(reqInfo.options.body + "\n\n");
+                }
+            }
+            if (currentChangeSetId.length > 0) {
+                // Close the changeset
+                batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
+                currentChangeSetId = "";
+            }
+            batchBody.push("--batch_" + _this._batchId + "--\n");
+            var batchHeaders = {
+                "Content-Type": "multipart/mixed; boundary=batch_" + _this._batchId,
+            };
+            var batchOptions = {
+                "body": batchBody.join(""),
+                "headers": batchHeaders,
+                "method": "POST",
+            };
+            logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", logging_1.LogLevel.Info);
+            return client.fetch(util_1.Util.combinePaths(absoluteRequestUrl, "/_api/$batch"), batchOptions)
+                .then(function (r) { return r.text(); })
+                .then(ODataBatch.ParseResponse)
+                .then(function (responses) {
+                if (responses.length !== _this._requests.length) {
+                    throw new exceptions_1.BatchParseException("Could not properly parse responses to match requests in batch.");
+                }
+                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", logging_1.LogLevel.Info);
+                return responses.reduce(function (chain, response, index) {
+                    var request = _this._requests[index];
+                    logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched request " + request.method + " " + request.url + ".", logging_1.LogLevel.Verbose);
+                    return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
+                }, Promise.resolve());
+            });
+        });
+    };
+    return ODataBatch;
+}());
+exports.ODataBatch = ODataBatch;
+
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports) {
 
 var g;
@@ -6757,7 +7213,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6776,10 +7232,10 @@ var FetchClient = /** @class */ (function () {
 }());
 exports.FetchClient = FetchClient;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)))
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7269,7 +7725,7 @@ exports.SearchBuiltInSourceId = SearchBuiltInSourceId;
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7321,7 +7777,7 @@ exports.CachingParserWrapper = CachingParserWrapper;
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7404,7 +7860,7 @@ exports.SearchSuggestResult = SearchSuggestResult;
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7424,7 +7880,7 @@ var sharepointqueryable_1 = __webpack_require__(1);
 var webs_1 = __webpack_require__(11);
 var usercustomactions_1 = __webpack_require__(25);
 var odata_1 = __webpack_require__(3);
-var batch_1 = __webpack_require__(37);
+var batch_1 = __webpack_require__(27);
 var features_1 = __webpack_require__(38);
 /**
  * Describes a site collection
@@ -7550,7 +8006,7 @@ exports.Site = Site;
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7672,18 +8128,20 @@ var SharePointQueryableSecurable = /** @class */ (function (_super) {
         if (!perm) {
             return true;
         }
+        var low = parseFloat(value.Low);
+        var high = parseFloat(value.High);
         if (perm === types_1.PermissionKind.FullMask) {
-            return (value.High & 32767) === 32767 && value.Low === 65535;
+            return (high & 32767) === 32767 && low === 65535;
         }
         perm = perm - 1;
         var num = 1;
         if (perm >= 0 && perm < 32) {
             num = num << perm;
-            return 0 !== (value.Low & num);
+            return 0 !== (low & num);
         }
         else if (perm >= 32 && perm < 64) {
             num = num << perm - 32;
-            return 0 !== (value.High & num);
+            return 0 !== (high & num);
         }
         return false;
     };
@@ -7693,7 +8151,7 @@ exports.SharePointQueryableSecurable = SharePointQueryableSecurable;
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7855,7 +8313,7 @@ exports.CurrentUser = CurrentUser;
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8004,7 +8462,7 @@ exports.WebPart = WebPart;
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8315,430 +8773,6 @@ var Field = /** @class */ (function (_super) {
     return Field;
 }(sharepointqueryable_1.SharePointQueryableInstance));
 exports.Field = Field;
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-var sharepointqueryable_1 = __webpack_require__(1);
-/**
- * Represents a collection of navigation nodes
- *
- */
-var NavigationNodes = /** @class */ (function (_super) {
-    __extends(NavigationNodes, _super);
-    function NavigationNodes() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Gets a navigation node by id
-     *
-     * @param id The id of the node
-     */
-    NavigationNodes.prototype.getById = function (id) {
-        var node = new NavigationNode(this);
-        node.concat("(" + id + ")");
-        return node;
-    };
-    /**
-     * Adds a new node to the collection
-     *
-     * @param title Display name of the node
-     * @param url The url of the node
-     * @param visible If true the node is visible, otherwise it is hidden (default: true)
-     */
-    NavigationNodes.prototype.add = function (title, url, visible) {
-        var _this = this;
-        if (visible === void 0) { visible = true; }
-        var postBody = JSON.stringify({
-            IsVisible: visible,
-            Title: title,
-            Url: url,
-            "__metadata": { "type": "SP.NavigationNode" },
-        });
-        return this.clone(NavigationNodes, null).postCore({ body: postBody }).then(function (data) {
-            return {
-                data: data,
-                node: _this.getById(data.Id),
-            };
-        });
-    };
-    /**
-     * Moves a node to be after another node in the navigation
-     *
-     * @param nodeId Id of the node to move
-     * @param previousNodeId Id of the node after which we move the node specified by nodeId
-     */
-    NavigationNodes.prototype.moveAfter = function (nodeId, previousNodeId) {
-        var postBody = JSON.stringify({
-            nodeId: nodeId,
-            previousNodeId: previousNodeId,
-        });
-        return this.clone(NavigationNodes, "MoveAfter").postCore({ body: postBody });
-    };
-    return NavigationNodes;
-}(sharepointqueryable_1.SharePointQueryableCollection));
-exports.NavigationNodes = NavigationNodes;
-/**
- * Represents an instance of a navigation node
- *
- */
-var NavigationNode = /** @class */ (function (_super) {
-    __extends(NavigationNode, _super);
-    function NavigationNode() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(NavigationNode.prototype, "children", {
-        /**
-         * Represents the child nodes of this node
-         */
-        get: function () {
-            return new NavigationNodes(this, "Children");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Updates this node based on the supplied properties
-     *
-     * @param properties The hash of key/value pairs to update
-     */
-    NavigationNode.prototype.update = function (properties) {
-        var _this = this;
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "__metadata": { "type": "SP.NavigationNode" },
-        }, properties));
-        return this.postCore({
-            body: postBody,
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            return {
-                data: data,
-                node: _this,
-            };
-        });
-    };
-    /**
-     * Deletes this node and any child nodes
-     */
-    NavigationNode.prototype.delete = function () {
-        return _super.prototype.deleteCore.call(this);
-    };
-    return NavigationNode;
-}(sharepointqueryable_1.SharePointQueryableInstance));
-exports.NavigationNode = NavigationNode;
-/**
- * Exposes the navigation components
- *
- */
-var Navigation = /** @class */ (function (_super) {
-    __extends(Navigation, _super);
-    /**
-     * Creates a new instance of the Navigation class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of these navigation components
-     */
-    function Navigation(baseUrl, path) {
-        if (path === void 0) { path = "navigation"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    Object.defineProperty(Navigation.prototype, "quicklaunch", {
-        /**
-         * Gets the quicklaunch navigation nodes for the current context
-         *
-         */
-        get: function () {
-            return new NavigationNodes(this, "quicklaunch");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Navigation.prototype, "topNavigationBar", {
-        /**
-         * Gets the top bar navigation nodes for the current context
-         *
-         */
-        get: function () {
-            return new NavigationNodes(this, "topnavigationbar");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return Navigation;
-}(sharepointqueryable_1.SharePointQueryable));
-exports.Navigation = Navigation;
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-var logging_1 = __webpack_require__(5);
-var httpclient_1 = __webpack_require__(21);
-var utils_1 = __webpack_require__(10);
-var pnplibconfig_1 = __webpack_require__(4);
-var exceptions_1 = __webpack_require__(2);
-/**
- * Manages a batch of OData operations
- */
-var ODataBatch = /** @class */ (function () {
-    function ODataBatch(baseUrl, _batchId) {
-        if (_batchId === void 0) { _batchId = util_1.Util.getGUID(); }
-        this.baseUrl = baseUrl;
-        this._batchId = _batchId;
-        this._requests = [];
-        this._dependencies = [];
-    }
-    Object.defineProperty(ODataBatch.prototype, "batchId", {
-        get: function () {
-            return this._batchId;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Adds a request to a batch (not designed for public use)
-     *
-     * @param url The full url of the request
-     * @param method The http method GET, POST, etc
-     * @param options Any options to include in the request
-     * @param parser The parser that will hadle the results of the request
-     */
-    ODataBatch.prototype.add = function (url, method, options, parser) {
-        var info = {
-            method: method.toUpperCase(),
-            options: options,
-            parser: parser,
-            reject: null,
-            resolve: null,
-            url: url,
-        };
-        var p = new Promise(function (resolve, reject) {
-            info.resolve = resolve;
-            info.reject = reject;
-        });
-        this._requests.push(info);
-        return p;
-    };
-    /**
-     * Adds a dependency insuring that some set of actions will occur before a batch is processed.
-     * MUST be cleared using the returned resolve delegate to allow batches to run
-     */
-    ODataBatch.prototype.addDependency = function () {
-        var resolver;
-        var promise = new Promise(function (resolve) {
-            resolver = resolve;
-        });
-        this._dependencies.push(promise);
-        return resolver;
-    };
-    /**
-     * Execute the current batch and resolve the associated promises
-     *
-     * @returns A promise which will be resolved once all of the batch's child promises have resolved
-     */
-    ODataBatch.prototype.execute = function () {
-        var _this = this;
-        // we need to check the dependencies twice due to how different engines handle things.
-        // We can get a second set of promises added after the first set resolve
-        return Promise.all(this._dependencies).then(function () { return Promise.all(_this._dependencies); }).then(function () { return _this.executeImpl(); });
-    };
-    ODataBatch.prototype.executeImpl = function () {
-        var _this = this;
-        logging_1.Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this._requests.length + " requests.", logging_1.LogLevel.Info);
-        // if we don't have any requests, don't bother sending anything
-        // this could be due to caching further upstream, or just an empty batch
-        if (this._requests.length < 1) {
-            logging_1.Logger.write("Resolving empty batch.", logging_1.LogLevel.Info);
-            return Promise.resolve();
-        }
-        // creating the client here allows the url to be populated for nodejs client as well as potentially
-        // any other hacks needed for other types of clients. Essentially allows the absoluteRequestUrl
-        // below to be correct
-        var client = new httpclient_1.HttpClient();
-        // due to timing we need to get the absolute url here so we can use it for all the individual requests
-        // and for sending the entire batch
-        return util_1.Util.toAbsoluteUrl(this.baseUrl).then(function (absoluteRequestUrl) {
-            // build all the requests, send them, pipe results in order to parsers
-            var batchBody = [];
-            var currentChangeSetId = "";
-            for (var i = 0; i < _this._requests.length; i++) {
-                var reqInfo = _this._requests[i];
-                if (reqInfo.method === "GET") {
-                    if (currentChangeSetId.length > 0) {
-                        // end an existing change set
-                        batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
-                        currentChangeSetId = "";
-                    }
-                    batchBody.push("--batch_" + _this._batchId + "\n");
-                }
-                else {
-                    if (currentChangeSetId.length < 1) {
-                        // start new change set
-                        currentChangeSetId = util_1.Util.getGUID();
-                        batchBody.push("--batch_" + _this._batchId + "\n");
-                        batchBody.push("Content-Type: multipart/mixed; boundary=\"changeset_" + currentChangeSetId + "\"\n\n");
-                    }
-                    batchBody.push("--changeset_" + currentChangeSetId + "\n");
-                }
-                // common batch part prefix
-                batchBody.push("Content-Type: application/http\n");
-                batchBody.push("Content-Transfer-Encoding: binary\n\n");
-                var headers = new Headers();
-                // this is the url of the individual request within the batch
-                var url = util_1.Util.isUrlAbsolute(reqInfo.url) ? reqInfo.url : util_1.Util.combinePaths(absoluteRequestUrl, reqInfo.url);
-                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", logging_1.LogLevel.Verbose);
-                if (reqInfo.method !== "GET") {
-                    var method = reqInfo.method;
-                    if (reqInfo.hasOwnProperty("options") && reqInfo.options.hasOwnProperty("headers") && typeof reqInfo.options.headers["X-HTTP-Method"] !== "undefined") {
-                        method = reqInfo.options.headers["X-HTTP-Method"];
-                        delete reqInfo.options.headers["X-HTTP-Method"];
-                    }
-                    batchBody.push(method + " " + url + " HTTP/1.1\n");
-                    headers.set("Content-Type", "application/json;odata=verbose;charset=utf-8");
-                }
-                else {
-                    batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
-                }
-                // merge global config headers
-                utils_1.mergeHeaders(headers, pnplibconfig_1.RuntimeConfig.spHeaders);
-                // merge per-request headers
-                if (reqInfo.options) {
-                    utils_1.mergeHeaders(headers, reqInfo.options.headers);
-                }
-                // lastly we apply any default headers we need that may not exist
-                if (!headers.has("Accept")) {
-                    headers.append("Accept", "application/json");
-                }
-                if (!headers.has("Content-Type")) {
-                    headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
-                }
-                if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:3.0.3");
-                }
-                // write headers into batch body
-                headers.forEach(function (value, name) {
-                    batchBody.push(name + ": " + value + "\n");
-                });
-                batchBody.push("\n");
-                if (reqInfo.options.body) {
-                    batchBody.push(reqInfo.options.body + "\n\n");
-                }
-            }
-            if (currentChangeSetId.length > 0) {
-                // Close the changeset
-                batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
-                currentChangeSetId = "";
-            }
-            batchBody.push("--batch_" + _this._batchId + "--\n");
-            var batchHeaders = {
-                "Content-Type": "multipart/mixed; boundary=batch_" + _this._batchId,
-            };
-            var batchOptions = {
-                "body": batchBody.join(""),
-                "headers": batchHeaders,
-                "method": "POST",
-            };
-            logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", logging_1.LogLevel.Info);
-            return client.fetch(util_1.Util.combinePaths(absoluteRequestUrl, "/_api/$batch"), batchOptions)
-                .then(function (r) { return r.text(); })
-                .then(_this._parseResponse)
-                .then(function (responses) {
-                if (responses.length !== _this._requests.length) {
-                    throw new exceptions_1.BatchParseException("Could not properly parse responses to match requests in batch.");
-                }
-                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", logging_1.LogLevel.Info);
-                return responses.reduce(function (chain, response, index) {
-                    var request = _this._requests[index];
-                    logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched request " + request.method + " " + request.url + ".", logging_1.LogLevel.Verbose);
-                    return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
-                }, Promise.resolve());
-            });
-        });
-    };
-    /**
-     * Parses the response from a batch request into an array of Response instances
-     *
-     * @param body Text body of the response from the batch request
-     */
-    ODataBatch.prototype._parseResponse = function (body) {
-        return new Promise(function (resolve, reject) {
-            var responses = [];
-            var header = "--batchresponse_";
-            // Ex. "HTTP/1.1 500 Internal Server Error"
-            var statusRegExp = new RegExp("^HTTP/[0-9.]+ +([0-9]+) +(.*)", "i");
-            var lines = body.split("\n");
-            var state = "batch";
-            var status;
-            var statusText;
-            for (var i = 0; i < lines.length; ++i) {
-                var line = lines[i];
-                switch (state) {
-                    case "batch":
-                        if (line.substr(0, header.length) === header) {
-                            state = "batchHeaders";
-                        }
-                        else {
-                            if (line.trim() !== "") {
-                                throw new exceptions_1.BatchParseException("Invalid response, line " + i);
-                            }
-                        }
-                        break;
-                    case "batchHeaders":
-                        if (line.trim() === "") {
-                            state = "status";
-                        }
-                        break;
-                    case "status":
-                        var parts = statusRegExp.exec(line);
-                        if (parts.length !== 3) {
-                            throw new exceptions_1.BatchParseException("Invalid status, line " + i);
-                        }
-                        status = parseInt(parts[1], 10);
-                        statusText = parts[2];
-                        state = "statusHeaders";
-                        break;
-                    case "statusHeaders":
-                        if (line.trim() === "") {
-                            state = "body";
-                        }
-                        break;
-                    case "body":
-                        responses.push((status === 204) ? new Response() : new Response(line, { status: status, statusText: statusText }));
-                        state = "batch";
-                        break;
-                }
-            }
-            if (state !== "status") {
-                reject(new exceptions_1.BatchParseException("Unexpected end of input"));
-            }
-            resolve(responses);
-        });
-    };
-    return ODataBatch;
-}());
-exports.ODataBatch = ODataBatch;
 
 
 /***/ }),
@@ -9480,12 +9514,13 @@ exports.Settings = Settings;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var search_1 = __webpack_require__(28);
-var searchsuggest_1 = __webpack_require__(30);
-var site_1 = __webpack_require__(31);
+var search_1 = __webpack_require__(30);
+var searchsuggest_1 = __webpack_require__(32);
+var site_1 = __webpack_require__(33);
 var webs_1 = __webpack_require__(11);
 var util_1 = __webpack_require__(0);
 var userprofiles_1 = __webpack_require__(53);
+var navigation_1 = __webpack_require__(26);
 var exceptions_1 = __webpack_require__(2);
 var utilities_1 = __webpack_require__(40);
 /**
@@ -9573,10 +9608,19 @@ var SPRest = /** @class */ (function () {
     Object.defineProperty(SPRest.prototype, "profiles", {
         /**
          * Access to user profile methods
-         *
          */
         get: function () {
             return new userprofiles_1.UserProfileQuery(this._baseUrl).configure(this._options);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SPRest.prototype, "navigation", {
+        /**
+         * Access to the site collection level navigation service
+         */
+        get: function () {
+            return new navigation_1.NavigationService();
         },
         enumerable: true,
         configurable: true
@@ -9793,6 +9837,19 @@ var AttachmentFiles = /** @class */ (function (_super) {
         }
         return files.reduce(function (chain, file) { return chain.then(function () { return _this.getByName(file).delete(); }); }, Promise.resolve());
     };
+    /**
+     * Delete multiple attachments from the collection and sends it to recycle bin. Not supported for batching.
+     *
+     * @files name The collection of files to delete
+     */
+    AttachmentFiles.prototype.recycleMultiple = function () {
+        var _this = this;
+        var files = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            files[_i] = arguments[_i];
+        }
+        return files.reduce(function (chain, file) { return chain.then(function () { return _this.getByName(file).recycle(); }); }, Promise.resolve());
+    };
     return AttachmentFiles;
 }(sharepointqueryable_1.SharePointQueryableCollection));
 exports.AttachmentFiles = AttachmentFiles;
@@ -9853,6 +9910,20 @@ var AttachmentFile = /** @class */ (function (_super) {
     AttachmentFile.prototype.delete = function (eTag) {
         if (eTag === void 0) { eTag = "*"; }
         return this.postCore({
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    /**
+     * Delete this attachment file and send it to Recycle Bin
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    AttachmentFile.prototype.recycle = function (eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return this.clone(AttachmentFile, "recycleObject").postCore({
             headers: {
                 "IF-Match": eTag,
                 "X-HTTP-Method": "DELETE",
@@ -11938,7 +12009,7 @@ var sprequestexecutorclient_1 = __webpack_require__(70);
 exports.SPRequestExecutorClient = sprequestexecutorclient_1.SPRequestExecutorClient;
 var nodefetchclient_1 = __webpack_require__(71);
 exports.NodeFetchClient = nodefetchclient_1.NodeFetchClient;
-var fetchclient_1 = __webpack_require__(27);
+var fetchclient_1 = __webpack_require__(29);
 exports.FetchClient = fetchclient_1.FetchClient;
 var graphclient_1 = __webpack_require__(41);
 exports.GraphHttpClient = graphclient_1.GraphHttpClient;
@@ -12073,7 +12144,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(13));
 __export(__webpack_require__(7));
-__export(__webpack_require__(29));
+__export(__webpack_require__(31));
 __export(__webpack_require__(19));
 
 
@@ -12103,6 +12174,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var appcatalog_1 = __webpack_require__(39);
 exports.AppCatalog = appcatalog_1.AppCatalog;
 exports.App = appcatalog_1.App;
+var batch_1 = __webpack_require__(27);
+exports.ODataBatch = batch_1.ODataBatch;
 var files_1 = __webpack_require__(9);
 exports.CheckinType = files_1.CheckinType;
 exports.WebPartsPersonalizationScope = files_1.WebPartsPersonalizationScope;
@@ -12119,7 +12192,7 @@ exports.Items = items_1.Items;
 exports.ItemVersion = items_1.ItemVersion;
 exports.ItemVersions = items_1.ItemVersions;
 exports.PagedItemCollection = items_1.PagedItemCollection;
-var navigation_1 = __webpack_require__(36);
+var navigation_1 = __webpack_require__(26);
 exports.NavigationNodes = navigation_1.NavigationNodes;
 exports.NavigationNode = navigation_1.NavigationNode;
 var lists_1 = __webpack_require__(14);
@@ -12135,7 +12208,7 @@ exports.SharePointQueryableInstance = sharepointqueryable_1.SharePointQueryableI
 exports.SharePointQueryableCollection = sharepointqueryable_1.SharePointQueryableCollection;
 var roles_1 = __webpack_require__(22);
 exports.RoleDefinitionBindings = roles_1.RoleDefinitionBindings;
-var search_1 = __webpack_require__(28);
+var search_1 = __webpack_require__(30);
 exports.Search = search_1.Search;
 exports.SearchQueryBuilder = search_1.SearchQueryBuilder;
 exports.SearchResults = search_1.SearchResults;
@@ -12143,15 +12216,15 @@ exports.SortDirection = search_1.SortDirection;
 exports.ReorderingRuleMatchType = search_1.ReorderingRuleMatchType;
 exports.QueryPropertyValueType = search_1.QueryPropertyValueType;
 exports.SearchBuiltInSourceId = search_1.SearchBuiltInSourceId;
-var searchsuggest_1 = __webpack_require__(30);
+var searchsuggest_1 = __webpack_require__(32);
 exports.SearchSuggest = searchsuggest_1.SearchSuggest;
 exports.SearchSuggestResult = searchsuggest_1.SearchSuggestResult;
-var site_1 = __webpack_require__(31);
+var site_1 = __webpack_require__(33);
 exports.Site = site_1.Site;
 __export(__webpack_require__(17));
 var utilities_1 = __webpack_require__(40);
 exports.UtilityMethod = utilities_1.UtilityMethod;
-var webparts_1 = __webpack_require__(34);
+var webparts_1 = __webpack_require__(36);
 exports.WebPartDefinitions = webparts_1.WebPartDefinitions;
 exports.WebPartDefinition = webparts_1.WebPartDefinition;
 exports.WebPart = webparts_1.WebPart;

@@ -1741,7 +1741,7 @@ var getFileContent = function getFileContent() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    if(webId != 'undefined')
+    if (webId != 'undefined')
       $pnp.sp.site.openWebById(webId).then(w => {
         w.web.getFileByServerRelativeUrl(fileUrl).getText().then(r => {
           window.postMessage(JSON.stringify({ function: "getFileContent", success: true, result: { content: r, type: fileUrl.substr(fileUrl.lastIndexOf('.') + 1) }, source: 'chrome-sp-editor' }), '*');
@@ -1980,8 +1980,9 @@ var updateApp = function updateApp() {
 // getSiteCollections
 var getSiteCollections = function getSiteCollections() {
 
-  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
-    var alertify = modules[0];
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
     var guid = function () {
       function s4() {
@@ -2018,17 +2019,41 @@ var getSiteCollections = function getSiteCollections() {
               window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
             }
             else {
-              // console.log(JSON.parse(xhr2.responseText));
-              var datas = {
-                webs: JSON.parse(xhr2.responseText)[6]._Child_Items_.concat(JSON.parse(xhr2.responseText)[12]._Child_Items_),
-                publicCDN: JSON.parse(xhr2.responseText)[22],
-                publicCDNOrigins: JSON.parse(xhr2.responseText)[20],
-                tenantObjectId: JSON.parse(xhr2.responseText)[16]._ObjectIdentity_,
-                privateCDN: JSON.parse(xhr2.responseText)[24],
-                privateCDNOrigins: JSON.parse(xhr2.responseText)[26],
-              };
-              // console.log(datas);
-              window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+              var q = $pnp.SearchQueryBuilder.create("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
+              $pnp.sp.search(q).then(re => {
+                fetch(spHostUrl + "/_vti_bin/client.svc/ProcessQuery", {
+                  method: 'post',
+                  credentials: 'include',
+                  headers: {
+                    'X-RequestDigest': data.d.GetContextWebInformation.FormDigestValue,
+                    'Content-Type': 'application/xml'
+                  },
+                  body: '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><Query Id="21" ObjectPathId="6"><Query SelectAllProperties="true"><Properties><Property Name="storageentitiesindex" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + re.PrimarySearchResults[0].siteid + ':web:' + re.PrimarySearchResults[0].webid + '" /><Property Id="6" ParentId="4" Name="AllProperties" /></ObjectPaths></Request>'
+                }).then(response => {
+                  if (!response.ok) { throw response }
+                  return response.json();
+                }).catch(err => {
+                  err.json().then(errorMessage => {
+                    alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
+                    window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+                  })
+                })
+                  .then(res => {
+                    var datas = {
+                      webs: JSON.parse(xhr2.responseText)[6]._Child_Items_.concat(JSON.parse(xhr2.responseText)[12]._Child_Items_),
+                      publicCDN: JSON.parse(xhr2.responseText)[22],
+                      publicCDNOrigins: JSON.parse(xhr2.responseText)[20],
+                      tenantObjectId: JSON.parse(xhr2.responseText)[16]._ObjectIdentity_,
+                      privateCDN: JSON.parse(xhr2.responseText)[24],
+                      privateCDNOrigins: JSON.parse(xhr2.responseText)[26],
+                      appCatalogSiteId: re.PrimarySearchResults[0].siteid,
+                      appCatalogWebId: re.PrimarySearchResults[0].webid,
+                      appCatalogUrl: re.PrimarySearchResults[0].url,
+                      tenantProperties: res[2].storageentitiesindex
+                    };
+                    window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+                  })
+              });
             }
           }
           else {
@@ -2228,7 +2253,7 @@ var addOrigin = function addOrigin() {
               window.postMessage(JSON.stringify({ function: 'addOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
             }
             else {
-             window.postMessage(JSON.stringify({ function: 'addOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+              window.postMessage(JSON.stringify({ function: 'addOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }
           }
           else {
@@ -2291,7 +2316,6 @@ var removeOrigin = function removeOrigin() {
           }
           else {
             alertify.delay(10000).error(xhr2.responseText);
-            console.log(xhr2.responseText);
             window.postMessage(JSON.stringify({ function: 'removeOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
         };
@@ -2299,6 +2323,145 @@ var removeOrigin = function removeOrigin() {
       }
     };
     xhr.send();
+  });
+};
+
+// add / update tenant property
+// <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.7206.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="4" ObjectPathId="3" /><ObjectPath Id="6" ObjectPathId="5" /><ObjectPath Id="8" ObjectPathId="7" /><Method Name="SetStorageEntity" Id="9" ObjectPathId="7"><Parameters><Parameter Type="String">SPFxTestApiKey</Parameter><Parameter Type="String">The API code</Parameter><Parameter Type="String">The key to the API</Parameter><Parameter Type="String">...</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="3" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="5" ParentId="3" Name="GetSiteByUrl"><Parameters><Parameter Type="String">https://tavikukko365.sharepoint.com/sites/appcatalog</Parameter></Parameters></Method><Property Id="7" ParentId="5" Name="RootWeb" /></ObjectPaths></Request>
+
+// updateTenantProperty
+var updateTenantProperty = function updateTenantProperty() {
+  var key = arguments[1];
+  var value = arguments[2];
+  var desc = arguments[3];
+  var comm = arguments[4];
+  var appCatalogUrl = arguments[5];
+  var siteid = arguments[6];
+  var webid = arguments[7];
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        fetch(spHostUrl + "/_vti_bin/client.svc/ProcessQuery", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Content-Type': 'application/xml'
+          },
+          body: '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.7206.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="4" ObjectPathId="3" /><ObjectPath Id="6" ObjectPathId="5" /><ObjectPath Id="8" ObjectPathId="7" /><Method Name="SetStorageEntity" Id="9" ObjectPathId="7"><Parameters><Parameter Type="String">' + key + '</Parameter><Parameter Type="String">' + value + '</Parameter><Parameter Type="String">' + desc + '</Parameter><Parameter Type="String">' + comm + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="3" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="5" ParentId="3" Name="GetSiteByUrl"><Parameters><Parameter Type="String">' + appCatalogUrl + '</Parameter></Parameters></Method><Property Id="7" ParentId="5" Name="RootWeb" /></ObjectPaths></Request>'
+        }).then(response => {
+          if (!response.ok) { throw response }
+          return response.json();
+        }).catch(err => {
+          err.json().then(errorMessage => {
+            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
+            window.postMessage(JSON.stringify({ function: 'updateTenantProperty', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          })
+        }).then(response => {
+
+          fetch(spHostUrl + "/_vti_bin/client.svc/ProcessQuery", {
+            method: 'post',
+            credentials: 'include',
+            headers: {
+              'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+              'Content-Type': 'application/xml'
+            },
+            body: '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><Query Id="21" ObjectPathId="6"><Query SelectAllProperties="true"><Properties><Property Name="storageentitiesindex" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="6" ParentId="4" Name="AllProperties" /></ObjectPaths></Request>'
+          }).then(response2 => {
+            if (!response2.ok) { throw response2 }
+            return response2.json();
+          }).catch(err => {
+            err.json().then(errorMessage => {
+              alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
+              window.postMessage(JSON.stringify({ function: 'updateTenantProperty', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+            })
+          })
+            .then(response2 => {
+              var datas = {
+                tenantProperties: response2[2].storageentitiesindex
+              };
+              window.postMessage(JSON.stringify({ function: 'updateTenantProperty', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+            })
+        })
+      })
+  });
+};
+
+// removeTenantProperty
+var removeTenantProperty = function removeTenantProperty() {
+  var key = arguments[1];
+  var appCatalogUrl = arguments[2];
+  var siteid = arguments[3];
+  var webid = arguments[4];
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        fetch(spHostUrl + "/_vti_bin/client.svc/ProcessQuery", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Content-Type': 'application/xml'
+          },
+          body: '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.7206.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="11" ObjectPathId="10" /><ObjectPath Id="13" ObjectPathId="12" /><ObjectPath Id="15" ObjectPathId="14" /><Method Name="RemoveStorageEntity" Id="16" ObjectPathId="14"><Parameters><Parameter Type="String">' + key + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="10" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="12" ParentId="10" Name="GetSiteByUrl"><Parameters><Parameter Type="String">' + appCatalogUrl + '</Parameter></Parameters></Method><Property Id="14" ParentId="12" Name="RootWeb" /></ObjectPaths></Request>'
+        }).then(response => {
+          if (!response.ok) { throw response }
+          return response.json();
+        }).catch(err => {
+          err.json().then(errorMessage => {
+            // error
+            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
+            window.postMessage(JSON.stringify({ function: 'removeTenantProperty', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          })
+        }).then(response => {
+
+          fetch(spHostUrl + "/_vti_bin/client.svc/ProcessQuery", {
+            method: 'post',
+            credentials: 'include',
+            headers: {
+              'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+              'Content-Type': 'application/xml'
+            },
+            body: '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><Query Id="21" ObjectPathId="6"><Query SelectAllProperties="true"><Properties><Property Name="storageentitiesindex" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="6" ParentId="4" Name="AllProperties" /></ObjectPaths></Request>'
+          }).then(response2 => {
+            if (!response2.ok) { throw response2 }
+            return response2.json();
+          }).catch(err => {
+            err.json().then(errorMessage => {
+              alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
+              window.postMessage(JSON.stringify({ function: 'removeTenantProperty', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+            })
+          })
+            .then(response2 => {
+              var datas = {
+                tenantProperties: response2[2].storageentitiesindex
+              };
+              window.postMessage(JSON.stringify({ function: 'removeTenantProperty', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+            })
+        })
+      })
   });
 };
 
