@@ -2039,6 +2039,9 @@ var getSiteCollections = function getSiteCollections() {
                   })
                 })
                   .then(res => {
+                    var tenantProps = "";
+                    if(res.length > 1) tenantProps = res[2].storageentitiesindex;
+
                     var datas = {
                       webs: JSON.parse(xhr2.responseText)[6]._Child_Items_.concat(JSON.parse(xhr2.responseText)[12]._Child_Items_),
                       publicCDN: JSON.parse(xhr2.responseText)[22],
@@ -2049,7 +2052,7 @@ var getSiteCollections = function getSiteCollections() {
                       appCatalogSiteId: re.PrimarySearchResults[0].siteid,
                       appCatalogWebId: re.PrimarySearchResults[0].webid,
                       appCatalogUrl: re.PrimarySearchResults[0].url,
-                      tenantProperties: res[2].storageentitiesindex
+                      tenantProperties: tenantProps
                     };
                     window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
                   })
@@ -2325,9 +2328,6 @@ var removeOrigin = function removeOrigin() {
     xhr.send();
   });
 };
-
-// add / update tenant property
-// <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.7206.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="4" ObjectPathId="3" /><ObjectPath Id="6" ObjectPathId="5" /><ObjectPath Id="8" ObjectPathId="7" /><Method Name="SetStorageEntity" Id="9" ObjectPathId="7"><Parameters><Parameter Type="String">SPFxTestApiKey</Parameter><Parameter Type="String">The API code</Parameter><Parameter Type="String">The key to the API</Parameter><Parameter Type="String">...</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="3" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="5" ParentId="3" Name="GetSiteByUrl"><Parameters><Parameter Type="String">https://tavikukko365.sharepoint.com/sites/appcatalog</Parameter></Parameters></Method><Property Id="7" ParentId="5" Name="RootWeb" /></ObjectPaths></Request>
 
 // updateTenantProperty
 var updateTenantProperty = function updateTenantProperty() {

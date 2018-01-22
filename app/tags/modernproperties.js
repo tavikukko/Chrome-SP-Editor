@@ -197,7 +197,8 @@ riot.tag("modernproperties", `
                 this.tenantObjectId = message.result.tenantObjectId;
                 this.privateCDNEnable = message.result.privateCDN;
                 this.privateCDNOrigins = message.result.privateCDNOrigins;
-                this.tenantProperties = JSON.parse(message.result.tenantProperties);
+                if (message.result.tenantProperties)
+                  this.tenantProperties = JSON.parse(message.result.tenantProperties);
                 this.siteid = message.result.appCatalogSiteId;
                 this.webid = message.result.appCatalogWebId;
                 this.appCatalogUrl = message.result.appCatalogUrl;
