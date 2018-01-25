@@ -2492,7 +2492,6 @@ var getDesigns = function getDesigns() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          console.log(response.d.GetSiteDesigns)
           if(response.error){
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'getDesigns', success: false, result: null, source: 'chrome-sp-editor' }), '*');
@@ -2539,6 +2538,128 @@ var getDesign = function getDesign() {
             window.postMessage(JSON.stringify({ function: 'getDesign', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
           window.postMessage(JSON.stringify({ function: 'getDesign', success: true, result: response.d.GetSiteDesignMetadata, source: 'chrome-sp-editor' }), '*');
+
+        })
+      })
+  });
+};
+
+// createDesign
+var createDesign = function createDesign() {
+
+  var info = arguments[1];
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        fetch(_spPageContextInfo.siteAbsoluteUrl + "/_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.CreateSiteDesign", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Accept': 'application/json; odata=verbose',
+            'Content-Type': 'application/json'
+          },
+          body: info,
+        }).then(response => {
+          return response.json();
+        }).then(response => {
+          if(response.error){
+            alertify.delay(10000).error(response.error.message.value);
+            window.postMessage(JSON.stringify({ function: 'createDesign', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
+          window.postMessage(JSON.stringify({ function: 'createDesign', success: true, result: response.d.CreateSiteDesign, source: 'chrome-sp-editor' }), '*');
+
+        })
+      })
+  });
+};
+
+// updateDesign
+var updateDesign = function updateDesign() {
+
+  var info = arguments[1];
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        fetch(_spPageContextInfo.siteAbsoluteUrl + "/_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.UpdateSiteDesign", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Accept': 'application/json; odata=verbose',
+            'Content-Type': 'application/json'
+          },
+          body: info,
+        }).then(response => {
+          return response.json();
+        }).then(response => {
+          if(response.error){
+            alertify.delay(10000).error(response.error.message.value);
+            window.postMessage(JSON.stringify({ function: 'updateDesign', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
+          window.postMessage(JSON.stringify({ function: 'updateDesign', success: true, result: response.d.UpdateSiteDesign, source: 'chrome-sp-editor' }), '*');
+
+        })
+      })
+  });
+};
+
+var deleteDesign = function deleteDesign() {
+
+  var designId = arguments[1];
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        fetch(_spPageContextInfo.siteAbsoluteUrl + "/_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.DeleteSiteDesign", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Accept': 'application/json; odata=verbose',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 'id': designId }),
+        }).then(response => {
+          return response.json();
+        }).then(response => {
+          if(response.error){
+            alertify.delay(10000).error(response.error.message.value);
+            window.postMessage(JSON.stringify({ function: 'deleteDesign', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
+          window.postMessage(JSON.stringify({ function: 'deleteDesign', success: true, result: response.d.DeleteSiteDesign, source: 'chrome-sp-editor' }), '*');
 
         })
       })
@@ -2756,7 +2877,7 @@ var deleteScript = function deleteScript() {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'deleteScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
-          window.postMessage(JSON.stringify({ function: 'deleteScript', success: true, result: response.d.GetSiteScriptMetadata, source: 'chrome-sp-editor' }), '*');
+          window.postMessage(JSON.stringify({ function: 'deleteScript', success: true, result: response.d.DeleteSiteScript, source: 'chrome-sp-editor' }), '*');
 
         })
       })

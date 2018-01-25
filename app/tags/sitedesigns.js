@@ -11,10 +11,16 @@ riot.tag("sitedesigns", `
               </select>
             </div>
 
-            <virtual if="{ selectedDesign }">
+            <virtual if="{ selectedDesign.Id }">
               <div class="form-group">
                 <label for="design-id">Id</label>
                 <input type="text" class="form-control" value="{ selectedDesign.Id }" id="design-id" readonly>
+              </div>
+            </virtual>
+              <div class="form-group">
+                <div class="checkbox">
+                  <label><input id="design-isdefault" checked="{ selectedDesign.IsDefault }" type="checkbox" value="">Default</label>
+                </div>
               </div>
               <div class="form-group">
                 <label for="design-title">Title</label>
@@ -36,16 +42,20 @@ riot.tag("sitedesigns", `
                 <label for="design-template">WebTemplate</label>
                 <input type="text" class="form-control" value="{ selectedDesign.WebTemplate }" id="design-template">
               </div>
+              <virtual if="{ selectedDesign.Id }">
               <div class="form-group">
                 <label for="design-version">Version</label>
                 <input type="text" class="form-control" value="{ selectedDesign.Version }" id="design-version">
               </div>
+              </virtual>
+
+              <label>Scripts</label>
               <div class="row">
-              <div class="col-sm-5">
-                  <select name="from[]" id="multiselect" class="form-control" size="8" multiple="multiple">
-                    <option each="{ script in scripts }" value="{ script }">{ script }</option>
-                  </select>
-              </div>
+                <div class="col-sm-5">
+                    <select name="from[]" id="multiselect" class="form-control" size="8" multiple="multiple">
+                      <option each="{ script in scripts }" value="{ script }">{ script }</option>
+                    </select>
+                </div>
 
               <div class="col-sm-2">
                   <button onclick="{ rightSelecteAll }" type="button" id="multiselect_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
@@ -67,21 +77,36 @@ riot.tag("sitedesigns", `
                           <button type="button" id="multiselect_move_down" class="btn btn-block col-sm-6"><i class="glyphicon glyphicon-arrow-down"></i></button>
                       </div>
                   </div>
+                </div>
               </div>
-          </div>
+
               <div class="form-group">
-                <button onclick="{ updateDesign }" class="btn btn-success">Save</button>
-                <button onclick="{ deleteDesign }" class="btn btn-danger">Delete</button>
+                <virtual if="{ selectedDesign.Id }">
+                  <button onclick="{ updateDesign }" class="btn btn-success">Save</button>
+                  <button onclick="{ deleteDesign }" class="btn btn-danger">Delete</button>
+                </virtual>
+                <virtual if="{ !selectedDesign.Id }">
+                  <button onclick="{ createDesign }" class="btn btn-success">Create</button>
+                  <button onclick="{ clearForm }" class="btn btn-danger">Clear</button>
+                </virtual>
               </div>
-            </virtual>
 
           </div>`,
   function (opts) {
 
-    //this.designs = [];
-    this.selectedDesign = null;
-    //this.scripts = [];
-    //this.allScripts = null;
+    this.selectedDesign = {
+      "Description": null,
+      "IsDefault": false,
+      "PreviewImageAltText": null,
+      "PreviewImageUrl": null,
+      "SiteScriptIds": {
+        "results": []
+      },
+      "Title": null,
+      "WebTemplate": null,
+      "Id": null,
+      "Version": 1
+    };
 
     this.on("mount", function () {
       this.init();
@@ -119,10 +144,44 @@ riot.tag("sitedesigns", `
             }
             else hideDimmer();
             break;
+            case 'createDesign':
+            if (message.success) {
+              this.designs.push(message.result)
+
+              var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getDesign;
+              script += " exescript(getDesign, '" + message.result.Id + "');";
+              chrome.devtools.inspectedWindow.eval(script);
+              this.update();
+            }
+            else hideDimmer();
+            break;
+            case 'updateDesign':
+            if (message.success) {
+              this.designs.find(x => x.Id === this.selectedDesign.Id).Title = message.result.Title;
+              var script = sj + ' ' + alertify + ' ' + exescript + ' ' + getScript;
+              script += " exescript(getDesign, '" + this.selectedDesign.Id + "');";
+              chrome.devtools.inspectedWindow.eval(script);
+            }
+            else hideDimmer();
+            break;
           case 'getDesigns':
             if (message.success) {
               hideDimmer()
+              this.designs = [];
               this.designs = message.result.results;
+              this.selectedDesign = {
+                "Description": null,
+                "IsDefault": false,
+                "PreviewImageAltText": null,
+                "PreviewImageUrl": null,
+                "SiteScriptIds": {
+                  "results": []
+                },
+                "Title": null,
+                "WebTemplate": 64,
+                "Id": null,
+                "Version": 1
+              };
               this.update();
             }
             else hideDimmer();
@@ -136,13 +195,22 @@ riot.tag("sitedesigns", `
 
               this.scripts = [];
               this.allScripts.forEach(function (arrayItem) {
-                this.scripts.push(arrayItem.Id)
+                if(this.selectedDesign.SiteScriptIds.results.indexOf(arrayItem.Id) == -1)
+                  this.scripts.push(arrayItem.Id)
               }.bind(this));
 
               this.update();
             }
             else hideDimmer();
             break;
+            case 'deleteDesign':
+            if (message.success) {
+              var script = sj + ' ' + alertify + ' ' + exescript + ' ' + getDesigns;
+              script += " exescript(getDesigns);";
+              chrome.devtools.inspectedWindow.eval(script);
+            }
+            else hideDimmer();
+              break;
         }
       }.bind(this));
 
@@ -220,10 +288,88 @@ riot.tag("sitedesigns", `
       $("#multiselect_to").val([]);
     }.bind(this);
 
+    this.createDesign = function (e) {
+      var ids = [];
+      $("#multiselect_to option").each(function () {
+        ids.push($(this).val())
+      });
+
+      this.selectedDesign2 = {
+        info: {
+          "Description": $('#design-desc').val(),
+          "IsDefault": $('#design-isdefault').is(":checked"),
+          "PreviewImageAltText": $('#design-imageAltText').val(),
+          "PreviewImageUrl": $('#design-imageUrl').val(),
+          "SiteScriptIds": ids,
+          "Title": $('#design-title').val(),
+          "WebTemplate": $('#design-template').val(),
+        }
+      };
+
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + createDesign;
+      script += " exescript(createDesign, '" + JSON.stringify(this.selectedDesign2) + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+
+    }.bind(this);
+
+    this.updateDesign = function (e) {
+      var ids = [];
+      $("#multiselect_to option").each(function () {
+        ids.push($(this).val())
+      });
+
+      this.selectedDesign2 = {
+        updateInfo: {
+          Id: $('#design-id').val(),
+          Title: $('#design-title').val(),
+          Description: $('#design-desc').val(),
+          SiteScriptIds: ids,
+          PreviewImageAltText: $('#design-imageAltText').val(),
+          PreviewImageUrl: $('#design-imageUrl').val(),
+          WebTemplate: $('#design-template').val(),
+          Version: $('#design-version').val(),
+          IsDefault: $('#design-isdefault').is(":checked")
+        }
+      };
+
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateDesign;
+      script += " exescript(updateDesign, '" + JSON.stringify(this.selectedDesign2) + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+
+    }.bind(this);
+
+    this.deleteDesign = function (e) {
+
+      var designId = $("#sitedesignsdd").val();
+      scheduleDimmer();
+      var script = sj + ' ' + alertify + ' ' + exescript + ' ' + deleteDesign;
+      script += " exescript(deleteDesign, '" + designId + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+
+    }.bind(this);
+
     this.changeDesign = function (e) {
       var designId = $("#sitedesignsdd").val();
       if (designId == "") {
-        this.selectedDesign = null;
+        this.selectedDesign = {
+          "Description": null,
+          "IsDefault": false,
+          "PreviewImageAltText": null,
+          "PreviewImageUrl": null,
+          "SiteScriptIds": {
+            "results": []
+          },
+          "Title": null,
+          "WebTemplate": 64,
+          "Id": null,
+          "Version": 1
+        };
+
+        this.scripts = [];
+        this.allScripts.forEach(function (arrayItem) {
+          this.scripts.push(arrayItem.Id)
+        }.bind(this));
+
         this.update();
         return;
       }
@@ -231,6 +377,25 @@ riot.tag("sitedesigns", `
       var script = sj + ' ' + alertify + ' ' + exescript + ' ' + getDesign;
       script += " exescript(getDesign, '" + designId + "');";
       chrome.devtools.inspectedWindow.eval(script);
+    }.bind(this);
+
+    this.clearForm = function (e) {
+
+      $('#design-desc').val("");
+      $('#design-isdefault').prop('checked', false);
+      $('#design-imageAltText').val("");
+      $('#design-imageUrl').val("");
+      $('#design-title').val("");
+      $('#design-template').val("");
+      $('#multiselect_to').find('option').remove();
+
+      this.scripts = [];
+      this.allScripts.forEach(function (arrayItem) {
+        this.scripts.push(arrayItem.Id)
+      }.bind(this));
+
+      this.update();
+
     }.bind(this);
 
     /* functions for moving items in array */
