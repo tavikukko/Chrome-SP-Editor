@@ -133,7 +133,6 @@ riot.tag("sitescripts", `
             else hideDimmer();
             break;
           case 'addScript':
-            console.log(message.result)
             if (message.success) {
               this.scripts.push(message.result)
 
@@ -141,14 +140,13 @@ riot.tag("sitescripts", `
               script += " exescript(getScript, '" + message.result.Id + "');";
               chrome.devtools.inspectedWindow.eval(script);
               this.update();
-
             }
             else hideDimmer();
             break;
           case 'updateScript':
             if (message.success) {
               this.scripts.find(x => x.Id === this.selectedScript.Id).Title = message.result.Title;
-              var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getScript;
+              var script = sj + ' ' + alertify + ' ' + exescript + ' ' + getScript;
               script += " exescript(getScript, '" + this.selectedScript.Id + "');";
               chrome.devtools.inspectedWindow.eval(script);
             }
@@ -156,7 +154,7 @@ riot.tag("sitescripts", `
             break;
           case 'deleteScript':
           if (message.success) {
-            var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getScripts;
+            var script = sj + ' ' + alertify + ' ' + exescript + ' ' + getScripts;
             script += " exescript(getScripts);";
             chrome.devtools.inspectedWindow.eval(script);
           }
@@ -174,7 +172,7 @@ riot.tag("sitescripts", `
       port.onMessage.addListener(sitescriptslistener);
 
       scheduleDimmer();
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getScripts;
+      var script = sj + ' ' + alertify + ' ' + exescript + ' ' + getScripts;
       script += " exescript(getScripts);";
       chrome.devtools.inspectedWindow.eval(script);
 
@@ -207,7 +205,7 @@ riot.tag("sitescripts", `
         return;
       }
       scheduleDimmer();
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getScript;
+      var script = sj + ' ' + alertify + ' ' + exescript + ' ' + getScript;
       script += " exescript(getScript, '" + scriptId + "');";
       chrome.devtools.inspectedWindow.eval(script);
 
@@ -223,7 +221,7 @@ riot.tag("sitescripts", `
       var desc = $("#new-script-desc").val();
       var content = encodeURIComponent(sitescriptseditor.getValue());
       scheduleDimmer();
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addScript;
+      var script = sj + ' ' + alertify + ' ' + exescript + ' ' + addScript;
       script += " exescript(addScript, '" + title + "', '" + content + "');";
       chrome.devtools.inspectedWindow.eval(script);
 
@@ -273,7 +271,7 @@ riot.tag("sitescripts", `
 
       var content = encodeURIComponent(sitescriptseditor.getValue());
       scheduleDimmer();
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateScript;
+      var script = sj + ' ' + alertify + ' ' + exescript + ' ' + updateScript;
       script += " exescript(updateScript, '" + this.selectedScript.Id + "', '" + title + "', '" + desc + "', " + version + ", '" + content + "');";
       chrome.devtools.inspectedWindow.eval(script);
 
@@ -283,7 +281,7 @@ riot.tag("sitescripts", `
 
       var scriptId = $("#sitescriptsdd").val();
       scheduleDimmer();
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + deleteScript;
+      var script = sj + ' ' + alertify + ' ' + exescript + ' ' + deleteScript;
       script += " exescript(deleteScript, '" + scriptId + "');";
       chrome.devtools.inspectedWindow.eval(script);
 

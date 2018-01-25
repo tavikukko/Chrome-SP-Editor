@@ -2492,11 +2492,53 @@ var getDesigns = function getDesigns() {
         }).then(response => {
           return response.json();
         }).then(response => {
+          console.log(response.d.GetSiteDesigns)
           if(response.error){
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'getDesigns', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
           window.postMessage(JSON.stringify({ function: 'getDesigns', success: true, result: response.d.GetSiteDesigns, source: 'chrome-sp-editor' }), '*');
+
+        })
+      })
+  });
+};
+
+// getDesign
+var getDesign = function getDesign() {
+
+  var designId = arguments[1];
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        fetch(_spPageContextInfo.siteAbsoluteUrl + "/_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.GetSiteDesignMetadata", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Accept': 'application/json; odata=verbose',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 'id': designId }),
+        }).then(response => {
+          return response.json();
+        }).then(response => {
+          if(response.error){
+            alertify.delay(10000).error(response.error.message.value);
+            window.postMessage(JSON.stringify({ function: 'getDesign', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
+          window.postMessage(JSON.stringify({ function: 'getDesign', success: true, result: response.d.GetSiteDesignMetadata, source: 'chrome-sp-editor' }), '*');
 
         })
       })
