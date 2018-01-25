@@ -42,6 +42,12 @@ riot.tag("sidebar", `
                   <a href="#" onclick="{ btnModernProperties }">Modern properties</a>
                 </li>
                 <li>
+                  <a href="#" onclick="{ btnSiteDesigns }">Site Designs</a>
+                </li>
+                <li>
+                  <a href="#" onclick="{ btnSiteScripts }">Site Scripts</a>
+                </li>
+                <li>
                 <a href="#" onclick="{ btnAppCatalog }">AppCatalog</a>
               </li>
                 <li>
@@ -144,6 +150,16 @@ riot.tag("sidebar", `
       if (!modernpropertiesmain)
         modernpropertiesmain = riot.mount("modernproperties");
       else modernpropertiesmain[0].remount();
+    }.bind(this);
+
+    this.btnSiteDesigns = function () {
+      swap("sitedesigns");
+      riot.mount("sitedesigns");
+    }.bind(this);
+
+    this.btnSiteScripts = function () {
+      swap("sitescriptscontainer");
+      riot.mount("sitescripts");
     }.bind(this);
 
     this.btnAbout = function () {

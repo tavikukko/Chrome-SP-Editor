@@ -2,7 +2,7 @@ body {
   overflow: hidden;
 }
 
-listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer, scrlinks, files, pageeditor {
+listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer, sitescriptscontainer, fileeditorcontainer, scrlinks, files, pageeditor {
   overflow-y: auto;
   height: 100%;
   position: fixed;
@@ -142,12 +142,53 @@ appcatalogcontainer {
   overflow-y: hidden;
 }
 
+sitescriptscontainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 250px;
+  border-left: 1px solid grey;
+}
+
+.sitescripts {
+  position: relative;
+  float: left;
+  width: 22%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: scroll;
+  background-color: black;
+  font-family: Menlo, Monaco, "Courier New", monospace;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #D4D4D4;
+  white-space: nowrap;
+}
+
+#sitescripts-container {
+  width: 78%;
+  height: 100%;
+  border-left: 1px solid grey;
+  margin-left: 22%;
+  overflow-y: hidden;
+}
+
 #pageeditor {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 250px;
+}
+#sitescriptconsole {
+  width:100%;
+  height:75%;
+  border-left:1px solid grey;
+  overflow: hidden;
+  position: absolute;
+  /*bottom: -20px;*/
 }
 #pnpjsconsole {
   width:100%;

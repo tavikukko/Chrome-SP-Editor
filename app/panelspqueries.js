@@ -2465,6 +2465,246 @@ var removeTenantProperty = function removeTenantProperty() {
   });
 };
 
+// getDesigns
+var getDesigns = function getDesigns() {
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        fetch(_spPageContextInfo.siteAbsoluteUrl + "/_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.GetSiteDesigns", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Accept': 'application/json; odata=verbose',
+            'Content-Type': 'application/json'
+          },
+        }).then(response => {
+          if (!response.ok) { throw response }
+          return response.json();
+        }).catch(err => {
+          err.json().then(errorMessage => {
+            // error
+            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
+            window.postMessage(JSON.stringify({ function: 'getDesigns', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          })
+        }).then(response => {
+          // success
+          console.log(response)
+          window.postMessage(JSON.stringify({ function: 'getDesigns', success: true, result: response.d.GetSiteDesigns, source: 'chrome-sp-editor' }), '*');
+
+        })
+      })
+  });
+};
+
+// getScripts
+var getScripts = function getScripts() {
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        fetch(_spPageContextInfo.siteAbsoluteUrl + "/_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.GetSiteScripts", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Accept': 'application/json; odata=verbose',
+            'Content-Type': 'application/json'
+          },
+        }).then(response => {
+          if (!response.ok) { throw response }
+          return response.json();
+        }).catch(err => {
+          err.json().then(errorMessage => {
+            // error
+            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
+            window.postMessage(JSON.stringify({ function: 'getScripts', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          })
+        }).then(response => {
+          // success
+          console.log(response)
+          window.postMessage(JSON.stringify({ function: 'getScripts', success: true, result: response.d.GetSiteScripts, source: 'chrome-sp-editor' }), '*');
+
+        })
+      })
+  });
+};
+
+// getScript
+var getScript = function getScript() {
+
+  var scriptId = arguments[1];
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        fetch(_spPageContextInfo.siteAbsoluteUrl + "/_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.GetSiteScriptMetadata", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Accept': 'application/json; odata=verbose',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 'id': scriptId }),
+        }).then(response => {
+          if (!response.ok) { throw response }
+          return response.json();
+        }).catch(err => {
+          err.json().then(errorMessage => {
+            // error
+            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
+            window.postMessage(JSON.stringify({ function: 'getScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          })
+        }).then(response => {
+          // success
+          console.log(response)
+          window.postMessage(JSON.stringify({ function: 'getScript', success: true, result: response.d.GetSiteScriptMetadata, source: 'chrome-sp-editor' }), '*');
+
+        })
+      })
+  });
+};
+
+// addScript
+var addScript = function addScript() {
+
+  var title = arguments[1];
+  var content = decodeURIComponent(arguments[2]);
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+
+        fetch(_spPageContextInfo.siteAbsoluteUrl + "/_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.CreateSiteScript(Title=@title)?@title='" + title + "'", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Accept': 'application/json; odata=verbose',
+            'Content-Type': 'text/xml',
+          },
+          body: content,
+        }).then(response => {
+          if (!response.ok) { throw response }
+          return response.json();
+        }).catch(err => {
+          err.json().then(errorMessage => {
+            // error
+            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
+            window.postMessage(JSON.stringify({ function: 'addScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          })
+        }).then(response => {
+          // success
+          console.log(response)
+          window.postMessage(JSON.stringify({ function: 'addScript', success: true, result: response.d.CreateSiteScript, source: 'chrome-sp-editor' }), '*');
+
+        })
+      })
+  });
+};
+
+// updateScript
+var updateScript = function updateScript() {
+
+  var id = arguments[1];
+  var title = arguments[2];
+  var desc = arguments[3];
+  var version = arguments[4];
+  var content = decodeURIComponent(arguments[5]);
+
+  var updateInfo = {
+    updateInfo: {
+      Id: id,
+      Title: title,
+      Description: desc,
+      Version: version,
+      Content: content
+    }
+  };
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+
+        fetch(_spPageContextInfo.siteAbsoluteUrl + "/_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.UpdateSiteScript", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Accept': 'application/json; odata=verbose',
+            'Content-Type': 'application/json;charset=utf-8',
+          },
+          body: JSON.stringify(updateInfo),
+        }).then(response => {
+          if (!response.ok) { throw response }
+          return response.json();
+        }).catch(err => {
+          err.json().then(errorMessage => {
+            // error
+            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
+            window.postMessage(JSON.stringify({ function: 'updateScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          })
+        }).then(response => {
+          // success
+          console.log(response)
+          window.postMessage(JSON.stringify({ function: 'updateScript', success: true, result: response.d.CreateSiteScript, source: 'chrome-sp-editor' }), '*');
+
+        })
+      })
+  });
+};
 
 // helper functions
 function elem(elem) {
@@ -2490,7 +2730,7 @@ function hideDimmer() {
     elem('dimmer').style.display = 'none';
 }
 
-var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman', 'modernproperties'];
+var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman', 'modernproperties', 'sitedesigns', 'sitescriptscontainer'];
 
 function swap(visibleElement) {
   for (var i = 0; i < allElements.length; i++) {
