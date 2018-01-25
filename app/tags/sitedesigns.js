@@ -144,7 +144,7 @@ riot.tag("sitedesigns", `
             }
             else hideDimmer();
             break;
-            case 'createDesign':
+          case 'createDesign':
             if (message.success) {
               this.designs.push(message.result)
 
@@ -155,7 +155,7 @@ riot.tag("sitedesigns", `
             }
             else hideDimmer();
             break;
-            case 'updateDesign':
+          case 'updateDesign':
             if (message.success) {
               this.designs.find(x => x.Id === this.selectedDesign.Id).Title = message.result.Title;
               var script = sj + ' ' + alertify + ' ' + exescript + ' ' + getScript;
@@ -195,7 +195,7 @@ riot.tag("sitedesigns", `
 
               this.scripts = [];
               this.allScripts.forEach(function (arrayItem) {
-                if(this.selectedDesign.SiteScriptIds.results.indexOf(arrayItem.Id) == -1)
+                if (this.selectedDesign.SiteScriptIds.results.indexOf(arrayItem.Id) == -1)
                   this.scripts.push(arrayItem.Id)
               }.bind(this));
 
@@ -203,14 +203,14 @@ riot.tag("sitedesigns", `
             }
             else hideDimmer();
             break;
-            case 'deleteDesign':
+          case 'deleteDesign':
             if (message.success) {
               var script = sj + ' ' + alertify + ' ' + exescript + ' ' + getDesigns;
               script += " exescript(getDesigns);";
               chrome.devtools.inspectedWindow.eval(script);
             }
             else hideDimmer();
-              break;
+            break;
         }
       }.bind(this));
 
@@ -306,6 +306,7 @@ riot.tag("sitedesigns", `
         }
       };
 
+      scheduleDimmer();
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + createDesign;
       script += " exescript(createDesign, '" + JSON.stringify(this.selectedDesign2) + "');";
       chrome.devtools.inspectedWindow.eval(script);
@@ -332,6 +333,7 @@ riot.tag("sitedesigns", `
         }
       };
 
+      scheduleDimmer();
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateDesign;
       script += " exescript(updateDesign, '" + JSON.stringify(this.selectedDesign2) + "');";
       chrome.devtools.inspectedWindow.eval(script);
@@ -341,6 +343,7 @@ riot.tag("sitedesigns", `
     this.deleteDesign = function (e) {
 
       var designId = $("#sitedesignsdd").val();
+
       scheduleDimmer();
       var script = sj + ' ' + alertify + ' ' + exescript + ' ' + deleteDesign;
       script += " exescript(deleteDesign, '" + designId + "');";
@@ -373,6 +376,7 @@ riot.tag("sitedesigns", `
         this.update();
         return;
       }
+
       scheduleDimmer();
       var script = sj + ' ' + alertify + ' ' + exescript + ' ' + getDesign;
       script += " exescript(getDesign, '" + designId + "');";
