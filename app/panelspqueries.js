@@ -2490,17 +2490,12 @@ var getDesigns = function getDesigns() {
             'Content-Type': 'application/json'
           },
         }).then(response => {
-          if (!response.ok) { throw response }
           return response.json();
-        }).catch(err => {
-          err.json().then(errorMessage => {
-            // error
-            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
-            window.postMessage(JSON.stringify({ function: 'getDesigns', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          })
         }).then(response => {
-          // success
-          console.log(response)
+          if(response.error){
+            alertify.delay(10000).error(response.error.message.value);
+            window.postMessage(JSON.stringify({ function: 'getDesigns', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
           window.postMessage(JSON.stringify({ function: 'getDesigns', success: true, result: response.d.GetSiteDesigns, source: 'chrome-sp-editor' }), '*');
 
         })
@@ -2533,19 +2528,13 @@ var getScripts = function getScripts() {
             'Content-Type': 'application/json'
           },
         }).then(response => {
-          if (!response.ok) { throw response }
           return response.json();
-        }).catch(err => {
-          err.json().then(errorMessage => {
-            // error
-            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
-            window.postMessage(JSON.stringify({ function: 'getScripts', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          })
         }).then(response => {
-          // success
-          console.log(response)
+          if(response.error){
+            alertify.delay(10000).error(response.error.message.value);
+            window.postMessage(JSON.stringify({ function: 'getScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
           window.postMessage(JSON.stringify({ function: 'getScripts', success: true, result: response.d.GetSiteScripts, source: 'chrome-sp-editor' }), '*');
-
         })
       })
   });
@@ -2579,17 +2568,12 @@ var getScript = function getScript() {
           },
           body: JSON.stringify({ 'id': scriptId }),
         }).then(response => {
-          if (!response.ok) { throw response }
           return response.json();
-        }).catch(err => {
-          err.json().then(errorMessage => {
-            // error
-            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
-            window.postMessage(JSON.stringify({ function: 'getScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          })
         }).then(response => {
-          // success
-          console.log(response)
+          if(response.error){
+            alertify.delay(10000).error(response.error.message.value);
+            window.postMessage(JSON.stringify({ function: 'getScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
           window.postMessage(JSON.stringify({ function: 'getScript', success: true, result: response.d.GetSiteScriptMetadata, source: 'chrome-sp-editor' }), '*');
 
         })
@@ -2627,17 +2611,12 @@ var addScript = function addScript() {
           },
           body: content,
         }).then(response => {
-          if (!response.ok) { throw response }
           return response.json();
-        }).catch(err => {
-          err.json().then(errorMessage => {
-            // error
-            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
-            window.postMessage(JSON.stringify({ function: 'addScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          })
         }).then(response => {
-          // success
-          console.log(response)
+          if(response.error){
+            alertify.delay(10000).error(response.error.message.value);
+            window.postMessage(JSON.stringify({ function: 'addScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
           window.postMessage(JSON.stringify({ function: 'addScript', success: true, result: response.d.CreateSiteScript, source: 'chrome-sp-editor' }), '*');
 
         })
@@ -2688,18 +2667,54 @@ var updateScript = function updateScript() {
           },
           body: JSON.stringify(updateInfo),
         }).then(response => {
-          if (!response.ok) { throw response }
           return response.json();
-        }).catch(err => {
-          err.json().then(errorMessage => {
-            // error
-            alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
-            window.postMessage(JSON.stringify({ function: 'updateScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          })
         }).then(response => {
-          // success
-          console.log(response)
-          window.postMessage(JSON.stringify({ function: 'updateScript', success: true, result: response.d.CreateSiteScript, source: 'chrome-sp-editor' }), '*');
+          if(response.error){
+            alertify.delay(10000).error(response.error.message.value);
+            window.postMessage(JSON.stringify({ function: 'updateScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
+          window.postMessage(JSON.stringify({ function: 'updateScript', success: true, result: response.d.UpdateSiteScript, source: 'chrome-sp-editor' }), '*');
+
+        })
+      })
+  });
+};
+
+// deleteScript
+var deleteScript = function deleteScript() {
+
+  var scriptId = arguments[1];
+
+  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
+    var alertify = modules[0];
+    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+
+    fetch(spHostUrl + "/_api/contextinfo", {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json; odata=verbose',
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(res => {
+        fetch(_spPageContextInfo.siteAbsoluteUrl + "/_api/Microsoft.Sharepoint.Utilities.WebTemplateExtensions.SiteScriptUtility.DeleteSiteScript", {
+          method: 'post',
+          credentials: 'include',
+          headers: {
+            'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
+            'Accept': 'application/json; odata=verbose',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 'id': scriptId }),
+        }).then(response => {
+          return response.json();
+        }).then(response => {
+          if(response.error){
+            alertify.delay(10000).error(response.error.message.value);
+            window.postMessage(JSON.stringify({ function: 'deleteScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+          }
+          window.postMessage(JSON.stringify({ function: 'deleteScript', success: true, result: response.d.GetSiteScriptMetadata, source: 'chrome-sp-editor' }), '*');
 
         })
       })

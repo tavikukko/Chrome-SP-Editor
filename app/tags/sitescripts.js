@@ -28,7 +28,7 @@ riot.tag("sitescripts", `
                 </div>
                 <div class="form-group">
                   <button onclick="{ updateScript }" class="btn btn-success">Save</button>
-                  <button class="btn btn-danger">Remove</button>
+                  <button onclick="{ deleteScript }" class="btn btn-danger">Delete</button>
                 </div>
               </virtual>
 
@@ -55,6 +55,10 @@ riot.tag("sitescripts", `
     this.selectedScript = null;
 
     this.on("mount", function () {
+      this.init();
+    }.bind(this));
+
+    this.init = function () {
 
       if (!sitescriptseditor) {
         require(['vs/editor/editor.main'], function () {
@@ -108,13 +112,16 @@ riot.tag("sitescripts", `
         switch (message.function) {
           case 'getScripts':
             if (message.success) {
+              hideDimmer();
               this.scripts = message.result.results;
+              this.selectedScript = null;
               this.update();
             }
+            else hideDimmer();
             break;
-            case 'getScript':
-            console.log(message.result)
+          case 'getScript':
             if (message.success) {
+              hideDimmer();
               this.selectedScript = message.result;
               var element = document.getElementById('sitescriptsdd');
               element.value = message.result.Id;
@@ -123,8 +130,9 @@ riot.tag("sitescripts", `
               sitescriptseditor.setScrollLeft(0);
               this.update();
             }
+            else hideDimmer();
             break;
-            case 'addScript':
+          case 'addScript':
             console.log(message.result)
             if (message.success) {
               this.scripts.push(message.result)
@@ -135,13 +143,25 @@ riot.tag("sitescripts", `
               this.update();
 
             }
+            else hideDimmer();
             break;
-            case 'updateScript':
-            // update dropdown for Title changes
+          case 'updateScript':
             if (message.success) {
-              alert("update ok")
+              this.scripts.find(x => x.Id === this.selectedScript.Id).Title = message.result.Title;
+              var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getScript;
+              script += " exescript(getScript, '" + this.selectedScript.Id + "');";
+              chrome.devtools.inspectedWindow.eval(script);
             }
-            break
+            else hideDimmer();
+            break;
+          case 'deleteScript':
+          if (message.success) {
+            var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getScripts;
+            script += " exescript(getScripts);";
+            chrome.devtools.inspectedWindow.eval(script);
+          }
+          else hideDimmer();
+            break;
         }
       }.bind(this);
 
@@ -153,15 +173,15 @@ riot.tag("sitescripts", `
       sitescriptslisteners.push(sitescriptslistener)
       port.onMessage.addListener(sitescriptslistener);
 
+      scheduleDimmer();
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getScripts;
       script += " exescript(getScripts);";
       chrome.devtools.inspectedWindow.eval(script);
 
-    });
+    }.bind(this);
 
     this.changeScript = function (e) {
       var scriptId = $("#sitescriptsdd").val();
-      this.selectedId = scriptId;
 
       if (scriptId == "") {
         this.selectedScript = null;
@@ -186,7 +206,7 @@ riot.tag("sitescripts", `
         this.update();
         return;
       }
-
+      scheduleDimmer();
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getScript;
       script += " exescript(getScript, '" + scriptId + "');";
       chrome.devtools.inspectedWindow.eval(script);
@@ -202,7 +222,7 @@ riot.tag("sitescripts", `
       }
       var desc = $("#new-script-desc").val();
       var content = encodeURIComponent(sitescriptseditor.getValue());
-
+      scheduleDimmer();
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addScript;
       script += " exescript(addScript, '" + title + "', '" + content + "');";
       chrome.devtools.inspectedWindow.eval(script);
@@ -231,10 +251,13 @@ riot.tag("sitescripts", `
 
     }.bind(this);
 
-    this.updateScript = function (e) {
+    this.isValidInt = function(value){
+      return ((parseFloat(value) == parseInt(value)) && !isNaN(value))
+    }
 
+    this.updateScript = function (e) {
+      var scriptId = $("#sitescriptsdd").val();
       var title = $("#script-title").val();
-      var id = $("#script-id").val();
       var desc = $("#script-desc").val();
       var version = $("#script-version").val();
 
@@ -243,10 +266,25 @@ riot.tag("sitescripts", `
         return;
       }
 
-      var content = encodeURIComponent(sitescriptseditor.getValue());
+      if (!this.isValidInt(version)) {
+        alert("Site script Version need to be a number")
+        return;
+      }
 
+      var content = encodeURIComponent(sitescriptseditor.getValue());
+      scheduleDimmer();
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateScript;
-      script += " exescript(updateScript, '" + id + "', '" + title + "', '" + desc + "', " + version + ", '" + content + "');";
+      script += " exescript(updateScript, '" + this.selectedScript.Id + "', '" + title + "', '" + desc + "', " + version + ", '" + content + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+
+    }.bind(this);
+
+    this.deleteScript = function (e) {
+
+      var scriptId = $("#sitescriptsdd").val();
+      scheduleDimmer();
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + deleteScript;
+      script += " exescript(deleteScript, '" + scriptId + "');";
       chrome.devtools.inspectedWindow.eval(script);
 
     }.bind(this);
