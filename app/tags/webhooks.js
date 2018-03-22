@@ -5,7 +5,7 @@ riot.tag("webhooks", `
                 <p>Add / remove webhooks.</p>
               </div>
               <hr>
-                <div class="row"> 
+                <div class="row">
                   <div class="col-xs-4">
                     <select class="form-control" id="webhooklist">
                       <option each="{list in lists}" value="{ list.listId }">{ list.listTitle }</option>
@@ -24,12 +24,14 @@ riot.tag("webhooks", `
               <div id="subscriptions">
                 <ul class="list-group" each="{ subscription in subscriptions }">
                   <li class="list-group-item active">
-                    <span style="display: inline-block;width: 33.33%;text-align: left;">{ subscription.listTitle }</span>
-                    <span style="display: inline-block;width: 33.33%;text-align: center;">{ subscription.subExpirationDateTime }</span>
-                    <span style="display: inline-block;width: 32.33%;text-align: right;">{ subscription.subId }</span>
+                    <span style="display: inline-block;width: 33.33%;text-align: left;">List: { subscription.listTitle }</span>
+                    <span style="display: inline-block;width: 33.33%;text-align: center;">ExpDate: { subscription.subExpirationDateTime }</span>
+                    <span style="display: inline-block;width: 32.33%;text-align: right;">Id: { subscription.subId }</span>
                   </li>
                   <li class="list-group-item">
-                    <span>{ subscription.subNotificationUrl }</span>
+                  &nbsp;&nbsp;<span>{ subscription.subNotificationUrl }</span>
+                    <span onclick="{ updatesub }" class="sub-remove glyphicon glyphicon-refresh pull-left" style="cursor: pointer;"></span>
+
                     <span onclick="{ removesub }" class="sub-remove glyphicon glyphicon-remove pull-right" style="cursor: pointer;"></span>
                   </li>
                 </ul>
@@ -66,6 +68,7 @@ riot.tag("webhooks", `
             }
             break;
           case 'removeSubscription':
+          case 'updateSubscription':
           case 'addSubscriptions':
             var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSubscriptions;
             script += " exescript(getSubscriptions);";
@@ -81,6 +84,14 @@ riot.tag("webhooks", `
 
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + removeSubscription;
       script += " exescript(removeSubscription, '" + e.item.subscription.listId + "', '" + e.item.subscription.subId + "');";
+      chrome.devtools.inspectedWindow.eval(script);
+
+    }.bind(this);
+
+    this.updatesub = function (e) {
+
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateSubscription;
+      script += " exescript(updateSubscription, '" + e.item.subscription.listId + "', '" + e.item.subscription.subId + "');";
       chrome.devtools.inspectedWindow.eval(script);
 
     }.bind(this);

@@ -1412,6 +1412,50 @@ var removeSubscription = function removeSubscription() {
   });
 };
 
+var updateSubscription = function updateSubscription() {
+
+  var listId = arguments[1];
+  var subId = arguments[2];
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    alertify.confirm("Really want to update webhook with id <b>" + subId + "</b> exp date to 6 months from now?", function () {
+
+    alertify.delay(5000).log("Updating webhook expiration date 6 months from now ...");
+
+    var today = new Date();
+    var expirationDate = new Date(today.setDate(today.getDate() + 180)).toISOString();
+
+    $pnp.sp.web.lists.getById(listId).subscriptions.getById(subId).update(expirationDate)
+      .then(function (result) {
+        alertify.delay(5000).success("Webhook expiration date updated successfully!");
+        window.postMessage(JSON.stringify({ function: 'updateSubscription', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+      })
+      .catch(function (error) {
+        if (error.data.responseBody.hasOwnProperty('error'))
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+        else
+          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+      });
+    }, function () {
+      // user clicked "cancel"
+    });
+  });
+};
+
 var getZonesAndWebparts = function getZonesAndWebparts() {
   var selectAll = function (parent, selector) {
     return Array.prototype.slice.call(parent.querySelectorAll(selector));
