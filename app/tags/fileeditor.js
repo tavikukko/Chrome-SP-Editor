@@ -38,7 +38,7 @@ riot.tag("fileeditor", `
 
         /* this needs more testing */
 
-        var fileeditoreditorBinding = fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
+        fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
           if (bgautosave) {
             port.onMessage.addListener(this.fileeditorlistener);
 
@@ -49,6 +49,17 @@ riot.tag("fileeditor", `
             scheduleDimmer();
           }
           else alert("Please check 'Update changes to SharePoint' to save the changes")
+        }.bind(this));
+
+        fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
+
+          var url = 'data:text/plain;base64,' + btoa(fileeditoreditor.getValue());
+          var filename = selectedFile.split('/').pop();
+          chrome.downloads.download({
+              url: url,
+              filename: filename,
+          });
+
         }.bind(this));
 
         window.addEventListener('resize', function () {
