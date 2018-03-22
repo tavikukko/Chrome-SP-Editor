@@ -1,5 +1,5 @@
 /**
- * sp-pnp-js v3.0.4 - A JavaScript library for SharePoint development.
+ * sp-pnp-js v3.0.6 - A JavaScript library for SharePoint development.
  * MIT (https://github.com/SharePoint/PnP-JS-Core/blob/master/LICENSE)
  * Copyright (c) 2017 Microsoft
  * docs: http://officedev.github.io/PnP-JS-Core
@@ -78,7 +78,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/assets/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 43);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -368,7 +368,7 @@ var Util = /** @class */ (function () {
 }());
 exports.Util = Util;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
 
 /***/ }),
 /* 1 */
@@ -388,7 +388,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var collections_1 = __webpack_require__(8);
+var collections_1 = __webpack_require__(9);
 var utils_1 = __webpack_require__(10);
 var exceptions_1 = __webpack_require__(2);
 var logging_1 = __webpack_require__(5);
@@ -550,6 +550,7 @@ var SharePointQueryable = /** @class */ (function (_super) {
     SharePointQueryable.prototype.clone = function (factory, additionalPath, includeBatch) {
         if (includeBatch === void 0) { includeBatch = true; }
         var clone = new factory(this, additionalPath);
+        clone.configure(this._options);
         var target = this.query.get("@target");
         if (target !== null) {
             clone.query.add("@target", target);
@@ -936,7 +937,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var logging_1 = __webpack_require__(5);
 var exceptions_1 = __webpack_require__(2);
-var core_1 = __webpack_require__(13);
+var core_1 = __webpack_require__(14);
 function spExtractODataId(candidate) {
     if (candidate.hasOwnProperty("odata.id")) {
         return candidate["odata.id"];
@@ -1027,7 +1028,7 @@ exports.spODataEntityArray = spODataEntityArray;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var fetchclient_1 = __webpack_require__(29);
+var fetchclient_1 = __webpack_require__(31);
 var RuntimeConfigImpl = /** @class */ (function () {
     function RuntimeConfigImpl() {
         // these are our default values for the library
@@ -1430,8 +1431,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var collections_1 = __webpack_require__(8);
-var graphclient_1 = __webpack_require__(41);
+var collections_1 = __webpack_require__(9);
+var graphclient_1 = __webpack_require__(44);
 var queryable_1 = __webpack_require__(19);
 var pipeline_1 = __webpack_require__(20);
 /**
@@ -1715,7 +1716,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(13);
+var core_1 = __webpack_require__(14);
 var util_1 = __webpack_require__(0);
 var ODataDefaultParser = /** @class */ (function (_super) {
     __extends(ODataDefaultParser, _super);
@@ -1796,121 +1797,6 @@ exports.BufferFileParser = BufferFileParser;
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Generic dictionary
- */
-var Dictionary = /** @class */ (function () {
-    /**
-     * Creates a new instance of the Dictionary<T> class
-     *
-     * @constructor
-     */
-    function Dictionary(keys, values) {
-        if (keys === void 0) { keys = []; }
-        if (values === void 0) { values = []; }
-        this.keys = keys;
-        this.values = values;
-    }
-    /**
-     * Gets a value from the collection using the specified key
-     *
-     * @param key The key whose value we want to return, returns null if the key does not exist
-     */
-    Dictionary.prototype.get = function (key) {
-        var index = this.keys.indexOf(key);
-        if (index < 0) {
-            return null;
-        }
-        return this.values[index];
-    };
-    /**
-     * Adds the supplied key and value to the dictionary
-     *
-     * @param key The key to add
-     * @param o The value to add
-     */
-    Dictionary.prototype.add = function (key, o) {
-        var index = this.keys.indexOf(key);
-        if (index > -1) {
-            this.values[index] = o;
-        }
-        else {
-            this.keys.push(key);
-            this.values.push(o);
-        }
-    };
-    /**
-     * Merges the supplied typed hash into this dictionary instance. Existing values are updated and new ones are created as appropriate.
-     */
-    Dictionary.prototype.merge = function (source) {
-        var _this = this;
-        if ("getKeys" in source) {
-            var sourceAsDictionary_1 = source;
-            sourceAsDictionary_1.getKeys().map(function (key) {
-                _this.add(key, sourceAsDictionary_1.get(key));
-            });
-        }
-        else {
-            var sourceAsHash = source;
-            for (var key in sourceAsHash) {
-                if (sourceAsHash.hasOwnProperty(key)) {
-                    this.add(key, sourceAsHash[key]);
-                }
-            }
-        }
-    };
-    /**
-     * Removes a value from the dictionary
-     *
-     * @param key The key of the key/value pair to remove. Returns null if the key was not found.
-     */
-    Dictionary.prototype.remove = function (key) {
-        var index = this.keys.indexOf(key);
-        if (index < 0) {
-            return null;
-        }
-        var val = this.values[index];
-        this.keys.splice(index, 1);
-        this.values.splice(index, 1);
-        return val;
-    };
-    /**
-     * Returns all the keys currently in the dictionary as an array
-     */
-    Dictionary.prototype.getKeys = function () {
-        return this.keys;
-    };
-    /**
-     * Returns all the values currently in the dictionary as an array
-     */
-    Dictionary.prototype.getValues = function () {
-        return this.values;
-    };
-    /**
-     * Clears the current dictionary
-     */
-    Dictionary.prototype.clear = function () {
-        this.keys = [];
-        this.values = [];
-    };
-    /**
-     * Gets a count of the items currently in the dictionary
-     */
-    Dictionary.prototype.count = function () {
-        return this.keys.length;
-    };
-    return Dictionary;
-}());
-exports.Dictionary = Dictionary;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -1926,8 +1812,8 @@ var sharepointqueryable_1 = __webpack_require__(1);
 var parsers_1 = __webpack_require__(7);
 var util_1 = __webpack_require__(0);
 var exceptions_1 = __webpack_require__(2);
-var webparts_1 = __webpack_require__(36);
-var items_1 = __webpack_require__(15);
+var webparts_1 = __webpack_require__(38);
+var items_1 = __webpack_require__(12);
 var sharepointqueryableshareable_1 = __webpack_require__(16);
 var odata_1 = __webpack_require__(3);
 /**
@@ -1991,12 +1877,9 @@ var Files = /** @class */ (function (_super) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
         if (chunkSize === void 0) { chunkSize = 10485760; }
         var adder = this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')", false);
-        return adder.postCore().then(function () { return _this.getByName(url); }).then(function (file) { return file.setContentChunked(content, progress, chunkSize); }).then(function (response) {
-            return {
-                data: response,
-                file: _this.getByName(url),
-            };
-        });
+        return adder.postCore()
+            .then(function () { return _this.getByName(url); })
+            .then(function (file) { return file.setContentChunked(content, progress, chunkSize); });
     };
     /**
      * Adds a ghosted file to an existing list or document library. Not supported for batching.
@@ -2249,21 +2132,21 @@ var File = /** @class */ (function (_super) {
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      */
     File.prototype.setContentChunked = function (file, progress, chunkSize) {
+        var _this = this;
         if (chunkSize === void 0) { chunkSize = 10485760; }
         if (typeof progress === "undefined") {
             progress = function () { return null; };
         }
-        var self = this;
         var fileSize = file.size;
         var blockCount = parseInt((file.size / chunkSize).toString(), 10) + ((file.size % chunkSize === 0) ? 1 : 0);
         var uploadId = util_1.Util.getGUID();
         // start the chain with the first fragment
         progress({ blockNumber: 1, chunkSize: chunkSize, currentPointer: 0, fileSize: fileSize, stage: "starting", totalBlocks: blockCount });
-        var chain = self.startUpload(uploadId, file.slice(0, chunkSize));
+        var chain = this.startUpload(uploadId, file.slice(0, chunkSize));
         var _loop_1 = function (i) {
             chain = chain.then(function (pointer) {
                 progress({ blockNumber: i, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "continue", totalBlocks: blockCount });
-                return self.continueUpload(uploadId, pointer, file.slice(pointer, pointer + chunkSize));
+                return _this.continueUpload(uploadId, pointer, file.slice(pointer, pointer + chunkSize));
             });
         };
         // skip the first and last blocks
@@ -2272,9 +2155,7 @@ var File = /** @class */ (function (_super) {
         }
         return chain.then(function (pointer) {
             progress({ blockNumber: blockCount, chunkSize: chunkSize, currentPointer: pointer, fileSize: fileSize, stage: "finishing", totalBlocks: blockCount });
-            return self.finishUpload(uploadId, pointer, file.slice(pointer));
-        }).then(function (_) {
-            return self;
+            return _this.finishUpload(uploadId, pointer, file.slice(pointer));
         });
     };
     /**
@@ -2292,7 +2173,16 @@ var File = /** @class */ (function (_super) {
      * @returns The size of the total uploaded data in bytes.
      */
     File.prototype.startUpload = function (uploadId, fragment) {
-        return this.clone(File, "startUpload(uploadId=guid'" + uploadId + "')", false).postAsCore({ body: fragment }).then(function (n) { return parseFloat(n); });
+        return this.clone(File, "startUpload(uploadId=guid'" + uploadId + "')", false)
+            .postAsCore({ body: fragment })
+            .then(function (n) {
+            // When OData=verbose the payload has the following shape:
+            // { StartUpload: "10485760" }
+            if (typeof n === "object") {
+                n = n.StartUpload;
+            }
+            return parseFloat(n);
+        });
     };
     /**
      * Continues the chunk upload session with an additional fragment.
@@ -2306,7 +2196,16 @@ var File = /** @class */ (function (_super) {
      * @returns The size of the total uploaded data in bytes.
      */
     File.prototype.continueUpload = function (uploadId, fileOffset, fragment) {
-        return this.clone(File, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false).postAsCore({ body: fragment }).then(function (n) { return parseFloat(n); });
+        return this.clone(File, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false)
+            .postAsCore({ body: fragment })
+            .then(function (n) {
+            // When OData=verbose the payload has the following shape:
+            // { ContinueUpload: "20971520" }
+            if (typeof n === "object") {
+                n = n.ContinueUpload;
+            }
+            return parseFloat(n);
+        });
     };
     /**
      * Uploads the last file fragment and commits the file. The current file content is changed when this method completes.
@@ -2320,7 +2219,8 @@ var File = /** @class */ (function (_super) {
      */
     File.prototype.finishUpload = function (uploadId, fileOffset, fragment) {
         return this.clone(File, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false)
-            .postAsCore({ body: fragment }).then(function (response) {
+            .postAsCore({ body: fragment })
+            .then(function (response) {
             return {
                 data: response,
                 file: new File(response.ServerRelativeUrl),
@@ -2458,7 +2358,123 @@ var TemplateFileType;
     TemplateFileType[TemplateFileType["StandardPage"] = 0] = "StandardPage";
     TemplateFileType[TemplateFileType["WikiPage"] = 1] = "WikiPage";
     TemplateFileType[TemplateFileType["FormPage"] = 2] = "FormPage";
+    TemplateFileType[TemplateFileType["ClientSidePage"] = 3] = "ClientSidePage";
 })(TemplateFileType = exports.TemplateFileType || (exports.TemplateFileType = {}));
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Generic dictionary
+ */
+var Dictionary = /** @class */ (function () {
+    /**
+     * Creates a new instance of the Dictionary<T> class
+     *
+     * @constructor
+     */
+    function Dictionary(keys, values) {
+        if (keys === void 0) { keys = []; }
+        if (values === void 0) { values = []; }
+        this.keys = keys;
+        this.values = values;
+    }
+    /**
+     * Gets a value from the collection using the specified key
+     *
+     * @param key The key whose value we want to return, returns null if the key does not exist
+     */
+    Dictionary.prototype.get = function (key) {
+        var index = this.keys.indexOf(key);
+        if (index < 0) {
+            return null;
+        }
+        return this.values[index];
+    };
+    /**
+     * Adds the supplied key and value to the dictionary
+     *
+     * @param key The key to add
+     * @param o The value to add
+     */
+    Dictionary.prototype.add = function (key, o) {
+        var index = this.keys.indexOf(key);
+        if (index > -1) {
+            this.values[index] = o;
+        }
+        else {
+            this.keys.push(key);
+            this.values.push(o);
+        }
+    };
+    /**
+     * Merges the supplied typed hash into this dictionary instance. Existing values are updated and new ones are created as appropriate.
+     */
+    Dictionary.prototype.merge = function (source) {
+        var _this = this;
+        if ("getKeys" in source) {
+            var sourceAsDictionary_1 = source;
+            sourceAsDictionary_1.getKeys().map(function (key) {
+                _this.add(key, sourceAsDictionary_1.get(key));
+            });
+        }
+        else {
+            var sourceAsHash = source;
+            for (var key in sourceAsHash) {
+                if (sourceAsHash.hasOwnProperty(key)) {
+                    this.add(key, sourceAsHash[key]);
+                }
+            }
+        }
+    };
+    /**
+     * Removes a value from the dictionary
+     *
+     * @param key The key of the key/value pair to remove. Returns null if the key was not found.
+     */
+    Dictionary.prototype.remove = function (key) {
+        var index = this.keys.indexOf(key);
+        if (index < 0) {
+            return null;
+        }
+        var val = this.values[index];
+        this.keys.splice(index, 1);
+        this.values.splice(index, 1);
+        return val;
+    };
+    /**
+     * Returns all the keys currently in the dictionary as an array
+     */
+    Dictionary.prototype.getKeys = function () {
+        return this.keys;
+    };
+    /**
+     * Returns all the values currently in the dictionary as an array
+     */
+    Dictionary.prototype.getValues = function () {
+        return this.values;
+    };
+    /**
+     * Clears the current dictionary
+     */
+    Dictionary.prototype.clear = function () {
+        this.keys = [];
+        this.values = [];
+    };
+    /**
+     * Gets a count of the items currently in the dictionary
+     */
+    Dictionary.prototype.count = function () {
+        return this.keys.length;
+    };
+    return Dictionary;
+}());
+exports.Dictionary = Dictionary;
 
 
 /***/ }),
@@ -2505,25 +2521,26 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
-var lists_1 = __webpack_require__(14);
-var fields_1 = __webpack_require__(37);
-var navigation_1 = __webpack_require__(26);
+var lists_1 = __webpack_require__(15);
+var fields_1 = __webpack_require__(25);
+var navigation_1 = __webpack_require__(27);
 var sitegroups_1 = __webpack_require__(23);
 var contenttypes_1 = __webpack_require__(24);
-var regionalsettings_1 = __webpack_require__(51);
+var regionalsettings_1 = __webpack_require__(53);
 var folders_1 = __webpack_require__(18);
 var roles_1 = __webpack_require__(22);
-var files_1 = __webpack_require__(9);
+var files_1 = __webpack_require__(8);
 var util_1 = __webpack_require__(0);
-var lists_2 = __webpack_require__(14);
-var siteusers_1 = __webpack_require__(35);
-var usercustomactions_1 = __webpack_require__(25);
+var lists_2 = __webpack_require__(15);
+var siteusers_1 = __webpack_require__(37);
+var usercustomactions_1 = __webpack_require__(26);
 var odata_1 = __webpack_require__(3);
-var batch_1 = __webpack_require__(27);
-var features_1 = __webpack_require__(38);
+var batch_1 = __webpack_require__(28);
+var features_1 = __webpack_require__(39);
 var sharepointqueryableshareable_1 = __webpack_require__(16);
-var relateditems_1 = __webpack_require__(52);
-var appcatalog_1 = __webpack_require__(39);
+var relateditems_1 = __webpack_require__(54);
+var appcatalog_1 = __webpack_require__(40);
+var clientsidepages_1 = __webpack_require__(41);
 /**
  * Describes a collection of webs
  *
@@ -2898,12 +2915,33 @@ var Web = /** @class */ (function (_super) {
         return new folders_1.Folder(this, "getFolderByServerRelativeUrl('" + folderRelativeUrl + "')");
     };
     /**
+     * Gets a folder by server relative relative path if your folder name contains # and % characters
+     * you need to first encode the file name using encodeURIComponent() and then pass the url
+     * let url = "/sites/test/Shared Documents/" + encodeURIComponent("%123");
+     * This works only in SharePoint online.
+     *
+     * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
+     */
+    Web.prototype.getFolderByServerRelativePath = function (folderRelativeUrl) {
+        return new folders_1.Folder(this, "getFolderByServerRelativePath(decodedUrl='" + folderRelativeUrl + "')");
+    };
+    /**
      * Gets a file by server relative url
      *
      * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
      */
     Web.prototype.getFileByServerRelativeUrl = function (fileRelativeUrl) {
         return new files_1.File(this, "getFileByServerRelativeUrl('" + fileRelativeUrl + "')");
+    };
+    /**
+     * Gets a file by server relative url if your file name contains # and % characters
+     * you need to first encode the file name using encodeURIComponent() and then pass the url
+     * let url = "/sites/test/Shared Documents/" + encodeURIComponent("%123.docx");
+     *
+     * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
+     */
+    Web.prototype.getFileByServerRelativePath = function (fileRelativeUrl) {
+        return new files_1.File(this, "getFileByServerRelativePath(decodedUrl='" + fileRelativeUrl + "')");
     };
     /**
      * Gets a list by server relative url (list's root folder)
@@ -3064,6 +3102,24 @@ var Web = /** @class */ (function (_super) {
     Web.prototype.getAppCatalog = function (url) {
         return new appcatalog_1.AppCatalog(url || this);
     };
+    /**
+     * Gets the collection of available client side web parts for this web instance
+     */
+    Web.prototype.getClientSideWebParts = function () {
+        return this.clone(sharepointqueryable_1.SharePointQueryableCollection, "GetClientSideWebParts").get();
+    };
+    /**
+     * Creates a new client side page
+     *
+     * @param pageName Name of the new page
+     * @param title Display title of the new page
+     * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
+     */
+    Web.prototype.addClientSidePage = function (pageName, title, libraryTitle) {
+        if (title === void 0) { title = pageName.replace(/\.[^/.]+$/, ""); }
+        if (libraryTitle === void 0) { libraryTitle = "Site Pages"; }
+        return clientsidepages_1.ClientSidePage.create(this.lists.getByTitle(libraryTitle), pageName, title);
+    };
     return Web;
 }(sharepointqueryableshareable_1.SharePointQueryableShareableWeb));
 exports.Web = Web;
@@ -3071,812 +3127,6 @@ exports.Web = Web;
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-var collections_1 = __webpack_require__(8);
-var pnplibconfig_1 = __webpack_require__(4);
-var logging_1 = __webpack_require__(5);
-/**
- * A wrapper class to provide a consistent interface to browser based storage
- *
- */
-var PnPClientStorageWrapper = /** @class */ (function () {
-    /**
-     * Creates a new instance of the PnPClientStorageWrapper class
-     *
-     * @constructor
-     */
-    function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
-        this.store = store;
-        this.defaultTimeoutMinutes = defaultTimeoutMinutes;
-        this.defaultTimeoutMinutes = (defaultTimeoutMinutes === void 0) ? -1 : defaultTimeoutMinutes;
-        this.enabled = this.test();
-        // if the cache timeout is enabled call the handler
-        // this will clear any expired items and set the timeout function
-        if (pnplibconfig_1.RuntimeConfig.enableCacheExpiration) {
-            logging_1.Logger.write("Enabling cache expiration.", logging_1.LogLevel.Info);
-            this.cacheExpirationHandler();
-        }
-    }
-    /**
-     * Get a value from storage, or null if that value does not exist
-     *
-     * @param key The key whose value we want to retrieve
-     */
-    PnPClientStorageWrapper.prototype.get = function (key) {
-        if (!this.enabled) {
-            return null;
-        }
-        var o = this.store.getItem(key);
-        if (o == null) {
-            return null;
-        }
-        var persistable = JSON.parse(o);
-        if (new Date(persistable.expiration) <= new Date()) {
-            logging_1.Logger.write("Removing item with key '" + key + "' from cache due to expiration.", logging_1.LogLevel.Info);
-            this.delete(key);
-            return null;
-        }
-        else {
-            return persistable.value;
-        }
-    };
-    /**
-     * Adds a value to the underlying storage
-     *
-     * @param key The key to use when storing the provided value
-     * @param o The value to store
-     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-     */
-    PnPClientStorageWrapper.prototype.put = function (key, o, expire) {
-        if (this.enabled) {
-            this.store.setItem(key, this.createPersistable(o, expire));
-        }
-    };
-    /**
-     * Deletes a value from the underlying storage
-     *
-     * @param key The key of the pair we want to remove from storage
-     */
-    PnPClientStorageWrapper.prototype.delete = function (key) {
-        if (this.enabled) {
-            this.store.removeItem(key);
-        }
-    };
-    /**
-     * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
-     *
-     * @param key The key to use when storing the provided value
-     * @param getter A function which will upon execution provide the desired value
-     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-     */
-    PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
-        var _this = this;
-        if (!this.enabled) {
-            return getter();
-        }
-        return new Promise(function (resolve) {
-            var o = _this.get(key);
-            if (o == null) {
-                getter().then(function (d) {
-                    _this.put(key, d, expire);
-                    resolve(d);
-                });
-            }
-            else {
-                resolve(o);
-            }
-        });
-    };
-    /**
-     * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
-     */
-    PnPClientStorageWrapper.prototype.deleteExpired = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (!_this.enabled) {
-                resolve();
-            }
-            try {
-                for (var i = 0; i < _this.store.length; i++) {
-                    var key = _this.store.key(i);
-                    // test the stored item to see if we stored it
-                    if (/["|']?pnp["|']? ?: ?1/i.test(_this.store.getItem(key))) {
-                        // get those items as get will delete from cache if they are expired
-                        _this.get(key);
-                    }
-                }
-                resolve();
-            }
-            catch (e) {
-                reject(e);
-            }
-        });
-    };
-    /**
-     * Used to determine if the wrapped storage is available currently
-     */
-    PnPClientStorageWrapper.prototype.test = function () {
-        var str = "test";
-        try {
-            this.store.setItem(str, str);
-            this.store.removeItem(str);
-            return true;
-        }
-        catch (e) {
-            return false;
-        }
-    };
-    /**
-     * Creates the persistable to store
-     */
-    PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
-        if (typeof expire === "undefined") {
-            // ensure we are by default inline with the global library setting
-            var defaultTimeout = pnplibconfig_1.RuntimeConfig.defaultCachingTimeoutSeconds;
-            if (this.defaultTimeoutMinutes > 0) {
-                defaultTimeout = this.defaultTimeoutMinutes * 60;
-            }
-            expire = util_1.Util.dateAdd(new Date(), "second", defaultTimeout);
-        }
-        return JSON.stringify({ pnp: 1, expiration: expire, value: o });
-    };
-    /**
-     * Deletes expired items added by this library in this.store and sets a timeout to call itself
-     */
-    PnPClientStorageWrapper.prototype.cacheExpirationHandler = function () {
-        var _this = this;
-        logging_1.Logger.write("Called cache expiration handler.", logging_1.LogLevel.Verbose);
-        this.deleteExpired().then(function (_) {
-            // call ourself in the future
-            setTimeout(util_1.Util.getCtxCallback(_this, _this.cacheExpirationHandler), pnplibconfig_1.RuntimeConfig.cacheExpirationIntervalMilliseconds);
-        }).catch(function (e) {
-            // we've got some error - so just stop the loop and report the error
-            logging_1.Logger.log({
-                data: e,
-                level: logging_1.LogLevel.Error,
-                message: "Error deleting expired cache entries, see data for details. Timeout not reset.",
-            });
-        });
-    };
-    return PnPClientStorageWrapper;
-}());
-exports.PnPClientStorageWrapper = PnPClientStorageWrapper;
-/**
- * A thin implementation of in-memory storage for use in nodejs
- */
-var MemoryStorage = /** @class */ (function () {
-    function MemoryStorage(_store) {
-        if (_store === void 0) { _store = new collections_1.Dictionary(); }
-        this._store = _store;
-    }
-    Object.defineProperty(MemoryStorage.prototype, "length", {
-        get: function () {
-            return this._store.count();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MemoryStorage.prototype.clear = function () {
-        this._store.clear();
-    };
-    MemoryStorage.prototype.getItem = function (key) {
-        return this._store.get(key);
-    };
-    MemoryStorage.prototype.key = function (index) {
-        return this._store.getKeys()[index];
-    };
-    MemoryStorage.prototype.removeItem = function (key) {
-        this._store.remove(key);
-    };
-    MemoryStorage.prototype.setItem = function (key, data) {
-        this._store.add(key, data);
-    };
-    return MemoryStorage;
-}());
-/**
- * A class that will establish wrappers for both local and session storage
- */
-var PnPClientStorage = /** @class */ (function () {
-    /**
-     * Creates a new instance of the PnPClientStorage class
-     *
-     * @constructor
-     */
-    function PnPClientStorage(_local, _session) {
-        if (_local === void 0) { _local = null; }
-        if (_session === void 0) { _session = null; }
-        this._local = _local;
-        this._session = _session;
-    }
-    Object.defineProperty(PnPClientStorage.prototype, "local", {
-        /**
-         * Provides access to the local storage of the browser
-         */
-        get: function () {
-            if (this._local === null) {
-                this._local = typeof localStorage !== "undefined" ? new PnPClientStorageWrapper(localStorage) : new PnPClientStorageWrapper(new MemoryStorage());
-            }
-            return this._local;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PnPClientStorage.prototype, "session", {
-        /**
-         * Provides access to the session storage of the browser
-         */
-        get: function () {
-            if (this._session === null) {
-                this._session = typeof sessionStorage !== "undefined" ? new PnPClientStorageWrapper(sessionStorage) : new PnPClientStorageWrapper(new MemoryStorage());
-            }
-            return this._session;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return PnPClientStorage;
-}());
-exports.PnPClientStorage = PnPClientStorage;
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var exceptions_1 = __webpack_require__(2);
-var logging_1 = __webpack_require__(5);
-var ODataParserBase = /** @class */ (function () {
-    function ODataParserBase() {
-    }
-    ODataParserBase.prototype.parse = function (r) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this.handleError(r, reject)) {
-                if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")) === 0) || r.status === 204) {
-                    resolve({});
-                }
-                else {
-                    // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
-                    r.text()
-                        .then(function (txt) { return txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {}; })
-                        .then(function (json) { return resolve(_this.parseODataJSON(json)); })
-                        .catch(function (e) { return reject(e); });
-                }
-            }
-        });
-    };
-    ODataParserBase.prototype.handleError = function (r, reject) {
-        if (!r.ok) {
-            r.json().then(function (json) {
-                // include the headers as they contain diagnostic information
-                var data = {
-                    responseBody: json,
-                    responseHeaders: r.headers,
-                };
-                reject(new exceptions_1.ProcessHttpClientResponseException(r.status, r.statusText, data));
-            }).catch(function (e) {
-                // we failed to read the body - possibly it is empty. Let's report the original status that caused
-                // the request to fail and log the error with parsing the body if anyone needs it for debugging
-                logging_1.Logger.log({
-                    data: e,
-                    level: logging_1.LogLevel.Warning,
-                    message: "There was an error parsing the error response body. See data for details.",
-                });
-                // include the headers as they contain diagnostic information
-                var data = {
-                    responseBody: "[[body not available]]",
-                    responseHeaders: r.headers,
-                };
-                reject(new exceptions_1.ProcessHttpClientResponseException(r.status, r.statusText, data));
-            });
-        }
-        return r.ok;
-    };
-    ODataParserBase.prototype.parseODataJSON = function (json) {
-        var result = json;
-        if (json.hasOwnProperty("d")) {
-            if (json.d.hasOwnProperty("results")) {
-                result = json.d.results;
-            }
-            else {
-                result = json.d;
-            }
-        }
-        else if (json.hasOwnProperty("value")) {
-            result = json.value;
-        }
-        return result;
-    };
-    return ODataParserBase;
-}());
-exports.ODataParserBase = ODataParserBase;
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var items_1 = __webpack_require__(15);
-var views_1 = __webpack_require__(48);
-var contenttypes_1 = __webpack_require__(24);
-var fields_1 = __webpack_require__(37);
-var forms_1 = __webpack_require__(49);
-var subscriptions_1 = __webpack_require__(50);
-var sharepointqueryable_1 = __webpack_require__(1);
-var sharepointqueryablesecurable_1 = __webpack_require__(34);
-var util_1 = __webpack_require__(0);
-var usercustomactions_1 = __webpack_require__(25);
-var odata_1 = __webpack_require__(3);
-var exceptions_1 = __webpack_require__(2);
-var folders_1 = __webpack_require__(18);
-/**
- * Describes a collection of List objects
- *
- */
-var Lists = /** @class */ (function (_super) {
-    __extends(Lists, _super);
-    /**
-     * Creates a new instance of the Lists class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    function Lists(baseUrl, path) {
-        if (path === void 0) { path = "lists"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a list from the collection by title
-     *
-     * @param title The title of the list
-     */
-    Lists.prototype.getByTitle = function (title) {
-        return new List(this, "getByTitle('" + title + "')");
-    };
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the list (GUID)
-     */
-    Lists.prototype.getById = function (id) {
-        var list = new List(this);
-        list.concat("('" + id + "')");
-        return list;
-    };
-    /**
-     * Adds a new list to the collection
-     *
-     * @param title The new list's title
-     * @param description The new list's description
-     * @param template The list template value
-     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
-     * @param additionalSettings Will be passed as part of the list creation body
-     */
-    Lists.prototype.add = function (title, description, template, enableContentTypes, additionalSettings) {
-        var _this = this;
-        if (description === void 0) { description = ""; }
-        if (template === void 0) { template = 100; }
-        if (enableContentTypes === void 0) { enableContentTypes = false; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        var addSettings = util_1.Util.extend({
-            "AllowContentTypes": enableContentTypes,
-            "BaseTemplate": template,
-            "ContentTypesEnabled": enableContentTypes,
-            "Description": description,
-            "Title": title,
-            "__metadata": { "type": "SP.List" },
-        }, additionalSettings);
-        return this.postCore({ body: JSON.stringify(addSettings) }).then(function (data) {
-            return { data: data, list: _this.getByTitle(addSettings.Title) };
-        });
-    };
-    /**
-     * Ensures that the specified list exists in the collection (note: this method not supported for batching)
-     *
-     * @param title The new list's title
-     * @param description The new list's description
-     * @param template The list template value
-     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
-     * @param additionalSettings Will be passed as part of the list creation body or used to update an existing list
-     */
-    Lists.prototype.ensure = function (title, description, template, enableContentTypes, additionalSettings) {
-        var _this = this;
-        if (description === void 0) { description = ""; }
-        if (template === void 0) { template = 100; }
-        if (enableContentTypes === void 0) { enableContentTypes = false; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        if (this.hasBatch) {
-            throw new exceptions_1.NotSupportedInBatchException("The ensure list method");
-        }
-        return new Promise(function (resolve, reject) {
-            var addOrUpdateSettings = util_1.Util.extend(additionalSettings, { Title: title, Description: description, ContentTypesEnabled: enableContentTypes }, true);
-            var list = _this.getByTitle(addOrUpdateSettings.Title);
-            list.get().then(function (_) {
-                list.update(addOrUpdateSettings).then(function (d) {
-                    resolve({ created: false, data: d, list: _this.getByTitle(addOrUpdateSettings.Title) });
-                }).catch(function (e) { return reject(e); });
-            }).catch(function (_) {
-                _this.add(title, description, template, enableContentTypes, addOrUpdateSettings).then(function (r) {
-                    resolve({ created: true, data: r.data, list: _this.getByTitle(addOrUpdateSettings.Title) });
-                }).catch(function (e) { return reject(e); });
-            });
-        });
-    };
-    /**
-     * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
-     */
-    Lists.prototype.ensureSiteAssetsLibrary = function () {
-        return this.clone(Lists, "ensuresiteassetslibrary").postCore().then(function (json) {
-            return new List(odata_1.spExtractODataId(json));
-        });
-    };
-    /**
-     * Gets a list that is the default location for wiki pages.
-     */
-    Lists.prototype.ensureSitePagesLibrary = function () {
-        return this.clone(Lists, "ensuresitepageslibrary").postCore().then(function (json) {
-            return new List(odata_1.spExtractODataId(json));
-        });
-    };
-    return Lists;
-}(sharepointqueryable_1.SharePointQueryableCollection));
-exports.Lists = Lists;
-/**
- * Describes a single List instance
- *
- */
-var List = /** @class */ (function (_super) {
-    __extends(List, _super);
-    function List() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(List.prototype, "contentTypes", {
-        /**
-         * Gets the content types in this list
-         *
-         */
-        get: function () {
-            return new contenttypes_1.ContentTypes(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "items", {
-        /**
-         * Gets the items in this list
-         *
-         */
-        get: function () {
-            return new items_1.Items(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "views", {
-        /**
-         * Gets the views in this list
-         *
-         */
-        get: function () {
-            return new views_1.Views(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "fields", {
-        /**
-         * Gets the fields in this list
-         *
-         */
-        get: function () {
-            return new fields_1.Fields(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "forms", {
-        /**
-         * Gets the forms in this list
-         *
-         */
-        get: function () {
-            return new forms_1.Forms(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "defaultView", {
-        /**
-         * Gets the default view of this list
-         *
-         */
-        get: function () {
-            return new sharepointqueryable_1.SharePointQueryableInstance(this, "DefaultView");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "userCustomActions", {
-        /**
-         * Get all custom actions on a site collection
-         *
-         */
-        get: function () {
-            return new usercustomactions_1.UserCustomActions(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "effectiveBasePermissions", {
-        /**
-         * Gets the effective base permissions of this list
-         *
-         */
-        get: function () {
-            return new sharepointqueryable_1.SharePointQueryable(this, "EffectiveBasePermissions");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "eventReceivers", {
-        /**
-         * Gets the event receivers attached to this list
-         *
-         */
-        get: function () {
-            return new sharepointqueryable_1.SharePointQueryableCollection(this, "EventReceivers");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "relatedFields", {
-        /**
-         * Gets the related fields of this list
-         *
-         */
-        get: function () {
-            return new sharepointqueryable_1.SharePointQueryable(this, "getRelatedFields");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "informationRightsManagementSettings", {
-        /**
-         * Gets the IRM settings for this list
-         *
-         */
-        get: function () {
-            return new sharepointqueryable_1.SharePointQueryable(this, "InformationRightsManagementSettings");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "subscriptions", {
-        /**
-         * Gets the webhook subscriptions of this list
-         *
-         */
-        get: function () {
-            return new subscriptions_1.Subscriptions(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(List.prototype, "rootFolder", {
-        /**
-         * The root folder of the list
-         */
-        get: function () {
-            return new folders_1.Folder(this, "rootFolder");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets a view by view guid id
-     *
-     */
-    List.prototype.getView = function (viewId) {
-        return new views_1.View(this, "getView('" + viewId + "')");
-    };
-    /**
-     * Updates this list intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the list
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    /* tslint:disable no-string-literal */
-    List.prototype.update = function (properties, eTag) {
-        var _this = this;
-        if (eTag === void 0) { eTag = "*"; }
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "__metadata": { "type": "SP.List" },
-        }, properties));
-        return this.postCore({
-            body: postBody,
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            var retList = _this;
-            if (properties.hasOwnProperty("Title")) {
-                retList = _this.getParent(List, _this.parentUrl, "getByTitle('" + properties["Title"] + "')");
-            }
-            return {
-                data: data,
-                list: retList,
-            };
-        });
-    };
-    /* tslint:enable */
-    /**
-     * Delete this list
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    List.prototype.delete = function (eTag) {
-        if (eTag === void 0) { eTag = "*"; }
-        return this.postCore({
-            headers: {
-                "IF-Match": eTag,
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
-     */
-    List.prototype.getChanges = function (query) {
-        return this.clone(List, "getchanges").postCore({
-            body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
-        });
-    };
-    /**
-     * Returns a collection of items from the list based on the specified query.
-     *
-     * @param CamlQuery The Query schema of Collaborative Application Markup
-     * Language (CAML) is used in various ways within the context of Microsoft SharePoint Foundation
-     * to define queries against list data.
-     * see:
-     *
-     * https://msdn.microsoft.com/en-us/library/office/ms467521.aspx
-     *
-     * @param expands A URI with a $expand System Query Option indicates that Entries associated with
-     * the Entry or Collection of Entries identified by the Resource Path
-     * section of the URI must be represented inline (i.e. eagerly loaded).
-     * see:
-     *
-     * https://msdn.microsoft.com/en-us/library/office/fp142385.aspx
-     *
-     * http://www.odata.org/documentation/odata-version-2-0/uri-conventions/#ExpandSystemQueryOption
-     */
-    List.prototype.getItemsByCAMLQuery = function (query) {
-        var expands = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            expands[_i - 1] = arguments[_i];
-        }
-        var q = this.clone(List, "getitems");
-        return q.expand.apply(q, expands).postCore({
-            body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
-        });
-    };
-    /**
-     * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
-     */
-    List.prototype.getListItemChangesSinceToken = function (query) {
-        return this.clone(List, "getlistitemchangessincetoken").postCore({
-            body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
-        }, { parse: function (r) { return r.text(); } });
-    };
-    /**
-     * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
-     */
-    List.prototype.recycle = function () {
-        return this.clone(List, "recycle").postCore().then(function (data) {
-            if (data.hasOwnProperty("Recycle")) {
-                return data.Recycle;
-            }
-            else {
-                return data;
-            }
-        });
-    };
-    /**
-     * Renders list data based on the view xml provided
-     */
-    List.prototype.renderListData = function (viewXml) {
-        var q = this.clone(List, "renderlistdata(@viewXml)");
-        q.query.add("@viewXml", "'" + viewXml + "'");
-        return q.postCore().then(function (data) {
-            if (data.hasOwnProperty("RenderListData")) {
-                return JSON.parse(data.RenderListData);
-            }
-            return JSON.parse(data);
-        });
-    };
-    /**
-     * Returns the data for the specified query view
-     *
-     * @param parameters The parameters to be used to render list data as JSON string.
-     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
-     */
-    List.prototype.renderListDataAsStream = function (parameters, overrideParameters) {
-        if (overrideParameters === void 0) { overrideParameters = null; }
-        var postBody = {
-            overrideParameters: util_1.Util.extend({
-                "__metadata": { "type": "SP.RenderListDataOverrideParameters" },
-            }, overrideParameters),
-            parameters: util_1.Util.extend({
-                "__metadata": { "type": "SP.RenderListDataParameters" },
-            }, parameters),
-        };
-        return this.clone(List, "RenderListDataAsStream", true).postCore({
-            body: JSON.stringify(postBody),
-        });
-    };
-    /**
-     * Gets the field values and field schema attributes for a list item.
-     */
-    List.prototype.renderListFormData = function (itemId, formId, mode) {
-        return this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')").postCore().then(function (data) {
-            // data will be a string, so we parse it again
-            data = JSON.parse(data);
-            if (data.hasOwnProperty("ListData")) {
-                return data.ListData;
-            }
-            else {
-                return data;
-            }
-        });
-    };
-    /**
-     * Reserves a list item ID for idempotent list item creation.
-     */
-    List.prototype.reserveListItemId = function () {
-        return this.clone(List, "reservelistitemid").postCore().then(function (data) {
-            if (data.hasOwnProperty("ReserveListItemId")) {
-                return data.ReserveListItemId;
-            }
-            else {
-                return data;
-            }
-        });
-    };
-    /**
-     * Returns the ListItemEntityTypeFullName for this list, used when adding/updating list items. Does not support batching.
-     *
-     */
-    List.prototype.getListItemEntityTypeFullName = function () {
-        return this.clone(List, null, false).select("ListItemEntityTypeFullName").getAs().then(function (o) { return o.ListItemEntityTypeFullName; });
-    };
-    return List;
-}(sharepointqueryablesecurable_1.SharePointQueryableSecurable));
-exports.List = List;
-
-
-/***/ }),
-/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3895,12 +3145,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
 var sharepointqueryableshareable_1 = __webpack_require__(16);
 var folders_1 = __webpack_require__(18);
-var files_1 = __webpack_require__(9);
+var files_1 = __webpack_require__(8);
 var contenttypes_1 = __webpack_require__(24);
 var util_1 = __webpack_require__(0);
-var core_1 = __webpack_require__(13);
-var attachmentfiles_1 = __webpack_require__(47);
-var lists_1 = __webpack_require__(14);
+var core_1 = __webpack_require__(14);
+var attachmentfiles_1 = __webpack_require__(49);
+var lists_1 = __webpack_require__(15);
+var pnp_1 = __webpack_require__(29);
 /**
  * Describes a collection of Item objects
  *
@@ -3940,9 +3191,16 @@ var Items = /** @class */ (function (_super) {
      * Skips the specified number of items (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#sectionSection6)
      *
      * @param skip The starting id where the page should start, use with top to specify pages
+     * @param reverse It true the PagedPrev=true parameter is added allowing backwards navigation in the collection
      */
-    Items.prototype.skip = function (skip) {
-        this._query.add("$skiptoken", encodeURIComponent("Paged=TRUE&p_ID=" + skip));
+    Items.prototype.skip = function (skip, reverse) {
+        if (reverse === void 0) { reverse = false; }
+        if (reverse) {
+            this._query.add("$skiptoken", encodeURIComponent("Paged=TRUE&PagedPrev=TRUE&p_ID=" + skip));
+        }
+        else {
+            this._query.add("$skiptoken", encodeURIComponent("Paged=TRUE&p_ID=" + skip));
+        }
         return this;
     };
     /**
@@ -3952,7 +3210,52 @@ var Items = /** @class */ (function (_super) {
     Items.prototype.getPaged = function () {
         return this.getAs(new PagedItemCollectionParser());
     };
-    //
+    /**
+     * Gets all the items in a list, regardless of count. Does not support batching or caching
+     *
+     *  @param requestSize Number of items to return in each request (Default: 2000)
+     */
+    Items.prototype.getAll = function (requestSize) {
+        var _this = this;
+        if (requestSize === void 0) { requestSize = 2000; }
+        pnp_1.Logger.write("Calling items.getAll should be done sparingly. Ensure this is the correct choice. If you are unsure, it is not.", pnp_1.LogLevel.Warning);
+        // this will be used for the actual query
+        // and we set no metadata here to try and reduce traffic
+        var items = new Items(this, "").top(requestSize).configure({
+            headers: {
+                "Accept": "application/json;odata=nometadata",
+            },
+        });
+        // let's copy over the odata query params that can be applied
+        // $top - allow setting the page size this way (override what we did above)
+        // $select - allow picking the return fields (good behavior)
+        // $filter - allow setting a filter, though this may fail for large lists
+        this.query.getKeys()
+            .filter(function (k) { return /^\$select$|^\$filter$|^\$top$/.test(k.toLowerCase()); })
+            .reduce(function (i, k) {
+            i.query.add(k, _this.query.get(k));
+            return i;
+        }, items);
+        // give back the promise
+        return new Promise(function (resolve, reject) {
+            // this will eventually hold the items we return
+            var itemsCollector = [];
+            // action that will gather up our results recursively
+            var gatherer = function (last) {
+                // collect that set of results
+                [].push.apply(itemsCollector, last.results);
+                // if we have more, repeat - otherwise resolve with the collected items
+                if (last.hasNext) {
+                    last.getNext().then(gatherer).catch(reject);
+                }
+                else {
+                    resolve(itemsCollector);
+                }
+            };
+            // start the cycle
+            items.getPaged().then(gatherer).catch(reject);
+        });
+    };
     /**
      * Adds a new item to the collection
      *
@@ -4324,6 +3627,812 @@ var ItemUpdatedParser = /** @class */ (function (_super) {
 
 
 /***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var collections_1 = __webpack_require__(9);
+var pnplibconfig_1 = __webpack_require__(4);
+var logging_1 = __webpack_require__(5);
+/**
+ * A wrapper class to provide a consistent interface to browser based storage
+ *
+ */
+var PnPClientStorageWrapper = /** @class */ (function () {
+    /**
+     * Creates a new instance of the PnPClientStorageWrapper class
+     *
+     * @constructor
+     */
+    function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
+        this.store = store;
+        this.defaultTimeoutMinutes = defaultTimeoutMinutes;
+        this.defaultTimeoutMinutes = (defaultTimeoutMinutes === void 0) ? -1 : defaultTimeoutMinutes;
+        this.enabled = this.test();
+        // if the cache timeout is enabled call the handler
+        // this will clear any expired items and set the timeout function
+        if (pnplibconfig_1.RuntimeConfig.enableCacheExpiration) {
+            logging_1.Logger.write("Enabling cache expiration.", logging_1.LogLevel.Info);
+            this.cacheExpirationHandler();
+        }
+    }
+    /**
+     * Get a value from storage, or null if that value does not exist
+     *
+     * @param key The key whose value we want to retrieve
+     */
+    PnPClientStorageWrapper.prototype.get = function (key) {
+        if (!this.enabled) {
+            return null;
+        }
+        var o = this.store.getItem(key);
+        if (o == null) {
+            return null;
+        }
+        var persistable = JSON.parse(o);
+        if (new Date(persistable.expiration) <= new Date()) {
+            logging_1.Logger.write("Removing item with key '" + key + "' from cache due to expiration.", logging_1.LogLevel.Info);
+            this.delete(key);
+            return null;
+        }
+        else {
+            return persistable.value;
+        }
+    };
+    /**
+     * Adds a value to the underlying storage
+     *
+     * @param key The key to use when storing the provided value
+     * @param o The value to store
+     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+     */
+    PnPClientStorageWrapper.prototype.put = function (key, o, expire) {
+        if (this.enabled) {
+            this.store.setItem(key, this.createPersistable(o, expire));
+        }
+    };
+    /**
+     * Deletes a value from the underlying storage
+     *
+     * @param key The key of the pair we want to remove from storage
+     */
+    PnPClientStorageWrapper.prototype.delete = function (key) {
+        if (this.enabled) {
+            this.store.removeItem(key);
+        }
+    };
+    /**
+     * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
+     *
+     * @param key The key to use when storing the provided value
+     * @param getter A function which will upon execution provide the desired value
+     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+     */
+    PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
+        var _this = this;
+        if (!this.enabled) {
+            return getter();
+        }
+        return new Promise(function (resolve) {
+            var o = _this.get(key);
+            if (o == null) {
+                getter().then(function (d) {
+                    _this.put(key, d, expire);
+                    resolve(d);
+                });
+            }
+            else {
+                resolve(o);
+            }
+        });
+    };
+    /**
+     * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
+     */
+    PnPClientStorageWrapper.prototype.deleteExpired = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            if (!_this.enabled) {
+                resolve();
+            }
+            try {
+                for (var i = 0; i < _this.store.length; i++) {
+                    var key = _this.store.key(i);
+                    // test the stored item to see if we stored it
+                    if (/["|']?pnp["|']? ?: ?1/i.test(_this.store.getItem(key))) {
+                        // get those items as get will delete from cache if they are expired
+                        _this.get(key);
+                    }
+                }
+                resolve();
+            }
+            catch (e) {
+                reject(e);
+            }
+        });
+    };
+    /**
+     * Used to determine if the wrapped storage is available currently
+     */
+    PnPClientStorageWrapper.prototype.test = function () {
+        var str = "test";
+        try {
+            this.store.setItem(str, str);
+            this.store.removeItem(str);
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    };
+    /**
+     * Creates the persistable to store
+     */
+    PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
+        if (typeof expire === "undefined") {
+            // ensure we are by default inline with the global library setting
+            var defaultTimeout = pnplibconfig_1.RuntimeConfig.defaultCachingTimeoutSeconds;
+            if (this.defaultTimeoutMinutes > 0) {
+                defaultTimeout = this.defaultTimeoutMinutes * 60;
+            }
+            expire = util_1.Util.dateAdd(new Date(), "second", defaultTimeout);
+        }
+        return JSON.stringify({ pnp: 1, expiration: expire, value: o });
+    };
+    /**
+     * Deletes expired items added by this library in this.store and sets a timeout to call itself
+     */
+    PnPClientStorageWrapper.prototype.cacheExpirationHandler = function () {
+        var _this = this;
+        logging_1.Logger.write("Called cache expiration handler.", logging_1.LogLevel.Verbose);
+        this.deleteExpired().then(function (_) {
+            // call ourself in the future
+            setTimeout(util_1.Util.getCtxCallback(_this, _this.cacheExpirationHandler), pnplibconfig_1.RuntimeConfig.cacheExpirationIntervalMilliseconds);
+        }).catch(function (e) {
+            // we've got some error - so just stop the loop and report the error
+            logging_1.Logger.log({
+                data: e,
+                level: logging_1.LogLevel.Error,
+                message: "Error deleting expired cache entries, see data for details. Timeout not reset.",
+            });
+        });
+    };
+    return PnPClientStorageWrapper;
+}());
+exports.PnPClientStorageWrapper = PnPClientStorageWrapper;
+/**
+ * A thin implementation of in-memory storage for use in nodejs
+ */
+var MemoryStorage = /** @class */ (function () {
+    function MemoryStorage(_store) {
+        if (_store === void 0) { _store = new collections_1.Dictionary(); }
+        this._store = _store;
+    }
+    Object.defineProperty(MemoryStorage.prototype, "length", {
+        get: function () {
+            return this._store.count();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MemoryStorage.prototype.clear = function () {
+        this._store.clear();
+    };
+    MemoryStorage.prototype.getItem = function (key) {
+        return this._store.get(key);
+    };
+    MemoryStorage.prototype.key = function (index) {
+        return this._store.getKeys()[index];
+    };
+    MemoryStorage.prototype.removeItem = function (key) {
+        this._store.remove(key);
+    };
+    MemoryStorage.prototype.setItem = function (key, data) {
+        this._store.add(key, data);
+    };
+    return MemoryStorage;
+}());
+/**
+ * A class that will establish wrappers for both local and session storage
+ */
+var PnPClientStorage = /** @class */ (function () {
+    /**
+     * Creates a new instance of the PnPClientStorage class
+     *
+     * @constructor
+     */
+    function PnPClientStorage(_local, _session) {
+        if (_local === void 0) { _local = null; }
+        if (_session === void 0) { _session = null; }
+        this._local = _local;
+        this._session = _session;
+    }
+    Object.defineProperty(PnPClientStorage.prototype, "local", {
+        /**
+         * Provides access to the local storage of the browser
+         */
+        get: function () {
+            if (this._local === null) {
+                this._local = typeof localStorage !== "undefined" ? new PnPClientStorageWrapper(localStorage) : new PnPClientStorageWrapper(new MemoryStorage());
+            }
+            return this._local;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PnPClientStorage.prototype, "session", {
+        /**
+         * Provides access to the session storage of the browser
+         */
+        get: function () {
+            if (this._session === null) {
+                this._session = typeof sessionStorage !== "undefined" ? new PnPClientStorageWrapper(sessionStorage) : new PnPClientStorageWrapper(new MemoryStorage());
+            }
+            return this._session;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return PnPClientStorage;
+}());
+exports.PnPClientStorage = PnPClientStorage;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var exceptions_1 = __webpack_require__(2);
+var logging_1 = __webpack_require__(5);
+var ODataParserBase = /** @class */ (function () {
+    function ODataParserBase() {
+    }
+    ODataParserBase.prototype.parse = function (r) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            if (_this.handleError(r, reject)) {
+                if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")) === 0) || r.status === 204) {
+                    resolve({});
+                }
+                else {
+                    // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
+                    r.text()
+                        .then(function (txt) { return txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {}; })
+                        .then(function (json) { return resolve(_this.parseODataJSON(json)); })
+                        .catch(function (e) { return reject(e); });
+                }
+            }
+        });
+    };
+    ODataParserBase.prototype.handleError = function (r, reject) {
+        if (!r.ok) {
+            r.json().then(function (json) {
+                // include the headers as they contain diagnostic information
+                var data = {
+                    responseBody: json,
+                    responseHeaders: r.headers,
+                };
+                reject(new exceptions_1.ProcessHttpClientResponseException(r.status, r.statusText, data));
+            }).catch(function (e) {
+                // we failed to read the body - possibly it is empty. Let's report the original status that caused
+                // the request to fail and log the error with parsing the body if anyone needs it for debugging
+                logging_1.Logger.log({
+                    data: e,
+                    level: logging_1.LogLevel.Warning,
+                    message: "There was an error parsing the error response body. See data for details.",
+                });
+                // include the headers as they contain diagnostic information
+                var data = {
+                    responseBody: "[[body not available]]",
+                    responseHeaders: r.headers,
+                };
+                reject(new exceptions_1.ProcessHttpClientResponseException(r.status, r.statusText, data));
+            });
+        }
+        return r.ok;
+    };
+    ODataParserBase.prototype.parseODataJSON = function (json) {
+        var result = json;
+        if (json.hasOwnProperty("d")) {
+            if (json.d.hasOwnProperty("results")) {
+                result = json.d.results;
+            }
+            else {
+                result = json.d;
+            }
+        }
+        else if (json.hasOwnProperty("value")) {
+            result = json.value;
+        }
+        return result;
+    };
+    return ODataParserBase;
+}());
+exports.ODataParserBase = ODataParserBase;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var items_1 = __webpack_require__(12);
+var views_1 = __webpack_require__(50);
+var contenttypes_1 = __webpack_require__(24);
+var fields_1 = __webpack_require__(25);
+var forms_1 = __webpack_require__(51);
+var subscriptions_1 = __webpack_require__(52);
+var sharepointqueryable_1 = __webpack_require__(1);
+var sharepointqueryablesecurable_1 = __webpack_require__(36);
+var util_1 = __webpack_require__(0);
+var usercustomactions_1 = __webpack_require__(26);
+var odata_1 = __webpack_require__(3);
+var exceptions_1 = __webpack_require__(2);
+var folders_1 = __webpack_require__(18);
+/**
+ * Describes a collection of List objects
+ *
+ */
+var Lists = /** @class */ (function (_super) {
+    __extends(Lists, _super);
+    /**
+     * Creates a new instance of the Lists class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
+     */
+    function Lists(baseUrl, path) {
+        if (path === void 0) { path = "lists"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a list from the collection by title
+     *
+     * @param title The title of the list
+     */
+    Lists.prototype.getByTitle = function (title) {
+        return new List(this, "getByTitle('" + title + "')");
+    };
+    /**
+     * Gets a list from the collection by guid id
+     *
+     * @param id The Id of the list (GUID)
+     */
+    Lists.prototype.getById = function (id) {
+        var list = new List(this);
+        list.concat("('" + id + "')");
+        return list;
+    };
+    /**
+     * Adds a new list to the collection
+     *
+     * @param title The new list's title
+     * @param description The new list's description
+     * @param template The list template value
+     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
+     * @param additionalSettings Will be passed as part of the list creation body
+     */
+    Lists.prototype.add = function (title, description, template, enableContentTypes, additionalSettings) {
+        var _this = this;
+        if (description === void 0) { description = ""; }
+        if (template === void 0) { template = 100; }
+        if (enableContentTypes === void 0) { enableContentTypes = false; }
+        if (additionalSettings === void 0) { additionalSettings = {}; }
+        var addSettings = util_1.Util.extend({
+            "AllowContentTypes": enableContentTypes,
+            "BaseTemplate": template,
+            "ContentTypesEnabled": enableContentTypes,
+            "Description": description,
+            "Title": title,
+            "__metadata": { "type": "SP.List" },
+        }, additionalSettings);
+        return this.postCore({ body: JSON.stringify(addSettings) }).then(function (data) {
+            return { data: data, list: _this.getByTitle(addSettings.Title) };
+        });
+    };
+    /**
+     * Ensures that the specified list exists in the collection (note: this method not supported for batching)
+     *
+     * @param title The new list's title
+     * @param description The new list's description
+     * @param template The list template value
+     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
+     * @param additionalSettings Will be passed as part of the list creation body or used to update an existing list
+     */
+    Lists.prototype.ensure = function (title, description, template, enableContentTypes, additionalSettings) {
+        var _this = this;
+        if (description === void 0) { description = ""; }
+        if (template === void 0) { template = 100; }
+        if (enableContentTypes === void 0) { enableContentTypes = false; }
+        if (additionalSettings === void 0) { additionalSettings = {}; }
+        if (this.hasBatch) {
+            throw new exceptions_1.NotSupportedInBatchException("The ensure list method");
+        }
+        return new Promise(function (resolve, reject) {
+            var addOrUpdateSettings = util_1.Util.extend(additionalSettings, { Title: title, Description: description, ContentTypesEnabled: enableContentTypes }, true);
+            var list = _this.getByTitle(addOrUpdateSettings.Title);
+            list.get().then(function (_) {
+                list.update(addOrUpdateSettings).then(function (d) {
+                    resolve({ created: false, data: d, list: _this.getByTitle(addOrUpdateSettings.Title) });
+                }).catch(function (e) { return reject(e); });
+            }).catch(function (_) {
+                _this.add(title, description, template, enableContentTypes, addOrUpdateSettings).then(function (r) {
+                    resolve({ created: true, data: r.data, list: _this.getByTitle(addOrUpdateSettings.Title) });
+                }).catch(function (e) { return reject(e); });
+            });
+        });
+    };
+    /**
+     * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
+     */
+    Lists.prototype.ensureSiteAssetsLibrary = function () {
+        return this.clone(Lists, "ensuresiteassetslibrary").postCore().then(function (json) {
+            return new List(odata_1.spExtractODataId(json));
+        });
+    };
+    /**
+     * Gets a list that is the default location for wiki pages.
+     */
+    Lists.prototype.ensureSitePagesLibrary = function () {
+        return this.clone(Lists, "ensuresitepageslibrary").postCore().then(function (json) {
+            return new List(odata_1.spExtractODataId(json));
+        });
+    };
+    return Lists;
+}(sharepointqueryable_1.SharePointQueryableCollection));
+exports.Lists = Lists;
+/**
+ * Describes a single List instance
+ *
+ */
+var List = /** @class */ (function (_super) {
+    __extends(List, _super);
+    function List() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(List.prototype, "contentTypes", {
+        /**
+         * Gets the content types in this list
+         *
+         */
+        get: function () {
+            return new contenttypes_1.ContentTypes(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "items", {
+        /**
+         * Gets the items in this list
+         *
+         */
+        get: function () {
+            return new items_1.Items(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "views", {
+        /**
+         * Gets the views in this list
+         *
+         */
+        get: function () {
+            return new views_1.Views(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "fields", {
+        /**
+         * Gets the fields in this list
+         *
+         */
+        get: function () {
+            return new fields_1.Fields(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "forms", {
+        /**
+         * Gets the forms in this list
+         *
+         */
+        get: function () {
+            return new forms_1.Forms(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "defaultView", {
+        /**
+         * Gets the default view of this list
+         *
+         */
+        get: function () {
+            return new views_1.View(this, "DefaultView");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "userCustomActions", {
+        /**
+         * Get all custom actions on a site collection
+         *
+         */
+        get: function () {
+            return new usercustomactions_1.UserCustomActions(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "effectiveBasePermissions", {
+        /**
+         * Gets the effective base permissions of this list
+         *
+         */
+        get: function () {
+            return new sharepointqueryable_1.SharePointQueryable(this, "EffectiveBasePermissions");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "eventReceivers", {
+        /**
+         * Gets the event receivers attached to this list
+         *
+         */
+        get: function () {
+            return new sharepointqueryable_1.SharePointQueryableCollection(this, "EventReceivers");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "relatedFields", {
+        /**
+         * Gets the related fields of this list
+         *
+         */
+        get: function () {
+            return new sharepointqueryable_1.SharePointQueryable(this, "getRelatedFields");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "informationRightsManagementSettings", {
+        /**
+         * Gets the IRM settings for this list
+         *
+         */
+        get: function () {
+            return new sharepointqueryable_1.SharePointQueryable(this, "InformationRightsManagementSettings");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "subscriptions", {
+        /**
+         * Gets the webhook subscriptions of this list
+         *
+         */
+        get: function () {
+            return new subscriptions_1.Subscriptions(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(List.prototype, "rootFolder", {
+        /**
+         * The root folder of the list
+         */
+        get: function () {
+            return new folders_1.Folder(this, "rootFolder");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets a view by view guid id
+     *
+     */
+    List.prototype.getView = function (viewId) {
+        return new views_1.View(this, "getView('" + viewId + "')");
+    };
+    /**
+     * Updates this list intance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the list
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    /* tslint:disable no-string-literal */
+    List.prototype.update = function (properties, eTag) {
+        var _this = this;
+        if (eTag === void 0) { eTag = "*"; }
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "__metadata": { "type": "SP.List" },
+        }, properties));
+        return this.postCore({
+            body: postBody,
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            var retList = _this;
+            if (properties.hasOwnProperty("Title")) {
+                retList = _this.getParent(List, _this.parentUrl, "getByTitle('" + properties["Title"] + "')");
+            }
+            return {
+                data: data,
+                list: retList,
+            };
+        });
+    };
+    /* tslint:enable */
+    /**
+     * Delete this list
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    List.prototype.delete = function (eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return this.postCore({
+            headers: {
+                "IF-Match": eTag,
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    /**
+     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
+     */
+    List.prototype.getChanges = function (query) {
+        return this.clone(List, "getchanges").postCore({
+            body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
+        });
+    };
+    /**
+     * Returns a collection of items from the list based on the specified query.
+     *
+     * @param CamlQuery The Query schema of Collaborative Application Markup
+     * Language (CAML) is used in various ways within the context of Microsoft SharePoint Foundation
+     * to define queries against list data.
+     * see:
+     *
+     * https://msdn.microsoft.com/en-us/library/office/ms467521.aspx
+     *
+     * @param expands A URI with a $expand System Query Option indicates that Entries associated with
+     * the Entry or Collection of Entries identified by the Resource Path
+     * section of the URI must be represented inline (i.e. eagerly loaded).
+     * see:
+     *
+     * https://msdn.microsoft.com/en-us/library/office/fp142385.aspx
+     *
+     * http://www.odata.org/documentation/odata-version-2-0/uri-conventions/#ExpandSystemQueryOption
+     */
+    List.prototype.getItemsByCAMLQuery = function (query) {
+        var expands = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            expands[_i - 1] = arguments[_i];
+        }
+        var q = this.clone(List, "getitems");
+        return q.expand.apply(q, expands).postCore({
+            body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
+        });
+    };
+    /**
+     * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
+     */
+    List.prototype.getListItemChangesSinceToken = function (query) {
+        return this.clone(List, "getlistitemchangessincetoken").postCore({
+            body: JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
+        }, { parse: function (r) { return r.text(); } });
+    };
+    /**
+     * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+     */
+    List.prototype.recycle = function () {
+        return this.clone(List, "recycle").postCore().then(function (data) {
+            if (data.hasOwnProperty("Recycle")) {
+                return data.Recycle;
+            }
+            else {
+                return data;
+            }
+        });
+    };
+    /**
+     * Renders list data based on the view xml provided
+     */
+    List.prototype.renderListData = function (viewXml) {
+        var q = this.clone(List, "renderlistdata(@viewXml)");
+        q.query.add("@viewXml", "'" + viewXml + "'");
+        return q.postCore().then(function (data) {
+            if (data.hasOwnProperty("RenderListData")) {
+                return JSON.parse(data.RenderListData);
+            }
+            return JSON.parse(data);
+        });
+    };
+    /**
+     * Returns the data for the specified query view
+     *
+     * @param parameters The parameters to be used to render list data as JSON string.
+     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     */
+    List.prototype.renderListDataAsStream = function (parameters, overrideParameters) {
+        if (overrideParameters === void 0) { overrideParameters = null; }
+        var postBody = {
+            overrideParameters: util_1.Util.extend({
+                "__metadata": { "type": "SP.RenderListDataOverrideParameters" },
+            }, overrideParameters),
+            parameters: util_1.Util.extend({
+                "__metadata": { "type": "SP.RenderListDataParameters" },
+            }, parameters),
+        };
+        return this.clone(List, "RenderListDataAsStream", true).postCore({
+            body: JSON.stringify(postBody),
+        });
+    };
+    /**
+     * Gets the field values and field schema attributes for a list item.
+     */
+    List.prototype.renderListFormData = function (itemId, formId, mode) {
+        return this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')").postCore().then(function (data) {
+            // data will be a string, so we parse it again
+            data = JSON.parse(data);
+            if (data.hasOwnProperty("ListData")) {
+                return data.ListData;
+            }
+            else {
+                return data;
+            }
+        });
+    };
+    /**
+     * Reserves a list item ID for idempotent list item creation.
+     */
+    List.prototype.reserveListItemId = function () {
+        return this.clone(List, "reservelistitemid").postCore().then(function (data) {
+            if (data.hasOwnProperty("ReserveListItemId")) {
+                return data.ReserveListItemId;
+            }
+            else {
+                return data;
+            }
+        });
+    };
+    /**
+     * Returns the ListItemEntityTypeFullName for this list, used when adding/updating list items. Does not support batching.
+     *
+     */
+    List.prototype.getListItemEntityTypeFullName = function () {
+        return this.clone(List, null, false).select("ListItemEntityTypeFullName").getAs().then(function (o) { return o.ListItemEntityTypeFullName; });
+    };
+    return List;
+}(sharepointqueryablesecurable_1.SharePointQueryableSecurable));
+exports.List = List;
+
+
+/***/ }),
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4344,7 +4453,7 @@ var util_1 = __webpack_require__(0);
 var webs_1 = __webpack_require__(11);
 var odata_1 = __webpack_require__(3);
 var sharepointqueryable_1 = __webpack_require__(1);
-var sharepointqueryablesecurable_1 = __webpack_require__(34);
+var sharepointqueryablesecurable_1 = __webpack_require__(36);
 var types_1 = __webpack_require__(17);
 /**
  * Internal helper class used to augment classes to include sharing functionality
@@ -5009,6 +5118,11 @@ var UrlFieldFormatType;
     UrlFieldFormatType[UrlFieldFormatType["Hyperlink"] = 0] = "Hyperlink";
     UrlFieldFormatType[UrlFieldFormatType["Image"] = 1] = "Image";
 })(UrlFieldFormatType = exports.UrlFieldFormatType || (exports.UrlFieldFormatType = {}));
+var ChoiceFieldFormatType;
+(function (ChoiceFieldFormatType) {
+    ChoiceFieldFormatType[ChoiceFieldFormatType["Dropdown"] = 0] = "Dropdown";
+    ChoiceFieldFormatType[ChoiceFieldFormatType["RadioButtons"] = 1] = "RadioButtons";
+})(ChoiceFieldFormatType = exports.ChoiceFieldFormatType || (exports.ChoiceFieldFormatType = {}));
 var PermissionKind;
 (function (PermissionKind) {
     /**
@@ -5328,7 +5442,24 @@ var RenderListDataOptions;
     RenderListDataOptions[RenderListDataOptions["ListData"] = 2] = "ListData";
     RenderListDataOptions[RenderListDataOptions["ListSchema"] = 4] = "ListSchema";
     RenderListDataOptions[RenderListDataOptions["MenuView"] = 8] = "MenuView";
+    RenderListDataOptions[RenderListDataOptions["ListContentType"] = 16] = "ListContentType";
+    RenderListDataOptions[RenderListDataOptions["FileSystemItemId"] = 32] = "FileSystemItemId";
+    RenderListDataOptions[RenderListDataOptions["ClientFormSchema"] = 64] = "ClientFormSchema";
+    RenderListDataOptions[RenderListDataOptions["QuickLaunch"] = 128] = "QuickLaunch";
+    RenderListDataOptions[RenderListDataOptions["Spotlight"] = 256] = "Spotlight";
+    RenderListDataOptions[RenderListDataOptions["Visualization"] = 512] = "Visualization";
+    RenderListDataOptions[RenderListDataOptions["ViewMetadata"] = 1024] = "ViewMetadata";
+    RenderListDataOptions[RenderListDataOptions["DisableAutoHyperlink"] = 2048] = "DisableAutoHyperlink";
+    RenderListDataOptions[RenderListDataOptions["EnableMediaTAUrls"] = 4096] = "EnableMediaTAUrls";
+    RenderListDataOptions[RenderListDataOptions["ParentInfo"] = 8192] = "ParentInfo";
+    RenderListDataOptions[RenderListDataOptions["PageContextInfo"] = 16384] = "PageContextInfo";
+    RenderListDataOptions[RenderListDataOptions["ClientSideComponentManifest"] = 32768] = "ClientSideComponentManifest";
 })(RenderListDataOptions = exports.RenderListDataOptions || (exports.RenderListDataOptions = {}));
+var FieldUserSelectionMode;
+(function (FieldUserSelectionMode) {
+    FieldUserSelectionMode[FieldUserSelectionMode["PeopleAndGroups"] = 1] = "PeopleAndGroups";
+    FieldUserSelectionMode[FieldUserSelectionMode["PeopleOnly"] = 0] = "PeopleOnly";
+})(FieldUserSelectionMode = exports.FieldUserSelectionMode || (exports.FieldUserSelectionMode = {}));
 
 
 /***/ }),
@@ -5350,10 +5481,10 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
 var sharepointqueryableshareable_1 = __webpack_require__(16);
-var files_1 = __webpack_require__(9);
+var files_1 = __webpack_require__(8);
 var util_1 = __webpack_require__(0);
 var odata_1 = __webpack_require__(3);
-var items_1 = __webpack_require__(15);
+var items_1 = __webpack_require__(12);
 /**
  * Describes a collection of Folder objects
  *
@@ -5684,7 +5815,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var caching_1 = __webpack_require__(31);
+var caching_1 = __webpack_require__(33);
 var logging_1 = __webpack_require__(5);
 var util_1 = __webpack_require__(0);
 /**
@@ -5909,7 +6040,7 @@ exports.PipelineMethods = PipelineMethods;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var digestcache_1 = __webpack_require__(46);
+var digestcache_1 = __webpack_require__(48);
 var util_1 = __webpack_require__(0);
 var pnplibconfig_1 = __webpack_require__(4);
 var exceptions_1 = __webpack_require__(2);
@@ -5936,11 +6067,11 @@ var HttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:3.0.4");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:3.0.6");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/3.0.4");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/3.0.6");
         }
         opts = util_1.Util.extend(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -6300,7 +6431,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
-var siteusers_1 = __webpack_require__(35);
+var siteusers_1 = __webpack_require__(37);
 var util_1 = __webpack_require__(0);
 /**
  * Principal Type enum
@@ -6641,6 +6772,411 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
 var util_1 = __webpack_require__(0);
+var types_1 = __webpack_require__(17);
+/**
+ * Describes a collection of Field objects
+ *
+ */
+var Fields = /** @class */ (function (_super) {
+    __extends(Fields, _super);
+    /**
+     * Creates a new instance of the Fields class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
+     */
+    function Fields(baseUrl, path) {
+        if (path === void 0) { path = "fields"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a field from the collection by title
+     *
+     * @param title The case-sensitive title of the field
+     */
+    Fields.prototype.getByTitle = function (title) {
+        return new Field(this, "getByTitle('" + title + "')");
+    };
+    /**
+     * Gets a field from the collection by using internal name or title
+     *
+     * @param name The case-sensitive internal name or title of the field
+     */
+    Fields.prototype.getByInternalNameOrTitle = function (name) {
+        return new Field(this, "getByInternalNameOrTitle('" + name + "')");
+    };
+    /**
+     * Gets a list from the collection by guid id
+     *
+     * @param id The Id of the list
+     */
+    Fields.prototype.getById = function (id) {
+        var f = new Field(this);
+        f.concat("('" + id + "')");
+        return f;
+    };
+    /**
+     * Creates a field based on the specified schema
+     */
+    Fields.prototype.createFieldAsXml = function (xml) {
+        var _this = this;
+        var info;
+        if (typeof xml === "string") {
+            info = { SchemaXml: xml };
+        }
+        else {
+            info = xml;
+        }
+        var postBody = JSON.stringify({
+            "parameters": util_1.Util.extend({
+                "__metadata": {
+                    "type": "SP.XmlSchemaFieldCreationInformation",
+                },
+            }, info),
+        });
+        return this.clone(Fields, "createfieldasxml").postAsCore({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                field: _this.getById(data.Id),
+            };
+        });
+    };
+    /**
+     * Adds a new field to the collection
+     *
+     * @param title The new field's title
+     * @param fieldType The new field's type (ex: SP.FieldText)
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.add = function (title, fieldType, properties) {
+        var _this = this;
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "Title": title,
+            "__metadata": { "type": fieldType },
+        }, properties));
+        return this.clone(Fields, null).postAsCore({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                field: _this.getById(data.Id),
+            };
+        });
+    };
+    /**
+     * Adds a new SP.FieldText to the collection
+     *
+     * @param title The field title
+     * @param maxLength The maximum number of characters allowed in the value of the field.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addText = function (title, maxLength, properties) {
+        if (maxLength === void 0) { maxLength = 255; }
+        var props = {
+            FieldTypeKind: 2,
+            MaxLength: maxLength,
+        };
+        return this.add(title, "SP.FieldText", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldCalculated to the collection
+     *
+     * @param title The field title.
+     * @param formula The formula for the field.
+     * @param dateFormat The date and time format that is displayed in the field.
+     * @param outputType Specifies the output format for the field. Represents a FieldType value.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addCalculated = function (title, formula, dateFormat, outputType, properties) {
+        if (outputType === void 0) { outputType = types_1.FieldTypes.Text; }
+        var props = {
+            DateFormat: dateFormat,
+            FieldTypeKind: 17,
+            Formula: formula,
+            OutputType: outputType,
+        };
+        return this.add(title, "SP.FieldCalculated", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldDateTime to the collection
+     *
+     * @param title The field title
+     * @param displayFormat The format of the date and time that is displayed in the field.
+     * @param calendarType Specifies the calendar type of the field.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addDateTime = function (title, displayFormat, calendarType, friendlyDisplayFormat, properties) {
+        if (displayFormat === void 0) { displayFormat = types_1.DateTimeFieldFormatType.DateOnly; }
+        if (calendarType === void 0) { calendarType = types_1.CalendarType.Gregorian; }
+        if (friendlyDisplayFormat === void 0) { friendlyDisplayFormat = 0; }
+        var props = {
+            DateTimeCalendarType: calendarType,
+            DisplayFormat: displayFormat,
+            FieldTypeKind: 4,
+            FriendlyDisplayFormat: friendlyDisplayFormat,
+        };
+        return this.add(title, "SP.FieldDateTime", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldNumber to the collection
+     *
+     * @param title The field title
+     * @param minValue The field's minimum value
+     * @param maxValue The field's maximum value
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addNumber = function (title, minValue, maxValue, properties) {
+        var props = { FieldTypeKind: 9 };
+        if (typeof minValue !== "undefined") {
+            props = util_1.Util.extend({ MinimumValue: minValue }, props);
+        }
+        if (typeof maxValue !== "undefined") {
+            props = util_1.Util.extend({ MaximumValue: maxValue }, props);
+        }
+        return this.add(title, "SP.FieldNumber", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldCurrency to the collection
+     *
+     * @param title The field title
+     * @param minValue The field's minimum value
+     * @param maxValue The field's maximum value
+     * @param currencyLocalId Specifies the language code identifier (LCID) used to format the value of the field
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addCurrency = function (title, minValue, maxValue, currencyLocalId, properties) {
+        if (currencyLocalId === void 0) { currencyLocalId = 1033; }
+        var props = {
+            CurrencyLocaleId: currencyLocalId,
+            FieldTypeKind: 10,
+        };
+        if (typeof minValue !== "undefined") {
+            props = util_1.Util.extend({ MinimumValue: minValue }, props);
+        }
+        if (typeof maxValue !== "undefined") {
+            props = util_1.Util.extend({ MaximumValue: maxValue }, props);
+        }
+        return this.add(title, "SP.FieldCurrency", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldMultiLineText to the collection
+     *
+     * @param title The field title
+     * @param numberOfLines Specifies the number of lines of text to display for the field.
+     * @param richText Specifies whether the field supports rich formatting.
+     * @param restrictedMode Specifies whether the field supports a subset of rich formatting.
+     * @param appendOnly Specifies whether all changes to the value of the field are displayed in list forms.
+     * @param allowHyperlink Specifies whether a hyperlink is allowed as a value of the field.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     *
+     */
+    Fields.prototype.addMultilineText = function (title, numberOfLines, richText, restrictedMode, appendOnly, allowHyperlink, properties) {
+        if (numberOfLines === void 0) { numberOfLines = 6; }
+        if (richText === void 0) { richText = true; }
+        if (restrictedMode === void 0) { restrictedMode = false; }
+        if (appendOnly === void 0) { appendOnly = false; }
+        if (allowHyperlink === void 0) { allowHyperlink = true; }
+        var props = {
+            AllowHyperlink: allowHyperlink,
+            AppendOnly: appendOnly,
+            FieldTypeKind: 3,
+            NumberOfLines: numberOfLines,
+            RestrictedMode: restrictedMode,
+            RichText: richText,
+        };
+        return this.add(title, "SP.FieldMultiLineText", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldUrl to the collection
+     *
+     * @param title The field title
+     */
+    Fields.prototype.addUrl = function (title, displayFormat, properties) {
+        if (displayFormat === void 0) { displayFormat = types_1.UrlFieldFormatType.Hyperlink; }
+        var props = {
+            DisplayFormat: displayFormat,
+            FieldTypeKind: 11,
+        };
+        return this.add(title, "SP.FieldUrl", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a user field to the colleciton
+     *
+     * @param title The new field's title
+     * @param selectionMode The selection mode of the field
+     * @param selectionGroup Value that specifies the identifier of the SharePoint group whose members can be selected as values of the field
+     * @param properties
+     */
+    Fields.prototype.addUser = function (title, selectionMode, properties) {
+        var props = {
+            FieldTypeKind: 20,
+            SelectionMode: selectionMode,
+        };
+        return this.add(title, "SP.FieldUser", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a SP.FieldLookup to the collection
+     *
+     * @param title The new field's title
+     * @param lookupListId The guid id of the list where the source of the lookup is found
+     * @param lookupFieldName The internal name of the field in the source list
+     * @param properties Set of additional properties to set on the new field
+     */
+    Fields.prototype.addLookup = function (title, lookupListId, lookupFieldName, properties) {
+        var _this = this;
+        var postBody = JSON.stringify({
+            parameters: util_1.Util.extend({
+                FieldTypeKind: 7,
+                LookupFieldName: lookupFieldName,
+                LookupListId: lookupListId,
+                Title: title,
+                "__metadata": { "type": "SP.FieldCreationInformation" },
+            }, properties),
+        });
+        return this.clone(Fields, "addfield").postAsCore({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                field: _this.getById(data.Id),
+            };
+        });
+    };
+    /**
+     * Adds a new SP.FieldChoice to the collection
+     *
+     * @param title The field title.
+     * @param choices The choices for the field.
+     * @param format The display format of the available options for the field.
+     * @param fillIn Specifies whether the field allows fill-in values.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addChoice = function (title, choices, format, fillIn, properties) {
+        if (format === void 0) { format = types_1.ChoiceFieldFormatType.Dropdown; }
+        var props = {
+            Choices: {
+                results: choices,
+            },
+            EditFormat: format,
+            FieldTypeKind: 6,
+            FillInChoice: fillIn,
+        };
+        return this.add(title, "SP.FieldChoice", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldMultiChoice to the collection
+     *
+     * @param title The field title.
+     * @param choices The choices for the field.
+     * @param fillIn Specifies whether the field allows fill-in values.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addMultiChoice = function (title, choices, fillIn, properties) {
+        var props = {
+            Choices: {
+                results: choices,
+            },
+            FieldTypeKind: 15,
+            FillInChoice: fillIn,
+        };
+        return this.add(title, "SP.FieldMultiChoice", util_1.Util.extend(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldBoolean to the collection
+     *
+     * @param title The field title.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    Fields.prototype.addBoolean = function (title, properties) {
+        var props = {
+            FieldTypeKind: 8,
+        };
+        return this.add(title, "SP.Field", util_1.Util.extend(props, properties));
+    };
+    return Fields;
+}(sharepointqueryable_1.SharePointQueryableCollection));
+exports.Fields = Fields;
+/**
+ * Describes a single of Field instance
+ *
+ */
+var Field = /** @class */ (function (_super) {
+    __extends(Field, _super);
+    function Field() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Updates this field intance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the list
+     * @param fieldType The type value, required to update child field type properties
+     */
+    Field.prototype.update = function (properties, fieldType) {
+        var _this = this;
+        if (fieldType === void 0) { fieldType = "SP.Field"; }
+        var postBody = JSON.stringify(util_1.Util.extend({
+            "__metadata": { "type": fieldType },
+        }, properties));
+        return this.postCore({
+            body: postBody,
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            return {
+                data: data,
+                field: _this,
+            };
+        });
+    };
+    /**
+     * Delete this fields
+     *
+     */
+    Field.prototype.delete = function () {
+        return this.postCore({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    /**
+     * Sets the value of the ShowInDisplayForm property for this field.
+     */
+    Field.prototype.setShowInDisplayForm = function (show) {
+        return this.clone(Field, "setshowindisplayform(" + show + ")").postCore();
+    };
+    /**
+     * Sets the value of the ShowInEditForm property for this field.
+     */
+    Field.prototype.setShowInEditForm = function (show) {
+        return this.clone(Field, "setshowineditform(" + show + ")").postCore();
+    };
+    /**
+     * Sets the value of the ShowInNewForm property for this field.
+     */
+    Field.prototype.setShowInNewForm = function (show) {
+        return this.clone(Field, "setshowinnewform(" + show + ")").postCore();
+    };
+    return Field;
+}(sharepointqueryable_1.SharePointQueryableInstance));
+exports.Field = Field;
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var sharepointqueryable_1 = __webpack_require__(1);
+var util_1 = __webpack_require__(0);
 /**
  * Describes a collection of user custom actions
  *
@@ -6736,7 +7272,7 @@ exports.UserCustomAction = UserCustomAction;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6931,7 +7467,7 @@ exports.NavigationService = NavigationService;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7138,7 +7674,7 @@ var ODataBatch = /** @class */ (function () {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:3.0.4");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:3.0.6");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -7186,7 +7722,103 @@ exports.ODataBatch = ODataBatch;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var util_1 = __webpack_require__(0);
+var storage_1 = __webpack_require__(13);
+var configuration_1 = __webpack_require__(46);
+var logging_1 = __webpack_require__(5);
+var rest_1 = __webpack_require__(47);
+var pnplibconfig_1 = __webpack_require__(4);
+var rest_2 = __webpack_require__(57);
+/**
+ * Root class of the Patterns and Practices namespace, provides an entry point to the library
+ */
+/**
+ * Utility methods
+ */
+exports.util = util_1.Util;
+/**
+ * Provides access to the SharePoint REST interface
+ */
+exports.sp = new rest_1.SPRest();
+/**
+ * Provides access to the Microsoft Graph REST interface
+ */
+exports.graph = new rest_2.GraphRest();
+/**
+ * Provides access to local and session storage
+ */
+exports.storage = new storage_1.PnPClientStorage();
+/**
+ * Global configuration instance to which providers can be added
+ */
+exports.config = new configuration_1.Settings();
+/**
+ * Global logging instance to which subscribers can be registered and messages written
+ */
+exports.log = logging_1.Logger;
+/**
+ * Allows for the configuration of the library
+ */
+exports.setup = pnplibconfig_1.setRuntimeConfig;
+/**
+ * Export everything back to the top level so it can be properly bundled
+ */
+__export(__webpack_require__(66));
+__export(__webpack_require__(69));
+__export(__webpack_require__(71));
+__export(__webpack_require__(74));
+__export(__webpack_require__(75));
+// /**
+//  * Expose a subset of classes from the library for public consumption
+//  */
+// creating this class instead of directly assigning to default fixes issue #116
+var Def = {
+    /**
+     * Global configuration instance to which providers can be added
+     */
+    config: exports.config,
+    /**
+     * Provides access to the Microsoft Graph REST interface
+     */
+    graph: exports.graph,
+    /**
+     * Global logging instance to which subscribers can be registered and messages written
+     */
+    log: exports.log,
+    /**
+     * Provides access to local and session storage
+     */
+    setup: exports.setup,
+    /**
+     * Provides access to the REST interface
+     */
+    sp: exports.sp,
+    /**
+     * Provides access to local and session storage
+     */
+    storage: exports.storage,
+    /**
+     * Utility methods
+     */
+    util: exports.util,
+};
+/**
+ * Enables use of the import pnp from syntax
+ */
+exports.default = Def;
+
+
+/***/ }),
+/* 30 */
 /***/ (function(module, exports) {
 
 var g;
@@ -7213,7 +7845,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7232,10 +7864,10 @@ var FetchClient = /** @class */ (function () {
 }());
 exports.FetchClient = FetchClient;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7725,13 +8357,13 @@ exports.SearchBuiltInSourceId = SearchBuiltInSourceId;
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var storage_1 = __webpack_require__(12);
+var storage_1 = __webpack_require__(13);
 var util_1 = __webpack_require__(0);
 var pnplibconfig_1 = __webpack_require__(4);
 var CachingOptions = /** @class */ (function () {
@@ -7777,7 +8409,7 @@ exports.CachingParserWrapper = CachingParserWrapper;
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7860,7 +8492,7 @@ exports.SearchSuggestResult = SearchSuggestResult;
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7878,10 +8510,10 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
 var webs_1 = __webpack_require__(11);
-var usercustomactions_1 = __webpack_require__(25);
+var usercustomactions_1 = __webpack_require__(26);
 var odata_1 = __webpack_require__(3);
-var batch_1 = __webpack_require__(27);
-var features_1 = __webpack_require__(38);
+var batch_1 = __webpack_require__(28);
+var features_1 = __webpack_require__(39);
 /**
  * Describes a site collection
  *
@@ -8006,7 +8638,7 @@ exports.Site = Site;
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8151,7 +8783,7 @@ exports.SharePointQueryableSecurable = SharePointQueryableSecurable;
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8313,7 +8945,7 @@ exports.CurrentUser = CurrentUser;
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8462,321 +9094,7 @@ exports.WebPart = WebPart;
 
 
 /***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var sharepointqueryable_1 = __webpack_require__(1);
-var util_1 = __webpack_require__(0);
-var types_1 = __webpack_require__(17);
-/**
- * Describes a collection of Field objects
- *
- */
-var Fields = /** @class */ (function (_super) {
-    __extends(Fields, _super);
-    /**
-     * Creates a new instance of the Fields class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    function Fields(baseUrl, path) {
-        if (path === void 0) { path = "fields"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a field from the collection by title
-     *
-     * @param title The case-sensitive title of the field
-     */
-    Fields.prototype.getByTitle = function (title) {
-        return new Field(this, "getByTitle('" + title + "')");
-    };
-    /**
-     * Gets a field from the collection by using internal name or title
-     *
-     * @param name The case-sensitive internal name or title of the field
-     */
-    Fields.prototype.getByInternalNameOrTitle = function (name) {
-        return new Field(this, "getByInternalNameOrTitle('" + name + "')");
-    };
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the list
-     */
-    Fields.prototype.getById = function (id) {
-        var f = new Field(this);
-        f.concat("('" + id + "')");
-        return f;
-    };
-    /**
-     * Creates a field based on the specified schema
-     */
-    Fields.prototype.createFieldAsXml = function (xml) {
-        var _this = this;
-        var info;
-        if (typeof xml === "string") {
-            info = { SchemaXml: xml };
-        }
-        else {
-            info = xml;
-        }
-        var postBody = JSON.stringify({
-            "parameters": util_1.Util.extend({
-                "__metadata": {
-                    "type": "SP.XmlSchemaFieldCreationInformation",
-                },
-            }, info),
-        });
-        return this.clone(Fields, "createfieldasxml").postAsCore({ body: postBody }).then(function (data) {
-            return {
-                data: data,
-                field: _this.getById(data.Id),
-            };
-        });
-    };
-    /**
-     * Adds a new list to the collection
-     *
-     * @param title The new field's title
-     * @param fieldType The new field's type (ex: SP.FieldText)
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     */
-    Fields.prototype.add = function (title, fieldType, properties) {
-        var _this = this;
-        if (properties === void 0) { properties = {}; }
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "Title": title,
-            "__metadata": { "type": fieldType },
-        }, properties));
-        return this.clone(Fields, null).postAsCore({ body: postBody }).then(function (data) {
-            return {
-                data: data,
-                field: _this.getById(data.Id),
-            };
-        });
-    };
-    /**
-     * Adds a new SP.FieldText to the collection
-     *
-     * @param title The field title
-     * @param maxLength The maximum number of characters allowed in the value of the field.
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     */
-    Fields.prototype.addText = function (title, maxLength, properties) {
-        if (maxLength === void 0) { maxLength = 255; }
-        var props = {
-            FieldTypeKind: 2,
-            MaxLength: maxLength,
-        };
-        return this.add(title, "SP.FieldText", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldCalculated to the collection
-     *
-     * @param title The field title.
-     * @param formula The formula for the field.
-     * @param dateFormat The date and time format that is displayed in the field.
-     * @param outputType Specifies the output format for the field. Represents a FieldType value.
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     */
-    Fields.prototype.addCalculated = function (title, formula, dateFormat, outputType, properties) {
-        if (outputType === void 0) { outputType = types_1.FieldTypes.Text; }
-        var props = {
-            DateFormat: dateFormat,
-            FieldTypeKind: 17,
-            Formula: formula,
-            OutputType: outputType,
-        };
-        return this.add(title, "SP.FieldCalculated", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldDateTime to the collection
-     *
-     * @param title The field title
-     * @param displayFormat The format of the date and time that is displayed in the field.
-     * @param calendarType Specifies the calendar type of the field.
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     */
-    Fields.prototype.addDateTime = function (title, displayFormat, calendarType, friendlyDisplayFormat, properties) {
-        if (displayFormat === void 0) { displayFormat = types_1.DateTimeFieldFormatType.DateOnly; }
-        if (calendarType === void 0) { calendarType = types_1.CalendarType.Gregorian; }
-        if (friendlyDisplayFormat === void 0) { friendlyDisplayFormat = 0; }
-        var props = {
-            DateTimeCalendarType: calendarType,
-            DisplayFormat: displayFormat,
-            FieldTypeKind: 4,
-            FriendlyDisplayFormat: friendlyDisplayFormat,
-        };
-        return this.add(title, "SP.FieldDateTime", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldNumber to the collection
-     *
-     * @param title The field title
-     * @param minValue The field's minimum value
-     * @param maxValue The field's maximum value
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     */
-    Fields.prototype.addNumber = function (title, minValue, maxValue, properties) {
-        var props = { FieldTypeKind: 9 };
-        if (typeof minValue !== "undefined") {
-            props = util_1.Util.extend({ MinimumValue: minValue }, props);
-        }
-        if (typeof maxValue !== "undefined") {
-            props = util_1.Util.extend({ MaximumValue: maxValue }, props);
-        }
-        return this.add(title, "SP.FieldNumber", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldCurrency to the collection
-     *
-     * @param title The field title
-     * @param minValue The field's minimum value
-     * @param maxValue The field's maximum value
-     * @param currencyLocalId Specifies the language code identifier (LCID) used to format the value of the field
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     */
-    Fields.prototype.addCurrency = function (title, minValue, maxValue, currencyLocalId, properties) {
-        if (currencyLocalId === void 0) { currencyLocalId = 1033; }
-        var props = {
-            CurrencyLocaleId: currencyLocalId,
-            FieldTypeKind: 10,
-        };
-        if (typeof minValue !== "undefined") {
-            props = util_1.Util.extend({ MinimumValue: minValue }, props);
-        }
-        if (typeof maxValue !== "undefined") {
-            props = util_1.Util.extend({ MaximumValue: maxValue }, props);
-        }
-        return this.add(title, "SP.FieldCurrency", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldMultiLineText to the collection
-     *
-     * @param title The field title
-     * @param numberOfLines Specifies the number of lines of text to display for the field.
-     * @param richText Specifies whether the field supports rich formatting.
-     * @param restrictedMode Specifies whether the field supports a subset of rich formatting.
-     * @param appendOnly Specifies whether all changes to the value of the field are displayed in list forms.
-     * @param allowHyperlink Specifies whether a hyperlink is allowed as a value of the field.
-     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-     *
-     */
-    Fields.prototype.addMultilineText = function (title, numberOfLines, richText, restrictedMode, appendOnly, allowHyperlink, properties) {
-        if (numberOfLines === void 0) { numberOfLines = 6; }
-        if (richText === void 0) { richText = true; }
-        if (restrictedMode === void 0) { restrictedMode = false; }
-        if (appendOnly === void 0) { appendOnly = false; }
-        if (allowHyperlink === void 0) { allowHyperlink = true; }
-        var props = {
-            AllowHyperlink: allowHyperlink,
-            AppendOnly: appendOnly,
-            FieldTypeKind: 3,
-            NumberOfLines: numberOfLines,
-            RestrictedMode: restrictedMode,
-            RichText: richText,
-        };
-        return this.add(title, "SP.FieldMultiLineText", util_1.Util.extend(props, properties));
-    };
-    /**
-     * Adds a new SP.FieldUrl to the collection
-     *
-     * @param title The field title
-     */
-    Fields.prototype.addUrl = function (title, displayFormat, properties) {
-        if (displayFormat === void 0) { displayFormat = types_1.UrlFieldFormatType.Hyperlink; }
-        var props = {
-            DisplayFormat: displayFormat,
-            FieldTypeKind: 11,
-        };
-        return this.add(title, "SP.FieldUrl", util_1.Util.extend(props, properties));
-    };
-    return Fields;
-}(sharepointqueryable_1.SharePointQueryableCollection));
-exports.Fields = Fields;
-/**
- * Describes a single of Field instance
- *
- */
-var Field = /** @class */ (function (_super) {
-    __extends(Field, _super);
-    function Field() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Updates this field intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the list
-     * @param fieldType The type value, required to update child field type properties
-     */
-    Field.prototype.update = function (properties, fieldType) {
-        var _this = this;
-        if (fieldType === void 0) { fieldType = "SP.Field"; }
-        var postBody = JSON.stringify(util_1.Util.extend({
-            "__metadata": { "type": fieldType },
-        }, properties));
-        return this.postCore({
-            body: postBody,
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            return {
-                data: data,
-                field: _this,
-            };
-        });
-    };
-    /**
-     * Delete this fields
-     *
-     */
-    Field.prototype.delete = function () {
-        return this.postCore({
-            headers: {
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    /**
-     * Sets the value of the ShowInDisplayForm property for this field.
-     */
-    Field.prototype.setShowInDisplayForm = function (show) {
-        return this.clone(Field, "setshowindisplayform(" + show + ")").postCore();
-    };
-    /**
-     * Sets the value of the ShowInEditForm property for this field.
-     */
-    Field.prototype.setShowInEditForm = function (show) {
-        return this.clone(Field, "setshowineditform(" + show + ")").postCore();
-    };
-    /**
-     * Sets the value of the ShowInNewForm property for this field.
-     */
-    Field.prototype.setShowInNewForm = function (show) {
-        return this.clone(Field, "setshowinnewform(" + show + ")").postCore();
-    };
-    return Field;
-}(sharepointqueryable_1.SharePointQueryableInstance));
-exports.Field = Field;
-
-
-/***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8885,7 +9203,7 @@ exports.Feature = Feature;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8902,7 +9220,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
-var files_1 = __webpack_require__(9);
+var files_1 = __webpack_require__(8);
 var odata_1 = __webpack_require__(3);
 var util_1 = __webpack_require__(0);
 /**
@@ -9008,7 +9326,766 @@ exports.App = App;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var files_1 = __webpack_require__(8);
+var items_1 = __webpack_require__(12);
+var util_1 = __webpack_require__(0);
+/**
+ * Gets the next order value 1 based for the provided collection
+ *
+ * @param collection Collection of orderable things
+ */
+function getNextOrder(collection) {
+    if (collection.length < 1) {
+        return 1;
+    }
+    return Math.max.apply(null, collection.map(function (i) { return i.order; })) + 1;
+}
+/**
+ * After https://stackoverflow.com/questions/273789/is-there-a-version-of-javascripts-string-indexof-that-allows-for-regular-expr/274094#274094
+ *
+ * @param this Types the called context this to a string in which the search will be conducted
+ * @param regex A regex or string to match
+ * @param startpos A starting position from which the search will begin
+ */
+function regexIndexOf(regex, startpos) {
+    if (startpos === void 0) { startpos = 0; }
+    var indexOf = this.substring(startpos).search(regex);
+    return (indexOf >= 0) ? (indexOf + (startpos)) : indexOf;
+}
+/**
+ * Gets an attribute value from an html string block
+ *
+ * @param html HTML to search
+ * @param attrName The name of the attribute to find
+ */
+function getAttrValueFromString(html, attrName) {
+    var reg = new RegExp(attrName + "=\"([^\"]*?)\"", "i");
+    var match = reg.exec(html);
+    return match.length > 0 ? match[1] : null;
+}
+/**
+ * Finds bounded blocks of markup bounded by divs, ensuring to match the ending div even with nested divs in the interstitial markup
+ *
+ * @param html HTML to search
+ * @param boundaryStartPattern The starting pattern to find, typically a div with attribute
+ * @param collector A func to take the found block and provide a way to form it into a useful return that is added into the return array
+ */
+function getBoundedDivMarkup(html, boundaryStartPattern, collector) {
+    var blocks = [];
+    if (typeof html === "undefined" || html === null) {
+        return blocks;
+    }
+    // remove some extra whitespace if present
+    var cleanedHtml = html.replace(/[\t\r\n]/g, "");
+    // find the first div
+    var startIndex = regexIndexOf.call(cleanedHtml, boundaryStartPattern);
+    if (startIndex < 0) {
+        // we found no blocks in the supplied html
+        return blocks;
+    }
+    // this loop finds each of the blocks
+    while (startIndex > -1) {
+        // we have one open div counting from the one found above using boundaryStartPattern so we need to ensure we find it's close
+        var openCounter = 1;
+        var searchIndex = startIndex + 1;
+        var nextDivOpen = -1;
+        var nextCloseDiv = -1;
+        // this loop finds the </div> tag that matches the opening of the control
+        while (true) {
+            // find both the next opening and closing div tags from our current searching index
+            nextDivOpen = regexIndexOf.call(cleanedHtml, /<div[^>]*>/i, searchIndex);
+            nextCloseDiv = regexIndexOf.call(cleanedHtml, /<\/div>/i, searchIndex);
+            if (nextDivOpen < 0) {
+                // we have no more opening divs, just set this to simplify checks below
+                nextDivOpen = cleanedHtml.length + 1;
+            }
+            // determine which we found first, then increment or decrement our counter
+            // and set the location to begin searching again
+            if (nextDivOpen < nextCloseDiv) {
+                openCounter++;
+                searchIndex = nextDivOpen + 1;
+            }
+            else if (nextCloseDiv < nextDivOpen) {
+                openCounter--;
+                searchIndex = nextCloseDiv + 1;
+            }
+            // once we have no open divs back to the level of the opening control div
+            // meaning we have all of the markup we intended to find
+            if (openCounter === 0) {
+                // get the bounded markup, +6 is the size of the ending </div> tag
+                var markup = cleanedHtml.substring(startIndex, nextCloseDiv + 6).trim();
+                // save the control data we found to the array
+                blocks.push(collector(markup));
+                // get out of our while loop
+                break;
+            }
+            if (openCounter > 1000 || openCounter < 0) {
+                // this is an arbitrary cut-off but likely we will not have 1000 nested divs
+                // something has gone wrong above and we are probably stuck in our while loop
+                // let's get out of our while loop and not hang everything
+                throw new Error("getBoundedDivMarkup exceeded depth parameters.");
+            }
+        }
+        // get the start of the next control
+        startIndex = regexIndexOf.call(cleanedHtml, boundaryStartPattern, nextCloseDiv);
+    }
+    return blocks;
+}
+/**
+ * Normalizes the order value for all the sections, columns, and controls to be 1 based and stepped (1, 2, 3...)
+ *
+ * @param collection The collection to normalize
+ */
+function reindex(collection) {
+    for (var i = 0; i < collection.length; i++) {
+        collection[i].order = i + 1;
+        if (collection[i].hasOwnProperty("columns")) {
+            reindex(collection[i].columns);
+        }
+        else if (collection[i].hasOwnProperty("controls")) {
+            reindex(collection[i].controls);
+        }
+    }
+}
+/**
+ * Represents the data and methods associated with client side "modern" pages
+ */
+var ClientSidePage = /** @class */ (function (_super) {
+    __extends(ClientSidePage, _super);
+    /**
+     * Creates a new instance of the ClientSidePage class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
+     * @param commentsDisabled Indicates if comments are disabled, not valid until load is called
+     */
+    function ClientSidePage(file, sections, commentsDisabled) {
+        if (sections === void 0) { sections = []; }
+        if (commentsDisabled === void 0) { commentsDisabled = false; }
+        var _this = _super.call(this, file) || this;
+        _this.sections = sections;
+        _this.commentsDisabled = commentsDisabled;
+        return _this;
+    }
+    /**
+     * Creates a new blank page within the supplied library
+     *
+     * @param library The library in which to create the page
+     * @param pageName Filename of the page, such as "page.aspx"
+     * @param title The display title of the page
+     * @param pageLayoutType Layout type of the page to use
+     */
+    ClientSidePage.create = function (library, pageName, title, pageLayoutType) {
+        if (pageLayoutType === void 0) { pageLayoutType = "Article"; }
+        // see if file exists, if not create it
+        return library.rootFolder.files.select("Name").filter("Name eq '" + pageName + "'").get().then(function (fs) {
+            if (fs.length > 0) {
+                throw new Error("A file with the name '" + pageName + "' already exists in the library '" + library.toUrl() + "'.");
+            }
+            // get our server relative path
+            return library.rootFolder.select("ServerRelativePath").get().then(function (path) {
+                var pageServerRelPath = util_1.Util.combinePaths("/", path.ServerRelativePath.DecodedUrl, pageName);
+                // add the template file
+                return library.rootFolder.files.addTemplateFile(pageServerRelPath, files_1.TemplateFileType.ClientSidePage).then(function (far) {
+                    // get the item associated with the file
+                    return far.file.getItem().then(function (i) {
+                        // update the item to have the correct values to create the client side page
+                        return i.update({
+                            BannerImageUrl: {
+                                Url: "/_layouts/15/images/sitepagethumbnail.png",
+                            },
+                            CanvasContent1: "",
+                            ClientSideApplicationId: "b6917cb1-93a0-4b97-a84d-7cf49975d4ec",
+                            ContentTypeId: "0x0101009D1CB255DA76424F860D91F20E6C4118",
+                            PageLayoutType: pageLayoutType,
+                            PromotedState: 0 /* NotPromoted */,
+                            Title: title,
+                        }).then(function (iar) { return new ClientSidePage(iar.item.file, iar.item.CommentsDisabled); });
+                    });
+                });
+            });
+        });
+    };
+    /**
+     * Creates a new ClientSidePage instance from the provided html content string
+     *
+     * @param html HTML markup representing the page
+     */
+    ClientSidePage.fromFile = function (file) {
+        var page = new ClientSidePage(file);
+        return page.load().then(function (_) { return page; });
+    };
+    /**
+     * Converts a json object to an escaped string appropriate for use in attributes when storing client-side controls
+     *
+     * @param json The json object to encode into a string
+     */
+    ClientSidePage.jsonToEscapedString = function (json) {
+        return JSON.stringify(json)
+            .replace(/"/g, "&quot;")
+            .replace(/:/g, "&#58;")
+            .replace(/{/g, "&#123;")
+            .replace(/}/g, "&#125;");
+    };
+    /**
+     * Converts an escaped string from a client-side control attribute to a json object
+     *
+     * @param escapedString
+     */
+    ClientSidePage.escapedStringToJson = function (escapedString) {
+        return JSON.parse(escapedString
+            .replace(/&quot;/g, "\"")
+            .replace(/&#58;/g, ":")
+            .replace(/&#123;/g, "{")
+            .replace(/&#125;/g, "}"));
+    };
+    /**
+     * Add a section to this page
+     */
+    ClientSidePage.prototype.addSection = function () {
+        var section = new CanvasSection(this, getNextOrder(this.sections));
+        this.sections.push(section);
+        return section;
+    };
+    /**
+     * Converts this page's content to html markup
+     */
+    ClientSidePage.prototype.toHtml = function () {
+        // trigger reindex of the entire tree
+        reindex(this.sections);
+        var html = [];
+        html.push("<div>");
+        for (var i = 0; i < this.sections.length; i++) {
+            html.push(this.sections[i].toHtml());
+        }
+        html.push("</div>");
+        return html.join("");
+    };
+    /**
+     * Loads this page instance's content from the supplied html
+     *
+     * @param html html string representing the page's content
+     */
+    ClientSidePage.prototype.fromHtml = function (html) {
+        var _this = this;
+        // reset sections
+        this.sections = [];
+        // gather our controls from the supplied html
+        getBoundedDivMarkup(html, /<div\b[^>]*data-sp-canvascontrol[^>]*?>/i, function (markup) {
+            // get the control type
+            var ct = /controlType&quot;&#58;(\d*?),/i.exec(markup);
+            // if no control type is present this is a column which we give type 0 to let us process it
+            var controlType = ct == null || ct.length < 2 ? 0 : parseInt(ct[1], 10);
+            var control = null;
+            switch (controlType) {
+                case 0:
+                    // empty canvas column
+                    control = new CanvasColumn(null, 0);
+                    control.fromHtml(markup);
+                    _this.mergeColumnToTree(control);
+                    break;
+                case 3:
+                    // client side webpart
+                    control = new ClientSideWebpart("");
+                    control.fromHtml(markup);
+                    _this.mergeControlToTree(control);
+                    break;
+                case 4:
+                    // client side text
+                    control = new ClientSideText();
+                    control.fromHtml(markup);
+                    _this.mergeControlToTree(control);
+                    break;
+            }
+        });
+        reindex(this.sections);
+        return this;
+    };
+    /**
+     * Loads this page's content from the server
+     */
+    ClientSidePage.prototype.load = function () {
+        var _this = this;
+        return this.getItem("CanvasContent1", "CommentsDisabled").then(function (item) {
+            _this.fromHtml(item.CanvasContent1);
+            _this.commentsDisabled = item.CommentsDisabled;
+        });
+    };
+    /**
+     * Persists the content changes (sections, columns, and controls)
+     */
+    ClientSidePage.prototype.save = function () {
+        return this.updateProperties({ CanvasContent1: this.toHtml() });
+    };
+    /**
+     * Enables comments on this page
+     */
+    ClientSidePage.prototype.enableComments = function () {
+        var _this = this;
+        return this.setCommentsOn(true).then(function (r) {
+            _this.commentsDisabled = false;
+            return r;
+        });
+    };
+    /**
+     * Disables comments on this page
+     */
+    ClientSidePage.prototype.disableComments = function () {
+        var _this = this;
+        return this.setCommentsOn(false).then(function (r) {
+            _this.commentsDisabled = true;
+            return r;
+        });
+    };
+    /**
+     * Finds a control by the specified instance id
+     *
+     * @param id Instance id of the control to find
+     */
+    ClientSidePage.prototype.findControlById = function (id) {
+        return this.findControl(function (c) { return c.id === id; });
+    };
+    /**
+     * Finds a control within this page's control tree using the supplied predicate
+     *
+     * @param predicate Takes a control and returns true or false, if true that control is returned by findControl
+     */
+    ClientSidePage.prototype.findControl = function (predicate) {
+        // check all sections
+        for (var i = 0; i < this.sections.length; i++) {
+            // check all columns
+            for (var j = 0; j < this.sections[i].columns.length; j++) {
+                // check all controls
+                for (var k = 0; k < this.sections[i].columns[j].controls.length; k++) {
+                    // check to see if the predicate likes this control
+                    if (predicate(this.sections[i].columns[j].controls[k])) {
+                        return this.sections[i].columns[j].controls[k];
+                    }
+                }
+            }
+        }
+        // we found nothing so give nothing back
+        return null;
+    };
+    /**
+     * Sets the comments flag for a page
+     *
+     * @param on If true comments are enabled, false they are disabled
+     */
+    ClientSidePage.prototype.setCommentsOn = function (on) {
+        return this.getItem().then(function (i) {
+            var updater = new items_1.Item(i, "SetCommentsDisabled(" + !on + ")");
+            return updater.update({});
+        });
+    };
+    /**
+     * Merges the control into the tree of sections and columns for this page
+     *
+     * @param control The control to merge
+     */
+    ClientSidePage.prototype.mergeControlToTree = function (control) {
+        var section = null;
+        var column = null;
+        var sections = this.sections.filter(function (s) { return s.order === control.controlData.position.zoneIndex; });
+        if (sections.length < 1) {
+            section = new CanvasSection(this, control.controlData.position.zoneIndex);
+            this.sections.push(section);
+        }
+        else {
+            section = sections[0];
+        }
+        var columns = section.columns.filter(function (c) { return c.order === control.controlData.position.sectionIndex; });
+        if (columns.length < 1) {
+            column = new CanvasColumn(section, control.controlData.position.sectionIndex, control.controlData.position.sectionFactor);
+            section.columns.push(column);
+        }
+        else {
+            column = columns[0];
+        }
+        control.column = column;
+        column.addControl(control);
+    };
+    /**
+     * Merges the supplied column into the tree
+     *
+     * @param column Column to merge
+     * @param position The position data for the column
+     */
+    ClientSidePage.prototype.mergeColumnToTree = function (column) {
+        var section = null;
+        var sections = this.sections.filter(function (s) { return s.order === column.controlData.position.zoneIndex; });
+        if (sections.length < 1) {
+            section = new CanvasSection(this, column.controlData.position.zoneIndex);
+            this.sections.push(section);
+        }
+        else {
+            section = sections[0];
+        }
+        column.section = section;
+        section.columns.push(column);
+    };
+    /**
+     * Updates the properties of the underlying ListItem associated with this ClientSidePage
+     *
+     * @param properties Set of properties to update
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    ClientSidePage.prototype.updateProperties = function (properties, eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return this.getItem().then(function (i) { return i.update(properties, eTag); });
+    };
+    return ClientSidePage;
+}(files_1.File));
+exports.ClientSidePage = ClientSidePage;
+var CanvasSection = /** @class */ (function () {
+    function CanvasSection(page, order, columns) {
+        if (columns === void 0) { columns = []; }
+        this.page = page;
+        this.order = order;
+        this.columns = columns;
+    }
+    Object.defineProperty(CanvasSection.prototype, "defaultColumn", {
+        /**
+         * Default column (this.columns[0]) for this section
+         */
+        get: function () {
+            if (this.columns.length < 1) {
+                this.addColumn(12);
+            }
+            return this.columns[0];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Adds a new column to this section
+     */
+    CanvasSection.prototype.addColumn = function (factor) {
+        var column = new CanvasColumn(this, getNextOrder(this.columns), factor);
+        this.columns.push(column);
+        return column;
+    };
+    /**
+     * Adds a control to the default column for this section
+     *
+     * @param control Control to add to the default column
+     */
+    CanvasSection.prototype.addControl = function (control) {
+        this.defaultColumn.addControl(control);
+        return this;
+    };
+    CanvasSection.prototype.toHtml = function () {
+        var html = [];
+        for (var i = 0; i < this.columns.length; i++) {
+            html.push(this.columns[i].toHtml());
+        }
+        return html.join("");
+    };
+    return CanvasSection;
+}());
+exports.CanvasSection = CanvasSection;
+var CanvasControl = /** @class */ (function () {
+    function CanvasControl(controlType, dataVersion, column, order, id, controlData) {
+        if (column === void 0) { column = null; }
+        if (order === void 0) { order = 1; }
+        if (id === void 0) { id = util_1.Util.getGUID(); }
+        if (controlData === void 0) { controlData = null; }
+        this.controlType = controlType;
+        this.dataVersion = dataVersion;
+        this.column = column;
+        this.order = order;
+        this.id = id;
+        this.controlData = controlData;
+    }
+    Object.defineProperty(CanvasControl.prototype, "jsonData", {
+        /**
+         * Value of the control's "data-sp-controldata" attribute
+         */
+        get: function () {
+            return ClientSidePage.jsonToEscapedString(this.getControlData());
+        },
+        enumerable: true,
+        configurable: true
+    });
+    CanvasControl.prototype.fromHtml = function (html) {
+        this.controlData = ClientSidePage.escapedStringToJson(getAttrValueFromString(html, "data-sp-controldata"));
+        this.dataVersion = getAttrValueFromString(html, "data-sp-canvasdataversion");
+        this.controlType = this.controlData.controlType;
+        this.id = this.controlData.id;
+    };
+    return CanvasControl;
+}());
+exports.CanvasControl = CanvasControl;
+var CanvasColumn = /** @class */ (function (_super) {
+    __extends(CanvasColumn, _super);
+    function CanvasColumn(section, order, factor, controls, dataVersion) {
+        if (factor === void 0) { factor = 12; }
+        if (controls === void 0) { controls = []; }
+        if (dataVersion === void 0) { dataVersion = "1.0"; }
+        var _this = _super.call(this, 0, dataVersion) || this;
+        _this.section = section;
+        _this.order = order;
+        _this.factor = factor;
+        _this.controls = controls;
+        return _this;
+    }
+    CanvasColumn.prototype.addControl = function (control) {
+        control.column = this;
+        this.controls.push(control);
+        return this;
+    };
+    CanvasColumn.prototype.getControl = function (index) {
+        return this.controls[index];
+    };
+    CanvasColumn.prototype.toHtml = function () {
+        var html = [];
+        if (this.controls.length < 1) {
+            html.push("<div data-sp-canvascontrol=\"\" data-sp-canvasdataversion=\"" + this.dataVersion + "\" data-sp-controldata=\"" + this.jsonData + "\"></div>");
+        }
+        else {
+            for (var i = 0; i < this.controls.length; i++) {
+                html.push(this.controls[i].toHtml(i + 1));
+            }
+        }
+        return html.join("");
+    };
+    CanvasColumn.prototype.fromHtml = function (html) {
+        _super.prototype.fromHtml.call(this, html);
+        this.controlData = ClientSidePage.escapedStringToJson(getAttrValueFromString(html, "data-sp-controldata"));
+        this.factor = this.controlData.position.sectionFactor;
+        this.order = this.controlData.position.sectionIndex;
+    };
+    CanvasColumn.prototype.getControlData = function () {
+        return {
+            displayMode: 2,
+            position: {
+                sectionFactor: this.factor,
+                sectionIndex: this.order,
+                zoneIndex: this.section.order,
+            },
+        };
+    };
+    return CanvasColumn;
+}(CanvasControl));
+exports.CanvasColumn = CanvasColumn;
+var ClientSideText = /** @class */ (function (_super) {
+    __extends(ClientSideText, _super);
+    function ClientSideText(text) {
+        if (text === void 0) { text = ""; }
+        var _this = _super.call(this, 4, "1.0") || this;
+        _this.text = text;
+        return _this;
+    }
+    Object.defineProperty(ClientSideText.prototype, "text", {
+        /**
+         * The text markup of this control
+         */
+        get: function () {
+            return this._text;
+        },
+        set: function (text) {
+            if (!text.startsWith("<p>")) {
+                text = "<p>" + text + "</p>";
+            }
+            this._text = text;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClientSideText.prototype.getControlData = function () {
+        return {
+            controlType: this.controlType,
+            editorType: "CKEditor",
+            id: this.id,
+            position: {
+                controlIndex: this.order,
+                sectionFactor: this.column.factor,
+                sectionIndex: this.column.order,
+                zoneIndex: this.column.section.order,
+            },
+        };
+    };
+    ClientSideText.prototype.toHtml = function (index) {
+        // set our order to the value passed in
+        this.order = index;
+        var html = [];
+        html.push("<div data-sp-canvascontrol=\"\" data-sp-canvasdataversion=\"" + this.dataVersion + "\" data-sp-controldata=\"" + this.jsonData + "\">");
+        html.push("<div data-sp-rte=\"\">");
+        html.push("" + this.text);
+        html.push("</div>");
+        html.push("</div>");
+        return html.join("");
+    };
+    ClientSideText.prototype.fromHtml = function (html) {
+        _super.prototype.fromHtml.call(this, html);
+        var match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>/i.exec(html);
+        this.text = match.length > 1 ? match[1] : "";
+    };
+    return ClientSideText;
+}(CanvasControl));
+exports.ClientSideText = ClientSideText;
+var ClientSideWebpart = /** @class */ (function (_super) {
+    __extends(ClientSideWebpart, _super);
+    function ClientSideWebpart(title, description, propertieJson, webPartId, htmlProperties, serverProcessedContent) {
+        if (description === void 0) { description = ""; }
+        if (propertieJson === void 0) { propertieJson = {}; }
+        if (webPartId === void 0) { webPartId = ""; }
+        if (htmlProperties === void 0) { htmlProperties = ""; }
+        if (serverProcessedContent === void 0) { serverProcessedContent = null; }
+        var _this = _super.call(this, 3, "1.0") || this;
+        _this.title = title;
+        _this.description = description;
+        _this.propertieJson = propertieJson;
+        _this.webPartId = webPartId;
+        _this.htmlProperties = htmlProperties;
+        _this.serverProcessedContent = serverProcessedContent;
+        return _this;
+    }
+    ClientSideWebpart.fromComponentDef = function (definition) {
+        var part = new ClientSideWebpart("");
+        part.import(definition);
+        return part;
+    };
+    ClientSideWebpart.prototype.import = function (component) {
+        this.webPartId = component.Id.replace(/^\{|\}$/g, "");
+        var manifest = JSON.parse(component.Manifest);
+        this.title = manifest.preconfiguredEntries[0].title.default;
+        this.description = manifest.preconfiguredEntries[0].description.default;
+        this.propertieJson = this.parseJsonProperties(manifest.preconfiguredEntries[0].properties);
+    };
+    ClientSideWebpart.prototype.setProperties = function (properties) {
+        this.propertieJson = properties;
+        return this;
+    };
+    ClientSideWebpart.prototype.getProperties = function () {
+        return this.propertieJson;
+    };
+    ClientSideWebpart.prototype.toHtml = function (index) {
+        // set our order to the value passed in
+        this.order = index;
+        // will form the value of the data-sp-webpartdata attribute
+        var data = {
+            dataVersion: this.dataVersion,
+            description: this.description,
+            id: this.webPartId,
+            instanceId: this.id,
+            properties: this.propertieJson,
+            title: this.title,
+        };
+        var html = [];
+        html.push("<div data-sp-canvascontrol=\"\" data-sp-canvasdataversion=\"" + this.dataVersion + "\" data-sp-controldata=\"" + this.jsonData + "\">");
+        html.push("<div data-sp-webpart=\"\" data-sp-canvasdataversion=\"" + this.dataVersion + "\" data-sp-webpartdata=\"" + ClientSidePage.jsonToEscapedString(data) + "\">");
+        html.push("<div data-sp-componentid>");
+        html.push(this.webPartId);
+        html.push("</div>");
+        html.push("<div data-sp-htmlproperties=\"\">");
+        html.push(this.renderHtmlProperties());
+        html.push("</div>");
+        html.push("</div>");
+        html.push("</div>");
+        return html.join("");
+    };
+    ClientSideWebpart.prototype.fromHtml = function (html) {
+        _super.prototype.fromHtml.call(this, html);
+        var webPartData = ClientSidePage.escapedStringToJson(getAttrValueFromString(html, "data-sp-webpartdata"));
+        this.title = webPartData.title;
+        this.description = webPartData.description;
+        this.webPartId = webPartData.id;
+        this.setProperties(webPartData.properties);
+        if (typeof webPartData.serverProcessedContent !== "undefined") {
+            this.serverProcessedContent = webPartData.serverProcessedContent;
+        }
+        // get our html properties
+        var htmlProps = getBoundedDivMarkup(html, /<div\b[^>]*data-sp-htmlproperties[^>]*?>/i, function (markup) {
+            return markup.replace(/^<div\b[^>]*data-sp-htmlproperties[^>]*?>/i, "").replace(/<\/div>$/i, "");
+        });
+        this.htmlProperties = htmlProps.length > 0 ? htmlProps[0] : "";
+    };
+    ClientSideWebpart.prototype.getControlData = function () {
+        return {
+            controlType: this.controlType,
+            id: this.id,
+            position: {
+                controlIndex: this.order,
+                sectionFactor: this.column.factor,
+                sectionIndex: this.column.order,
+                zoneIndex: this.column.section.order,
+            },
+            webPartId: this.webPartId,
+        };
+    };
+    ClientSideWebpart.prototype.renderHtmlProperties = function () {
+        var html = [];
+        if (typeof this.serverProcessedContent === "undefined" || this.serverProcessedContent === null) {
+            html.push(this.htmlProperties);
+        }
+        else if (typeof this.serverProcessedContent !== "undefined") {
+            if (typeof this.serverProcessedContent.searchablePlainTexts !== "undefined") {
+                for (var i = 0; i < this.serverProcessedContent.searchablePlainTexts.length; i++) {
+                    var prop = this.serverProcessedContent.searchablePlainTexts[i];
+                    html.push("<div data-sp-prop-name=\"" + prop.Name + "\" data-sp-searchableplaintext=\"true\">");
+                    html.push(prop.Value);
+                    html.push("</div>");
+                }
+            }
+            if (typeof this.serverProcessedContent.imageSources !== "undefined") {
+                for (var i = 0; i < this.serverProcessedContent.imageSources.length; i++) {
+                    var prop = this.serverProcessedContent.imageSources[i];
+                    html.push("<img data-sp-prop-name=\"" + prop.Name + "\" src=\"" + prop.Value + "\" />");
+                }
+            }
+            if (typeof this.serverProcessedContent.links !== "undefined") {
+                for (var i = 0; i < this.serverProcessedContent.links.length; i++) {
+                    var prop = this.serverProcessedContent.links[i];
+                    html.push("<a data-sp-prop-name=\"" + prop.Name + "\" href=\"" + prop.Value + "\"></a>");
+                }
+            }
+        }
+        return html.join("");
+    };
+    ClientSideWebpart.prototype.parseJsonProperties = function (props) {
+        // If the web part has the serverProcessedContent property then keep this one as it might be needed as input to render the web part HTML later on
+        if (typeof props.webPartData !== "undefined" && typeof props.webPartData.serverProcessedContent !== "undefined") {
+            this.serverProcessedContent = props.webPartData.serverProcessedContent;
+        }
+        else if (typeof props.serverProcessedContent !== "undefined") {
+            this.serverProcessedContent = props.serverProcessedContent;
+        }
+        else {
+            this.serverProcessedContent = null;
+        }
+        if (typeof props.webPartData !== "undefined" && typeof props.webPartData.properties !== "undefined") {
+            return props.webPartData.properties;
+        }
+        else if (typeof props.properties !== "undefined") {
+            return props.properties;
+        }
+        else {
+            return props;
+        }
+    };
+    return ClientSideWebpart;
+}(CanvasControl));
+exports.ClientSideWebpart = ClientSideWebpart;
+
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9026,7 +10103,155 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
 var util_1 = __webpack_require__(0);
-var files_1 = __webpack_require__(9);
+/**
+ * Exposes social following methods
+ */
+var SocialQuery = /** @class */ (function (_super) {
+    __extends(SocialQuery, _super);
+    /**
+     * Creates a new instance of the SocialQuery class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this social query
+     */
+    function SocialQuery(baseUrl, path) {
+        if (path === void 0) { path = "_api/social.following"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    Object.defineProperty(SocialQuery.prototype, "my", {
+        get: function () {
+            return new MySocialQuery(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets a URI to a site that lists the current user's followed sites.
+     */
+    SocialQuery.prototype.getFollowedSitesUri = function () {
+        return this.clone(SocialQuery, "FollowedSitesUri").get().then(function (r) {
+            return r.FollowedSitesUri || r;
+        });
+    };
+    /**
+     * Gets a URI to a site that lists the current user's followed documents.
+     */
+    SocialQuery.prototype.getFollowedDocumentsUri = function () {
+        return this.clone(SocialQuery, "FollowedDocumentsUri").get().then(function (r) {
+            return r.FollowedDocumentsUri || r;
+        });
+    };
+    /**
+     * Makes the current user start following a user, document, site, or tag
+     *
+     * @param actorInfo The actor to start following
+     */
+    SocialQuery.prototype.follow = function (actorInfo) {
+        return this.clone(SocialQuery, "follow").postCore({ body: this.createSocialActorInfoRequestBody(actorInfo) });
+    };
+    /**
+     * Indicates whether the current user is following a specified user, document, site, or tag
+     *
+     * @param actorInfo The actor to find the following status for
+     */
+    SocialQuery.prototype.isFollowed = function (actorInfo) {
+        return this.clone(SocialQuery, "isfollowed").postCore({ body: this.createSocialActorInfoRequestBody(actorInfo) });
+    };
+    /**
+     * Makes the current user stop following a user, document, site, or tag
+     *
+     * @param actorInfo The actor to stop following
+     */
+    SocialQuery.prototype.stopFollowing = function (actorInfo) {
+        return this.clone(SocialQuery, "stopfollowing").postCore({ body: this.createSocialActorInfoRequestBody(actorInfo) });
+    };
+    /**
+     * Creates SocialActorInfo request body
+     *
+     * @param actorInfo The actor to create request body
+     */
+    SocialQuery.prototype.createSocialActorInfoRequestBody = function (actorInfo) {
+        return JSON.stringify({
+            "actor": util_1.Util.extend({
+                Id: null,
+                "__metadata": { "type": "SP.Social.SocialActorInfo" },
+            }, actorInfo),
+        });
+    };
+    return SocialQuery;
+}(sharepointqueryable_1.SharePointQueryableInstance));
+exports.SocialQuery = SocialQuery;
+var MySocialQuery = /** @class */ (function (_super) {
+    __extends(MySocialQuery, _super);
+    /**
+     * Creates a new instance of the SocialQuery class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this social query
+     */
+    function MySocialQuery(baseUrl, path) {
+        if (path === void 0) { path = "my"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets users, documents, sites, and tags that the current user is following.
+     *
+     * @param types Bitwise set of SocialActorTypes to retrieve
+     */
+    MySocialQuery.prototype.followed = function (types) {
+        return this.clone(MySocialQuery, "followed(types=" + types + ")").get().then(function (r) {
+            return r.hasOwnProperty("Followed") ? r.Followed.results : r;
+        });
+    };
+    /**
+     * Gets the count of users, documents, sites, and tags that the current user is following.
+     *
+     * @param types Bitwise set of SocialActorTypes to retrieve
+     */
+    MySocialQuery.prototype.followedCount = function (types) {
+        return this.clone(MySocialQuery, "followedcount(types=" + types + ")").get().then(function (r) {
+            return r.FollowedCount || r;
+        });
+    };
+    /**
+     * Gets the users who are following the current user.
+     */
+    MySocialQuery.prototype.followers = function () {
+        return this.clone(MySocialQuery, "followers").get().then(function (r) {
+            return r.hasOwnProperty("Followers") ? r.Followers.results : r;
+        });
+    };
+    /**
+     * Gets users who the current user might want to follow.
+     */
+    MySocialQuery.prototype.suggestions = function () {
+        return this.clone(MySocialQuery, "suggestions").get().then(function (r) {
+            return r.hasOwnProperty("Suggestions") ? r.Suggestions.results : r;
+        });
+    };
+    return MySocialQuery;
+}(sharepointqueryable_1.SharePointQueryableInstance));
+exports.MySocialQuery = MySocialQuery;
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var sharepointqueryable_1 = __webpack_require__(1);
+var util_1 = __webpack_require__(0);
+var files_1 = __webpack_require__(8);
 var odata_1 = __webpack_require__(3);
 /**
  * Allows for calling of the static SP.Utilities.Utility methods by supplying the method name
@@ -9150,7 +10375,7 @@ exports.UtilityMethod = UtilityMethod;
 
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9239,13 +10464,13 @@ exports.GraphHttpClient = GraphHttpClient;
 
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var storage = __webpack_require__(12);
+var storage = __webpack_require__(13);
 var exceptions_1 = __webpack_require__(2);
 /**
  * A caching provider which can wrap other non-caching providers
@@ -9313,109 +10538,13 @@ exports.default = CachingConfigurationProvider;
 
 
 /***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = __webpack_require__(0);
-var storage_1 = __webpack_require__(12);
-var configuration_1 = __webpack_require__(44);
-var logging_1 = __webpack_require__(5);
-var rest_1 = __webpack_require__(45);
-var pnplibconfig_1 = __webpack_require__(4);
-var rest_2 = __webpack_require__(55);
-/**
- * Root class of the Patterns and Practices namespace, provides an entry point to the library
- */
-/**
- * Utility methods
- */
-exports.util = util_1.Util;
-/**
- * Provides access to the SharePoint REST interface
- */
-exports.sp = new rest_1.SPRest();
-/**
- * Provides access to the Microsoft Graph REST interface
- */
-exports.graph = new rest_2.GraphRest();
-/**
- * Provides access to local and session storage
- */
-exports.storage = new storage_1.PnPClientStorage();
-/**
- * Global configuration instance to which providers can be added
- */
-exports.config = new configuration_1.Settings();
-/**
- * Global logging instance to which subscribers can be registered and messages written
- */
-exports.log = logging_1.Logger;
-/**
- * Allows for the configuration of the library
- */
-exports.setup = pnplibconfig_1.setRuntimeConfig;
-/**
- * Export everything back to the top level so it can be properly bundled
- */
-__export(__webpack_require__(64));
-__export(__webpack_require__(67));
-__export(__webpack_require__(69));
-__export(__webpack_require__(72));
-__export(__webpack_require__(73));
-// /**
-//  * Expose a subset of classes from the library for public consumption
-//  */
-// creating this class instead of directly assigning to default fixes issue #116
-var Def = {
-    /**
-     * Global configuration instance to which providers can be added
-     */
-    config: exports.config,
-    /**
-     * Provides access to the Microsoft Graph REST interface
-     */
-    graph: exports.graph,
-    /**
-     * Global logging instance to which subscribers can be registered and messages written
-     */
-    log: exports.log,
-    /**
-     * Provides access to local and session storage
-     */
-    setup: exports.setup,
-    /**
-     * Provides access to the REST interface
-     */
-    sp: exports.sp,
-    /**
-     * Provides access to local and session storage
-     */
-    storage: exports.storage,
-    /**
-     * Utility methods
-     */
-    util: exports.util,
-};
-/**
- * Enables use of the import pnp from syntax
- */
-exports.default = Def;
-
-
-/***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var collections_1 = __webpack_require__(8);
+var collections_1 = __webpack_require__(9);
 /**
  * Class used to manage the current application settings
  *
@@ -9508,21 +10637,22 @@ exports.Settings = Settings;
 
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var search_1 = __webpack_require__(30);
-var searchsuggest_1 = __webpack_require__(32);
-var site_1 = __webpack_require__(33);
+var search_1 = __webpack_require__(32);
+var searchsuggest_1 = __webpack_require__(34);
+var site_1 = __webpack_require__(35);
 var webs_1 = __webpack_require__(11);
 var util_1 = __webpack_require__(0);
-var userprofiles_1 = __webpack_require__(53);
-var navigation_1 = __webpack_require__(26);
+var userprofiles_1 = __webpack_require__(55);
+var social_1 = __webpack_require__(42);
+var navigation_1 = __webpack_require__(27);
 var exceptions_1 = __webpack_require__(2);
-var utilities_1 = __webpack_require__(40);
+var utilities_1 = __webpack_require__(43);
 /**
  * Root of the SharePoint REST module
  */
@@ -9615,6 +10745,16 @@ var SPRest = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(SPRest.prototype, "social", {
+        /**
+         * Access to social methods
+         */
+        get: function () {
+            return new social_1.SocialQuery(this._baseUrl).configure(this._options);
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(SPRest.prototype, "navigation", {
         /**
          * Access to the site collection level navigation service
@@ -9686,13 +10826,13 @@ exports.SPRest = SPRest;
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var collections_1 = __webpack_require__(8);
+var collections_1 = __webpack_require__(9);
 var util_1 = __webpack_require__(0);
 var parsers_1 = __webpack_require__(7);
 var pnplibconfig_1 = __webpack_require__(4);
@@ -9752,7 +10892,7 @@ exports.DigestCache = DigestCache;
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9936,7 +11076,7 @@ exports.AttachmentFile = AttachmentFile;
 
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10123,7 +11263,7 @@ exports.ViewFields = ViewFields;
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10183,7 +11323,7 @@ exports.Form = Form;
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10283,7 +11423,7 @@ exports.Subscription = Subscription;
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10442,7 +11582,7 @@ exports.TimeZones = TimeZones;
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10575,7 +11715,7 @@ exports.RelatedItemManagerImpl = RelatedItemManagerImpl;
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10592,7 +11732,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharepointqueryable_1 = __webpack_require__(1);
-var files_1 = __webpack_require__(54);
+var files_1 = __webpack_require__(56);
 var parsers_1 = __webpack_require__(7);
 var UserProfileQuery = /** @class */ (function (_super) {
     __extends(UserProfileQuery, _super);
@@ -10772,6 +11912,38 @@ var UserProfileQuery = /** @class */ (function (_super) {
         });
     };
     /**
+     * Sets single value User Profile property
+     *
+     * @param accountName The account name of the user
+     * @param propertyName Property name
+     * @param propertyValue Property value
+     */
+    UserProfileQuery.prototype.setSingleValueProfileProperty = function (accountName, propertyName, propertyValue) {
+        var postBody = JSON.stringify({
+            accountName: accountName,
+            propertyName: propertyName,
+            propertyValue: propertyValue,
+        });
+        return this.clone(UserProfileQuery, "SetSingleValueProfileProperty")
+            .postCore({ body: postBody });
+    };
+    /**
+     * Sets multi valued User Profile property
+     *
+     * @param accountName The account name of the user
+     * @param propertyName Property name
+     * @param propertyValues Property values
+     */
+    UserProfileQuery.prototype.setMultiValuedProfileProperty = function (accountName, propertyName, propertyValues) {
+        var postBody = JSON.stringify({
+            accountName: accountName,
+            propertyName: propertyName,
+            propertyValues: propertyValues,
+        });
+        return this.clone(UserProfileQuery, "SetMultiValuedProfileProperty")
+            .postCore({ body: postBody });
+    };
+    /**
      * Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only)
      *
      * @param emails The email addresses of the users to provision sites for
@@ -10893,7 +12065,7 @@ var ProfileLoader = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10947,13 +12119,13 @@ function readBlobAs(blob, mode) {
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var v1_1 = __webpack_require__(56);
+var v1_1 = __webpack_require__(58);
 var GraphRest = /** @class */ (function () {
     function GraphRest() {
     }
@@ -10970,7 +12142,7 @@ exports.GraphRest = GraphRest;
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10987,7 +12159,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var graphqueryable_1 = __webpack_require__(6);
-var groups_1 = __webpack_require__(57);
+var groups_1 = __webpack_require__(59);
 // import { Me } from "./me";
 /**
  * Root object wrapping v1 functionality for MS Graph
@@ -11018,7 +12190,7 @@ exports.V1 = V1;
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11035,12 +12207,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var graphqueryable_1 = __webpack_require__(6);
-var members_1 = __webpack_require__(58);
+var members_1 = __webpack_require__(60);
 var util_1 = __webpack_require__(0);
-var calendars_1 = __webpack_require__(59);
-var conversations_1 = __webpack_require__(60);
-var plans_1 = __webpack_require__(62);
-var photos_1 = __webpack_require__(63);
+var calendars_1 = __webpack_require__(61);
+var conversations_1 = __webpack_require__(62);
+var plans_1 = __webpack_require__(64);
+var photos_1 = __webpack_require__(65);
 var GroupType;
 (function (GroupType) {
     /**
@@ -11286,7 +12458,7 @@ exports.Group = Group;
 
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11354,7 +12526,7 @@ exports.Owners = Owners;
 
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11458,7 +12630,7 @@ exports.Event = Event;
 
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11475,7 +12647,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var graphqueryable_1 = __webpack_require__(6);
-var attachments_1 = __webpack_require__(61);
+var attachments_1 = __webpack_require__(63);
 var Conversations = /** @class */ (function (_super) {
     __extends(Conversations, _super);
     function Conversations(baseUrl, path) {
@@ -11700,7 +12872,7 @@ exports.Senders = Senders;
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11760,7 +12932,7 @@ exports.Attachment = Attachment;
 
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11805,7 +12977,7 @@ exports.Plan = Plan;
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11857,7 +13029,7 @@ exports.Photo = Photo;
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11866,37 +13038,37 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(65));
-var collections_1 = __webpack_require__(8);
+__export(__webpack_require__(67));
+var collections_1 = __webpack_require__(9);
 exports.Dictionary = collections_1.Dictionary;
 var util_1 = __webpack_require__(0);
 exports.Util = util_1.Util;
 __export(__webpack_require__(5));
 __export(__webpack_require__(2));
-__export(__webpack_require__(12));
+__export(__webpack_require__(13));
 
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var cachingConfigurationProvider_1 = __webpack_require__(42);
+var cachingConfigurationProvider_1 = __webpack_require__(45);
 exports.CachingConfigurationProvider = cachingConfigurationProvider_1.default;
-var spListConfigurationProvider_1 = __webpack_require__(66);
+var spListConfigurationProvider_1 = __webpack_require__(68);
 exports.SPListConfigurationProvider = spListConfigurationProvider_1.default;
 
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var cachingConfigurationProvider_1 = __webpack_require__(42);
+var cachingConfigurationProvider_1 = __webpack_require__(45);
 /**
  * A configuration provider which loads configuration values from a SharePoint list
  *
@@ -11970,7 +13142,7 @@ exports.default = SPListConfigurationProvider;
 
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11979,11 +13151,11 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(68));
+__export(__webpack_require__(70));
 
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11997,7 +13169,7 @@ exports.GraphQueryableSearchableCollection = graphqueryable_1.GraphQueryableSear
 
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12005,18 +13177,18 @@ exports.GraphQueryableSearchableCollection = graphqueryable_1.GraphQueryableSear
 Object.defineProperty(exports, "__esModule", { value: true });
 var httpclient_1 = __webpack_require__(21);
 exports.HttpClient = httpclient_1.HttpClient;
-var sprequestexecutorclient_1 = __webpack_require__(70);
+var sprequestexecutorclient_1 = __webpack_require__(72);
 exports.SPRequestExecutorClient = sprequestexecutorclient_1.SPRequestExecutorClient;
-var nodefetchclient_1 = __webpack_require__(71);
+var nodefetchclient_1 = __webpack_require__(73);
 exports.NodeFetchClient = nodefetchclient_1.NodeFetchClient;
-var fetchclient_1 = __webpack_require__(29);
+var fetchclient_1 = __webpack_require__(31);
 exports.FetchClient = fetchclient_1.FetchClient;
-var graphclient_1 = __webpack_require__(41);
+var graphclient_1 = __webpack_require__(44);
 exports.GraphHttpClient = graphclient_1.GraphHttpClient;
 
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12107,7 +13279,7 @@ exports.SPRequestExecutorClient = SPRequestExecutorClient;
 
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12133,35 +13305,6 @@ exports.NodeFetchClient = NodeFetchClient;
 
 
 /***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(13));
-__export(__webpack_require__(7));
-__export(__webpack_require__(31));
-__export(__webpack_require__(19));
-
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(74));
-
-
-/***/ }),
 /* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12171,12 +13314,45 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-var appcatalog_1 = __webpack_require__(39);
+__export(__webpack_require__(14));
+__export(__webpack_require__(7));
+__export(__webpack_require__(33));
+__export(__webpack_require__(19));
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(76));
+
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var appcatalog_1 = __webpack_require__(40);
 exports.AppCatalog = appcatalog_1.AppCatalog;
 exports.App = appcatalog_1.App;
-var batch_1 = __webpack_require__(27);
+__export(__webpack_require__(41));
+var batch_1 = __webpack_require__(28);
 exports.ODataBatch = batch_1.ODataBatch;
-var files_1 = __webpack_require__(9);
+var fields_1 = __webpack_require__(25);
+exports.Field = fields_1.Field;
+exports.Fields = fields_1.Fields;
+var files_1 = __webpack_require__(8);
 exports.CheckinType = files_1.CheckinType;
 exports.WebPartsPersonalizationScope = files_1.WebPartsPersonalizationScope;
 exports.MoveOperations = files_1.MoveOperations;
@@ -12186,16 +13362,16 @@ exports.Files = files_1.Files;
 var folders_1 = __webpack_require__(18);
 exports.Folder = folders_1.Folder;
 exports.Folders = folders_1.Folders;
-var items_1 = __webpack_require__(15);
+var items_1 = __webpack_require__(12);
 exports.Item = items_1.Item;
 exports.Items = items_1.Items;
 exports.ItemVersion = items_1.ItemVersion;
 exports.ItemVersions = items_1.ItemVersions;
 exports.PagedItemCollection = items_1.PagedItemCollection;
-var navigation_1 = __webpack_require__(26);
+var navigation_1 = __webpack_require__(27);
 exports.NavigationNodes = navigation_1.NavigationNodes;
 exports.NavigationNode = navigation_1.NavigationNode;
-var lists_1 = __webpack_require__(14);
+var lists_1 = __webpack_require__(15);
 exports.List = lists_1.List;
 exports.Lists = lists_1.Lists;
 var odata_1 = __webpack_require__(3);
@@ -12208,7 +13384,7 @@ exports.SharePointQueryableInstance = sharepointqueryable_1.SharePointQueryableI
 exports.SharePointQueryableCollection = sharepointqueryable_1.SharePointQueryableCollection;
 var roles_1 = __webpack_require__(22);
 exports.RoleDefinitionBindings = roles_1.RoleDefinitionBindings;
-var search_1 = __webpack_require__(30);
+var search_1 = __webpack_require__(32);
 exports.Search = search_1.Search;
 exports.SearchQueryBuilder = search_1.SearchQueryBuilder;
 exports.SearchResults = search_1.SearchResults;
@@ -12216,15 +13392,16 @@ exports.SortDirection = search_1.SortDirection;
 exports.ReorderingRuleMatchType = search_1.ReorderingRuleMatchType;
 exports.QueryPropertyValueType = search_1.QueryPropertyValueType;
 exports.SearchBuiltInSourceId = search_1.SearchBuiltInSourceId;
-var searchsuggest_1 = __webpack_require__(32);
+var searchsuggest_1 = __webpack_require__(34);
 exports.SearchSuggest = searchsuggest_1.SearchSuggest;
 exports.SearchSuggestResult = searchsuggest_1.SearchSuggestResult;
-var site_1 = __webpack_require__(33);
+var site_1 = __webpack_require__(35);
 exports.Site = site_1.Site;
+__export(__webpack_require__(42));
 __export(__webpack_require__(17));
-var utilities_1 = __webpack_require__(40);
+var utilities_1 = __webpack_require__(43);
 exports.UtilityMethod = utilities_1.UtilityMethod;
-var webparts_1 = __webpack_require__(36);
+var webparts_1 = __webpack_require__(38);
 exports.WebPartDefinitions = webparts_1.WebPartDefinitions;
 exports.WebPartDefinition = webparts_1.WebPartDefinition;
 exports.WebPart = webparts_1.WebPart;

@@ -10,6 +10,7 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 ## Version history
 - 3.6.2 New feature in File Editor
     * Pressing ctrl/cmd + D downloads the current file in editor
+    * Updated sp-pnp-js to 3.0.6
 - 3.6.1 some adjustments
 - 3.6.0 New feature
     * Manage Site Designs & Scripts

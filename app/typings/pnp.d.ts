@@ -1517,6 +1517,7 @@ declare module "sharepoint/search" {
           }[];
       };
       Refiners?: {
+          Name: string;
           Entries: {
               RefinementCount: string;
               RefinementName: string;
@@ -2212,6 +2213,19 @@ declare module "sharepoint/types" {
       Options?: AddFieldOptions;
       SchemaXml: string;
   }
+  export interface FieldCreationProperties extends TypedHash<string | number | boolean> {
+      DefaultFormula?: string;
+      Description?: string;
+      EnforceUniqueValues?: boolean;
+      FieldTypeKind?: number;
+      Group?: string;
+      Hidden?: boolean;
+      Indexed?: boolean;
+      Required?: boolean;
+      Title?: string;
+      ValidationFormula?: string;
+      ValidationMessage?: string;
+  }
   export enum CalendarType {
       Gregorian = 1,
       Japan = 3,
@@ -2232,6 +2246,10 @@ declare module "sharepoint/types" {
   export enum UrlFieldFormatType {
       Hyperlink = 0,
       Image = 1,
+  }
+  export enum ChoiceFieldFormatType {
+      Dropdown = 0,
+      RadioButtons = 1,
   }
   export interface BasePermissions {
       Low: string;
@@ -3154,12 +3172,31 @@ declare module "sharepoint/types" {
       ListData = 2,
       ListSchema = 4,
       MenuView = 8,
+      ListContentType = 16,
+      FileSystemItemId = 32,
+      ClientFormSchema = 64,
+      QuickLaunch = 128,
+      Spotlight = 256,
+      Visualization = 512,
+      ViewMetadata = 1024,
+      DisableAutoHyperlink = 2048,
+      EnableMediaTAUrls = 4096,
+      ParentInfo = 8192,
+      PageContextInfo = 16384,
+      ClientSideComponentManifest = 32768,
   }
   export interface RenderListDataParameters {
-      ViewXml?: string;
-      Paging?: string;
+      AllowMultipleValueFilterForTaxonomyFields?: boolean;
+      DatesInUtc?: boolean;
+      ExpandGroups?: boolean;
+      FirstGroupOnly?: boolean;
       FolderServerRelativeUrl?: string;
+      ImageFieldsToTryRewriteToCdnUrls?: string;
+      OverrideViewXml?: string;
+      Paging?: string;
       RenderOptions?: RenderListDataOptions;
+      ReplaceGroup?: boolean;
+      ViewXml?: string;
   }
   export interface AppData {
       AppCatalogVersion?: string;
@@ -3222,6 +3259,10 @@ declare module "sharepoint/types" {
       StartingNodeKey: string;
       StartingNodeTitle: string;
       Version: Date;
+  }
+  export enum FieldUserSelectionMode {
+      PeopleAndGroups = 1,
+      PeopleOnly = 0,
   }
 }
 declare module "sharepoint/roles" {
@@ -3944,7 +3985,7 @@ declare module "sharepoint/files" {
        * @param progress A callback function which can be used to track the progress of the upload
        * @param chunkSize The size of each file slice, in bytes (default: 10485760)
        */
-      setContentChunked(file: Blob, progress?: (data: ChunkedFileUploadProgressData) => void, chunkSize?: number): Promise<File>;
+      setContentChunked(file: Blob, progress?: (data: ChunkedFileUploadProgressData) => void, chunkSize?: number): Promise<FileAddResult>;
       /**
        * Starts a new chunk upload session and uploads the first fragment.
        * The current file content is not changed when this method completes.
@@ -4074,6 +4115,7 @@ declare module "sharepoint/files" {
       StandardPage = 0,
       WikiPage = 1,
       FormPage = 2,
+      ClientSidePage = 3,
   }
 }
 declare module "sharepoint/folders" {
@@ -4397,13 +4439,20 @@ declare module "sharepoint/items" {
        * Skips the specified number of items (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#sectionSection6)
        *
        * @param skip The starting id where the page should start, use with top to specify pages
+       * @param reverse It true the PagedPrev=true parameter is added allowing backwards navigation in the collection
        */
-      skip(skip: number): this;
+      skip(skip: number, reverse?: boolean): this;
       /**
        * Gets a collection designed to aid in paging through data
        *
        */
       getPaged(): Promise<PagedItemCollection<any>>;
+      /**
+       * Gets all the items in a list, regardless of count. Does not support batching or caching
+       *
+       *  @param requestSize Number of items to return in each request (Default: 2000)
+       */
+      getAll(requestSize?: number): Promise<any[]>;
       /**
        * Adds a new item to the collection
        *
@@ -4667,7 +4716,7 @@ declare module "sharepoint/views" {
 declare module "sharepoint/fields" {
   import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "sharepoint/sharepointqueryable";
   import { TypedHash } from "collections/collections";
-  import { XmlSchemaFieldCreationInformation, DateTimeFieldFormatType, FieldTypes, CalendarType, UrlFieldFormatType } from "sharepoint/types";
+  import { XmlSchemaFieldCreationInformation, FieldCreationProperties, DateTimeFieldFormatType, FieldTypes, CalendarType, UrlFieldFormatType, FieldUserSelectionMode, ChoiceFieldFormatType } from "sharepoint/types";
   /**
    * Describes a collection of Field objects
    *
@@ -4702,13 +4751,15 @@ declare module "sharepoint/fields" {
        */
       createFieldAsXml(xml: string | XmlSchemaFieldCreationInformation): Promise<FieldAddResult>;
       /**
-       * Adds a new list to the collection
+       * Adds a new field to the collection
        *
        * @param title The new field's title
        * @param fieldType The new field's type (ex: SP.FieldText)
        * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
        */
-      add(title: string, fieldType: string, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+      add(title: string, fieldType: string, properties: FieldCreationProperties & {
+          FieldTypeKind: number;
+      }): Promise<FieldAddResult>;
       /**
        * Adds a new SP.FieldText to the collection
        *
@@ -4716,7 +4767,7 @@ declare module "sharepoint/fields" {
        * @param maxLength The maximum number of characters allowed in the value of the field.
        * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
        */
-      addText(title: string, maxLength?: number, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+      addText(title: string, maxLength?: number, properties?: FieldCreationProperties): Promise<FieldAddResult>;
       /**
        * Adds a new SP.FieldCalculated to the collection
        *
@@ -4726,7 +4777,7 @@ declare module "sharepoint/fields" {
        * @param outputType Specifies the output format for the field. Represents a FieldType value.
        * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
        */
-      addCalculated(title: string, formula: string, dateFormat: DateTimeFieldFormatType, outputType?: FieldTypes, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+      addCalculated(title: string, formula: string, dateFormat: DateTimeFieldFormatType, outputType?: FieldTypes, properties?: FieldCreationProperties): Promise<FieldAddResult>;
       /**
        * Adds a new SP.FieldDateTime to the collection
        *
@@ -4735,7 +4786,7 @@ declare module "sharepoint/fields" {
        * @param calendarType Specifies the calendar type of the field.
        * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
        */
-      addDateTime(title: string, displayFormat?: DateTimeFieldFormatType, calendarType?: CalendarType, friendlyDisplayFormat?: number, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+      addDateTime(title: string, displayFormat?: DateTimeFieldFormatType, calendarType?: CalendarType, friendlyDisplayFormat?: number, properties?: FieldCreationProperties): Promise<FieldAddResult>;
       /**
        * Adds a new SP.FieldNumber to the collection
        *
@@ -4744,7 +4795,7 @@ declare module "sharepoint/fields" {
        * @param maxValue The field's maximum value
        * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
        */
-      addNumber(title: string, minValue?: number, maxValue?: number, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+      addNumber(title: string, minValue?: number, maxValue?: number, properties?: FieldCreationProperties): Promise<FieldAddResult>;
       /**
        * Adds a new SP.FieldCurrency to the collection
        *
@@ -4754,7 +4805,7 @@ declare module "sharepoint/fields" {
        * @param currencyLocalId Specifies the language code identifier (LCID) used to format the value of the field
        * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
        */
-      addCurrency(title: string, minValue?: number, maxValue?: number, currencyLocalId?: number, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+      addCurrency(title: string, minValue?: number, maxValue?: number, currencyLocalId?: number, properties?: FieldCreationProperties): Promise<FieldAddResult>;
       /**
        * Adds a new SP.FieldMultiLineText to the collection
        *
@@ -4767,13 +4818,57 @@ declare module "sharepoint/fields" {
        * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
        *
        */
-      addMultilineText(title: string, numberOfLines?: number, richText?: boolean, restrictedMode?: boolean, appendOnly?: boolean, allowHyperlink?: boolean, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+      addMultilineText(title: string, numberOfLines?: number, richText?: boolean, restrictedMode?: boolean, appendOnly?: boolean, allowHyperlink?: boolean, properties?: FieldCreationProperties): Promise<FieldAddResult>;
       /**
        * Adds a new SP.FieldUrl to the collection
        *
        * @param title The field title
        */
-      addUrl(title: string, displayFormat?: UrlFieldFormatType, properties?: TypedHash<string | number | boolean>): Promise<FieldAddResult>;
+      addUrl(title: string, displayFormat?: UrlFieldFormatType, properties?: FieldCreationProperties): Promise<FieldAddResult>;
+      /**
+       * Adds a user field to the colleciton
+       *
+       * @param title The new field's title
+       * @param selectionMode The selection mode of the field
+       * @param selectionGroup Value that specifies the identifier of the SharePoint group whose members can be selected as values of the field
+       * @param properties
+       */
+      addUser(title: string, selectionMode: FieldUserSelectionMode, properties?: FieldCreationProperties): Promise<FieldAddResult>;
+      /**
+       * Adds a SP.FieldLookup to the collection
+       *
+       * @param title The new field's title
+       * @param lookupListId The guid id of the list where the source of the lookup is found
+       * @param lookupFieldName The internal name of the field in the source list
+       * @param properties Set of additional properties to set on the new field
+       */
+      addLookup(title: string, lookupListId: string, lookupFieldName: string, properties?: FieldCreationProperties): Promise<FieldAddResult>;
+      /**
+       * Adds a new SP.FieldChoice to the collection
+       *
+       * @param title The field title.
+       * @param choices The choices for the field.
+       * @param format The display format of the available options for the field.
+       * @param fillIn Specifies whether the field allows fill-in values.
+       * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+       */
+      addChoice(title: string, choices: string[], format?: ChoiceFieldFormatType, fillIn?: boolean, properties?: FieldCreationProperties): Promise<FieldAddResult>;
+      /**
+       * Adds a new SP.FieldMultiChoice to the collection
+       *
+       * @param title The field title.
+       * @param choices The choices for the field.
+       * @param fillIn Specifies whether the field allows fill-in values.
+       * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+       */
+      addMultiChoice(title: string, choices: string[], fillIn?: boolean, properties?: FieldCreationProperties): Promise<FieldAddResult>;
+      /**
+       * Adds a new SP.FieldBoolean to the collection
+       *
+       * @param title The field title.
+       * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+       */
+      addBoolean(title: string, properties?: FieldCreationProperties): Promise<FieldAddResult>;
   }
   /**
    * Describes a single of Field instance
@@ -4786,7 +4881,7 @@ declare module "sharepoint/fields" {
        * @param properties A plain object hash of values to update for the list
        * @param fieldType The type value, required to update child field type properties
        */
-      update(properties: TypedHash<string | number | boolean>, fieldType?: string): Promise<FieldUpdateResult>;
+      update(properties: TypedHash<any>, fieldType?: string): Promise<FieldUpdateResult>;
       /**
        * Delete this fields
        *
@@ -4972,7 +5067,7 @@ declare module "sharepoint/lists" {
   import { Fields } from "sharepoint/fields";
   import { Forms } from "sharepoint/forms";
   import { Subscriptions } from "sharepoint/subscriptions";
-  import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "sharepoint/sharepointqueryable";
+  import { SharePointQueryable, SharePointQueryableCollection } from "sharepoint/sharepointqueryable";
   import { SharePointQueryableSecurable } from "sharepoint/sharepointqueryablesecurable";
   import { TypedHash } from "collections/collections";
   import { ControlMode, RenderListData, ChangeQuery, CamlQuery, ChangeLogitemQuery, ListFormData, RenderListDataParameters } from "sharepoint/types";
@@ -5064,7 +5159,7 @@ declare module "sharepoint/lists" {
        * Gets the default view of this list
        *
        */
-      readonly defaultView: SharePointQueryableInstance;
+      readonly defaultView: View;
       /**
        * Get all custom actions on a site collection
        *
@@ -5523,6 +5618,319 @@ declare module "sharepoint/appcatalog" {
       file: File;
   }
 }
+declare module "sharepoint/clientsidepages" {
+  import { List } from "sharepoint/lists";
+  import { File } from "sharepoint/files";
+  import { ItemUpdateResult } from "sharepoint/items";
+  import { TypedHash } from "collections/collections";
+  /**
+   * Page promotion state
+   */
+  export const enum PromotedState {
+      /**
+       * Regular client side page
+       */
+      NotPromoted = 0,
+      /**
+       * Page that will be promoted as news article after publishing
+       */
+      PromoteOnPublish = 1,
+      /**
+       * Page that is promoted as news article
+       */
+      Promoted = 2,
+  }
+  /**
+   * Type describing the available page layout types for client side "modern" pages
+   */
+  export type ClientSidePageLayoutType = "Article" | "Home";
+  /**
+   * Column size factor. Max value is 12 (= one column), other options are 8,6,4 or 0
+   */
+  export type CanvasColumnFactorType = 0 | 2 | 4 | 6 | 8 | 12;
+  /**
+   * Represents the data and methods associated with client side "modern" pages
+   */
+  export class ClientSidePage extends File {
+      sections: CanvasSection[];
+      commentsDisabled: boolean;
+      /**
+       * Creates a new blank page within the supplied library
+       *
+       * @param library The library in which to create the page
+       * @param pageName Filename of the page, such as "page.aspx"
+       * @param title The display title of the page
+       * @param pageLayoutType Layout type of the page to use
+       */
+      static create(library: List, pageName: string, title: string, pageLayoutType?: ClientSidePageLayoutType): Promise<ClientSidePage>;
+      /**
+       * Creates a new ClientSidePage instance from the provided html content string
+       *
+       * @param html HTML markup representing the page
+       */
+      static fromFile(file: File): Promise<ClientSidePage>;
+      /**
+       * Converts a json object to an escaped string appropriate for use in attributes when storing client-side controls
+       *
+       * @param json The json object to encode into a string
+       */
+      static jsonToEscapedString(json: any): string;
+      /**
+       * Converts an escaped string from a client-side control attribute to a json object
+       *
+       * @param escapedString
+       */
+      static escapedStringToJson<T = any>(escapedString: string): T;
+      /**
+       * Creates a new instance of the ClientSidePage class
+       *
+       * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
+       * @param commentsDisabled Indicates if comments are disabled, not valid until load is called
+       */
+      constructor(file: File, sections?: CanvasSection[], commentsDisabled?: boolean);
+      /**
+       * Add a section to this page
+       */
+      addSection(): CanvasSection;
+      /**
+       * Converts this page's content to html markup
+       */
+      toHtml(): string;
+      /**
+       * Loads this page instance's content from the supplied html
+       *
+       * @param html html string representing the page's content
+       */
+      fromHtml(html: string): this;
+      /**
+       * Loads this page's content from the server
+       */
+      load(): Promise<void>;
+      /**
+       * Persists the content changes (sections, columns, and controls)
+       */
+      save(): Promise<ItemUpdateResult>;
+      /**
+       * Enables comments on this page
+       */
+      enableComments(): Promise<ItemUpdateResult>;
+      /**
+       * Disables comments on this page
+       */
+      disableComments(): Promise<ItemUpdateResult>;
+      /**
+       * Finds a control by the specified instance id
+       *
+       * @param id Instance id of the control to find
+       */
+      findControlById<T extends CanvasControl = CanvasControl>(id: string): T;
+      /**
+       * Finds a control within this page's control tree using the supplied predicate
+       *
+       * @param predicate Takes a control and returns true or false, if true that control is returned by findControl
+       */
+      findControl<T extends CanvasControl = CanvasControl>(predicate: (c: CanvasControl) => boolean): T;
+      /**
+       * Sets the comments flag for a page
+       *
+       * @param on If true comments are enabled, false they are disabled
+       */
+      private setCommentsOn(on);
+      /**
+       * Merges the control into the tree of sections and columns for this page
+       *
+       * @param control The control to merge
+       */
+      private mergeControlToTree(control);
+      /**
+       * Merges the supplied column into the tree
+       *
+       * @param column Column to merge
+       * @param position The position data for the column
+       */
+      private mergeColumnToTree(column);
+      /**
+       * Updates the properties of the underlying ListItem associated with this ClientSidePage
+       *
+       * @param properties Set of properties to update
+       * @param eTag Value used in the IF-Match header, by default "*"
+       */
+      private updateProperties(properties, eTag?);
+  }
+  export class CanvasSection {
+      page: ClientSidePage;
+      order: number;
+      columns: CanvasColumn[];
+      constructor(page: ClientSidePage, order: number, columns?: CanvasColumn[]);
+      /**
+       * Default column (this.columns[0]) for this section
+       */
+      readonly defaultColumn: CanvasColumn;
+      /**
+       * Adds a new column to this section
+       */
+      addColumn(factor: CanvasColumnFactorType): CanvasColumn;
+      /**
+       * Adds a control to the default column for this section
+       *
+       * @param control Control to add to the default column
+       */
+      addControl(control: CanvasControl): this;
+      toHtml(): string;
+  }
+  export abstract class CanvasControl {
+      protected controlType: number;
+      protected dataVersion: string;
+      column: CanvasColumn;
+      order: number;
+      id: string;
+      controlData: ClientSideControlData;
+      constructor(controlType: number, dataVersion: string, column?: CanvasColumn, order?: number, id?: string, controlData?: ClientSideControlData);
+      /**
+       * Value of the control's "data-sp-controldata" attribute
+       */
+      readonly jsonData: string;
+      abstract toHtml(index: number): string;
+      fromHtml(html: string): void;
+      protected abstract getControlData(): ClientSideControlData;
+  }
+  export class CanvasColumn extends CanvasControl {
+      section: CanvasSection;
+      order: number;
+      factor: CanvasColumnFactorType;
+      controls: CanvasControl[];
+      constructor(section: CanvasSection, order: number, factor?: CanvasColumnFactorType, controls?: CanvasControl[], dataVersion?: string);
+      addControl(control: CanvasControl): this;
+      getControl<T extends CanvasControl>(index: number): T;
+      toHtml(): string;
+      fromHtml(html: string): void;
+      getControlData(): ClientSideControlData;
+  }
+  export class ClientSideText extends CanvasControl {
+      private _text;
+      constructor(text?: string);
+      /**
+       * The text markup of this control
+       */
+      text: string;
+      getControlData(): ClientSideControlData;
+      toHtml(index: number): string;
+      fromHtml(html: string): void;
+  }
+  export class ClientSideWebpart extends CanvasControl {
+      title: string;
+      description: string;
+      propertieJson: TypedHash<any>;
+      webPartId: string;
+      protected htmlProperties: string;
+      protected serverProcessedContent: ServerProcessedContent;
+      static fromComponentDef(definition: ClientSidePageComponent): ClientSideWebpart;
+      constructor(title: string, description?: string, propertieJson?: TypedHash<any>, webPartId?: string, htmlProperties?: string, serverProcessedContent?: ServerProcessedContent);
+      import(component: ClientSidePageComponent): void;
+      setProperties<T = any>(properties: T): this;
+      getProperties<T = any>(): T;
+      toHtml(index: number): string;
+      fromHtml(html: string): void;
+      getControlData(): ClientSideControlData;
+      protected renderHtmlProperties(): string;
+      protected parseJsonProperties(props: TypedHash<any>): any;
+  }
+  /**
+   * Client side webpart object (retrieved via the _api/web/GetClientSideWebParts REST call)
+   */
+  export interface ClientSidePageComponent {
+      /**
+       * Component type for client side webpart object
+       */
+      ComponentType: number;
+      /**
+       * Id for client side webpart object
+       */
+      Id: string;
+      /**
+       * Manifest for client side webpart object
+       */
+      Manifest: string;
+      /**
+       * Manifest type for client side webpart object
+       */
+      ManifestType: number;
+      /**
+       * Name for client side webpart object
+       */
+      Name: string;
+      /**
+       * Status for client side webpart object
+       */
+      Status: number;
+  }
+  export interface ServerProcessedContent {
+      searchablePlainTexts: any[];
+      imageSources: any[];
+      links: any[];
+  }
+  export interface ClientSideControlPosition {
+      controlIndex?: number;
+      sectionFactor: CanvasColumnFactorType;
+      sectionIndex: number;
+      zoneIndex: number;
+  }
+  export interface ClientSideControlData {
+      controlType?: number;
+      id?: string;
+      editorType?: string;
+      position: ClientSideControlPosition;
+      webPartId?: string;
+      displayMode?: number;
+  }
+  export interface ClientSideWebpartData {
+      dataVersion: string;
+      description: string;
+      id: string;
+      instanceId: string;
+      properties: any;
+      title: string;
+      serverProcessedContent?: ServerProcessedContent;
+  }
+  export module ClientSideWebpartPropertyTypes {
+      /**
+       * Propereties for Embed (component id: 490d7c76-1824-45b2-9de3-676421c997fa)
+       */
+      interface Embed {
+          embedCode: string;
+          cachedEmbedCode?: string;
+          shouldScaleWidth?: boolean;
+          tempState?: any;
+      }
+      /**
+       * Properties for Bing Map (component id: e377ea37-9047-43b9-8cdb-a761be2f8e09)
+       */
+      interface BingMap {
+          center: {
+              altitude?: number;
+              altitudeReference?: number;
+              latitude: number;
+              longitude: number;
+          };
+          mapType: "aerial" | "birdseye" | "road" | "streetside";
+          maxNumberOfPushPins?: number;
+          pushPins?: {
+              location: {
+                  latitude: number;
+                  longitude: number;
+                  altitude?: number;
+                  altitudeReference?: number;
+              };
+              address?: string;
+              defaultAddress?: string;
+              defaultTitle?: string;
+              title?: string;
+          }[];
+          shouldShowPushPinTitle?: boolean;
+          zoomLevel?: number;
+      }
+  }
+}
 declare module "sharepoint/webs" {
   import { SharePointQueryable, SharePointQueryableCollection } from "sharepoint/sharepointqueryable";
   import { Lists } from "sharepoint/lists";
@@ -5544,6 +5952,7 @@ declare module "sharepoint/webs" {
   import { SharePointQueryableShareableWeb } from "sharepoint/sharepointqueryableshareable";
   import { RelatedItemManger } from "sharepoint/relateditems";
   import { AppCatalog } from "sharepoint/appcatalog";
+  import { ClientSidePage, ClientSidePageComponent } from "sharepoint/clientsidepages";
   /**
    * Describes a collection of webs
    *
@@ -5730,11 +6139,28 @@ declare module "sharepoint/webs" {
        */
       getFolderByServerRelativeUrl(folderRelativeUrl: string): Folder;
       /**
+       * Gets a folder by server relative relative path if your folder name contains # and % characters
+       * you need to first encode the file name using encodeURIComponent() and then pass the url
+       * let url = "/sites/test/Shared Documents/" + encodeURIComponent("%123");
+       * This works only in SharePoint online.
+       *
+       * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
+       */
+      getFolderByServerRelativePath(folderRelativeUrl: string): Folder;
+      /**
        * Gets a file by server relative url
        *
        * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
        */
       getFileByServerRelativeUrl(fileRelativeUrl: string): File;
+      /**
+       * Gets a file by server relative url if your file name contains # and % characters
+       * you need to first encode the file name using encodeURIComponent() and then pass the url
+       * let url = "/sites/test/Shared Documents/" + encodeURIComponent("%123.docx");
+       *
+       * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
+       */
+      getFileByServerRelativePath(fileRelativeUrl: string): File;
       /**
        * Gets a list by server relative url (list's root folder)
        *
@@ -5824,6 +6250,18 @@ declare module "sharepoint/webs" {
        * @param url Optional url or web containing the app catalog (default: current web)
        */
       getAppCatalog(url?: string | Web): AppCatalog;
+      /**
+       * Gets the collection of available client side web parts for this web instance
+       */
+      getClientSideWebParts(): Promise<ClientSidePageComponent[]>;
+      /**
+       * Creates a new client side page
+       *
+       * @param pageName Name of the new page
+       * @param title Display title of the new page
+       * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
+       */
+      addClientSidePage(pageName: string, title?: string, libraryTitle?: string): Promise<ClientSidePage>;
   }
   /**
    * Result from adding a web
@@ -6038,6 +6476,22 @@ declare module "sharepoint/userprofiles" {
        */
       setMyProfilePic(profilePicSource: Blob): Promise<void>;
       /**
+       * Sets single value User Profile property
+       *
+       * @param accountName The account name of the user
+       * @param propertyName Property name
+       * @param propertyValue Property value
+       */
+      setSingleValueProfileProperty(accountName: string, propertyName: string, propertyValue: string): Promise<void>;
+      /**
+       * Sets multi valued User Profile property
+       *
+       * @param accountName The account name of the user
+       * @param propertyName Property name
+       * @param propertyValues Property values
+       */
+      setMultiValuedProfileProperty(accountName: string, propertyName: string, propertyValues: string[]): Promise<void>;
+      /**
        * Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only)
        *
        * @param emails The email addresses of the users to provision sites for
@@ -6064,6 +6518,331 @@ declare module "sharepoint/userprofiles" {
        * @param share true to make all social data public; false to make all social data private
        */
       shareAllSocialData(share: boolean): Promise<void>;
+  }
+}
+declare module "sharepoint/social" {
+  import { SharePointQueryable, SharePointQueryableInstance } from "sharepoint/sharepointqueryable";
+  export interface SocialMethods {
+      my: MySocialQueryMethods;
+      getFollowedSitesUri(): Promise<string>;
+      getFollowedDocumentsUri(): Promise<string>;
+      follow(actorInfo: SocialActorInfo): Promise<SocialFollowResult>;
+      isFollowed(actorInfo: SocialActorInfo): Promise<boolean>;
+      stopFollowing(actorInfo: SocialActorInfo): Promise<void>;
+  }
+  /**
+   * Exposes social following methods
+   */
+  export class SocialQuery extends SharePointQueryableInstance implements SocialMethods {
+      /**
+       * Creates a new instance of the SocialQuery class
+       *
+       * @param baseUrl The url or SharePointQueryable which forms the parent of this social query
+       */
+      constructor(baseUrl: string | SharePointQueryable, path?: string);
+      readonly my: MySocialQueryMethods;
+      /**
+       * Gets a URI to a site that lists the current user's followed sites.
+       */
+      getFollowedSitesUri(): Promise<string>;
+      /**
+       * Gets a URI to a site that lists the current user's followed documents.
+       */
+      getFollowedDocumentsUri(): Promise<string>;
+      /**
+       * Makes the current user start following a user, document, site, or tag
+       *
+       * @param actorInfo The actor to start following
+       */
+      follow(actorInfo: SocialActorInfo): Promise<SocialFollowResult>;
+      /**
+       * Indicates whether the current user is following a specified user, document, site, or tag
+       *
+       * @param actorInfo The actor to find the following status for
+       */
+      isFollowed(actorInfo: SocialActorInfo): Promise<boolean>;
+      /**
+       * Makes the current user stop following a user, document, site, or tag
+       *
+       * @param actorInfo The actor to stop following
+       */
+      stopFollowing(actorInfo: SocialActorInfo): Promise<void>;
+      /**
+       * Creates SocialActorInfo request body
+       *
+       * @param actorInfo The actor to create request body
+       */
+      private createSocialActorInfoRequestBody(actorInfo);
+  }
+  /**
+   * Defines the public methods exposed by the my endpoint
+   */
+  export interface MySocialQueryMethods {
+      /**
+       * Gets this user's data
+       */
+      get(): Promise<MySocialData>;
+      /**
+       * Gets users, documents, sites, and tags that the current user is following.
+       *
+       * @param types Bitwise set of SocialActorTypes to retrieve
+       */
+      followed(types: SocialActorTypes): Promise<any[]>;
+      /**
+       * Gets the count of users, documents, sites, and tags that the current user is following.
+       *
+       * @param types Bitwise set of SocialActorTypes to retrieve
+       */
+      followedCount(types: SocialActorTypes): Promise<number>;
+      /**
+       * Gets the users who are following the current user.
+       */
+      followers(): Promise<SocialActor[]>;
+      /**
+       * Gets users who the current user might want to follow.
+       */
+      suggestions(): Promise<SocialActor[]>;
+  }
+  export class MySocialQuery extends SharePointQueryableInstance implements MySocialQueryMethods {
+      /**
+       * Creates a new instance of the SocialQuery class
+       *
+       * @param baseUrl The url or SharePointQueryable which forms the parent of this social query
+       */
+      constructor(baseUrl: string | SharePointQueryable, path?: string);
+      /**
+       * Gets users, documents, sites, and tags that the current user is following.
+       *
+       * @param types Bitwise set of SocialActorTypes to retrieve
+       */
+      followed(types: SocialActorTypes): Promise<SocialActor[]>;
+      /**
+       * Gets the count of users, documents, sites, and tags that the current user is following.
+       *
+       * @param types Bitwise set of SocialActorTypes to retrieve
+       */
+      followedCount(types: SocialActorTypes): Promise<number>;
+      /**
+       * Gets the users who are following the current user.
+       */
+      followers(): Promise<SocialActor[]>;
+      /**
+       * Gets users who the current user might want to follow.
+       */
+      suggestions(): Promise<SocialActor[]>;
+  }
+  /**
+   * Social actor info
+   *
+   */
+  export interface SocialActorInfo {
+      AccountName?: string;
+      ActorType: SocialActorType;
+      ContentUri?: string;
+      Id?: string;
+      TagGuid?: string;
+  }
+  /**
+   * Social actor type
+   *
+   */
+  export const enum SocialActorType {
+      User = 0,
+      Document = 1,
+      Site = 2,
+      Tag = 3,
+  }
+  /**
+   * Social actor type
+   *
+   */
+  export const enum SocialActorTypes {
+      None = 0,
+      User = 1,
+      Document = 2,
+      Site = 4,
+      Tag = 8,
+      /**
+       * The set excludes documents and sites that do not have feeds.
+       */
+      ExcludeContentWithoutFeeds = 268435456,
+      /**
+       * The set includes group sites
+       */
+      IncludeGroupsSites = 536870912,
+      /**
+       * The set includes only items created within the last 24 hours
+       */
+      WithinLast24Hours = 1073741824,
+  }
+  /**
+   * Result from following
+   *
+   */
+  export const enum SocialFollowResult {
+      Ok = 0,
+      AlreadyFollowing = 1,
+      LimitReached = 2,
+      InternalError = 3,
+  }
+  /**
+   * Specifies an exception or status code.
+   */
+  export const enum SocialStatusCode {
+      /**
+       * The operation completed successfully
+       */
+      OK = 0,
+      /**
+       * The request is invalid.
+       */
+      InvalidRequest = 1,
+      /**
+       *  The current user is not authorized to perform the operation.
+       */
+      AccessDenied = 2,
+      /**
+       * The target of the operation was not found.
+       */
+      ItemNotFound = 3,
+      /**
+       * The operation is invalid for the target's current state.
+       */
+      InvalidOperation = 4,
+      /**
+       * The operation completed without modifying the target.
+       */
+      ItemNotModified = 5,
+      /**
+       * The operation failed because an internal error occurred.
+       */
+      InternalError = 6,
+      /**
+       * The operation failed because the server could not access the distributed cache.
+       */
+      CacheReadError = 7,
+      /**
+       * The operation succeeded but the server could not update the distributed cache.
+       */
+      CacheUpdateError = 8,
+      /**
+       * No personal site exists for the current user, and no further information is available.
+       */
+      PersonalSiteNotFound = 9,
+      /**
+       * No personal site exists for the current user, and a previous attempt to create one failed.
+       */
+      FailedToCreatePersonalSite = 10,
+      /**
+       * No personal site exists for the current user, and a previous attempt to create one was not authorized.
+       */
+      NotAuthorizedToCreatePersonalSite = 11,
+      /**
+       * No personal site exists for the current user, and no attempt should be made to create one.
+       */
+      CannotCreatePersonalSite = 12,
+      /**
+       * The operation was rejected because an internal limit had been reached.
+       */
+      LimitReached = 13,
+      /**
+       * The operation failed because an error occurred during the processing of the specified attachment.
+       */
+      AttachmentError = 14,
+      /**
+       * The operation succeeded with recoverable errors; the returned data is incomplete.
+       */
+      PartialData = 15,
+      /**
+       * A required SharePoint feature is not enabled.
+       */
+      FeatureDisabled = 16,
+      /**
+       * The site's storage quota has been exceeded.
+       */
+      StorageQuotaExceeded = 17,
+      /**
+       * The operation failed because the server could not access the database.
+       */
+      DatabaseError = 18,
+  }
+  export interface SocialActor {
+      /**
+       * Gets the actor type.
+       */
+      ActorType: SocialActorType;
+      /**
+       * Gets the actor's unique identifier.
+       */
+      Id: string;
+      /**
+       * Gets the actor's canonical URI.
+       */
+      Uri: string;
+      /**
+       * Gets the actor's display name.
+       */
+      Name: string;
+      /**
+       * Returns true if the current user is following the actor, false otherwise.
+       */
+      IsFollowed: boolean;
+      /**
+       * Gets a code that indicates recoverable errors that occurred during actor retrieval
+       */
+      Status: SocialStatusCode;
+      /**
+       * Returns true if the Actor can potentially be followed, false otherwise.
+       */
+      CanFollow: boolean;
+      /**
+       * Gets the actor's image URI. Only valid when ActorType is User, Document, or Site
+       */
+      ImageUri: string;
+      /**
+       * Gets the actor's account name. Only valid when ActorType is User
+       */
+      AccountName: string;
+      /**
+       * Gets the actor's email address. Only valid when ActorType is User
+       */
+      EmailAddress: string;
+      /**
+       * Gets the actor's title. Only valid when ActorType is User
+       */
+      Title: string;
+      /**
+       * Gets the text of the actor's most recent post. Only valid when ActorType is User
+       */
+      StatusText: string;
+      /**
+       * Gets the URI of the actor's personal site. Only valid when ActorType is User
+       */
+      PersonalSiteUri: string;
+      /**
+       * Gets the URI of the actor's followed content folder. Only valid when this represents the current user
+       */
+      FollowedContentUri: string;
+      /**
+       * Gets the actor's content URI. Only valid when ActorType is Document, or Site
+       */
+      ContentUri: string;
+      /**
+       * Gets the actor's library URI. Only valid when ActorType is Document
+       */
+      LibraryUri: string;
+      /**
+       * Gets the actor's tag GUID. Only valid when ActorType is Tag
+       */
+      TagGuid: string;
+  }
+  /**
+   * Defines the properties retrurned from the my endpoint
+   */
+  export interface MySocialData {
+      SocialActor: SocialActor;
+      MyFollowedDocumentsUri: string;
+      MyFollowedSitesUri: string;
   }
 }
 declare module "sharepoint/utilities" {
@@ -6124,6 +6903,7 @@ declare module "sharepoint/rest" {
   import { Site } from "sharepoint/site";
   import { Web } from "sharepoint/webs";
   import { UserProfileQuery } from "sharepoint/userprofiles";
+  import { SocialMethods } from "sharepoint/social";
   import { INavigationService } from "sharepoint/navigation";
   import { ODataBatch } from "sharepoint/batch";
   import { UtilityMethods } from "sharepoint/utilities";
@@ -6181,6 +6961,10 @@ declare module "sharepoint/rest" {
        * Access to user profile methods
        */
       readonly profiles: UserProfileQuery;
+      /**
+       * Access to social methods
+       */
+      readonly social: SocialMethods;
       /**
        * Access to the site collection level navigation service
        */
@@ -6920,8 +7704,9 @@ declare module "exports/odata" {
 declare module "sharepoint/index" {
   export { AppCatalog, AppAddResult, App } from "sharepoint/appcatalog";
   export { AttachmentFileAddResult, AttachmentFileInfo } from "sharepoint/attachmentfiles";
+  export * from "sharepoint/clientsidepages";
   export { ODataBatch } from "sharepoint/batch";
-  export { FieldAddResult, FieldUpdateResult } from "sharepoint/fields";
+  export { Field, Fields, FieldAddResult, FieldUpdateResult } from "sharepoint/fields";
   export { CheckinType, FileAddResult, WebPartsPersonalizationScope, MoveOperations, TemplateFileType, ChunkedFileUploadProgressData, File, Files } from "sharepoint/files";
   export { FeatureAddResult } from "sharepoint/features";
   export { FolderAddResult, Folder, Folders } from "sharepoint/folders";
@@ -6937,6 +7722,7 @@ declare module "sharepoint/index" {
   export { Site, OpenWebByIdResult } from "sharepoint/site";
   export { SiteGroupAddResult } from "sharepoint/sitegroups";
   export { UserUpdateResult, SiteUserProps } from "sharepoint/siteusers";
+  export * from "sharepoint/social";
   export { SubscriptionAddResult, SubscriptionUpdateResult } from "sharepoint/subscriptions";
   export * from "sharepoint/types";
   export { UserCustomActionAddResult, UserCustomActionUpdateResult } from "sharepoint/usercustomactions";
