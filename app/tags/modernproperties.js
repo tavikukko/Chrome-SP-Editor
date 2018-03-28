@@ -123,8 +123,8 @@ riot.tag("modernproperties", `
     <input keyup="{ filterprops }" id="modernfilterprops" style="width: 30%;" type="text" class="form-control" placeholder="Search by title, url and template">
    </li>
    <virtual each="{ web in filtered() }">
-    <li class="list-group-item">
-    <h5 class="list-group-item-heading"><b>{ web.Title }</b> - { web.Template }</h5 >
+    <li class="list-group-item { isHubSite(web.Url) ? 'list-group-item-success' : '' }">
+    <h5 class="list-group-item-heading"><b>{ web.Title }</b> - { web.Template } </h5 >
       <span >{ web.Url }</span>
       <span class="scriptlinks-remove pull-right" style="margin-top: -7px;">
         <label class="switch">
@@ -202,6 +202,7 @@ riot.tag("modernproperties", `
                 this.siteid = message.result.appCatalogSiteId;
                 this.webid = message.result.appCatalogWebId;
                 this.appCatalogUrl = message.result.appCatalogUrl;
+                this.hubSites = message.result.hubsites;
 
                 this.update();
               }
@@ -267,6 +268,10 @@ riot.tag("modernproperties", `
       return this.webs.filter(function (t) {
         return ~t.Url.toLowerCase().indexOf(this.filterstr) || ~t.Title.toLowerCase().indexOf(this.filterstr) || ~t.Template.toLowerCase().indexOf(this.filterstr);
       }.bind(this));
+    }.bind(this);
+
+    this.isHubSite = function (e) {
+      return this.hubSites.find(o => o.SiteUrl == e);
     }.bind(this);
 
     this.addNewOrigin = function (e) {
