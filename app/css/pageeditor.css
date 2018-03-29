@@ -47,12 +47,12 @@ listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer,
   width: 200%;
   left: 0;
 }
-.treenode.selected:before {
-  background: var(--active-bg);
-  color: var(--active-color);
-}
 .treenode:hover:before {
   background: var(--hover-bg);
+}
+.treenode.selected:hover:before,
+.treenode.selected:before {
+  background: var(--active-bg);
 }
 .treenode.selected > span {
   margin-top:3px;

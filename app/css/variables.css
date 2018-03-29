@@ -8,8 +8,7 @@
     --rightpanel-width: 77%;
     --font-size: 12px;
     --hover-bg: rgba(56, 121, 217, 0.1);
-    --active-bg: rgb(56,121, 217);
-    --active-color: white;
+    --active-bg: rgb(56,121, 217, 0.3);
 
     --sidebar-background-color: #fafafa;
     --sidebar-text-color: #999;

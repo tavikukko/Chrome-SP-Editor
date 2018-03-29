@@ -105,7 +105,6 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4{
 .sidebar-nav li a:active, 
 .sidebar-nav li a.active  {
     text-decoration: none;
-    color: var(--active-color);
     background: var(--active-bg);
 }
 
