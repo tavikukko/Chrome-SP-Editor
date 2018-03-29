@@ -3,6 +3,21 @@
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
+ :root {
+    --font-family: Menlo, Monaco, "Ubuntu Mono", Consolas, monospace;
+    --background-color: black;
+    --border: 1px solid gray;
+    --text-color: #D4D4D4;
+    --leftpanel-width: 22%;
+    --rightpanel-width: 78%;
+    --sidepanel-width: 250px;
+    --font-size: 14px;
+
+     --sidebar-text-color: #999;
+     --sidebar-width: 250px;
+    --sidebar-negwidth: -250px;
+    --rightpanel-width: calc(100% - var(--leftpanel-width));
+  }
 
 /* Toggle Styles */
 
@@ -12,11 +27,11 @@
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
-    padding-left: 250px;
+    padding-left: var(--sidebar-width);
 }
 
 #wrapper.toggled {
-    /*padding-left: 250px;*/
+    /*padding-left: var(--sidebar-width);*/
     padding-left: 0;
 }
 
@@ -28,14 +43,14 @@ margin-bottom: 10px;
 #sidebar-wrapper {
     z-index: 1000;
     position: fixed;
-    width: 250px;
-    left: 250px;
+    width: var(--sidebar-width);
+    left: var(--sidebar-width);
     /*width: 0;*/
    /* border-right: 1px solid grey;*/
     height: 100%;
-    margin-left: -250px;
+    margin-left: var(--sidebar-negwidth);
     overflow-y: auto;
-    background: #000;
+    background: var(--background-color);
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -43,7 +58,7 @@ margin-bottom: 10px;
 }
 
 #wrapper.toggled #sidebar-wrapper {
-    /*width: 250px;*/
+    /*width: var(--sidebar-width);*/
     width: 0;
 }
 
@@ -55,7 +70,7 @@ margin-bottom: 10px;
 
 #wrapper.toggled #page-content-wrapper {
 /*    position: absolute;
-    margin-right: -250px;*/
+    margin-right: var(--sidebar-negwidth);*/
     position: relative;
     margin-right: 0;
 }
@@ -66,7 +81,7 @@ margin-bottom: 10px;
 .sidebar-nav {
     position: absolute;
     top: 0;
-    width: 250px;
+    width: var(--sidebar-width);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -80,13 +95,13 @@ margin-bottom: 10px;
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #999999;
+    color: var(--sidebar-text-color);
 }
 
 .sidebar-nav li p {
     display: block;
     text-decoration: none;
-    color: #999999;
+    color: var(--sidebar-text-color);
 }
 
 .sidebar-nav li a:hover {
@@ -107,7 +122,7 @@ margin-bottom: 10px;
 }
 
 .sidebar-nav > .sidebar-brand a {
-    color: #999999;
+    color: var(--sidebar-text-color);
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
@@ -116,7 +131,7 @@ margin-bottom: 10px;
 }
 
 /*    #wrapper {
-        padding-left: 250px;
+        padding-left: var(--sidebar-width);
     }*/
 
   /*  #wrapper.toggled {
@@ -124,7 +139,7 @@ margin-bottom: 10px;
     }*/
 
   /*  #sidebar-wrapper {
-        width: 250px;
+        width: var(--sidebar-width);
     }*/
 
   /*  #wrapper.toggled #sidebar-wrapper {
