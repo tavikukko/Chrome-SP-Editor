@@ -4,8 +4,8 @@
     --background-color: #fff;
     --border: 1px solid #999;
     --text-color: #5a5a5a;
-    --leftpanel-width: 23%;
-    --rightpanel-width: 77%;
+    --leftpanel-width: 250px;
+    --rightpanel-width: calc(100% - var(--leftpanel-width) - var(--sidebar-width));
     --font-size: 12px;
     --hover-bg: rgba(56, 121, 217, 0.1);
     --active-bg: rgb(56,121, 217, 0.3);

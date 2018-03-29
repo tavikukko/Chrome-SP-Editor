@@ -3,6 +3,25 @@ body {
   font-family: var(--font-family);
   font-size: var(--font-size);
 }
+::-webkit-scrollbar {
+  width: 10px;
+  height:10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
 listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer, sitescriptscontainer, fileeditorcontainer, scrlinks, files, pageeditor {
   overflow-y: auto;
   height: 100%;
