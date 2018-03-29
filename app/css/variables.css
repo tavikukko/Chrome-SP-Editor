@@ -15,4 +15,26 @@
     --sidebar-width: 180px;
     --sidebar-negwidth: -180px;
     --rightpanel-width: calc(100% - var(--leftpanel-width));
+} 
+
+/* 
+DARK MODE 
+:root {
+    --fixed-font-family: Consolas, "Lucida Console", "Courier New", monospace;
+    --font-family: --fixed-font-family: Menlo, Monaco, "Ubuntu Mono", Consolas, monospace;
+    --background-color: #222;
+    --border: 1px solid #999;
+    --text-color: #ccc;
+    --leftpanel-width: 250px;
+    --rightpanel-width: calc(100% - var(--leftpanel-width) - var(--sidebar-width));
+    --font-size: 12px;
+    --hover-bg: rgba(200, 121, 217, 0.1);
+    --active-bg: rgb(56,121, 217, 0.3);
+
+    --sidebar-background-color: #111;
+    --sidebar-text-color: #ccc;
+    --sidebar-width: 180px;
+    --sidebar-negwidth: -180px;
+    --rightpanel-width: calc(100% - var(--leftpanel-width));
 }
+*/
