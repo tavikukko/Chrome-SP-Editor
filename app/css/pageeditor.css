@@ -1,18 +1,8 @@
-:root {
-  --font-family: Menlo, Monaco, "Ubuntu Mono", Consolas, monospace;
-  --background-color: black;
-  --border: 1px solid gray;
-  --text-color: #D4D4D4;
-  --leftpanel-width: 22%;
-  --rightpanel-width: 78%;
-  --sidepanel-width: 250px;
-  --font-size: 14px;
-}
-
 body {
   overflow: hidden;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
 }
-
 listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer, sitescriptscontainer, fileeditorcontainer, scrlinks, files, pageeditor {
   overflow-y: auto;
   height: 100%;
@@ -26,17 +16,17 @@ listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer,
 }
 
 .fe-icon {
-  color: #fff;
+  color: var(--text-color);
   width: 1.1em;
 }
 .fa-file-o {
-  color: #eee;
+  color: var(--text-color);
 }
 .ghosted {
   color: red;
 }
 .unghosted {
-  color: yellow;
+  color: orange;
 }
 .edited {
   color: lightskyblue;
@@ -44,6 +34,9 @@ listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer,
 .treenode {
   border: 1px solid var(--background-color);
   display: inline-block;
+}
+.treenode > span {
+  margin-top:3px;
 }
 .treenode:before {
   content: "";
@@ -55,13 +48,14 @@ listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer,
   left: 0;
 }
 .treenode.selected:before {
-  background: rgba(255,255,255,0.3);
+  background: var(--active-bg);
+  color: var(--active-color);
 }
 .treenode:hover:before {
-  background: rgba(255,255,255,0.2);
+  background: var(--hover-bg);
 }
 .treenode.selected > span {
-    position: relative;
+  margin-top:3px;
 }
 .fe-ul {
   list-style: none;
@@ -78,10 +72,10 @@ listproperties, sidebar, webproperties, webhooks, graphman, appcatalogcontainer,
 }
 
 .fe-li.selected {
-  background: rgba(255,255,255,0.3);
+  background: rgba(0,0,0,0.3);
 }
 .fe-li:hover:before {
-  background: rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.2);
 }
 .fe-li.selected > span {
     position: relative;
@@ -92,7 +86,7 @@ fileeditorcontainer {
   top: 0;
   right: 0;
   bottom: 0;
-  left: var(--sidepanel-width);
+  left: var(--sidebar-width);
   border-left: var(--border);
 }
 
@@ -125,7 +119,7 @@ appcatalogcontainer {
   top: 0;
   right: 0;
   bottom: 0;
-  left: var(--sidepanel-width);
+  left: var(--sidebar-width);
   border-left: var(--border);
 }
 
@@ -158,7 +152,7 @@ sitescriptscontainer {
   top: 0;
   right: 0;
   bottom: 0;
-  left: var(--sidepanel-width);
+  left: var(--sidebar-width);
   border-left: var(--border);
 }
 
@@ -191,7 +185,7 @@ sitescriptscontainer {
   top: 0;
   right: 0;
   bottom: 0;
-  left: var(--sidepanel-width);
+  left: var(--sidebar-width);
 }
 #sitescriptconsole {
   width:100%;
@@ -245,7 +239,7 @@ sitescriptscontainer {
 
 #webpart-zones-list {
   float: left;
-  width: 20%;
+  width: var(--leftpanel-width);
   height: 100%;
   padding-left: 10px;
   overflow-y: auto;
@@ -258,7 +252,7 @@ sitescriptscontainer {
   top: 0;
   right: 0;
   bottom: 0;
-  left: var(--sidepanel-width);
+  left: var(--sidebar-width);
   text-align: center;
 }
 
@@ -374,7 +368,10 @@ border-right: 1px solid #ddd;
 .modal-footer .btn-group:last-child > button {
 border-right: 0;
 }*/
-
+h1, h2, h3, .speditor-header {
+  font-weight: 300;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
 .switch {
   position: relative;
   display: inline-block;
@@ -406,6 +403,11 @@ border-right: 0;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
+}
+
+.form-control, .btn {
+  font-size: var(--font-size);
+  font-family: var(--font-family);
 }
 
 input:checked + .mslider {

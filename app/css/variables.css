@@ -1,0 +1,19 @@
+:root {
+    --fixed-font-family: Consolas, "Lucida Console", "Courier New", monospace;
+    --font-family: --fixed-font-family: Menlo, Monaco, "Ubuntu Mono", Consolas, monospace;
+    --background-color: #fff;
+    --border: 1px solid #999;
+    --text-color: #5a5a5a;
+    --leftpanel-width: 23%;
+    --rightpanel-width: 77%;
+    --font-size: 12px;
+    --hover-bg: rgba(56, 121, 217, 0.1);
+    --active-bg: rgb(56,121, 217);
+    --active-color: white;
+
+    --sidebar-background-color: #fafafa;
+    --sidebar-text-color: #999;
+    --sidebar-width: 180px;
+    --sidebar-negwidth: -180px;
+    --rightpanel-width: calc(100% - var(--leftpanel-width));
+}

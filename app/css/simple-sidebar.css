@@ -3,24 +3,12 @@
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
- :root {
-    --font-family: Menlo, Monaco, "Ubuntu Mono", Consolas, monospace;
-    --background-color: black;
-    --border: 1px solid gray;
-    --text-color: #D4D4D4;
-    --leftpanel-width: 22%;
-    --rightpanel-width: 78%;
-    --sidepanel-width: 250px;
-    --font-size: 14px;
-
-     --sidebar-text-color: #999;
-     --sidebar-width: 250px;
-    --sidebar-negwidth: -250px;
-    --rightpanel-width: calc(100% - var(--leftpanel-width));
-  }
 
 /* Toggle Styles */
-
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+}
 #wrapper {
     /*padding-left: 0;*/
     -webkit-transition: all 0.5s ease;
@@ -36,8 +24,8 @@
 }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4{
-margin-top: 3px;
-margin-bottom: 10px;
+    margin-top: 3px;
+    margin-bottom: 10px;
 }
 
 #sidebar-wrapper {
@@ -50,7 +38,7 @@ margin-bottom: 10px;
     height: 100%;
     margin-left: var(--sidebar-negwidth);
     overflow-y: auto;
-    background: var(--background-color);
+    background: var(--sidebar-background-color);
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -88,26 +76,37 @@ margin-bottom: 10px;
 }
 
 .sidebar-nav li {
-    text-indent: 20px;
-    line-height: 40px;
+    text-indent: 15px;
+    line-height: 32px;
 }
 
+.sidebar-nav li label,
+.sidebar-nav li a {
+    color: var(--sidebar-text-color);
+    font-weight: normal;
+    margin-bottom: 0;
+    text-decoration: none;
+}
 .sidebar-nav li a {
     display: block;
-    text-decoration: none;
-    color: var(--sidebar-text-color);
 }
-
 .sidebar-nav li p {
     display: block;
     text-decoration: none;
     color: var(--sidebar-text-color);
 }
 
-.sidebar-nav li a:hover {
+.sidebar-nav li a:hover,
+.sidebar-nav li:hover {
     text-decoration: none;
-    color: #fff;
-    background: rgba(255,255,255,0.2);
+    background: var(--hover-bg);
+}
+
+.sidebar-nav li a:active, 
+.sidebar-nav li a.active  {
+    text-decoration: none;
+    color: var(--active-color);
+    background: var(--active-bg);
 }
 
 .sidebar-nav li a:active,
@@ -126,7 +125,7 @@ margin-bottom: 10px;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
-    color: #fff;
+    color: var(--text-color);
     background: none;
 }
 

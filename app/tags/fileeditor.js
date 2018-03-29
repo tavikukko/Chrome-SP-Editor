@@ -21,8 +21,8 @@ riot.tag("fileeditor", `
           roundedSelection: true,
           scrollBeyondLastLine: false,
           readOnly: false,
-          theme: "vs-dark",
-          fontSize: 16,
+          theme: "vs-light",
+          fontSize: 12,
           renderIndentGuides: true
         });
 

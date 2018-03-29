@@ -1,11 +1,13 @@
 riot.tag("sidebar", `
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                  <p>Chrome SharePoint Editor</p>
-                <li style="line-height: 14px;">
-                  <p><input onclick="{ autosave }" type="checkbox" />&nbsp;&nbsp;&nbsp;Save changes</p>
-                  <p><input onclick="{ autopublish }" type="checkbox" />&nbsp;&nbsp;&nbsp;Publish major</p>
+                <li class="sidebar-brand speditor-header">
+                  <p>Chrome SP Editor</p>
+                <li>
+                  <input onclick="{ autosave }" type="checkbox" id="autosaveButton"/> <label for="autosaveButton"> Save changes</label>
+                </li>
+                <li>
+                  <input onclick="{ autopublish }" type="checkbox" id="autopublishButton" /> <label for="autopublishButton"> Publish major</label>
                 </li>
                 </li>
                 <li>

@@ -1,6 +1,6 @@
 riot.tag("save", `
 <div id="page-content-wrapper">
-<h1>SP Editor</h1>
+<h1>Chrome SharePoint Editor</h1>
 
 <h2>Usage</h2>
 
