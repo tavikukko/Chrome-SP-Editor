@@ -120,11 +120,21 @@ riot.tag("modernproperties", `
   <ul class="list-group">
    <li class="list-group-item list-group-item-info">Enable or disable running scripts of modern team / communication sites ( GROUP#0 / SITEPAGEPUBLISHING#0 )</li>
    <li class="list-group-item list-group-item-info">
-    <input keyup="{ filterprops }" id="modernfilterprops" style="width: 30%;" type="text" class="form-control" placeholder="Search by title, url and template">
+    <div class="row">
+      <div class="col-xs-6">
+        <input keyup="{ filterprops }" id="modernfilterprops" type="text" class="form-control" placeholder="Search by title, url and template">
+      </div>
+      <div class="col-xs-6">
+        <select onchange="{ filterhubprops }" class="form-control" id="hublist">
+          <option value="">Filter By Hubsite...</option>
+          <option each="{ hub in hubSites }" value="{ hub.SiteUrl }" >{ hub.SiteUrl }</option>
+        </select>
+      </div>
+    </div>
    </li>
    <virtual each="{ web in filtered() }">
-    <li class="list-group-item { isHubSite(web.Url) ? 'list-group-item-success' : '' }">
-    <h5 class="list-group-item-heading"><b>{ web.Title }</b> - { web.Template } </h5 >
+    <li class="list-group-item { web.IsHubSite ? 'list-group-item-success' : web.IsConnectedToHub ? 'list-group-item-warning' : '' }">
+    <h5 class="list-group-item-heading"><b>{ web.Title }</b> - { web.Template } { web.IsConnectedToHub ? ' - Connected To HubSite: ' + web.IsConnectedToHub : web.IsHubSite ? ' - HubSite ' : '' }</h5 >
       <span >{ web.Url }</span>
       <span class="scriptlinks-remove pull-right" style="margin-top: -7px;">
         <label class="switch">
@@ -139,6 +149,7 @@ riot.tag("modernproperties", `
   function (opts) {
 
     this.filterstr = "";
+    this.filterhubstr = "";
     this.webs = [];
     this.publicCDNEnable = false;
     this.publicCDNOrigins = [];
@@ -153,6 +164,10 @@ riot.tag("modernproperties", `
 
     this.filterprops = function (e) {
       this.filterstr = e.target.value.toLowerCase();
+    }.bind(this);
+
+    this.filterhubprops = function (e) {
+      this.filterhubstr = $("#hublist").val().toLowerCase();
     }.bind(this);
 
     this.remount = function () {
@@ -203,6 +218,21 @@ riot.tag("modernproperties", `
                 this.webid = message.result.appCatalogWebId;
                 this.appCatalogUrl = message.result.appCatalogUrl;
                 this.hubSites = message.result.hubsites;
+                this.departmentIds = message.result.departmentIds;
+
+                this.webs.forEach(web => {
+                  if (this.isHubSite(web.Url)) {
+                    web.IsHubSite = true;
+                    web.IsConnectedToHub = "";
+                  } else {
+                    var hub = this.departmentIds.find(o => {
+                      return o.Url == web.Url ? o.DepartmentId : null;
+                    });
+                    if (hub)
+                      web.IsConnectedToHub = this.getHubsiteUrlById(hub.DepartmentId).SiteUrl;
+                    else web.IsConnectedToHub = "";
+                  }
+                });
 
                 this.update();
               }
@@ -266,12 +296,25 @@ riot.tag("modernproperties", `
 
     this.filtered = function () {
       return this.webs.filter(function (t) {
-        return ~t.Url.toLowerCase().indexOf(this.filterstr) || ~t.Title.toLowerCase().indexOf(this.filterstr) || ~t.Template.toLowerCase().indexOf(this.filterstr);
+        return (~t.IsConnectedToHub.toLowerCase().indexOf(this.filterhubstr)) && (~t.Url.toLowerCase().indexOf(this.filterstr) || ~t.Title.toLowerCase().indexOf(this.filterstr) || ~t.Template.toLowerCase().indexOf(this.filterstr));
       }.bind(this));
     }.bind(this);
 
     this.isHubSite = function (e) {
       return this.hubSites.find(o => o.SiteUrl == e);
+    }.bind(this);
+
+    this.getHubsiteUrlById = function (e) {
+
+      return this.hubSites.find(o => o.ID.indexOf(e.slice(1, -1)) > -1 ? o.SiteUrl : '');
+    }.bind(this);
+
+    this.isConnectedToHubSite = function (e) {
+      return this.departmentIds.find(o => o.Url == e);
+    }.bind(this);
+
+    this.getHubUrl = function (e) {
+      return this.webs.find(o => o.Id == e);
     }.bind(this);
 
     this.addNewOrigin = function (e) {

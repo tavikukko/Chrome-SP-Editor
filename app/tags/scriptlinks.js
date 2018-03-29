@@ -7,7 +7,7 @@ riot.tag("scrlinks", `
               <b>Local css</b> and <b>external css and js</b> files must use absolute url.</p>
             </div>
             <hr>
-              <div class="row"> 
+              <div class="row">
                 <div class="col-xs-2">
                   <input id="scriptsequence" type="text" class="form-control" placeholder="Sequence">
                 </div>
@@ -29,7 +29,8 @@ riot.tag("scrlinks", `
               <ul class="list-group">
                 <li class="list-group-item active">Current web scriptlinks</li>
                 <li class="list-group-item" each="{ link, i in web }">
-                  <span class="pull-left" style="width: 10%">{ link.sequence }</span>
+                  <span class="pull-left" style="width: 5%">{ link.sequence }</span>
+                  <span style="padding-right: 3px;"><b>{ link.title }</b></span>
                   <span>{ link.scripturl }</span>
                   <span onclick="{ remove }" data-scope="web" data-id="{ link.id }"class="scriptlinks-remove glyphicon glyphicon-remove pull-right" style="cursor: pointer;"></span>
                 </li>
@@ -37,7 +38,8 @@ riot.tag("scrlinks", `
               <ul class="list-group">
                 <li class="list-group-item active">Site collection scriptlinks</li>
                 <li class="list-group-item" each="{ link, i in site }">
-                <span class="pull-left" style="width: 10%">{ link.sequence }</span>
+                <span class="pull-left" style="width: 5%">{ link.sequence }</span>
+                <span style="padding-right: 3px;"><b>{ link.title }</b></span>
                 <span>{ link.scripturl }</span>
                 <span onclick="{ remove }" data-scope="site" data-id="{ link.id }" class="scriptlinks-remove glyphicon glyphicon-remove pull-right" style="cursor: pointer;"></span>
                 </li>

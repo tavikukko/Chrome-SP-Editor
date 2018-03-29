@@ -40,7 +40,7 @@ var getCustomActions = function getCustomActions() {
                 scripturl = scripturl.substring(0, scripturl.indexOf("\""));
               }
             }
-            if (scripturl.length < 1) scripturl = "CustomAction scriptSrc is empty";
+            if (scripturl.length < 1) scripturl = "No url";
 
             if (action.Scope == 3)
               webactions.push({
@@ -49,7 +49,8 @@ var getCustomActions = function getCustomActions() {
                 scripturl: scripturl,
                 sequence: action.Sequence,
                 scope: "web",
-                id: action.Id
+                id: action.Id,
+                title: action.Title
               });
             else
               siteactions.push({
@@ -58,7 +59,8 @@ var getCustomActions = function getCustomActions() {
                 scripturl: scripturl,
                 sequence: action.Sequence,
                 scope: "site",
-                id: action.Id
+                id: action.Id,
+                title: action.Title
               });
           }
         });
@@ -1434,22 +1436,22 @@ var updateSubscription = function updateSubscription() {
 
     alertify.confirm("Really want to update webhook with id <b>" + subId + "</b> exp date to 6 months from now?", function () {
 
-    alertify.delay(5000).log("Updating webhook expiration date 6 months from now ...");
+      alertify.delay(5000).log("Updating webhook expiration date 6 months from now ...");
 
-    var today = new Date();
-    var expirationDate = new Date(today.setDate(today.getDate() + 180)).toISOString();
+      var today = new Date();
+      var expirationDate = new Date(today.setDate(today.getDate() + 180)).toISOString();
 
-    $pnp.sp.web.lists.getById(listId).subscriptions.getById(subId).update(expirationDate)
-      .then(function (result) {
-        alertify.delay(5000).success("Webhook expiration date updated successfully!");
-        window.postMessage(JSON.stringify({ function: 'updateSubscription', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-      })
-      .catch(function (error) {
-        if (error.data.responseBody.hasOwnProperty('error'))
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
-        else
-          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-      });
+      $pnp.sp.web.lists.getById(listId).subscriptions.getById(subId).update(expirationDate)
+        .then(function (result) {
+          alertify.delay(5000).success("Webhook expiration date updated successfully!");
+          window.postMessage(JSON.stringify({ function: 'updateSubscription', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+        })
+        .catch(function (error) {
+          if (error.data.responseBody.hasOwnProperty('error'))
+            alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          else
+            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+        });
     }, function () {
       // user clicked "cancel"
     });
@@ -2064,6 +2066,7 @@ var getSiteCollections = function getSiteCollections() {
             }
             else {
               var q = $pnp.SearchQueryBuilder.create("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
+
               $pnp.sp.search(q).then(re => {
                 fetch(spHostUrl + "/_vti_bin/client.svc/ProcessQuery", {
                   method: 'post',
@@ -2084,22 +2087,62 @@ var getSiteCollections = function getSiteCollections() {
                 })
                   .then(res => {
                     var tenantProps = "";
-                    if(res.length > 1) tenantProps = res[2].storageentitiesindex;
+                    if (res.length > 1) tenantProps = res[2].storageentitiesindex;
 
-                    var datas = {
-                      webs: JSON.parse(xhr2.responseText)[6]._Child_Items_.concat(JSON.parse(xhr2.responseText)[12]._Child_Items_),
-                      publicCDN: JSON.parse(xhr2.responseText)[22],
-                      publicCDNOrigins: JSON.parse(xhr2.responseText)[20],
-                      tenantObjectId: JSON.parse(xhr2.responseText)[16]._ObjectIdentity_,
-                      privateCDN: JSON.parse(xhr2.responseText)[24],
-                      privateCDNOrigins: JSON.parse(xhr2.responseText)[26],
-                      appCatalogSiteId: re.PrimarySearchResults[0].siteid,
-                      appCatalogWebId: re.PrimarySearchResults[0].webid,
-                      appCatalogUrl: re.PrimarySearchResults[0].url,
-                      tenantProperties: tenantProps,
-                      hubsites: JSON.parse(xhr2.responseText)[32]._Child_Items_
-                    };
-                    window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+                    var hubsites = JSON.parse(xhr2.responseText)[32]._Child_Items_;
+
+                    if (hubsites.length > 0) {
+                      var hubsiteQuery = "";
+
+                      hubsites.forEach(function (hubsite) {
+                        if (hubsiteQuery.length > 0) hubsiteQuery += " OR "
+                        var id = hubsite.SiteId.substring(6, hubsite.SiteId.length - 2)
+                        hubsiteQuery += "DepartmentId:{" + id + "}";
+                      });
+
+                      var q2 = $pnp.SearchQueryBuilder.create("contentclass:STS_Site AND ( " + hubsiteQuery + " )", { TrimDuplicates: false, SelectProperties: ["DepartmentId", "Url"] });
+
+                      $pnp.sp.search(q2).then(re2 => {
+                        var deps = [];
+                        re2.PrimarySearchResults.forEach(hub => {
+                          deps.push({ Url: hub.Url, DepartmentId: hub.DepartmentId })
+                        })
+
+                        var datas = {
+                          webs: JSON.parse(xhr2.responseText)[6]._Child_Items_.concat(JSON.parse(xhr2.responseText)[12]._Child_Items_),
+                          publicCDN: JSON.parse(xhr2.responseText)[22],
+                          publicCDNOrigins: JSON.parse(xhr2.responseText)[20],
+                          tenantObjectId: JSON.parse(xhr2.responseText)[16]._ObjectIdentity_,
+                          privateCDN: JSON.parse(xhr2.responseText)[24],
+                          privateCDNOrigins: JSON.parse(xhr2.responseText)[26],
+                          appCatalogSiteId: re.PrimarySearchResults[0].siteid,
+                          appCatalogWebId: re.PrimarySearchResults[0].webid,
+                          appCatalogUrl: re.PrimarySearchResults[0].url,
+                          tenantProperties: tenantProps,
+                          hubsites: hubsites,
+                          departmentIds: deps
+                        };
+
+                        window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+                      });
+
+                    } else {
+                      var datas = {
+                        webs: JSON.parse(xhr2.responseText)[6]._Child_Items_.concat(JSON.parse(xhr2.responseText)[12]._Child_Items_),
+                        publicCDN: JSON.parse(xhr2.responseText)[22],
+                        publicCDNOrigins: JSON.parse(xhr2.responseText)[20],
+                        tenantObjectId: JSON.parse(xhr2.responseText)[16]._ObjectIdentity_,
+                        privateCDN: JSON.parse(xhr2.responseText)[24],
+                        privateCDNOrigins: JSON.parse(xhr2.responseText)[26],
+                        appCatalogSiteId: re.PrimarySearchResults[0].siteid,
+                        appCatalogWebId: re.PrimarySearchResults[0].webid,
+                        appCatalogUrl: re.PrimarySearchResults[0].url,
+                        tenantProperties: tenantProps,
+                        hubsites: hubsites,
+                        departmentIds: []
+                      };
+                      window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+                    }
                   })
               });
             }
@@ -2109,7 +2152,6 @@ var getSiteCollections = function getSiteCollections() {
             window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
         };
- //       var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="264" ObjectPathId="263" /><ObjectPath Id="266" ObjectPathId="265" /><Query Id="267" ObjectPathId="265"><Query SelectAllProperties="true"><Properties><Property Name="NextStartIndexFromSharePoint" ScalarProperty="true" /></Properties></Query><ChildItemQuery SelectAllProperties="true"><Properties /></ChildItemQuery></Query><ObjectPath Id="283" ObjectPathId="282" /><ObjectPath Id="285" ObjectPathId="284" /><Query Id="286" ObjectPathId="284"><Query SelectAllProperties="true"><Properties><Property Name="NextStartIndexFromSharePoint" ScalarProperty="true" /></Properties></Query><ChildItemQuery SelectAllProperties="true"><Properties /></ChildItemQuery></Query><ObjectPath Id="36" ObjectPathId="35" /><Query Id="37" ObjectPathId="35"><Query SelectAllProperties="true"><Properties /></Query></Query><Method Name="GetTenantCdnPolicies" Id="33" ObjectPathId="29"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnOrigins" Id="34" ObjectPathId="29"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnEnabled" Id="48" ObjectPathId="44"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnEnabled" Id="63" ObjectPathId="59"><Parameters><Parameter Type="Enum">1</Parameter></Parameters></Method><Method Name="GetTenantCdnOrigins" Id="68" ObjectPathId="64"><Parameters><Parameter Type="Enum">1</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="263" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="265" ParentId="263" Name="GetSitePropertiesFromSharePointByFilter"><Parameters><Parameter Type="String"> Template -eq "GROUP#0" </Parameter><Parameter Type="Null" /><Parameter Type="Boolean">false</Parameter></Parameters></Method><Constructor Id="282" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="284" ParentId="282" Name="GetSitePropertiesFromSharePointByFilter"><Parameters><Parameter Type="String"> Template -eq "SITEPAGEPUBLISHING#0" </Parameter><Parameter Type="Null" /><Parameter Type="Boolean">false</Parameter></Parameters></Method><Constructor Id="29" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Constructor Id="35" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Identity Id="44" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Identity Id="59" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Identity Id="64" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /></ObjectPaths></Request>';
         var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="264" ObjectPathId="263" /><ObjectPath Id="266" ObjectPathId="265" /><Query Id="267" ObjectPathId="265"><Query SelectAllProperties="false"><Properties /></Query><ChildItemQuery SelectAllProperties="false"><Properties><Property Name="DenyAddAndCustomizePages" ScalarProperty="true" /><Property Name="Template" ScalarProperty="true" /><Property Name="Title" ScalarProperty="true" /><Property Name="Url" ScalarProperty="true" /></Properties></ChildItemQuery></Query><ObjectPath Id="283" ObjectPathId="282" /><ObjectPath Id="285" ObjectPathId="284" /><Query Id="286" ObjectPathId="284"><Query SelectAllProperties="false"><Properties /></Query><ChildItemQuery SelectAllProperties="false"><Properties><Property Name="DenyAddAndCustomizePages" ScalarProperty="true" /><Property Name="Template" ScalarProperty="true" /><Property Name="Title" ScalarProperty="true" /><Property Name="Url" ScalarProperty="true" /></Properties></ChildItemQuery></Query><ObjectPath Id="36" ObjectPathId="35" /><Query Id="37" ObjectPathId="35"><Query SelectAllProperties="true"><Properties /></Query></Query><Method Name="GetTenantCdnPolicies" Id="33" ObjectPathId="29"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnOrigins" Id="34" ObjectPathId="29"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnEnabled" Id="48" ObjectPathId="44"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnEnabled" Id="63" ObjectPathId="59"><Parameters><Parameter Type="Enum">1</Parameter></Parameters></Method><Method Name="GetTenantCdnOrigins" Id="68" ObjectPathId="64"><Parameters><Parameter Type="Enum">1</Parameter></Parameters></Method><ObjectPath Id="2" ObjectPathId="1" /><ObjectPath Id="4" ObjectPathId="3" /><Query Id="5" ObjectPathId="3"><Query SelectAllProperties="true"><Properties /></Query><ChildItemQuery SelectAllProperties="true"><Properties /></ChildItemQuery></Query></Actions><ObjectPaths><Constructor Id="263" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="265" ParentId="263" Name="GetSitePropertiesFromSharePointByFilter"><Parameters><Parameter Type="String"> Template -eq "GROUP#0" </Parameter><Parameter Type="Null" /><Parameter Type="Boolean">false</Parameter></Parameters></Method><Constructor Id="282" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="284" ParentId="282" Name="GetSitePropertiesFromSharePointByFilter"><Parameters><Parameter Type="String"> Template -eq "SITEPAGEPUBLISHING#0" </Parameter><Parameter Type="Null" /><Parameter Type="Boolean">false</Parameter></Parameters></Method><Constructor Id="29" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Constructor Id="35" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Identity Id="44" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Identity Id="59" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Identity Id="64" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Constructor Id="1" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="3" ParentId="1" Name="GetHubSitesProperties" /></ObjectPaths></Request>';
 
         xhr2.send(payload);
@@ -2538,7 +2580,7 @@ var getDesigns = function getDesigns() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          if(response.error){
+          if (response.error) {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'getDesigns', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
@@ -2579,7 +2621,7 @@ var getDesign = function getDesign() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          if(response.error){
+          if (response.error) {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'getDesign', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
@@ -2620,7 +2662,7 @@ var createDesign = function createDesign() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          if(response.error){
+          if (response.error) {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'createDesign', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
@@ -2661,7 +2703,7 @@ var updateDesign = function updateDesign() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          if(response.error){
+          if (response.error) {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'updateDesign', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
@@ -2701,7 +2743,7 @@ var deleteDesign = function deleteDesign() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          if(response.error){
+          if (response.error) {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'deleteDesign', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
@@ -2739,7 +2781,7 @@ var getScripts = function getScripts() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          if(response.error){
+          if (response.error) {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'getScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
@@ -2779,7 +2821,7 @@ var getScript = function getScript() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          if(response.error){
+          if (response.error) {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'getScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
@@ -2822,7 +2864,7 @@ var addScript = function addScript() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          if(response.error){
+          if (response.error) {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'addScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
@@ -2878,7 +2920,7 @@ var updateScript = function updateScript() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          if(response.error){
+          if (response.error) {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'updateScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
@@ -2919,7 +2961,7 @@ var deleteScript = function deleteScript() {
         }).then(response => {
           return response.json();
         }).then(response => {
-          if(response.error){
+          if (response.error) {
             alertify.delay(10000).error(response.error.message.value);
             window.postMessage(JSON.stringify({ function: 'deleteScript', success: false, result: null, source: 'chrome-sp-editor' }), '*');
           }
