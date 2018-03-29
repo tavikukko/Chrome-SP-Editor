@@ -136,7 +136,7 @@ riot.tag("modernproperties", `
     <li class="list-group-item { web.IsHubSite ? 'list-group-item-success' : web.IsConnectedToHub ? 'list-group-item-warning' : '' }">
     <h5 class="list-group-item-heading"><b>{ web.Title }</b> - { web.Template } { web.IsConnectedToHub ? ' - Connected To HubSite: ' + web.IsConnectedToHub : web.IsHubSite ? ' - HubSite ' : '' }</h5 >
       <span >{ web.Url }</span>
-      <span class="scriptlinks-remove pull-right" style="margin-top: -7px;">
+      <span class="scriptlinks-remove pull-right" style="margin-top: -15px;" ><span>Allow Scripts:</span>
         <label class="switch">
           <input type="checkbox" checked="{ web.DenyAddAndCustomizePages != 2 }" onclick="{ toggleScripts }">
           <span class="mslider round"></span>
