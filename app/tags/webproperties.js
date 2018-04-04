@@ -27,7 +27,7 @@ riot.tag("webproperties", `
             <hr>
              <div id="webPropertyBag">
               <div class="form-group" each="{ property, i in filtered() }">
-              <div class="row">
+              <div>
                 <label>{ property.prop }</label>
                 <div class="input-group">
                   <input keyup="{ updatevalue }" type="text" class="form-control" aria-describedby="helpBlock" value="{ property.value }">

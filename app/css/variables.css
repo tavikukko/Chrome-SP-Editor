@@ -1,40 +1,37 @@
-:root {
+:root {    
     --fixed-font-family: Consolas, "Lucida Console", "Courier New", monospace;
     --font-family: --fixed-font-family: Menlo, Monaco, "Ubuntu Mono", Consolas, monospace;
-    --background-color: #fff;
-    --border: 1px solid #999;
-    --text-color: #5a5a5a;
-    --leftpanel-width: 250px;
-    --rightpanel-width: calc(100% - var(--leftpanel-width) - var(--sidebar-width));
     --font-size: 12px;
-    --hover-bg: rgba(56, 121, 217, 0.1);
-    --active-bg: rgb(56,121, 217, 0.3);
 
-    --sidebar-background-color: #fafafa;
-    --sidebar-text-color: #999;
+    /* sidebar: editor-wide navigation */ 
     --sidebar-width: 180px;
     --sidebar-negwidth: -180px;
-    --rightpanel-width: calc(100% - var(--leftpanel-width));
+    /* main: width without the nav */
+    --main-width: calc(100% - var(--sidebar-width));
+    /* leftpanel: left section of main (optional) */
+    --leftpanel-width: 250px;
+    /* rightpanel: right section of main (optional) */
+    --rightpanel-margin: calc(var(--leftpanel-width) + var(--sidebar-width))
+    --rightpanel-width: calc(100% - var(--rightpanel--margin));
 } 
 
-/* 
-DARK MODE 
+/* DARK MODE  */
 :root {
-    --fixed-font-family: Consolas, "Lucida Console", "Courier New", monospace;
-    --font-family: --fixed-font-family: Menlo, Monaco, "Ubuntu Mono", Consolas, monospace;
     --background-color: #222;
     --border: 1px solid #999;
     --text-color: #ccc;
-    --leftpanel-width: 250px;
-    --rightpanel-width: calc(100% - var(--leftpanel-width) - var(--sidebar-width));
-    --font-size: 12px;
-    --hover-bg: rgba(200, 121, 217, 0.1);
-    --active-bg: rgb(56,121, 217, 0.3);
-
+    --hover-bg: rgba(100, 150, 200, 0.1);
+    --active-bg: rgb(100, 150, 200, 0.3);
     --sidebar-background-color: #111;
     --sidebar-text-color: #ccc;
-    --sidebar-width: 180px;
-    --sidebar-negwidth: -180px;
-    --rightpanel-width: calc(100% - var(--leftpanel-width));
 }
-*/
+/* LIGHT MODE */
+/* :root {
+    --background-color: #fff;
+    --border: 1px solid #999;
+    --text-color: #5a5a5a;
+    --hover-bg: rgba(56, 121, 217, 0.1);
+    --active-bg: rgb(56,121, 217, 0.3);
+    --sidebar-background-color: #fafafa;
+    --sidebar-text-color: #999;
+} */

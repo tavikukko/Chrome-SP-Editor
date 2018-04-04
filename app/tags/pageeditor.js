@@ -100,7 +100,7 @@ riot.tag("pageeditor", `
             roundedSelection: true,
             scrollBeyondLastLine: false,
             readOnly: false,
-            theme: "vs-light",
+            theme: "vs-dark",
             fontSize: 12,
             renderIndentGuides: true
           });

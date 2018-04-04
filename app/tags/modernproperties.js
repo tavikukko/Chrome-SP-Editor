@@ -163,7 +163,6 @@ riot.tag("modernproperties", `
     }.bind(this);
 
     this.init = function () {
-      debugger;
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getSiteCollections;
       script += " exescript(getSiteCollections);";
       chrome.devtools.inspectedWindow.eval(script);
