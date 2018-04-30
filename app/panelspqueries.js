@@ -2952,7 +2952,7 @@ function hideDimmer() {
     elem('dimmer').style.display = 'none';
 }
 
-var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman', 'modernproperties', 'sitedesigns', 'sitescriptscontainer'];
+var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'settings', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman', 'modernproperties', 'sitedesigns', 'sitescriptscontainer'];
 
 function swap(visibleElement) {
   for (var i = 0; i < allElements.length; i++) {

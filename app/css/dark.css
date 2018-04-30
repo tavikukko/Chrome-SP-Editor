@@ -1,0 +1,9 @@
+:root {
+    --background-color: #222;
+    --border: 1px solid #999;
+    --text-color: #ccc;
+    --hover-bg: rgba(100, 150, 200, 0.1);
+    --active-bg: rgb(100, 150, 200, 0.3);
+    --sidebar-background-color: #111;
+    --sidebar-text-color: #ccc;
+}

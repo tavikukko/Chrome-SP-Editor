@@ -53,7 +53,7 @@ riot.tag("sidebar", `
                 <a href="#" onclick="{ btnAppCatalog }">AppCatalog</a>
               </li>
                 <li>
-                  <a href="#" onclick="{ btnAbout }">About</a>
+                  <a href="#" onclick="{ btnSettings }">Settings</a>
                 </li>
             </ul>
         </div>`,
@@ -164,8 +164,8 @@ riot.tag("sidebar", `
       riot.mount("sitescripts");
     }.bind(this);
 
-    this.btnAbout = function () {
-      swap("about");
-      riot.mount("about");
+    this.btnSettings = function () {
+      swap("settings");
+      riot.mount("settings");
     }.bind(this);
   });
