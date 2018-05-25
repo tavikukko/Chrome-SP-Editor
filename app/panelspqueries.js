@@ -135,7 +135,7 @@ var addCustomAction = function addCustomAction() {
       payload.ScriptBlock = jsScriptBlock;
     }
     else if (url.match(/.css$/)) {
-      payload.ScriptBlock = "if (window.location.href.indexOf('_layouts/15/termstoremanager.aspx') === -1) { document.write('<link rel=\"stylesheet\" href=\"" + url + querystrings + "\" />');}";
+      payload.ScriptBlock = "if (window.location.href.toLowerCase().indexOf('_layouts/15/termstoremanager.aspx') === -1) { document.write('<link rel=\"stylesheet\" href=\"" + url + querystrings + "\" />');}";
     }
     else {
       alertify.delay(5000).error("Only JS and CSS files!!");
