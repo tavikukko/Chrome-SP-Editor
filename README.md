@@ -8,6 +8,8 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 4.0.0 Updated PnPjs Console to use new PnPjs modules
+    * bugfix: css injections will not be loaded when in termstoremanager, thanks [@juhaalhojoki](https://github.com/juhaalhojoki)
 - 3.7.0 New feature in Modern Properties
     * View HubSites and Sites connected to HubSites
 - 3.6.3 New feature in Webhooks

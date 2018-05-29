@@ -38,6 +38,32 @@ var bgautosave = false;
 var bgautopublish = false;
 var modernpropertiesinitialized = false;
 var modernpropertiesmain;
+var filenames = [];
+
+chrome.runtime.getPackageDirectoryEntry(function (directoryEntry) {
+
+  function getDir(directoryEntry, dir) {
+    directoryEntry.getDirectory(dir.replace('/crxfs', ''), {}, function (subDirectoryEntry) {
+      var directoryReader = subDirectoryEntry.createReader();
+      // List of DirectoryEntry and/or FileEntry objects.
+        directoryReader.readEntries(function (entries) {
+          if (entries.length) {
+            for (var i = 0; i < entries.length; ++i) {
+              if (entries[i].isFile) {
+                var fname = entries[i].fullPath.replace('/crxfs/app/', '');
+                //console.log(fname);
+                filenames.push(fname);
+              }
+              else getDir(directoryEntry, entries[i].fullPath.replace('/crxfs/', ''));
+            }
+          }
+        });
+    });
+  }
+
+  getDir(directoryEntry, 'app/@pnp');
+
+});
 // this is called from multiple tabs, so it will be here
 function addscriptlink(scope, scriptsequence, scriptpath) {
 

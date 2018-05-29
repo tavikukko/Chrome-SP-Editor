@@ -2,6 +2,18 @@ var pnp = "var speditorpnp = '" + chrome.extension.getURL('app/js/pnp.js') + "';
 var sj = "var sj = '" + chrome.extension.getURL('app/js/system.js') + "';";
 var alertify = "var alertify = '" + chrome.extension.getURL('app/js/alertify.js') + "';";
 
+var mod_common = "var mod_common = '" + chrome.extension.getURL('app/js/common.es5.umd.bundle.js') + "';";
+var mod_config = "var mod_config = '" + chrome.extension.getURL('app/js/config-store.es5.umd.bundle.js') + "';";
+var mod_graph = "var mod_graph = '" + chrome.extension.getURL('app/js/graph.es5.umd.bundle.js') + "';";
+var mod_logging = "var mod_logging = '" + chrome.extension.getURL('app/js/logging.es5.umd.bundle.js') + "';";
+var mod_nodejs = "var mod_nodejs = '" + chrome.extension.getURL('app/js/nodejs.es5.umd.js') + "';";
+var mod_odata = "var mod_odata = '" + chrome.extension.getURL('app/js/odata.es5.umd.bundle.js') + "';";
+var mod_pnpjs = "var mod_pnpjs = '" + chrome.extension.getURL('app/js/pnpjs.es5.umd.bundle.js') + "';";
+var mod_addin = "var mod_addin = '" + chrome.extension.getURL('app/js/sp-addinhelpers.es5.umd.bundle.js') + "';";
+var mod_client = "var mod_client = '" + chrome.extension.getURL('app/js/sp-clientsvc.es5.umd.bundle.js') + "';";
+var mod_taxonomy = "var mod_taxonomy = '" + chrome.extension.getURL('app/js/sp-taxonomy.es5.umd.bundle.js') + "';";
+var mod_sp = "var mod_sp = '" + chrome.extension.getURL('app/js/sp.es5.umd.bundle.js') + "';";
+
 // getCustomActions
 var getCustomActions = function getCustomActions() {
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {

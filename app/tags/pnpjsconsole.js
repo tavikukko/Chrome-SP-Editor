@@ -23,9 +23,9 @@ riot.tag("pnpjsconsole", `
             });
           };
 
-          return Promise.all([
-            loadDeclaration('typings/pnp.d.ts'),
-          ]);
+          return Promise.all(filenames.map(loadDeclaration)
+
+          );
         };
 
         // validation settings
@@ -36,29 +36,51 @@ riot.tag("pnpjsconsole", `
 
         monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
           target: monaco.languages.typescript.ScriptTarget.ES6,
-          allowNonTsExtensions: true
+          allowNonTsExtensions: true,
+          moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+          module: monaco.languages.typescript.ModuleKind.CommonJS,
+          noEmit: true,
+          typeRoots: ["node_modules/@pnp"]
         });
 
-
+/*
         monaco.languages.registerCompletionItemProvider('typescript', {
-           provideCompletionItems: function (model, position) {
-               return createDependencyProposals(); // from snippets.js
-           }
+          provideCompletionItems: function (model, position) {
+            return createDependencyProposals(); // from snippets.js
+          }
         });
-
+*/
 
         loadDeclaration().then(function () {
 
           playground = monaco.editor.create(document.getElementById('pnpjsconsole'), {
-            value: [
-              'import pnp from "pnp";',
-              '',
-              'pnp.sp.web.lists.select("Title").get().then(result => {',
-              '\t// gets all list titles from current web and writes them to console',
-              '\t// hit \'ctrl + d\' to test it :)',
-              '\tconsole.log(result);',
-              '});',
-            ].join('\n'),
+            model: monaco.editor.createModel(
+`// hit CTRL + D to run the code, view console for results
+
+// using @pnp/sp
+import { sp } from "@pnp/sp";
+sp.web.select("Title").get().then(w => {
+    console.log("Web Title: " + w.Title);
+});
+
+// using @pnp/pnpjs
+import pnp from "@pnp/pnpjs";
+pnp.sp.web.get().then(w => {
+    console.log(JSON.stringify(w, null, 4));
+});
+
+// using @pnp/common
+import { Util } from "@pnp/common";
+console.log(Util.getGUID());
+
+// using @pnp/logging
+import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
+Logger.subscribe(new ConsoleListener());
+Logger.activeLogLevel = LogLevel.Verbose;
+Logger.write("This is logging a simple string", LogLevel.Info);`,
+              "typescript",
+              new monaco.Uri("main.ts")
+            ),
             language: 'typescript',
             lineNumbers: true,
             roundedSelection: true,
@@ -72,15 +94,17 @@ riot.tag("pnpjsconsole", `
             showTypeScriptWarnings: false
           });
 
-          document.getElementById('pnpjsconsole').onclick = function(){
+          document.getElementById('pnpjsconsole').onclick = function () {
             window.focus()
           };
 
           var playgroundBinding = playground.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
             try {
-              var js = ts.transpileModule(playground.getValue(), { compilerOptions: { module: ts.ModuleKind.None } });
-              var prepnp = 'pnp';
+              let model = playground.getModel().getValue();
 
+              var js = ts.transpileModule(playground.getModel().getValue(), { compilerOptions: { module: ts.ModuleKind.None } });
+              var prepnp = 'pnp';
+              console.log(js)
               var lines = js.outputText.split('\n');
               var code = [];
               var prepnp = [];
@@ -91,8 +115,22 @@ riot.tag("pnpjsconsole", `
                 }
                 if (line.toLowerCase().indexOf(' = require') > -1) {
                   // fix imports
+
+                  console.log(line)
                   var lineRe = line.match("var (.*) = require");
-                  prepnp.push('var ' + lineRe[1] + ' = modules[0];');
+                  var mod = -1;
+                  mod = line.indexOf("@pnp/common") > -1 ? 0 : mod;
+                  mod = line.indexOf("@pnp/config-store") > -1 ? 1 : mod;
+                  mod = line.indexOf("@pnp/graph") > -1 ? 2 : mod;
+                  mod = line.indexOf("@pnp/logging") > -1 ? 3 : mod;
+                  mod = line.indexOf("@pnp/odata") > -1 ? 4 : mod;
+                  mod = line.indexOf("@pnp/pnpjs") > -1 ? 5 : mod;
+                  mod = line.indexOf("@pnp/sp-addinhelpers") > -1 ? 6 : mod;
+                  mod = line.indexOf("@pnp/sp-clientsvc") > -1 ? 7 : mod;
+                  mod = line.indexOf("@pnp/sp") > -1 ? 8 : mod;
+                  mod = line.indexOf("@pnp/sp-taxonomy") > -1 ? 9 : mod;
+
+                  prepnp.push('var ' + lineRe[1] + ' = modules['+mod+'];');
                 }
               });
 
@@ -132,7 +170,7 @@ riot.tag("pnpjsconsole", `
 
               var execme = [
                 'var execme = function execme() {',
-                '\tPromise.all([SystemJS.import(speditorpnp)]).then(function (modules) {',
+                '\tPromise.all([SystemJS.import(mod_common),SystemJS.import(mod_config),SystemJS.import(mod_graph),SystemJS.import(mod_logging),SystemJS.import(mod_odata),SystemJS.import(mod_pnpjs),SystemJS.import(mod_addin),SystemJS.import(mod_client),SystemJS.import(mod_sp),SystemJS.import(mod_taxonomy)]).then(function (modules) {',
                 '\t\t' + prepnp.join('\n'),
                 '\t\t// Your code starts here',
                 '\t\t// #####################',
@@ -142,9 +180,23 @@ riot.tag("pnpjsconsole", `
                 '\t});',
                 '};'].join('\n').replace(/GraphManToken/g, graphmantoken);
 
-              var script = pnp + '\n' + sj + '\n\n' + exescript + '\n\n' + execme + '\n\n';
+              var script = mod_common + '\n' +
+              mod_config + '\n' +
+              mod_graph + '\n' +
+              mod_logging + '\n' +
+              mod_odata + '\n' +
+              mod_pnpjs + '\n' +
+              mod_addin + '\n' +
+              mod_client + '\n' +
+              mod_sp + '\n' +
+              mod_taxonomy + '\n' +
+             // pnp + '\n' +
+              sj + '\n\n' +
+              exescript + '\n\n' +
+              execme + '\n\n';
 
               script += "exescript(execme);";
+              console.log(script);
               chrome.devtools.inspectedWindow.eval(script);
             }
             catch (e) {
@@ -165,3 +217,4 @@ riot.tag("pnpjsconsole", `
     }.bind(this);
 
   });
+
