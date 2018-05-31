@@ -1,10 +1,95 @@
 # Monaco Editor Change log
 
+## [0.13.1] (15.05.2018)
+ - Fixes [issue #871](https://github.com/Microsoft/monaco-editor/issues/871): TypeScript import error after mocaco-editor upgraded from 0.12 to 0.13
+
+## [0.13.0] (11.05.2018)
+### New & Noteworthy
+* New folding provider `registerFoldingRangeProvider`.
+* You can now specifies the stack order of a decoration by setting `IModelDecorationOptions.zIndex`. A decoration with greater stack order is always in front of a decoration with a lower stack order.
+* You can now tell Monaco if there is an `inlineClassName` which affects letter spacing. the stack order of a decoration by setting `IModelDecorationOptions.inlineClassNameAffectsLetterSpacing`.
+* Get the text length for a certain line on text model (`ITextModel.getLineLength(lineNumber: number)`)
+* New option `codeActionsOnSave`, controls whether code action kinds will be run on save.
+* New option `codeActionsOnSaveTimeout`, controls timeout for running code actions on save.
+* New option `multiCursorMergeOverlapping`, controls if overlapping selections should be merged. Default to `true`.
+
+### Breaking Change
+* Removed `ICodeEditor.getCenteredRangeInViewport`.
+* `RenameProvider.resolveRenameLocation` now returns `RenameLocation` instead of `IRange`.
+
+### Thank you
+* [Sergey Romanov @Serhioromano](https://github.com/Serhioromano): Add new language Structured Text support [PR monaco-languages#32](https://github.com/Microsoft/monaco-languages/pull/32)
+* [Yukai Huang @Yukaii](https://github.com/Yukaii): Fix backspace in IME composition on iOS Safari [PR vscode#40546](https://github.com/Microsoft/vscode/pull/40546)
+
+## [0.12.0] (11.04.2018)
+* Special thanks to [Tim Kendrick](https://github.com/timkendrick) for contributing a webpack plugin - `monaco-editor-webpack-plugin` - now available on [npm](https://www.npmjs.com/package/monaco-editor-webpack-plugin).
+
+### Breaking changes
+* Introduced `MarkerSeverity` instead of `Severity` for markers serverity.
+* Replaced `RenameProvider.resolveInitialRenameValue` with `RenameProvider.resolveRenameLocation`.
+* Fixed typo in `monaco-typescript`, renamed `setMaximunWorkerIdleTime` to `setMaximumWorkerIdleTime`.
+
+### Thank you
+* [Remy Suen @rcjsuen](https://github.com/rcjsuen): Fix conversion code from MarkedString to IMarkdownString in hovers [PR monaco-css#5](https://github.com/Microsoft/monaco-css/pull/5)
+* [Peng Xiao @pengx17](https://github.com/pengx17): fix an issue of `fromMarkdownString` [PR monaco-json#4](https://github.com/Microsoft/monaco-json/pull/4)
+* [TJ Kells @systemsoverload](https://github.com/systemsoverload): Add rust colorization support [PR monaco-languages#31](https://github.com/Microsoft/monaco-languages/pull/31)
+
+## [0.11.1] (15.03.2018)
+ - Fixes [issue #756](https://github.com/Microsoft/monaco-editor/issues/756): Can't use "Enter" key to accept an IntelliSense item
+ - Fixes [issue #757](https://github.com/Microsoft/monaco-editor/issues/757): TypeScript errors in `editor.api.d.ts` typings
+
+## [0.11.0] (14.03.2018)
+
+### New & Noteworthy
+* **ESM distribution** (compatible with e.g. webpack).
+* New interval tree decorations implementation.
+* New piece tree text buffer implementation.
+* The minimap can be placed to the left.
+* Line numbers can be displayed in an interval.
+* The cursor width can be customized.
+* Smooth scrolling can be turned on.
+* Color decorators and color picker via `DocumentColorProvider`.
+
+### Breaking changes
+* Replaced `MarkedString` with `IMarkdownString`. Source code snippets can be expressed using the GH markdown syntax.
+* Renamed `IResourceEdit` to `ResourceTextEdit`.
+
+### API changes
+* Merged `IModel`, `IReadOnlyModel`, `IEditableTextModel`, `ITextModelWithMarkers`, `ITokenizedModel`, `ITextModelWithDecorations` to `ITextModel`. A type alias for `IModel` is defined for compatibility.
+* Merged `ICommonCodeEditor` and `ICodeEditor` to `ICodeEditor`.
+* Merged `ICommonDiffEditor` and `IDiffEditor` to `IDiffEditor`.
+* `CompletionItem.documentation`, `ParameterInformation.documentation` and `SignatureInformation.documentation` can now be an `IMarkdownString`.
+* Added `CompetionItem.command`, `CompletionItem.commitCharacters` and `CompletionItem.additionalTextEdits`.
+* Added language configuration `folding` which can define markers for code patterns where a folding regions should be created. See for example the [Python configuration](https://github.com/Microsoft/monaco-languages/blob/d2db3faa76b741bf4ee822c403fc355c913bc46d/src/python/python.ts#L35-L41).
+* Added by accident `ResourceFileEdit` (due to how `monaco.d.ts` is generated from vscode). That is not honoured by the editor, and should not be used.
+
+### Thank you
+* [Remy Suen @rcjsuen](https://github.com/rcjsuen):
+  * Fix a small typo in README.md [PR monaco-typescript#18](https://github.com/Microsoft/monaco-typescript/pull/18)
+  * Remove unused IDisposable array [PR monaco-typescript#19](https://github.com/Microsoft/monaco-typescript/pull/19)
+  * Add HEALTHCHECK as a Dockerfile keyword [PR monaco-languages#29](https://github.com/Microsoft/monaco-languages/pull/29)
+  * Add ARG as a Dockerfile keyword [PR monaco-languages#30](https://github.com/Microsoft/monaco-languages/pull/30)
+* [Can Abacigil @abacigil](https://github.com/abacigil): MySQL, Postgres, Redshift and Redis Language Support [PR monaco-languages#26](https://github.com/Microsoft/monaco-languages/pull/26)
+* [Matthias Kadenbach @mattes](https://github.com/mattes): Support Content-Security-Policy syntax highlighting [PR monaco-languages#27](https://github.com/Microsoft/monaco-languages/pull/27)
+* [e.vakili @evakili](https://github.com/evakili): Whitespaces after # are allowed in C++ preprocessor statements [PR monaco-languages#28](https://github.com/Microsoft/monaco-languages/pull/28)
+* [Pankaj Kumar Gautam @PAPERPANKS](https://github.com/PAPERPANKS): adding microsoft logo to footer [PR monaco-editor#577](https://github.com/Microsoft/monaco-editor/pull/577)
+* [Dominik Moritz @domoritz](https://github.com/domoritz): Fix code in changelog [PR monaco-editor#582](https://github.com/Microsoft/monaco-editor/pull/582)
+* [ItsPugle @ItsPugle](https://github.com/ItsPugle): Updating the footer to reflect change of year [PR monaco-editor#707](https://github.com/Microsoft/monaco-editor/pull/707)
+* [Michael Seifert @MSeifert04](https://github.com/MSeifert04): Add linebreak for if  [PR monaco-editor#726](https://github.com/Microsoft/monaco-editor/pull/726)
+* [Andrew Palm @apalm](https://github.com/apalm): Fix 'Configure JSON defaults' sample [PR monaco-editor#731](https://github.com/Microsoft/monaco-editor/pull/731)
+* [Niklas Mollenhauer @nikeee](https://github.com/nikeee): Fix line number API usage [PR monaco-editor#740](https://github.com/Microsoft/monaco-editor/pull/740)
+* [Andre @anc](https://github.com/anc): More realistic terminal shell [PR monaco-editor#742](https://github.com/Microsoft/monaco-editor/pull/742)
+* to the many others that have contributed PRs to [vscode](https://github.com/Microsoft/vscode) which have also made their way into the monaco-editor.
+
+
+## [0.10.1] (16.10.2017)
+ - Fixes [issue #601](https://github.com/Microsoft/monaco-editor/issues/601): window.opener should be set to null to protect against malicious code
+
 ## [0.10.0] (17.08.2017)
 
 ### Breaking changes
 * Removed `CodeAction`.
-* Method `provideCodeActions` in `CodeActionProvider` now returns `Command[] | Thenable<Command[]` instead of `CodeAction[] | Thenable<CodeAction[]>`, which is already removed.
+* Method `provideCodeActions` in `CodeActionProvider` now returns `Command[] | Thenable<Command[]>` instead of `CodeAction[] | Thenable<CodeAction[]>`, which is already removed.
 
 ### API changes
 * added `monaco.editor.getModelMarkers`. Get markers for owner and/or resource.
@@ -266,3 +351,15 @@
 - The right-pointing mouse pointer is oversized in high DPI - [issue](https://github.com/Microsoft/monaco-editor/issues/5)
 - The editor functions now correctly when hosted inside a `position:fixed` element.
 - Cross origin configuration is now picked up (as advertised in documentation from MonacoEnvironment)
+
+[0.11.1]: https://github.com/Microsoft/monaco-editor/compare/v0.11.0...v0.11.1
+[0.11.0]: https://github.com/Microsoft/monaco-editor/compare/v0.10.1...v0.11.0
+[0.10.1]: https://github.com/Microsoft/monaco-editor/compare/v0.10.0...v0.10.1
+[0.10.0]: https://github.com/Microsoft/monaco-editor/compare/v0.9.0...v0.10.0
+[0.9.0]: https://github.com/Microsoft/monaco-editor/compare/v0.8.3...v0.9.0
+[0.8.3]: https://github.com/Microsoft/monaco-editor/compare/v0.8.2...v0.8.3
+[0.8.2]: https://github.com/Microsoft/monaco-editor/compare/v0.8.1...v0.8.2
+[0.8.1]: https://github.com/Microsoft/monaco-editor/compare/v0.8.0...v0.8.1
+[0.6.1]: https://github.com/Microsoft/monaco-editor/compare/v0.6.0...v0.6.1
+[0.6.0]: https://github.com/Microsoft/monaco-editor/compare/v0.5.1...v0.6.0
+[0.5.1]: https://github.com/Microsoft/monaco-editor/compare/v0.5.0...v0.5.1

@@ -43,19 +43,18 @@ riot.tag("pnpjsconsole", `
           typeRoots: ["node_modules/@pnp"]
         });
 
-/*
         monaco.languages.registerCompletionItemProvider('typescript', {
           provideCompletionItems: function (model, position) {
             return createDependencyProposals(); // from snippets.js
           }
         });
-*/
 
         loadDeclaration().then(function () {
 
           playground = monaco.editor.create(document.getElementById('pnpjsconsole'), {
             model: monaco.editor.createModel(
-`// hit CTRL + D to run the code, view console for results
+`// Hit CTRL/CMD + D to run the code, view console for results
+// below there is some some sample snippets
 
 // using @pnp/sp
 import { sp } from "@pnp/sp";
@@ -77,7 +76,25 @@ console.log(Util.getGUID());
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
 Logger.subscribe(new ConsoleListener());
 Logger.activeLogLevel = LogLevel.Verbose;
-Logger.write("This is logging a simple string", LogLevel.Info);`,
+Logger.write("This is logging a simple string", LogLevel.Info);
+
+// using @pnp/graph (modern page in browser)
+import { graph } from "@pnp/graph"
+(window as any).moduleLoaderPromise.then(e => {
+    graph.setup({
+        spfxContext: e.context
+    })
+
+    graph.groups.get().then(grps => {
+        console.log(grps);
+    })
+})
+
+// using @pnp/sp-taxonomy
+import { taxonomy } from "@pnp/sp-taxonomy"
+taxonomy.termStores.get().then(ts => {
+    console.log(ts);
+})`,
               "typescript",
               new monaco.Uri("main.ts")
             ),

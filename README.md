@@ -8,6 +8,9 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 4.1.0 Updated monaco editor to 0.13.1
+    * Added some new sample scripts
+    * Restored snippets
 - 4.0.0 Updated PnPjs Console to use new PnPjs modules
     * bugfix: css injections will not be loaded when in termstoremanager, thanks [@juhaalhojoki](https://github.com/juhaalhojoki)
 - 3.7.0 New feature in Modern Properties

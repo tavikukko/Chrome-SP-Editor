@@ -131,7 +131,7 @@ function createDependencyProposals() {
       documentation: "Include request headers for SP2013",
       insertText: {
         value: [
-          "pnp.setup({",
+          "sp.setup({",
           "\tsp:{",
           "\t\theaders: {",
           "\t\t\t\"Accept\": \"application/json; odata=verbose\"",
