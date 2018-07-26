@@ -62,7 +62,7 @@ export declare class UserProfileQuery extends SharePointQueryableInstance {
      *
      * @param loginName The account name of the user.
      */
-    getPropertiesFor(loginName: string): Promise<any[]>;
+    getPropertiesFor(loginName: string): Promise<any>;
     /**
      * Gets the 20 most popular hash tags over the past week, sorted so that the most popular tag appears first
      *

@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/graph v1.1.0 - pnp - provides functionality to query the Microsoft Graph
+ * @pnp/graph v1.1.2 - pnp - provides functionality to query the Microsoft Graph
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -181,8 +181,8 @@ function __generator(thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -612,7 +612,7 @@ var GraphQueryableInstance = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_adal_angular__);
 /**
 @license
- * @pnp/common v1.1.0 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.1.2 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1685,7 +1685,7 @@ var PnPClientStorage = /** @class */ (function () {
 /* unused harmony export FunctionListener */
 /**
 @license
- * @pnp/logging v1.1.0 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.1.2 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1934,7 +1934,7 @@ var FunctionListener = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(3);
 /**
 @license
- * @pnp/odata v1.1.0 - pnp - provides shared odata functionality and base classes
+ * @pnp/odata v1.1.2 - pnp - provides shared odata functionality and base classes
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/

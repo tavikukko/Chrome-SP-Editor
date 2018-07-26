@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/sp v1.1.0 - pnp - provides a fluent api for working with SharePoint REST
+ * @pnp/sp v1.1.2 - pnp - provides a fluent api for working with SharePoint REST
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -181,8 +181,8 @@ function __generator(thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -617,11 +617,11 @@ var SharePointQueryableInstance = /** @class */ (function (_super) {
 /* unused harmony export Util */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_logging__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_tslib__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_adal_angular__);
 /**
 @license
- * @pnp/common v1.1.0 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.1.2 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1797,7 +1797,7 @@ function spODataEntityArray(factory) {
 /* unused harmony export FunctionListener */
 /**
 @license
- * @pnp/logging v1.1.0 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.1.2 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2046,7 +2046,7 @@ var FunctionListener = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(4);
 /**
 @license
- * @pnp/odata v1.1.0 - pnp - provides shared odata functionality and base classes
+ * @pnp/odata v1.1.2 - pnp - provides shared odata functionality and base classes
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -4054,10 +4054,10 @@ var SharePointQueryableShareableFolder = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__contenttypes__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pnp_common__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pnp_odata__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__attachmentfiles__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__attachmentfiles__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lists__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pnp_logging__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__comments__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__comments__ = __webpack_require__(32);
 
 
 
@@ -4645,7 +4645,7 @@ var NotSupportedInBatchException = /** @class */ (function (_super) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SPHttpClient; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__digestcache__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__digestcache__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pnp_common__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_splibconfig__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_extractweburl__ = __webpack_require__(7);
@@ -4675,11 +4675,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.0");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.2");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.0");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.2");
         }
         opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -6330,11 +6330,11 @@ var SiteGroup = /** @class */ (function (_super) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return List; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__items__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contenttypes__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fields__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__forms__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__subscriptions__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__forms__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__subscriptions__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__sharepointqueryable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__sharepointqueryablesecurable__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pnp_common__ = __webpack_require__(2);
@@ -6504,7 +6504,7 @@ var List = /** @class */ (function (_super) {
          *
          */
         get: function () {
-            return new __WEBPACK_IMPORTED_MODULE_2__views__["b" /* Views */](this);
+            return new __WEBPACK_IMPORTED_MODULE_2__views__["c" /* Views */](this);
         },
         enumerable: true,
         configurable: true
@@ -7542,8 +7542,8 @@ var NavigationService = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__webs__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__usercustomactions__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__odata__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__batch__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__features__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__batch__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__features__ = __webpack_require__(38);
 
 
 
@@ -7706,12 +7706,12 @@ var Site = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__siteusers__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__usercustomactions__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__odata__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__batch__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__features__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__relateditems__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__batch__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__features__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__relateditems__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__appcatalog__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__regionalsettings__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__clientsidepages__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__regionalsettings__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__clientsidepages__ = __webpack_require__(33);
 
 
 
@@ -8365,10 +8365,10 @@ var Web = /** @class */ (function (_super) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_sp__ = __webpack_require__(40);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spExtractODataId", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_45"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spODataEntity", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_46"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spODataEntityArray", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_47"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_sp__ = __webpack_require__(42);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spExtractODataId", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_49"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spODataEntity", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_50"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spODataEntityArray", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_51"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SharePointQueryable", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_12"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SharePointQueryableInstance", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_14"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SharePointQueryableCollection", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_13"]; });
@@ -8388,7 +8388,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Field", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["t"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Fields", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["y"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "CheckinType", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["h"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartsPersonalizationScope", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_42"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartsPersonalizationScope", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_46"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "MoveOperations", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["L"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "TemplateFileType", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_32"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "File", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["z"]; });
@@ -8410,7 +8410,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "InstalledLanguages", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["E"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "TimeZone", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_33"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "TimeZones", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_34"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "sp", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_44"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "sp", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_48"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SPRest", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_4"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "RoleDefinitionBindings", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_1"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Search", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_6"]; });
@@ -8423,13 +8423,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SearchSuggest", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_10"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SearchSuggestResult", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_11"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Site", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_25"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "toAbsoluteUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_48"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "extractWebUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_43"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "UtilityMethod", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_37"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartDefinitions", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_41"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartDefinition", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_40"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPart", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_39"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Web", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_38"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "UserProfileQuery", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_37"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "toAbsoluteUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_52"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "extractWebUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_47"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "UtilityMethod", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_38"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "View", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_39"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Views", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_41"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "ViewFields", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_40"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartDefinitions", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_45"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartDefinition", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_44"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPart", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_43"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Web", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["_42"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "PromotedState", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["V"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "ClientSidePage", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["j"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "CanvasSection", function() { return __WEBPACK_IMPORTED_MODULE_0__src_sp__["g"]; });
@@ -8924,6 +8928,188 @@ var WebPart = /** @class */ (function (_super) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Views; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return View; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ViewFields; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_common__ = __webpack_require__(2);
+
+
+
+/**
+ * Describes the views available in the current context
+ *
+ */
+var Views = /** @class */ (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](Views, _super);
+    /**
+     * Creates a new instance of the Views class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
+     */
+    function Views(baseUrl, path) {
+        if (path === void 0) { path = "views"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a view by guid id
+     *
+     * @param id The GUID id of the view
+     */
+    Views.prototype.getById = function (id) {
+        var v = new View(this);
+        v.concat("('" + id + "')");
+        return v;
+    };
+    /**
+     * Gets a view by title (case-sensitive)
+     *
+     * @param title The case-sensitive title of the view
+     */
+    Views.prototype.getByTitle = function (title) {
+        return new View(this, "getByTitle('" + title + "')");
+    };
+    /**
+     * Adds a new view to the collection
+     *
+     * @param title The new views's title
+     * @param personalView True if this is a personal view, otherwise false, default = false
+     * @param additionalSettings Will be passed as part of the view creation body
+     */
+    Views.prototype.add = function (title, personalView, additionalSettings) {
+        var _this = this;
+        if (personalView === void 0) { personalView = false; }
+        if (additionalSettings === void 0) { additionalSettings = {}; }
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            "PersonalView": personalView,
+            "Title": title,
+            "__metadata": { "type": "SP.View" },
+        }, additionalSettings));
+        return this.clone(Views, null).postCore({ body: postBody }).then(function (data) {
+            return {
+                data: data,
+                view: _this.getById(data.Id),
+            };
+        });
+    };
+    return Views;
+}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["b" /* SharePointQueryableCollection */]));
+
+/**
+ * Describes a single View instance
+ *
+ */
+var View = /** @class */ (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](View, _super);
+    function View() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(View.prototype, "fields", {
+        get: function () {
+            return new ViewFields(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Updates this view intance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the view
+     */
+    View.prototype.update = function (properties) {
+        var _this = this;
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            "__metadata": { "type": "SP.View" },
+        }, properties));
+        return this.postCore({
+            body: postBody,
+            headers: {
+                "X-HTTP-Method": "MERGE",
+            },
+        }).then(function (data) {
+            return {
+                data: data,
+                view: _this,
+            };
+        });
+    };
+    /**
+     * Delete this view
+     *
+     */
+    View.prototype.delete = function () {
+        return this.postCore({
+            headers: {
+                "X-HTTP-Method": "DELETE",
+            },
+        });
+    };
+    /**
+     * Returns the list view as HTML.
+     *
+     */
+    View.prototype.renderAsHtml = function () {
+        return this.clone(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["a" /* SharePointQueryable */], "renderashtml").get();
+    };
+    return View;
+}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["c" /* SharePointQueryableInstance */]));
+
+var ViewFields = /** @class */ (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](ViewFields, _super);
+    function ViewFields(baseUrl, path) {
+        if (path === void 0) { path = "viewfields"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Gets a value that specifies the XML schema that represents the collection.
+     */
+    ViewFields.prototype.getSchemaXml = function () {
+        return this.clone(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["a" /* SharePointQueryable */], "schemaxml").get();
+    };
+    /**
+     * Adds the field with the specified field internal name or display name to the collection.
+     *
+     * @param fieldTitleOrInternalName The case-sensitive internal name or display name of the field to add.
+     */
+    ViewFields.prototype.add = function (fieldTitleOrInternalName) {
+        return this.clone(ViewFields, "addviewfield('" + fieldTitleOrInternalName + "')").postCore();
+    };
+    /**
+     * Moves the field with the specified field internal name to the specified position in the collection.
+     *
+     * @param fieldInternalName The case-sensitive internal name of the field to move.
+     * @param index The zero-based index of the new position for the field.
+     */
+    ViewFields.prototype.move = function (fieldInternalName, index) {
+        return this.clone(ViewFields, "moveviewfieldto").postCore({
+            body: JSON.stringify({ "field": fieldInternalName, "index": index }),
+        });
+    };
+    /**
+     * Removes all the fields from the collection.
+     */
+    ViewFields.prototype.removeAll = function () {
+        return this.clone(ViewFields, "removeallviewfields").postCore();
+    };
+    /**
+     * Removes the field with the specified field internal name from the collection.
+     *
+     * @param fieldInternalName The case-sensitive internal name of the field to remove from the view.
+     */
+    ViewFields.prototype.remove = function (fieldInternalName) {
+        return this.clone(ViewFields, "removeviewfield('" + fieldInternalName + "')").postCore();
+    };
+    return ViewFields;
+}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["b" /* SharePointQueryableCollection */]));
+
+//# sourceMappingURL=views.js.map
+
+/***/ }),
+/* 32 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Comments; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Comment; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Replies; });
@@ -9057,7 +9243,7 @@ var Replies = /** @class */ (function (_super) {
 //# sourceMappingURL=comments.js.map
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9279,7 +9465,10 @@ var ClientSidePage = /** @class */ (function (_super) {
             .replace(/"/g, "&quot;")
             .replace(/:/g, "&#58;")
             .replace(/{/g, "&#123;")
-            .replace(/}/g, "&#125;");
+            .replace(/}/g, "&#125;")
+            .replace(/\[/g, "\[")
+            .replace(/\]/g, "\]")
+            .replace(/\./g, "\.");
     };
     /**
      * Converts an escaped string from a client-side control attribute to a json object
@@ -9287,11 +9476,15 @@ var ClientSidePage = /** @class */ (function (_super) {
      * @param escapedString
      */
     ClientSidePage.escapedStringToJson = function (escapedString) {
-        return JSON.parse(escapedString
-            .replace(/&quot;/g, "\"")
-            .replace(/&#58;/g, ":")
-            .replace(/&#123;/g, "{")
-            .replace(/&#125;/g, "}"));
+        var unespace = function (escaped) {
+            var mapDict = [
+                [/&quot;/g, "\""], [/&#58;/g, ":"], [/&#123;/g, "{"], [/&#125;/g, "}"],
+                [/\\\\/g, "\\"], [/\\\?/g, "?"], [/\\\./g, "."], [/\\\[/g, "["], [/\\\]/g, "]"],
+                [/\\\(/g, "("], [/\\\)/g, ")"], [/\\\|/g, "|"], [/\\\+/g, "+"],
+            ];
+            return mapDict.reduce(function (r, m) { return r.replace(m[0], m[1]); }, escaped);
+        };
+        return JSON.parse(unespace(escapedString));
     };
     /**
      * Add a section to this page
@@ -9708,9 +9901,14 @@ var ClientSideText = /** @class */ (function (_super) {
         return html.join("");
     };
     ClientSideText.prototype.fromHtml = function (html) {
+        var _this = this;
         _super.prototype.fromHtml.call(this, html);
-        var match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>$/i.exec(html);
-        this.text = match.length > 1 ? match[1] : "";
+        this.text = "";
+        getBoundedDivMarkup(html, /<div[^>]*data-sp-rte[^>]*>/i, function (s) {
+            // now we need to grab the inner text between the divs
+            var match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>$/i.exec(s);
+            _this.text = match.length > 1 ? match[1] : "";
+        });
     };
     return ClientSideText;
 }(ClientSidePart));
@@ -9764,6 +9962,7 @@ var ClientSideWebpart = /** @class */ (function (_super) {
             id: this.webPartId,
             instanceId: this.id,
             properties: this.propertieJson,
+            serverProcessedContent: this.serverProcessedContent,
             title: this.title,
         };
         var html = [];
@@ -9785,8 +9984,8 @@ var ClientSideWebpart = /** @class */ (function (_super) {
         this.title = webPartData.title;
         this.description = webPartData.description;
         this.webPartId = webPartData.id;
-        this.canvasDataVersion = Object(__WEBPACK_IMPORTED_MODULE_3__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion");
-        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_3__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-webpartdataversion");
+        this.canvasDataVersion = Object(__WEBPACK_IMPORTED_MODULE_3__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion").replace(/\\\./, ".");
+        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_3__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-webpartdataversion").replace(/\\\./, ".");
         this.setProperties(webPartData.properties);
         if (typeof webPartData.serverProcessedContent !== "undefined") {
             this.serverProcessedContent = webPartData.serverProcessedContent;
@@ -9866,7 +10065,7 @@ var ClientSideWebpart = /** @class */ (function (_super) {
 //# sourceMappingURL=clientsidepages.js.map
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10022,7 +10221,7 @@ var TimeZones = /** @class */ (function (_super) {
 //# sourceMappingURL=regionalsettings.js.map
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10511,7 +10710,7 @@ var SearchBuiltInSourceId = /** @class */ (function () {
 //# sourceMappingURL=search.js.map
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10587,7 +10786,7 @@ var SearchSuggestResult = /** @class */ (function () {
 //# sourceMappingURL=searchsuggest.js.map
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10749,7 +10948,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.0");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.2");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -10796,7 +10995,7 @@ var SPBatch = /** @class */ (function (_super) {
 //# sourceMappingURL=batch.js.map
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10898,7 +11097,429 @@ var Feature = /** @class */ (function (_super) {
 //# sourceMappingURL=features.js.map
 
 /***/ }),
-/* 38 */
+/* 39 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserProfileQuery; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_common__ = __webpack_require__(2);
+
+
+
+var UserProfileQuery = /** @class */ (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](UserProfileQuery, _super);
+    /**
+     * Creates a new instance of the UserProfileQuery class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this user profile query
+     */
+    function UserProfileQuery(baseUrl, path) {
+        if (path === void 0) { path = "_api/sp.userprofiles.peoplemanager"; }
+        var _this = _super.call(this, baseUrl, path) || this;
+        _this.clientPeoplePickerQuery = new ClientPeoplePickerQuery(baseUrl);
+        _this.profileLoader = new ProfileLoader(baseUrl);
+        return _this;
+    }
+    Object.defineProperty(UserProfileQuery.prototype, "editProfileLink", {
+        /**
+         * The url of the edit profile page for the current user
+         */
+        get: function () {
+            return this.clone(UserProfileQuery, "EditProfileLink").get();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UserProfileQuery.prototype, "isMyPeopleListPublic", {
+        /**
+         * A boolean value that indicates whether the current user's "People I'm Following" list is public
+         */
+        get: function () {
+            return this.clone(UserProfileQuery, "IsMyPeopleListPublic").get();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * A boolean value that indicates whether the current user is being followed by the specified user
+     *
+     * @param loginName The account name of the user
+     */
+    UserProfileQuery.prototype.amIFollowedBy = function (loginName) {
+        var q = this.clone(UserProfileQuery, "amifollowedby(@v)");
+        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
+        return q.get();
+    };
+    /**
+     * A boolean value that indicates whether the current user is following the specified user
+     *
+     * @param loginName The account name of the user
+     */
+    UserProfileQuery.prototype.amIFollowing = function (loginName) {
+        var q = this.clone(UserProfileQuery, "amifollowing(@v)");
+        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
+        return q.get();
+    };
+    /**
+     * Gets tags that the current user is following
+     *
+     * @param maxCount The maximum number of tags to retrieve (default is 20)
+     */
+    UserProfileQuery.prototype.getFollowedTags = function (maxCount) {
+        if (maxCount === void 0) { maxCount = 20; }
+        return this.clone(UserProfileQuery, "getfollowedtags(" + maxCount + ")").get();
+    };
+    /**
+     * Gets the people who are following the specified user
+     *
+     * @param loginName The account name of the user
+     */
+    UserProfileQuery.prototype.getFollowersFor = function (loginName) {
+        var q = this.clone(UserProfileQuery, "getfollowersfor(@v)");
+        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
+        return q.get();
+    };
+    Object.defineProperty(UserProfileQuery.prototype, "myFollowers", {
+        /**
+         * Gets the people who are following the current user
+         *
+         */
+        get: function () {
+            return new __WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["b" /* SharePointQueryableCollection */](this, "getmyfollowers");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UserProfileQuery.prototype, "myProperties", {
+        /**
+         * Gets user properties for the current user
+         *
+         */
+        get: function () {
+            return new UserProfileQuery(this, "getmyproperties");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets the people who the specified user is following
+     *
+     * @param loginName The account name of the user.
+     */
+    UserProfileQuery.prototype.getPeopleFollowedBy = function (loginName) {
+        var q = this.clone(UserProfileQuery, "getpeoplefollowedby(@v)");
+        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
+        return q.get();
+    };
+    /**
+     * Gets user properties for the specified user.
+     *
+     * @param loginName The account name of the user.
+     */
+    UserProfileQuery.prototype.getPropertiesFor = function (loginName) {
+        var q = this.clone(UserProfileQuery, "getpropertiesfor(@v)");
+        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
+        return q.get();
+    };
+    Object.defineProperty(UserProfileQuery.prototype, "trendingTags", {
+        /**
+         * Gets the 20 most popular hash tags over the past week, sorted so that the most popular tag appears first
+         *
+         */
+        get: function () {
+            var q = this.clone(UserProfileQuery, null);
+            q.concat(".gettrendingtags");
+            return q.get();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets the specified user profile property for the specified user
+     *
+     * @param loginName The account name of the user
+     * @param propertyName The case-sensitive name of the property to get
+     */
+    UserProfileQuery.prototype.getUserProfilePropertyFor = function (loginName, propertyName) {
+        var q = this.clone(UserProfileQuery, "getuserprofilepropertyfor(accountname=@v, propertyname='" + propertyName + "')");
+        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
+        return q.get();
+    };
+    /**
+     * Removes the specified user from the user's list of suggested people to follow
+     *
+     * @param loginName The account name of the user
+     */
+    UserProfileQuery.prototype.hideSuggestion = function (loginName) {
+        var q = this.clone(UserProfileQuery, "hidesuggestion(@v)");
+        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
+        return q.postCore();
+    };
+    /**
+     * A boolean values that indicates whether the first user is following the second user
+     *
+     * @param follower The account name of the user who might be following the followee
+     * @param followee The account name of the user who might be followed by the follower
+     */
+    UserProfileQuery.prototype.isFollowing = function (follower, followee) {
+        var q = this.clone(UserProfileQuery, null);
+        q.concat(".isfollowing(possiblefolloweraccountname=@v, possiblefolloweeaccountname=@y)");
+        q.query.add("@v", "'" + encodeURIComponent(follower) + "'");
+        q.query.add("@y", "'" + encodeURIComponent(followee) + "'");
+        return q.get();
+    };
+    /**
+     * Uploads and sets the user profile picture (Users can upload a picture to their own profile only). Not supported for batching.
+     *
+     * @param profilePicSource Blob data representing the user's picture in BMP, JPEG, or PNG format of up to 4.76MB
+     */
+    UserProfileQuery.prototype.setMyProfilePic = function (profilePicSource) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["p" /* readBlobAsArrayBuffer */])(profilePicSource).then(function (buffer) {
+                var request = new UserProfileQuery(_this, "setmyprofilepicture");
+                request.postCore({
+                    body: String.fromCharCode.apply(null, new Uint16Array(buffer)),
+                }).then(function (_) { return resolve(); });
+            }).catch(function (e) { return reject(e); });
+        });
+    };
+    /**
+     * Sets single value User Profile property
+     *
+     * @param accountName The account name of the user
+     * @param propertyName Property name
+     * @param propertyValue Property value
+     */
+    UserProfileQuery.prototype.setSingleValueProfileProperty = function (accountName, propertyName, propertyValue) {
+        var postBody = JSON.stringify({
+            accountName: accountName,
+            propertyName: propertyName,
+            propertyValue: propertyValue,
+        });
+        return this.clone(UserProfileQuery, "SetSingleValueProfileProperty")
+            .postCore({ body: postBody });
+    };
+    /**
+     * Sets multi valued User Profile property
+     *
+     * @param accountName The account name of the user
+     * @param propertyName Property name
+     * @param propertyValues Property values
+     */
+    UserProfileQuery.prototype.setMultiValuedProfileProperty = function (accountName, propertyName, propertyValues) {
+        var postBody = JSON.stringify({
+            accountName: accountName,
+            propertyName: propertyName,
+            propertyValues: propertyValues,
+        });
+        return this.clone(UserProfileQuery, "SetMultiValuedProfileProperty")
+            .postCore({ body: postBody });
+    };
+    /**
+     * Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only)
+     *
+     * @param emails The email addresses of the users to provision sites for
+     */
+    UserProfileQuery.prototype.createPersonalSiteEnqueueBulk = function () {
+        var emails = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            emails[_i] = arguments[_i];
+        }
+        return this.profileLoader.createPersonalSiteEnqueueBulk(emails);
+    };
+    Object.defineProperty(UserProfileQuery.prototype, "ownerUserProfile", {
+        /**
+         * Gets the user profile of the site owner
+         *
+         */
+        get: function () {
+            return this.profileLoader.ownerUserProfile;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UserProfileQuery.prototype, "userProfile", {
+        /**
+         * Gets the user profile for the current user
+         */
+        get: function () {
+            return this.profileLoader.userProfile;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Enqueues creating a personal site for this user, which can be used to share documents, web pages, and other files
+     *
+     * @param interactiveRequest true if interactively (web) initiated request, or false (default) if non-interactively (client) initiated request
+     */
+    UserProfileQuery.prototype.createPersonalSite = function (interactiveRequest) {
+        if (interactiveRequest === void 0) { interactiveRequest = false; }
+        return this.profileLoader.createPersonalSite(interactiveRequest);
+    };
+    /**
+     * Sets the privacy settings for this profile
+     *
+     * @param share true to make all social data public; false to make all social data private
+     */
+    UserProfileQuery.prototype.shareAllSocialData = function (share) {
+        return this.profileLoader.shareAllSocialData(share);
+    };
+    /**
+     * Resolves user or group using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform resolve
+     */
+    UserProfileQuery.prototype.clientPeoplePickerResolveUser = function (queryParams) {
+        return this.clientPeoplePickerQuery.clientPeoplePickerResolveUser(queryParams);
+    };
+    /**
+     * Searches for users or groups using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform search
+     */
+    UserProfileQuery.prototype.clientPeoplePickerSearchUser = function (queryParams) {
+        return this.clientPeoplePickerQuery.clientPeoplePickerSearchUser(queryParams);
+    };
+    return UserProfileQuery;
+}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["c" /* SharePointQueryableInstance */]));
+
+var ProfileLoader = /** @class */ (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](ProfileLoader, _super);
+    /**
+   * Creates a new instance of the ProfileLoader class
+   *
+   * @param baseUrl The url or SharePointQueryable which forms the parent of this profile loader
+   */
+    function ProfileLoader(baseUrl, path) {
+        if (path === void 0) { path = "_api/sp.userprofiles.profileloader.getprofileloader"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only) Doesn't support batching
+     *
+     * @param emails The email addresses of the users to provision sites for
+     */
+    ProfileLoader.prototype.createPersonalSiteEnqueueBulk = function (emails) {
+        return this.clone(ProfileLoader, "createpersonalsiteenqueuebulk", false).postCore({
+            body: JSON.stringify({ "emailIDs": emails }),
+        });
+    };
+    Object.defineProperty(ProfileLoader.prototype, "ownerUserProfile", {
+        /**
+         * Gets the user profile of the site owner.
+         *
+         */
+        get: function () {
+            var q = this.getParent(ProfileLoader, this.parentUrl, "_api/sp.userprofiles.profileloader.getowneruserprofile");
+            if (this.hasBatch) {
+                q = q.inBatch(this.batch);
+            }
+            return q.postCore();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ProfileLoader.prototype, "userProfile", {
+        /**
+         * Gets the user profile of the current user.
+         *
+         */
+        get: function () {
+            return this.clone(ProfileLoader, "getuserprofile").postCore();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Enqueues creating a personal site for this user, which can be used to share documents, web pages, and other files.
+     *
+     * @param interactiveRequest true if interactively (web) initiated request, or false (default) if non-interactively (client) initiated request
+     */
+    ProfileLoader.prototype.createPersonalSite = function (interactiveRequest) {
+        if (interactiveRequest === void 0) { interactiveRequest = false; }
+        return this.clone(ProfileLoader, "getuserprofile/createpersonalsiteenque(" + interactiveRequest + ")").postCore();
+    };
+    /**
+     * Sets the privacy settings for this profile
+     *
+     * @param share true to make all social data public; false to make all social data private.
+     */
+    ProfileLoader.prototype.shareAllSocialData = function (share) {
+        return this.clone(ProfileLoader, "getuserprofile/shareallsocialdata(" + share + ")").postCore();
+    };
+    return ProfileLoader;
+}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["a" /* SharePointQueryable */]));
+var ClientPeoplePickerQuery = /** @class */ (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](ClientPeoplePickerQuery, _super);
+    /**
+     * Creates a new instance of the PeoplePickerQuery class
+     *
+     * @param baseUrl The url or SharePointQueryable which forms the parent of this people picker query
+     */
+    function ClientPeoplePickerQuery(baseUrl, path) {
+        if (path === void 0) { path = "_api/sp.ui.applicationpages.clientpeoplepickerwebserviceinterface"; }
+        return _super.call(this, baseUrl, path) || this;
+    }
+    /**
+     * Resolves user or group using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform resolve
+     */
+    ClientPeoplePickerQuery.prototype.clientPeoplePickerResolveUser = function (queryParams) {
+        var q = this.clone(ClientPeoplePickerQuery, null);
+        q.concat(".clientpeoplepickerresolveuser");
+        return q.postCore({
+            body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
+        })
+            .then(function (res) {
+            if (typeof res === "object") {
+                return res.ClientPeoplePickerResolveUser;
+            }
+            return res;
+        })
+            .then(JSON.parse);
+    };
+    /**
+     * Searches for users or groups using specified query parameters
+     *
+     * @param queryParams The query parameters used to perform search
+     */
+    ClientPeoplePickerQuery.prototype.clientPeoplePickerSearchUser = function (queryParams) {
+        var q = this.clone(ClientPeoplePickerQuery, null);
+        q.concat(".clientpeoplepickersearchuser");
+        return q.postCore({
+            body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
+        })
+            .then(function (res) {
+            if (typeof res === "object") {
+                return res.ClientPeoplePickerSearchUser;
+            }
+            return res;
+        })
+            .then(JSON.parse);
+    };
+    /**
+     * Creates ClientPeoplePickerQueryParameters request body
+     *
+     * @param queryParams The query parameters to create request body
+     */
+    ClientPeoplePickerQuery.prototype.createClientPeoplePickerQueryParametersRequestBody = function (queryParams) {
+        return JSON.stringify({
+            "queryParams": Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+                "__metadata": { "type": "SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters" },
+            }, queryParams),
+        });
+    };
+    return ClientPeoplePickerQuery;
+}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["a" /* SharePointQueryable */]));
+//# sourceMappingURL=userprofiles.js.map
+
+/***/ }),
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11174,7 +11795,7 @@ var SocialStatusCode;
 //# sourceMappingURL=social.js.map
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11311,14 +11932,14 @@ var UtilityMethod = /** @class */ (function (_super) {
 //# sourceMappingURL=utilities.js.map
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__odata__ = __webpack_require__(3);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_45", function() { return __WEBPACK_IMPORTED_MODULE_0__odata__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_46", function() { return __WEBPACK_IMPORTED_MODULE_0__odata__["c"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_47", function() { return __WEBPACK_IMPORTED_MODULE_0__odata__["d"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_49", function() { return __WEBPACK_IMPORTED_MODULE_0__odata__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_50", function() { return __WEBPACK_IMPORTED_MODULE_0__odata__["c"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_51", function() { return __WEBPACK_IMPORTED_MODULE_0__odata__["d"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__ = __webpack_require__(1);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_12", function() { return __WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_14", function() { return __WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["c"]; });
@@ -11335,7 +11956,7 @@ var UtilityMethod = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__appcatalog__ = __webpack_require__(29);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_4__appcatalog__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_4__appcatalog__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__clientsidepages__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__clientsidepages__ = __webpack_require__(33);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_5__clientsidepages__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_5__clientsidepages__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_5__clientsidepages__["c"]; });
@@ -11344,7 +11965,7 @@ var UtilityMethod = /** @class */ (function (_super) {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_5__clientsidepages__["f"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "m", function() { return __WEBPACK_IMPORTED_MODULE_5__clientsidepages__["g"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "V", function() { return __WEBPACK_IMPORTED_MODULE_5__clientsidepages__["h"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__comments__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__comments__ = __webpack_require__(32);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "n", function() { return __WEBPACK_IMPORTED_MODULE_6__comments__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "o", function() { return __WEBPACK_IMPORTED_MODULE_6__comments__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_0", function() { return __WEBPACK_IMPORTED_MODULE_6__comments__["c"]; });
@@ -11358,7 +11979,7 @@ var UtilityMethod = /** @class */ (function (_super) {
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return __WEBPACK_IMPORTED_MODULE_8__fields__["b"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__files__ = __webpack_require__(6);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_9__files__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_42", function() { return __WEBPACK_IMPORTED_MODULE_9__files__["f"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_46", function() { return __WEBPACK_IMPORTED_MODULE_9__files__["f"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "L", function() { return __WEBPACK_IMPORTED_MODULE_9__files__["d"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_32", function() { return __WEBPACK_IMPORTED_MODULE_9__files__["e"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return __WEBPACK_IMPORTED_MODULE_9__files__["b"]; });
@@ -11381,17 +12002,17 @@ var UtilityMethod = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lists__ = __webpack_require__(20);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "J", function() { return __WEBPACK_IMPORTED_MODULE_14__lists__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "K", function() { return __WEBPACK_IMPORTED_MODULE_14__lists__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__regionalsettings__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__regionalsettings__ = __webpack_require__(34);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "X", function() { return __WEBPACK_IMPORTED_MODULE_15__regionalsettings__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return __WEBPACK_IMPORTED_MODULE_15__regionalsettings__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_33", function() { return __WEBPACK_IMPORTED_MODULE_15__regionalsettings__["c"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_34", function() { return __WEBPACK_IMPORTED_MODULE_15__regionalsettings__["d"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__rest__ = __webpack_require__(47);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_44", function() { return __WEBPACK_IMPORTED_MODULE_16__rest__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__rest__ = __webpack_require__(48);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_48", function() { return __WEBPACK_IMPORTED_MODULE_16__rest__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_4", function() { return __WEBPACK_IMPORTED_MODULE_16__rest__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__roles__ = __webpack_require__(18);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_1", function() { return __WEBPACK_IMPORTED_MODULE_17__roles__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__search__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__search__ = __webpack_require__(35);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_6", function() { return __WEBPACK_IMPORTED_MODULE_18__search__["c"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_8", function() { return __WEBPACK_IMPORTED_MODULE_18__search__["e"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_9", function() { return __WEBPACK_IMPORTED_MODULE_18__search__["f"]; });
@@ -11399,12 +12020,12 @@ var UtilityMethod = /** @class */ (function (_super) {
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Z", function() { return __WEBPACK_IMPORTED_MODULE_18__search__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "W", function() { return __WEBPACK_IMPORTED_MODULE_18__search__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_7", function() { return __WEBPACK_IMPORTED_MODULE_18__search__["d"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__searchsuggest__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__searchsuggest__ = __webpack_require__(36);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_10", function() { return __WEBPACK_IMPORTED_MODULE_19__searchsuggest__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_11", function() { return __WEBPACK_IMPORTED_MODULE_19__searchsuggest__["b"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__site__ = __webpack_require__(24);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_25", function() { return __WEBPACK_IMPORTED_MODULE_20__site__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__social__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__social__ = __webpack_require__(40);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "M", function() { return __WEBPACK_IMPORTED_MODULE_21__social__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_26", function() { return __WEBPACK_IMPORTED_MODULE_21__social__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_27", function() { return __WEBPACK_IMPORTED_MODULE_21__social__["c"]; });
@@ -11432,18 +12053,26 @@ var UtilityMethod = /** @class */ (function (_super) {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_24", function() { return __WEBPACK_IMPORTED_MODULE_22__types__["r"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_35", function() { return __WEBPACK_IMPORTED_MODULE_22__types__["s"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_36", function() { return __WEBPACK_IMPORTED_MODULE_22__types__["t"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__utils_toabsoluteurl__ = __webpack_require__(16);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_48", function() { return __WEBPACK_IMPORTED_MODULE_23__utils_toabsoluteurl__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__utils_extractweburl__ = __webpack_require__(7);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_43", function() { return __WEBPACK_IMPORTED_MODULE_24__utils_extractweburl__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__utilities__ = __webpack_require__(39);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_37", function() { return __WEBPACK_IMPORTED_MODULE_25__utilities__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__webparts__ = __webpack_require__(30);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_41", function() { return __WEBPACK_IMPORTED_MODULE_26__webparts__["d"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_40", function() { return __WEBPACK_IMPORTED_MODULE_26__webparts__["c"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_39", function() { return __WEBPACK_IMPORTED_MODULE_26__webparts__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__webs__ = __webpack_require__(25);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_38", function() { return __WEBPACK_IMPORTED_MODULE_27__webs__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__userprofiles__ = __webpack_require__(39);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_37", function() { return __WEBPACK_IMPORTED_MODULE_23__userprofiles__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__utils_toabsoluteurl__ = __webpack_require__(16);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_52", function() { return __WEBPACK_IMPORTED_MODULE_24__utils_toabsoluteurl__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__utils_extractweburl__ = __webpack_require__(7);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_47", function() { return __WEBPACK_IMPORTED_MODULE_25__utils_extractweburl__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__utilities__ = __webpack_require__(41);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_38", function() { return __WEBPACK_IMPORTED_MODULE_26__utilities__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__views__ = __webpack_require__(31);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_39", function() { return __WEBPACK_IMPORTED_MODULE_27__views__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_41", function() { return __WEBPACK_IMPORTED_MODULE_27__views__["c"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_40", function() { return __WEBPACK_IMPORTED_MODULE_27__views__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__webparts__ = __webpack_require__(30);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_45", function() { return __WEBPACK_IMPORTED_MODULE_28__webparts__["d"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_44", function() { return __WEBPACK_IMPORTED_MODULE_28__webparts__["c"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_43", function() { return __WEBPACK_IMPORTED_MODULE_28__webparts__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__webs__ = __webpack_require__(25);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_42", function() { return __WEBPACK_IMPORTED_MODULE_29__webs__["a"]; });
+
+
 
 
 
@@ -11475,7 +12104,7 @@ var UtilityMethod = /** @class */ (function (_super) {
 //# sourceMappingURL=sp.js.map
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports) {
 
 //----------------------------------------------------------------------
@@ -13420,7 +14049,7 @@ var AuthenticationContext = (function () {
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13488,7 +14117,7 @@ var DigestCache = /** @class */ (function () {
 //# sourceMappingURL=digestcache.js.map
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13642,189 +14271,7 @@ var AttachmentFile = /** @class */ (function (_super) {
 //# sourceMappingURL=attachmentfiles.js.map
 
 /***/ }),
-/* 44 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Views; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return View; });
-/* unused harmony export ViewFields */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_common__ = __webpack_require__(2);
-
-
-
-/**
- * Describes the views available in the current context
- *
- */
-var Views = /** @class */ (function (_super) {
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](Views, _super);
-    /**
-     * Creates a new instance of the Views class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    function Views(baseUrl, path) {
-        if (path === void 0) { path = "views"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a view by guid id
-     *
-     * @param id The GUID id of the view
-     */
-    Views.prototype.getById = function (id) {
-        var v = new View(this);
-        v.concat("('" + id + "')");
-        return v;
-    };
-    /**
-     * Gets a view by title (case-sensitive)
-     *
-     * @param title The case-sensitive title of the view
-     */
-    Views.prototype.getByTitle = function (title) {
-        return new View(this, "getByTitle('" + title + "')");
-    };
-    /**
-     * Adds a new view to the collection
-     *
-     * @param title The new views's title
-     * @param personalView True if this is a personal view, otherwise false, default = false
-     * @param additionalSettings Will be passed as part of the view creation body
-     */
-    Views.prototype.add = function (title, personalView, additionalSettings) {
-        var _this = this;
-        if (personalView === void 0) { personalView = false; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
-            "PersonalView": personalView,
-            "Title": title,
-            "__metadata": { "type": "SP.View" },
-        }, additionalSettings));
-        return this.clone(Views, null).postCore({ body: postBody }).then(function (data) {
-            return {
-                data: data,
-                view: _this.getById(data.Id),
-            };
-        });
-    };
-    return Views;
-}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["b" /* SharePointQueryableCollection */]));
-
-/**
- * Describes a single View instance
- *
- */
-var View = /** @class */ (function (_super) {
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](View, _super);
-    function View() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(View.prototype, "fields", {
-        get: function () {
-            return new ViewFields(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Updates this view intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the view
-     */
-    View.prototype.update = function (properties) {
-        var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
-            "__metadata": { "type": "SP.View" },
-        }, properties));
-        return this.postCore({
-            body: postBody,
-            headers: {
-                "X-HTTP-Method": "MERGE",
-            },
-        }).then(function (data) {
-            return {
-                data: data,
-                view: _this,
-            };
-        });
-    };
-    /**
-     * Delete this view
-     *
-     */
-    View.prototype.delete = function () {
-        return this.postCore({
-            headers: {
-                "X-HTTP-Method": "DELETE",
-            },
-        });
-    };
-    /**
-     * Returns the list view as HTML.
-     *
-     */
-    View.prototype.renderAsHtml = function () {
-        return this.clone(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["a" /* SharePointQueryable */], "renderashtml").get();
-    };
-    return View;
-}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["c" /* SharePointQueryableInstance */]));
-
-var ViewFields = /** @class */ (function (_super) {
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](ViewFields, _super);
-    function ViewFields(baseUrl, path) {
-        if (path === void 0) { path = "viewfields"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Gets a value that specifies the XML schema that represents the collection.
-     */
-    ViewFields.prototype.getSchemaXml = function () {
-        return this.clone(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["a" /* SharePointQueryable */], "schemaxml").get();
-    };
-    /**
-     * Adds the field with the specified field internal name or display name to the collection.
-     *
-     * @param fieldTitleOrInternalName The case-sensitive internal name or display name of the field to add.
-     */
-    ViewFields.prototype.add = function (fieldTitleOrInternalName) {
-        return this.clone(ViewFields, "addviewfield('" + fieldTitleOrInternalName + "')").postCore();
-    };
-    /**
-     * Moves the field with the specified field internal name to the specified position in the collection.
-     *
-     * @param fieldInternalName The case-sensitive internal name of the field to move.
-     * @param index The zero-based index of the new position for the field.
-     */
-    ViewFields.prototype.move = function (fieldInternalName, index) {
-        return this.clone(ViewFields, "moveviewfieldto").postCore({
-            body: JSON.stringify({ "field": fieldInternalName, "index": index }),
-        });
-    };
-    /**
-     * Removes all the fields from the collection.
-     */
-    ViewFields.prototype.removeAll = function () {
-        return this.clone(ViewFields, "removeallviewfields").postCore();
-    };
-    /**
-     * Removes the field with the specified field internal name from the collection.
-     *
-     * @param fieldInternalName The case-sensitive internal name of the field to remove from the view.
-     */
-    ViewFields.prototype.remove = function (fieldInternalName) {
-        return this.clone(ViewFields, "removeviewfield('" + fieldInternalName + "')").postCore();
-    };
-    return ViewFields;
-}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["b" /* SharePointQueryableCollection */]));
-
-//# sourceMappingURL=views.js.map
-
-/***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13877,7 +14324,7 @@ var Form = /** @class */ (function (_super) {
 //# sourceMappingURL=forms.js.map
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13970,20 +14417,20 @@ var Subscription = /** @class */ (function (_super) {
 //# sourceMappingURL=subscriptions.js.map
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SPRest; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return sp; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__search__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__searchsuggest__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__search__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__searchsuggest__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__site__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__webs__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__userprofiles__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__userprofiles__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__navigation__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__social__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utilities__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__social__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utilities__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__config_splibconfig__ = __webpack_require__(8);
 
 
@@ -14148,7 +14595,7 @@ var sp = new SPRest();
 //# sourceMappingURL=rest.js.map
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14271,428 +14718,6 @@ var RelatedItemManagerImpl = /** @class */ (function (_super) {
 }(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["a" /* SharePointQueryable */]));
 
 //# sourceMappingURL=relateditems.js.map
-
-/***/ }),
-/* 49 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserProfileQuery; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_common__ = __webpack_require__(2);
-
-
-
-var UserProfileQuery = /** @class */ (function (_super) {
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](UserProfileQuery, _super);
-    /**
-     * Creates a new instance of the UserProfileQuery class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this user profile query
-     */
-    function UserProfileQuery(baseUrl, path) {
-        if (path === void 0) { path = "_api/sp.userprofiles.peoplemanager"; }
-        var _this = _super.call(this, baseUrl, path) || this;
-        _this.clientPeoplePickerQuery = new ClientPeoplePickerQuery(baseUrl);
-        _this.profileLoader = new ProfileLoader(baseUrl);
-        return _this;
-    }
-    Object.defineProperty(UserProfileQuery.prototype, "editProfileLink", {
-        /**
-         * The url of the edit profile page for the current user
-         */
-        get: function () {
-            return this.clone(UserProfileQuery, "EditProfileLink").get();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UserProfileQuery.prototype, "isMyPeopleListPublic", {
-        /**
-         * A boolean value that indicates whether the current user's "People I'm Following" list is public
-         */
-        get: function () {
-            return this.clone(UserProfileQuery, "IsMyPeopleListPublic").get();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * A boolean value that indicates whether the current user is being followed by the specified user
-     *
-     * @param loginName The account name of the user
-     */
-    UserProfileQuery.prototype.amIFollowedBy = function (loginName) {
-        var q = this.clone(UserProfileQuery, "amifollowedby(@v)");
-        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
-        return q.get();
-    };
-    /**
-     * A boolean value that indicates whether the current user is following the specified user
-     *
-     * @param loginName The account name of the user
-     */
-    UserProfileQuery.prototype.amIFollowing = function (loginName) {
-        var q = this.clone(UserProfileQuery, "amifollowing(@v)");
-        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
-        return q.get();
-    };
-    /**
-     * Gets tags that the current user is following
-     *
-     * @param maxCount The maximum number of tags to retrieve (default is 20)
-     */
-    UserProfileQuery.prototype.getFollowedTags = function (maxCount) {
-        if (maxCount === void 0) { maxCount = 20; }
-        return this.clone(UserProfileQuery, "getfollowedtags(" + maxCount + ")").get();
-    };
-    /**
-     * Gets the people who are following the specified user
-     *
-     * @param loginName The account name of the user
-     */
-    UserProfileQuery.prototype.getFollowersFor = function (loginName) {
-        var q = this.clone(UserProfileQuery, "getfollowersfor(@v)");
-        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
-        return q.get();
-    };
-    Object.defineProperty(UserProfileQuery.prototype, "myFollowers", {
-        /**
-         * Gets the people who are following the current user
-         *
-         */
-        get: function () {
-            return new __WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["b" /* SharePointQueryableCollection */](this, "getmyfollowers");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UserProfileQuery.prototype, "myProperties", {
-        /**
-         * Gets user properties for the current user
-         *
-         */
-        get: function () {
-            return new UserProfileQuery(this, "getmyproperties");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets the people who the specified user is following
-     *
-     * @param loginName The account name of the user.
-     */
-    UserProfileQuery.prototype.getPeopleFollowedBy = function (loginName) {
-        var q = this.clone(UserProfileQuery, "getpeoplefollowedby(@v)");
-        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
-        return q.get();
-    };
-    /**
-     * Gets user properties for the specified user.
-     *
-     * @param loginName The account name of the user.
-     */
-    UserProfileQuery.prototype.getPropertiesFor = function (loginName) {
-        var q = this.clone(UserProfileQuery, "getpropertiesfor(@v)");
-        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
-        return q.get();
-    };
-    Object.defineProperty(UserProfileQuery.prototype, "trendingTags", {
-        /**
-         * Gets the 20 most popular hash tags over the past week, sorted so that the most popular tag appears first
-         *
-         */
-        get: function () {
-            var q = this.clone(UserProfileQuery, null);
-            q.concat(".gettrendingtags");
-            return q.get();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets the specified user profile property for the specified user
-     *
-     * @param loginName The account name of the user
-     * @param propertyName The case-sensitive name of the property to get
-     */
-    UserProfileQuery.prototype.getUserProfilePropertyFor = function (loginName, propertyName) {
-        var q = this.clone(UserProfileQuery, "getuserprofilepropertyfor(accountname=@v, propertyname='" + propertyName + "')");
-        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
-        return q.get();
-    };
-    /**
-     * Removes the specified user from the user's list of suggested people to follow
-     *
-     * @param loginName The account name of the user
-     */
-    UserProfileQuery.prototype.hideSuggestion = function (loginName) {
-        var q = this.clone(UserProfileQuery, "hidesuggestion(@v)");
-        q.query.add("@v", "'" + encodeURIComponent(loginName) + "'");
-        return q.postCore();
-    };
-    /**
-     * A boolean values that indicates whether the first user is following the second user
-     *
-     * @param follower The account name of the user who might be following the followee
-     * @param followee The account name of the user who might be followed by the follower
-     */
-    UserProfileQuery.prototype.isFollowing = function (follower, followee) {
-        var q = this.clone(UserProfileQuery, null);
-        q.concat(".isfollowing(possiblefolloweraccountname=@v, possiblefolloweeaccountname=@y)");
-        q.query.add("@v", "'" + encodeURIComponent(follower) + "'");
-        q.query.add("@y", "'" + encodeURIComponent(followee) + "'");
-        return q.get();
-    };
-    /**
-     * Uploads and sets the user profile picture (Users can upload a picture to their own profile only). Not supported for batching.
-     *
-     * @param profilePicSource Blob data representing the user's picture in BMP, JPEG, or PNG format of up to 4.76MB
-     */
-    UserProfileQuery.prototype.setMyProfilePic = function (profilePicSource) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["p" /* readBlobAsArrayBuffer */])(profilePicSource).then(function (buffer) {
-                var request = new UserProfileQuery(_this, "setmyprofilepicture");
-                request.postCore({
-                    body: String.fromCharCode.apply(null, new Uint16Array(buffer)),
-                }).then(function (_) { return resolve(); });
-            }).catch(function (e) { return reject(e); });
-        });
-    };
-    /**
-     * Sets single value User Profile property
-     *
-     * @param accountName The account name of the user
-     * @param propertyName Property name
-     * @param propertyValue Property value
-     */
-    UserProfileQuery.prototype.setSingleValueProfileProperty = function (accountName, propertyName, propertyValue) {
-        var postBody = JSON.stringify({
-            accountName: accountName,
-            propertyName: propertyName,
-            propertyValue: propertyValue,
-        });
-        return this.clone(UserProfileQuery, "SetSingleValueProfileProperty")
-            .postCore({ body: postBody });
-    };
-    /**
-     * Sets multi valued User Profile property
-     *
-     * @param accountName The account name of the user
-     * @param propertyName Property name
-     * @param propertyValues Property values
-     */
-    UserProfileQuery.prototype.setMultiValuedProfileProperty = function (accountName, propertyName, propertyValues) {
-        var postBody = JSON.stringify({
-            accountName: accountName,
-            propertyName: propertyName,
-            propertyValues: propertyValues,
-        });
-        return this.clone(UserProfileQuery, "SetMultiValuedProfileProperty")
-            .postCore({ body: postBody });
-    };
-    /**
-     * Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only)
-     *
-     * @param emails The email addresses of the users to provision sites for
-     */
-    UserProfileQuery.prototype.createPersonalSiteEnqueueBulk = function () {
-        var emails = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            emails[_i] = arguments[_i];
-        }
-        return this.profileLoader.createPersonalSiteEnqueueBulk(emails);
-    };
-    Object.defineProperty(UserProfileQuery.prototype, "ownerUserProfile", {
-        /**
-         * Gets the user profile of the site owner
-         *
-         */
-        get: function () {
-            return this.profileLoader.ownerUserProfile;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UserProfileQuery.prototype, "userProfile", {
-        /**
-         * Gets the user profile for the current user
-         */
-        get: function () {
-            return this.profileLoader.userProfile;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Enqueues creating a personal site for this user, which can be used to share documents, web pages, and other files
-     *
-     * @param interactiveRequest true if interactively (web) initiated request, or false (default) if non-interactively (client) initiated request
-     */
-    UserProfileQuery.prototype.createPersonalSite = function (interactiveRequest) {
-        if (interactiveRequest === void 0) { interactiveRequest = false; }
-        return this.profileLoader.createPersonalSite(interactiveRequest);
-    };
-    /**
-     * Sets the privacy settings for this profile
-     *
-     * @param share true to make all social data public; false to make all social data private
-     */
-    UserProfileQuery.prototype.shareAllSocialData = function (share) {
-        return this.profileLoader.shareAllSocialData(share);
-    };
-    /**
-     * Resolves user or group using specified query parameters
-     *
-     * @param queryParams The query parameters used to perform resolve
-     */
-    UserProfileQuery.prototype.clientPeoplePickerResolveUser = function (queryParams) {
-        return this.clientPeoplePickerQuery.clientPeoplePickerResolveUser(queryParams);
-    };
-    /**
-     * Searches for users or groups using specified query parameters
-     *
-     * @param queryParams The query parameters used to perform search
-     */
-    UserProfileQuery.prototype.clientPeoplePickerSearchUser = function (queryParams) {
-        return this.clientPeoplePickerQuery.clientPeoplePickerSearchUser(queryParams);
-    };
-    return UserProfileQuery;
-}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["c" /* SharePointQueryableInstance */]));
-
-var ProfileLoader = /** @class */ (function (_super) {
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](ProfileLoader, _super);
-    /**
-   * Creates a new instance of the ProfileLoader class
-   *
-   * @param baseUrl The url or SharePointQueryable which forms the parent of this profile loader
-   */
-    function ProfileLoader(baseUrl, path) {
-        if (path === void 0) { path = "_api/sp.userprofiles.profileloader.getprofileloader"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Provisions one or more users' personal sites. (My Site administrator on SharePoint Online only) Doesn't support batching
-     *
-     * @param emails The email addresses of the users to provision sites for
-     */
-    ProfileLoader.prototype.createPersonalSiteEnqueueBulk = function (emails) {
-        return this.clone(ProfileLoader, "createpersonalsiteenqueuebulk", false).postCore({
-            body: JSON.stringify({ "emailIDs": emails }),
-        });
-    };
-    Object.defineProperty(ProfileLoader.prototype, "ownerUserProfile", {
-        /**
-         * Gets the user profile of the site owner.
-         *
-         */
-        get: function () {
-            var q = this.getParent(ProfileLoader, this.parentUrl, "_api/sp.userprofiles.profileloader.getowneruserprofile");
-            if (this.hasBatch) {
-                q = q.inBatch(this.batch);
-            }
-            return q.postCore();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ProfileLoader.prototype, "userProfile", {
-        /**
-         * Gets the user profile of the current user.
-         *
-         */
-        get: function () {
-            return this.clone(ProfileLoader, "getuserprofile").postCore();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Enqueues creating a personal site for this user, which can be used to share documents, web pages, and other files.
-     *
-     * @param interactiveRequest true if interactively (web) initiated request, or false (default) if non-interactively (client) initiated request
-     */
-    ProfileLoader.prototype.createPersonalSite = function (interactiveRequest) {
-        if (interactiveRequest === void 0) { interactiveRequest = false; }
-        return this.clone(ProfileLoader, "getuserprofile/createpersonalsiteenque(" + interactiveRequest + ")").postCore();
-    };
-    /**
-     * Sets the privacy settings for this profile
-     *
-     * @param share true to make all social data public; false to make all social data private.
-     */
-    ProfileLoader.prototype.shareAllSocialData = function (share) {
-        return this.clone(ProfileLoader, "getuserprofile/shareallsocialdata(" + share + ")").postCore();
-    };
-    return ProfileLoader;
-}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["a" /* SharePointQueryable */]));
-var ClientPeoplePickerQuery = /** @class */ (function (_super) {
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */](ClientPeoplePickerQuery, _super);
-    /**
-     * Creates a new instance of the PeoplePickerQuery class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this people picker query
-     */
-    function ClientPeoplePickerQuery(baseUrl, path) {
-        if (path === void 0) { path = "_api/sp.ui.applicationpages.clientpeoplepickerwebserviceinterface"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    /**
-     * Resolves user or group using specified query parameters
-     *
-     * @param queryParams The query parameters used to perform resolve
-     */
-    ClientPeoplePickerQuery.prototype.clientPeoplePickerResolveUser = function (queryParams) {
-        var q = this.clone(ClientPeoplePickerQuery, null);
-        q.concat(".clientpeoplepickerresolveuser");
-        return q.postCore({
-            body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
-        })
-            .then(function (res) {
-            if (typeof res === "object") {
-                return res.ClientPeoplePickerResolveUser;
-            }
-            return res;
-        })
-            .then(JSON.parse);
-    };
-    /**
-     * Searches for users or groups using specified query parameters
-     *
-     * @param queryParams The query parameters used to perform search
-     */
-    ClientPeoplePickerQuery.prototype.clientPeoplePickerSearchUser = function (queryParams) {
-        var q = this.clone(ClientPeoplePickerQuery, null);
-        q.concat(".clientpeoplepickersearchuser");
-        return q.postCore({
-            body: this.createClientPeoplePickerQueryParametersRequestBody(queryParams),
-        })
-            .then(function (res) {
-            if (typeof res === "object") {
-                return res.ClientPeoplePickerSearchUser;
-            }
-            return res;
-        })
-            .then(JSON.parse);
-    };
-    /**
-     * Creates ClientPeoplePickerQueryParameters request body
-     *
-     * @param queryParams The query parameters to create request body
-     */
-    ClientPeoplePickerQuery.prototype.createClientPeoplePickerQueryParametersRequestBody = function (queryParams) {
-        return JSON.stringify({
-            "queryParams": Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
-                "__metadata": { "type": "SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters" },
-            }, queryParams),
-        });
-    };
-    return ClientPeoplePickerQuery;
-}(__WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__["a" /* SharePointQueryable */]));
-//# sourceMappingURL=userprofiles.js.map
 
 /***/ })
 /******/ ]);

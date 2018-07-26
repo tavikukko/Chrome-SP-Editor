@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/pnpjs v1.1.0 - pnp - rollup library of core functionality (mimics sp-pnp-js)
+ * @pnp/pnpjs v1.1.2 - pnp - rollup library of core functionality (mimics sp-pnp-js)
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -93,7 +93,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return FunctionListener; });
 /**
 @license
- * @pnp/logging v1.1.0 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.1.2 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -355,7 +355,7 @@ var FunctionListener = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_adal_angular__);
 /**
 @license
- * @pnp/common v1.1.0 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.1.2 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1516,8 +1516,8 @@ function __generator(thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -1652,7 +1652,7 @@ function __importDefault(mod) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(0);
 /**
 @license
- * @pnp/odata v1.1.0 - pnp - provides shared odata functionality and base classes
+ * @pnp/odata v1.1.2 - pnp - provides shared odata functionality and base classes
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2410,9 +2410,9 @@ var ODataBatch = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_44", function() { return spExtractODataId$1; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_45", function() { return spODataEntity; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_46", function() { return spODataEntityArray; });
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_48", function() { return spExtractODataId$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_49", function() { return spODataEntity; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_50", function() { return spODataEntityArray; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_12", function() { return SharePointQueryable; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_14", function() { return SharePointQueryableInstance; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_13", function() { return SharePointQueryableCollection; });
@@ -2432,7 +2432,7 @@ var ODataBatch = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return Field; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return Fields; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return CheckinType; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_42", function() { return WebPartsPersonalizationScope; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_46", function() { return WebPartsPersonalizationScope; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "L", function() { return MoveOperations; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_32", function() { return TemplateFileType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return File; });
@@ -2467,13 +2467,17 @@ var ODataBatch = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_10", function() { return SearchSuggest; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_11", function() { return SearchSuggestResult; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_25", function() { return Site; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_47", function() { return toAbsoluteUrl; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_43", function() { return extractWebUrl; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_37", function() { return UtilityMethod; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_41", function() { return WebPartDefinitions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_40", function() { return WebPartDefinition; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_39", function() { return WebPart; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_38", function() { return Web; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_37", function() { return UserProfileQuery; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_51", function() { return toAbsoluteUrl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_47", function() { return extractWebUrl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_38", function() { return UtilityMethod; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_39", function() { return View; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_41", function() { return Views; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_40", function() { return ViewFields; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_45", function() { return WebPartDefinitions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_44", function() { return WebPartDefinition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_43", function() { return WebPart; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_42", function() { return Web; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "V", function() { return PromotedState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return ClientSidePage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return CanvasSection; });
@@ -2518,7 +2522,7 @@ var ODataBatch = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4____ = __webpack_require__(4);
 /**
 @license
- * @pnp/sp v1.1.0 - pnp - provides a fluent api for working with SharePoint REST
+ * @pnp/sp v1.1.2 - pnp - provides a fluent api for working with SharePoint REST
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2795,11 +2799,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.0");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.2");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.0");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.2");
         }
         opts = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["p" /* extend */])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -6858,7 +6862,7 @@ var Replies = /** @class */ (function (_super) {
             "__metadata": { "type": "Microsoft.SharePoint.Comments.comment" },
         }, info));
         return this.clone(Replies, null).postCore({ body: postBody }).then(function (d) {
-            return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["p" /* extend */])(new Comment(Object(__WEBPACK_IMPORTED_MODULE_4____["_44" /* spExtractODataId */])(d)), d);
+            return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["p" /* extend */])(new Comment(Object(__WEBPACK_IMPORTED_MODULE_4____["_48" /* spExtractODataId */])(d)), d);
         });
     };
     return Replies;
@@ -8200,7 +8204,10 @@ var ClientSidePage = /** @class */ (function (_super) {
             .replace(/"/g, "&quot;")
             .replace(/:/g, "&#58;")
             .replace(/{/g, "&#123;")
-            .replace(/}/g, "&#125;");
+            .replace(/}/g, "&#125;")
+            .replace(/\[/g, "\[")
+            .replace(/\]/g, "\]")
+            .replace(/\./g, "\.");
     };
     /**
      * Converts an escaped string from a client-side control attribute to a json object
@@ -8208,11 +8215,15 @@ var ClientSidePage = /** @class */ (function (_super) {
      * @param escapedString
      */
     ClientSidePage.escapedStringToJson = function (escapedString) {
-        return JSON.parse(escapedString
-            .replace(/&quot;/g, "\"")
-            .replace(/&#58;/g, ":")
-            .replace(/&#123;/g, "{")
-            .replace(/&#125;/g, "}"));
+        var unespace = function (escaped) {
+            var mapDict = [
+                [/&quot;/g, "\""], [/&#58;/g, ":"], [/&#123;/g, "{"], [/&#125;/g, "}"],
+                [/\\\\/g, "\\"], [/\\\?/g, "?"], [/\\\./g, "."], [/\\\[/g, "["], [/\\\]/g, "]"],
+                [/\\\(/g, "("], [/\\\)/g, ")"], [/\\\|/g, "|"], [/\\\+/g, "+"],
+            ];
+            return mapDict.reduce(function (r, m) { return r.replace(m[0], m[1]); }, escaped);
+        };
+        return JSON.parse(unespace(escapedString));
     };
     /**
      * Add a section to this page
@@ -8624,9 +8635,14 @@ var ClientSideText = /** @class */ (function (_super) {
         return html.join("");
     };
     ClientSideText.prototype.fromHtml = function (html) {
+        var _this = this;
         _super.prototype.fromHtml.call(this, html);
-        var match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>$/i.exec(html);
-        this.text = match.length > 1 ? match[1] : "";
+        this.text = "";
+        getBoundedDivMarkup(html, /<div[^>]*data-sp-rte[^>]*>/i, function (s) {
+            // now we need to grab the inner text between the divs
+            var match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>$/i.exec(s);
+            _this.text = match.length > 1 ? match[1] : "";
+        });
     };
     return ClientSideText;
 }(ClientSidePart));
@@ -8679,6 +8695,7 @@ var ClientSideWebpart = /** @class */ (function (_super) {
             id: this.webPartId,
             instanceId: this.id,
             properties: this.propertieJson,
+            serverProcessedContent: this.serverProcessedContent,
             title: this.title,
         };
         var html = [];
@@ -8700,8 +8717,8 @@ var ClientSideWebpart = /** @class */ (function (_super) {
         this.title = webPartData.title;
         this.description = webPartData.description;
         this.webPartId = webPartData.id;
-        this.canvasDataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["q" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion");
-        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["q" /* getAttrValueFromString */])(html, "data-sp-webpartdataversion");
+        this.canvasDataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["q" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion").replace(/\\\./, ".");
+        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["q" /* getAttrValueFromString */])(html, "data-sp-webpartdataversion").replace(/\\\./, ".");
         this.setProperties(webPartData.properties);
         if (typeof webPartData.serverProcessedContent !== "undefined") {
             this.serverProcessedContent = webPartData.serverProcessedContent;
@@ -9753,7 +9770,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.0");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.2");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -11690,13 +11707,13 @@ var sp = new SPRest();
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_130", function() { return util; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_123", function() { return sp; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_108", function() { return graph; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_127", function() { return storage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_96", function() { return config; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_112", function() { return log; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_122", function() { return setup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_134", function() { return util; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_127", function() { return sp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_112", function() { return graph; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_131", function() { return storage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_100", function() { return config; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_116", function() { return log; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_126", function() { return setup; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_logging__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pnp_common__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_config_store__ = __webpack_require__(7);
@@ -11793,17 +11810,21 @@ var sp = new SPRest();
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_83", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_34"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_85", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_35"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_86", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_36"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_88", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_37"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_87", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_37"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_89", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_38"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_90", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_39"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_91", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_40"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_92", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_41"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_93", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_42"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_102", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_43"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_124", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_44"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_125", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_45"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_126", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_46"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_129", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_47"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_94", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_43"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_95", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_44"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_96", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_45"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_97", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_46"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_106", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_47"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_128", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_48"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_129", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_49"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_130", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_50"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_133", function() { return __WEBPACK_IMPORTED_MODULE_6__pnp_sp__["_51"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "Q", function() { return __WEBPACK_IMPORTED_MODULE_3__pnp_graph__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "R", function() { return __WEBPACK_IMPORTED_MODULE_3__pnp_graph__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "S", function() { return __WEBPACK_IMPORTED_MODULE_3__pnp_graph__["c"]; });
@@ -11831,27 +11852,27 @@ var sp = new SPRest();
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_43", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["g"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_44", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["h"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_84", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["i"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_87", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["j"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_94", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["k"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_95", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["l"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_97", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["m"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_99", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["n"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_100", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["o"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_101", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["p"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_103", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["q"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_104", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["r"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_106", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["s"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_107", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["t"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_109", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["u"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_110", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["v"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_111", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["w"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_113", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["x"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_114", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["y"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_115", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["z"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_117", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["A"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_118", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["B"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_120", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["C"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_128", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["D"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_88", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["j"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_98", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["k"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_99", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["l"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_101", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["m"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_103", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["n"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_104", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["o"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_105", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["p"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_107", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["q"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_108", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["r"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_110", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["s"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_111", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["t"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_113", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["u"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_114", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["v"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_115", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["w"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_117", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["x"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_118", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["y"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_119", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["z"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_121", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["A"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_122", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["B"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_124", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["C"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_132", function() { return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["D"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "x", function() { return __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "P", function() { return __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_9", function() { return __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["c"]; });
@@ -11876,10 +11897,10 @@ var sp = new SPRest();
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_33", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["m"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_36", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["n"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_81", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["o"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_105", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["p"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_116", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["q"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_119", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["r"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_121", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["s"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_109", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["p"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_120", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["q"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_123", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["r"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "_125", function() { return __WEBPACK_IMPORTED_MODULE_7__pnp_odata__["s"]; });
 
 
 
@@ -11963,7 +11984,7 @@ var Def = {
 /**
  * Enables use of the import pnp from syntax
  */
-/* harmony default export */ __webpack_exports__["_98"] = (Def);
+/* harmony default export */ __webpack_exports__["_102"] = (Def);
 //# sourceMappingURL=pnpjs.js.map
 
 /***/ }),
@@ -12007,7 +12028,7 @@ module.exports = g;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(0);
 /**
 @license
- * @pnp/config-store v1.1.0 - pnp - provides a way to manage configuration within your application
+ * @pnp/config-store v1.1.2 - pnp - provides a way to manage configuration within your application
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -12255,7 +12276,7 @@ var SPListConfigurationProvider = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pnp_odata__ = __webpack_require__(3);
 /**
 @license
- * @pnp/graph v1.1.0 - pnp - provides functionality to query the Microsoft Graph
+ * @pnp/graph v1.1.2 - pnp - provides functionality to query the Microsoft Graph
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -13804,16 +13825,16 @@ var GraphBatch = /** @class */ (function (_super) {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__ = __webpack_require__(5);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "util", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_130"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "sp", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_123"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "graph", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_108"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "storage", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_127"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "config", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_96"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "log", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_112"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "setup", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_122"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spExtractODataId", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_124"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spODataEntity", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_125"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spODataEntityArray", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_126"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "util", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_134"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "sp", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_127"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "graph", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_112"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "storage", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_131"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "config", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_100"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "log", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_116"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "setup", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_126"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spExtractODataId", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_128"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spODataEntity", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_129"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "spODataEntityArray", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_130"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SharePointQueryable", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_58"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SharePointQueryableInstance", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_60"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SharePointQueryableCollection", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_59"]; });
@@ -13833,7 +13854,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Field", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["E"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Fields", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["J"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "CheckinType", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["p"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartsPersonalizationScope", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_93"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartsPersonalizationScope", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_97"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "MoveOperations", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_11"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "TemplateFileType", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_80"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "File", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["K"]; });
@@ -13867,13 +13888,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SearchSuggest", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_53"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SearchSuggestResult", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_54"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Site", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_71"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "toAbsoluteUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_129"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "extractWebUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_102"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "UtilityMethod", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_88"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartDefinitions", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_92"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartDefinition", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_91"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPart", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_90"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Web", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_89"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "UserProfileQuery", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_87"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "toAbsoluteUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_133"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "extractWebUrl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_106"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "UtilityMethod", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_89"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "View", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_90"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Views", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_92"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "ViewFields", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_91"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartDefinitions", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_96"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPartDefinition", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_95"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebPart", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_94"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Web", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_93"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "PromotedState", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_34"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "ClientSidePage", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["r"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "CanvasSection", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["o"]; });
@@ -13930,35 +13955,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Section", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_55"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Pages", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_26"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "AdalClient", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "readBlobAsText", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_118"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "readBlobAsArrayBuffer", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_117"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "readBlobAsText", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_122"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "readBlobAsArrayBuffer", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_121"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Dictionary", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["C"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "deprecatedClass", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_100"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "deprecated", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_99"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "beta", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_94"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "deprecatedClass", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_104"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "deprecated", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_103"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "beta", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_98"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "UrlException", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_84"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "RuntimeConfigImpl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_44"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_43"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_113"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "mergeOptions", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_114"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_117"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "mergeOptions", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_118"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "FetchClient", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["D"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "BearerTokenFetchClient", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["f"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "PnPClientStorageWrapper", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_30"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_29"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getCtxCallback", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_104"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "dateAdd", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_97"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "combinePaths", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_95"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getRandomString", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_107"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getGUID", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_106"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "isFunc", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_110"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "objectDefinedNotNull", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_115"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "isArray", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_109"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "extend", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_101"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "isUrlAbsolute", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_111"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "stringIsNullOrEmpty", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_128"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getAttrValueFromString", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_103"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "sanitizeGuid", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_120"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Util", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_87"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getCtxCallback", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_108"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "dateAdd", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_101"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "combinePaths", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_99"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getRandomString", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_111"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getGUID", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_110"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "isFunc", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_114"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "objectDefinedNotNull", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_119"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "isArray", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_113"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "extend", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_105"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "isUrlAbsolute", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_115"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "stringIsNullOrEmpty", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_132"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getAttrValueFromString", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_107"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "sanitizeGuid", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_124"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Util", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_88"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Logger", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_10"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "LogLevel", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_9"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "ConsoleListener", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["x"]; });
@@ -13977,18 +14002,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "JSONParser", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_5"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "BufferParser", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["h"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "LambdaParser", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_6"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "setResult", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_121"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "pipe", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_116"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "requestPipelineMethod", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_119"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "setResult", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_125"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "pipe", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_120"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "requestPipelineMethod", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_123"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "PipelineMethods", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_28"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getDefaultPipeline", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_105"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "getDefaultPipeline", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_109"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "AlreadyInBatchException", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["c"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Queryable", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_36"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "ODataQueryable", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_22"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "ODataBatch", function() { return __WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_19"]; });
 
 
-/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_98" /* default */]);
+/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__src_pnpjs__["_102" /* default */]);
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -15951,7 +15976,7 @@ var AuthenticationContext = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pnp_sp__ = __webpack_require__(4);
 /**
 @license
- * @pnp/sp-addinhelpers v1.1.0 - pnp - provides functionality for working within SharePoint add-ins
+ * @pnp/sp-addinhelpers v1.1.2 - pnp - provides functionality for working within SharePoint add-ins
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -16071,7 +16096,7 @@ var SPRestAddIn = /** @class */ (function (_super) {
      * @param hostWebUrl The absolute url of the host web
      */
     SPRestAddIn.prototype.crossDomainWeb = function (addInWebUrl, hostWebUrl) {
-        return this._cdImpl(__WEBPACK_IMPORTED_MODULE_3__pnp_sp__["_38" /* Web */], addInWebUrl, hostWebUrl, "web");
+        return this._cdImpl(__WEBPACK_IMPORTED_MODULE_3__pnp_sp__["_42" /* Web */], addInWebUrl, hostWebUrl, "web");
     };
     /**
      * Implements the creation of cross domain REST urls

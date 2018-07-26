@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/sp-addinhelpers v1.1.0 - pnp - provides functionality for working within SharePoint add-ins
+ * @pnp/sp-addinhelpers v1.1.2 - pnp - provides functionality for working within SharePoint add-ins
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -181,8 +181,8 @@ function __generator(thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -330,7 +330,7 @@ function __importDefault(mod) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_adal_angular__);
 /**
 @license
- * @pnp/common v1.1.0 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.1.2 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1403,7 +1403,7 @@ var PnPClientStorage = /** @class */ (function () {
 /* unused harmony export FunctionListener */
 /**
 @license
- * @pnp/logging v1.1.0 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.1.2 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1740,9 +1740,13 @@ var SPRequestExecutorUndefinedException = /** @class */ (function (_super) {
 /* unused harmony export SearchSuggest */
 /* unused harmony export SearchSuggestResult */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Site; });
+/* unused harmony export UserProfileQuery */
 /* unused harmony export toAbsoluteUrl */
 /* unused harmony export extractWebUrl */
 /* unused harmony export UtilityMethod */
+/* unused harmony export View */
+/* unused harmony export Views */
+/* unused harmony export ViewFields */
 /* unused harmony export WebPartDefinitions */
 /* unused harmony export WebPartDefinition */
 /* unused harmony export WebPart */
@@ -1791,7 +1795,7 @@ var SPRequestExecutorUndefinedException = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4____ = __webpack_require__(5);
 /**
 @license
- * @pnp/sp v1.1.0 - pnp - provides a fluent api for working with SharePoint REST
+ * @pnp/sp v1.1.2 - pnp - provides a fluent api for working with SharePoint REST
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2068,11 +2072,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.0");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.2");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.0");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.2");
         }
         opts = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["h" /* extend */])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -7473,7 +7477,10 @@ var ClientSidePage = /** @class */ (function (_super) {
             .replace(/"/g, "&quot;")
             .replace(/:/g, "&#58;")
             .replace(/{/g, "&#123;")
-            .replace(/}/g, "&#125;");
+            .replace(/}/g, "&#125;")
+            .replace(/\[/g, "\[")
+            .replace(/\]/g, "\]")
+            .replace(/\./g, "\.");
     };
     /**
      * Converts an escaped string from a client-side control attribute to a json object
@@ -7481,11 +7488,15 @@ var ClientSidePage = /** @class */ (function (_super) {
      * @param escapedString
      */
     ClientSidePage.escapedStringToJson = function (escapedString) {
-        return JSON.parse(escapedString
-            .replace(/&quot;/g, "\"")
-            .replace(/&#58;/g, ":")
-            .replace(/&#123;/g, "{")
-            .replace(/&#125;/g, "}"));
+        var unespace = function (escaped) {
+            var mapDict = [
+                [/&quot;/g, "\""], [/&#58;/g, ":"], [/&#123;/g, "{"], [/&#125;/g, "}"],
+                [/\\\\/g, "\\"], [/\\\?/g, "?"], [/\\\./g, "."], [/\\\[/g, "["], [/\\\]/g, "]"],
+                [/\\\(/g, "("], [/\\\)/g, ")"], [/\\\|/g, "|"], [/\\\+/g, "+"],
+            ];
+            return mapDict.reduce(function (r, m) { return r.replace(m[0], m[1]); }, escaped);
+        };
+        return JSON.parse(unespace(escapedString));
     };
     /**
      * Add a section to this page
@@ -7897,9 +7908,14 @@ var ClientSideText = /** @class */ (function (_super) {
         return html.join("");
     };
     ClientSideText.prototype.fromHtml = function (html) {
+        var _this = this;
         _super.prototype.fromHtml.call(this, html);
-        var match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>$/i.exec(html);
-        this.text = match.length > 1 ? match[1] : "";
+        this.text = "";
+        getBoundedDivMarkup(html, /<div[^>]*data-sp-rte[^>]*>/i, function (s) {
+            // now we need to grab the inner text between the divs
+            var match = /<div[^>]*data-sp-rte[^>]*>(.*?)<\/div>$/i.exec(s);
+            _this.text = match.length > 1 ? match[1] : "";
+        });
     };
     return ClientSideText;
 }(ClientSidePart));
@@ -7952,6 +7968,7 @@ var ClientSideWebpart = /** @class */ (function (_super) {
             id: this.webPartId,
             instanceId: this.id,
             properties: this.propertieJson,
+            serverProcessedContent: this.serverProcessedContent,
             title: this.title,
         };
         var html = [];
@@ -7973,8 +7990,8 @@ var ClientSideWebpart = /** @class */ (function (_super) {
         this.title = webPartData.title;
         this.description = webPartData.description;
         this.webPartId = webPartData.id;
-        this.canvasDataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["i" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion");
-        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["i" /* getAttrValueFromString */])(html, "data-sp-webpartdataversion");
+        this.canvasDataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["i" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion").replace(/\\\./, ".");
+        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["i" /* getAttrValueFromString */])(html, "data-sp-webpartdataversion").replace(/\\\./, ".");
         this.setProperties(webPartData.properties);
         if (typeof webPartData.serverProcessedContent !== "undefined") {
             this.serverProcessedContent = webPartData.serverProcessedContent;
@@ -9026,7 +9043,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.0");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.2");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -13108,7 +13125,7 @@ var sp = new SPRestAddIn();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(2);
 /**
 @license
- * @pnp/odata v1.1.0 - pnp - provides shared odata functionality and base classes
+ * @pnp/odata v1.1.2 - pnp - provides shared odata functionality and base classes
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/

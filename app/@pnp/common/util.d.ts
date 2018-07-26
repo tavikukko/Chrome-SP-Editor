@@ -8,6 +8,7 @@ import { TypedHash } from "./collections";
  * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
  */
 export declare function getCtxCallback(context: any, method: Function, ...params: any[]): Function;
+export declare type DateAddInterval = "year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second";
 /**
  * Adds a value to a date
  *
@@ -17,7 +18,7 @@ export declare function getCtxCallback(context: any, method: Function, ...params
  *
  * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
  */
-export declare function dateAdd(date: Date, interval: string, units: number): Date | undefined;
+export declare function dateAdd(date: Date, interval: DateAddInterval, units: number): Date | undefined;
 /**
  * Combines an arbitrary set of paths ensuring and normalizes the slashes
  *

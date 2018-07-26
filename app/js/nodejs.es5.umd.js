@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/nodejs v1.1.0 - pnp - provides functionality enabling the @pnp libraries within nodejs
+ * @pnp/nodejs v1.1.2 - pnp - provides functionality enabling the @pnp libraries within nodejs
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -27,15 +27,24 @@
 
     var nodeFetch = require("node-fetch").default;
     var u = require("url");
+    (function (SPOAuthEnv) {
+        SPOAuthEnv[SPOAuthEnv["SPO"] = 0] = "SPO";
+        SPOAuthEnv[SPOAuthEnv["China"] = 1] = "China";
+        SPOAuthEnv[SPOAuthEnv["Germany"] = 2] = "Germany";
+        SPOAuthEnv[SPOAuthEnv["USDef"] = 3] = "USDef";
+        SPOAuthEnv[SPOAuthEnv["USGov"] = 4] = "USGov";
+    })(exports.SPOAuthEnv || (exports.SPOAuthEnv = {}));
     /**
      * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions
      */
     var SPFetchClient = /** @class */ (function () {
-        function SPFetchClient(siteUrl, _clientId, _clientSecret, _realm) {
+        function SPFetchClient(siteUrl, _clientId, _clientSecret, authEnv, _realm) {
+            if (authEnv === void 0) { authEnv = exports.SPOAuthEnv.SPO; }
             if (_realm === void 0) { _realm = ""; }
             this.siteUrl = siteUrl;
             this._clientId = _clientId;
             this._clientSecret = _clientSecret;
+            this.authEnv = authEnv;
             this._realm = _realm;
             this.token = null;
             // here we set the globals for page context info to help when building absolute urls
@@ -86,13 +95,23 @@
                 }
             });
         };
+        SPFetchClient.prototype.getAuthHostUrl = function (env) {
+            switch (env) {
+                case exports.SPOAuthEnv.China:
+                    return "accounts.accesscontrol.chinacloudapi.cn";
+                case exports.SPOAuthEnv.Germany:
+                    return "login.microsoftonline.de";
+                default:
+                    return "accounts.accesscontrol.windows.net";
+            }
+        };
         SPFetchClient.prototype.getRealm = function () {
             var _this = this;
             return new Promise(function (resolve) {
                 if (_this._realm.length > 0) {
                     resolve(_this._realm);
                 }
-                var url = common.combinePaths(_this.siteUrl, "vti_bin/client.svc");
+                var url = common.combinePaths(_this.siteUrl, "_vti_bin/client.svc");
                 nodeFetch(url, {
                     "headers": {
                         "Authorization": "Bearer ",
@@ -107,7 +126,7 @@
             });
         };
         SPFetchClient.prototype.getAuthUrl = function (realm) {
-            var url = "https://accounts.accesscontrol.windows.net/metadata/json/1?realm=" + realm;
+            var url = "https://" + this.getAuthHostUrl(this.authEnv) + "/metadata/json/1?realm=" + realm;
             return nodeFetch(url).then(function (r) { return r.json(); }).then(function (json) {
                 var eps = json.endpoints.filter(function (ep) { return ep.protocol === "OAuth2"; });
                 if (eps.length > 0) {

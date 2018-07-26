@@ -91,7 +91,7 @@ export declare class TermSet extends ClientSvcQueryable implements ITermSet {
      *
      * @param name Name for the term
      * @param lcid Language code
-     * @param isAvailableForTagging set tagging availability (default: false)
+     * @param isAvailableForTagging set tagging availability (default: true)
      * @param id GUID id for the term (optional)
      */
     addTerm(name: string, lcid: number, isAvailableForTagging?: boolean, id?: string): Promise<ITerm & ITermData>;
