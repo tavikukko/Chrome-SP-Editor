@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/sp-taxonomy v1.1.3 - pnp - Provides a fluent API to work with SharePoint taxonomy
+ * @pnp/sp-taxonomy v1.1.4 - pnp - Provides a fluent API to work with SharePoint taxonomy
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -122,9 +122,12 @@ and limitations under the License.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
 
 function __extends(d, b) {
     extendStatics(d, b);
@@ -132,12 +135,15 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
-var __assign = Object.assign || function __assign(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
     }
-    return t;
+    return __assign.apply(this, arguments);
 }
 
 function __rest(s, e) {
@@ -330,7 +336,7 @@ function __importDefault(mod) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_adal_angular__);
 /**
 @license
- * @pnp/common v1.1.3 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.1.4 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1426,7 +1432,7 @@ var PnPClientStorage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pnp_logging__ = __webpack_require__(3);
 /**
 @license
- * @pnp/sp-clientsvc v1.1.3 - pnp - Provides core functionality to interact with the legacy client.svc SharePoint endpoint
+ * @pnp/sp-clientsvc v1.1.4 - pnp - Provides core functionality to interact with the legacy client.svc SharePoint endpoint
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2474,7 +2480,7 @@ var ProcessQueryCachingParserWrapper = /** @class */ (function (_super) {
 /* unused harmony export FunctionListener */
 /**
 @license
- * @pnp/logging v1.1.3 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.1.4 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2964,14 +2970,14 @@ var TermSet = /** @class */ (function (_super) {
 /* unused harmony export FieldUserSelectionMode */
 /* unused harmony export ChoiceFieldFormatType */
 /* unused harmony export UrlZone */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pnp_common__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_common__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_tslib__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pnp_odata__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4____ = __webpack_require__(5);
 /**
 @license
- * @pnp/sp v1.1.3 - pnp - provides a fluent api for working with SharePoint REST
+ * @pnp/sp v1.1.4 - pnp - provides a fluent api for working with SharePoint REST
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2984,26 +2990,48 @@ var TermSet = /** @class */ (function (_super) {
 
 
 
-function spExtractODataId$1(candidate) {
-    if (candidate.hasOwnProperty("odata.id")) {
-        return candidate["odata.id"];
+function extractWebUrl(candidateUrl) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["r" /* stringIsNullOrEmpty */])(candidateUrl)) {
+        return "";
     }
-    else if (candidate.hasOwnProperty("__metadata") && candidate.__metadata.hasOwnProperty("id")) {
-        return candidate.__metadata.id;
+    var index = candidateUrl.indexOf("_api/");
+    if (index < 0) {
+        index = candidateUrl.indexOf("_vti_bin/");
+    }
+    if (index > -1) {
+        return candidateUrl.substr(0, index);
+    }
+    // if all else fails just give them what they gave us back
+    return candidateUrl;
+}
+
+function spExtractODataId$1(candidate) {
+    if (candidate.hasOwnProperty("odata.metadata") && candidate.hasOwnProperty("odata.editLink")) {
+        // we are dealign with minimal metadata (default)
+        return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(extractWebUrl(candidate["odata.metadata"]), "_api", candidate["odata.editLink"]);
+    }
+    else if (candidate.hasOwnProperty("odata.editLink")) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])("_api", candidate["odata.editLink"]);
+    }
+    else if (candidate.hasOwnProperty("__metadata")) {
+        // we are dealing with verbose, which has an absolute uri
+        return candidate.__metadata.uri;
     }
     else {
+        // we are likely dealing with nometadata, so don't error but we won't be able to
+        // chain off these objects
         __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
         return "";
     }
 }
 var SPODataEntityParserImpl = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SPODataEntityParserImpl, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SPODataEntityParserImpl, _super);
     function SPODataEntityParserImpl(factory) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
         _this.hydrate = function (d) {
             var o = new _this.factory(spExtractODataId$1(d), null);
-            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(o, d);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(o, d);
         };
         return _this;
     }
@@ -3011,20 +3039,20 @@ var SPODataEntityParserImpl = /** @class */ (function (_super) {
         var _this = this;
         return _super.prototype.parse.call(this, r).then(function (d) {
             var o = new _this.factory(spExtractODataId$1(d), null);
-            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(o, d);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(o, d);
         });
     };
     return SPODataEntityParserImpl;
 }(__WEBPACK_IMPORTED_MODULE_3__pnp_odata__["i" /* ODataParserBase */]));
 var SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SPODataEntityArrayParserImpl, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SPODataEntityArrayParserImpl, _super);
     function SPODataEntityArrayParserImpl(factory) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
         _this.hydrate = function (d) {
             return d.map(function (v) {
                 var o = new _this.factory(spExtractODataId$1(v), null);
-                return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(o, v);
+                return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(o, v);
             });
         };
         return _this;
@@ -3034,7 +3062,7 @@ var SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
         return _super.prototype.parse.call(this, r).then(function (d) {
             return d.map(function (v) {
                 var o = new _this.factory(spExtractODataId$1(v), null);
-                return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(o, v);
+                return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(o, v);
             });
         });
     };
@@ -3048,14 +3076,14 @@ function spODataEntityArray(factory) {
 }
 
 function setup(config) {
-    __WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].extend(config);
+    __WEBPACK_IMPORTED_MODULE_0__pnp_common__["d" /* RuntimeConfig */].extend(config);
 }
 var SPRuntimeConfigImpl = /** @class */ (function () {
     function SPRuntimeConfigImpl() {
     }
     Object.defineProperty(SPRuntimeConfigImpl.prototype, "headers", {
         get: function () {
-            var spPart = __WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].get("sp");
+            var spPart = __WEBPACK_IMPORTED_MODULE_0__pnp_common__["d" /* RuntimeConfig */].get("sp");
             if (spPart !== null && typeof spPart !== "undefined" && typeof spPart.headers !== "undefined") {
                 return spPart.headers;
             }
@@ -3066,12 +3094,12 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
     });
     Object.defineProperty(SPRuntimeConfigImpl.prototype, "baseUrl", {
         get: function () {
-            var spPart = __WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].get("sp");
+            var spPart = __WEBPACK_IMPORTED_MODULE_0__pnp_common__["d" /* RuntimeConfig */].get("sp");
             if (spPart !== null && typeof spPart.baseUrl !== "undefined") {
                 return spPart.baseUrl;
             }
-            if (__WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].spfxContext !== null) {
-                return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].spfxContext.pageContext.web.absoluteUrl;
+            if (__WEBPACK_IMPORTED_MODULE_0__pnp_common__["d" /* RuntimeConfig */].spfxContext !== null) {
+                return __WEBPACK_IMPORTED_MODULE_0__pnp_common__["d" /* RuntimeConfig */].spfxContext.pageContext.web.absoluteUrl;
             }
             return null;
         },
@@ -3080,13 +3108,13 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
     });
     Object.defineProperty(SPRuntimeConfigImpl.prototype, "fetchClientFactory", {
         get: function () {
-            var spPart = __WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].get("sp");
+            var spPart = __WEBPACK_IMPORTED_MODULE_0__pnp_common__["d" /* RuntimeConfig */].get("sp");
             // use a configured factory firt
             if (spPart !== null && typeof spPart.fetchClientFactory !== "undefined") {
                 return spPart.fetchClientFactory;
             }
             else {
-                return function () { return new __WEBPACK_IMPORTED_MODULE_1__pnp_common__["b" /* FetchClient */](); };
+                return function () { return new __WEBPACK_IMPORTED_MODULE_0__pnp_common__["b" /* FetchClient */](); };
             }
         },
         enumerable: true,
@@ -3102,7 +3130,7 @@ var CachedDigest = /** @class */ (function () {
     return CachedDigest;
 }());
 // allows for the caching of digests across all HttpClient's which each have their own DigestCache wrapper.
-var digests = new __WEBPACK_IMPORTED_MODULE_1__pnp_common__["a" /* Dictionary */]();
+var digests = new __WEBPACK_IMPORTED_MODULE_0__pnp_common__["a" /* Dictionary */]();
 var DigestCache = /** @class */ (function () {
     function DigestCache(_httpClient, _digests) {
         if (_digests === void 0) { _digests = digests; }
@@ -3118,7 +3146,7 @@ var DigestCache = /** @class */ (function () {
                 return Promise.resolve(cachedDigest.value);
             }
         }
-        var url = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(webUrl, "/_api/contextinfo");
+        var url = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(webUrl, "/_api/contextinfo");
         var headers = {
             "Accept": "application/json;odata=verbose",
             "Content-Type": "application/json;odata=verbose;charset=utf-8",
@@ -3126,7 +3154,7 @@ var DigestCache = /** @class */ (function () {
         return this._httpClient.fetchRaw(url, {
             cache: "no-cache",
             credentials: "same-origin",
-            headers: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(headers, SPRuntimeConfig.headers, true),
+            headers: Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(headers, SPRuntimeConfig.headers, true),
             method: "POST",
         }).then(function (response) {
             var parser = new __WEBPACK_IMPORTED_MODULE_3__pnp_odata__["h" /* ODataDefaultParser */]();
@@ -3148,21 +3176,6 @@ var DigestCache = /** @class */ (function () {
     return DigestCache;
 }());
 
-function extractWebUrl(candidateUrl) {
-    if (candidateUrl === null) {
-        return "";
-    }
-    var index = candidateUrl.indexOf("_api/");
-    if (index < 0) {
-        index = candidateUrl.indexOf("_vti_bin/");
-    }
-    if (index > -1) {
-        return candidateUrl.substr(0, index);
-    }
-    // if all else fails just give them what they gave us back
-    return candidateUrl;
-}
-
 var SPHttpClient = /** @class */ (function () {
     function SPHttpClient() {
         this._impl = SPRuntimeConfig.fetchClientFactory();
@@ -3171,12 +3184,12 @@ var SPHttpClient = /** @class */ (function () {
     SPHttpClient.prototype.fetch = function (url, options) {
         var _this = this;
         if (options === void 0) { options = {}; }
-        var opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { cache: "no-cache", credentials: "same-origin" }, true);
+        var opts = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(options, { cache: "no-cache", credentials: "same-origin" }, true);
         var headers = new Headers();
         // first we add the global headers so they can be overwritten by any passed in locally to this call
-        Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["m" /* mergeHeaders */])(headers, SPRuntimeConfig.headers);
+        Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["m" /* mergeHeaders */])(headers, SPRuntimeConfig.headers);
         // second we add the local options so we can overwrite the globals
-        Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["m" /* mergeHeaders */])(headers, options.headers);
+        Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["m" /* mergeHeaders */])(headers, options.headers);
         // lastly we apply any default headers we need that may not exist
         if (!headers.has("Accept")) {
             headers.append("Accept", "application/json");
@@ -3185,13 +3198,13 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.3");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.4");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.3");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.4");
         }
-        opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(opts, { headers: headers });
+        opts = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
             // if we have either a request digest or an authorization header we don't need a digest
             if (!headers.has("X-RequestDigest") && !headers.has("Authorization")) {
@@ -3209,8 +3222,8 @@ var SPHttpClient = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         // here we need to normalize the headers
         var rawHeaders = new Headers();
-        Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["m" /* mergeHeaders */])(rawHeaders, options.headers);
-        options = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { headers: rawHeaders });
+        Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["m" /* mergeHeaders */])(rawHeaders, options.headers);
+        options = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(options, { headers: rawHeaders });
         var retry = function (ctx) {
             _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
                 // Check if request was throttled - http status code 429
@@ -3228,7 +3241,7 @@ var SPHttpClient = /** @class */ (function () {
                     ctx.reject(response);
                 }
                 // Set our retry timeout for {delay} milliseconds.
-                setTimeout(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["i" /* getCtxCallback */])(_this, retry, ctx), delay);
+                setTimeout(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["i" /* getCtxCallback */])(_this, retry, ctx), delay);
             });
         };
         return new Promise(function (resolve, reject) {
@@ -3244,22 +3257,22 @@ var SPHttpClient = /** @class */ (function () {
     };
     SPHttpClient.prototype.get = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { method: "GET" });
+        var opts = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(options, { method: "GET" });
         return this.fetch(url, opts);
     };
     SPHttpClient.prototype.post = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { method: "POST" });
+        var opts = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(options, { method: "POST" });
         return this.fetch(url, opts);
     };
     SPHttpClient.prototype.patch = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { method: "PATCH" });
+        var opts = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(options, { method: "PATCH" });
         return this.fetch(url, opts);
     };
     SPHttpClient.prototype.delete = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { method: "DELETE" });
+        var opts = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(options, { method: "DELETE" });
         return this.fetch(url, opts);
     };
     return SPHttpClient;
@@ -3273,21 +3286,21 @@ var SPHttpClient = /** @class */ (function () {
  */
 function toAbsoluteUrl(candidateUrl) {
     return new Promise(function (resolve) {
-        if (Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["l" /* isUrlAbsolute */])(candidateUrl)) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["l" /* isUrlAbsolute */])(candidateUrl)) {
             // if we are already absolute, then just return the url
             return resolve(candidateUrl);
         }
         if (SPRuntimeConfig.baseUrl !== null) {
             // base url specified either with baseUrl of spfxContext config property
-            return resolve(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(SPRuntimeConfig.baseUrl, candidateUrl));
+            return resolve(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(SPRuntimeConfig.baseUrl, candidateUrl));
         }
         if (typeof global._spPageContextInfo !== "undefined") {
             // operating in classic pages
             if (global._spPageContextInfo.hasOwnProperty("webAbsoluteUrl")) {
-                return resolve(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(global._spPageContextInfo.webAbsoluteUrl, candidateUrl));
+                return resolve(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(global._spPageContextInfo.webAbsoluteUrl, candidateUrl));
             }
             else if (global._spPageContextInfo.hasOwnProperty("webServerRelativeUrl")) {
-                return resolve(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(global._spPageContextInfo.webServerRelativeUrl, candidateUrl));
+                return resolve(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(global._spPageContextInfo.webServerRelativeUrl, candidateUrl));
             }
         }
         // does window.location exist and have a certain path part in it?
@@ -3296,7 +3309,7 @@ function toAbsoluteUrl(candidateUrl) {
             ["/_layouts/", "/siteassets/"].forEach(function (s) {
                 var index = baseUrl_1.indexOf(s);
                 if (index > 0) {
-                    return resolve(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(baseUrl_1.substr(0, index), candidateUrl));
+                    return resolve(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(baseUrl_1.substr(0, index), candidateUrl));
                 }
             });
         }
@@ -3309,7 +3322,7 @@ function toAbsoluteUrl(candidateUrl) {
  *
  */
 var SharePointQueryable = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SharePointQueryable, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SharePointQueryable, _super);
     /**
      * Creates a new instance of the SharePointQueryable class
      *
@@ -3322,22 +3335,22 @@ var SharePointQueryable = /** @class */ (function (_super) {
         if (typeof baseUrl === "string") {
             // we need to do some extra parsing to get the parent url correct if we are
             // being created from just a string.
-            if (Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["l" /* isUrlAbsolute */])(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
+            if (Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["l" /* isUrlAbsolute */])(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
                 _this._parentUrl = baseUrl;
-                _this._url = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(baseUrl, path);
+                _this._url = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(baseUrl, path);
             }
             else if (baseUrl.lastIndexOf("/") > baseUrl.lastIndexOf("(")) {
                 // .../items(19)/fields
                 var index = baseUrl.lastIndexOf("/");
                 _this._parentUrl = baseUrl.slice(0, index);
-                path = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(baseUrl.slice(index), path);
-                _this._url = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(_this._parentUrl, path);
+                path = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(baseUrl.slice(index), path);
+                _this._url = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(_this._parentUrl, path);
             }
             else {
                 // .../items(19)
                 var index = baseUrl.lastIndexOf("(");
                 _this._parentUrl = baseUrl.slice(0, index);
-                _this._url = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(baseUrl, path);
+                _this._url = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(baseUrl, path);
             }
         }
         else {
@@ -3356,14 +3369,14 @@ var SharePointQueryable = /** @class */ (function (_super) {
      */
     SharePointQueryable.prototype.as = function (factory) {
         var o = new factory(this._url, null);
-        return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(o, this, true);
+        return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(o, this, true);
     };
     /**
      * Gets the full url with query information
      *
      */
     SharePointQueryable.prototype.toUrlAndQuery = function () {
-        var aliasedParams = new __WEBPACK_IMPORTED_MODULE_1__pnp_common__["a" /* Dictionary */]();
+        var aliasedParams = new __WEBPACK_IMPORTED_MODULE_0__pnp_common__["a" /* Dictionary */]();
         var url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, function (match, labelName, value) {
             __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("Rewriting aliased parameter from match " + match + " to label: " + labelName + " value: " + value, 0 /* Verbose */);
             aliasedParams.add(labelName, "'" + value + "'");
@@ -3426,7 +3439,7 @@ var SharePointQueryable = /** @class */ (function (_super) {
         if (options === void 0) { options = {}; }
         var dependencyDispose = this.hasBatch ? this.addBatchDependency() : function () { return; };
         return toAbsoluteUrl(this.toUrlAndQuery()).then(function (url) {
-            Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["n" /* mergeOptions */])(options, _this._options);
+            Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["n" /* mergeOptions */])(options, _this._options);
             // build our request context
             var context = {
                 batch: _this.batch,
@@ -3439,7 +3452,7 @@ var SharePointQueryable = /** @class */ (function (_super) {
                 parser: parser,
                 pipeline: pipeline,
                 requestAbsoluteUrl: url,
-                requestId: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["j" /* getGUID */])(),
+                requestId: Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["j" /* getGUID */])(),
                 verb: verb,
             };
             return context;
@@ -3452,7 +3465,7 @@ var SharePointQueryable = /** @class */ (function (_super) {
  *
  */
 var SharePointQueryableCollection = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SharePointQueryableCollection, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SharePointQueryableCollection, _super);
     function SharePointQueryableCollection() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3534,7 +3547,7 @@ var SharePointQueryableCollection = /** @class */ (function (_super) {
  *
  */
 var SharePointQueryableInstance = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SharePointQueryableInstance, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SharePointQueryableInstance, _super);
     function SharePointQueryableInstance() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3576,7 +3589,7 @@ var SharePointQueryableInstance = /** @class */ (function (_super) {
  *
  */
 var SiteUsers = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SiteUsers, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SiteUsers, _super);
     /**
      * Creates a new instance of the SiteUsers class
      *
@@ -3650,7 +3663,7 @@ var SiteUsers = /** @class */ (function (_super) {
  *
  */
 var SiteUser = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SiteUser, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SiteUser, _super);
     function SiteUser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3672,7 +3685,7 @@ var SiteUser = /** @class */ (function (_super) {
     */
     SiteUser.prototype.update = function (properties) {
         var _this = this;
-        var postBody = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.User" } }, properties);
+        var postBody = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.User" } }, properties);
         return this.postCore({
             body: JSON.stringify(postBody),
             headers: {
@@ -3702,7 +3715,7 @@ var SiteUser = /** @class */ (function (_super) {
  * Represents the current user
  */
 var CurrentUser = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(CurrentUser, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(CurrentUser, _super);
     function CurrentUser(baseUrl, path) {
         if (path === void 0) { path = "currentuser"; }
         return _super.call(this, baseUrl, path) || this;
@@ -3728,7 +3741,7 @@ var PrincipalType;
  *
  */
 var SiteGroups = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SiteGroups, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SiteGroups, _super);
     /**
      * Creates a new instance of the SiteGroups class
      *
@@ -3745,7 +3758,7 @@ var SiteGroups = /** @class */ (function (_super) {
      */
     SiteGroups.prototype.add = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.Group" } }, properties));
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.Group" } }, properties));
         return this.postCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
@@ -3794,7 +3807,7 @@ var SiteGroups = /** @class */ (function (_super) {
  *
  */
 var SiteGroup = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SiteGroup, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SiteGroup, _super);
     function SiteGroup() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3817,7 +3830,7 @@ var SiteGroup = /** @class */ (function (_super) {
     /* tslint:disable no-string-literal */
     SiteGroup.prototype.update = function (properties) {
         var _this = this;
-        var postBody = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.Group" } }, properties);
+        var postBody = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.Group" } }, properties);
         return this.postCore({
             body: JSON.stringify(postBody),
             headers: {
@@ -3842,7 +3855,7 @@ var SiteGroup = /** @class */ (function (_super) {
  *
  */
 var RoleAssignments = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(RoleAssignments, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(RoleAssignments, _super);
     /**
      * Creates a new instance of the RoleAssignments class
      *
@@ -3889,7 +3902,7 @@ var RoleAssignments = /** @class */ (function (_super) {
  *
  */
 var RoleAssignment = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(RoleAssignment, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(RoleAssignment, _super);
     function RoleAssignment() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3933,7 +3946,7 @@ var RoleAssignment = /** @class */ (function (_super) {
  *
  */
 var RoleDefinitions = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(RoleDefinitions, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(RoleDefinitions, _super);
     /**
      * Creates a new instance of the RoleDefinitions class
      *
@@ -3983,7 +3996,7 @@ var RoleDefinitions = /** @class */ (function (_super) {
     RoleDefinitions.prototype.add = function (name, description, order, basePermissions) {
         var _this = this;
         var postBody = JSON.stringify({
-            BasePermissions: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
+            BasePermissions: Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
             Description: description,
             Name: name,
             Order: order,
@@ -4003,7 +4016,7 @@ var RoleDefinitions = /** @class */ (function (_super) {
  *
  */
 var RoleDefinition = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(RoleDefinition, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(RoleDefinition, _super);
     function RoleDefinition() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4016,9 +4029,9 @@ var RoleDefinition = /** @class */ (function (_super) {
     RoleDefinition.prototype.update = function (properties) {
         var _this = this;
         if (typeof properties.hasOwnProperty("BasePermissions") !== "undefined") {
-            properties["BasePermissions"] = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ __metadata: { type: "SP.BasePermissions" } }, properties["BasePermissions"]);
+            properties["BasePermissions"] = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ __metadata: { type: "SP.BasePermissions" } }, properties["BasePermissions"]);
         }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.RoleDefinition" },
         }, properties));
         return this.postCore({
@@ -4057,7 +4070,7 @@ var RoleDefinition = /** @class */ (function (_super) {
  *
  */
 var RoleDefinitionBindings = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(RoleDefinitionBindings, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(RoleDefinitionBindings, _super);
     /**
      * Creates a new instance of the RoleDefinitionBindings class
      *
@@ -4594,7 +4607,7 @@ var UrlZone;
 })(UrlZone || (UrlZone = {}));
 
 var SharePointQueryableSecurable = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SharePointQueryableSecurable, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SharePointQueryableSecurable, _super);
     function SharePointQueryableSecurable() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4718,7 +4731,7 @@ var SharePointQueryableSecurable = /** @class */ (function (_super) {
  * Internal helper class used to augment classes to include sharing functionality
  */
 var SharePointQueryableShareable = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SharePointQueryableShareable, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SharePointQueryableShareable, _super);
     function SharePointQueryableShareable() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4780,7 +4793,7 @@ var SharePointQueryableShareable = /** @class */ (function (_super) {
                 useSimplifiedRoles: true,
             };
             if (typeof emailData !== "undefined") {
-                postBody = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(postBody, {
+                postBody = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(postBody, {
                     emailBody: emailData.body,
                     emailSubject: typeof emailData.subject !== "undefined" ? emailData.subject : "",
                     sendEmail: true,
@@ -4805,7 +4818,7 @@ var SharePointQueryableShareable = /** @class */ (function (_super) {
             return this.sendShareObjectRequest(options);
         }
         // extend our options with some defaults
-        options = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, {
+        options = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(options, {
             group: null,
             includeAnonymousLinkInEmail: false,
             propagateAcl: false,
@@ -4823,7 +4836,7 @@ var SharePointQueryableShareable = /** @class */ (function (_super) {
                 url: options.url,
             };
             if (typeof options.emailData !== "undefined" && options.emailData !== null) {
-                postBody = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(postBody, {
+                postBody = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(postBody, {
                     emailBody: options.emailData.body,
                     emailSubject: typeof options.emailData.subject !== "undefined" ? options.emailData.subject : "Shared with you.",
                     sendEmail: true,
@@ -4958,7 +4971,7 @@ var SharePointQueryableShareable = /** @class */ (function (_super) {
     return SharePointQueryableShareable;
 }(SharePointQueryable));
 var SharePointQueryableShareableWeb = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SharePointQueryableShareableWeb, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SharePointQueryableShareableWeb, _super);
     function SharePointQueryableShareableWeb() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4976,7 +4989,7 @@ var SharePointQueryableShareableWeb = /** @class */ (function (_super) {
         var web = new SharePointQueryableInstance(extractWebUrl(this.toUrl()), "/_api/web/url");
         return web.get().then(function (url) {
             dependency();
-            return _this.shareObject(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(url, "/_layouts/15/aclinv.aspx?forSharing=1&mbypass=1"), loginNames, role, emailData);
+            return _this.shareObject(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(url, "/_layouts/15/aclinv.aspx?forSharing=1&mbypass=1"), loginNames, role, emailData);
         });
     };
     /**
@@ -5025,7 +5038,7 @@ var SharePointQueryableShareableWeb = /** @class */ (function (_super) {
     return SharePointQueryableShareableWeb;
 }(SharePointQueryableSecurable));
 var SharePointQueryableShareableItem = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SharePointQueryableShareableItem, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SharePointQueryableShareableItem, _super);
     function SharePointQueryableShareableItem() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5104,7 +5117,7 @@ var SharePointQueryableShareableItem = /** @class */ (function (_super) {
     return SharePointQueryableShareableItem;
 }(SharePointQueryableSecurable));
 var FileFolderShared = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(FileFolderShared, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(FileFolderShared, _super);
     function FileFolderShared() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5214,7 +5227,7 @@ var FileFolderShared = /** @class */ (function (_super) {
     return FileFolderShared;
 }(SharePointQueryableInstance));
 var SharePointQueryableShareableFile = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SharePointQueryableShareableFile, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SharePointQueryableShareableFile, _super);
     function SharePointQueryableShareableFile() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5239,7 +5252,7 @@ var SharePointQueryableShareableFile = /** @class */ (function (_super) {
     return SharePointQueryableShareableFile;
 }(FileFolderShared));
 var SharePointQueryableShareableFolder = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SharePointQueryableShareableFolder, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SharePointQueryableShareableFolder, _super);
     function SharePointQueryableShareableFolder() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5266,7 +5279,7 @@ var SharePointQueryableShareableFolder = /** @class */ (function (_super) {
 }(FileFolderShared));
 
 var SPBatchParseException = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SPBatchParseException, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SPBatchParseException, _super);
     function SPBatchParseException(msg) {
         var _this = _super.call(this, msg) || this;
         _this.name = "BatchParseException";
@@ -5276,7 +5289,7 @@ var SPBatchParseException = /** @class */ (function (_super) {
     return SPBatchParseException;
 }(Error));
 var MaxCommentLengthException = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(MaxCommentLengthException, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(MaxCommentLengthException, _super);
     function MaxCommentLengthException(msg) {
         if (msg === void 0) { msg = "The maximum comment length is 1023 characters."; }
         var _this = _super.call(this, msg) || this;
@@ -5287,7 +5300,7 @@ var MaxCommentLengthException = /** @class */ (function (_super) {
     return MaxCommentLengthException;
 }(Error));
 var NotSupportedInBatchException = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(NotSupportedInBatchException, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(NotSupportedInBatchException, _super);
     function NotSupportedInBatchException(operation) {
         if (operation === void 0) { operation = "This operation"; }
         var _this = _super.call(this, operation + " is not supported as part of a batch.") || this;
@@ -5299,7 +5312,7 @@ var NotSupportedInBatchException = /** @class */ (function (_super) {
 }(Error));
 
 var LimitedWebPartManager = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(LimitedWebPartManager, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(LimitedWebPartManager, _super);
     function LimitedWebPartManager() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5337,7 +5350,7 @@ var LimitedWebPartManager = /** @class */ (function (_super) {
     return LimitedWebPartManager;
 }(SharePointQueryable));
 var WebPartDefinitions = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(WebPartDefinitions, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(WebPartDefinitions, _super);
     function WebPartDefinitions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5360,7 +5373,7 @@ var WebPartDefinitions = /** @class */ (function (_super) {
     return WebPartDefinitions;
 }(SharePointQueryableCollection));
 var WebPartDefinition = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(WebPartDefinition, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(WebPartDefinition, _super);
     function WebPartDefinition() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5410,7 +5423,7 @@ var WebPartDefinition = /** @class */ (function (_super) {
     return WebPartDefinition;
 }(SharePointQueryableInstance));
 var WebPart = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(WebPart, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(WebPart, _super);
     /**
      * Creates a new instance of the WebPart class
      *
@@ -5429,7 +5442,7 @@ var WebPart = /** @class */ (function (_super) {
  *
  */
 var Folders = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Folders, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Folders, _super);
     /**
      * Creates a new instance of the Folders class
      *
@@ -5470,7 +5483,7 @@ var Folders = /** @class */ (function (_super) {
  *
  */
 var Folder = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Folder, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Folder, _super);
     function Folder() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5564,7 +5577,7 @@ var Folder = /** @class */ (function (_super) {
     });
     Folder.prototype.update = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.Folder" },
         }, properties));
         return this.postCore({
@@ -5609,7 +5622,7 @@ var Folder = /** @class */ (function (_super) {
         }
         var q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then(function (d) {
-            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(new Item(spExtractODataId$1(d)), d);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(new Item(spExtractODataId$1(d)), d);
         });
     };
     /**
@@ -5641,7 +5654,7 @@ var Folder = /** @class */ (function (_super) {
  *
  */
 var ContentTypes = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ContentTypes, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ContentTypes, _super);
     /**
      * Creates a new instance of the ContentTypes class
      *
@@ -5691,7 +5704,7 @@ var ContentTypes = /** @class */ (function (_super) {
         if (description === void 0) { description = ""; }
         if (group === void 0) { group = "Custom Content Types"; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "Description": description,
             "Group": group,
             "Id": { "StringValue": id },
@@ -5709,7 +5722,7 @@ var ContentTypes = /** @class */ (function (_super) {
  *
  */
 var ContentType = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ContentType, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ContentType, _super);
     function ContentType() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5769,7 +5782,7 @@ var ContentType = /** @class */ (function (_super) {
  * Represents a collection of field link instances
  */
 var FieldLinks = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(FieldLinks, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(FieldLinks, _super);
     /**
      * Creates a new instance of the ContentType class
      *
@@ -5795,7 +5808,7 @@ var FieldLinks = /** @class */ (function (_super) {
  * Represents a field link instance
  */
 var FieldLink = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(FieldLink, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(FieldLink, _super);
     function FieldLink() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5807,7 +5820,7 @@ var FieldLink = /** @class */ (function (_super) {
  *
  */
 var AttachmentFiles = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(AttachmentFiles, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(AttachmentFiles, _super);
     /**
      * Creates a new instance of the AttachmentFiles class
      *
@@ -5876,7 +5889,7 @@ var AttachmentFiles = /** @class */ (function (_super) {
  *
  */
 var AttachmentFile = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(AttachmentFile, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(AttachmentFile, _super);
     function AttachmentFile() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5945,7 +5958,7 @@ var AttachmentFile = /** @class */ (function (_super) {
  *
  */
 var Views = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Views, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Views, _super);
     /**
      * Creates a new instance of the Views class
      *
@@ -5984,7 +5997,7 @@ var Views = /** @class */ (function (_super) {
         var _this = this;
         if (personalView === void 0) { personalView = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "PersonalView": personalView,
             "Title": title,
             "__metadata": { "type": "SP.View" },
@@ -6003,7 +6016,7 @@ var Views = /** @class */ (function (_super) {
  *
  */
 var View = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(View, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(View, _super);
     function View() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6021,7 +6034,7 @@ var View = /** @class */ (function (_super) {
      */
     View.prototype.update = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.View" },
         }, properties));
         return this.postCore({
@@ -6057,7 +6070,7 @@ var View = /** @class */ (function (_super) {
     return View;
 }(SharePointQueryableInstance));
 var ViewFields = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ViewFields, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ViewFields, _super);
     function ViewFields(baseUrl, path) {
         if (path === void 0) { path = "viewfields"; }
         return _super.call(this, baseUrl, path) || this;
@@ -6109,7 +6122,7 @@ var ViewFields = /** @class */ (function (_super) {
  *
  */
 var Fields = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Fields, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Fields, _super);
     /**
      * Creates a new instance of the Fields class
      *
@@ -6158,7 +6171,7 @@ var Fields = /** @class */ (function (_super) {
             info = xml;
         }
         var postBody = JSON.stringify({
-            "parameters": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+            "parameters": Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
                 "__metadata": {
                     "type": "SP.XmlSchemaFieldCreationInformation",
                 },
@@ -6180,7 +6193,7 @@ var Fields = /** @class */ (function (_super) {
      */
     Fields.prototype.add = function (title, fieldType, properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "Title": title,
             "__metadata": { "type": fieldType },
         }, properties));
@@ -6204,7 +6217,7 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 2,
             MaxLength: maxLength,
         };
-        return this.add(title, "SP.FieldText", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldText", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldCalculated to the collection
@@ -6223,7 +6236,7 @@ var Fields = /** @class */ (function (_super) {
             Formula: formula,
             OutputType: outputType,
         };
-        return this.add(title, "SP.FieldCalculated", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldCalculated", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldDateTime to the collection
@@ -6243,7 +6256,7 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 4,
             FriendlyDisplayFormat: friendlyDisplayFormat,
         };
-        return this.add(title, "SP.FieldDateTime", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldDateTime", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldNumber to the collection
@@ -6256,12 +6269,12 @@ var Fields = /** @class */ (function (_super) {
     Fields.prototype.addNumber = function (title, minValue, maxValue, properties) {
         var props = { FieldTypeKind: 9 };
         if (typeof minValue !== "undefined") {
-            props = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ MinimumValue: minValue }, props);
+            props = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ MinimumValue: minValue }, props);
         }
         if (typeof maxValue !== "undefined") {
-            props = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ MaximumValue: maxValue }, props);
+            props = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ MaximumValue: maxValue }, props);
         }
-        return this.add(title, "SP.FieldNumber", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldNumber", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldCurrency to the collection
@@ -6279,12 +6292,12 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 10,
         };
         if (typeof minValue !== "undefined") {
-            props = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ MinimumValue: minValue }, props);
+            props = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ MinimumValue: minValue }, props);
         }
         if (typeof maxValue !== "undefined") {
-            props = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ MaximumValue: maxValue }, props);
+            props = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ MaximumValue: maxValue }, props);
         }
-        return this.add(title, "SP.FieldCurrency", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldCurrency", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldMultiLineText to the collection
@@ -6312,7 +6325,7 @@ var Fields = /** @class */ (function (_super) {
             RestrictedMode: restrictedMode,
             RichText: richText,
         };
-        return this.add(title, "SP.FieldMultiLineText", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldMultiLineText", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldUrl to the collection
@@ -6325,7 +6338,7 @@ var Fields = /** @class */ (function (_super) {
             DisplayFormat: displayFormat,
             FieldTypeKind: 11,
         };
-        return this.add(title, "SP.FieldUrl", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldUrl", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     /** Adds a user field to the colleciton
     *
@@ -6339,7 +6352,7 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 20,
             SelectionMode: selectionMode,
         };
-        return this.add(title, "SP.FieldUser", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldUser", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a SP.FieldLookup to the collection
@@ -6352,7 +6365,7 @@ var Fields = /** @class */ (function (_super) {
     Fields.prototype.addLookup = function (title, lookupListId, lookupFieldName, properties) {
         var _this = this;
         var postBody = JSON.stringify({
-            parameters: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+            parameters: Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
                 FieldTypeKind: 7,
                 LookupFieldName: lookupFieldName,
                 LookupListId: lookupListId,
@@ -6386,7 +6399,7 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 6,
             FillInChoice: fillIn,
         };
-        return this.add(title, "SP.FieldChoice", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldChoice", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldMultiChoice to the collection
@@ -6404,7 +6417,7 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 15,
             FillInChoice: fillIn,
         };
-        return this.add(title, "SP.FieldMultiChoice", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldMultiChoice", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldBoolean to the collection
@@ -6416,7 +6429,7 @@ var Fields = /** @class */ (function (_super) {
         var props = {
             FieldTypeKind: 8,
         };
-        return this.add(title, "SP.Field", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.Field", Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(props, properties));
     };
     return Fields;
 }(SharePointQueryableCollection));
@@ -6425,7 +6438,7 @@ var Fields = /** @class */ (function (_super) {
  *
  */
 var Field = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Field, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Field, _super);
     function Field() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6438,7 +6451,7 @@ var Field = /** @class */ (function (_super) {
     Field.prototype.update = function (properties, fieldType) {
         var _this = this;
         if (fieldType === void 0) { fieldType = "SP.Field"; }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "__metadata": { "type": fieldType },
         }, properties));
         return this.postCore({
@@ -6490,7 +6503,7 @@ var Field = /** @class */ (function (_super) {
  *
  */
 var Forms = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Forms, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Forms, _super);
     /**
      * Creates a new instance of the Fields class
      *
@@ -6517,7 +6530,7 @@ var Forms = /** @class */ (function (_super) {
  *
  */
 var Form = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Form, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Form, _super);
     function Form() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6529,7 +6542,7 @@ var Form = /** @class */ (function (_super) {
  *
  */
 var Subscriptions = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Subscriptions, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Subscriptions, _super);
     /**
      * Creates a new instance of the Subscriptions class
      *
@@ -6575,7 +6588,7 @@ var Subscriptions = /** @class */ (function (_super) {
  *
  */
 var Subscription = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Subscription, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Subscription, _super);
     function Subscription() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6608,7 +6621,7 @@ var Subscription = /** @class */ (function (_super) {
  *
  */
 var UserCustomActions = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(UserCustomActions, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(UserCustomActions, _super);
     /**
      * Creates a new instance of the UserCustomActions class
      *
@@ -6636,7 +6649,7 @@ var UserCustomActions = /** @class */ (function (_super) {
      */
     UserCustomActions.prototype.add = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ __metadata: { "type": "SP.UserCustomAction" } }, properties));
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ __metadata: { "type": "SP.UserCustomAction" } }, properties));
         return this.postCore({ body: postBody }).then(function (data) {
             return {
                 action: _this.getById(data.Id),
@@ -6658,7 +6671,7 @@ var UserCustomActions = /** @class */ (function (_super) {
  *
  */
 var UserCustomAction = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(UserCustomAction, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(UserCustomAction, _super);
     function UserCustomAction() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6669,7 +6682,7 @@ var UserCustomAction = /** @class */ (function (_super) {
     */
     UserCustomAction.prototype.update = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.UserCustomAction" },
         }, properties));
         return this.postCore({
@@ -6699,7 +6712,7 @@ var UserCustomAction = /** @class */ (function (_super) {
  *
  */
 var Lists = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Lists, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Lists, _super);
     /**
      * Creates a new instance of the Lists class
      *
@@ -6742,7 +6755,7 @@ var Lists = /** @class */ (function (_super) {
         if (template === void 0) { template = 100; }
         if (enableContentTypes === void 0) { enableContentTypes = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        var addSettings = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var addSettings = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "AllowContentTypes": enableContentTypes,
             "BaseTemplate": template,
             "ContentTypesEnabled": enableContentTypes,
@@ -6773,7 +6786,7 @@ var Lists = /** @class */ (function (_super) {
             throw new NotSupportedInBatchException("The ensure list method");
         }
         return new Promise(function (resolve, reject) {
-            var addOrUpdateSettings = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(additionalSettings, { Title: title, Description: description, ContentTypesEnabled: enableContentTypes }, true);
+            var addOrUpdateSettings = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(additionalSettings, { Title: title, Description: description, ContentTypesEnabled: enableContentTypes }, true);
             var list = _this.getByTitle(addOrUpdateSettings.Title);
             list.get().then(function (_) {
                 list.update(addOrUpdateSettings).then(function (d) {
@@ -6809,7 +6822,7 @@ var Lists = /** @class */ (function (_super) {
  *
  */
 var List = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(List, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(List, _super);
     function List() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6972,7 +6985,7 @@ var List = /** @class */ (function (_super) {
     List.prototype.update = function (properties, eTag) {
         var _this = this;
         if (eTag === void 0) { eTag = "*"; }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.List" },
         }, properties));
         return this.postCore({
@@ -7012,7 +7025,7 @@ var List = /** @class */ (function (_super) {
      */
     List.prototype.getChanges = function (query) {
         return this.clone(List, "getchanges").postCore({
-            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
+            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
         });
     };
     /**
@@ -7041,7 +7054,7 @@ var List = /** @class */ (function (_super) {
         }
         var q = this.clone(List, "getitems");
         return q.expand.apply(q, expands).postCore({
-            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
+            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
         });
     };
     /**
@@ -7049,7 +7062,7 @@ var List = /** @class */ (function (_super) {
      */
     List.prototype.getListItemChangesSinceToken = function (query) {
         return this.clone(List, "getlistitemchangessincetoken").postCore({
-            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
+            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
         }, { parse: function (r) { return r.text(); } });
     };
     /**
@@ -7091,10 +7104,10 @@ var List = /** @class */ (function (_super) {
     List.prototype.renderListDataAsStream = function (parameters, overrideParameters) {
         if (overrideParameters === void 0) { overrideParameters = null; }
         var postBody = {
-            overrideParameters: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+            overrideParameters: Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": "SP.RenderListDataOverrideParameters" },
             }, overrideParameters),
-            parameters: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+            parameters: Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": "SP.RenderListDataParameters" },
             }, parameters),
         };
@@ -7174,7 +7187,7 @@ var List = /** @class */ (function (_super) {
  * Represents a Collection of comments
  */
 var Comments = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Comments, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Comments, _super);
     /**
      * Creates a new instance of the Comments class
      *
@@ -7204,11 +7217,11 @@ var Comments = /** @class */ (function (_super) {
         if (typeof info === "string") {
             info = { text: info };
         }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "Microsoft.SharePoint.Comments.comment" },
         }, info));
         return this.clone(Comments, null).postCore({ body: postBody }).then(function (d) {
-            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(_this.getById(d.id), d);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(_this.getById(d.id), d);
         });
     };
     /**
@@ -7223,7 +7236,7 @@ var Comments = /** @class */ (function (_super) {
  * Represents a comment
  */
 var Comment = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Comment, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Comment, _super);
     function Comment() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -7258,7 +7271,7 @@ var Comment = /** @class */ (function (_super) {
  * Represents a Collection of comments
  */
 var Replies = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Replies, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Replies, _super);
     /**
      * Creates a new instance of the Comments class
      *
@@ -7277,11 +7290,11 @@ var Replies = /** @class */ (function (_super) {
         if (typeof info === "string") {
             info = { text: info };
         }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "Microsoft.SharePoint.Comments.comment" },
         }, info));
         return this.clone(Replies, null).postCore({ body: postBody }).then(function (d) {
-            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(new Comment(Object(__WEBPACK_IMPORTED_MODULE_4____["c" /* spExtractODataId */])(d)), d);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(new Comment(Object(__WEBPACK_IMPORTED_MODULE_4____["c" /* spExtractODataId */])(d)), d);
         });
     };
     return Replies;
@@ -7292,7 +7305,7 @@ var Replies = /** @class */ (function (_super) {
  *
  */
 var Items = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Items, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Items, _super);
     /**
      * Creates a new instance of the Items class
      *
@@ -7402,7 +7415,7 @@ var Items = /** @class */ (function (_super) {
         if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
         var removeDependency = this.addBatchDependency();
         return this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(function (listItemEntityType) {
-            var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+            var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": listItemEntityType },
             }, properties));
             var promise = _this.clone(Items, null).postCore({ body: postBody }).then(function (data) {
@@ -7432,7 +7445,7 @@ var Items = /** @class */ (function (_super) {
  *
  */
 var Item = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Item, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Item, _super);
     function Item() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -7569,7 +7582,7 @@ var Item = /** @class */ (function (_super) {
         return new Promise(function (resolve, reject) {
             var removeDependency = _this.addBatchDependency();
             return _this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(function (listItemEntityType) {
-                var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+                var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
                     "__metadata": { "type": listItemEntityType },
                 }, properties));
                 removeDependency();
@@ -7673,7 +7686,7 @@ var Item = /** @class */ (function (_super) {
  *
  */
 var ItemVersions = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ItemVersions, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ItemVersions, _super);
     /**
      * Creates a new instance of the File class
      *
@@ -7700,7 +7713,7 @@ var ItemVersions = /** @class */ (function (_super) {
  *
  */
 var ItemVersion = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ItemVersion, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ItemVersion, _super);
     function ItemVersion() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -7750,7 +7763,7 @@ var PagedItemCollection = /** @class */ (function () {
     return PagedItemCollection;
 }());
 var PagedItemCollectionParser = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(PagedItemCollectionParser, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(PagedItemCollectionParser, _super);
     function PagedItemCollectionParser(_parent) {
         var _this = _super.call(this) || this;
         _this._parent = _parent;
@@ -7770,7 +7783,7 @@ var PagedItemCollectionParser = /** @class */ (function (_super) {
     return PagedItemCollectionParser;
 }(__WEBPACK_IMPORTED_MODULE_3__pnp_odata__["i" /* ODataParserBase */]));
 var ItemUpdatedParser = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ItemUpdatedParser, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ItemUpdatedParser, _super);
     function ItemUpdatedParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -7792,7 +7805,7 @@ var ItemUpdatedParser = /** @class */ (function (_super) {
  *
  */
 var Files = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Files, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Files, _super);
     /**
      * Creates a new instance of the Files class
      *
@@ -7876,7 +7889,7 @@ var Files = /** @class */ (function (_super) {
  *
  */
 var File = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(File, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(File, _super);
     function File() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8091,7 +8104,7 @@ var File = /** @class */ (function (_super) {
         }
         var q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then(function (d) {
-            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(new Item(spExtractODataId$1(d)), d);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(new Item(spExtractODataId$1(d)), d);
         });
     };
     /**
@@ -8109,7 +8122,7 @@ var File = /** @class */ (function (_super) {
         }
         var fileSize = file.size;
         var blockCount = parseInt((file.size / chunkSize).toString(), 10) + ((file.size % chunkSize === 0) ? 1 : 0);
-        var uploadId = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["j" /* getGUID */])();
+        var uploadId = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["j" /* getGUID */])();
         // start the chain with the first fragment
         progress({ uploadId: uploadId, blockNumber: 1, chunkSize: chunkSize, currentPointer: 0, fileSize: fileSize, stage: "starting", totalBlocks: blockCount });
         var chain = this.startUpload(uploadId, file.slice(0, chunkSize));
@@ -8204,7 +8217,7 @@ var File = /** @class */ (function (_super) {
  *
  */
 var Versions = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Versions, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Versions, _super);
     /**
      * Creates a new instance of the File class
      *
@@ -8278,7 +8291,7 @@ var Versions = /** @class */ (function (_super) {
  *
  */
 var Version = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Version, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Version, _super);
     function Version() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8326,7 +8339,7 @@ var TemplateFileType;
  * Represents an app catalog
  */
 var AppCatalog = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(AppCatalog, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(AppCatalog, _super);
     function AppCatalog(baseUrl, path) {
         if (path === void 0) { path = "_api/web/tenantappcatalog/AvailableApps"; }
         var _this = this;
@@ -8375,7 +8388,7 @@ var AppCatalog = /** @class */ (function (_super) {
  * Represents the actions you can preform on a given app within the catalog
  */
 var App = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(App, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(App, _super);
     function App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8550,7 +8563,7 @@ function reindex(collection) {
  * Represents the data and methods associated with client side "modern" pages
  */
 var ClientSidePage = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ClientSidePage, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ClientSidePage, _super);
     /**
      * Creates a new instance of the ClientSidePage class
      *
@@ -8582,7 +8595,7 @@ var ClientSidePage = /** @class */ (function (_super) {
             }
             // get our server relative path
             return library.rootFolder.select("ServerRelativePath").get().then(function (path) {
-                var pageServerRelPath = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])("/", path.ServerRelativePath.DecodedUrl, pageName);
+                var pageServerRelPath = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])("/", path.ServerRelativePath.DecodedUrl, pageName);
                 // add the template file
                 return library.rootFolder.files.addTemplateFile(pageServerRelPath, TemplateFileType.ClientSidePage).then(function (far) {
                     // get the item associated with the file
@@ -8848,7 +8861,7 @@ var CanvasSection = /** @class */ (function () {
         this.page = page;
         this.order = order;
         this.columns = columns;
-        this._memId = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["j" /* getGUID */])();
+        this._memId = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["j" /* getGUID */])();
     }
     Object.defineProperty(CanvasSection.prototype, "defaultColumn", {
         /**
@@ -8901,7 +8914,7 @@ var CanvasControl = /** @class */ (function () {
     function CanvasControl(controlType, dataVersion, column, order, id, controlData) {
         if (column === void 0) { column = null; }
         if (order === void 0) { order = 1; }
-        if (id === void 0) { id = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["j" /* getGUID */])(); }
+        if (id === void 0) { id = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["j" /* getGUID */])(); }
         if (controlData === void 0) { controlData = null; }
         this.controlType = controlType;
         this.dataVersion = dataVersion;
@@ -8921,15 +8934,15 @@ var CanvasControl = /** @class */ (function () {
         configurable: true
     });
     CanvasControl.prototype.fromHtml = function (html) {
-        this.controlData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-controldata"));
-        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion");
+        this.controlData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-controldata"));
+        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion");
         this.controlType = this.controlData.controlType;
         this.id = this.controlData.id;
     };
     return CanvasControl;
 }());
 var CanvasColumn = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(CanvasColumn, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(CanvasColumn, _super);
     function CanvasColumn(section, order, factor, controls, dataVersion) {
         if (factor === void 0) { factor = 12; }
         if (controls === void 0) { controls = []; }
@@ -8963,7 +8976,7 @@ var CanvasColumn = /** @class */ (function (_super) {
     };
     CanvasColumn.prototype.fromHtml = function (html) {
         _super.prototype.fromHtml.call(this, html);
-        this.controlData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-controldata"));
+        this.controlData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-controldata"));
         this.factor = this.controlData.position.sectionFactor;
         this.order = this.controlData.position.sectionIndex;
     };
@@ -8991,7 +9004,7 @@ var CanvasColumn = /** @class */ (function (_super) {
  * Abstract class with shared functionality for parts
  */
 var ClientSidePart = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ClientSidePart, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ClientSidePart, _super);
     function ClientSidePart() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9006,7 +9019,7 @@ var ClientSidePart = /** @class */ (function (_super) {
     return ClientSidePart;
 }(CanvasControl));
 var ClientSideText = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ClientSideText, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ClientSideText, _super);
     function ClientSideText(text) {
         if (text === void 0) { text = ""; }
         var _this = _super.call(this, 4, "1.0") || this;
@@ -9066,7 +9079,7 @@ var ClientSideText = /** @class */ (function (_super) {
     return ClientSideText;
 }(ClientSidePart));
 var ClientSideWebpart = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ClientSideWebpart, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ClientSideWebpart, _super);
     function ClientSideWebpart(title, description, propertieJson, webPartId, htmlProperties, serverProcessedContent, canvasDataVersion) {
         if (description === void 0) { description = ""; }
         if (propertieJson === void 0) { propertieJson = {}; }
@@ -9098,7 +9111,7 @@ var ClientSideWebpart = /** @class */ (function (_super) {
         this.propertieJson = this.parseJsonProperties(manifest.preconfiguredEntries[0].properties);
     };
     ClientSideWebpart.prototype.setProperties = function (properties) {
-        this.propertieJson = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(this.propertieJson, properties);
+        this.propertieJson = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(this.propertieJson, properties);
         return this;
     };
     ClientSideWebpart.prototype.getProperties = function () {
@@ -9132,12 +9145,12 @@ var ClientSideWebpart = /** @class */ (function (_super) {
     };
     ClientSideWebpart.prototype.fromHtml = function (html) {
         _super.prototype.fromHtml.call(this, html);
-        var webPartData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-webpartdata"));
+        var webPartData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-webpartdata"));
         this.title = webPartData.title;
         this.description = webPartData.description;
         this.webPartId = webPartData.id;
-        this.canvasDataVersion = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion").replace(/\\\./, ".");
-        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-webpartdataversion").replace(/\\\./, ".");
+        this.canvasDataVersion = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion").replace(/\\\./, ".");
+        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-webpartdataversion").replace(/\\\./, ".");
         this.setProperties(webPartData.properties);
         if (typeof webPartData.serverProcessedContent !== "undefined") {
             this.serverProcessedContent = webPartData.serverProcessedContent;
@@ -9219,7 +9232,7 @@ var ClientSideWebpart = /** @class */ (function (_super) {
  *
  */
 var NavigationNodes = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(NavigationNodes, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(NavigationNodes, _super);
     function NavigationNodes() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9276,7 +9289,7 @@ var NavigationNodes = /** @class */ (function (_super) {
  *
  */
 var NavigationNode = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(NavigationNode, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(NavigationNode, _super);
     function NavigationNode() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9303,7 +9316,7 @@ var NavigationNode = /** @class */ (function (_super) {
  *
  */
 var Navigation = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Navigation, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Navigation, _super);
     /**
      * Creates a new instance of the Navigation class
      *
@@ -9341,7 +9354,7 @@ var Navigation = /** @class */ (function (_super) {
  * Represents the top level navigation service
  */
 var NavigationService = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(NavigationService, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(NavigationService, _super);
     function NavigationService(path) {
         if (path === void 0) { path = null; }
         return _super.call(this, "_api/navigation", path) || this;
@@ -9390,7 +9403,7 @@ var NavigationService = /** @class */ (function (_super) {
  * Describes regional settings ODada object
  */
 var RegionalSettings = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(RegionalSettings, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(RegionalSettings, _super);
     /**
      * Creates a new instance of the RegionalSettings class
      *
@@ -9446,7 +9459,7 @@ var RegionalSettings = /** @class */ (function (_super) {
  * Describes installed languages ODada queriable collection
  */
 var InstalledLanguages = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(InstalledLanguages, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(InstalledLanguages, _super);
     function InstalledLanguages(baseUrl, path) {
         if (path === void 0) { path = "installedlanguages"; }
         return _super.call(this, baseUrl, path) || this;
@@ -9457,7 +9470,7 @@ var InstalledLanguages = /** @class */ (function (_super) {
  * Describes TimeZone ODada object
  */
 var TimeZone = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(TimeZone, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(TimeZone, _super);
     function TimeZone(baseUrl, path) {
         if (path === void 0) { path = "timezone"; }
         return _super.call(this, baseUrl, path) || this;
@@ -9490,7 +9503,7 @@ var TimeZone = /** @class */ (function (_super) {
             dateIsoString = localTime;
         }
         else {
-            dateIsoString = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["f" /* dateAdd */])(localTime, "minute", localTime.getTimezoneOffset() * -1).toISOString();
+            dateIsoString = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["f" /* dateAdd */])(localTime, "minute", localTime.getTimezoneOffset() * -1).toISOString();
         }
         return this.clone(TimeZone, "localtimetoutc('" + dateIsoString + "')")
             .postCore()
@@ -9502,7 +9515,7 @@ var TimeZone = /** @class */ (function (_super) {
  * Describes time zones queriable collection
  */
 var TimeZones = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(TimeZones, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(TimeZones, _super);
     function TimeZones(baseUrl, path) {
         if (path === void 0) { path = "timezones"; }
         return _super.call(this, baseUrl, path) || this;
@@ -9750,7 +9763,7 @@ var SearchQueryBuilder = /** @class */ (function () {
         return this._query;
     };
     SearchQueryBuilder.prototype.extendQuery = function (part) {
-        this._query = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(this._query, part);
+        this._query = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(this._query, part);
         return this;
     };
     return SearchQueryBuilder;
@@ -9760,7 +9773,7 @@ var SearchQueryBuilder = /** @class */ (function () {
  *
  */
 var Search = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Search, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Search, _super);
     /**
      * Creates a new instance of the Search class
      *
@@ -9798,7 +9811,7 @@ var Search = /** @class */ (function (_super) {
             formattedBody.Properties = this.fixupProp(query.Properties);
         }
         var postBody = JSON.stringify({
-            request: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+            request: Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": "Microsoft.Office.Server.Search.REST.SearchRequest" },
             }, formattedBody),
         });
@@ -9893,7 +9906,7 @@ var SearchResults = /** @class */ (function () {
         // if pageSize is supplied, then we use that regardless of any previous values
         // otherwise get the previous RowLimit or default to 10
         var rows = typeof pageSize !== "undefined" ? pageSize : this._query.hasOwnProperty("RowLimit") ? this._query.RowLimit : 10;
-        var query = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(this._query, {
+        var query = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(this._query, {
             RowLimit: rows,
             StartRow: rows * (pageNumber - 1),
         });
@@ -9987,7 +10000,7 @@ var SearchBuiltInSourceId = /** @class */ (function () {
 }());
 
 var SearchSuggest = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SearchSuggest, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SearchSuggest, _super);
     function SearchSuggest(baseUrl, path) {
         if (path === void 0) { path = "_api/search/suggest"; }
         return _super.call(this, baseUrl, path) || this;
@@ -10052,7 +10065,7 @@ var SearchSuggestResult = /** @class */ (function () {
  * Manages a batch of OData operations
  */
 var SPBatch = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SPBatch, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SPBatch, _super);
     function SPBatch(baseUrl) {
         var _this = _super.call(this) || this;
         _this.baseUrl = baseUrl;
@@ -10149,7 +10162,7 @@ var SPBatch = /** @class */ (function (_super) {
                 else {
                     if (currentChangeSetId.length < 1) {
                         // start new change set
-                        currentChangeSetId = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["j" /* getGUID */])();
+                        currentChangeSetId = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["j" /* getGUID */])();
                         batchBody.push("--batch_" + _this.batchId + "\n");
                         batchBody.push("Content-Type: multipart/mixed; boundary=\"changeset_" + currentChangeSetId + "\"\n\n");
                     }
@@ -10160,7 +10173,7 @@ var SPBatch = /** @class */ (function (_super) {
                 batchBody.push("Content-Transfer-Encoding: binary\n\n");
                 var headers = new Headers();
                 // this is the url of the individual request within the batch
-                var url = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["l" /* isUrlAbsolute */])(reqInfo.url) ? reqInfo.url : Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(absoluteRequestUrl, reqInfo.url);
+                var url = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["l" /* isUrlAbsolute */])(reqInfo.url) ? reqInfo.url : Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(absoluteRequestUrl, reqInfo.url);
                 __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", 0 /* Verbose */);
                 if (reqInfo.method !== "GET") {
                     var method = reqInfo.method;
@@ -10176,10 +10189,10 @@ var SPBatch = /** @class */ (function (_super) {
                     batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
                 }
                 // merge global config headers
-                Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["m" /* mergeHeaders */])(headers, SPRuntimeConfig.headers);
+                Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["m" /* mergeHeaders */])(headers, SPRuntimeConfig.headers);
                 // merge per-request headers
                 if (reqInfo.options) {
-                    Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["m" /* mergeHeaders */])(headers, reqInfo.options.headers);
+                    Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["m" /* mergeHeaders */])(headers, reqInfo.options.headers);
                 }
                 // lastly we apply any default headers we need that may not exist
                 if (!headers.has("Accept")) {
@@ -10189,7 +10202,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.3");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.4");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -10214,7 +10227,7 @@ var SPBatch = /** @class */ (function (_super) {
                 "method": "POST",
             };
             __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
-            return client.fetch(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(absoluteRequestUrl, "/_api/$batch"), batchOptions)
+            return client.fetch(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["e" /* combinePaths */])(absoluteRequestUrl, "/_api/$batch"), batchOptions)
                 .then(function (r) { return r.text(); })
                 .then(SPBatch.ParseResponse)
                 .then(function (responses) {
@@ -10238,7 +10251,7 @@ var SPBatch = /** @class */ (function (_super) {
  *
  */
 var Features = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Features, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Features, _super);
     /**
      * Creates a new instance of the Lists class
      *
@@ -10298,7 +10311,7 @@ var Features = /** @class */ (function (_super) {
     return Features;
 }(SharePointQueryableCollection));
 var Feature = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Feature, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Feature, _super);
     function Feature() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10322,7 +10335,7 @@ var Feature = /** @class */ (function (_super) {
 }(SharePointQueryableInstance));
 
 var RelatedItemManagerImpl = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(RelatedItemManagerImpl, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(RelatedItemManagerImpl, _super);
     function RelatedItemManagerImpl(baseUrl, path) {
         if (path === void 0) { path = "_api/SP.RelatedItemManager"; }
         return _super.call(this, baseUrl, path) || this;
@@ -10439,7 +10452,7 @@ var RelatedItemManagerImpl = /** @class */ (function (_super) {
  *
  */
 var Webs = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Webs, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Webs, _super);
     /**
      * Creates a new instance of the Webs class
      *
@@ -10473,7 +10486,7 @@ var Webs = /** @class */ (function (_super) {
             WebTemplate: template,
         };
         var postBody = JSON.stringify({
-            "parameters": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+            "parameters": Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": "SP.WebCreationInformation" },
             }, props),
         });
@@ -10491,7 +10504,7 @@ var Webs = /** @class */ (function (_super) {
  *
  */
 var WebInfos = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(WebInfos, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(WebInfos, _super);
     /**
      * Creates a new instance of the WebInfos class
      *
@@ -10508,7 +10521,7 @@ var WebInfos = /** @class */ (function (_super) {
  *
  */
 var Web = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Web, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Web, _super);
     /**
      * Creates a new instance of the Web class
      *
@@ -10850,7 +10863,7 @@ var Web = /** @class */ (function (_super) {
      */
     Web.prototype.update = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.Web" },
         }, properties));
         return this.postCore({
@@ -10944,7 +10957,7 @@ var Web = /** @class */ (function (_super) {
      * @param query The change query
      */
     Web.prototype.getChanges = function (query) {
-        var postBody = JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+        var postBody = JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
         return this.clone(Web, "getchanges").postCore({ body: postBody });
     };
     Object.defineProperty(Web.prototype, "customListTemplate", {
@@ -11059,7 +11072,7 @@ var Web = /** @class */ (function (_super) {
  *
  */
 var Site = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(Site, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(Site, _super);
     /**
      * Creates a new instance of the Site class
      *
@@ -11183,7 +11196,7 @@ var Site = /** @class */ (function (_super) {
 }(SharePointQueryableInstance));
 
 var UserProfileQuery = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(UserProfileQuery, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(UserProfileQuery, _super);
     /**
      * Creates a new instance of the UserProfileQuery class
      *
@@ -11352,7 +11365,7 @@ var UserProfileQuery = /** @class */ (function (_super) {
     UserProfileQuery.prototype.setMyProfilePic = function (profilePicSource) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["p" /* readBlobAsArrayBuffer */])(profilePicSource).then(function (buffer) {
+            Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["p" /* readBlobAsArrayBuffer */])(profilePicSource).then(function (buffer) {
                 var request = new UserProfileQuery(_this, "setmyprofilepicture");
                 request.postCore({
                     body: String.fromCharCode.apply(null, new Uint16Array(buffer)),
@@ -11461,7 +11474,7 @@ var UserProfileQuery = /** @class */ (function (_super) {
     return UserProfileQuery;
 }(SharePointQueryableInstance));
 var ProfileLoader = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ProfileLoader, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ProfileLoader, _super);
     /**
    * Creates a new instance of the ProfileLoader class
    *
@@ -11527,7 +11540,7 @@ var ProfileLoader = /** @class */ (function (_super) {
     return ProfileLoader;
 }(SharePointQueryable));
 var ClientPeoplePickerQuery = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(ClientPeoplePickerQuery, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(ClientPeoplePickerQuery, _super);
     /**
      * Creates a new instance of the PeoplePickerQuery class
      *
@@ -11582,7 +11595,7 @@ var ClientPeoplePickerQuery = /** @class */ (function (_super) {
      */
     ClientPeoplePickerQuery.prototype.createClientPeoplePickerQueryParametersRequestBody = function (queryParams) {
         return JSON.stringify({
-            "queryParams": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+            "queryParams": Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": "SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters" },
             }, queryParams),
         });
@@ -11594,7 +11607,7 @@ var ClientPeoplePickerQuery = /** @class */ (function (_super) {
  * Exposes social following methods
  */
 var SocialQuery = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SocialQuery, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(SocialQuery, _super);
     /**
      * Creates a new instance of the SocialQuery class
      *
@@ -11658,7 +11671,7 @@ var SocialQuery = /** @class */ (function (_super) {
      */
     SocialQuery.prototype.createSocialActorInfoRequestBody = function (actorInfo) {
         return JSON.stringify({
-            "actor": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
+            "actor": Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])({
                 Id: null,
                 "__metadata": { "type": "SP.Social.SocialActorInfo" },
             }, actorInfo),
@@ -11667,7 +11680,7 @@ var SocialQuery = /** @class */ (function (_super) {
     return SocialQuery;
 }(SharePointQueryableInstance));
 var MySocialQuery = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(MySocialQuery, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(MySocialQuery, _super);
     /**
      * Creates a new instance of the SocialQuery class
      *
@@ -11850,7 +11863,7 @@ var SocialStatusCode;
  * Allows for calling of the static SP.Utilities.Utility methods by supplying the method name
  */
 var UtilityMethod = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(UtilityMethod, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["b" /* __extends */])(UtilityMethod, _super);
     /**
      * Creates a new instance of the Utility method class
      *
@@ -11892,22 +11905,22 @@ var UtilityMethod = /** @class */ (function (_super) {
             },
         };
         if (props.To && props.To.length > 0) {
-            params.properties = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(params.properties, {
+            params.properties = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(params.properties, {
                 To: { results: props.To },
             });
         }
         if (props.CC && props.CC.length > 0) {
-            params.properties = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(params.properties, {
+            params.properties = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(params.properties, {
                 CC: { results: props.CC },
             });
         }
         if (props.BCC && props.BCC.length > 0) {
-            params.properties = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(params.properties, {
+            params.properties = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(params.properties, {
                 BCC: { results: props.BCC },
             });
         }
         if (props.AdditionalHeaders) {
-            params.properties = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(params.properties, {
+            params.properties = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(params.properties, {
                 AdditionalHeaders: props.AdditionalHeaders,
             });
         }
@@ -12818,7 +12831,7 @@ module.exports = g;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(3);
 /**
 @license
- * @pnp/odata v1.1.3 - pnp - provides shared odata functionality and base classes
+ * @pnp/odata v1.1.4 - pnp - provides shared odata functionality and base classes
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/

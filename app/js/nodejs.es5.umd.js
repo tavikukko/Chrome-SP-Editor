@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/nodejs v1.1.3 - pnp - provides functionality enabling the @pnp libraries within nodejs
+ * @pnp/nodejs v1.1.4 - pnp - provides functionality enabling the @pnp libraries within nodejs
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -10,7 +10,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('tslib'), require('@pnp/logging'), require('@pnp/common'), require('adal-node')) :
     typeof define === 'function' && define.amd ? define(['exports', 'tslib', '@pnp/logging', '@pnp/common', 'adal-node'], factory) :
-    (factory((global.pnp = global.pnp || {}, global.pnp.nodejs = {}),null,global.pnp.logging,global.pnp.common,null));
+    (factory((global.pnp = global.pnp || {}, global.pnp.nodejs = {}),global.tslib_1,global.pnp.logging,global.pnp.common,global.adalNode));
 }(this, (function (exports,tslib_1,logging,common,adalNode) { 'use strict';
 
     var AuthUrlException = /** @class */ (function (_super) {

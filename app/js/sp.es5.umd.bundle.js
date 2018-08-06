@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/sp v1.1.3 - pnp - provides a fluent api for working with SharePoint REST
+ * @pnp/sp v1.1.4 - pnp - provides a fluent api for working with SharePoint REST
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -122,9 +122,12 @@ and limitations under the License.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
 
 function __extends(d, b) {
     extendStatics(d, b);
@@ -132,12 +135,15 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
-var __assign = Object.assign || function __assign(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
     }
-    return t;
+    return __assign.apply(this, arguments);
 }
 
 function __rest(s, e) {
@@ -611,7 +617,7 @@ var SharePointQueryableInstance = /** @class */ (function (_super) {
 /* unused harmony export isArray */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return extend; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return isUrlAbsolute; });
-/* unused harmony export stringIsNullOrEmpty */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return stringIsNullOrEmpty; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return getAttrValueFromString; });
 /* unused harmony export sanitizeGuid */
 /* unused harmony export Util */
@@ -621,7 +627,7 @@ var SharePointQueryableInstance = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_adal_angular__);
 /**
 @license
- * @pnp/common v1.1.3 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.1.4 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1695,18 +1701,27 @@ var PnPClientStorage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pnp_common__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pnp_odata__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_extractweburl__ = __webpack_require__(7);
+
 
 
 
 
 function spExtractODataId(candidate) {
-    if (candidate.hasOwnProperty("odata.id")) {
-        return candidate["odata.id"];
+    if (candidate.hasOwnProperty("odata.metadata") && candidate.hasOwnProperty("odata.editLink")) {
+        // we are dealign with minimal metadata (default)
+        return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(Object(__WEBPACK_IMPORTED_MODULE_4__utils_extractweburl__["a" /* extractWebUrl */])(candidate["odata.metadata"]), "_api", candidate["odata.editLink"]);
     }
-    else if (candidate.hasOwnProperty("__metadata") && candidate.__metadata.hasOwnProperty("id")) {
-        return candidate.__metadata.id;
+    else if (candidate.hasOwnProperty("odata.editLink")) {
+        return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])("_api", candidate["odata.editLink"]);
+    }
+    else if (candidate.hasOwnProperty("__metadata")) {
+        // we are dealing with verbose, which has an absolute uri
+        return candidate.__metadata.uri;
     }
     else {
+        // we are likely dealing with nometadata, so don't error but we won't be able to
+        // chain off these objects
         __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
         return "";
     }
@@ -1774,7 +1789,7 @@ function spODataEntityArray(factory) {
 /* unused harmony export FunctionListener */
 /**
 @license
- * @pnp/logging v1.1.3 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.1.4 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2023,7 +2038,7 @@ var FunctionListener = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(4);
 /**
 @license
- * @pnp/odata v1.1.3 - pnp - provides shared odata functionality and base classes
+ * @pnp/odata v1.1.4 - pnp - provides shared odata functionality and base classes
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -3352,6 +3367,30 @@ var TemplateFileType;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = extractWebUrl;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_common__ = __webpack_require__(2);
+
+function extractWebUrl(candidateUrl) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["q" /* stringIsNullOrEmpty */])(candidateUrl)) {
+        return "";
+    }
+    var index = candidateUrl.indexOf("_api/");
+    if (index < 0) {
+        index = candidateUrl.indexOf("_vti_bin/");
+    }
+    if (index > -1) {
+        return candidateUrl.substr(0, index);
+    }
+    // if all else fails just give them what they gave us back
+    return candidateUrl;
+}
+//# sourceMappingURL=extractweburl.js.map
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["b"] = setup;
 /* unused harmony export SPRuntimeConfigImpl */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SPRuntimeConfig; });
@@ -3409,28 +3448,6 @@ var SPRuntimeConfig = new SPRuntimeConfigImpl();
 //# sourceMappingURL=splibconfig.js.map
 
 /***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = extractWebUrl;
-function extractWebUrl(candidateUrl) {
-    if (candidateUrl === null) {
-        return "";
-    }
-    var index = candidateUrl.indexOf("_api/");
-    if (index < 0) {
-        index = candidateUrl.indexOf("_vti_bin/");
-    }
-    if (index > -1) {
-        return candidateUrl.substr(0, index);
-    }
-    // if all else fails just give them what they gave us back
-    return candidateUrl;
-}
-//# sourceMappingURL=extractweburl.js.map
-
-/***/ }),
 /* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3447,7 +3464,7 @@ function extractWebUrl(candidateUrl) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sharepointqueryable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sharepointqueryablesecurable__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__types__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_extractweburl__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_extractweburl__ = __webpack_require__(7);
 
 
 
@@ -4561,8 +4578,8 @@ var ItemUpdatedParser = /** @class */ (function (_super) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SPHttpClient; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__digestcache__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pnp_common__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_splibconfig__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_extractweburl__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_splibconfig__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_extractweburl__ = __webpack_require__(7);
 
 
 
@@ -4589,11 +4606,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.3");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.4");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.3");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.4");
         }
         opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -5651,7 +5668,7 @@ var FieldLink = /** @class */ (function (_super) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/* harmony export (immutable) */ __webpack_exports__["a"] = toAbsoluteUrl;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_common__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config_splibconfig__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config_splibconfig__ = __webpack_require__(8);
 
 
 /**
@@ -7665,7 +7682,7 @@ var Site = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__contenttypes__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__roles__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__files__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__utils_extractweburl__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__utils_extractweburl__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__siteusers__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__usercustomactions__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__odata__ = __webpack_require__(3);
@@ -8634,7 +8651,7 @@ var CurrentUser = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sharepointqueryable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__files__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__odata__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_extractweburl__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_extractweburl__ = __webpack_require__(7);
 
 
 
@@ -10759,7 +10776,7 @@ var SearchSuggestResult = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_common__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pnp_logging__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__net_sphttpclient__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__config_splibconfig__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__config_splibconfig__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__exceptions__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_toabsoluteurl__ = __webpack_require__(15);
 
@@ -10911,7 +10928,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.3");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.4");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -12020,7 +12037,7 @@ var UtilityMethod = /** @class */ (function (_super) {
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_37", function() { return __WEBPACK_IMPORTED_MODULE_23__userprofiles__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__utils_toabsoluteurl__ = __webpack_require__(15);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_52", function() { return __WEBPACK_IMPORTED_MODULE_24__utils_toabsoluteurl__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__utils_extractweburl__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__utils_extractweburl__ = __webpack_require__(7);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_47", function() { return __WEBPACK_IMPORTED_MODULE_25__utils_extractweburl__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__utilities__ = __webpack_require__(41);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "_38", function() { return __WEBPACK_IMPORTED_MODULE_26__utilities__["a"]; });
@@ -14020,7 +14037,7 @@ var AuthenticationContext = (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DigestCache; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_common__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pnp_odata__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_splibconfig__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_splibconfig__ = __webpack_require__(8);
 
 
 
@@ -14394,7 +14411,7 @@ var Subscription = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__navigation__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__social__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utilities__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__config_splibconfig__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__config_splibconfig__ = __webpack_require__(8);
 
 
 
