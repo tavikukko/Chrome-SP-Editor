@@ -76,7 +76,7 @@ export declare class ClientSvcQueryable<GetType = any> extends Queryable<GetType
     /**
      * Sends the request, merging the result data array with a new instances of factory
      */
-    protected sendGetCollection<DataType, FactoryType>(factory: ClientSvcQueryableConstructor<FactoryType>): Promise<(DataType & FactoryType)[]>;
+    protected sendGetCollection<DataType, FactoryType>(factory: (d: DataType) => FactoryType): Promise<(DataType & FactoryType)[]>;
     /**
      * Invokes the specified method on the server and returns the result
      *

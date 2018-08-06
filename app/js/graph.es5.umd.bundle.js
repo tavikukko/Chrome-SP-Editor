@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/graph v1.1.2 - pnp - provides functionality to query the Microsoft Graph
+ * @pnp/graph v1.1.3 - pnp - provides functionality to query the Microsoft Graph
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -612,7 +612,7 @@ var GraphQueryableInstance = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_adal_angular__);
 /**
 @license
- * @pnp/common v1.1.2 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.1.3 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1685,7 +1685,7 @@ var PnPClientStorage = /** @class */ (function () {
 /* unused harmony export FunctionListener */
 /**
 @license
- * @pnp/logging v1.1.2 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.1.3 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1934,7 +1934,7 @@ var FunctionListener = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(3);
 /**
 @license
- * @pnp/odata v1.1.2 - pnp - provides shared odata functionality and base classes
+ * @pnp/odata v1.1.3 - pnp - provides shared odata functionality and base classes
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/

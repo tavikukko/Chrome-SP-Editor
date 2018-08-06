@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/common v1.1.2 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.1.3 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -614,7 +614,7 @@ function __importDefault(mod) {
 /* unused harmony export FunctionListener */
 /**
 @license
- * @pnp/logging v1.1.2 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.1.3 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/

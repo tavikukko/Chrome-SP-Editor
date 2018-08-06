@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/sp-taxonomy v1.1.2 - pnp - Provides a fluent API to work with SharePoint taxonomy
+ * @pnp/sp-taxonomy v1.1.3 - pnp - Provides a fluent API to work with SharePoint taxonomy
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -320,7 +320,7 @@ function __importDefault(mod) {
 /* unused harmony export isArray */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return extend; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return isUrlAbsolute; });
-/* unused harmony export stringIsNullOrEmpty */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return stringIsNullOrEmpty; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return getAttrValueFromString; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return sanitizeGuid; });
 /* unused harmony export Util */
@@ -330,7 +330,7 @@ function __importDefault(mod) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_adal_angular__);
 /**
 @license
- * @pnp/common v1.1.2 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.1.3 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1426,7 +1426,7 @@ var PnPClientStorage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pnp_logging__ = __webpack_require__(3);
 /**
 @license
- * @pnp/sp-clientsvc v1.1.2 - pnp - Provides core functionality to interact with the legacy client.svc SharePoint endpoint
+ * @pnp/sp-clientsvc v1.1.3 - pnp - Provides core functionality to interact with the legacy client.svc SharePoint endpoint
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2144,9 +2144,8 @@ var ClientSvcQueryable = /** @class */ (function (_super) {
      * Sends the request, merging the result data array with a new instances of factory
      */
     ClientSvcQueryable.prototype.sendGetCollection = function (factory) {
-        var _this = this;
         var ops = this._objectPaths.clone().appendActionToLast(opQuery([], this.getSelects()));
-        return this.send(ops).then(function (r) { return r.map(function (d) { return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(new factory(_this), d); }); });
+        return this.send(ops).then(function (r) { return r.map(function (d) { return Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["g" /* extend */])(factory(d), d); }); });
     };
     /**
      * Invokes the specified method on the server and returns the result
@@ -2475,7 +2474,7 @@ var ProcessQueryCachingParserWrapper = /** @class */ (function (_super) {
 /* unused harmony export FunctionListener */
 /**
 @license
- * @pnp/logging v1.1.2 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.1.3 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2721,7 +2720,16 @@ var TermSets = /** @class */ (function (_super) {
      * Gets the termsets in this collection
      */
     TermSets.prototype.get = function () {
-        return this.sendGetCollection(TermSet);
+        var _this = this;
+        return this.sendGetCollection(function (d) {
+            if (!Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["r" /* stringIsNullOrEmpty */])(d.Name)) {
+                return _this.getByName(d.Name);
+            }
+            else if (!Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["r" /* stringIsNullOrEmpty */])(d.Id)) {
+                return _this.getById(d.Id);
+            }
+            throw new Error("Could not find Value in Labels.get(). You must include at least one of these in your select fields.");
+        });
     };
     /**
      * Gets a TermSet from this collection by id
@@ -2957,13 +2965,13 @@ var TermSet = /** @class */ (function (_super) {
 /* unused harmony export ChoiceFieldFormatType */
 /* unused harmony export UrlZone */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pnp_logging__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_common__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pnp_common__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pnp_odata__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4____ = __webpack_require__(5);
 /**
 @license
- * @pnp/sp v1.1.2 - pnp - provides a fluent api for working with SharePoint REST
+ * @pnp/sp v1.1.3 - pnp - provides a fluent api for working with SharePoint REST
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -2976,66 +2984,6 @@ var TermSet = /** @class */ (function (_super) {
 
 
 
-function extractWebUrl(candidateUrl) {
-    if (candidateUrl === null) {
-        return "";
-    }
-    var index = candidateUrl.indexOf("_api/");
-    if (index < 0) {
-        index = candidateUrl.indexOf("_vti_bin/");
-    }
-    if (index > -1) {
-        return candidateUrl.substr(0, index);
-    }
-    // if all else fails just give them what they gave us back
-    return candidateUrl;
-}
-
-var SPBatchParseException = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SPBatchParseException, _super);
-    function SPBatchParseException(msg) {
-        var _this = _super.call(this, msg) || this;
-        _this.name = "BatchParseException";
-        __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].error(_this);
-        return _this;
-    }
-    return SPBatchParseException;
-}(Error));
-var SPODataIdException = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SPODataIdException, _super);
-    function SPODataIdException(data, msg) {
-        if (msg === void 0) { msg = "Could not extract odata id in object, you may be using nometadata. Object data logged to logger."; }
-        var _this = _super.call(this, msg) || this;
-        _this.data = data;
-        _this.name = "ODataIdException";
-        __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].error(_this);
-        return _this;
-    }
-    return SPODataIdException;
-}(Error));
-var MaxCommentLengthException = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(MaxCommentLengthException, _super);
-    function MaxCommentLengthException(msg) {
-        if (msg === void 0) { msg = "The maximum comment length is 1023 characters."; }
-        var _this = _super.call(this, msg) || this;
-        _this.name = "MaxCommentLengthException";
-        __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].error(_this);
-        return _this;
-    }
-    return MaxCommentLengthException;
-}(Error));
-var NotSupportedInBatchException = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(NotSupportedInBatchException, _super);
-    function NotSupportedInBatchException(operation) {
-        if (operation === void 0) { operation = "This operation"; }
-        var _this = _super.call(this, operation + " is not supported as part of a batch.") || this;
-        _this.name = "NotSupportedInBatchException";
-        __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].error(_this);
-        return _this;
-    }
-    return NotSupportedInBatchException;
-}(Error));
-
 function spExtractODataId$1(candidate) {
     if (candidate.hasOwnProperty("odata.id")) {
         return candidate["odata.id"];
@@ -3044,7 +2992,8 @@ function spExtractODataId$1(candidate) {
         return candidate.__metadata.id;
     }
     else {
-        throw new SPODataIdException(candidate);
+        __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
+        return "";
     }
 }
 var SPODataEntityParserImpl = /** @class */ (function (_super) {
@@ -3053,16 +3002,16 @@ var SPODataEntityParserImpl = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
         _this.hydrate = function (d) {
-            var o = new _this.factory(spGetEntityUrl(d), null);
-            return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(o, d);
+            var o = new _this.factory(spExtractODataId$1(d), null);
+            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(o, d);
         };
         return _this;
     }
     SPODataEntityParserImpl.prototype.parse = function (r) {
         var _this = this;
         return _super.prototype.parse.call(this, r).then(function (d) {
-            var o = new _this.factory(spGetEntityUrl(d), null);
-            return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(o, d);
+            var o = new _this.factory(spExtractODataId$1(d), null);
+            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(o, d);
         });
     };
     return SPODataEntityParserImpl;
@@ -3074,8 +3023,8 @@ var SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
         _this.factory = factory;
         _this.hydrate = function (d) {
             return d.map(function (v) {
-                var o = new _this.factory(spGetEntityUrl(v), null);
-                return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(o, v);
+                var o = new _this.factory(spExtractODataId$1(v), null);
+                return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(o, v);
             });
         };
         return _this;
@@ -3084,32 +3033,13 @@ var SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
         var _this = this;
         return _super.prototype.parse.call(this, r).then(function (d) {
             return d.map(function (v) {
-                var o = new _this.factory(spGetEntityUrl(v), null);
-                return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(o, v);
+                var o = new _this.factory(spExtractODataId$1(v), null);
+                return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(o, v);
             });
         });
     };
     return SPODataEntityArrayParserImpl;
 }(__WEBPACK_IMPORTED_MODULE_3__pnp_odata__["i" /* ODataParserBase */]));
-function spGetEntityUrl(entity) {
-    if (entity.hasOwnProperty("odata.metadata") && entity.hasOwnProperty("odata.editLink")) {
-        // we are dealign with minimal metadata (default)
-        return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(extractWebUrl(entity["odata.metadata"]), "_api", entity["odata.editLink"]);
-    }
-    else if (entity.hasOwnProperty("odata.editLink")) {
-        return entity["odata.editLink"];
-    }
-    else if (entity.hasOwnProperty("__metadata")) {
-        // we are dealing with verbose, which has an absolute uri
-        return entity.__metadata.uri;
-    }
-    else {
-        // we are likely dealing with nometadata, so don't error but we won't be able to
-        // chain off these objects
-        __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
-        return "";
-    }
-}
 function spODataEntity(factory) {
     return new SPODataEntityParserImpl(factory);
 }
@@ -3118,14 +3048,14 @@ function spODataEntityArray(factory) {
 }
 
 function setup(config) {
-    __WEBPACK_IMPORTED_MODULE_2__pnp_common__["d" /* RuntimeConfig */].extend(config);
+    __WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].extend(config);
 }
 var SPRuntimeConfigImpl = /** @class */ (function () {
     function SPRuntimeConfigImpl() {
     }
     Object.defineProperty(SPRuntimeConfigImpl.prototype, "headers", {
         get: function () {
-            var spPart = __WEBPACK_IMPORTED_MODULE_2__pnp_common__["d" /* RuntimeConfig */].get("sp");
+            var spPart = __WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].get("sp");
             if (spPart !== null && typeof spPart !== "undefined" && typeof spPart.headers !== "undefined") {
                 return spPart.headers;
             }
@@ -3136,12 +3066,12 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
     });
     Object.defineProperty(SPRuntimeConfigImpl.prototype, "baseUrl", {
         get: function () {
-            var spPart = __WEBPACK_IMPORTED_MODULE_2__pnp_common__["d" /* RuntimeConfig */].get("sp");
+            var spPart = __WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].get("sp");
             if (spPart !== null && typeof spPart.baseUrl !== "undefined") {
                 return spPart.baseUrl;
             }
-            if (__WEBPACK_IMPORTED_MODULE_2__pnp_common__["d" /* RuntimeConfig */].spfxContext !== null) {
-                return __WEBPACK_IMPORTED_MODULE_2__pnp_common__["d" /* RuntimeConfig */].spfxContext.pageContext.web.absoluteUrl;
+            if (__WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].spfxContext !== null) {
+                return __WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].spfxContext.pageContext.web.absoluteUrl;
             }
             return null;
         },
@@ -3150,13 +3080,13 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
     });
     Object.defineProperty(SPRuntimeConfigImpl.prototype, "fetchClientFactory", {
         get: function () {
-            var spPart = __WEBPACK_IMPORTED_MODULE_2__pnp_common__["d" /* RuntimeConfig */].get("sp");
+            var spPart = __WEBPACK_IMPORTED_MODULE_1__pnp_common__["d" /* RuntimeConfig */].get("sp");
             // use a configured factory firt
             if (spPart !== null && typeof spPart.fetchClientFactory !== "undefined") {
                 return spPart.fetchClientFactory;
             }
             else {
-                return function () { return new __WEBPACK_IMPORTED_MODULE_2__pnp_common__["b" /* FetchClient */](); };
+                return function () { return new __WEBPACK_IMPORTED_MODULE_1__pnp_common__["b" /* FetchClient */](); };
             }
         },
         enumerable: true,
@@ -3172,7 +3102,7 @@ var CachedDigest = /** @class */ (function () {
     return CachedDigest;
 }());
 // allows for the caching of digests across all HttpClient's which each have their own DigestCache wrapper.
-var digests = new __WEBPACK_IMPORTED_MODULE_2__pnp_common__["a" /* Dictionary */]();
+var digests = new __WEBPACK_IMPORTED_MODULE_1__pnp_common__["a" /* Dictionary */]();
 var DigestCache = /** @class */ (function () {
     function DigestCache(_httpClient, _digests) {
         if (_digests === void 0) { _digests = digests; }
@@ -3188,7 +3118,7 @@ var DigestCache = /** @class */ (function () {
                 return Promise.resolve(cachedDigest.value);
             }
         }
-        var url = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(webUrl, "/_api/contextinfo");
+        var url = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(webUrl, "/_api/contextinfo");
         var headers = {
             "Accept": "application/json;odata=verbose",
             "Content-Type": "application/json;odata=verbose;charset=utf-8",
@@ -3196,7 +3126,7 @@ var DigestCache = /** @class */ (function () {
         return this._httpClient.fetchRaw(url, {
             cache: "no-cache",
             credentials: "same-origin",
-            headers: Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(headers, SPRuntimeConfig.headers, true),
+            headers: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(headers, SPRuntimeConfig.headers, true),
             method: "POST",
         }).then(function (response) {
             var parser = new __WEBPACK_IMPORTED_MODULE_3__pnp_odata__["h" /* ODataDefaultParser */]();
@@ -3218,6 +3148,21 @@ var DigestCache = /** @class */ (function () {
     return DigestCache;
 }());
 
+function extractWebUrl(candidateUrl) {
+    if (candidateUrl === null) {
+        return "";
+    }
+    var index = candidateUrl.indexOf("_api/");
+    if (index < 0) {
+        index = candidateUrl.indexOf("_vti_bin/");
+    }
+    if (index > -1) {
+        return candidateUrl.substr(0, index);
+    }
+    // if all else fails just give them what they gave us back
+    return candidateUrl;
+}
+
 var SPHttpClient = /** @class */ (function () {
     function SPHttpClient() {
         this._impl = SPRuntimeConfig.fetchClientFactory();
@@ -3226,12 +3171,12 @@ var SPHttpClient = /** @class */ (function () {
     SPHttpClient.prototype.fetch = function (url, options) {
         var _this = this;
         if (options === void 0) { options = {}; }
-        var opts = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(options, { cache: "no-cache", credentials: "same-origin" }, true);
+        var opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { cache: "no-cache", credentials: "same-origin" }, true);
         var headers = new Headers();
         // first we add the global headers so they can be overwritten by any passed in locally to this call
-        Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["m" /* mergeHeaders */])(headers, SPRuntimeConfig.headers);
+        Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["m" /* mergeHeaders */])(headers, SPRuntimeConfig.headers);
         // second we add the local options so we can overwrite the globals
-        Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["m" /* mergeHeaders */])(headers, options.headers);
+        Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["m" /* mergeHeaders */])(headers, options.headers);
         // lastly we apply any default headers we need that may not exist
         if (!headers.has("Accept")) {
             headers.append("Accept", "application/json");
@@ -3240,13 +3185,13 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.2");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.3");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.2");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.1.3");
         }
-        opts = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(opts, { headers: headers });
+        opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
             // if we have either a request digest or an authorization header we don't need a digest
             if (!headers.has("X-RequestDigest") && !headers.has("Authorization")) {
@@ -3264,8 +3209,8 @@ var SPHttpClient = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         // here we need to normalize the headers
         var rawHeaders = new Headers();
-        Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["m" /* mergeHeaders */])(rawHeaders, options.headers);
-        options = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(options, { headers: rawHeaders });
+        Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["m" /* mergeHeaders */])(rawHeaders, options.headers);
+        options = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { headers: rawHeaders });
         var retry = function (ctx) {
             _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
                 // Check if request was throttled - http status code 429
@@ -3283,7 +3228,7 @@ var SPHttpClient = /** @class */ (function () {
                     ctx.reject(response);
                 }
                 // Set our retry timeout for {delay} milliseconds.
-                setTimeout(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["i" /* getCtxCallback */])(_this, retry, ctx), delay);
+                setTimeout(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["i" /* getCtxCallback */])(_this, retry, ctx), delay);
             });
         };
         return new Promise(function (resolve, reject) {
@@ -3299,22 +3244,22 @@ var SPHttpClient = /** @class */ (function () {
     };
     SPHttpClient.prototype.get = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(options, { method: "GET" });
+        var opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { method: "GET" });
         return this.fetch(url, opts);
     };
     SPHttpClient.prototype.post = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(options, { method: "POST" });
+        var opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { method: "POST" });
         return this.fetch(url, opts);
     };
     SPHttpClient.prototype.patch = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(options, { method: "PATCH" });
+        var opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { method: "PATCH" });
         return this.fetch(url, opts);
     };
     SPHttpClient.prototype.delete = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(options, { method: "DELETE" });
+        var opts = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, { method: "DELETE" });
         return this.fetch(url, opts);
     };
     return SPHttpClient;
@@ -3328,21 +3273,21 @@ var SPHttpClient = /** @class */ (function () {
  */
 function toAbsoluteUrl(candidateUrl) {
     return new Promise(function (resolve) {
-        if (Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["l" /* isUrlAbsolute */])(candidateUrl)) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["l" /* isUrlAbsolute */])(candidateUrl)) {
             // if we are already absolute, then just return the url
             return resolve(candidateUrl);
         }
         if (SPRuntimeConfig.baseUrl !== null) {
             // base url specified either with baseUrl of spfxContext config property
-            return resolve(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(SPRuntimeConfig.baseUrl, candidateUrl));
+            return resolve(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(SPRuntimeConfig.baseUrl, candidateUrl));
         }
         if (typeof global._spPageContextInfo !== "undefined") {
             // operating in classic pages
             if (global._spPageContextInfo.hasOwnProperty("webAbsoluteUrl")) {
-                return resolve(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(global._spPageContextInfo.webAbsoluteUrl, candidateUrl));
+                return resolve(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(global._spPageContextInfo.webAbsoluteUrl, candidateUrl));
             }
             else if (global._spPageContextInfo.hasOwnProperty("webServerRelativeUrl")) {
-                return resolve(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(global._spPageContextInfo.webServerRelativeUrl, candidateUrl));
+                return resolve(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(global._spPageContextInfo.webServerRelativeUrl, candidateUrl));
             }
         }
         // does window.location exist and have a certain path part in it?
@@ -3351,7 +3296,7 @@ function toAbsoluteUrl(candidateUrl) {
             ["/_layouts/", "/siteassets/"].forEach(function (s) {
                 var index = baseUrl_1.indexOf(s);
                 if (index > 0) {
-                    return resolve(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(baseUrl_1.substr(0, index), candidateUrl));
+                    return resolve(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(baseUrl_1.substr(0, index), candidateUrl));
                 }
             });
         }
@@ -3377,22 +3322,22 @@ var SharePointQueryable = /** @class */ (function (_super) {
         if (typeof baseUrl === "string") {
             // we need to do some extra parsing to get the parent url correct if we are
             // being created from just a string.
-            if (Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["l" /* isUrlAbsolute */])(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
+            if (Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["l" /* isUrlAbsolute */])(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
                 _this._parentUrl = baseUrl;
-                _this._url = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(baseUrl, path);
+                _this._url = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(baseUrl, path);
             }
             else if (baseUrl.lastIndexOf("/") > baseUrl.lastIndexOf("(")) {
                 // .../items(19)/fields
                 var index = baseUrl.lastIndexOf("/");
                 _this._parentUrl = baseUrl.slice(0, index);
-                path = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(baseUrl.slice(index), path);
-                _this._url = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(_this._parentUrl, path);
+                path = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(baseUrl.slice(index), path);
+                _this._url = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(_this._parentUrl, path);
             }
             else {
                 // .../items(19)
                 var index = baseUrl.lastIndexOf("(");
                 _this._parentUrl = baseUrl.slice(0, index);
-                _this._url = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(baseUrl, path);
+                _this._url = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(baseUrl, path);
             }
         }
         else {
@@ -3411,16 +3356,16 @@ var SharePointQueryable = /** @class */ (function (_super) {
      */
     SharePointQueryable.prototype.as = function (factory) {
         var o = new factory(this._url, null);
-        return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(o, this, true);
+        return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(o, this, true);
     };
     /**
      * Gets the full url with query information
      *
      */
     SharePointQueryable.prototype.toUrlAndQuery = function () {
-        var aliasedParams = new __WEBPACK_IMPORTED_MODULE_2__pnp_common__["a" /* Dictionary */]();
+        var aliasedParams = new __WEBPACK_IMPORTED_MODULE_1__pnp_common__["a" /* Dictionary */]();
         var url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, function (match, labelName, value) {
-            __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].write("Rewriting aliased parameter from match " + match + " to label: " + labelName + " value: " + value, 0 /* Verbose */);
+            __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("Rewriting aliased parameter from match " + match + " to label: " + labelName + " value: " + value, 0 /* Verbose */);
             aliasedParams.add(labelName, "'" + value + "'");
             return labelName;
         });
@@ -3481,7 +3426,7 @@ var SharePointQueryable = /** @class */ (function (_super) {
         if (options === void 0) { options = {}; }
         var dependencyDispose = this.hasBatch ? this.addBatchDependency() : function () { return; };
         return toAbsoluteUrl(this.toUrlAndQuery()).then(function (url) {
-            Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["n" /* mergeOptions */])(options, _this._options);
+            Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["n" /* mergeOptions */])(options, _this._options);
             // build our request context
             var context = {
                 batch: _this.batch,
@@ -3494,7 +3439,7 @@ var SharePointQueryable = /** @class */ (function (_super) {
                 parser: parser,
                 pipeline: pipeline,
                 requestAbsoluteUrl: url,
-                requestId: Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["j" /* getGUID */])(),
+                requestId: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["j" /* getGUID */])(),
                 verb: verb,
             };
             return context;
@@ -3727,7 +3672,7 @@ var SiteUser = /** @class */ (function (_super) {
     */
     SiteUser.prototype.update = function (properties) {
         var _this = this;
-        var postBody = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.User" } }, properties);
+        var postBody = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.User" } }, properties);
         return this.postCore({
             body: JSON.stringify(postBody),
             headers: {
@@ -3800,7 +3745,7 @@ var SiteGroups = /** @class */ (function (_super) {
      */
     SiteGroups.prototype.add = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.Group" } }, properties));
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.Group" } }, properties));
         return this.postCore({ body: postBody }).then(function (data) {
             return {
                 data: data,
@@ -3872,7 +3817,7 @@ var SiteGroup = /** @class */ (function (_super) {
     /* tslint:disable no-string-literal */
     SiteGroup.prototype.update = function (properties) {
         var _this = this;
-        var postBody = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.Group" } }, properties);
+        var postBody = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.Group" } }, properties);
         return this.postCore({
             body: JSON.stringify(postBody),
             headers: {
@@ -4038,7 +3983,7 @@ var RoleDefinitions = /** @class */ (function (_super) {
     RoleDefinitions.prototype.add = function (name, description, order, basePermissions) {
         var _this = this;
         var postBody = JSON.stringify({
-            BasePermissions: Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
+            BasePermissions: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
             Description: description,
             Name: name,
             Order: order,
@@ -4071,9 +4016,9 @@ var RoleDefinition = /** @class */ (function (_super) {
     RoleDefinition.prototype.update = function (properties) {
         var _this = this;
         if (typeof properties.hasOwnProperty("BasePermissions") !== "undefined") {
-            properties["BasePermissions"] = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ __metadata: { type: "SP.BasePermissions" } }, properties["BasePermissions"]);
+            properties["BasePermissions"] = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ __metadata: { type: "SP.BasePermissions" } }, properties["BasePermissions"]);
         }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.RoleDefinition" },
         }, properties));
         return this.postCore({
@@ -4835,7 +4780,7 @@ var SharePointQueryableShareable = /** @class */ (function (_super) {
                 useSimplifiedRoles: true,
             };
             if (typeof emailData !== "undefined") {
-                postBody = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(postBody, {
+                postBody = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(postBody, {
                     emailBody: emailData.body,
                     emailSubject: typeof emailData.subject !== "undefined" ? emailData.subject : "",
                     sendEmail: true,
@@ -4860,7 +4805,7 @@ var SharePointQueryableShareable = /** @class */ (function (_super) {
             return this.sendShareObjectRequest(options);
         }
         // extend our options with some defaults
-        options = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(options, {
+        options = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(options, {
             group: null,
             includeAnonymousLinkInEmail: false,
             propagateAcl: false,
@@ -4878,7 +4823,7 @@ var SharePointQueryableShareable = /** @class */ (function (_super) {
                 url: options.url,
             };
             if (typeof options.emailData !== "undefined" && options.emailData !== null) {
-                postBody = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(postBody, {
+                postBody = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(postBody, {
                     emailBody: options.emailData.body,
                     emailSubject: typeof options.emailData.subject !== "undefined" ? options.emailData.subject : "Shared with you.",
                     sendEmail: true,
@@ -5031,7 +4976,7 @@ var SharePointQueryableShareableWeb = /** @class */ (function (_super) {
         var web = new SharePointQueryableInstance(extractWebUrl(this.toUrl()), "/_api/web/url");
         return web.get().then(function (url) {
             dependency();
-            return _this.shareObject(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(url, "/_layouts/15/aclinv.aspx?forSharing=1&mbypass=1"), loginNames, role, emailData);
+            return _this.shareObject(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(url, "/_layouts/15/aclinv.aspx?forSharing=1&mbypass=1"), loginNames, role, emailData);
         });
     };
     /**
@@ -5257,8 +5202,8 @@ var FileFolderShared = /** @class */ (function (_super) {
     FileFolderShared.prototype.getShareable = function () {
         var _this = this;
         // sharing only works on the item end point, not the file one - so we create a folder instance with the item url internally
-        return this.clone(SharePointQueryableShareableFile, "listItemAllFields", false).select("odata.editlink").get().then(function (d) {
-            var shareable = new SharePointQueryableShareable(spGetEntityUrl(d));
+        return this.clone(SharePointQueryableShareableFile, "listItemAllFields", false).select("odata.id").get().then(function (d) {
+            var shareable = new SharePointQueryableShareable(spExtractODataId$1(d));
             // we need to handle batching
             if (_this.hasBatch) {
                 shareable = shareable.inBatch(_this.batch);
@@ -5319,6 +5264,39 @@ var SharePointQueryableShareableFolder = /** @class */ (function (_super) {
     };
     return SharePointQueryableShareableFolder;
 }(FileFolderShared));
+
+var SPBatchParseException = /** @class */ (function (_super) {
+    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(SPBatchParseException, _super);
+    function SPBatchParseException(msg) {
+        var _this = _super.call(this, msg) || this;
+        _this.name = "BatchParseException";
+        __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].error(_this);
+        return _this;
+    }
+    return SPBatchParseException;
+}(Error));
+var MaxCommentLengthException = /** @class */ (function (_super) {
+    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(MaxCommentLengthException, _super);
+    function MaxCommentLengthException(msg) {
+        if (msg === void 0) { msg = "The maximum comment length is 1023 characters."; }
+        var _this = _super.call(this, msg) || this;
+        _this.name = "MaxCommentLengthException";
+        __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].error(_this);
+        return _this;
+    }
+    return MaxCommentLengthException;
+}(Error));
+var NotSupportedInBatchException = /** @class */ (function (_super) {
+    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(NotSupportedInBatchException, _super);
+    function NotSupportedInBatchException(operation) {
+        if (operation === void 0) { operation = "This operation"; }
+        var _this = _super.call(this, operation + " is not supported as part of a batch.") || this;
+        _this.name = "NotSupportedInBatchException";
+        __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].error(_this);
+        return _this;
+    }
+    return NotSupportedInBatchException;
+}(Error));
 
 var LimitedWebPartManager = /** @class */ (function (_super) {
     Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["b" /* __extends */])(LimitedWebPartManager, _super);
@@ -5586,7 +5564,7 @@ var Folder = /** @class */ (function (_super) {
     });
     Folder.prototype.update = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.Folder" },
         }, properties));
         return this.postCore({
@@ -5631,7 +5609,7 @@ var Folder = /** @class */ (function (_super) {
         }
         var q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then(function (d) {
-            return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(new Item(spGetEntityUrl(d)), d);
+            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(new Item(spExtractODataId$1(d)), d);
         });
     };
     /**
@@ -5713,7 +5691,7 @@ var ContentTypes = /** @class */ (function (_super) {
         if (description === void 0) { description = ""; }
         if (group === void 0) { group = "Custom Content Types"; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "Description": description,
             "Group": group,
             "Id": { "StringValue": id },
@@ -6006,7 +5984,7 @@ var Views = /** @class */ (function (_super) {
         var _this = this;
         if (personalView === void 0) { personalView = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "PersonalView": personalView,
             "Title": title,
             "__metadata": { "type": "SP.View" },
@@ -6043,7 +6021,7 @@ var View = /** @class */ (function (_super) {
      */
     View.prototype.update = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.View" },
         }, properties));
         return this.postCore({
@@ -6180,7 +6158,7 @@ var Fields = /** @class */ (function (_super) {
             info = xml;
         }
         var postBody = JSON.stringify({
-            "parameters": Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            "parameters": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
                 "__metadata": {
                     "type": "SP.XmlSchemaFieldCreationInformation",
                 },
@@ -6202,7 +6180,7 @@ var Fields = /** @class */ (function (_super) {
      */
     Fields.prototype.add = function (title, fieldType, properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "Title": title,
             "__metadata": { "type": fieldType },
         }, properties));
@@ -6226,7 +6204,7 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 2,
             MaxLength: maxLength,
         };
-        return this.add(title, "SP.FieldText", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldText", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldCalculated to the collection
@@ -6245,7 +6223,7 @@ var Fields = /** @class */ (function (_super) {
             Formula: formula,
             OutputType: outputType,
         };
-        return this.add(title, "SP.FieldCalculated", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldCalculated", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldDateTime to the collection
@@ -6265,7 +6243,7 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 4,
             FriendlyDisplayFormat: friendlyDisplayFormat,
         };
-        return this.add(title, "SP.FieldDateTime", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldDateTime", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldNumber to the collection
@@ -6278,12 +6256,12 @@ var Fields = /** @class */ (function (_super) {
     Fields.prototype.addNumber = function (title, minValue, maxValue, properties) {
         var props = { FieldTypeKind: 9 };
         if (typeof minValue !== "undefined") {
-            props = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ MinimumValue: minValue }, props);
+            props = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ MinimumValue: minValue }, props);
         }
         if (typeof maxValue !== "undefined") {
-            props = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ MaximumValue: maxValue }, props);
+            props = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ MaximumValue: maxValue }, props);
         }
-        return this.add(title, "SP.FieldNumber", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldNumber", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldCurrency to the collection
@@ -6301,12 +6279,12 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 10,
         };
         if (typeof minValue !== "undefined") {
-            props = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ MinimumValue: minValue }, props);
+            props = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ MinimumValue: minValue }, props);
         }
         if (typeof maxValue !== "undefined") {
-            props = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ MaximumValue: maxValue }, props);
+            props = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ MaximumValue: maxValue }, props);
         }
-        return this.add(title, "SP.FieldCurrency", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldCurrency", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldMultiLineText to the collection
@@ -6334,7 +6312,7 @@ var Fields = /** @class */ (function (_super) {
             RestrictedMode: restrictedMode,
             RichText: richText,
         };
-        return this.add(title, "SP.FieldMultiLineText", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldMultiLineText", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldUrl to the collection
@@ -6347,7 +6325,7 @@ var Fields = /** @class */ (function (_super) {
             DisplayFormat: displayFormat,
             FieldTypeKind: 11,
         };
-        return this.add(title, "SP.FieldUrl", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldUrl", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     /** Adds a user field to the colleciton
     *
@@ -6361,7 +6339,7 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 20,
             SelectionMode: selectionMode,
         };
-        return this.add(title, "SP.FieldUser", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldUser", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a SP.FieldLookup to the collection
@@ -6374,7 +6352,7 @@ var Fields = /** @class */ (function (_super) {
     Fields.prototype.addLookup = function (title, lookupListId, lookupFieldName, properties) {
         var _this = this;
         var postBody = JSON.stringify({
-            parameters: Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            parameters: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
                 FieldTypeKind: 7,
                 LookupFieldName: lookupFieldName,
                 LookupListId: lookupListId,
@@ -6408,7 +6386,7 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 6,
             FillInChoice: fillIn,
         };
-        return this.add(title, "SP.FieldChoice", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldChoice", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldMultiChoice to the collection
@@ -6426,7 +6404,7 @@ var Fields = /** @class */ (function (_super) {
             FieldTypeKind: 15,
             FillInChoice: fillIn,
         };
-        return this.add(title, "SP.FieldMultiChoice", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.FieldMultiChoice", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     /**
      * Adds a new SP.FieldBoolean to the collection
@@ -6438,7 +6416,7 @@ var Fields = /** @class */ (function (_super) {
         var props = {
             FieldTypeKind: 8,
         };
-        return this.add(title, "SP.Field", Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(props, properties));
+        return this.add(title, "SP.Field", Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(props, properties));
     };
     return Fields;
 }(SharePointQueryableCollection));
@@ -6460,7 +6438,7 @@ var Field = /** @class */ (function (_super) {
     Field.prototype.update = function (properties, fieldType) {
         var _this = this;
         if (fieldType === void 0) { fieldType = "SP.Field"; }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "__metadata": { "type": fieldType },
         }, properties));
         return this.postCore({
@@ -6658,7 +6636,7 @@ var UserCustomActions = /** @class */ (function (_super) {
      */
     UserCustomActions.prototype.add = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ __metadata: { "type": "SP.UserCustomAction" } }, properties));
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ __metadata: { "type": "SP.UserCustomAction" } }, properties));
         return this.postCore({ body: postBody }).then(function (data) {
             return {
                 action: _this.getById(data.Id),
@@ -6691,7 +6669,7 @@ var UserCustomAction = /** @class */ (function (_super) {
     */
     UserCustomAction.prototype.update = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.UserCustomAction" },
         }, properties));
         return this.postCore({
@@ -6764,7 +6742,7 @@ var Lists = /** @class */ (function (_super) {
         if (template === void 0) { template = 100; }
         if (enableContentTypes === void 0) { enableContentTypes = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        var addSettings = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var addSettings = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "AllowContentTypes": enableContentTypes,
             "BaseTemplate": template,
             "ContentTypesEnabled": enableContentTypes,
@@ -6795,7 +6773,7 @@ var Lists = /** @class */ (function (_super) {
             throw new NotSupportedInBatchException("The ensure list method");
         }
         return new Promise(function (resolve, reject) {
-            var addOrUpdateSettings = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(additionalSettings, { Title: title, Description: description, ContentTypesEnabled: enableContentTypes }, true);
+            var addOrUpdateSettings = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(additionalSettings, { Title: title, Description: description, ContentTypesEnabled: enableContentTypes }, true);
             var list = _this.getByTitle(addOrUpdateSettings.Title);
             list.get().then(function (_) {
                 list.update(addOrUpdateSettings).then(function (d) {
@@ -6994,7 +6972,7 @@ var List = /** @class */ (function (_super) {
     List.prototype.update = function (properties, eTag) {
         var _this = this;
         if (eTag === void 0) { eTag = "*"; }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.List" },
         }, properties));
         return this.postCore({
@@ -7034,7 +7012,7 @@ var List = /** @class */ (function (_super) {
      */
     List.prototype.getChanges = function (query) {
         return this.clone(List, "getchanges").postCore({
-            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
+            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeQuery" } }, query) }),
         });
     };
     /**
@@ -7063,7 +7041,7 @@ var List = /** @class */ (function (_super) {
         }
         var q = this.clone(List, "getitems");
         return q.expand.apply(q, expands).postCore({
-            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
+            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.CamlQuery" } }, query) }),
         });
     };
     /**
@@ -7071,7 +7049,7 @@ var List = /** @class */ (function (_super) {
      */
     List.prototype.getListItemChangesSinceToken = function (query) {
         return this.clone(List, "getlistitemchangessincetoken").postCore({
-            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
+            body: JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) }),
         }, { parse: function (r) { return r.text(); } });
     };
     /**
@@ -7113,10 +7091,10 @@ var List = /** @class */ (function (_super) {
     List.prototype.renderListDataAsStream = function (parameters, overrideParameters) {
         if (overrideParameters === void 0) { overrideParameters = null; }
         var postBody = {
-            overrideParameters: Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            overrideParameters: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": "SP.RenderListDataOverrideParameters" },
             }, overrideParameters),
-            parameters: Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            parameters: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": "SP.RenderListDataParameters" },
             }, parameters),
         };
@@ -7226,11 +7204,11 @@ var Comments = /** @class */ (function (_super) {
         if (typeof info === "string") {
             info = { text: info };
         }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "Microsoft.SharePoint.Comments.comment" },
         }, info));
         return this.clone(Comments, null).postCore({ body: postBody }).then(function (d) {
-            return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(_this.getById(d.id), d);
+            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(_this.getById(d.id), d);
         });
     };
     /**
@@ -7299,11 +7277,11 @@ var Replies = /** @class */ (function (_super) {
         if (typeof info === "string") {
             info = { text: info };
         }
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "Microsoft.SharePoint.Comments.comment" },
         }, info));
         return this.clone(Replies, null).postCore({ body: postBody }).then(function (d) {
-            return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(new Comment(Object(__WEBPACK_IMPORTED_MODULE_4____["c" /* spExtractODataId */])(d)), d);
+            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(new Comment(Object(__WEBPACK_IMPORTED_MODULE_4____["c" /* spExtractODataId */])(d)), d);
         });
     };
     return Replies;
@@ -7374,7 +7352,7 @@ var Items = /** @class */ (function (_super) {
     Items.prototype.getAll = function (requestSize) {
         var _this = this;
         if (requestSize === void 0) { requestSize = 2000; }
-        __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].write("Calling items.getAll should be done sparingly. Ensure this is the correct choice. If you are unsure, it is not.", 2 /* Warning */);
+        __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("Calling items.getAll should be done sparingly. Ensure this is the correct choice. If you are unsure, it is not.", 2 /* Warning */);
         // this will be used for the actual query
         // and we set no metadata here to try and reduce traffic
         var items = new Items(this, "").top(requestSize).configure({
@@ -7424,7 +7402,7 @@ var Items = /** @class */ (function (_super) {
         if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
         var removeDependency = this.addBatchDependency();
         return this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(function (listItemEntityType) {
-            var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": listItemEntityType },
             }, properties));
             var promise = _this.clone(Items, null).postCore({ body: postBody }).then(function (data) {
@@ -7591,7 +7569,7 @@ var Item = /** @class */ (function (_super) {
         return new Promise(function (resolve, reject) {
             var removeDependency = _this.addBatchDependency();
             return _this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(function (listItemEntityType) {
-                var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+                var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
                     "__metadata": { "type": listItemEntityType },
                 }, properties));
                 removeDependency();
@@ -8113,7 +8091,7 @@ var File = /** @class */ (function (_super) {
         }
         var q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then(function (d) {
-            return Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(new Item(spGetEntityUrl(d)), d);
+            return Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(new Item(spExtractODataId$1(d)), d);
         });
     };
     /**
@@ -8131,7 +8109,7 @@ var File = /** @class */ (function (_super) {
         }
         var fileSize = file.size;
         var blockCount = parseInt((file.size / chunkSize).toString(), 10) + ((file.size % chunkSize === 0) ? 1 : 0);
-        var uploadId = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["j" /* getGUID */])();
+        var uploadId = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["j" /* getGUID */])();
         // start the chain with the first fragment
         progress({ uploadId: uploadId, blockNumber: 1, chunkSize: chunkSize, currentPointer: 0, fileSize: fileSize, stage: "starting", totalBlocks: blockCount });
         var chain = this.startUpload(uploadId, file.slice(0, chunkSize));
@@ -8215,7 +8193,7 @@ var File = /** @class */ (function (_super) {
             .then(function (response) {
             return {
                 data: response,
-                file: new File(response.ServerRelativeUrl),
+                file: new File(spExtractODataId$1(response)),
             };
         });
     };
@@ -8604,7 +8582,7 @@ var ClientSidePage = /** @class */ (function (_super) {
             }
             // get our server relative path
             return library.rootFolder.select("ServerRelativePath").get().then(function (path) {
-                var pageServerRelPath = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])("/", path.ServerRelativePath.DecodedUrl, pageName);
+                var pageServerRelPath = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])("/", path.ServerRelativePath.DecodedUrl, pageName);
                 // add the template file
                 return library.rootFolder.files.addTemplateFile(pageServerRelPath, TemplateFileType.ClientSidePage).then(function (far) {
                     // get the item associated with the file
@@ -8870,7 +8848,7 @@ var CanvasSection = /** @class */ (function () {
         this.page = page;
         this.order = order;
         this.columns = columns;
-        this._memId = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["j" /* getGUID */])();
+        this._memId = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["j" /* getGUID */])();
     }
     Object.defineProperty(CanvasSection.prototype, "defaultColumn", {
         /**
@@ -8923,7 +8901,7 @@ var CanvasControl = /** @class */ (function () {
     function CanvasControl(controlType, dataVersion, column, order, id, controlData) {
         if (column === void 0) { column = null; }
         if (order === void 0) { order = 1; }
-        if (id === void 0) { id = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["j" /* getGUID */])(); }
+        if (id === void 0) { id = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["j" /* getGUID */])(); }
         if (controlData === void 0) { controlData = null; }
         this.controlType = controlType;
         this.dataVersion = dataVersion;
@@ -8943,8 +8921,8 @@ var CanvasControl = /** @class */ (function () {
         configurable: true
     });
     CanvasControl.prototype.fromHtml = function (html) {
-        this.controlData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-controldata"));
-        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion");
+        this.controlData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-controldata"));
+        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion");
         this.controlType = this.controlData.controlType;
         this.id = this.controlData.id;
     };
@@ -8985,7 +8963,7 @@ var CanvasColumn = /** @class */ (function (_super) {
     };
     CanvasColumn.prototype.fromHtml = function (html) {
         _super.prototype.fromHtml.call(this, html);
-        this.controlData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-controldata"));
+        this.controlData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-controldata"));
         this.factor = this.controlData.position.sectionFactor;
         this.order = this.controlData.position.sectionIndex;
     };
@@ -9120,7 +9098,7 @@ var ClientSideWebpart = /** @class */ (function (_super) {
         this.propertieJson = this.parseJsonProperties(manifest.preconfiguredEntries[0].properties);
     };
     ClientSideWebpart.prototype.setProperties = function (properties) {
-        this.propertieJson = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(this.propertieJson, properties);
+        this.propertieJson = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(this.propertieJson, properties);
         return this;
     };
     ClientSideWebpart.prototype.getProperties = function () {
@@ -9154,12 +9132,12 @@ var ClientSideWebpart = /** @class */ (function (_super) {
     };
     ClientSideWebpart.prototype.fromHtml = function (html) {
         _super.prototype.fromHtml.call(this, html);
-        var webPartData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-webpartdata"));
+        var webPartData = ClientSidePage.escapedStringToJson(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-webpartdata"));
         this.title = webPartData.title;
         this.description = webPartData.description;
         this.webPartId = webPartData.id;
-        this.canvasDataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion").replace(/\\\./, ".");
-        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-webpartdataversion").replace(/\\\./, ".");
+        this.canvasDataVersion = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-canvasdataversion").replace(/\\\./, ".");
+        this.dataVersion = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["h" /* getAttrValueFromString */])(html, "data-sp-webpartdataversion").replace(/\\\./, ".");
         this.setProperties(webPartData.properties);
         if (typeof webPartData.serverProcessedContent !== "undefined") {
             this.serverProcessedContent = webPartData.serverProcessedContent;
@@ -9512,7 +9490,7 @@ var TimeZone = /** @class */ (function (_super) {
             dateIsoString = localTime;
         }
         else {
-            dateIsoString = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["f" /* dateAdd */])(localTime, "minute", localTime.getTimezoneOffset() * -1).toISOString();
+            dateIsoString = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["f" /* dateAdd */])(localTime, "minute", localTime.getTimezoneOffset() * -1).toISOString();
         }
         return this.clone(TimeZone, "localtimetoutc('" + dateIsoString + "')")
             .postCore()
@@ -9772,7 +9750,7 @@ var SearchQueryBuilder = /** @class */ (function () {
         return this._query;
     };
     SearchQueryBuilder.prototype.extendQuery = function (part) {
-        this._query = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(this._query, part);
+        this._query = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(this._query, part);
         return this;
     };
     return SearchQueryBuilder;
@@ -9820,7 +9798,7 @@ var Search = /** @class */ (function (_super) {
             formattedBody.Properties = this.fixupProp(query.Properties);
         }
         var postBody = JSON.stringify({
-            request: Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            request: Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": "Microsoft.Office.Server.Search.REST.SearchRequest" },
             }, formattedBody),
         });
@@ -9915,7 +9893,7 @@ var SearchResults = /** @class */ (function () {
         // if pageSize is supplied, then we use that regardless of any previous values
         // otherwise get the previous RowLimit or default to 10
         var rows = typeof pageSize !== "undefined" ? pageSize : this._query.hasOwnProperty("RowLimit") ? this._query.RowLimit : 10;
-        var query = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(this._query, {
+        var query = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(this._query, {
             RowLimit: rows,
             StartRow: rows * (pageNumber - 1),
         });
@@ -10141,11 +10119,11 @@ var SPBatch = /** @class */ (function (_super) {
     };
     SPBatch.prototype.executeImpl = function () {
         var _this = this;
-        __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
+        __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
         // if we don't have any requests, don't bother sending anything
         // this could be due to caching further upstream, or just an empty batch
         if (this.requests.length < 1) {
-            __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].write("Resolving empty batch.", 1 /* Info */);
+            __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("Resolving empty batch.", 1 /* Info */);
             return Promise.resolve();
         }
         // creating the client here allows the url to be populated for nodejs client as well as potentially
@@ -10171,7 +10149,7 @@ var SPBatch = /** @class */ (function (_super) {
                 else {
                     if (currentChangeSetId.length < 1) {
                         // start new change set
-                        currentChangeSetId = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["j" /* getGUID */])();
+                        currentChangeSetId = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["j" /* getGUID */])();
                         batchBody.push("--batch_" + _this.batchId + "\n");
                         batchBody.push("Content-Type: multipart/mixed; boundary=\"changeset_" + currentChangeSetId + "\"\n\n");
                     }
@@ -10182,8 +10160,8 @@ var SPBatch = /** @class */ (function (_super) {
                 batchBody.push("Content-Transfer-Encoding: binary\n\n");
                 var headers = new Headers();
                 // this is the url of the individual request within the batch
-                var url = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["l" /* isUrlAbsolute */])(reqInfo.url) ? reqInfo.url : Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(absoluteRequestUrl, reqInfo.url);
-                __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", 0 /* Verbose */);
+                var url = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["l" /* isUrlAbsolute */])(reqInfo.url) ? reqInfo.url : Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(absoluteRequestUrl, reqInfo.url);
+                __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", 0 /* Verbose */);
                 if (reqInfo.method !== "GET") {
                     var method = reqInfo.method;
                     var castHeaders = reqInfo.options.headers;
@@ -10198,10 +10176,10 @@ var SPBatch = /** @class */ (function (_super) {
                     batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
                 }
                 // merge global config headers
-                Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["m" /* mergeHeaders */])(headers, SPRuntimeConfig.headers);
+                Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["m" /* mergeHeaders */])(headers, SPRuntimeConfig.headers);
                 // merge per-request headers
                 if (reqInfo.options) {
-                    Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["m" /* mergeHeaders */])(headers, reqInfo.options.headers);
+                    Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["m" /* mergeHeaders */])(headers, reqInfo.options.headers);
                 }
                 // lastly we apply any default headers we need that may not exist
                 if (!headers.has("Accept")) {
@@ -10211,7 +10189,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.2");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.1.3");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -10235,18 +10213,18 @@ var SPBatch = /** @class */ (function (_super) {
                 },
                 "method": "POST",
             };
-            __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
-            return client.fetch(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["e" /* combinePaths */])(absoluteRequestUrl, "/_api/$batch"), batchOptions)
+            __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
+            return client.fetch(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["e" /* combinePaths */])(absoluteRequestUrl, "/_api/$batch"), batchOptions)
                 .then(function (r) { return r.text(); })
                 .then(SPBatch.ParseResponse)
                 .then(function (responses) {
                 if (responses.length !== _this.requests.length) {
                     throw new SPBatchParseException("Could not properly parse responses to match requests in batch.");
                 }
-                __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
+                __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
                 return responses.reduce(function (chain, response, index) {
                     var request = _this.requests[index];
-                    __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].write("[" + request.id + "] (" + (new Date()).getTime() + ") Resolving request in batch " + _this.batchId + ".", 1 /* Info */);
+                    __WEBPACK_IMPORTED_MODULE_2__pnp_logging__["a" /* Logger */].write("[" + request.id + "] (" + (new Date()).getTime() + ") Resolving request in batch " + _this.batchId + ".", 1 /* Info */);
                     return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
                 }, Promise.resolve());
             });
@@ -10495,7 +10473,7 @@ var Webs = /** @class */ (function (_super) {
             WebTemplate: template,
         };
         var postBody = JSON.stringify({
-            "parameters": Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            "parameters": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": "SP.WebCreationInformation" },
             }, props),
         });
@@ -10872,7 +10850,7 @@ var Web = /** @class */ (function (_super) {
      */
     Web.prototype.update = function (properties) {
         var _this = this;
-        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+        var postBody = JSON.stringify(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
             "__metadata": { "type": "SP.Web" },
         }, properties));
         return this.postCore({
@@ -10966,7 +10944,7 @@ var Web = /** @class */ (function (_super) {
      * @param query The change query
      */
     Web.prototype.getChanges = function (query) {
-        var postBody = JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+        var postBody = JSON.stringify({ "query": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
         return this.clone(Web, "getchanges").postCore({ body: postBody });
     };
     Object.defineProperty(Web.prototype, "customListTemplate", {
@@ -11374,7 +11352,7 @@ var UserProfileQuery = /** @class */ (function (_super) {
     UserProfileQuery.prototype.setMyProfilePic = function (profilePicSource) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["p" /* readBlobAsArrayBuffer */])(profilePicSource).then(function (buffer) {
+            Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["p" /* readBlobAsArrayBuffer */])(profilePicSource).then(function (buffer) {
                 var request = new UserProfileQuery(_this, "setmyprofilepicture");
                 request.postCore({
                     body: String.fromCharCode.apply(null, new Uint16Array(buffer)),
@@ -11604,7 +11582,7 @@ var ClientPeoplePickerQuery = /** @class */ (function (_super) {
      */
     ClientPeoplePickerQuery.prototype.createClientPeoplePickerQueryParametersRequestBody = function (queryParams) {
         return JSON.stringify({
-            "queryParams": Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            "queryParams": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
                 "__metadata": { "type": "SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters" },
             }, queryParams),
         });
@@ -11680,7 +11658,7 @@ var SocialQuery = /** @class */ (function (_super) {
      */
     SocialQuery.prototype.createSocialActorInfoRequestBody = function (actorInfo) {
         return JSON.stringify({
-            "actor": Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])({
+            "actor": Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])({
                 Id: null,
                 "__metadata": { "type": "SP.Social.SocialActorInfo" },
             }, actorInfo),
@@ -11914,22 +11892,22 @@ var UtilityMethod = /** @class */ (function (_super) {
             },
         };
         if (props.To && props.To.length > 0) {
-            params.properties = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(params.properties, {
+            params.properties = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(params.properties, {
                 To: { results: props.To },
             });
         }
         if (props.CC && props.CC.length > 0) {
-            params.properties = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(params.properties, {
+            params.properties = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(params.properties, {
                 CC: { results: props.CC },
             });
         }
         if (props.BCC && props.BCC.length > 0) {
-            params.properties = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(params.properties, {
+            params.properties = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(params.properties, {
                 BCC: { results: props.BCC },
             });
         }
         if (props.AdditionalHeaders) {
-            params.properties = Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["g" /* extend */])(params.properties, {
+            params.properties = Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["g" /* extend */])(params.properties, {
                 AdditionalHeaders: props.AdditionalHeaders,
             });
         }
@@ -12179,7 +12157,16 @@ var TermStores = /** @class */ (function (_super) {
      * Gets the term stores
      */
     TermStores.prototype.get = function () {
-        return this.sendGetCollection(TermStore);
+        var _this = this;
+        return this.sendGetCollection(function (d) {
+            if (!Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["r" /* stringIsNullOrEmpty */])(d.Name)) {
+                return _this.getByName(d.Name);
+            }
+            else if (!Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["r" /* stringIsNullOrEmpty */])(d.Id)) {
+                return _this.getById(d.Id);
+            }
+            throw new Error("Could not find Name or Id in TermStores.get(). You must include at least one of these in your select fields.");
+        });
     };
     /**
      * Returns the TermStore specified by its index name
@@ -12549,7 +12536,36 @@ var Terms = /** @class */ (function (_super) {
      * Gets the terms in this collection
      */
     Terms.prototype.get = function () {
-        return this.sendGetCollection(Term);
+        var _this = this;
+        return this.sendGetCollection(function (d) {
+            if (!Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["r" /* stringIsNullOrEmpty */])(d.Name)) {
+                return _this.getByName(d.Name);
+            }
+            else if (!Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["r" /* stringIsNullOrEmpty */])(d.Id)) {
+                return _this.getById(d.Id);
+            }
+            throw new Error("Could not find Name or Id in Terms.get(). You must include at least one of these in your select fields.");
+        });
+    };
+    /**
+     * Gets a term by id
+     *
+     * @param id The id of the term
+     */
+    Terms.prototype.getById = function (id) {
+        var params = __WEBPACK_IMPORTED_MODULE_2__pnp_sp_clientsvc__["b" /* MethodParams */].build()
+            .string(Object(__WEBPACK_IMPORTED_MODULE_1__pnp_common__["q" /* sanitizeGuid */])(id));
+        return this.getChild(Term, "GetById", params);
+    };
+    /**
+     * Gets a term by name
+     *
+     * @param name Term name
+     */
+    Terms.prototype.getByName = function (name) {
+        var params = __WEBPACK_IMPORTED_MODULE_2__pnp_sp_clientsvc__["b" /* MethodParams */].build()
+            .string(name);
+        return this.getChild(Term, "GetByName", params);
     };
     return Terms;
 }(__WEBPACK_IMPORTED_MODULE_2__pnp_sp_clientsvc__["a" /* ClientSvcQueryable */]));
@@ -12802,7 +12818,7 @@ module.exports = g;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_logging__ = __webpack_require__(3);
 /**
 @license
- * @pnp/odata v1.1.2 - pnp - provides shared odata functionality and base classes
+ * @pnp/odata v1.1.3 - pnp - provides shared odata functionality and base classes
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -13564,6 +13580,8 @@ var ODataBatch = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Label; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pnp_sp_clientsvc__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pnp_common__ = __webpack_require__(1);
+
 
 
 /**
@@ -13591,7 +13609,13 @@ var Labels = /** @class */ (function (_super) {
      * Loads the data and merges with with the ILabel instances
      */
     Labels.prototype.get = function () {
-        return this.sendGetCollection(Label);
+        var _this = this;
+        return this.sendGetCollection(function (d) {
+            if (!Object(__WEBPACK_IMPORTED_MODULE_2__pnp_common__["r" /* stringIsNullOrEmpty */])(d.Value)) {
+                return _this.getByValue(d.Value);
+            }
+            throw new Error("Could not find Value in Labels.get(). You must include at least one of these in your select fields.");
+        });
     };
     return Labels;
 }(__WEBPACK_IMPORTED_MODULE_1__pnp_sp_clientsvc__["a" /* ClientSvcQueryable */]));

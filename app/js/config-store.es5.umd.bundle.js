@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/config-store v1.1.2 - pnp - provides a way to manage configuration within your application
+ * @pnp/config-store v1.1.3 - pnp - provides a way to manage configuration within your application
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -124,7 +124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_adal_angular__);
 /**
 @license
- * @pnp/common v1.1.2 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.1.3 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1197,7 +1197,7 @@ var PnPClientStorage = /** @class */ (function () {
 /* unused harmony export FunctionListener */
 /**
 @license
- * @pnp/logging v1.1.2 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.1.3 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/

@@ -3,6 +3,8 @@ import { ILabelData, ILabel, ILabels } from "./labels";
 import { ITermSet, ITermSets } from "./termsets";
 export interface ITerms extends IClientSvcQueryable {
     get(): Promise<(ITermData & ITerm)[]>;
+    getById(id: string): ITerm;
+    getByName(name: string): ITerm;
 }
 export interface ITermData {
     CustomProperties?: any;
@@ -47,6 +49,18 @@ export declare class Terms extends ClientSvcQueryable implements ITerms {
      * Gets the terms in this collection
      */
     get(): Promise<(ITermData & ITerm)[]>;
+    /**
+     * Gets a term by id
+     *
+     * @param id The id of the term
+     */
+    getById(id: string): ITerm;
+    /**
+     * Gets a term by name
+     *
+     * @param name Term name
+     */
+    getByName(name: string): ITerm;
 }
 /**
  * Represents the operations available on a given term

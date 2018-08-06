@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/nodejs v1.1.2 - pnp - provides functionality enabling the @pnp libraries within nodejs
+ * @pnp/nodejs v1.1.3 - pnp - provides functionality enabling the @pnp libraries within nodejs
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
