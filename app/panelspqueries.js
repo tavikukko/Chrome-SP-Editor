@@ -1377,7 +1377,7 @@ var addSubscriptions = function addSubscriptions() {
 
     $pnp.sp.web.lists.getById(listId).subscriptions.add(hookurl, expirationDate, clientstate).then(function (result) {
       alertify.delay(5000).success("Webhook added successfully!");
-      window.postMessage(JSON.stringify({ function: 'addSubscriptions', success: true, result: null, source: clientstate }), '*');
+      window.postMessage(JSON.stringify({ function: 'addSubscriptions', success: true, result: null, source: 'chrome-sp-editor' }), '*');
     })
       .catch(function (error) {
         if (error.data.responseBody.hasOwnProperty('error'))
