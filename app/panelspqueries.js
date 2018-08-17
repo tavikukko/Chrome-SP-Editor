@@ -1,4 +1,4 @@
-var pnp = "var speditorpnp = '" + chrome.extension.getURL('app/js/pnp.js') + "';";
+var pnp = "var speditorpnp = '" + chrome.extension.getURL('app/js/pnpjs.es5.umd.bundle.js') + "';";
 var sj = "var sj = '" + chrome.extension.getURL('app/js/system.js') + "';";
 var alertify = "var alertify = '" + chrome.extension.getURL('app/js/alertify.js') + "';";
 
