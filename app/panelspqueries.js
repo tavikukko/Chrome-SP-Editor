@@ -1332,7 +1332,8 @@ var getSubscriptions = function getSubscriptions() {
               listId: list.Id,
               subExpirationDateTime: subscription.expirationDateTime,
               subId: subscription.id,
-              subNotificationUrl: subscription.notificationUrl
+              subNotificationUrl: subscription.notificationUrl,
+              subClientState: subscription.clientState
             });
           });
         }
@@ -1352,6 +1353,7 @@ var addSubscriptions = function addSubscriptions() {
 
   var listId = arguments[1];
   var hookurl = arguments[2];
+  var clientstate = arguments[3];
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
@@ -1373,7 +1375,7 @@ var addSubscriptions = function addSubscriptions() {
 
     alertify.delay(5000).log("Adding webhook...");
 
-    $pnp.sp.web.lists.getById(listId).subscriptions.add(hookurl, expirationDate).then(function (result) {
+    $pnp.sp.web.lists.getById(listId).subscriptions.add(hookurl, expirationDate, clientstate).then(function (result) {
       alertify.delay(5000).success("Webhook added successfully!");
       window.postMessage(JSON.stringify({ function: 'addSubscriptions', success: true, result: null, source: 'chrome-sp-editor' }), '*');
     })

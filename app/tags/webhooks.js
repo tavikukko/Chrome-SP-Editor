@@ -6,10 +6,13 @@ riot.tag("webhooks", `
               </div>
               <hr>
                 <div class="row">
-                  <div class="col-xs-4">
+                  <div class="col-xs-2">
                     <select class="form-control" id="webhooklist">
                       <option each="{list in lists}" value="{ list.listId }">{ list.listTitle }</option>
                     </select>
+                  </div>
+                  <div class="col-xs-2">
+                    <input id="webhookclientstate" type="text" class="form-control" placeholder="Client state string (optional)">
                   </div>
                   <div class="col-xs-8">
                     <div class="input-group">
@@ -24,9 +27,10 @@ riot.tag("webhooks", `
               <div id="subscriptions">
                 <ul class="list-group" each="{ subscription in subscriptions }">
                   <li class="list-group-item active">
-                    <span style="display: inline-block;width: 33.33%;text-align: left;">List: { subscription.listTitle }</span>
-                    <span style="display: inline-block;width: 33.33%;text-align: center;">ExpDate: { subscription.subExpirationDateTime }</span>
-                    <span style="display: inline-block;width: 32.33%;text-align: right;">Id: { subscription.subId }</span>
+                    <span style="display: inline-block;width: 15%;text-align: left;">List: { subscription.listTitle }</span>
+                    <span style="display: inline-block;width: 15%;text-align: left;">Client state: { subscription.subClientState }</span>
+                    <span style="display: inline-block;width: 25%;text-align: left;">ExpDate: { subscription.subExpirationDateTime }</span>
+                    <span style="display: inline-block;width: 35%;text-align: left;">Id: { subscription.subId }</span>
                   </li>
                   <li class="list-group-item">
                   &nbsp;&nbsp;<span>{ subscription.subNotificationUrl }</span>
@@ -100,9 +104,10 @@ riot.tag("webhooks", `
 
       var webhooklist = $("#webhooklist").val();
       var webhookurl = elem('webhookurl').value;
+      var webhookclientstate = elem('webhookclientstate').value;
 
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addSubscriptions;
-      script += " exescript(addSubscriptions, '" + webhooklist + "', '" + webhookurl + "');";
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addSubscriptions;      
+      script += " exescript(addSubscriptions, '" + webhooklist + "', '" + webhookurl + "', '" + webhookclientstate + "');";
       chrome.devtools.inspectedWindow.eval(script);
 
     }.bind(this);
