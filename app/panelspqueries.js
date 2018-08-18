@@ -2986,6 +2986,36 @@ var deleteScript = function deleteScript() {
   });
 };
 
+var runSearch = function runSearch() {
+  var content = arguments[1];
+  var opts = JSON.parse(content);
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+
+    $pnp.setup({
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose"
+        }
+      }
+    });
+
+    $pnp.sp.search(opts).then(function (r) {
+      // TODO: add more objects to results
+      window.postMessage(JSON.stringify({ function: 'runSearch', success: true, result: r.PrimarySearchResults, source: 'chrome-sp-editor' }), '*');
+    }).catch(function (error) {
+      var err;
+      if (error.data.responseBody.hasOwnProperty('error'))
+        err = error.data.responseBody.error;
+      else
+        err = error.data.responseBody['odata.error'];
+
+      window.postMessage(JSON.stringify({ function: "runSearch", success: false, result: err, source: 'chrome-sp-editor' }), '*');
+    });
+  });
+};
+
 // helper functions
 function elem(elem) {
   return document.getElementById(elem);
@@ -3010,7 +3040,7 @@ function hideDimmer() {
     elem('dimmer').style.display = 'none';
 }
 
-var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman', 'modernproperties', 'sitedesigns', 'sitescriptscontainer'];
+var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman', 'modernproperties', 'sitedesigns', 'sitescriptscontainer', 'search'];
 
 function swap(visibleElement) {
   for (var i = 0; i < allElements.length; i++) {

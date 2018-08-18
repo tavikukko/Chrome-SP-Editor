@@ -30,6 +30,9 @@ riot.tag("sidebar", `
                   <a href="#" onclick="{ btnPnPJSConsole }">PnPjs Console v1.1.4</a>
                 </li>
                 <li>
+                  <a href="#" onclick="{ btnSearch }">Search</a>
+                </li>
+                <li>
                   <a href="#" onclick="{ btnGraphMan }">Graph Man</a>
                 </li>
                 <li>
@@ -115,6 +118,11 @@ riot.tag("sidebar", `
       swap("pnpjsconsole");
       if (pnpjsconsole) { playground.layout(); return; }
       pnpjsconsole = riot.mount("pnpjsconsole");
+    }.bind(this);
+
+    this.btnSearch = function () {
+      swap("search");
+      riot.mount("search");
     }.bind(this);
 
     this.btnGraphMan = function () {
