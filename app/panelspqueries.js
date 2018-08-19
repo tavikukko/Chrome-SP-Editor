@@ -3003,6 +3003,7 @@ var runSearch = function runSearch() {
 
     $pnp.sp.search(opts).then(function (r) {
       // TODO: add more objects to results
+      //console.log(r)
       window.postMessage(JSON.stringify({ function: 'runSearch', success: true, result: r.PrimarySearchResults, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
       var err;

@@ -4,14 +4,21 @@ riot.tag("search", `
                 <div class="col-sm-4">
                   <div class="form-group">
                     <div class="panel panel-default">
-                      <div class="panel-heading">Query string</div>
+                      <div class="panel-heading">Query</div>
                       <div class="panel-body">
                         <div class="form-group">
-                          <textarea ref="searchString" class="form-control rounded-0" id="exampleFormControlTextarea1" rows="5"></textarea>
+                          <textarea ref="searchString" class="form-control rounded-0" id="exampleFormControlTextarea1" rows="5" placeholder="Search string"></textarea>
                         </div>
-                        <div class="class="form-group">
-                          <button onclick="{ runSearch }" type="button" class="btn btn-primary btn-md">Search</button>
+                        <div class="form-group">
+                          <input value=10 ref="rowlimit" type="text" class="form-control" id="inlineFormInputGroup" placeholder="Row limit">
                         </div>
+                        <div class="form-group">
+                          <input value=0 ref="startrow" type="text" class="form-control" id="inlineFormInputGroup" placeholder="Start">
+                        </div>
+                        <div class="form-group">
+                          <button onclick="{ runSearch }" type="button" class="btn btn-primary btn-md">Run search</button>
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -20,15 +27,56 @@ riot.tag("search", `
                   <div class="panel panel-default">
                     <div class="panel-heading">Options</div>
                     <div class="panel-body">
-                      <div class="checkbox">
-                        <label><input ref="option1" type="checkbox" value="">Option 1</label>
-                      </div>
-                      <div class="checkbox">
-                        <label><input ref="option2" type="checkbox" value="">Option 2</label>
-                      </div>
-                      <div class="checkbox">
-                        <label><input ref="option3" type="checkbox" value="">Option 3</label>
-                      </div>
+
+                    <div class="row">
+                    <div class="col-md-4">
+                    <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="EnableStemming" >Enable stemming</label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="EnableQueryRules">Enable query rules</label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="EnableNicknames">Enable nicknames</label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="ProcessBestBets">Process bestbets</label>
+                  </div>
+                  <div class="checkbox">
+                  <label><input ref="option" type="checkbox" value="ProcessPersonalFavorites">Process personal favorites</label>
+                </div>
+                    </div>
+                    <div class="col-md-4">
+                    <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="TrimDuplicates" >Trim dublicates</label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="EnableFQL">Enable FQL</label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="EnablePhonetic">Enable phonetic</label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="BypassResultTypes">Bypass result types</label>
+                  </div>
+                  <div class="checkbox">
+                  <label><input ref="option" type="checkbox" value="GenerateBlockRankLog">Generate block rank</label>
+                </div>
+                    </div>
+                    <div class="col-md-4">
+                    <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="EnableInterleaving" >Enable interleaving</label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="EnableSorting">Enable sorting</label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input ref="option" type="checkbox" value="EnableOrderingHitHighlightedProperty">Enable ordering hit highlighted property</label>
+                  </div>
+                    </div>
+                  </div>
+
+
                     </div>
                   </div>
                 </div>
@@ -106,6 +154,36 @@ riot.tag("search", `
             break;
         }
       }.bind(this));
+
+      // TODO: loop all checkbox options here and set three states.
+      $('input[ref="option"]').each(function() {
+        // `this` is the div
+        console.log("hello")
+        var $check = $(this);
+
+      $check.data('checked', 1).prop('indeterminate', true).click(function (e) {
+          var el = $(this);
+          switch (el.data('checked')) {
+            // unchecked, going indeterminate
+            case 0:
+              el.data('checked', 1);
+              el.prop('indeterminate', true);
+              break;
+            // indeterminate, going checked
+            case 1:
+              el.data('checked', 2);
+              el.prop('indeterminate', false);
+              el.prop('checked', true);
+              break;
+            // checked, going unchecked
+            default:
+              el.data('checked', 0);
+              el.prop('indeterminate', false);
+              el.prop('checked', false);
+          }
+        });
+      });
+
     }.bind(this);
 
     this.runSearch = function (e) {
@@ -114,9 +192,17 @@ riot.tag("search", `
 
       var searchOpts = {
         Querytext: this.refs.searchString.value,
-        RowLimit: 500,
-        //EnableInterleaving: true
+        RowLimit: Number(this.refs.rowlimit.value),
+        StartRow: Number(this.refs.startrow.value)
       };
+
+      $('input[ref="option"]').each(function(e) {
+        var option = $(this);
+        if ( option.data('checked') == 2 && !option.prop('indeterminate') && option.prop('checked') )
+          searchOpts[option[0].defaultValue] = true;
+        else if ( option.data('checked') == 0 && !option.prop('indeterminate') && !option.prop('checked') )
+        searchOpts[option[0].defaultValue] = false;
+      });
 
       var content = JSON.stringify(searchOpts);
 
