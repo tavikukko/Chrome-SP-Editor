@@ -2988,10 +2988,11 @@ var deleteScript = function deleteScript() {
 
 var runSearch = function runSearch() {
   var content = arguments[1];
-  var opts = JSON.parse(content);
+  var opts = JSON.parse(decodeURIComponent(content));
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
+    var alertify = modules[1];
 
     $pnp.setup({
       sp: {
@@ -3002,7 +3003,6 @@ var runSearch = function runSearch() {
     });
 
     $pnp.sp.search(opts).then(function (r) {
-      // TODO: add more objects to results
       //console.log(r)
       var result = {
         ElapsedTime: r.ElapsedTime,
@@ -3014,13 +3014,12 @@ var runSearch = function runSearch() {
       }
       window.postMessage(JSON.stringify({ function: 'runSearch', success: true, result: result, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
-      var err;
       if (error.data.responseBody.hasOwnProperty('error'))
-        err = error.data.responseBody.error;
-      else
-        err = error.data.responseBody['odata.error'];
+      alertify.delay(10000).error(error.data.responseBody.error.message.value);
+    else
+      alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
 
-      window.postMessage(JSON.stringify({ function: "runSearch", success: false, result: err, source: 'chrome-sp-editor' }), '*');
+      window.postMessage(JSON.stringify({ function: "runSearch", success: false, result: error, source: 'chrome-sp-editor' }), '*');
     });
   });
 };
