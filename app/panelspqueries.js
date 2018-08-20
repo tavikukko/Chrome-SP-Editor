@@ -3004,7 +3004,15 @@ var runSearch = function runSearch() {
     $pnp.sp.search(opts).then(function (r) {
       // TODO: add more objects to results
       //console.log(r)
-      window.postMessage(JSON.stringify({ function: 'runSearch', success: true, result: r.PrimarySearchResults, source: 'chrome-sp-editor' }), '*');
+      var result = {
+        ElapsedTime: r.ElapsedTime,
+        PrimarySearchResults: r.PrimarySearchResults,
+        RawSearchResults: r.RawSearchResults,
+        RowCount: r.RowCount,
+        TotalRows: r.TotalRows,
+        TotalRowsIncludingDuplicates: r.TotalRowsIncludingDuplicates
+      }
+      window.postMessage(JSON.stringify({ function: 'runSearch', success: true, result: result, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
       var err;
       if (error.data.responseBody.hasOwnProperty('error'))
