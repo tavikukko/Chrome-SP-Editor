@@ -157,17 +157,16 @@ riot.tag("search", `
 
         switch (message.function) {
           case 'runSearch':
-          this.searching = false;
-          this.update();
+            this.searching = false;
+            this.update();
             if (message.success) {
-              // update results here
               //console.log(message.result)
               message.result.PrimarySearchResults.forEach(function (obj) {
                 var rowProps = [];
                 for (var name in obj) {
                   rowProps.push({ key: name, value: obj[name] });
                 }
-                this.searchResults.push({name: obj.Title, props: rowProps });
+                this.searchResults.push({ name: obj.Title, props: rowProps });
               }.bind(this));
 
               this.elapsedTime = message.result.ElapsedTime;
@@ -181,10 +180,10 @@ riot.tag("search", `
         }
       }.bind(this));
 
-      $('input[ref="option"]').each(function() {
+      $('input[ref="option"]').each(function () {
         var $check = $(this);
 
-      $check.data('checked', 1).prop('indeterminate', true);
+        $check.data('checked', 1).prop('indeterminate', true);
 
       });
 
@@ -204,15 +203,15 @@ riot.tag("search", `
         ClientType: "ContentSearchRegular"
       };
 
-      $('input[ref="option"]').each(function(e) {
+      $('input[ref="option"]').each(function (e) {
         var option = $(this);
-        if ( option.data('checked') == 2 && !option.prop('indeterminate') && option.prop('checked') )
+        if (option.data('checked') == 2 && !option.prop('indeterminate') && option.prop('checked'))
           searchOpts[option[0].defaultValue] = true;
-        else if ( option.data('checked') == 0 && !option.prop('indeterminate') && !option.prop('checked') )
-        searchOpts[option[0].defaultValue] = false;
+        else if (option.data('checked') == 0 && !option.prop('indeterminate') && !option.prop('checked'))
+          searchOpts[option[0].defaultValue] = false;
       });
 
-      if (this.refs.selectproperties.value.length > 0){
+      if (this.refs.selectproperties.value.length > 0) {
         var selProps = this.refs.selectproperties.value.split(',');
         selProps.push("OriginalPath");
         selProps.push("Title");
@@ -231,15 +230,13 @@ riot.tag("search", `
     }.bind(this);
 
     this.openLink = function (e) {
-      console.log(e)
       let obj = e.item.result.props.find(o => o.key === 'OriginalPath');
-
       chrome.tabs.create({ url: obj.value });
     }.bind(this);
 
     this.onEnter = function (e) {
-      if(e.keyCode === 13){
-      e.preventDefault();
+      if (e.keyCode === 13) {
+        e.preventDefault();
         this.runSearch();
       } else this.buildPayload();
     }
@@ -276,15 +273,15 @@ riot.tag("search", `
         ClientType: "ContentSearchRegular"
       };
 
-      $('input[ref="option"]').each(function(e) {
+      $('input[ref="option"]').each(function (e) {
         var option = $(this);
-        if ( option.data('checked') == 2 && !option.prop('indeterminate') && option.prop('checked') )
+        if (option.data('checked') == 2 && !option.prop('indeterminate') && option.prop('checked'))
           searchOpts[option[0].defaultValue] = true;
-        else if ( option.data('checked') == 0 && !option.prop('indeterminate') && !option.prop('checked') )
-        searchOpts[option[0].defaultValue] = false;
+        else if (option.data('checked') == 0 && !option.prop('indeterminate') && !option.prop('checked'))
+          searchOpts[option[0].defaultValue] = false;
       });
 
-      if (this.refs.selectproperties.value.length > 0){
+      if (this.refs.selectproperties.value.length > 0) {
         var selProps = this.refs.selectproperties.value.split(',');
         selProps.push("OriginalPath");
         selProps.push("Title");

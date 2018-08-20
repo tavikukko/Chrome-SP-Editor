@@ -3015,9 +3015,9 @@ var runSearch = function runSearch() {
       window.postMessage(JSON.stringify({ function: 'runSearch', success: true, result: result, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
       if (error.data.responseBody.hasOwnProperty('error'))
-      alertify.delay(10000).error(error.data.responseBody.error.message.value);
-    else
-      alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      else
+        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
 
       window.postMessage(JSON.stringify({ function: "runSearch", success: false, result: error, source: 'chrome-sp-editor' }), '*');
     });
