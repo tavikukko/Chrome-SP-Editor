@@ -29,7 +29,7 @@ export interface LibraryConfiguration {
 export declare function setup(config: LibraryConfiguration): void;
 export declare class RuntimeConfigImpl {
     private _v;
-    constructor();
+    constructor(_v?: Map<string, any>);
     /**
      *
      * @param config The set of properties to add to the globa configuration instance

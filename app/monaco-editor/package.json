@@ -1,17 +1,17 @@
 {
-  "_from": "monaco-editor",
-  "_id": "monaco-editor@0.13.1",
+  "_from": "monaco-editor@latest",
+  "_id": "monaco-editor@0.14.3",
   "_inBundle": false,
-  "_integrity": "sha512-0Kssg/O3cl1tXP0qAIxhrtMbRnzusFUEvFyt5/fpUbmuVeY3z+TnUx13+3kW16pgacFPXGUTEO/hOPlDeFU/dw==",
+  "_integrity": "sha512-RhaO4xXmWn/p0WrkEOXe4PoZj6xOcvDYjoAh0e1kGUrQnP1IOpc0m86Ceuaa2CLEMDINqKijBSmqhvBQnsPLHQ==",
   "_location": "/monaco-editor",
   "_phantomChildren": {},
   "_requested": {
     "type": "tag",
     "registry": true,
-    "raw": "monaco-editor",
+    "raw": "monaco-editor@latest",
     "name": "monaco-editor",
     "escapedName": "monaco-editor",
-    "rawSpec": "",
+    "rawSpec": "latest",
     "saveSpec": null,
     "fetchSpec": "latest"
   },
@@ -19,9 +19,9 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.13.1.tgz",
-  "_shasum": "6b9ce20e4d1c945042d256825eb133cb23315a52",
-  "_spec": "monaco-editor",
+  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.14.3.tgz",
+  "_shasum": "7cc4a4096a3821f52fea9b10489b527ef3034e22",
+  "_spec": "monaco-editor@latest",
   "_where": "/Users/tomi/development/pnpjs-1.1.0",
   "author": {
     "name": "Microsoft Corporation"
@@ -33,20 +33,20 @@
   "deprecated": false,
   "description": "A browser based code editor",
   "devDependencies": {
-    "clean-css": "^4.1.11",
+    "clean-css": "^4.2.1",
     "event-stream": "^3.3.4",
     "gulp": "^3.9.1",
-    "gulp-typedoc": "^2.0.0",
+    "gulp-typedoc": "^2.2.0",
     "http-server": "^0.11.1",
-    "monaco-css": "2.1.1",
-    "monaco-editor-core": "0.13.2",
-    "monaco-html": "2.1.1",
-    "monaco-json": "2.1.1",
-    "monaco-languages": "1.3.1",
-    "monaco-typescript": "3.1.0",
+    "monaco-css": "2.2.0",
+    "monaco-editor-core": "0.14.6",
+    "monaco-html": "2.2.0",
+    "monaco-json": "2.2.0",
+    "monaco-languages": "1.5.1",
+    "monaco-typescript": "3.2.0",
     "rimraf": "^2.6.2",
     "typedoc": "^0.11.1",
-    "typescript": "^2.8.3",
+    "typescript": "^3.0.1",
     "uncss": "^0.16.2",
     "vinyl": "^0.5.3"
   },
@@ -65,5 +65,5 @@
     "website": "gulp website"
   },
   "typings": "./esm/vs/editor/editor.api.d.ts",
-  "version": "0.13.1"
+  "version": "0.14.3"
 }

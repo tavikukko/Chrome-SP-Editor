@@ -35,6 +35,6 @@ export declare class MethodParams implements IMethodParamsBuilder {
         type: PropertyType;
         value: string;
     }[];
-    private a(type, value);
+    private a;
 }
 export declare function method(name: string, params: IMethodParamsBuilder, ...actions: string[]): IObjectPath;

@@ -13,16 +13,10 @@ import { Comments } from "./comments";
  */
 export declare class Items extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the Items class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
-    /**
-     * Gets an Item by id
-     *
-     * @param id The integer id of the item to retrieve
-     */
+    * Gets an Item by id
+    *
+    * @param id The integer id of the item to retrieve
+    */
     getById(id: number): Item;
     /**
      * Gets BCS Item by string id
@@ -41,13 +35,14 @@ export declare class Items extends SharePointQueryableCollection {
      * Gets a collection designed to aid in paging through data
      *
      */
-    getPaged(): Promise<PagedItemCollection<any>>;
+    getPaged<T = any[]>(): Promise<PagedItemCollection<T>>;
     /**
      * Gets all the items in a list, regardless of count. Does not support batching or caching
      *
      *  @param requestSize Number of items to return in each request (Default: 2000)
+     *  @param acceptHeader Allows for setting the value of the Accept header for SP 2013 support
      */
-    getAll(requestSize?: number): Promise<any[]>;
+    getAll(requestSize?: number, acceptHeader?: string): Promise<any[]>;
     /**
      * Adds a new item to the collection
      *
@@ -60,13 +55,19 @@ export declare class Items extends SharePointQueryableCollection {
      *
      * @param candidatelistItemEntityTypeFullName The potential type name
      */
-    private ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName);
+    private ensureListItemEntityTypeName;
 }
 /**
  * Descrines a single Item instance
  *
  */
 export declare class Item extends SharePointQueryableShareableItem {
+    /**
+     * Delete this item
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    delete: (eTag?: string) => Promise<void>;
     /**
      * Gets the set of attachments for this item
      *
@@ -141,12 +142,6 @@ export declare class Item extends SharePointQueryableShareableItem {
      */
     unlike(): Promise<void>;
     /**
-     * Delete this item
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    delete(eTag?: string): Promise<void>;
-    /**
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     recycle(): Promise<string>;
@@ -169,7 +164,7 @@ export declare class Item extends SharePointQueryableShareableItem {
      *
      * @param candidatelistItemEntityTypeFullName The potential type name
      */
-    private ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName);
+    private ensureListItemEntityTypeName;
 }
 export interface ItemAddResult {
     item: Item;
@@ -188,12 +183,6 @@ export interface ItemUpdateResultData {
  */
 export declare class ItemVersions extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the File class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
-    /**
      * Gets a version by id
      *
      * @param versionId The id of the version to retrieve
@@ -210,7 +199,7 @@ export declare class ItemVersion extends SharePointQueryableInstance {
     *
     * @param eTag Value used in the IF-Match header, by default "*"
     */
-    delete(): Promise<void>;
+    delete: (eTag?: string) => Promise<void>;
 }
 /**
  * Provides paging functionality for list items
@@ -227,5 +216,5 @@ export declare class PagedItemCollection<T> {
     /**
      * Gets the next set of results, or resolves to null if no results are available
      */
-    getNext(): Promise<PagedItemCollection<any>>;
+    getNext(): Promise<PagedItemCollection<T>>;
 }

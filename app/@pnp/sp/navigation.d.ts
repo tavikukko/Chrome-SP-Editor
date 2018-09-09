@@ -55,12 +55,6 @@ export declare class NavigationNode extends SharePointQueryableInstance {
  */
 export declare class Navigation extends SharePointQueryable {
     /**
-     * Creates a new instance of the Navigation class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of these navigation components
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
-    /**
      * Gets the quicklaunch navigation nodes for the current context
      *
      */

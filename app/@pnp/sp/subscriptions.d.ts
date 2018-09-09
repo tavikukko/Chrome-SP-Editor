@@ -1,15 +1,9 @@
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 /**
  * Describes a collection of webhook subscriptions
  *
  */
 export declare class Subscriptions extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the Subscriptions class
-     *
-     * @param baseUrl - The url or SharePointQueryable which forms the parent of this webhook subscriptions collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Returns all the webhook subscriptions or the specified webhook subscription
      *

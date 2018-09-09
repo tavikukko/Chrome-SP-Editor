@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/logging v1.1.4 - pnp - light-weight, subscribable logging framework
+ * @pnp/logging v1.2.1 - pnp - light-weight, subscribable logging framework
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -13,9 +13,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["pnp"] = factory();
+		exports["pnp.logging"] = factory();
 	else
-		root["pnp"] = factory();
+		root["pnp.logging"] = factory();
 })(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -141,7 +141,7 @@ var Logger = /** @class */ (function () {
     });
     Object.defineProperty(Logger, "instance", {
         get: function () {
-            if (typeof Logger._instance === "undefined" || Logger._instance === null) {
+            if (Logger._instance === undefined || Logger._instance === null) {
                 Logger._instance = new LoggerImpl();
             }
             return Logger._instance;
@@ -195,7 +195,7 @@ var Logger = /** @class */ (function () {
      */
     Logger.writeJSON = function (json, level) {
         if (level === void 0) { level = 1 /* Info */; }
-        Logger.instance.log({ level: level, message: JSON.stringify(json) });
+        this.write(JSON.stringify(json), level);
     };
     /**
      * Logs the supplied entry to the subscribed listeners
@@ -243,7 +243,7 @@ var LoggerImpl = /** @class */ (function () {
         this.log({ level: level, message: message });
     };
     LoggerImpl.prototype.log = function (entry) {
-        if (typeof entry !== "undefined" && this.activeLogLevel <= entry.level) {
+        if (entry !== undefined && this.activeLogLevel <= entry.level) {
             this.subscribers.map(function (subscriber) { return subscriber.log(entry); });
         }
     };
@@ -312,7 +312,7 @@ var ConsoleListener = /** @class */ (function () {
     ConsoleListener.prototype.format = function (entry) {
         var msg = [];
         msg.push("Message: " + entry.message);
-        if (typeof entry.data !== "undefined") {
+        if (entry.data !== undefined) {
             msg.push(" Data: " + JSON.stringify(entry.data));
         }
         return msg.join("");

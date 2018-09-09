@@ -9,6 +9,7 @@ export interface SharePointQueryableConstructor<T> {
  *
  */
 export declare class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, GetType> {
+    protected _forceCaching: boolean;
     /**
      * Creates a new instance of the SharePointQueryable class
      *
@@ -28,6 +29,18 @@ export declare class SharePointQueryable<GetType = any> extends ODataQueryable<S
      *
      */
     toUrlAndQuery(): string;
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    select(...selects: string[]): this;
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    expand(...expands: string[]): this;
     /**
      * Gets a parent for this instance as specified
      *
@@ -63,18 +76,6 @@ export declare class SharePointQueryableCollection<GetType = any[]> extends Shar
      */
     filter(filter: string): this;
     /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    select(...selects: string[]): this;
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    expand(...expands: string[]): this;
-    /**
      * Orders based on the supplied fields
      *
      * @param orderby The name of the field on which to sort
@@ -100,15 +101,29 @@ export declare class SharePointQueryableCollection<GetType = any[]> extends Shar
  */
 export declare class SharePointQueryableInstance extends SharePointQueryable {
     /**
-     * Choose which fields to return
+     * Curries the update function into the common pieces
      *
-     * @param selects One or more fields to return
+     * @param type
+     * @param mapper
      */
-    select(...selects: string[]): this;
+    protected _update<Return, Props = any, Data = any>(type: string, mapper: (data: Data, props: Props) => Return): (props: Props) => Promise<Return>;
     /**
-     * Expands fields such as lookups to get additional data
+    * Deletes this instance
+    *
+    */
+    protected _delete(): Promise<void>;
+    /**
+     * Deletes this instance with an etag value in the headers
      *
-     * @param expands The Fields for which to expand the values
+     * @param eTag eTag to delete
      */
-    expand(...expands: string[]): this;
+    protected _deleteWithETag(eTag?: string): Promise<void>;
 }
+/**
+ * Decorator used to specify the default path for SharePointQueryable objects
+ *
+ * @param path
+ */
+export declare function defaultPath(path: string): <T extends new (...args: any[]) => {}>(target: T) => {
+    new (...args: any[]): {};
+} & T;

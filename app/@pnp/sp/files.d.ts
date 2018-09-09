@@ -1,4 +1,4 @@
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 import { LimitedWebPartManager } from "./webparts";
 import { Item } from "./items";
 import { SharePointQueryableShareableFile } from "./sharepointqueryableshareable";
@@ -16,12 +16,6 @@ export interface ChunkedFileUploadProgressData {
  *
  */
 export declare class Files extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the Files class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets a File by filename
      *
@@ -239,12 +233,6 @@ export declare class File extends SharePointQueryableShareableFile {
  */
 export declare class Versions extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the File class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
-    /**
      * Gets a version by id
      *
      * @param versionId The id of the version to retrieve
@@ -296,12 +284,12 @@ export declare class Version extends SharePointQueryableInstance {
     *
     * @param eTag Value used in the IF-Match header, by default "*"
     */
-    delete(eTag?: string): Promise<void>;
+    delete: (eTag?: string) => Promise<void>;
 }
 export declare enum CheckinType {
     Minor = 0,
     Major = 1,
-    Overwrite = 2,
+    Overwrite = 2
 }
 export interface FileAddResult {
     file: File;
@@ -309,15 +297,15 @@ export interface FileAddResult {
 }
 export declare enum WebPartsPersonalizationScope {
     User = 0,
-    Shared = 1,
+    Shared = 1
 }
 export declare enum MoveOperations {
     Overwrite = 1,
-    AllowBrokenThickets = 8,
+    AllowBrokenThickets = 8
 }
 export declare enum TemplateFileType {
     StandardPage = 0,
     WikiPage = 1,
     FormPage = 2,
-    ClientSidePage = 3,
+    ClientSidePage = 3
 }

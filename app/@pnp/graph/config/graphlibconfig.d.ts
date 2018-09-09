@@ -14,9 +14,6 @@ export interface GraphConfigurationPart {
 export interface GraphConfiguration extends LibraryConfiguration, GraphConfigurationPart {
 }
 export declare function setup(config: GraphConfiguration): void;
-export declare class NoGraphClientAvailableException extends Error {
-    constructor(msg?: string);
-}
 export declare class GraphRuntimeConfigImpl {
     readonly headers: TypedHash<string>;
     readonly fetchClientFactory: () => HttpClientImpl;

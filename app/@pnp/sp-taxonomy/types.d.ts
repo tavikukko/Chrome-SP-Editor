@@ -1,6 +1,6 @@
 export declare enum StringMatchOption {
     StartsWith = 0,
-    ExactMatch = 1,
+    ExactMatch = 1
 }
 export interface TimeSpan {
     Days: number;
@@ -31,7 +31,7 @@ export declare enum ChangedItemType {
     TermSet = 2,
     Group = 3,
     TermStore = 4,
-    Site = 5,
+    Site = 5
 }
 export declare enum ChangedOperationType {
     Unknown = 0,
@@ -43,7 +43,7 @@ export declare enum ChangedOperationType {
     PathChange = 6,
     Merge = 7,
     ImportObject = 8,
-    Restore = 9,
+    Restore = 9
 }
 export interface ChangedItem {
     ChangedBy: string;

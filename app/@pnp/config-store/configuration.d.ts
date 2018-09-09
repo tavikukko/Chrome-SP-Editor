@@ -14,16 +14,13 @@ export interface IConfigurationProvider {
  *
  */
 export declare class Settings {
-    /**
-     * The settings currently stored in this instance
-     */
     private _settings;
     /**
      * Creates a new instance of the settings class
      *
      * @constructor
      */
-    constructor();
+    constructor(_settings?: Map<string, string>);
     /**
      * Adds a new single setting, or overwrites a previous setting with the same key
      *

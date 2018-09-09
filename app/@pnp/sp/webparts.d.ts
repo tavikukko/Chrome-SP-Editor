@@ -62,11 +62,4 @@ export declare class WebPartDefinition extends SharePointQueryableInstance {
     delete(): Promise<void>;
 }
 export declare class WebPart extends SharePointQueryableInstance {
-    /**
-     * Creates a new instance of the WebPart class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     * @param path Optional, if supplied will be appended to the supplied baseUrl
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
 }

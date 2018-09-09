@@ -1,13 +1,3 @@
-/**
- * Represents an exception with an HttpClient request
- *
- */
-export declare class ProcessHttpClientResponseException extends Error {
-    readonly status: number;
-    readonly statusText: string;
-    readonly data: any;
-    constructor(status: number, statusText: string, data: any);
-}
 export interface ODataParser<T> {
     hydrate?: (d: any) => T;
     parse(r: Response): Promise<T>;

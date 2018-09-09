@@ -16,23 +16,17 @@ import { Folder } from "./folders";
  */
 export declare class Lists extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the Lists class
+     * Gets a list from the collection by guid id
      *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
+     * @param id The Id of the list (GUID)
      */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
+    getById(id: string): List;
     /**
      * Gets a list from the collection by title
      *
      * @param title The title of the list
      */
     getByTitle(title: string): List;
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the list (GUID)
-     */
-    getById(id: string): List;
     /**
      * Adds a new list to the collection
      *

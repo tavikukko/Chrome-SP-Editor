@@ -1,11 +1,8 @@
-import { Dictionary, FetchOptions, ConfigOptions } from "@pnp/common";
+import { FetchOptions, ConfigOptions } from "@pnp/common";
 import { ODataParser } from "./parsers";
 import { ICachingOptions } from "./caching";
 import { ODataBatch } from "./odatabatch";
 import { RequestContext } from "./pipeline";
-export declare class AlreadyInBatchException extends Error {
-    constructor(msg?: string);
-}
 export declare abstract class Queryable<GetType> {
     /**
      * Additional options to be set before sending actual http request
@@ -14,7 +11,7 @@ export declare abstract class Queryable<GetType> {
     /**
      * Tracks the query parts of the url
      */
-    protected _query: Dictionary<string>;
+    protected _query: Map<string, string>;
     /**
      * Tracks the url as it is built
      */
@@ -52,7 +49,7 @@ export declare abstract class Queryable<GetType> {
      * Provides access to the query builder for this url
      *
      */
-    readonly query: Dictionary<string>;
+    readonly query: Map<string, string>;
     /**
      * Sets custom options for current object and all derived objects accessible via chaining
      *

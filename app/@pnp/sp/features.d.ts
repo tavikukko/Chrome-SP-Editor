@@ -1,21 +1,9 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 /**
  * Describes a collection of List objects
  *
  */
 export declare class Features extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the Lists class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the feature (GUID)
-     */
-    getById(id: string): Feature;
     /**
      * Adds a new list to the collection
      *
@@ -23,6 +11,12 @@ export declare class Features extends SharePointQueryableCollection {
      * @param force If true the feature activation will be forced
      */
     add(id: string, force?: boolean): Promise<FeatureAddResult>;
+    /**
+     * Gets a list from the collection by guid id
+     *
+     * @param id The Id of the feature (GUID)
+     */
+    getById(id: string): Feature;
     /**
      * Removes (deactivates) a feature from the collection
      *

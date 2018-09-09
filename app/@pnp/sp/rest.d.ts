@@ -1,4 +1,4 @@
-import { SearchQuery, SearchResults, SearchQueryBuilder } from "./search";
+import { SearchResults, SearchQueryInit } from "./search";
 import { SearchSuggestQuery, SearchSuggestResult } from "./searchsuggest";
 import { Site } from "./site";
 import { Web } from "./webs";
@@ -9,6 +9,7 @@ import { SPBatch } from "./batch";
 import { SocialMethods } from "./social";
 import { UtilityMethods } from "./utilities";
 import { SPConfiguration } from "./config/splibconfig";
+import { ICachingOptions } from "@pnp/odata";
 /**
  * Root of the SharePoint REST module
  */
@@ -47,7 +48,14 @@ export declare class SPRest {
      *
      * @param query The SearchQuery definition
      */
-    search(query: string | SearchQuery | SearchQueryBuilder): Promise<SearchResults>;
+    search(query: SearchQueryInit): Promise<SearchResults>;
+    /**
+     * Executes the provided search query, caching the results
+     *
+     * @param query The SearchQuery definition
+     * @param options The set of caching options used to store the results
+     */
+    searchWithCaching(query: SearchQueryInit, options?: ICachingOptions): Promise<SearchResults>;
     /**
      * Begins a site collection scoped REST request
      *
@@ -86,6 +94,6 @@ export declare class SPRest {
      * @param fm The factory method used to create the instance
      * @param path Optional additional path information to pass to the factory method
      */
-    private create<T>(fm, path?);
+    private create;
 }
 export declare const sp: SPRest;

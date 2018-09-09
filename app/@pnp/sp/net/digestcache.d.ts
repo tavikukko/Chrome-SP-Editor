@@ -1,5 +1,4 @@
 import { SPHttpClient } from "./sphttpclient";
-import { Dictionary } from "@pnp/common";
 export declare class CachedDigest {
     expiration: Date;
     value: string;
@@ -7,7 +6,7 @@ export declare class CachedDigest {
 export declare class DigestCache {
     private _httpClient;
     private _digests;
-    constructor(_httpClient: SPHttpClient, _digests?: Dictionary<CachedDigest>);
+    constructor(_httpClient: SPHttpClient, _digests?: Map<string, CachedDigest>);
     getDigest(webUrl: string): Promise<string>;
     clear(): void;
 }

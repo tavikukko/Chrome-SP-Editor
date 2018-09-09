@@ -1,4 +1,4 @@
-import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableInstance } from "./sharepointqueryable";
 import { Web } from "./webs";
 import { UserCustomActions } from "./usercustomactions";
 import { ContextInfo, DocumentLibraryInformation } from "./types";
@@ -9,12 +9,6 @@ import { Features } from "./features";
  *
  */
 export declare class Site extends SharePointQueryableInstance {
-    /**
-     * Creates a new instance of the Site class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this site collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets the root web of the site collection
      *

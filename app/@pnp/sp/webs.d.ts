@@ -1,5 +1,5 @@
 import { TypedHash } from "@pnp/common";
-import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableCollection } from "./sharepointqueryable";
 import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { Folders, Folder } from "./folders";
 import { Lists, List } from "./lists";
@@ -24,12 +24,6 @@ import { ClientSidePage, ClientSidePageComponent } from "./clientsidepages";
  */
 export declare class Webs extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the Webs class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, webPath?: string);
-    /**
      * Adds a new web to the collection
      *
      * @param title The new web's title
@@ -46,24 +40,12 @@ export declare class Webs extends SharePointQueryableCollection {
  *
  */
 export declare class WebInfos extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the WebInfos class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web infos collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, webPath?: string);
 }
 /**
  * Describes a web
  *
  */
 export declare class Web extends SharePointQueryableShareableWeb {
-    /**
-     * Creates a new instance of the Web class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Creates a new web instance from the given url by indexing the location of the /_api/
      * segment. If this is not found the method creates a new web with the entire string as

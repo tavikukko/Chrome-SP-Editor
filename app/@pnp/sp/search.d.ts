@@ -1,33 +1,29 @@
-import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
-import { Dictionary } from "@pnp/common";
-/**
- * Allows for the fluent construction of search queries
- */
-export declare class SearchQueryBuilder {
-    private _query;
-    constructor(queryText?: string, _query?: {});
-    static create(queryText?: string, queryTemplate?: SearchQuery): SearchQueryBuilder;
-    text(queryText: string): this;
-    template(template: string): this;
-    sourceId(id: string): this;
-    readonly enableInterleaving: this;
-    readonly enableStemming: this;
-    readonly trimDuplicates: this;
-    trimDuplicatesIncludeId(n: number): this;
-    readonly enableNicknames: this;
-    readonly enableFql: this;
-    readonly enablePhonetic: this;
+import { SharePointQueryableInstance } from "./sharepointqueryable";
+export interface ISearchQueryBuilder {
+    query: any;
     readonly bypassResultTypes: this;
+    readonly enableStemming: this;
+    readonly enableInterleaving: this;
+    readonly enableFql: this;
+    readonly enableNicknames: this;
+    readonly enablePhonetic: this;
+    readonly trimDuplicates: this;
     readonly processBestBets: this;
     readonly enableQueryRules: this;
     readonly enableSorting: this;
     readonly generateBlockRankLog: this;
-    rankingModelId(id: string): this;
-    startRow(n: number): this;
+    readonly processPersonalFavorites: this;
+    readonly enableOrderingHitHighlightedProperty: this;
+    culture(culture: number): this;
     rowLimit(n: number): this;
+    startRow(n: number): this;
+    sourceId(id: string): this;
+    text(queryText: string): this;
+    template(template: string): this;
+    trimDuplicatesIncludeId(n: number): this;
+    rankingModelId(id: string): this;
     rowsPerPage(n: number): this;
     selectProperties(...properties: string[]): this;
-    culture(culture: number): this;
     timeZoneId(id: number): this;
     refinementFilters(...filters: string[]): this;
     refiners(refiners: string): this;
@@ -40,42 +36,45 @@ export declare class SearchQueryBuilder {
     resultsURL(url: string): this;
     queryTag(...tags: string[]): this;
     properties(...properties: SearchProperty[]): this;
-    readonly processPersonalFavorites: this;
     queryTemplatePropertiesUrl(url: string): this;
     reorderingRules(...rules: ReorderingRule[]): this;
     hitHighlightedMultivaluePropertyLimit(limit: number): this;
-    readonly enableOrderingHitHighlightedProperty: this;
     collapseSpecification(spec: string): this;
     uiLanguage(lang: number): this;
     desiredSnippetLength(len: number): this;
     maxSnippetLength(len: number): this;
     summaryLength(len: number): this;
     toSearchQuery(): SearchQuery;
-    private extendQuery(part);
 }
+/**
+ * Creates a new instance of the SearchQueryBuilder
+ *
+ * @param queryText Initial query text
+ * @param _query Any initial query configuration
+ */
+export declare function SearchQueryBuilder(queryText?: string, _query?: {}): ISearchQueryBuilder;
+export declare type SearchQueryInit = string | SearchQuery | ISearchQueryBuilder;
 /**
  * Describes the search API
  *
  */
 export declare class Search extends SharePointQueryableInstance {
     /**
-     * Creates a new instance of the Search class
-     *
-     * @param baseUrl The url for the search context
-     * @param query The SearchQuery object to execute
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
-    /**
-     * .......
      * @returns Promise
      */
-    execute(query: SearchQuery): Promise<SearchResults>;
+    execute(queryInit: SearchQueryInit): Promise<SearchResults>;
     /**
      * Fixes up properties that expect to consist of a "results" collection when needed
      *
      * @param prop property to fixup for container struct
      */
-    private fixupProp(prop);
+    private fixupProp;
+    /**
+     * Translates one of the query initializers into a SearchQuery instance
+     *
+     * @param query
+     */
+    private parseQuery;
 }
 /**
  * Describes the SearchResults class, which returns the formatted and raw version of the query response
@@ -349,7 +348,7 @@ export interface SearchResponse {
     TriggeredRules?: any[];
 }
 export interface ResultTableCollection {
-    QueryErrors?: Dictionary<any>;
+    QueryErrors?: Map<string, any>;
     QueryId?: string;
     QueryRuleId?: string;
     CustomResults?: ResultTable;
@@ -426,7 +425,7 @@ export interface SearchPropertyValue {
 export declare enum SortDirection {
     Ascending = 0,
     Descending = 1,
-    FQLFormula = 2,
+    FQLFormula = 2
 }
 /**
  * Defines how ReorderingRule interface, used for reordering results
@@ -457,7 +456,7 @@ export declare enum ReorderingRuleMatchType {
     ContentTypeIs = 5,
     FileExtensionMatches = 6,
     ResultHasTag = 7,
-    ManualCondition = 8,
+    ManualCondition = 8
 }
 /**
  * Specifies the type value for the property
@@ -468,7 +467,7 @@ export declare enum QueryPropertyValueType {
     Int32Type = 2,
     BooleanType = 3,
     StringArrayType = 4,
-    UnSupportedType = 5,
+    UnSupportedType = 5
 }
 export declare class SearchBuiltInSourceId {
     static readonly Documents: string;

@@ -138,5 +138,5 @@ export declare class ClientSvcQueryable<GetType = any> extends Queryable<GetType
      * @param params Method parameters
      * @param queryAction Specifies the query action to take
      */
-    private invokeMethodImpl<T>(methodName, params, actions, queryAction, isAction?);
+    private invokeMethodImpl;
 }

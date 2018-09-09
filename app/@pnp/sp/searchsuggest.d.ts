@@ -1,8 +1,9 @@
-import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableInstance } from "./sharepointqueryable";
 /**
  * Defines a query execute against the search/suggest endpoint (see https://msdn.microsoft.com/en-us/library/office/dn194079.aspx)
  */
 export interface SearchSuggestQuery {
+    [key: string]: string | number | boolean;
     /**
      * A string that contains the text for the search query.
      */
@@ -53,20 +54,23 @@ export interface SearchSuggestQuery {
     prefixMatch?: boolean;
 }
 export declare class SearchSuggest extends SharePointQueryableInstance {
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     execute(query: SearchSuggestQuery): Promise<SearchSuggestResult>;
-    private mapQueryToQueryString(query);
+    private mapQueryToQueryString;
 }
-export declare class SearchSuggestResult {
-    PeopleNames: string[];
-    PersonalResults: PersonalResultSuggestion[];
-    Queries: any[];
-    constructor(json: any);
+export interface SearchSuggestResult {
+    readonly PeopleNames: string[];
+    readonly PersonalResults: PersonalResultSuggestion[];
+    readonly Queries: any[];
+}
+export interface ESearchSuggestResult {
+    readonly PeopleNames: string[];
+    readonly PersonalResults: PersonalResultSuggestion[];
+    readonly Queries: any[];
 }
 export interface PersonalResultSuggestion {
-    HighlightedTitle?: string;
-    IsBestBet?: boolean;
-    Title?: string;
-    TypeId?: string;
-    Url?: string;
+    readonly HighlightedTitle?: string;
+    readonly IsBestBet?: boolean;
+    readonly Title?: string;
+    readonly TypeId?: string;
+    readonly Url?: string;
 }

@@ -29,7 +29,7 @@ export declare class UtilityMethod extends SharePointQueryable implements Utilit
      * @param methodName The static method name to call on the utility class
      */
     constructor(baseUrl: string | SharePointQueryable, methodName: string);
-    private static getBaseUrl(candidate);
+    private static getBaseUrl;
     excute<T>(props: any): Promise<T>;
     /**
      * Sends an email based on the supplied properties

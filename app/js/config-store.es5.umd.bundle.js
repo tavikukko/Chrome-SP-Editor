@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/config-store v1.1.4 - pnp - provides a way to manage configuration within your application
+ * @pnp/config-store v1.2.1 - pnp - provides a way to manage configuration within your application
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -13,9 +13,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["pnp"] = factory();
+		exports["pnp.config-store"] = factory();
 	else
-		root["pnp"] = factory();
+		root["pnp.config-store"] = factory();
 })(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -79,7 +79,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -88,13 +88,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/* unused harmony export AdalClient */
-/* unused harmony export readBlobAsText */
-/* unused harmony export readBlobAsArrayBuffer */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Dictionary; });
-/* unused harmony export deprecatedClass */
-/* unused harmony export deprecated */
-/* unused harmony export beta */
-/* unused harmony export UrlException */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return objectToMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mergeMaps; });
 /* unused harmony export setup */
 /* unused harmony export RuntimeConfigImpl */
 /* unused harmony export RuntimeConfig */
@@ -103,10 +98,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* unused harmony export FetchClient */
 /* unused harmony export BearerTokenFetchClient */
 /* unused harmony export PnPClientStorageWrapper */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return PnPClientStorage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PnPClientStorage; });
 /* unused harmony export getCtxCallback */
 /* unused harmony export dateAdd */
-/* unused harmony export combinePaths */
+/* unused harmony export combine */
 /* unused harmony export getRandomString */
 /* unused harmony export getGUID */
 /* unused harmony export isFunc */
@@ -117,14 +112,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /* unused harmony export stringIsNullOrEmpty */
 /* unused harmony export getAttrValueFromString */
 /* unused harmony export sanitizeGuid */
-/* unused harmony export Util */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_logging__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_tslib__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_adal_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_adal_angular__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return jsS; });
+/* unused harmony export hOP */
+/* unused harmony export getHashCode */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_adal_angular_dist_adal_min_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_adal_angular_dist_adal_min_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_adal_angular_dist_adal_min_js__);
 /**
 @license
- * @pnp/common v1.1.4 - pnp - provides shared functionality across all pnp libraries
+ * @pnp/common v1.2.1 - pnp - provides shared functionality across all pnp libraries
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -134,61 +130,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-
-function deprecatedClass(deprecationVersion, message) {
-    return function (target) {
-        __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["a" /* Logger */].log({
-            data: {
-                target: target,
-            },
-            level: 2 /* Warning */,
-            message: "(" + deprecationVersion + ") " + message,
-        });
-    };
-}
-function deprecated(deprecationVersion, message) {
-    return function (target, propertyKey, descriptor) {
-        var method = descriptor.value;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["a" /* Logger */].log({
-                data: {
-                    descriptor: descriptor,
-                    propertyKey: propertyKey,
-                    target: target,
-                },
-                level: 2 /* Warning */,
-                message: "(" + deprecationVersion + ") " + message,
-            });
-            return method.apply(this, args);
-        };
-    };
-}
-function beta(message) {
-    if (message === void 0) { message = "This feature is flagged as beta and is subject to change."; }
-    return function (target, propertyKey, descriptor) {
-        var method = descriptor.value;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["a" /* Logger */].log({
-                data: {
-                    descriptor: descriptor,
-                    propertyKey: propertyKey,
-                    target: target,
-                },
-                level: 2 /* Warning */,
-                message: message,
-            });
-            return method.apply(this, args);
-        };
-    };
-}
+var global$1 = (typeof global !== "undefined" ? global :
+            typeof self !== "undefined" ? self :
+            typeof window !== "undefined" ? window : {});
 
 /**
  * Gets a callback function which will maintain context across async calls.
@@ -254,7 +198,7 @@ function dateAdd(date, interval, units) {
  *
  * @param paths 0 to n path parts to combine
  */
-function combinePaths() {
+function combine() {
     var paths = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         paths[_i] = arguments[_i];
@@ -331,15 +275,14 @@ function isArray(array) {
  */
 function extend(target, source, noOverwrite, filter) {
     if (noOverwrite === void 0) { noOverwrite = false; }
+    if (filter === void 0) { filter = function () { return true; }; }
     if (!objectDefinedNotNull(source)) {
         return target;
     }
     // ensure we don't overwrite things we don't want overwritten
     var check = noOverwrite ? function (o, i) { return !(i in o); } : function () { return true; };
-    // allow filtering of copied properties
-    var check2 = isFunc(filter) ? filter : function () { return true; };
     // final filter we will use
-    var f = function (v) { return check(target, v) && check2(v); };
+    var f = function (v) { return check(target, v) && filter(v); };
     return Object.getOwnPropertyNames(source)
         .filter(f)
         .reduce(function (t, v) {
@@ -361,7 +304,7 @@ function isUrlAbsolute(url) {
  * @param s The string to test
  */
 function stringIsNullOrEmpty(s) {
-    return typeof s === "undefined" || s === null || s.length < 1;
+    return s === undefined || s === null || s.length < 1;
 }
 /**
  * Gets an attribute value from an html/xml string block. NOTE: if the input attribute value has
@@ -389,100 +332,45 @@ function sanitizeGuid(guid) {
     var matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
     return matches === null ? guid : matches[1];
 }
-var Util = /** @class */ (function () {
-    function Util() {
+/**
+ * Shorthand for oToS
+ *
+ * @param o Any type of object
+ */
+function jsS(o) {
+    return JSON.stringify(o);
+}
+/**
+ * Shorthand for Object.hasOwnProperty
+ *
+ * @param o Object to check for
+ * @param p Name of the property
+ */
+function hOP(o, p) {
+    return Object.hasOwnProperty.call(o, p);
+}
+/**
+ * Generates a ~unique hash code for this ObjectPathQueue
+ *
+ * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
+ */
+// tslint:disable:no-bitwise
+function getHashCode(s) {
+    var hash = 0;
+    if (s.length === 0) {
+        return hash;
     }
-    /**
-     * Gets a callback function which will maintain context across async calls.
-     * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
-     *
-     * @param context The object that will be the 'this' value in the callback
-     * @param method The method to which we will apply the context and parameters
-     * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
-     */
-    Util.getCtxCallback = getCtxCallback;
-    /**
-     * Adds a value to a date
-     *
-     * @param date The date to which we will add units, done in local time
-     * @param interval The name of the interval to add, one of: ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second']
-     * @param units The amount to add to date of the given interval
-     *
-     * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
-     */
-    Util.dateAdd = dateAdd;
-    /**
-     * Combines an arbitrary set of paths ensuring and normalizes the slashes
-     *
-     * @param paths 0 to n path parts to combine
-     */
-    Util.combinePaths = combinePaths;
-    /**
-     * Gets a random string of chars length
-     *
-     * @param chars The length of the random string to generate
-     */
-    Util.getRandomString = getRandomString;
-    /**
-     * Gets a random GUID value
-     *
-     * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-     */
-    Util.getGUID = getGUID;
-    /**
-     * Determines if a given value is a function
-     *
-     * @param cf The thing to test for functionness
-     */
-    Util.isFunc = isFunc;
-    /**
-     * Determines if an object is both defined and not null
-     * @param obj Object to test
-     */
-    Util.objectDefinedNotNull = objectDefinedNotNull;
-    /**
-     * @returns whether the provided parameter is a JavaScript Array or not.
-    */
-    Util.isArray = isArray;
-    /**
-     * Provides functionality to extend the given object by doing a shallow copy
-     *
-     * @param target The object to which properties will be copied
-     * @param source The source object from which properties will be copied
-     * @param noOverwrite If true existing properties on the target are not overwritten from the source
-     *
-     */
-    Util.extend = extend;
-    /**
-     * Determines if a given url is absolute
-     *
-     * @param url The url to check to see if it is absolute
-     */
-    Util.isUrlAbsolute = isUrlAbsolute;
-    /**
-     * Determines if a string is null or empty or undefined
-     *
-     * @param s The string to test
-     */
-    Util.stringIsNullOrEmpty = stringIsNullOrEmpty;
-    /**
-     * Gets an attribute value from an html/xml string block
-     *
-     * @param html HTML to search
-     * @param attrName The name of the attribute to find
-     */
-    Util.getAttrValueFromString = getAttrValueFromString;
-    /**
-     * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
-     *
-     * @param guid The candidate guid id
-     */
-    Util.sanitizeGuid = sanitizeGuid;
-    return Util;
-}());
+    for (var i = 0; i < s.length; i++) {
+        var chr = s.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+}
+// tslint:enable:no-bitwise
 
 function mergeHeaders(target, source) {
-    if (typeof source !== "undefined" && source !== null) {
+    if (source !== undefined && source !== null) {
         var temp = new Request("", { headers: source });
         temp.headers.forEach(function (value, name) {
             target.append(name, value);
@@ -503,7 +391,7 @@ var FetchClient = /** @class */ (function () {
     function FetchClient() {
     }
     FetchClient.prototype.fetch = function (url, options) {
-        return global.fetch(url, options);
+        return global$1.fetch(url, options);
     };
     return FetchClient;
 }());
@@ -511,7 +399,7 @@ var FetchClient = /** @class */ (function () {
  * Makes requests using the fetch API adding the supplied token to the Authorization header
  */
 var BearerTokenFetchClient = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["a" /* __extends */])(BearerTokenFetchClient, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */])(BearerTokenFetchClient, _super);
     function BearerTokenFetchClient(_token) {
         var _this = _super.call(this) || this;
         _this._token = _token;
@@ -542,7 +430,7 @@ var BearerTokenFetchClient = /** @class */ (function (_super) {
  * Azure AD Client for use in the browser
  */
 var AdalClient = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["a" /* __extends */])(AdalClient, _super);
+    Object(__WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */])(AdalClient, _super);
     /**
      * Creates a new instance of AdalClient
      * @param clientId Azure App Id
@@ -569,7 +457,7 @@ var AdalClient = /** @class */ (function (_super) {
         if (cliendId === void 0) { cliendId = "c58637bb-e2e1-4312-8a00-04b5ffcd3403"; }
         // this "magic" client id is the one to which permissions are granted behind the scenes
         // this redirectUrl is the page as used by spfx
-        return new AdalClient(cliendId, spfxContext.pageContext.aadInfo.tenantId.toString(), combinePaths(window.location.origin, "/_forms/spfxsinglesignon.aspx"));
+        return new AdalClient(cliendId, spfxContext.pageContext.aadInfo.tenantId.toString(), combine(window.location.origin, "/_forms/spfxsinglesignon.aspx"));
     };
     /**
      * Conducts the fetch opertation against the AAD secured resource
@@ -613,7 +501,7 @@ var AdalClient = /** @class */ (function (_super) {
         var _this = this;
         return new Promise(function (resolve) {
             if (AdalClient._authContext === null) {
-                AdalClient._authContext = Object(__WEBPACK_IMPORTED_MODULE_2_adal_angular__["inject"])({
+                AdalClient._authContext = Object(__WEBPACK_IMPORTED_MODULE_1_adal_angular_dist_adal_min_js__["inject"])({
                     clientId: _this.clientId,
                     displayCall: function (url) {
                         if (_this._displayCallback) {
@@ -693,242 +581,111 @@ var AdalClient = /** @class */ (function (_super) {
 }(BearerTokenFetchClient));
 
 /**
- * Reads a blob as text
- *
- * @param blob The data to read
+ * Used to calculate the object properties, with polyfill if needed
  */
-function readBlobAsText(blob) {
-    return readBlobAs(blob, "string");
-}
+var objectEntries = isFunc(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
 /**
- * Reads a blob into an array buffer
+ * Converts the supplied object to a map
  *
- * @param blob The data to read
+ * @param o The object to map
  */
-function readBlobAsArrayBuffer(blob) {
-    return readBlobAs(blob, "buffer");
-}
-/**
- * Generic method to read blob's content
- *
- * @param blob The data to read
- * @param mode The read mode
- */
-function readBlobAs(blob, mode) {
-    return new Promise(function (resolve, reject) {
-        try {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                resolve(e.target.result);
-            };
-            switch (mode) {
-                case "string":
-                    reader.readAsText(blob);
-                    break;
-                case "buffer":
-                    reader.readAsArrayBuffer(blob);
-                    break;
-            }
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
-}
-
-/**
- * Generic dictionary
- */
-var Dictionary = /** @class */ (function () {
-    /**
-     * Creates a new instance of the Dictionary<T> class
-     *
-     * @constructor
-     */
-    function Dictionary(keys, values) {
-        if (keys === void 0) { keys = []; }
-        if (values === void 0) { values = []; }
-        this.keys = keys;
-        this.values = values;
+function objectToMap(o) {
+    if (o !== undefined && o !== null) {
+        return new Map(objectEntries(o));
     }
-    /**
-     * Gets a value from the collection using the specified key
-     *
-     * @param key The key whose value we want to return, returns null if the key does not exist
-     */
-    Dictionary.prototype.get = function (key) {
-        var index = this.keys.indexOf(key);
-        if (index < 0) {
-            return null;
-        }
-        return this.values[index];
-    };
-    /**
-     * Adds the supplied key and value to the dictionary
-     *
-     * @param key The key to add
-     * @param o The value to add
-     */
-    Dictionary.prototype.add = function (key, o) {
-        var index = this.keys.indexOf(key);
-        if (index > -1) {
-            if (o === null) {
-                this.remove(key);
-            }
-            else {
-                this.values[index] = o;
-            }
-        }
-        else {
-            if (o !== null) {
-                this.keys.push(key);
-                this.values.push(o);
-            }
-        }
-    };
-    /**
-     * Merges the supplied typed hash into this dictionary instance. Existing values are updated and new ones are created as appropriate.
-     */
-    Dictionary.prototype.merge = function (source) {
-        var _this = this;
-        if ("getKeys" in source) {
-            var sourceAsDictionary_1 = source;
-            sourceAsDictionary_1.getKeys().map(function (key) {
-                _this.add(key, sourceAsDictionary_1.get(key));
-            });
-        }
-        else {
-            var sourceAsHash = source;
-            for (var key in sourceAsHash) {
-                if (sourceAsHash.hasOwnProperty(key)) {
-                    this.add(key, sourceAsHash[key]);
-                }
-            }
-        }
-    };
-    /**
-     * Removes a value from the dictionary
-     *
-     * @param key The key of the key/value pair to remove. Returns null if the key was not found.
-     */
-    Dictionary.prototype.remove = function (key) {
-        var index = this.keys.indexOf(key);
-        if (index < 0) {
-            return null;
-        }
-        var val = this.values[index];
-        this.keys.splice(index, 1);
-        this.values.splice(index, 1);
-        return val;
-    };
-    /**
-     * Returns all the keys currently in the dictionary as an array
-     */
-    Dictionary.prototype.getKeys = function () {
-        return this.keys;
-    };
-    /**
-     * Returns all the values currently in the dictionary as an array
-     */
-    Dictionary.prototype.getValues = function () {
-        return this.values;
-    };
-    /**
-     * Clears the current dictionary
-     */
-    Dictionary.prototype.clear = function () {
-        this.keys = [];
-        this.values = [];
-    };
-    Object.defineProperty(Dictionary.prototype, "count", {
-        /**
-         * Gets a count of the items currently in the dictionary
-         */
-        get: function () {
-            return this.keys.length;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return Dictionary;
-}());
-
-var UrlException = /** @class */ (function (_super) {
-    Object(__WEBPACK_IMPORTED_MODULE_1_tslib__["a" /* __extends */])(UrlException, _super);
-    function UrlException(msg) {
-        var _this = _super.call(this, msg) || this;
-        _this.name = "UrlException";
-        __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["a" /* Logger */].log({ data: {}, level: 3 /* Error */, message: "[" + _this.name + "]::" + _this.message });
-        return _this;
+    return new Map();
+}
+/**
+ * Merges to Map instances together, overwriting values in target with matching keys, last in wins
+ *
+ * @param target map into which the other maps are merged
+ * @param maps One or more maps to merge into the target
+ */
+function mergeMaps(target) {
+    var maps = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        maps[_i - 1] = arguments[_i];
     }
-    return UrlException;
-}(Error));
+    for (var i = 0; i < maps.length; i++) {
+        maps[i].forEach(function (v, k) {
+            target.set(k, v);
+        });
+    }
+    return target;
+}
 
 function setup(config) {
     RuntimeConfig.extend(config);
 }
+// lable mapping for known config values
+var s = [
+    "defaultCachingStore",
+    "defaultCachingTimeoutSeconds",
+    "globalCacheDisable",
+    "enableCacheExpiration",
+    "cacheExpirationIntervalMilliseconds",
+    "spfxContext",
+];
 var RuntimeConfigImpl = /** @class */ (function () {
-    function RuntimeConfigImpl() {
-        this._v = new Dictionary();
+    function RuntimeConfigImpl(_v) {
+        if (_v === void 0) { _v = new Map(); }
+        this._v = _v;
         // setup defaults
-        this._v.add("defaultCachingStore", "session");
-        this._v.add("defaultCachingTimeoutSeconds", 60);
-        this._v.add("globalCacheDisable", false);
-        this._v.add("enableCacheExpiration", false);
-        this._v.add("cacheExpirationIntervalMilliseconds", 750);
-        this._v.add("spfxContext", null);
+        this._v.set(s[0], "session");
+        this._v.set(s[1], 60);
+        this._v.set(s[2], false);
+        this._v.set(s[3], false);
+        this._v.set(s[4], 750);
+        this._v.set(s[5], null);
     }
     /**
      *
      * @param config The set of properties to add to the globa configuration instance
      */
     RuntimeConfigImpl.prototype.extend = function (config) {
-        var _this = this;
-        Object.keys(config).forEach(function (key) {
-            _this._v.add(key, config[key]);
-        });
+        this._v = mergeMaps(this._v, objectToMap(config));
     };
     RuntimeConfigImpl.prototype.get = function (key) {
         return this._v.get(key);
     };
     Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingStore", {
         get: function () {
-            return this.get("defaultCachingStore");
+            return this.get(s[0]);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingTimeoutSeconds", {
         get: function () {
-            return this.get("defaultCachingTimeoutSeconds");
+            return this.get(s[1]);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(RuntimeConfigImpl.prototype, "globalCacheDisable", {
         get: function () {
-            return this.get("globalCacheDisable");
+            return this.get(s[2]);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(RuntimeConfigImpl.prototype, "enableCacheExpiration", {
         get: function () {
-            return this.get("enableCacheExpiration");
+            return this.get(s[3]);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(RuntimeConfigImpl.prototype, "cacheExpirationIntervalMilliseconds", {
         get: function () {
-            return this.get("cacheExpirationIntervalMilliseconds");
+            return this.get(s[4]);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(RuntimeConfigImpl.prototype, "spfxContext", {
         get: function () {
-            return this.get("spfxContext");
+            return this.get(s[5]);
         },
         enumerable: true,
         configurable: true
@@ -956,7 +713,6 @@ var PnPClientStorageWrapper = /** @class */ (function () {
         // if the cache timeout is enabled call the handler
         // this will clear any expired items and set the timeout function
         if (RuntimeConfig.enableCacheExpiration) {
-            __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["a" /* Logger */].write("Enabling cache expiration.", 1 /* Info */);
             this.cacheExpirationHandler();
         }
     }
@@ -970,12 +726,11 @@ var PnPClientStorageWrapper = /** @class */ (function () {
             return null;
         }
         var o = this.store.getItem(key);
-        if (o == null) {
+        if (!objectDefinedNotNull(o)) {
             return null;
         }
         var persistable = JSON.parse(o);
         if (new Date(persistable.expiration) <= new Date()) {
-            __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["a" /* Logger */].write("Removing item with key '" + key + "' from cache due to expiration.", 1 /* Info */);
             this.delete(key);
             return null;
         }
@@ -1061,7 +816,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
      * Used to determine if the wrapped storage is available currently
      */
     PnPClientStorageWrapper.prototype.test = function () {
-        var str = "test";
+        var str = "t";
         try {
             this.store.setItem(str, str);
             this.store.removeItem(str);
@@ -1075,7 +830,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
      * Creates the persistable to store
      */
     PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
-        if (typeof expire === "undefined") {
+        if (expire === undefined) {
             // ensure we are by default inline with the global library setting
             var defaultTimeout = RuntimeConfig.defaultCachingTimeoutSeconds;
             if (this.defaultTimeoutMinutes > 0) {
@@ -1083,24 +838,18 @@ var PnPClientStorageWrapper = /** @class */ (function () {
             }
             expire = dateAdd(new Date(), "second", defaultTimeout);
         }
-        return JSON.stringify({ pnp: 1, expiration: expire, value: o });
+        return jsS({ pnp: 1, expiration: expire, value: o });
     };
     /**
      * Deletes expired items added by this library in this.store and sets a timeout to call itself
      */
     PnPClientStorageWrapper.prototype.cacheExpirationHandler = function () {
         var _this = this;
-        __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["a" /* Logger */].write("Called cache expiration handler.", 0 /* Verbose */);
         this.deleteExpired().then(function (_) {
             // call ourself in the future
             setTimeout(getCtxCallback(_this, _this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
         }).catch(function (e) {
-            // we've got some error - so just stop the loop and report the error
-            __WEBPACK_IMPORTED_MODULE_0__pnp_logging__["a" /* Logger */].log({
-                data: e,
-                level: 3 /* Error */,
-                message: "Error deleting expired cache entries, see data for details. Timeout not reset.",
-            });
+            console.error(e);
         });
     };
     return PnPClientStorageWrapper;
@@ -1110,12 +859,12 @@ var PnPClientStorageWrapper = /** @class */ (function () {
  */
 var MemoryStorage = /** @class */ (function () {
     function MemoryStorage(_store) {
-        if (_store === void 0) { _store = new Dictionary(); }
+        if (_store === void 0) { _store = new Map(); }
         this._store = _store;
     }
     Object.defineProperty(MemoryStorage.prototype, "length", {
         get: function () {
-            return this._store.count;
+            return this._store.size;
         },
         enumerable: true,
         configurable: true
@@ -1127,13 +876,13 @@ var MemoryStorage = /** @class */ (function () {
         return this._store.get(key);
     };
     MemoryStorage.prototype.key = function (index) {
-        return this._store.getKeys()[index];
+        return Array.from(this._store)[index][0];
     };
     MemoryStorage.prototype.removeItem = function (key) {
-        this._store.remove(key);
+        this._store.delete(key);
     };
     MemoryStorage.prototype.setItem = function (key, data) {
-        this._store.add(key, data);
+        this._store.set(key, data);
     };
     return MemoryStorage;
 }());
@@ -1158,7 +907,7 @@ var PnPClientStorage = /** @class */ (function () {
          */
         get: function () {
             if (this._local === null) {
-                this._local = typeof localStorage !== "undefined" ? new PnPClientStorageWrapper(localStorage) : new PnPClientStorageWrapper(new MemoryStorage());
+                this._local = this.getStore("local");
             }
             return this._local;
         },
@@ -1171,254 +920,247 @@ var PnPClientStorage = /** @class */ (function () {
          */
         get: function () {
             if (this._session === null) {
-                this._session = typeof sessionStorage !== "undefined" ? new PnPClientStorageWrapper(sessionStorage) : new PnPClientStorageWrapper(new MemoryStorage());
+                this._session = this.getStore("session");
             }
             return this._session;
         },
         enumerable: true,
         configurable: true
     });
+    PnPClientStorage.prototype.getStore = function (name) {
+        if (name === "local") {
+            return new PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
+        }
+        return new PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
+    };
     return PnPClientStorage;
 }());
 
 
 //# sourceMappingURL=common.es5.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(5)))
 
 /***/ }),
 /* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Logger; });
-/* unused harmony export LogLevel */
-/* unused harmony export ConsoleListener */
-/* unused harmony export FunctionListener */
-/**
-@license
- * @pnp/logging v1.1.4 - pnp - light-weight, subscribable logging framework
- * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
- * Copyright (c) 2018 Microsoft
- * docs: https://pnp.github.io/pnpjs/
- * source: https:github.com/pnp/pnpjs
- * bugs: https://github.com/pnp/pnpjs/issues
- */
-/**
- * Class used to subscribe ILogListener and log messages throughout an application
- *
- */
-var Logger = /** @class */ (function () {
-    function Logger() {
-    }
-    Object.defineProperty(Logger, "activeLogLevel", {
-        /**
-         * Gets or sets the active log level to apply for log filtering
-         */
-        get: function () {
-            return Logger.instance.activeLogLevel;
-        },
-        set: function (value) {
-            Logger.instance.activeLogLevel = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Logger, "instance", {
-        get: function () {
-            if (typeof Logger._instance === "undefined" || Logger._instance === null) {
-                Logger._instance = new LoggerImpl();
-            }
-            return Logger._instance;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Adds ILogListener instances to the set of subscribed listeners
-     *
-     * @param listeners One or more listeners to subscribe to this log
-     */
-    Logger.subscribe = function () {
-        var listeners = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            listeners[_i] = arguments[_i];
-        }
-        listeners.map(function (listener) { return Logger.instance.subscribe(listener); });
-    };
-    /**
-     * Clears the subscribers collection, returning the collection before modifiction
-     */
-    Logger.clearSubscribers = function () {
-        return Logger.instance.clearSubscribers();
-    };
-    Object.defineProperty(Logger, "count", {
-        /**
-         * Gets the current subscriber count
-         */
-        get: function () {
-            return Logger.instance.count;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Writes the supplied string to the subscribed listeners
-     *
-     * @param message The message to write
-     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
-     */
-    Logger.write = function (message, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        Logger.instance.log({ level: level, message: message });
-    };
-    /**
-     * Writes the supplied string to the subscribed listeners
-     *
-     * @param json The json object to stringify and write
-     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
-     */
-    Logger.writeJSON = function (json, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        Logger.instance.log({ level: level, message: JSON.stringify(json) });
-    };
-    /**
-     * Logs the supplied entry to the subscribed listeners
-     *
-     * @param entry The message to log
-     */
-    Logger.log = function (entry) {
-        Logger.instance.log(entry);
-    };
-    /**
-     * Logs an error object to the subscribed listeners
-     *
-     * @param err The error object
-     */
-    Logger.error = function (err) {
-        Logger.instance.log({ data: err, level: 3 /* Error */, message: err.message });
-    };
-    return Logger;
-}());
-var LoggerImpl = /** @class */ (function () {
-    function LoggerImpl(activeLogLevel, subscribers) {
-        if (activeLogLevel === void 0) { activeLogLevel = 2 /* Warning */; }
-        if (subscribers === void 0) { subscribers = []; }
-        this.activeLogLevel = activeLogLevel;
-        this.subscribers = subscribers;
-    }
-    LoggerImpl.prototype.subscribe = function (listener) {
-        this.subscribers.push(listener);
-    };
-    LoggerImpl.prototype.clearSubscribers = function () {
-        var s = this.subscribers.slice(0);
-        this.subscribers.length = 0;
-        return s;
-    };
-    Object.defineProperty(LoggerImpl.prototype, "count", {
-        get: function () {
-            return this.subscribers.length;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    LoggerImpl.prototype.write = function (message, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        this.log({ level: level, message: message });
-    };
-    LoggerImpl.prototype.log = function (entry) {
-        if (typeof entry !== "undefined" && this.activeLogLevel <= entry.level) {
-            this.subscribers.map(function (subscriber) { return subscriber.log(entry); });
-        }
-    };
-    return LoggerImpl;
-}());
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_common__ = __webpack_require__(0);
 
 /**
- * A set of logging levels
- */
-var LogLevel;
-(function (LogLevel) {
-    LogLevel[LogLevel["Verbose"] = 0] = "Verbose";
-    LogLevel[LogLevel["Info"] = 1] = "Info";
-    LogLevel[LogLevel["Warning"] = 2] = "Warning";
-    LogLevel[LogLevel["Error"] = 3] = "Error";
-    LogLevel[LogLevel["Off"] = 99] = "Off";
-})(LogLevel || (LogLevel = {}));
-
-/**
- * Implementation of LogListener which logs to the console
+ * A caching provider which can wrap other non-caching providers
  *
  */
-var ConsoleListener = /** @class */ (function () {
-    function ConsoleListener() {
-    }
+var CachingConfigurationProvider = /** @class */ (function () {
     /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
-    ConsoleListener.prototype.log = function (entry) {
-        var msg = this.format(entry);
-        switch (entry.level) {
-            case 0 /* Verbose */:
-            case 1 /* Info */:
-                console.log(msg);
-                break;
-            case 2 /* Warning */:
-                console.warn(msg);
-                break;
-            case 3 /* Error */:
-                console.error(msg);
-                break;
-        }
-    };
-    /**
-     * Formats the message
-     *
-     * @param entry The information to format into a string
-     */
-    ConsoleListener.prototype.format = function (entry) {
-        var msg = [];
-        msg.push("Message: " + entry.message);
-        if (typeof entry.data !== "undefined") {
-            msg.push(" Data: " + JSON.stringify(entry.data));
-        }
-        return msg.join("");
-    };
-    return ConsoleListener;
-}());
-/**
- * Implementation of LogListener which logs to the supplied function
- *
- */
-var FunctionListener = /** @class */ (function () {
-    /**
-     * Creates a new instance of the FunctionListener class
-     *
+     * Creates a new caching configuration provider
      * @constructor
-     * @param  method The method to which any logging data will be passed
+     * @param {IConfigurationProvider} wrappedProvider Provider which will be used to fetch the configuration
+     * @param {string} cacheKey Key that will be used to store cached items to the cache
+     * @param {IPnPClientStore} cacheStore OPTIONAL storage, which will be used to store cached settings.
      */
-    function FunctionListener(method) {
-        this.method = method;
+    function CachingConfigurationProvider(wrappedProvider, cacheKey, cacheStore) {
+        this.wrappedProvider = wrappedProvider;
+        this.cacheKey = cacheKey;
+        this.wrappedProvider = wrappedProvider;
+        this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
     }
     /**
-     * Any associated data that a given logging listener may choose to log or ignore
+     * Gets the wrapped configuration providers
      *
-     * @param entry The information to be logged
+     * @return {IConfigurationProvider} Wrapped configuration provider
      */
-    FunctionListener.prototype.log = function (entry) {
-        this.method(entry);
+    CachingConfigurationProvider.prototype.getWrappedProvider = function () {
+        return this.wrappedProvider;
     };
-    return FunctionListener;
+    /**
+     * Loads the configuration values either from the cache or from the wrapped provider
+     *
+     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
+     */
+    CachingConfigurationProvider.prototype.getConfiguration = function () {
+        var _this = this;
+        // Cache not available, pass control to the wrapped provider
+        if ((!this.store) || (!this.store.enabled)) {
+            return this.wrappedProvider.getConfiguration();
+        }
+        return this.store.getOrPut(this.cacheKey, function () {
+            return _this.wrappedProvider.getConfiguration().then(function (providedConfig) {
+                _this.store.put(_this.cacheKey, providedConfig);
+                return providedConfig;
+            });
+        });
+    };
+    CachingConfigurationProvider.prototype.selectPnPCache = function () {
+        var pnpCache = new __WEBPACK_IMPORTED_MODULE_0__pnp_common__["a" /* PnPClientStorage */]();
+        if ((pnpCache.local) && (pnpCache.local.enabled)) {
+            return pnpCache.local;
+        }
+        if ((pnpCache.session) && (pnpCache.session.enabled)) {
+            return pnpCache.session;
+        }
+        throw new Error("Cannot create a caching configuration provider since cache is not available.");
+    };
+    return CachingConfigurationProvider;
 }());
-
-
-//# sourceMappingURL=logging.es5.js.map
-
+/* harmony default export */ __webpack_exports__["a"] = (CachingConfigurationProvider);
+//# sourceMappingURL=cachingConfigurationProvider.js.map
 
 /***/ }),
 /* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_configstore__ = __webpack_require__(3);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Settings", function() { return __WEBPACK_IMPORTED_MODULE_0__src_configstore__["c"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "CachingConfigurationProvider", function() { return __WEBPACK_IMPORTED_MODULE_0__src_configstore__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SPListConfigurationProvider", function() { return __WEBPACK_IMPORTED_MODULE_0__src_configstore__["b"]; });
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__configuration__ = __webpack_require__(4);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__configuration__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_index__ = __webpack_require__(8);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__providers_index__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__providers_index__["b"]; });
+
+
+//# sourceMappingURL=configstore.js.map
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Settings; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_common__ = __webpack_require__(0);
+
+/**
+ * Class used to manage the current application settings
+ *
+ */
+var Settings = /** @class */ (function () {
+    /**
+     * Creates a new instance of the settings class
+     *
+     * @constructor
+     */
+    function Settings(_settings) {
+        if (_settings === void 0) { _settings = new Map(); }
+        this._settings = _settings;
+    }
+    /**
+     * Adds a new single setting, or overwrites a previous setting with the same key
+     *
+     * @param {string} key The key used to store this setting
+     * @param {string} value The setting value to store
+     */
+    Settings.prototype.add = function (key, value) {
+        this._settings.set(key, value);
+    };
+    /**
+     * Adds a JSON value to the collection as a string, you must use getJSON to rehydrate the object when read
+     *
+     * @param {string} key The key used to store this setting
+     * @param {any} value The setting value to store
+     */
+    Settings.prototype.addJSON = function (key, value) {
+        this._settings.set(key, Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["b" /* jsS */])(value));
+    };
+    /**
+     * Applies the supplied hash to the setting collection overwriting any existing value, or created new values
+     *
+     * @param {TypedHash<any>} hash The set of values to add
+     */
+    Settings.prototype.apply = function (hash) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            try {
+                _this._settings = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["c" /* mergeMaps */])(_this._settings, Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["d" /* objectToMap */])(hash));
+                resolve();
+            }
+            catch (e) {
+                reject(e);
+            }
+        });
+    };
+    /**
+     * Loads configuration settings into the collection from the supplied provider and returns a Promise
+     *
+     * @param {IConfigurationProvider} provider The provider from which we will load the settings
+     */
+    Settings.prototype.load = function (provider) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            provider.getConfiguration().then(function (value) {
+                _this._settings = Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["c" /* mergeMaps */])(_this._settings, Object(__WEBPACK_IMPORTED_MODULE_0__pnp_common__["d" /* objectToMap */])(value));
+                resolve();
+            }).catch(reject);
+        });
+    };
+    /**
+     * Gets a value from the configuration
+     *
+     * @param {string} key The key whose value we want to return. Returns null if the key does not exist
+     * @return {string} string value from the configuration
+     */
+    Settings.prototype.get = function (key) {
+        return this._settings.get(key);
+    };
+    /**
+     * Gets a JSON value, rehydrating the stored string to the original object
+     *
+     * @param {string} key The key whose value we want to return. Returns null if the key does not exist
+     * @return {any} object from the configuration
+     */
+    Settings.prototype.getJSON = function (key) {
+        var o = this.get(key);
+        if (o === undefined || o === null) {
+            return o;
+        }
+        return JSON.parse(o);
+    };
+    return Settings;
+}());
+
+//# sourceMappingURL=configuration.js.map
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1630,2216 +1372,32 @@ function __importDefault(mod) {
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_common__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__exceptions__ = __webpack_require__(4);
-
-
-/**
- * A caching provider which can wrap other non-caching providers
- *
- */
-var CachingConfigurationProvider = /** @class */ (function () {
-    /**
-     * Creates a new caching configuration provider
-     * @constructor
-     * @param {IConfigurationProvider} wrappedProvider Provider which will be used to fetch the configuration
-     * @param {string} cacheKey Key that will be used to store cached items to the cache
-     * @param {IPnPClientStore} cacheStore OPTIONAL storage, which will be used to store cached settings.
-     */
-    function CachingConfigurationProvider(wrappedProvider, cacheKey, cacheStore) {
-        this.wrappedProvider = wrappedProvider;
-        this.cacheKey = cacheKey;
-        this.wrappedProvider = wrappedProvider;
-        this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
-    }
-    /**
-     * Gets the wrapped configuration providers
-     *
-     * @return {IConfigurationProvider} Wrapped configuration provider
-     */
-    CachingConfigurationProvider.prototype.getWrappedProvider = function () {
-        return this.wrappedProvider;
-    };
-    /**
-     * Loads the configuration values either from the cache or from the wrapped provider
-     *
-     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
-     */
-    CachingConfigurationProvider.prototype.getConfiguration = function () {
-        var _this = this;
-        // Cache not available, pass control to the wrapped provider
-        if ((!this.store) || (!this.store.enabled)) {
-            return this.wrappedProvider.getConfiguration();
-        }
-        return this.store.getOrPut(this.cacheKey, function () {
-            return _this.wrappedProvider.getConfiguration().then(function (providedConfig) {
-                _this.store.put(_this.cacheKey, providedConfig);
-                return providedConfig;
-            });
-        });
-    };
-    CachingConfigurationProvider.prototype.selectPnPCache = function () {
-        var pnpCache = new __WEBPACK_IMPORTED_MODULE_0__pnp_common__["b" /* PnPClientStorage */]();
-        if ((pnpCache.local) && (pnpCache.local.enabled)) {
-            return pnpCache.local;
-        }
-        if ((pnpCache.session) && (pnpCache.session.enabled)) {
-            return pnpCache.session;
-        }
-        throw new __WEBPACK_IMPORTED_MODULE_1__exceptions__["a" /* NoCacheAvailableException */]();
-    };
-    return CachingConfigurationProvider;
-}());
-/* harmony default export */ __webpack_exports__["a"] = (CachingConfigurationProvider);
-//# sourceMappingURL=cachingConfigurationProvider.js.map
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NoCacheAvailableException; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pnp_logging__ = __webpack_require__(1);
-
-
-var NoCacheAvailableException = /** @class */ (function (_super) {
-    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](NoCacheAvailableException, _super);
-    function NoCacheAvailableException(msg) {
-        if (msg === void 0) { msg = "Cannot create a caching configuration provider since cache is not available."; }
-        var _this = _super.call(this, msg) || this;
-        _this.name = "NoCacheAvailableException";
-        __WEBPACK_IMPORTED_MODULE_1__pnp_logging__["a" /* Logger */].log({ data: {}, level: 3 /* Error */, message: "[" + _this.name + "]::" + _this.message });
-        return _this;
-    }
-    return NoCacheAvailableException;
-}(Error));
-
-//# sourceMappingURL=exceptions.js.map
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_configstore__ = __webpack_require__(6);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Settings", function() { return __WEBPACK_IMPORTED_MODULE_0__src_configstore__["d"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "CachingConfigurationProvider", function() { return __WEBPACK_IMPORTED_MODULE_0__src_configstore__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SPListConfigurationProvider", function() { return __WEBPACK_IMPORTED_MODULE_0__src_configstore__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "NoCacheAvailableException", function() { return __WEBPACK_IMPORTED_MODULE_0__src_configstore__["b"]; });
-
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__configuration__ = __webpack_require__(7);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__configuration__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_index__ = __webpack_require__(10);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__providers_index__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__providers_index__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__exceptions__ = __webpack_require__(4);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__exceptions__["a"]; });
-
-
-
-//# sourceMappingURL=configstore.js.map
-
-/***/ }),
 /* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Settings; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pnp_common__ = __webpack_require__(0);
-
-/**
- * Class used to manage the current application settings
- *
- */
-var Settings = /** @class */ (function () {
-    /**
-     * Creates a new instance of the settings class
-     *
-     * @constructor
-     */
-    function Settings() {
-        this._settings = new __WEBPACK_IMPORTED_MODULE_0__pnp_common__["a" /* Dictionary */]();
-    }
-    /**
-     * Adds a new single setting, or overwrites a previous setting with the same key
-     *
-     * @param {string} key The key used to store this setting
-     * @param {string} value The setting value to store
-     */
-    Settings.prototype.add = function (key, value) {
-        this._settings.add(key, value);
-    };
-    /**
-     * Adds a JSON value to the collection as a string, you must use getJSON to rehydrate the object when read
-     *
-     * @param {string} key The key used to store this setting
-     * @param {any} value The setting value to store
-     */
-    Settings.prototype.addJSON = function (key, value) {
-        this._settings.add(key, JSON.stringify(value));
-    };
-    /**
-     * Applies the supplied hash to the setting collection overwriting any existing value, or created new values
-     *
-     * @param {TypedHash<any>} hash The set of values to add
-     */
-    Settings.prototype.apply = function (hash) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            try {
-                _this._settings.merge(hash);
-                resolve();
-            }
-            catch (e) {
-                reject(e);
-            }
-        });
-    };
-    /**
-     * Loads configuration settings into the collection from the supplied provider and returns a Promise
-     *
-     * @param {IConfigurationProvider} provider The provider from which we will load the settings
-     */
-    Settings.prototype.load = function (provider) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            provider.getConfiguration().then(function (value) {
-                _this._settings.merge(value);
-                resolve();
-            }).catch(reject);
-        });
-    };
-    /**
-     * Gets a value from the configuration
-     *
-     * @param {string} key The key whose value we want to return. Returns null if the key does not exist
-     * @return {string} string value from the configuration
-     */
-    Settings.prototype.get = function (key) {
-        return this._settings.get(key);
-    };
-    /**
-     * Gets a JSON value, rehydrating the stored string to the original object
-     *
-     * @param {string} key The key whose value we want to return. Returns null if the key does not exist
-     * @return {any} object from the configuration
-     */
-    Settings.prototype.getJSON = function (key) {
-        var o = this.get(key);
-        if (typeof o === "undefined" || o === null) {
-            return o;
-        }
-        return JSON.parse(o);
-    };
-    return Settings;
-}());
-
-//# sourceMappingURL=configuration.js.map
+/*! adal-angular v1.0.17 2018-02-27 */
+var AuthenticationContext=function(){"use strict";return AuthenticationContext=function(a){if(this.REQUEST_TYPE={LOGIN:"LOGIN",RENEW_TOKEN:"RENEW_TOKEN",UNKNOWN:"UNKNOWN"},this.RESPONSE_TYPE={ID_TOKEN_TOKEN:"id_token token",TOKEN:"token"},this.CONSTANTS={ACCESS_TOKEN:"access_token",EXPIRES_IN:"expires_in",ID_TOKEN:"id_token",ERROR_DESCRIPTION:"error_description",SESSION_STATE:"session_state",ERROR:"error",STORAGE:{TOKEN_KEYS:"adal.token.keys",ACCESS_TOKEN_KEY:"adal.access.token.key",EXPIRATION_KEY:"adal.expiration.key",STATE_LOGIN:"adal.state.login",STATE_RENEW:"adal.state.renew",NONCE_IDTOKEN:"adal.nonce.idtoken",SESSION_STATE:"adal.session.state",USERNAME:"adal.username",IDTOKEN:"adal.idtoken",ERROR:"adal.error",ERROR_DESCRIPTION:"adal.error.description",LOGIN_REQUEST:"adal.login.request",LOGIN_ERROR:"adal.login.error",RENEW_STATUS:"adal.token.renew.status",ANGULAR_LOGIN_REQUEST:"adal.angular.login.request"},RESOURCE_DELIMETER:"|",CACHE_DELIMETER:"||",LOADFRAME_TIMEOUT:6e3,TOKEN_RENEW_STATUS_CANCELED:"Canceled",TOKEN_RENEW_STATUS_COMPLETED:"Completed",TOKEN_RENEW_STATUS_IN_PROGRESS:"In Progress",LOGGING_LEVEL:{ERROR:0,WARN:1,INFO:2,VERBOSE:3},LEVEL_STRING_MAP:{0:"ERROR:",1:"WARNING:",2:"INFO:",3:"VERBOSE:"},POPUP_WIDTH:483,POPUP_HEIGHT:600},AuthenticationContext.prototype._singletonInstance)return AuthenticationContext.prototype._singletonInstance;if(AuthenticationContext.prototype._singletonInstance=this,this.instance="https://login.microsoftonline.com/",this.config={},this.callback=null,this.popUp=!1,this.isAngular=!1,this._user=null,this._activeRenewals={},this._loginInProgress=!1,this._acquireTokenInProgress=!1,this._renewStates=[],this._callBackMappedToRenewStates={},this._callBacksMappedToRenewStates={},this._openedWindows=[],this._requestType=this.REQUEST_TYPE.LOGIN,window._adalInstance=this,a.displayCall&&"function"!=typeof a.displayCall)throw new Error("displayCall is not a function");if(!a.clientId)throw new Error("clientId is required");this.config=this._cloneConfig(a),void 0===this.config.navigateToLoginRequestUrl&&(this.config.navigateToLoginRequestUrl=!0),this.config.popUp&&(this.popUp=!0),this.config.callback&&"function"==typeof this.config.callback&&(this.callback=this.config.callback),this.config.instance&&(this.instance=this.config.instance),this.config.loginResource||(this.config.loginResource=this.config.clientId),this.config.redirectUri||(this.config.redirectUri=window.location.href.split("?")[0].split("#")[0]),this.config.postLogoutRedirectUri||(this.config.postLogoutRedirectUri=window.location.href.split("?")[0].split("#")[0]),this.config.anonymousEndpoints||(this.config.anonymousEndpoints=[]),this.config.isAngular&&(this.isAngular=this.config.isAngular),this.config.loadFrameTimeout&&(this.CONSTANTS.LOADFRAME_TIMEOUT=this.config.loadFrameTimeout)},"undefined"!=typeof window&&(window.Logging={piiLoggingEnabled:!1,level:0,log:function(a){}}),AuthenticationContext.prototype.login=function(){if(this._loginInProgress)return void this.info("Login in progress");this._loginInProgress=!0;var a=this._guid();this.config.state=a,this._idTokenNonce=this._guid();var b=this._getItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST);b&&""!==b?this._saveItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST,""):b=window.location.href,this.verbose("Expected state: "+a+" startPage:"+b),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,b),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,a,!0),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"");var c=this._getNavigateUrl("id_token",null)+"&nonce="+encodeURIComponent(this._idTokenNonce);this.config.displayCall?this.config.displayCall(c):this.popUp?(this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,""),this._renewStates.push(a),this.registerCallback(a,this.config.clientId,this.callback),this._loginPopup(c)):this.promptUser(c)},AuthenticationContext.prototype._openPopup=function(a,b,c,d){try{var e=window.screenLeft?window.screenLeft:window.screenX,f=window.screenTop?window.screenTop:window.screenY,g=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,h=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight,i=g/2-c/2+e,j=h/2-d/2+f,k=window.open(a,b,"width="+c+", height="+d+", top="+j+", left="+i);return k.focus&&k.focus(),k}catch(a){return this.warn("Error opening popup, "+a.message),this._loginInProgress=!1,this._acquireTokenInProgress=!1,null}},AuthenticationContext.prototype._handlePopupError=function(a,b,c,d,e){this.warn(d),this._saveItem(this.CONSTANTS.STORAGE.ERROR,c),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,d),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,e),b&&this._activeRenewals[b]&&(this._activeRenewals[b]=null),this._loginInProgress=!1,this._acquireTokenInProgress=!1,a&&a(d,null,c)},AuthenticationContext.prototype._loginPopup=function(a,b,c){var d=this._openPopup(a,"login",this.CONSTANTS.POPUP_WIDTH,this.CONSTANTS.POPUP_HEIGHT),e=c||this.callback;if(null==d){var f="Popup Window is null. This can happen if you are using IE";return void this._handlePopupError(e,b,"Error opening popup",f,f)}if(this._openedWindows.push(d),-1!=this.config.redirectUri.indexOf("#"))var g=this.config.redirectUri.split("#")[0];else var g=this.config.redirectUri;var h=this,i=window.setInterval(function(){if(!d||d.closed||void 0===d.closed){var a="Popup Window closed",c="Popup Window closed by UI action/ Popup Window handle destroyed due to cross zone navigation in IE/Edge";return h.isAngular&&h._broadcast("adal:popUpClosed",c+h.CONSTANTS.RESOURCE_DELIMETER+a),h._handlePopupError(e,b,a,c,c),void window.clearInterval(i)}try{var f=d.location;if(-1!=encodeURI(f.href).indexOf(encodeURI(g)))return h.isAngular?h._broadcast("adal:popUpHashChanged",f.hash):h.handleWindowCallback(f.hash),window.clearInterval(i),h._loginInProgress=!1,h._acquireTokenInProgress=!1,h.info("Closing popup window"),h._openedWindows=[],void d.close()}catch(a){}},1)},AuthenticationContext.prototype._broadcast=function(a,b){!function(){function a(a,b){b=b||{bubbles:!1,cancelable:!1,detail:void 0};var c=document.createEvent("CustomEvent");return c.initCustomEvent(a,b.bubbles,b.cancelable,b.detail),c}if("function"==typeof window.CustomEvent)return!1;a.prototype=window.Event.prototype,window.CustomEvent=a}();var c=new CustomEvent(a,{detail:b});window.dispatchEvent(c)},AuthenticationContext.prototype.loginInProgress=function(){return this._loginInProgress},AuthenticationContext.prototype._hasResource=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS);return b&&!this._isEmpty(b)&&b.indexOf(a+this.CONSTANTS.RESOURCE_DELIMETER)>-1},AuthenticationContext.prototype.getCachedToken=function(a){if(!this._hasResource(a))return null;var b=this._getItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a),c=this._getItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a),d=this.config.expireOffsetSeconds||300;return c&&c>this._now()+d?b:(this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a,""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a,0),null)},AuthenticationContext.prototype.getCachedUser=function(){if(this._user)return this._user;var a=this._getItem(this.CONSTANTS.STORAGE.IDTOKEN);return this._user=this._createUser(a),this._user},AuthenticationContext.prototype.registerCallback=function(a,b,c){this._activeRenewals[b]=a,this._callBacksMappedToRenewStates[a]||(this._callBacksMappedToRenewStates[a]=[]);var d=this;this._callBacksMappedToRenewStates[a].push(c),this._callBackMappedToRenewStates[a]||(this._callBackMappedToRenewStates[a]=function(c,e,f,g){d._activeRenewals[b]=null;for(var h=0;h<d._callBacksMappedToRenewStates[a].length;++h)try{d._callBacksMappedToRenewStates[a][h](c,e,f,g)}catch(f){d.warn(f)}d._callBacksMappedToRenewStates[a]=null,d._callBackMappedToRenewStates[a]=null})},AuthenticationContext.prototype._renewToken=function(a,b,c){this.info("renewToken is called for resource:"+a);var d=this._addAdalFrame("adalRenewFrame"+a),e=this._guid()+"|"+a;this.config.state=e,this._renewStates.push(e),this.verbose("Renew token Expected state: "+e),c=c||"token";var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl(c,a),"prompt");c===this.RESPONSE_TYPE.ID_TOKEN_TOKEN&&(this._idTokenNonce=this._guid(),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),f+="&nonce="+encodeURIComponent(this._idTokenNonce)),f+="&prompt=none",f=this._addHintParameters(f),this.registerCallback(e,a,b),this.verbosePii("Navigate to:"+f),d.src="about:blank",this._loadFrameTimeout(f,"adalRenewFrame"+a,a)},AuthenticationContext.prototype._renewIdToken=function(a,b){this.info("renewIdToken is called");var c=this._addAdalFrame("adalIdTokenFrame"),d=this._guid()+"|"+this.config.clientId;this._idTokenNonce=this._guid(),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),this.config.state=d,this._renewStates.push(d),this.verbose("Renew Idtoken Expected state: "+d);var e=null===b||void 0===b?null:this.config.clientId,b=b||"id_token",f=this._urlRemoveQueryStringParameter(this._getNavigateUrl(b,e),"prompt");f+="&prompt=none",f=this._addHintParameters(f),f+="&nonce="+encodeURIComponent(this._idTokenNonce),this.registerCallback(d,this.config.clientId,a),this.verbosePii("Navigate to:"+f),c.src="about:blank",this._loadFrameTimeout(f,"adalIdTokenFrame",this.config.clientId)},AuthenticationContext.prototype._urlContainsQueryStringParameter=function(a,b){return new RegExp("[\\?&]"+a+"=").test(b)},AuthenticationContext.prototype._urlRemoveQueryStringParameter=function(a,b){var c=new RegExp("(\\&"+b+"=)[^&]+");return a=a.replace(c,""),c=new RegExp("("+b+"=)[^&]+&"),a=a.replace(c,""),c=new RegExp("("+b+"=)[^&]+"),a=a.replace(c,"")},AuthenticationContext.prototype._loadFrameTimeout=function(a,b,c){this.verbose("Set loading state to pending for: "+c),this._saveItem(this.CONSTANTS.STORAGE.RENEW_STATUS+c,this.CONSTANTS.TOKEN_RENEW_STATUS_IN_PROGRESS),this._loadFrame(a,b);var d=this;setTimeout(function(){if(d._getItem(d.CONSTANTS.STORAGE.RENEW_STATUS+c)===d.CONSTANTS.TOKEN_RENEW_STATUS_IN_PROGRESS){d.verbose("Loading frame has timed out after: "+d.CONSTANTS.LOADFRAME_TIMEOUT/1e3+" seconds for resource "+c);var a=d._activeRenewals[c];a&&d._callBackMappedToRenewStates[a]&&d._callBackMappedToRenewStates[a]("Token renewal operation failed due to timeout",null,"Token Renewal Failed"),d._saveItem(d.CONSTANTS.STORAGE.RENEW_STATUS+c,d.CONSTANTS.TOKEN_RENEW_STATUS_CANCELED)}},d.CONSTANTS.LOADFRAME_TIMEOUT)},AuthenticationContext.prototype._loadFrame=function(a,b){var c=this;c.info("LoadFrame: "+b);var d=b;setTimeout(function(){var b=c._addAdalFrame(d);""!==b.src&&"about:blank"!==b.src||(b.src=a,c._loadFrame(a,d))},500)},AuthenticationContext.prototype.acquireToken=function(a,b){if(this._isEmpty(a))return this.warn("resource is required"),void b("resource is required",null,"resource is required");var c=this.getCachedToken(a);return c?(this.info("Token is already in cache for resource:"+a),void b(null,c,null)):this._user||this.config.extraQueryParameter&&-1!==this.config.extraQueryParameter.indexOf("login_hint")?void(this._activeRenewals[a]?this.registerCallback(this._activeRenewals[a],a,b):(this._requestType=this.REQUEST_TYPE.RENEW_TOKEN,a===this.config.clientId?this._user?(this.verbose("renewing idtoken"),this._renewIdToken(b)):(this.verbose("renewing idtoken and access_token"),this._renewIdToken(b,this.RESPONSE_TYPE.ID_TOKEN_TOKEN)):this._user?(this.verbose("renewing access_token"),this._renewToken(a,b)):(this.verbose("renewing idtoken and access_token"),this._renewToken(a,b,this.RESPONSE_TYPE.ID_TOKEN_TOKEN)))):(this.warn("User login is required"),void b("User login is required",null,"login required"))},AuthenticationContext.prototype.acquireTokenPopup=function(a,b,c,d){if(this._isEmpty(a))return this.warn("resource is required"),void d("resource is required",null,"resource is required");if(!this._user)return this.warn("User login is required"),void d("User login is required",null,"login required");if(this._acquireTokenInProgress)return this.warn("Acquire token interactive is already in progress"),void d("Acquire token interactive is already in progress",null,"Acquire token interactive is already in progress");var e=this._guid()+"|"+a;this.config.state=e,this._renewStates.push(e),this._requestType=this.REQUEST_TYPE.RENEW_TOKEN,this.verbose("Renew token Expected state: "+e);var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl("token",a),"prompt");if(f+="&prompt=select_account",b&&(f+=b),c&&-1===f.indexOf("&claims"))f+="&claims="+encodeURIComponent(c);else if(c&&-1!==f.indexOf("&claims"))throw new Error("Claims cannot be passed as an extraQueryParameter");f=this._addHintParameters(f),this._acquireTokenInProgress=!0,this.info("acquireToken interactive is called for the resource "+a),this.registerCallback(e,a,d),this._loginPopup(f,a,d)},AuthenticationContext.prototype.acquireTokenRedirect=function(a,b,c){if(this._isEmpty(a))return this.warn("resource is required"),void d("resource is required",null,"resource is required");var d=this.callback;if(!this._user)return this.warn("User login is required"),void d("User login is required",null,"login required");if(this._acquireTokenInProgress)return this.warn("Acquire token interactive is already in progress"),void d("Acquire token interactive is already in progress",null,"Acquire token interactive is already in progress");var e=this._guid()+"|"+a;this.config.state=e,this.verbose("Renew token Expected state: "+e);var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl("token",a),"prompt");if(f+="&prompt=select_account",b&&(f+=b),c&&-1===f.indexOf("&claims"))f+="&claims="+encodeURIComponent(c);else if(c&&-1!==f.indexOf("&claims"))throw new Error("Claims cannot be passed as an extraQueryParameter");f=this._addHintParameters(f),this._acquireTokenInProgress=!0,this.info("acquireToken interactive is called for the resource "+a),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,window.location.href),this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,e,!0),this.promptUser(f)},AuthenticationContext.prototype.promptUser=function(a){a?(this.infoPii("Navigate to:"+a),window.location.replace(a)):this.info("Navigate url is empty")},AuthenticationContext.prototype.clearCache=function(){this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,""),this._saveItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST,""),this._saveItem(this.CONSTANTS.STORAGE.SESSION_STATE,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,""),this._renewStates=[],this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,""),this._saveItem(this.CONSTANTS.STORAGE.IDTOKEN,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,""),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,"");var a=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS);if(!this._isEmpty(a)){a=a.split(this.CONSTANTS.RESOURCE_DELIMETER);for(var b=0;b<a.length&&""!==a[b];b++)this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a[b],""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a[b],0)}this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,"")},AuthenticationContext.prototype.clearCacheForResource=function(a){this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,""),this._hasResource(a)&&(this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a,""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a,0))},AuthenticationContext.prototype.logOut=function(){this.clearCache(),this._user=null;var a;if(this.config.logOutUri)a=this.config.logOutUri;else{var b="common",c="";this.config.tenant&&(b=this.config.tenant),this.config.postLogoutRedirectUri&&(c="post_logout_redirect_uri="+encodeURIComponent(this.config.postLogoutRedirectUri)),a=this.instance+b+"/oauth2/logout?"+c}this.infoPii("Logout navigate to: "+a),this.promptUser(a)},AuthenticationContext.prototype._isEmpty=function(a){return void 0===a||!a||0===a.length},AuthenticationContext.prototype.getUser=function(a){if("function"!=typeof a)throw new Error("callback is not a function");if(this._user)return void a(null,this._user);var b=this._getItem(this.CONSTANTS.STORAGE.IDTOKEN);this._isEmpty(b)?(this.warn("User information is not available"),a("User information is not available",null)):(this.info("User exists in cache: "),this._user=this._createUser(b),a(null,this._user))},AuthenticationContext.prototype._addHintParameters=function(a){if(this._user&&this._user.profile)if(this._user.profile.sid&&-1!==a.indexOf("&prompt=none"))this._urlContainsQueryStringParameter("sid",a)||(a+="&sid="+encodeURIComponent(this._user.profile.sid));else if(this._user.profile.upn&&(this._urlContainsQueryStringParameter("login_hint",a)||(a+="&login_hint="+encodeURIComponent(this._user.profile.upn)),!this._urlContainsQueryStringParameter("domain_hint",a)&&this._user.profile.upn.indexOf("@")>-1)){var b=this._user.profile.upn.split("@");a+="&domain_hint="+encodeURIComponent(b[b.length-1])}return a},AuthenticationContext.prototype._createUser=function(a){var b=null,c=this._extractIdToken(a);return c&&c.hasOwnProperty("aud")&&(c.aud.toLowerCase()===this.config.clientId.toLowerCase()?(b={userName:"",profile:c},c.hasOwnProperty("upn")?b.userName=c.upn:c.hasOwnProperty("email")&&(b.userName=c.email)):this.warn("IdToken has invalid aud field")),b},AuthenticationContext.prototype._getHash=function(a){return a.indexOf("#/")>-1?a=a.substring(a.indexOf("#/")+2):a.indexOf("#")>-1&&(a=a.substring(1)),a},AuthenticationContext.prototype.isCallback=function(a){a=this._getHash(a);var b=this._deserialize(a);return b.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION)||b.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)||b.hasOwnProperty(this.CONSTANTS.ID_TOKEN)},AuthenticationContext.prototype.getLoginError=function(){return this._getItem(this.CONSTANTS.STORAGE.LOGIN_ERROR)},AuthenticationContext.prototype.getRequestInfo=function(a){a=this._getHash(a);var b=this._deserialize(a),c={valid:!1,parameters:{},stateMatch:!1,stateResponse:"",requestType:this.REQUEST_TYPE.UNKNOWN};if(b&&(c.parameters=b,b.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION)||b.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)||b.hasOwnProperty(this.CONSTANTS.ID_TOKEN))){c.valid=!0;var d="";if(!b.hasOwnProperty("state"))return this.warn("No state returned"),c;if(this.verbose("State: "+b.state),d=b.state,c.stateResponse=d,this._matchState(c))return c;if(!c.stateMatch&&window.parent){c.requestType=this._requestType;for(var e=this._renewStates,f=0;f<e.length;f++)if(e[f]===c.stateResponse){c.stateMatch=!0;break}}}return c},AuthenticationContext.prototype._matchNonce=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN);if(b){b=b.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<b.length;c++)if(b[c]===a.profile.nonce)return!0}return!1},AuthenticationContext.prototype._matchState=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.STATE_LOGIN);if(b){b=b.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<b.length;c++)if(b[c]===a.stateResponse)return a.requestType=this.REQUEST_TYPE.LOGIN,a.stateMatch=!0,!0}var d=this._getItem(this.CONSTANTS.STORAGE.STATE_RENEW);if(d){d=d.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<d.length;c++)if(d[c]===a.stateResponse)return a.requestType=this.REQUEST_TYPE.RENEW_TOKEN,a.stateMatch=!0,!0}return!1},AuthenticationContext.prototype._getResourceFromState=function(a){if(a){var b=a.indexOf("|");if(b>-1&&b+1<a.length)return a.substring(b+1)}return""},AuthenticationContext.prototype.saveTokenFromHash=function(a){this.info("State status:"+a.stateMatch+"; Request type:"+a.requestType),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"");var b=this._getResourceFromState(a.stateResponse);if(a.parameters.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION))this.infoPii("Error :"+a.parameters.error+"; Error description:"+a.parameters[this.CONSTANTS.ERROR_DESCRIPTION]),this._saveItem(this.CONSTANTS.STORAGE.ERROR,a.parameters.error),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,a.parameters[this.CONSTANTS.ERROR_DESCRIPTION]),a.requestType===this.REQUEST_TYPE.LOGIN&&(this._loginInProgress=!1,this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,a.parameters.error_description));else if(a.stateMatch){this.info("State is right"),a.parameters.hasOwnProperty(this.CONSTANTS.SESSION_STATE)&&this._saveItem(this.CONSTANTS.STORAGE.SESSION_STATE,a.parameters[this.CONSTANTS.SESSION_STATE]);var c;a.parameters.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)&&(this.info("Fragment has access token"),this._hasResource(b)||(c=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS)||"",this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,c+b+this.CONSTANTS.RESOURCE_DELIMETER)),this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+b,a.parameters[this.CONSTANTS.ACCESS_TOKEN]),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+b,this._expiresIn(a.parameters[this.CONSTANTS.EXPIRES_IN]))),a.parameters.hasOwnProperty(this.CONSTANTS.ID_TOKEN)&&(this.info("Fragment has id token"),this._loginInProgress=!1,this._user=this._createUser(a.parameters[this.CONSTANTS.ID_TOKEN]),this._user&&this._user.profile?this._matchNonce(this._user)?(this._saveItem(this.CONSTANTS.STORAGE.IDTOKEN,a.parameters[this.CONSTANTS.ID_TOKEN]),b=this.config.loginResource?this.config.loginResource:this.config.clientId,this._hasResource(b)||(c=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS)||"",this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,c+b+this.CONSTANTS.RESOURCE_DELIMETER)),this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+b,a.parameters[this.CONSTANTS.ID_TOKEN]),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+b,this._user.profile.exp)):(this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,"Nonce received: "+this._user.profile.nonce+" is not same as requested: "+this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN)),this._user=null):(a.parameters.error="invalid id_token",a.parameters.error_description="Invalid id_token. id_token: "+a.parameters[this.CONSTANTS.ID_TOKEN],this._saveItem(this.CONSTANTS.STORAGE.ERROR,"invalid id_token"),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"Invalid id_token. id_token: "+a.parameters[this.CONSTANTS.ID_TOKEN])))}else a.parameters.error="Invalid_state",a.parameters.error_description="Invalid_state. state: "+a.stateResponse,this._saveItem(this.CONSTANTS.STORAGE.ERROR,"Invalid_state"),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"Invalid_state. state: "+a.stateResponse);this._saveItem(this.CONSTANTS.STORAGE.RENEW_STATUS+b,this.CONSTANTS.TOKEN_RENEW_STATUS_COMPLETED)},AuthenticationContext.prototype.getResourceForEndpoint=function(a){if(this.config&&this.config.anonymousEndpoints)for(var b=0;b<this.config.anonymousEndpoints.length;b++)if(a.indexOf(this.config.anonymousEndpoints[b])>-1)return null;if(this.config&&this.config.endpoints)for(var c in this.config.endpoints)if(a.indexOf(c)>-1)return this.config.endpoints[c];return a.indexOf("http://")>-1||a.indexOf("https://")>-1?this._getHostFromUri(a)===this._getHostFromUri(this.config.redirectUri)?this.config.loginResource:null:this.config.loginResource},AuthenticationContext.prototype._getHostFromUri=function(a){var b=String(a).replace(/^(https?:)\/\//,"");return b=b.split("/")[0]},AuthenticationContext.prototype.handleWindowCallback=function(a){if(null==a&&(a=window.location.hash),this.isCallback(a)){var b=null,c=!1;this._openedWindows.length>0&&this._openedWindows[this._openedWindows.length-1].opener&&this._openedWindows[this._openedWindows.length-1].opener._adalInstance?(b=this._openedWindows[this._openedWindows.length-1].opener._adalInstance,c=!0):window.parent&&window.parent._adalInstance&&(b=window.parent._adalInstance);var d,e,f=b.getRequestInfo(a),g=null;e=c||window.parent!==window?b._callBackMappedToRenewStates[f.stateResponse]:b.callback,b.info("Returned from redirect url"),b.saveTokenFromHash(f),f.requestType===this.REQUEST_TYPE.RENEW_TOKEN&&window.parent?(window.parent!==window?b.verbose("Window is in iframe, acquiring token silently"):b.verbose("acquiring token interactive in progress"),d=f.parameters[b.CONSTANTS.ACCESS_TOKEN]||f.parameters[b.CONSTANTS.ID_TOKEN],g=b.CONSTANTS.ACCESS_TOKEN):f.requestType===this.REQUEST_TYPE.LOGIN&&(d=f.parameters[b.CONSTANTS.ID_TOKEN],g=b.CONSTANTS.ID_TOKEN);var h=f.parameters[b.CONSTANTS.ERROR_DESCRIPTION],i=f.parameters[b.CONSTANTS.ERROR];try{e&&e(h,d,i,g)}catch(a){b.error("Error occurred in user defined callback function: "+a)}window.parent!==window||c||(b.config.navigateToLoginRequestUrl?window.location.href=b._getItem(b.CONSTANTS.STORAGE.LOGIN_REQUEST):window.location.hash="")}},AuthenticationContext.prototype._getNavigateUrl=function(a,b){var c="common";this.config.tenant&&(c=this.config.tenant);var d=this.instance+c+"/oauth2/authorize"+this._serialize(a,this.config,b)+this._addLibMetadata();return this.info("Navigate url:"+d),d},AuthenticationContext.prototype._extractIdToken=function(a){var b=this._decodeJwt(a);if(!b)return null;try{var c=b.JWSPayload,d=this._base64DecodeStringUrlSafe(c);return d?JSON.parse(d):(this.info("The returned id_token could not be base64 url safe decoded."),null)}catch(a){this.error("The returned id_token could not be decoded",a)}return null},AuthenticationContext.prototype._base64DecodeStringUrlSafe=function(a){return a=a.replace(/-/g,"+").replace(/_/g,"/"),window.atob?decodeURIComponent(escape(window.atob(a))):decodeURIComponent(escape(this._decode(a)))},AuthenticationContext.prototype._decode=function(a){var b="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";a=String(a).replace(/=+$/,"");var c=a.length;if(c%4==1)throw new Error("The token to be decoded is not correctly encoded.");for(var d,e,f,g,h,i,j,k,l="",m=0;m<c;m+=4){if(d=b.indexOf(a.charAt(m)),e=b.indexOf(a.charAt(m+1)),f=b.indexOf(a.charAt(m+2)),g=b.indexOf(a.charAt(m+3)),m+2===c-1){h=d<<18|e<<12|f<<6,i=h>>16&255,j=h>>8&255,l+=String.fromCharCode(i,j);break}if(m+1===c-1){h=d<<18|e<<12,i=h>>16&255,l+=String.fromCharCode(i);break}h=d<<18|e<<12|f<<6|g,i=h>>16&255,j=h>>8&255,k=255&h,l+=String.fromCharCode(i,j,k)}return l},AuthenticationContext.prototype._decodeJwt=function(a){if(this._isEmpty(a))return null;var b=/^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/,c=b.exec(a);return!c||c.length<4?(this.warn("The returned id_token is not parseable."),null):{header:c[1],JWSPayload:c[2],JWSSig:c[3]}},AuthenticationContext.prototype._convertUrlSafeToRegularBase64EncodedString=function(a){return a.replace("-","+").replace("_","/")},AuthenticationContext.prototype._serialize=function(a,b,c){var d=[];if(null!==b){d.push("?response_type="+a),d.push("client_id="+encodeURIComponent(b.clientId)),c&&d.push("resource="+encodeURIComponent(c)),d.push("redirect_uri="+encodeURIComponent(b.redirectUri)),d.push("state="+encodeURIComponent(b.state)),b.hasOwnProperty("slice")&&d.push("slice="+encodeURIComponent(b.slice)),b.hasOwnProperty("extraQueryParameter")&&d.push(b.extraQueryParameter);var e=b.correlationId?b.correlationId:this._guid();d.push("client-request-id="+encodeURIComponent(e))}return d.join("&")},AuthenticationContext.prototype._deserialize=function(a){var b,c=/\+/g,d=/([^&=]+)=([^&]*)/g,e=function(a){return decodeURIComponent(a.replace(c," "))},f={};for(b=d.exec(a);b;)f[e(b[1])]=e(b[2]),b=d.exec(a);return f},AuthenticationContext.prototype._decimalToHex=function(a){for(var b=a.toString(16);b.length<2;)b="0"+b;return b},AuthenticationContext.prototype._guid=function(){var a=window.crypto||window.msCrypto;if(a&&a.getRandomValues){var b=new Uint8Array(16);return a.getRandomValues(b),b[6]|=64,b[6]&=79,b[8]|=128,b[8]&=191,this._decimalToHex(b[0])+this._decimalToHex(b[1])+this._decimalToHex(b[2])+this._decimalToHex(b[3])+"-"+this._decimalToHex(b[4])+this._decimalToHex(b[5])+"-"+this._decimalToHex(b[6])+this._decimalToHex(b[7])+"-"+this._decimalToHex(b[8])+this._decimalToHex(b[9])+"-"+this._decimalToHex(b[10])+this._decimalToHex(b[11])+this._decimalToHex(b[12])+this._decimalToHex(b[13])+this._decimalToHex(b[14])+this._decimalToHex(b[15])}for(var c="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",d="0123456789abcdef",e=0,f="",g=0;g<36;g++)"-"!==c[g]&&"4"!==c[g]&&(e=16*Math.random()|0),"x"===c[g]?f+=d[e]:"y"===c[g]?(e&=3,e|=8,f+=d[e]):f+=c[g];return f},AuthenticationContext.prototype._expiresIn=function(a){return a||(a=3599),this._now()+parseInt(a,10)},AuthenticationContext.prototype._now=function(){return Math.round((new Date).getTime()/1e3)},AuthenticationContext.prototype._addAdalFrame=function(a){if(void 0!==a){this.info("Add adal frame to document:"+a);var b=document.getElementById(a);if(!b){if(document.createElement&&document.documentElement&&(window.opera||-1===window.navigator.userAgent.indexOf("MSIE 5.0"))){var c=document.createElement("iframe");c.setAttribute("id",a),c.setAttribute("aria-hidden","true"),c.style.visibility="hidden",c.style.position="absolute",c.style.width=c.style.height=c.borderWidth="0px",b=document.getElementsByTagName("body")[0].appendChild(c)}else document.body&&document.body.insertAdjacentHTML&&document.body.insertAdjacentHTML("beforeEnd",'<iframe name="'+a+'" id="'+a+'" style="display:none"></iframe>');window.frames&&window.frames[a]&&(b=window.frames[a])}return b}},AuthenticationContext.prototype._saveItem=function(a,b,c){if(this.config&&this.config.cacheLocation&&"localStorage"===this.config.cacheLocation){if(!this._supportsLocalStorage())return this.info("Local storage is not supported"),!1;if(c){var d=this._getItem(a)||"";localStorage.setItem(a,d+b+this.CONSTANTS.CACHE_DELIMETER)}else localStorage.setItem(a,b);return!0}return this._supportsSessionStorage()?(sessionStorage.setItem(a,b),!0):(this.info("Session storage is not supported"),!1)},AuthenticationContext.prototype._getItem=function(a){return this.config&&this.config.cacheLocation&&"localStorage"===this.config.cacheLocation?this._supportsLocalStorage()?localStorage.getItem(a):(this.info("Local storage is not supported"),null):this._supportsSessionStorage()?sessionStorage.getItem(a):(this.info("Session storage is not supported"),null)},AuthenticationContext.prototype._supportsLocalStorage=function(){try{return!!window.localStorage&&(window.localStorage.setItem("storageTest","A"),"A"==window.localStorage.getItem("storageTest")&&(window.localStorage.removeItem("storageTest"),!window.localStorage.getItem("storageTest")))}catch(a){return!1}},AuthenticationContext.prototype._supportsSessionStorage=function(){try{return!!window.sessionStorage&&(window.sessionStorage.setItem("storageTest","A"),"A"==window.sessionStorage.getItem("storageTest")&&(window.sessionStorage.removeItem("storageTest"),!window.sessionStorage.getItem("storageTest")))}catch(a){return!1}},AuthenticationContext.prototype._cloneConfig=function(a){if(null===a||"object"!=typeof a)return a;var b={};for(var c in a)a.hasOwnProperty(c)&&(b[c]=a[c]);return b},AuthenticationContext.prototype._addLibMetadata=function(){return"&x-client-SKU=Js&x-client-Ver="+this._libVersion()},AuthenticationContext.prototype.log=function(a,b,c,d){if(a<=Logging.level){if(!Logging.piiLoggingEnabled&&d)return;var e=(new Date).toUTCString(),f="";f=this.config.correlationId?e+":"+this.config.correlationId+"-"+this._libVersion()+"-"+this.CONSTANTS.LEVEL_STRING_MAP[a]+" "+b:e+":"+this._libVersion()+"-"+this.CONSTANTS.LEVEL_STRING_MAP[a]+" "+b,c&&(f+="\nstack:\n"+c.stack),Logging.log(f)}},AuthenticationContext.prototype.error=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b)},AuthenticationContext.prototype.warn=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null)},AuthenticationContext.prototype.info=function(a){
+this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null)},AuthenticationContext.prototype.verbose=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null)},AuthenticationContext.prototype.errorPii=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b,!0)},AuthenticationContext.prototype.warnPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null,!0)},AuthenticationContext.prototype.infoPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null,!0)},AuthenticationContext.prototype.verbosePii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null,!0)},AuthenticationContext.prototype._libVersion=function(){return"1.0.17"},"undefined"!=typeof module&&module.exports&&(module.exports=AuthenticationContext,module.exports.inject=function(a){return new AuthenticationContext(a)}),AuthenticationContext}();
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-//----------------------------------------------------------------------
-// AdalJS v1.0.17
-// @preserve Copyright (c) Microsoft Open Technologies, Inc.
-// All Rights Reserved
-// Apache License 2.0
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//id
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//----------------------------------------------------------------------
-
-var AuthenticationContext = (function () {
-
-    'use strict';
-
-    /**
-     * Configuration options for Authentication Context.
-     * @class config
-     *  @property {string} tenant - Your target tenant.
-     *  @property {string} clientId - Client ID assigned to your app by Azure Active Directory.
-     *  @property {string} redirectUri - Endpoint at which you expect to receive tokens.Defaults to `window.location.href`.
-     *  @property {string} instance - Azure Active Directory Instance.Defaults to `https://login.microsoftonline.com/`.
-     *  @property {Array} endpoints - Collection of {Endpoint-ResourceId} used for automatically attaching tokens in webApi calls.
-     *  @property {Boolean} popUp - Set this to true to enable login in a popup winodow instead of a full redirect.Defaults to `false`.
-     *  @property {string} localLoginUrl - Set this to redirect the user to a custom login page.
-     *  @property {function} displayCall - User defined function of handling the navigation to Azure AD authorization endpoint in case of login. Defaults to 'null'.
-     *  @property {string} postLogoutRedirectUri - Redirects the user to postLogoutRedirectUri after logout. Defaults is 'redirectUri'.
-     *  @property {string} cacheLocation - Sets browser storage to either 'localStorage' or sessionStorage'. Defaults to 'sessionStorage'.
-     *  @property {Array.<string>} anonymousEndpoints Array of keywords or URI's. Adal will not attach a token to outgoing requests that have these keywords or uri. Defaults to 'null'.
-     *  @property {number} expireOffsetSeconds If the cached token is about to be expired in the expireOffsetSeconds (in seconds), Adal will renew the token instead of using the cached token. Defaults to 300 seconds.
-     *  @property {string} correlationId Unique identifier used to map the request with the response. Defaults to RFC4122 version 4 guid (128 bits).
-     *  @property {number} loadFrameTimeout The number of milliseconds of inactivity before a token renewal response from AAD should be considered timed out.
-     */
-
-    /**
-     * Creates a new AuthenticationContext object.
-     * @constructor
-     * @param {config}  config               Configuration options for AuthenticationContext
-     */
-
-    AuthenticationContext = function (config) {
-        /**
-         * Enum for request type
-         * @enum {string}
-         */
-        this.REQUEST_TYPE = {
-            LOGIN: 'LOGIN',
-            RENEW_TOKEN: 'RENEW_TOKEN',
-            UNKNOWN: 'UNKNOWN'
-        };
-
-        this.RESPONSE_TYPE = {
-            ID_TOKEN_TOKEN: 'id_token token',
-            TOKEN: 'token'
-        };
-
-        /**
-         * Enum for storage constants
-         * @enum {string}
-         */
-        this.CONSTANTS = {
-            ACCESS_TOKEN: 'access_token',
-            EXPIRES_IN: 'expires_in',
-            ID_TOKEN: 'id_token',
-            ERROR_DESCRIPTION: 'error_description',
-            SESSION_STATE: 'session_state',
-            ERROR: 'error',
-            STORAGE: {
-                TOKEN_KEYS: 'adal.token.keys',
-                ACCESS_TOKEN_KEY: 'adal.access.token.key',
-                EXPIRATION_KEY: 'adal.expiration.key',
-                STATE_LOGIN: 'adal.state.login',
-                STATE_RENEW: 'adal.state.renew',
-                NONCE_IDTOKEN: 'adal.nonce.idtoken',
-                SESSION_STATE: 'adal.session.state',
-                USERNAME: 'adal.username',
-                IDTOKEN: 'adal.idtoken',
-                ERROR: 'adal.error',
-                ERROR_DESCRIPTION: 'adal.error.description',
-                LOGIN_REQUEST: 'adal.login.request',
-                LOGIN_ERROR: 'adal.login.error',
-                RENEW_STATUS: 'adal.token.renew.status',
-                ANGULAR_LOGIN_REQUEST: 'adal.angular.login.request'
-            },
-            RESOURCE_DELIMETER: '|',
-            CACHE_DELIMETER: '||',
-            LOADFRAME_TIMEOUT: 6000,
-            TOKEN_RENEW_STATUS_CANCELED: 'Canceled',
-            TOKEN_RENEW_STATUS_COMPLETED: 'Completed',
-            TOKEN_RENEW_STATUS_IN_PROGRESS: 'In Progress',
-            LOGGING_LEVEL: {
-                ERROR: 0,
-                WARN: 1,
-                INFO: 2,
-                VERBOSE: 3
-            },
-            LEVEL_STRING_MAP: {
-                0: 'ERROR:',
-                1: 'WARNING:',
-                2: 'INFO:',
-                3: 'VERBOSE:'
-            },
-            POPUP_WIDTH: 483,
-            POPUP_HEIGHT: 600
-        };
-
-        if (AuthenticationContext.prototype._singletonInstance) {
-            return AuthenticationContext.prototype._singletonInstance;
-        }
-        AuthenticationContext.prototype._singletonInstance = this;
-
-        // public
-        this.instance = 'https://login.microsoftonline.com/';
-        this.config = {};
-        this.callback = null;
-        this.popUp = false;
-        this.isAngular = false;
-
-        // private
-        this._user = null;
-        this._activeRenewals = {};
-        this._loginInProgress = false;
-        this._acquireTokenInProgress = false;
-        this._renewStates = [];
-        this._callBackMappedToRenewStates = {};
-        this._callBacksMappedToRenewStates = {};
-        this._openedWindows = [];
-        this._requestType = this.REQUEST_TYPE.LOGIN;
-        window._adalInstance = this;
-
-        // validate before constructor assignments
-        if (config.displayCall && typeof config.displayCall !== 'function') {
-            throw new Error('displayCall is not a function');
-        }
-
-        if (!config.clientId) {
-            throw new Error('clientId is required');
-        }
-
-        this.config = this._cloneConfig(config);
-
-        if (this.config.navigateToLoginRequestUrl === undefined)
-            this.config.navigateToLoginRequestUrl = true;
-
-        if (this.config.popUp)
-            this.popUp = true;
-
-        if (this.config.callback && typeof this.config.callback === 'function')
-            this.callback = this.config.callback;
-
-        if (this.config.instance) {
-            this.instance = this.config.instance;
-        }
-
-        // App can request idtoken for itself using clientid as resource
-        if (!this.config.loginResource) {
-            this.config.loginResource = this.config.clientId;
-        }
-
-        // redirect and logout_redirect are set to current location by default
-        if (!this.config.redirectUri) {
-            // strip off query parameters or hashes from the redirect uri as AAD does not allow those.
-            this.config.redirectUri = window.location.href.split("?")[0].split("#")[0];
-        }
-
-        if (!this.config.postLogoutRedirectUri) {
-            // strip off query parameters or hashes from the post logout redirect uri as AAD does not allow those.
-            this.config.postLogoutRedirectUri = window.location.href.split("?")[0].split("#")[0];
-        }
-
-        if (!this.config.anonymousEndpoints) {
-            this.config.anonymousEndpoints = [];
-        }
-
-        if (this.config.isAngular) {
-            this.isAngular = this.config.isAngular;
-        }
-
-        if (this.config.loadFrameTimeout) {
-            this.CONSTANTS.LOADFRAME_TIMEOUT = this.config.loadFrameTimeout;
-        }
-    };
-
-    if (typeof window !== 'undefined') {
-        window.Logging = {
-            piiLoggingEnabled: false,
-            level: 0,
-            log: function (message) { }
-        };
-    }
-
-    /**
-     * Initiates the login process by redirecting the user to Azure AD authorization endpoint.
-     */
-    AuthenticationContext.prototype.login = function () {
-        if (this._loginInProgress) {
-            this.info("Login in progress");
-            return;
-        }
-
-        this._loginInProgress = true;
-
-        // Token is not present and user needs to login
-        var expectedState = this._guid();
-        this.config.state = expectedState;
-        this._idTokenNonce = this._guid();
-        var loginStartPage = this._getItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST);
-
-        if (!loginStartPage || loginStartPage === "") {
-            loginStartPage = window.location.href;
-        }
-        else {
-            this._saveItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST, "")
-        }
-
-        this.verbose('Expected state: ' + expectedState + ' startPage:' + loginStartPage);
-        this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST, loginStartPage);
-        this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR, '');
-        this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN, expectedState, true);
-        this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN, this._idTokenNonce, true);
-        this._saveItem(this.CONSTANTS.STORAGE.ERROR, '');
-        this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, '');
-        var urlNavigate = this._getNavigateUrl('id_token', null) + '&nonce=' + encodeURIComponent(this._idTokenNonce);
-
-        if (this.config.displayCall) {
-            // User defined way of handling the navigation
-            this.config.displayCall(urlNavigate);
-        }
-        else if (this.popUp) {
-            this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN, '');// so requestInfo does not match redirect case
-            this._renewStates.push(expectedState);
-            this.registerCallback(expectedState, this.config.clientId, this.callback);
-            this._loginPopup(urlNavigate);
-        }
-        else {
-            this.promptUser(urlNavigate);
-        }
-    };
-
-    /**
-     * Configures popup window for login.
-     * @ignore
-     */
-    AuthenticationContext.prototype._openPopup = function (urlNavigate, title, popUpWidth, popUpHeight) {
-        try {
-            /**
-            * adding winLeft and winTop to account for dual monitor
-            * using screenLeft and screenTop for IE8 and earlier
-            */
-            var winLeft = window.screenLeft ? window.screenLeft : window.screenX;
-            var winTop = window.screenTop ? window.screenTop : window.screenY;
-            /**
-            * window.innerWidth displays browser window's height and width excluding toolbars
-            * using document.documentElement.clientWidth for IE8 and earlier
-            */
-            var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-            var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-            var left = ((width / 2) - (popUpWidth / 2)) + winLeft;
-            var top = ((height / 2) - (popUpHeight / 2)) + winTop;
-
-            var popupWindow = window.open(urlNavigate, title, 'width=' + popUpWidth + ', height=' + popUpHeight + ', top=' + top + ', left=' + left);
-
-            if (popupWindow.focus) {
-                popupWindow.focus();
-            }
-
-            return popupWindow;
-        } catch (e) {
-            this.warn('Error opening popup, ' + e.message);
-            this._loginInProgress = false;
-            this._acquireTokenInProgress = false;
-            return null;
-        }
-    }
-
-    AuthenticationContext.prototype._handlePopupError = function (loginCallback, resource, error, errorDesc, loginError) {
-        this.warn(errorDesc);
-        this._saveItem(this.CONSTANTS.STORAGE.ERROR, error);
-        this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, errorDesc);
-        this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR, loginError);
-
-        if (resource && this._activeRenewals[resource]) {
-            this._activeRenewals[resource] = null;
-        }
-
-        this._loginInProgress = false;
-        this._acquireTokenInProgress = false;
-
-        if (loginCallback) {
-            loginCallback(errorDesc, null, error);
-        }
-    }
-
-    /**
-     * After authorization, the user will be sent to your specified redirect_uri with the user's bearer token
-     * attached to the URI fragment as an id_token field. It closes popup window after redirection.
-     * @ignore
-     */
-    AuthenticationContext.prototype._loginPopup = function (urlNavigate, resource, callback) {
-        var popupWindow = this._openPopup(urlNavigate, "login", this.CONSTANTS.POPUP_WIDTH, this.CONSTANTS.POPUP_HEIGHT);
-        var loginCallback = callback || this.callback;
-
-        if (popupWindow == null) {
-            var error = 'Error opening popup';
-            var errorDesc = 'Popup Window is null. This can happen if you are using IE';
-            this._handlePopupError(loginCallback, resource, error, errorDesc, errorDesc);
-            return;
-        }
-
-        this._openedWindows.push(popupWindow);
-
-        if (this.config.redirectUri.indexOf('#') != -1) {
-            var registeredRedirectUri = this.config.redirectUri.split("#")[0];
-        }
-
-        else {
-            var registeredRedirectUri = this.config.redirectUri;
-        }
-
-        var that = this;
-
-        var pollTimer = window.setInterval(function () {
-            if (!popupWindow || popupWindow.closed || popupWindow.closed === undefined) {
-                var error = 'Popup Window closed';
-                var errorDesc = 'Popup Window closed by UI action/ Popup Window handle destroyed due to cross zone navigation in IE/Edge'
-
-                if (that.isAngular) {
-                    that._broadcast('adal:popUpClosed', errorDesc + that.CONSTANTS.RESOURCE_DELIMETER + error);
-                }
-
-                that._handlePopupError(loginCallback, resource, error, errorDesc, errorDesc);
-                window.clearInterval(pollTimer);
-                return;
-            }
-            try {
-                var popUpWindowLocation = popupWindow.location;
-                if (encodeURI(popUpWindowLocation.href).indexOf(encodeURI(registeredRedirectUri)) != -1) {
-                    if (that.isAngular) {
-                        that._broadcast('adal:popUpHashChanged', popUpWindowLocation.hash);
-                    }
-                    else {
-                        that.handleWindowCallback(popUpWindowLocation.hash);
-                    }
-
-                    window.clearInterval(pollTimer);
-                    that._loginInProgress = false;
-                    that._acquireTokenInProgress = false;
-                    that.info("Closing popup window");
-                    that._openedWindows = [];
-                    popupWindow.close();
-                    return;
-                }
-            } catch (e) {
-            }
-        }, 1);
-    };
-
-    AuthenticationContext.prototype._broadcast = function (eventName, data) {
-        // Custom Event is not supported in IE, below IIFE will polyfill the CustomEvent() constructor functionality in Internet Explorer 9 and higher
-        (function () {
-
-            if (typeof window.CustomEvent === "function") {
-                return false;
-            }
-
-            function CustomEvent(event, params) {
-                params = params || { bubbles: false, cancelable: false, detail: undefined };
-                var evt = document.createEvent('CustomEvent');
-                evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-                return evt;
-            }
-
-            CustomEvent.prototype = window.Event.prototype;
-            window.CustomEvent = CustomEvent;
-        })();
-
-        var evt = new CustomEvent(eventName, { detail: data });
-        window.dispatchEvent(evt);
-    };
-
-    AuthenticationContext.prototype.loginInProgress = function () {
-        return this._loginInProgress;
-    };
-
-    /**
-     * Checks for the resource in the cache. By default, cache location is Session Storage
-     * @ignore
-     * @returns {Boolean} 'true' if login is in progress, else returns 'false'.
-     */
-    AuthenticationContext.prototype._hasResource = function (key) {
-        var keys = this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS);
-        return keys && !this._isEmpty(keys) && (keys.indexOf(key + this.CONSTANTS.RESOURCE_DELIMETER) > -1);
-    };
-
-    /**
-     * Gets token for the specified resource from the cache.
-     * @param {string}   resource A URI that identifies the resource for which the token is requested.
-     * @returns {string} token if if it exists and not expired, otherwise null.
-     */
-    AuthenticationContext.prototype.getCachedToken = function (resource) {
-        if (!this._hasResource(resource)) {
-            return null;
-        }
-
-        var token = this._getItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY + resource);
-        var expiry = this._getItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY + resource);
-
-        // If expiration is within offset, it will force renew
-        var offset = this.config.expireOffsetSeconds || 300;
-
-        if (expiry && (expiry > this._now() + offset)) {
-            return token;
-        } else {
-            this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY + resource, '');
-            this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY + resource, 0);
-            return null;
-        }
-    };
-
-    /**
-    * User information from idtoken.
-    *  @class User
-    *  @property {string} userName - username assigned from upn or email.
-    *  @property {object} profile - properties parsed from idtoken.
-    */
-
-    /**
-     * If user object exists, returns it. Else creates a new user object by decoding id_token from the cache.
-     * @returns {User} user object
-     */
-    AuthenticationContext.prototype.getCachedUser = function () {
-        if (this._user) {
-            return this._user;
-        }
-
-        var idtoken = this._getItem(this.CONSTANTS.STORAGE.IDTOKEN);
-        this._user = this._createUser(idtoken);
-        return this._user;
-    };
-
-    /**
-     * Adds the passed callback to the array of callbacks for the specified resource and puts the array on the window object. 
-     * @param {string}   resource A URI that identifies the resource for which the token is requested.
-     * @param {string}   expectedState A unique identifier (guid).
-     * @param {tokenCallback} callback - The callback provided by the caller. It will be called with token or error.
-     */
-    AuthenticationContext.prototype.registerCallback = function (expectedState, resource, callback) {
-        this._activeRenewals[resource] = expectedState;
-
-        if (!this._callBacksMappedToRenewStates[expectedState]) {
-            this._callBacksMappedToRenewStates[expectedState] = [];
-        }
-
-        var self = this;
-        this._callBacksMappedToRenewStates[expectedState].push(callback);
-
-        if (!this._callBackMappedToRenewStates[expectedState]) {
-            this._callBackMappedToRenewStates[expectedState] = function (errorDesc, token, error, tokenType) {
-                self._activeRenewals[resource] = null;
-
-                for (var i = 0; i < self._callBacksMappedToRenewStates[expectedState].length; ++i) {
-                    try {
-                        self._callBacksMappedToRenewStates[expectedState][i](errorDesc, token, error, tokenType);
-                    }
-                    catch (error) {
-                        self.warn(error);
-                    }
-                }
-
-                self._callBacksMappedToRenewStates[expectedState] = null;
-                self._callBackMappedToRenewStates[expectedState] = null;
-            };
-        }
-    };
-
-    // var errorResponse = {error:'', error_description:''};
-    // var token = 'string token';
-    // callback(errorResponse, token)
-    // with callback
-    /**
-     * Acquires access token with hidden iframe
-     * @ignore
-     */
-    AuthenticationContext.prototype._renewToken = function (resource, callback, responseType) {
-        // use iframe to try to renew token
-        // use given resource to create new authz url
-        this.info('renewToken is called for resource:' + resource);
-        var frameHandle = this._addAdalFrame('adalRenewFrame' + resource);
-        var expectedState = this._guid() + '|' + resource;
-        this.config.state = expectedState;
-        // renew happens in iframe, so it keeps javascript context
-        this._renewStates.push(expectedState);
-        this.verbose('Renew token Expected state: ' + expectedState);
-        // remove the existing prompt=... query parameter and add prompt=none
-        responseType = responseType || 'token';
-        var urlNavigate = this._urlRemoveQueryStringParameter(this._getNavigateUrl(responseType, resource), 'prompt');
-
-        if (responseType === this.RESPONSE_TYPE.ID_TOKEN_TOKEN) {
-            this._idTokenNonce = this._guid();
-            this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN, this._idTokenNonce, true);
-            urlNavigate += '&nonce=' + encodeURIComponent(this._idTokenNonce);
-        }
-
-        urlNavigate = urlNavigate + '&prompt=none';
-        urlNavigate = this._addHintParameters(urlNavigate);
-        this.registerCallback(expectedState, resource, callback);
-        this.verbosePii('Navigate to:' + urlNavigate);
-        frameHandle.src = 'about:blank';
-        this._loadFrameTimeout(urlNavigate, 'adalRenewFrame' + resource, resource);
-
-    };
-
-    /**
-     * Renews idtoken for app's own backend when resource is clientId and calls the callback with token/error
-     * @ignore
-     */
-    AuthenticationContext.prototype._renewIdToken = function (callback, responseType) {
-        // use iframe to try to renew token
-        this.info('renewIdToken is called');
-        var frameHandle = this._addAdalFrame('adalIdTokenFrame');
-        var expectedState = this._guid() + '|' + this.config.clientId;
-        this._idTokenNonce = this._guid();
-        this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN, this._idTokenNonce, true);
-        this.config.state = expectedState;
-        // renew happens in iframe, so it keeps javascript context
-        this._renewStates.push(expectedState);
-        this.verbose('Renew Idtoken Expected state: ' + expectedState);
-        // remove the existing prompt=... query parameter and add prompt=none
-        var resource = responseType === null || typeof (responseType) === "undefined" ? null : this.config.clientId;
-        var responseType = responseType || 'id_token';
-        var urlNavigate = this._urlRemoveQueryStringParameter(this._getNavigateUrl(responseType, resource), 'prompt');
-        urlNavigate = urlNavigate + '&prompt=none';
-        urlNavigate = this._addHintParameters(urlNavigate);
-        urlNavigate += '&nonce=' + encodeURIComponent(this._idTokenNonce);
-        this.registerCallback(expectedState, this.config.clientId, callback);
-        this.verbosePii('Navigate to:' + urlNavigate);
-        frameHandle.src = 'about:blank';
-        this._loadFrameTimeout(urlNavigate, 'adalIdTokenFrame', this.config.clientId);
-    };
-
-    /**
-     * Checks if the authorization endpoint URL contains query string parameters
-     * @ignore
-     */
-    AuthenticationContext.prototype._urlContainsQueryStringParameter = function (name, url) {
-        // regex to detect pattern of a ? or & followed by the name parameter and an equals character
-        var regex = new RegExp("[\\?&]" + name + "=");
-        return regex.test(url);
-    }
-
-    /**
-     * Removes the query string parameter from the authorization endpoint URL if it exists
-     * @ignore
-     */
-    AuthenticationContext.prototype._urlRemoveQueryStringParameter = function (url, name) {
-        // we remove &name=value, name=value& and name=value
-        // &name=value
-        var regex = new RegExp('(\\&' + name + '=)[^\&]+');
-        url = url.replace(regex, '');
-        // name=value&
-        regex = new RegExp('(' + name + '=)[^\&]+&');
-        url = url.replace(regex, '');
-        // name=value
-        regex = new RegExp('(' + name + '=)[^\&]+');
-        url = url.replace(regex, '');
-        return url;
-    }
-
-    // Calling _loadFrame but with a timeout to signal failure in loadframeStatus. Callbacks are left
-    // registered when network errors occur and subsequent token requests for same resource are registered to the pending request
-    /**
-     * @ignore
-     */
-    AuthenticationContext.prototype._loadFrameTimeout = function (urlNavigation, frameName, resource) {
-        //set iframe session to pending
-        this.verbose('Set loading state to pending for: ' + resource);
-        this._saveItem(this.CONSTANTS.STORAGE.RENEW_STATUS + resource, this.CONSTANTS.TOKEN_RENEW_STATUS_IN_PROGRESS);
-        this._loadFrame(urlNavigation, frameName);
-        var self = this;
-
-        setTimeout(function () {
-            if (self._getItem(self.CONSTANTS.STORAGE.RENEW_STATUS + resource) === self.CONSTANTS.TOKEN_RENEW_STATUS_IN_PROGRESS) {
-                // fail the iframe session if it's in pending state
-                self.verbose('Loading frame has timed out after: ' + (self.CONSTANTS.LOADFRAME_TIMEOUT / 1000) + ' seconds for resource ' + resource);
-                var expectedState = self._activeRenewals[resource];
-
-                if (expectedState && self._callBackMappedToRenewStates[expectedState]) {
-                    self._callBackMappedToRenewStates[expectedState]('Token renewal operation failed due to timeout', null, 'Token Renewal Failed');
-                }
-
-                self._saveItem(self.CONSTANTS.STORAGE.RENEW_STATUS + resource, self.CONSTANTS.TOKEN_RENEW_STATUS_CANCELED);
-            }
-        }, self.CONSTANTS.LOADFRAME_TIMEOUT);
-    }
-
-    /**
-     * Loads iframe with authorization endpoint URL
-     * @ignore
-     */
-    AuthenticationContext.prototype._loadFrame = function (urlNavigate, frameName) {
-        // This trick overcomes iframe navigation in IE
-        // IE does not load the page consistently in iframe
-        var self = this;
-        self.info('LoadFrame: ' + frameName);
-        var frameCheck = frameName;
-        setTimeout(function () {
-            var frameHandle = self._addAdalFrame(frameCheck);
-
-            if (frameHandle.src === '' || frameHandle.src === 'about:blank') {
-                frameHandle.src = urlNavigate;
-                self._loadFrame(urlNavigate, frameCheck);
-            }
-
-        }, 500);
-    };
-
-    /**
-     * @callback tokenCallback
-     * @param {string} error_description error description returned from AAD if token request fails.
-     * @param {string} token token returned from AAD if token request is successful.
-     * @param {string} error error message returned from AAD if token request fails.
-     */
-
-    /**
-     * Acquires token from the cache if it is not expired. Otherwise sends request to AAD to obtain a new token.
-     * @param {string}   resource  ResourceUri identifying the target resource
-     * @param {tokenCallback} callback -  The callback provided by the caller. It will be called with token or error.
-     */
-    AuthenticationContext.prototype.acquireToken = function (resource, callback) {
-        if (this._isEmpty(resource)) {
-            this.warn('resource is required');
-            callback('resource is required', null, 'resource is required');
-            return;
-        }
-
-        var token = this.getCachedToken(resource);
-
-        if (token) {
-            this.info('Token is already in cache for resource:' + resource);
-            callback(null, token, null);
-            return;
-        }
-
-        if (!this._user && !(this.config.extraQueryParameter && this.config.extraQueryParameter.indexOf('login_hint') !== -1)) {
-            this.warn('User login is required');
-            callback('User login is required', null, 'login required');
-            return;
-        }
-
-        // renew attempt with iframe
-        // Already renewing for this resource, callback when we get the token.
-        if (this._activeRenewals[resource]) {
-            // Active renewals contains the state for each renewal.
-            this.registerCallback(this._activeRenewals[resource], resource, callback);
-        }
-        else {
-            this._requestType = this.REQUEST_TYPE.RENEW_TOKEN;
-            if (resource === this.config.clientId) {
-                // App uses idtoken to send to api endpoints
-                // Default resource is tracked as clientid to store this token
-                if (this._user) {
-                    this.verbose('renewing idtoken');
-                    this._renewIdToken(callback);
-                }
-                else {
-                    this.verbose('renewing idtoken and access_token');
-                    this._renewIdToken(callback, this.RESPONSE_TYPE.ID_TOKEN_TOKEN);
-                }
-            } else {
-                if (this._user) {
-                    this.verbose('renewing access_token');
-                    this._renewToken(resource, callback);
-                }
-                else {
-                    this.verbose('renewing idtoken and access_token');
-                    this._renewToken(resource, callback, this.RESPONSE_TYPE.ID_TOKEN_TOKEN);
-                }
-            }
-        }
-    };
-
-    /**
-  * Acquires token (interactive flow using a popUp window) by sending request to AAD to obtain a new token.
-  * @param {string}   resource  ResourceUri identifying the target resource
-  * @param {string}   extraQueryParameters  extraQueryParameters to add to the authentication request
-  * @param {tokenCallback} callback -  The callback provided by the caller. It will be called with token or error.
-  */
-    AuthenticationContext.prototype.acquireTokenPopup = function (resource, extraQueryParameters, claims, callback) {
-        if (this._isEmpty(resource)) {
-            this.warn('resource is required');
-            callback('resource is required', null, 'resource is required');
-            return;
-        }
-
-        if (!this._user) {
-            this.warn('User login is required');
-            callback('User login is required', null, 'login required');
-            return;
-        }
-
-        if (this._acquireTokenInProgress) {
-            this.warn("Acquire token interactive is already in progress")
-            callback("Acquire token interactive is already in progress", null, "Acquire token interactive is already in progress");
-            return;
-        }
-
-        var expectedState = this._guid() + '|' + resource;
-        this.config.state = expectedState;
-        this._renewStates.push(expectedState);
-        this._requestType = this.REQUEST_TYPE.RENEW_TOKEN;
-        this.verbose('Renew token Expected state: ' + expectedState);
-        // remove the existing prompt=... query parameter and add prompt=select_account
-        var urlNavigate = this._urlRemoveQueryStringParameter(this._getNavigateUrl('token', resource), 'prompt');
-        urlNavigate = urlNavigate + '&prompt=select_account';
-
-        if (extraQueryParameters) {
-            urlNavigate += extraQueryParameters;
-        }
-
-        if (claims && (urlNavigate.indexOf("&claims") === -1)) {
-            urlNavigate += '&claims=' + encodeURIComponent(claims);
-        }
-        else if (claims && (urlNavigate.indexOf("&claims") !== -1)) {
-            throw new Error('Claims cannot be passed as an extraQueryParameter');
-        }
-
-        urlNavigate = this._addHintParameters(urlNavigate);
-        this._acquireTokenInProgress = true;
-        this.info('acquireToken interactive is called for the resource ' + resource);
-        this.registerCallback(expectedState, resource, callback);
-        this._loginPopup(urlNavigate, resource, callback);
-
-    };
-
-    /**
-      * Acquires token (interactive flow using a redirect) by sending request to AAD to obtain a new token. In this case the callback passed in the Authentication
-      * request constructor will be called.
-      * @param {string}   resource  ResourceUri identifying the target resource
-      * @param {string}   extraQueryParameters  extraQueryParameters to add to the authentication request
-      */
-    AuthenticationContext.prototype.acquireTokenRedirect = function (resource, extraQueryParameters, claims) {
-        if (this._isEmpty(resource)) {
-            this.warn('resource is required');
-            callback('resource is required', null, 'resource is required');
-            return;
-        }
-
-        var callback = this.callback;
-
-        if (!this._user) {
-            this.warn('User login is required');
-            callback('User login is required', null, 'login required');
-            return;
-        }
-
-        if (this._acquireTokenInProgress) {
-            this.warn("Acquire token interactive is already in progress")
-            callback("Acquire token interactive is already in progress", null, "Acquire token interactive is already in progress");
-            return;
-        }
-
-        var expectedState = this._guid() + '|' + resource;
-        this.config.state = expectedState;
-        this.verbose('Renew token Expected state: ' + expectedState);
-
-        // remove the existing prompt=... query parameter and add prompt=select_account
-        var urlNavigate = this._urlRemoveQueryStringParameter(this._getNavigateUrl('token', resource), 'prompt');
-        urlNavigate = urlNavigate + '&prompt=select_account';
-        if (extraQueryParameters) {
-            urlNavigate += extraQueryParameters;
-        }
-
-        if (claims && (urlNavigate.indexOf("&claims") === -1)) {
-            urlNavigate += '&claims=' + encodeURIComponent(claims);
-        }
-        else if (claims && (urlNavigate.indexOf("&claims") !== -1)) {
-            throw new Error('Claims cannot be passed as an extraQueryParameter');
-        }
-
-        urlNavigate = this._addHintParameters(urlNavigate);
-        this._acquireTokenInProgress = true;
-        this.info('acquireToken interactive is called for the resource ' + resource);
-        this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST, window.location.href);
-        this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW, expectedState, true);
-        this.promptUser(urlNavigate);
-    };
-    /**
-     * Redirects the browser to Azure AD authorization endpoint.
-     * @param {string}   urlNavigate  Url of the authorization endpoint.
-     */
-    AuthenticationContext.prototype.promptUser = function (urlNavigate) {
-        if (urlNavigate) {
-            this.infoPii('Navigate to:' + urlNavigate);
-            window.location.replace(urlNavigate);
-        } else {
-            this.info('Navigate url is empty');
-        }
-    };
-
-    /**
-     * Clears cache items.
-     */
-    AuthenticationContext.prototype.clearCache = function () {
-        this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST, '');
-        this._saveItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST, '');
-        this._saveItem(this.CONSTANTS.STORAGE.SESSION_STATE, '');
-        this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN, '');
-        this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW, '');
-        this._renewStates = [];
-        this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN, '');
-        this._saveItem(this.CONSTANTS.STORAGE.IDTOKEN, '');
-        this._saveItem(this.CONSTANTS.STORAGE.ERROR, '');
-        this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, '');
-        this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR, '');
-        this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR, '');
-        var keys = this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS);
-
-        if (!this._isEmpty(keys)) {
-            keys = keys.split(this.CONSTANTS.RESOURCE_DELIMETER);
-            for (var i = 0; i < keys.length && keys[i] !== ""; i++) {
-                this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY + keys[i], '');
-                this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY + keys[i], 0);
-            }
-        }
-
-        this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS, '');
-    };
-
-    /**
-     * Clears cache items for a given resource.
-     * @param {string}  resource a URI that identifies the resource.
-     */
-    AuthenticationContext.prototype.clearCacheForResource = function (resource) {
-        this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW, '');
-        this._saveItem(this.CONSTANTS.STORAGE.ERROR, '');
-        this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, '');
-
-        if (this._hasResource(resource)) {
-            this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY + resource, '');
-            this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY + resource, 0);
-        }
-    };
-
-    /**
-     * Redirects user to logout endpoint.
-     * After logout, it will redirect to postLogoutRedirectUri if added as a property on the config object.
-     */
-    AuthenticationContext.prototype.logOut = function () {
-        this.clearCache();
-        this._user = null;
-        var urlNavigate;
-
-        if (this.config.logOutUri) {
-            urlNavigate = this.config.logOutUri;
-        } else {
-            var tenant = 'common';
-            var logout = '';
-
-            if (this.config.tenant) {
-                tenant = this.config.tenant;
-            }
-
-            if (this.config.postLogoutRedirectUri) {
-                logout = 'post_logout_redirect_uri=' + encodeURIComponent(this.config.postLogoutRedirectUri);
-            }
-
-            urlNavigate = this.instance + tenant + '/oauth2/logout?' + logout;
-        }
-
-        this.infoPii('Logout navigate to: ' + urlNavigate);
-        this.promptUser(urlNavigate);
-    };
-
-    AuthenticationContext.prototype._isEmpty = function (str) {
-        return (typeof str === 'undefined' || !str || 0 === str.length);
-    };
-
-    /**
-     * @callback userCallback
-     * @param {string} error error message if user info is not available.
-     * @param {User} user user object retrieved from the cache.
-     */
-
-    /**
-     * Calls the passed in callback with the user object or error message related to the user.
-     * @param {userCallback} callback - The callback provided by the caller. It will be called with user or error.
-     */
-    AuthenticationContext.prototype.getUser = function (callback) {
-        // IDToken is first call
-        if (typeof callback !== 'function') {
-            throw new Error('callback is not a function');
-        }
-
-        // user in memory
-        if (this._user) {
-            callback(null, this._user);
-            return;
-        }
-
-        // frame is used to get idtoken
-        var idtoken = this._getItem(this.CONSTANTS.STORAGE.IDTOKEN);
-
-        if (!this._isEmpty(idtoken)) {
-            this.info('User exists in cache: ');
-            this._user = this._createUser(idtoken);
-            callback(null, this._user);
-        } else {
-            this.warn('User information is not available');
-            callback('User information is not available', null);
-        }
-    };
-
-    /**
-     * Adds login_hint to authorization URL which is used to pre-fill the username field of sign in page for the user if known ahead of time.
-     * domain_hint can be one of users/organisations which when added skips the email based discovery process of the user.
-     * @ignore
-     */
-    AuthenticationContext.prototype._addHintParameters = function (urlNavigate) {
-        //If you don�t use prompt=none, then if the session does not exist, there will be a failure.
-        //If sid is sent alongside domain or login hints, there will be a failure since request is ambiguous.
-        //If sid is sent with a prompt value other than none or attempt_none, there will be a failure since the request is ambiguous.
-
-        if (this._user && this._user.profile) {
-            if (this._user.profile.sid && urlNavigate.indexOf('&prompt=none') !== -1) {
-                // don't add sid twice if user provided it in the extraQueryParameter value
-                if (!this._urlContainsQueryStringParameter("sid", urlNavigate)) {
-                    // add sid
-                    urlNavigate += '&sid=' + encodeURIComponent(this._user.profile.sid);
-                }
-            }
-            else if (this._user.profile.upn) {
-                // don't add login_hint twice if user provided it in the extraQueryParameter value
-                if (!this._urlContainsQueryStringParameter("login_hint", urlNavigate)) {
-                    // add login_hint
-                    urlNavigate += '&login_hint=' + encodeURIComponent(this._user.profile.upn);
-                }
-                // don't add domain_hint twice if user provided it in the extraQueryParameter value
-                if (!this._urlContainsQueryStringParameter("domain_hint", urlNavigate) && this._user.profile.upn.indexOf('@') > -1) {
-                    var parts = this._user.profile.upn.split('@');
-                    // local part can include @ in quotes. Sending last part handles that.
-                    urlNavigate += '&domain_hint=' + encodeURIComponent(parts[parts.length - 1]);
-                }
-            }
-
-        }
-
-        return urlNavigate;
-    }
-
-    /**
-     * Creates a user object by decoding the id_token
-     * @ignore
-     */
-    AuthenticationContext.prototype._createUser = function (idToken) {
-        var user = null;
-        var parsedJson = this._extractIdToken(idToken);
-        if (parsedJson && parsedJson.hasOwnProperty('aud')) {
-            if (parsedJson.aud.toLowerCase() === this.config.clientId.toLowerCase()) {
-
-                user = {
-                    userName: '',
-                    profile: parsedJson
-                };
-
-                if (parsedJson.hasOwnProperty('upn')) {
-                    user.userName = parsedJson.upn;
-                } else if (parsedJson.hasOwnProperty('email')) {
-                    user.userName = parsedJson.email;
-                }
-            } else {
-                this.warn('IdToken has invalid aud field');
-            }
-
-        }
-
-        return user;
-    };
-
-    /**
-     * Returns the anchor part(#) of the URL
-     * @ignore
-     */
-    AuthenticationContext.prototype._getHash = function (hash) {
-        if (hash.indexOf('#/') > -1) {
-            hash = hash.substring(hash.indexOf('#/') + 2);
-        } else if (hash.indexOf('#') > -1) {
-            hash = hash.substring(1);
-        }
-
-        return hash;
-    };
-
-    /**
-     * Checks if the URL fragment contains access token, id token or error_description.
-     * @param {string} hash  -  Hash passed from redirect page
-     * @returns {Boolean} true if response contains id_token, access_token or error, false otherwise.
-     */
-    AuthenticationContext.prototype.isCallback = function (hash) {
-        hash = this._getHash(hash);
-        var parameters = this._deserialize(hash);
-        return (
-            parameters.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION) ||
-            parameters.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN) ||
-            parameters.hasOwnProperty(this.CONSTANTS.ID_TOKEN)
-        );
-    };
-
-    /**
-     * Gets login error
-     * @returns {string} error message related to login.
-     */
-    AuthenticationContext.prototype.getLoginError = function () {
-        return this._getItem(this.CONSTANTS.STORAGE.LOGIN_ERROR);
-    };
-
-    /**
-     * Request info object created from the response received from AAD.
-     *  @class RequestInfo
-     *  @property {object} parameters - object comprising of fields such as id_token/error, session_state, state, e.t.c.
-     *  @property {REQUEST_TYPE} requestType - either LOGIN, RENEW_TOKEN or UNKNOWN.
-     *  @property {boolean} stateMatch - true if state is valid, false otherwise.
-     *  @property {string} stateResponse - unique guid used to match the response with the request.
-     *  @property {boolean} valid - true if requestType contains id_token, access_token or error, false otherwise.
-     */
-
-    /**
-     * Creates a requestInfo object from the URL fragment and returns it.
-     * @returns {RequestInfo} an object created from the redirect response from AAD comprising of the keys - parameters, requestType, stateMatch, stateResponse and valid.
-     */
-    AuthenticationContext.prototype.getRequestInfo = function (hash) {
-        hash = this._getHash(hash);
-        var parameters = this._deserialize(hash);
-        var requestInfo = {
-            valid: false,
-            parameters: {},
-            stateMatch: false,
-            stateResponse: '',
-            requestType: this.REQUEST_TYPE.UNKNOWN,
-        };
-
-        if (parameters) {
-            requestInfo.parameters = parameters;
-            if (parameters.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION) ||
-                parameters.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN) ||
-                parameters.hasOwnProperty(this.CONSTANTS.ID_TOKEN)) {
-
-                requestInfo.valid = true;
-
-                // which call
-                var stateResponse = '';
-                if (parameters.hasOwnProperty('state')) {
-                    this.verbose('State: ' + parameters.state);
-                    stateResponse = parameters.state;
-                } else {
-                    this.warn('No state returned');
-                    return requestInfo;
-                }
-
-                requestInfo.stateResponse = stateResponse;
-
-                // async calls can fire iframe and login request at the same time if developer does not use the API as expected
-                // incoming callback needs to be looked up to find the request type
-                if (this._matchState(requestInfo)) { // loginRedirect or acquireTokenRedirect
-                    return requestInfo;
-                }
-
-                // external api requests may have many renewtoken requests for different resource
-                if (!requestInfo.stateMatch && window.parent) {
-                    requestInfo.requestType = this._requestType;
-                    var statesInParentContext = this._renewStates;
-                    for (var i = 0; i < statesInParentContext.length; i++) {
-                        if (statesInParentContext[i] === requestInfo.stateResponse) {
-                            requestInfo.stateMatch = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        return requestInfo;
-    };
-
-    /**
-    * Matches nonce from the request with the response.
-    * @ignore
-    */
-    AuthenticationContext.prototype._matchNonce = function (user) {
-        var requestNonce = this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN);
-
-        if (requestNonce) {
-            requestNonce = requestNonce.split(this.CONSTANTS.CACHE_DELIMETER);
-            for (var i = 0; i < requestNonce.length; i++) {
-                if (requestNonce[i] === user.profile.nonce) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    };
-
-    /**
-    * Matches state from the request with the response.
-    * @ignore
-    */
-    AuthenticationContext.prototype._matchState = function (requestInfo) {
-        var loginStates = this._getItem(this.CONSTANTS.STORAGE.STATE_LOGIN);
-
-        if (loginStates) {
-            loginStates = loginStates.split(this.CONSTANTS.CACHE_DELIMETER);
-            for (var i = 0; i < loginStates.length; i++) {
-                if (loginStates[i] === requestInfo.stateResponse) {
-                    requestInfo.requestType = this.REQUEST_TYPE.LOGIN;
-                    requestInfo.stateMatch = true;
-                    return true;
-                }
-            }
-        }
-
-        var acquireTokenStates = this._getItem(this.CONSTANTS.STORAGE.STATE_RENEW);
-
-        if (acquireTokenStates) {
-            acquireTokenStates = acquireTokenStates.split(this.CONSTANTS.CACHE_DELIMETER);
-            for (var i = 0; i < acquireTokenStates.length; i++) {
-                if (acquireTokenStates[i] === requestInfo.stateResponse) {
-                    requestInfo.requestType = this.REQUEST_TYPE.RENEW_TOKEN;
-                    requestInfo.stateMatch = true;
-                    return true;
-                }
-            }
-        }
-
-        return false;
-
-    };
-
-    /**
-     * Extracts resource value from state.
-     * @ignore
-     */
-    AuthenticationContext.prototype._getResourceFromState = function (state) {
-        if (state) {
-            var splitIndex = state.indexOf('|');
-
-            if (splitIndex > -1 && splitIndex + 1 < state.length) {
-                return state.substring(splitIndex + 1);
-            }
-        }
-
-        return '';
-    };
-
-    /**
-     * Saves token or error received in the response from AAD in the cache. In case of id_token, it also creates the user object.
-     */
-    AuthenticationContext.prototype.saveTokenFromHash = function (requestInfo) {
-        this.info('State status:' + requestInfo.stateMatch + '; Request type:' + requestInfo.requestType);
-        this._saveItem(this.CONSTANTS.STORAGE.ERROR, '');
-        this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, '');
-
-        var resource = this._getResourceFromState(requestInfo.stateResponse);
-
-        // Record error
-        if (requestInfo.parameters.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION)) {
-            this.infoPii('Error :' + requestInfo.parameters.error + '; Error description:' + requestInfo.parameters[this.CONSTANTS.ERROR_DESCRIPTION]);
-            this._saveItem(this.CONSTANTS.STORAGE.ERROR, requestInfo.parameters.error);
-            this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, requestInfo.parameters[this.CONSTANTS.ERROR_DESCRIPTION]);
-
-            if (requestInfo.requestType === this.REQUEST_TYPE.LOGIN) {
-                this._loginInProgress = false;
-                this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR, requestInfo.parameters.error_description);
-            }
-        } else {
-            // It must verify the state from redirect
-            if (requestInfo.stateMatch) {
-                // record tokens to storage if exists
-                this.info('State is right');
-                if (requestInfo.parameters.hasOwnProperty(this.CONSTANTS.SESSION_STATE)) {
-                    this._saveItem(this.CONSTANTS.STORAGE.SESSION_STATE, requestInfo.parameters[this.CONSTANTS.SESSION_STATE]);
-                }
-
-                var keys;
-
-                if (requestInfo.parameters.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)) {
-                    this.info('Fragment has access token');
-
-                    if (!this._hasResource(resource)) {
-                        keys = this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS) || '';
-                        this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS, keys + resource + this.CONSTANTS.RESOURCE_DELIMETER);
-                    }
-
-                    // save token with related resource
-                    this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY + resource, requestInfo.parameters[this.CONSTANTS.ACCESS_TOKEN]);
-                    this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY + resource, this._expiresIn(requestInfo.parameters[this.CONSTANTS.EXPIRES_IN]));
-                }
-
-                if (requestInfo.parameters.hasOwnProperty(this.CONSTANTS.ID_TOKEN)) {
-                    this.info('Fragment has id token');
-                    this._loginInProgress = false;
-                    this._user = this._createUser(requestInfo.parameters[this.CONSTANTS.ID_TOKEN]);
-                    if (this._user && this._user.profile) {
-                        if (!this._matchNonce(this._user)) {
-                            this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR, 'Nonce received: ' + this._user.profile.nonce + ' is not same as requested: ' +
-                                this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN));
-                            this._user = null;
-                        } else {
-                            this._saveItem(this.CONSTANTS.STORAGE.IDTOKEN, requestInfo.parameters[this.CONSTANTS.ID_TOKEN]);
-
-                            // Save idtoken as access token for app itself
-                            resource = this.config.loginResource ? this.config.loginResource : this.config.clientId;
-
-                            if (!this._hasResource(resource)) {
-                                keys = this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS) || '';
-                                this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS, keys + resource + this.CONSTANTS.RESOURCE_DELIMETER);
-                            }
-
-                            this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY + resource, requestInfo.parameters[this.CONSTANTS.ID_TOKEN]);
-                            this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY + resource, this._user.profile.exp);
-                        }
-                    }
-                    else {
-                        requestInfo.parameters['error'] = 'invalid id_token';
-                        requestInfo.parameters['error_description'] = 'Invalid id_token. id_token: ' + requestInfo.parameters[this.CONSTANTS.ID_TOKEN];
-                        this._saveItem(this.CONSTANTS.STORAGE.ERROR, 'invalid id_token');
-                        this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, 'Invalid id_token. id_token: ' + requestInfo.parameters[this.CONSTANTS.ID_TOKEN]);
-                    }
-                }
-            } else {
-                requestInfo.parameters['error'] = 'Invalid_state';
-                requestInfo.parameters['error_description'] = 'Invalid_state. state: ' + requestInfo.stateResponse;
-                this._saveItem(this.CONSTANTS.STORAGE.ERROR, 'Invalid_state');
-                this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, 'Invalid_state. state: ' + requestInfo.stateResponse);
-            }
-        }
-
-        this._saveItem(this.CONSTANTS.STORAGE.RENEW_STATUS + resource, this.CONSTANTS.TOKEN_RENEW_STATUS_COMPLETED);
-    };
-
-    /**
-     * Gets resource for given endpoint if mapping is provided with config.
-     * @param {string} endpoint  -  The URI for which the resource Id is requested.
-     * @returns {string} resource for this API endpoint.
-     */
-    AuthenticationContext.prototype.getResourceForEndpoint = function (endpoint) {
-
-        // if user specified list of anonymous endpoints, no need to send token to these endpoints, return null.
-        if (this.config && this.config.anonymousEndpoints) {
-            for (var i = 0; i < this.config.anonymousEndpoints.length; i++) {
-                if (endpoint.indexOf(this.config.anonymousEndpoints[i]) > -1) {
-                    return null;
-                }
-            }
-        }
-
-        if (this.config && this.config.endpoints) {
-            for (var configEndpoint in this.config.endpoints) {
-                // configEndpoint is like /api/Todo requested endpoint can be /api/Todo/1
-                if (endpoint.indexOf(configEndpoint) > -1) {
-                    return this.config.endpoints[configEndpoint];
-                }
-            }
-        }
-
-        // default resource will be clientid if nothing specified
-        // App will use idtoken for calls to itself
-        // check if it's staring from http or https, needs to match with app host
-        if (endpoint.indexOf('http://') > -1 || endpoint.indexOf('https://') > -1) {
-            if (this._getHostFromUri(endpoint) === this._getHostFromUri(this.config.redirectUri)) {
-                return this.config.loginResource;
-            }
-        }
-        else {
-            // in angular level, the url for $http interceptor call could be relative url,
-            // if it's relative call, we'll treat it as app backend call.            
-            return this.config.loginResource;
-        }
-
-        // if not the app's own backend or not a domain listed in the endpoints structure
-        return null;
-    };
-
-    /**
-     * Strips the protocol part of the URL and returns it.
-     * @ignore
-     */
-    AuthenticationContext.prototype._getHostFromUri = function (uri) {
-        // remove http:// or https:// from uri
-        var extractedUri = String(uri).replace(/^(https?:)\/\//, '');
-        extractedUri = extractedUri.split('/')[0];
-        return extractedUri;
-    };
-
-    /**
-     * This method must be called for processing the response received from AAD. It extracts the hash, processes the token or error, saves it in the cache and calls the registered callbacks with the result.
-     * @param {string} [hash=window.location.hash] - Hash fragment of Url.
-     */
-    AuthenticationContext.prototype.handleWindowCallback = function (hash) {
-        // This is for regular javascript usage for redirect handling
-        // need to make sure this is for callback
-        if (hash == null) {
-            hash = window.location.hash;
-        }
-
-        if (this.isCallback(hash)) {
-            var self = null;
-            var isPopup = false;
-
-            if (this._openedWindows.length > 0 && this._openedWindows[this._openedWindows.length - 1].opener
-                && this._openedWindows[this._openedWindows.length - 1].opener._adalInstance) {
-                self = this._openedWindows[this._openedWindows.length - 1].opener._adalInstance;
-                isPopup = true;
-            }
-            else if (window.parent && window.parent._adalInstance) {
-                self = window.parent._adalInstance;
-            }
-
-            var requestInfo = self.getRequestInfo(hash);
-            var token, tokenReceivedCallback, tokenType = null;
-
-            if (isPopup || window.parent !== window) {
-                tokenReceivedCallback = self._callBackMappedToRenewStates[requestInfo.stateResponse];
-            }
-            else {
-                tokenReceivedCallback = self.callback;
-            }
-
-            self.info("Returned from redirect url");
-            self.saveTokenFromHash(requestInfo);
-
-            if ((requestInfo.requestType === this.REQUEST_TYPE.RENEW_TOKEN) && window.parent) {
-                if (window.parent !== window) {
-                    self.verbose("Window is in iframe, acquiring token silently");
-                } else {
-                    self.verbose("acquiring token interactive in progress");
-                }
-
-                token = requestInfo.parameters[self.CONSTANTS.ACCESS_TOKEN] || requestInfo.parameters[self.CONSTANTS.ID_TOKEN];
-                tokenType = self.CONSTANTS.ACCESS_TOKEN;
-            } else if (requestInfo.requestType === this.REQUEST_TYPE.LOGIN) {
-                token = requestInfo.parameters[self.CONSTANTS.ID_TOKEN];
-                tokenType = self.CONSTANTS.ID_TOKEN;
-            }
-
-            var errorDesc = requestInfo.parameters[self.CONSTANTS.ERROR_DESCRIPTION];
-            var error = requestInfo.parameters[self.CONSTANTS.ERROR];
-            try {
-                if (tokenReceivedCallback) {
-                    tokenReceivedCallback(errorDesc, token, error, tokenType);
-                }
-
-            } catch (err) {
-                self.error("Error occurred in user defined callback function: " + err);
-            }
-
-            if (window.parent === window && !isPopup) {
-                if (self.config.navigateToLoginRequestUrl) {
-                    window.location.href = self._getItem(self.CONSTANTS.STORAGE.LOGIN_REQUEST);
-                } else window.location.hash = '';
-            }
-        }
-    };
-
-    /**
-     * Constructs the authorization endpoint URL and returns it.
-     * @ignore
-     */
-    AuthenticationContext.prototype._getNavigateUrl = function (responseType, resource) {
-        var tenant = 'common';
-        if (this.config.tenant) {
-            tenant = this.config.tenant;
-        }
-
-        var urlNavigate = this.instance + tenant + '/oauth2/authorize' + this._serialize(responseType, this.config, resource) + this._addLibMetadata();
-        this.info('Navigate url:' + urlNavigate);
-        return urlNavigate;
-    };
-
-    /**
-     * Returns the decoded id_token.
-     * @ignore
-     */
-    AuthenticationContext.prototype._extractIdToken = function (encodedIdToken) {
-        // id token will be decoded to get the username
-        var decodedToken = this._decodeJwt(encodedIdToken);
-
-        if (!decodedToken) {
-            return null;
-        }
-
-        try {
-            var base64IdToken = decodedToken.JWSPayload;
-            var base64Decoded = this._base64DecodeStringUrlSafe(base64IdToken);
-
-            if (!base64Decoded) {
-                this.info('The returned id_token could not be base64 url safe decoded.');
-                return null;
-            }
-
-            // ECMA script has JSON built-in support
-            return JSON.parse(base64Decoded);
-        } catch (err) {
-            this.error('The returned id_token could not be decoded', err);
-        }
-
-        return null;
-    };
-
-    /**
-     * Decodes a string of data which has been encoded using base-64 encoding.
-     * @ignore
-     */
-    AuthenticationContext.prototype._base64DecodeStringUrlSafe = function (base64IdToken) {
-        // html5 should support atob function for decoding
-        base64IdToken = base64IdToken.replace(/-/g, '+').replace(/_/g, '/');
-
-        if (window.atob) {
-            return decodeURIComponent(escape(window.atob(base64IdToken))); // jshint ignore:line
-        }
-        else {
-            return decodeURIComponent(escape(this._decode(base64IdToken)));
-        }
-    };
-
-    //Take https://cdnjs.cloudflare.com/ajax/libs/Base64/0.3.0/base64.js and https://en.wikipedia.org/wiki/Base64 as reference. 
-    AuthenticationContext.prototype._decode = function (base64IdToken) {
-        var codes = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-        base64IdToken = String(base64IdToken).replace(/=+$/, '');
-
-        var length = base64IdToken.length;
-
-        if (length % 4 === 1) {
-            throw new Error('The token to be decoded is not correctly encoded.');
-        }
-
-        var h1, h2, h3, h4, bits, c1, c2, c3, decoded = '';
-
-        for (var i = 0; i < length; i += 4) {
-            //Every 4 base64 encoded character will be converted to 3 byte string, which is 24 bits
-            // then 6 bits per base64 encoded character
-            h1 = codes.indexOf(base64IdToken.charAt(i));
-            h2 = codes.indexOf(base64IdToken.charAt(i + 1));
-            h3 = codes.indexOf(base64IdToken.charAt(i + 2));
-            h4 = codes.indexOf(base64IdToken.charAt(i + 3));
-
-            // For padding, if last two are '='
-            if (i + 2 === length - 1) {
-                bits = h1 << 18 | h2 << 12 | h3 << 6;
-                c1 = bits >> 16 & 255;
-                c2 = bits >> 8 & 255;
-                decoded += String.fromCharCode(c1, c2);
-                break;
-            }
-            // if last one is '='
-            else if (i + 1 === length - 1) {
-                bits = h1 << 18 | h2 << 12
-                c1 = bits >> 16 & 255;
-                decoded += String.fromCharCode(c1);
-                break;
-            }
-
-            bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
-
-            // then convert to 3 byte chars
-            c1 = bits >> 16 & 255;
-            c2 = bits >> 8 & 255;
-            c3 = bits & 255;
-
-            decoded += String.fromCharCode(c1, c2, c3);
-        }
-
-        return decoded;
-    };
-
-    /**
-     * Decodes an id token into an object with header, payload and signature fields.
-     * @ignore
-     */
-    // Adal.node js crack function
-    AuthenticationContext.prototype._decodeJwt = function (jwtToken) {
-        if (this._isEmpty(jwtToken)) {
-            return null;
-        };
-
-        var idTokenPartsRegex = /^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/;
-
-        var matches = idTokenPartsRegex.exec(jwtToken);
-
-        if (!matches || matches.length < 4) {
-            this.warn('The returned id_token is not parseable.');
-            return null;
-        }
-
-        var crackedToken = {
-            header: matches[1],
-            JWSPayload: matches[2],
-            JWSSig: matches[3]
-        };
-
-        return crackedToken;
-    };
-
-    /**
-     * Converts string to represent binary data in ASCII string format by translating it into a radix-64 representation and returns it
-     * @ignore
-     */
-    AuthenticationContext.prototype._convertUrlSafeToRegularBase64EncodedString = function (str) {
-        return str.replace('-', '+').replace('_', '/');
-    };
-
-    /**
-     * Serializes the parameters for the authorization endpoint URL and returns the serialized uri string.
-     * @ignore
-     */
-    AuthenticationContext.prototype._serialize = function (responseType, obj, resource) {
-        var str = [];
-
-        if (obj !== null) {
-            str.push('?response_type=' + responseType);
-            str.push('client_id=' + encodeURIComponent(obj.clientId));
-            if (resource) {
-                str.push('resource=' + encodeURIComponent(resource));
-            }
-
-            str.push('redirect_uri=' + encodeURIComponent(obj.redirectUri));
-            str.push('state=' + encodeURIComponent(obj.state));
-
-            if (obj.hasOwnProperty('slice')) {
-                str.push('slice=' + encodeURIComponent(obj.slice));
-            }
-
-            if (obj.hasOwnProperty('extraQueryParameter')) {
-                str.push(obj.extraQueryParameter);
-            }
-
-            var correlationId = obj.correlationId ? obj.correlationId : this._guid();
-            str.push('client-request-id=' + encodeURIComponent(correlationId));
-        }
-
-        return str.join('&');
-    };
-
-    /**
-     * Parses the query string parameters into a key-value pair object.
-     * @ignore
-     */
-    AuthenticationContext.prototype._deserialize = function (query) {
-        var match,
-            pl = /\+/g,  // Regex for replacing addition symbol with a space
-            search = /([^&=]+)=([^&]*)/g,
-            decode = function (s) {
-                return decodeURIComponent(s.replace(pl, ' '));
-            },
-            obj = {};
-        match = search.exec(query);
-
-        while (match) {
-            obj[decode(match[1])] = decode(match[2]);
-            match = search.exec(query);
-        }
-
-        return obj;
-    };
-
-    /**
-     * Converts decimal value to hex equivalent
-     * @ignore
-     */
-    AuthenticationContext.prototype._decimalToHex = function (number) {
-        var hex = number.toString(16);
-
-        while (hex.length < 2) {
-            hex = '0' + hex;
-        }
-        return hex;
-    }
-
-    /**
-     * Generates RFC4122 version 4 guid (128 bits)
-     * @ignore
-     */
-    /* jshint ignore:start */
-    AuthenticationContext.prototype._guid = function () {
-        // RFC4122: The version 4 UUID is meant for generating UUIDs from truly-random or
-        // pseudo-random numbers.
-        // The algorithm is as follows:
-        //     Set the two most significant bits (bits 6 and 7) of the
-        //        clock_seq_hi_and_reserved to zero and one, respectively.
-        //     Set the four most significant bits (bits 12 through 15) of the
-        //        time_hi_and_version field to the 4-bit version number from
-        //        Section 4.1.3. Version4
-        //     Set all the other bits to randomly (or pseudo-randomly) chosen
-        //     values.
-        // UUID                   = time-low "-" time-mid "-"time-high-and-version "-"clock-seq-reserved and low(2hexOctet)"-" node
-        // time-low               = 4hexOctet
-        // time-mid               = 2hexOctet
-        // time-high-and-version  = 2hexOctet
-        // clock-seq-and-reserved = hexOctet:
-        // clock-seq-low          = hexOctet
-        // node                   = 6hexOctet
-        // Format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
-        // y could be 1000, 1001, 1010, 1011 since most significant two bits needs to be 10
-        // y values are 8, 9, A, B
-        var cryptoObj = window.crypto || window.msCrypto; // for IE 11
-        if (cryptoObj && cryptoObj.getRandomValues) {
-            var buffer = new Uint8Array(16);
-            cryptoObj.getRandomValues(buffer);
-            //buffer[6] and buffer[7] represents the time_hi_and_version field. We will set the four most significant bits (4 through 7) of buffer[6] to represent decimal number 4 (UUID version number).
-            buffer[6] |= 0x40; //buffer[6] | 01000000 will set the 6 bit to 1.
-            buffer[6] &= 0x4f; //buffer[6] & 01001111 will set the 4, 5, and 7 bit to 0 such that bits 4-7 == 0100 = "4".
-            //buffer[8] represents the clock_seq_hi_and_reserved field. We will set the two most significant bits (6 and 7) of the clock_seq_hi_and_reserved to zero and one, respectively.
-            buffer[8] |= 0x80; //buffer[8] | 10000000 will set the 7 bit to 1.
-            buffer[8] &= 0xbf; //buffer[8] & 10111111 will set the 6 bit to 0.
-            return this._decimalToHex(buffer[0]) + this._decimalToHex(buffer[1]) + this._decimalToHex(buffer[2]) + this._decimalToHex(buffer[3]) + '-' + this._decimalToHex(buffer[4]) + this._decimalToHex(buffer[5]) + '-' + this._decimalToHex(buffer[6]) + this._decimalToHex(buffer[7]) + '-' +
-                this._decimalToHex(buffer[8]) + this._decimalToHex(buffer[9]) + '-' + this._decimalToHex(buffer[10]) + this._decimalToHex(buffer[11]) + this._decimalToHex(buffer[12]) + this._decimalToHex(buffer[13]) + this._decimalToHex(buffer[14]) + this._decimalToHex(buffer[15]);
-        }
-        else {
-            var guidHolder = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
-            var hex = '0123456789abcdef';
-            var r = 0;
-            var guidResponse = "";
-            for (var i = 0; i < 36; i++) {
-                if (guidHolder[i] !== '-' && guidHolder[i] !== '4') {
-                    // each x and y needs to be random
-                    r = Math.random() * 16 | 0;
-                }
-                if (guidHolder[i] === 'x') {
-                    guidResponse += hex[r];
-                } else if (guidHolder[i] === 'y') {
-                    // clock-seq-and-reserved first hex is filtered and remaining hex values are random
-                    r &= 0x3; // bit and with 0011 to set pos 2 to zero ?0??
-                    r |= 0x8; // set pos 3 to 1 as 1???
-                    guidResponse += hex[r];
-                } else {
-                    guidResponse += guidHolder[i];
-                }
-            }
-            return guidResponse;
-        }
-    };
-    /* jshint ignore:end */
-
-    /**
-     * Calculates the expires in value in milliseconds for the acquired token
-     * @ignore
-     */
-    AuthenticationContext.prototype._expiresIn = function (expires) {
-        // if AAD did not send "expires_in" property, use default expiration of 3599 seconds, for some reason AAD sends 3599 as "expires_in" value instead of 3600
-        if (!expires) expires = 3599;
-        return this._now() + parseInt(expires, 10);
-    };
-
-    /**
-     * Return the number of milliseconds since 1970/01/01
-     * @ignore
-     */
-    AuthenticationContext.prototype._now = function () {
-        return Math.round(new Date().getTime() / 1000.0);
-    };
-
-    /**
-     * Adds the hidden iframe for silent token renewal
-     * @ignore
-     */
-    AuthenticationContext.prototype._addAdalFrame = function (iframeId) {
-        if (typeof iframeId === 'undefined') {
-            return;
-        }
-
-        this.info('Add adal frame to document:' + iframeId);
-        var adalFrame = document.getElementById(iframeId);
-
-        if (!adalFrame) {
-            if (document.createElement && document.documentElement &&
-                (window.opera || window.navigator.userAgent.indexOf('MSIE 5.0') === -1)) {
-                var ifr = document.createElement('iframe');
-                ifr.setAttribute('id', iframeId);
-                ifr.setAttribute('aria-hidden', 'true');
-                ifr.style.visibility = 'hidden';
-                ifr.style.position = 'absolute';
-                ifr.style.width = ifr.style.height = ifr.borderWidth = '0px';
-
-                adalFrame = document.getElementsByTagName('body')[0].appendChild(ifr);
-            }
-            else if (document.body && document.body.insertAdjacentHTML) {
-                document.body.insertAdjacentHTML('beforeEnd', '<iframe name="' + iframeId + '" id="' + iframeId + '" style="display:none"></iframe>');
-            }
-            if (window.frames && window.frames[iframeId]) {
-                adalFrame = window.frames[iframeId];
-            }
-        }
-
-        return adalFrame;
-    };
-
-    /**
-     * Saves the key-value pair in the cache
-     * @ignore
-     */
-    AuthenticationContext.prototype._saveItem = function (key, obj, preserve) {
-
-        if (this.config && this.config.cacheLocation && this.config.cacheLocation === 'localStorage') {
-
-            if (!this._supportsLocalStorage()) {
-                this.info('Local storage is not supported');
-                return false;
-            }
-
-            if (preserve) {
-                var value = this._getItem(key) || '';
-                localStorage.setItem(key, value + obj + this.CONSTANTS.CACHE_DELIMETER);
-            }
-            else {
-                localStorage.setItem(key, obj);
-            }
-
-            return true;
-        }
-
-        // Default as session storage
-        if (!this._supportsSessionStorage()) {
-            this.info('Session storage is not supported');
-            return false;
-        }
-
-        sessionStorage.setItem(key, obj);
-        return true;
-    };
-
-    /**
-     * Searches the value for the given key in the cache
-     * @ignore
-     */
-    AuthenticationContext.prototype._getItem = function (key) {
-
-        if (this.config && this.config.cacheLocation && this.config.cacheLocation === 'localStorage') {
-
-            if (!this._supportsLocalStorage()) {
-                this.info('Local storage is not supported');
-                return null;
-            }
-
-            return localStorage.getItem(key);
-        }
-
-        // Default as session storage
-        if (!this._supportsSessionStorage()) {
-            this.info('Session storage is not supported');
-            return null;
-        }
-
-        return sessionStorage.getItem(key);
-    };
-
-    /**
-     * Returns true if browser supports localStorage, false otherwise.
-     * @ignore
-     */
-    AuthenticationContext.prototype._supportsLocalStorage = function () {
-        try {
-            if (!window.localStorage) return false; // Test availability
-            window.localStorage.setItem('storageTest', 'A'); // Try write
-            if (window.localStorage.getItem('storageTest') != 'A') return false; // Test read/write
-            window.localStorage.removeItem('storageTest'); // Try delete
-            if (window.localStorage.getItem('storageTest')) return false; // Test delete
-            return true; // Success
-        } catch (e) {
-            return false;
-        }
-    };
-
-    /**
-     * Returns true if browser supports sessionStorage, false otherwise.
-     * @ignore
-     */
-    AuthenticationContext.prototype._supportsSessionStorage = function () {
-        try {
-            if (!window.sessionStorage) return false; // Test availability
-            window.sessionStorage.setItem('storageTest', 'A'); // Try write
-            if (window.sessionStorage.getItem('storageTest') != 'A') return false; // Test read/write
-            window.sessionStorage.removeItem('storageTest'); // Try delete
-            if (window.sessionStorage.getItem('storageTest')) return false; // Test delete
-            return true; // Success
-        } catch (e) {
-            return false;
-        }
-    };
-
-    /**
-     * Returns a cloned copy of the passed object.
-     * @ignore
-     */
-    AuthenticationContext.prototype._cloneConfig = function (obj) {
-        if (null === obj || 'object' !== typeof obj) {
-            return obj;
-        }
-
-        var copy = {};
-        for (var attr in obj) {
-            if (obj.hasOwnProperty(attr)) {
-                copy[attr] = obj[attr];
-            }
-        }
-        return copy;
-    };
-
-    /**
-     * Adds the library version and returns it.
-     * @ignore
-     */
-    AuthenticationContext.prototype._addLibMetadata = function () {
-        // x-client-SKU
-        // x-client-Ver
-        return '&x-client-SKU=Js&x-client-Ver=' + this._libVersion();
-    };
-
-    /**
-     * Checks the Logging Level, constructs the Log message and logs it. Users need to implement/override this method to turn on Logging. 
-     * @param {number} level  -  Level can be set 0,1,2 and 3 which turns on 'error', 'warning', 'info' or 'verbose' level logging respectively.
-     * @param {string} message  -  Message to log.
-     * @param {string} error  -  Error to log.
-     */
-    AuthenticationContext.prototype.log = function (level, message, error, containsPii) {
-
-        if (level <= Logging.level) {
-
-            if (!Logging.piiLoggingEnabled && containsPii)
-                return;
-
-            var timestamp = new Date().toUTCString();
-            var formattedMessage = '';
-
-            if (this.config.correlationId)
-                formattedMessage = timestamp + ':' + this.config.correlationId + '-' + this._libVersion() + '-' + this.CONSTANTS.LEVEL_STRING_MAP[level] + ' ' + message;
-            else
-                formattedMessage = timestamp + ':' + this._libVersion() + '-' + this.CONSTANTS.LEVEL_STRING_MAP[level] + ' ' + message;
-
-            if (error) {
-                formattedMessage += '\nstack:\n' + error.stack;
-            }
-
-            Logging.log(formattedMessage);
-        }
-    };
-
-    /**
-     * Logs messages when Logging Level is set to 0.
-     * @param {string} message  -  Message to log.
-     * @param {string} error  -  Error to log.
-     */
-    AuthenticationContext.prototype.error = function (message, error) {
-        this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR, message, error);
-    };
-
-    /**
-     * Logs messages when Logging Level is set to 1.
-     * @param {string} message  -  Message to log.
-     */
-    AuthenticationContext.prototype.warn = function (message) {
-        this.log(this.CONSTANTS.LOGGING_LEVEL.WARN, message, null);
-    };
-
-    /**
-     * Logs messages when Logging Level is set to 2.
-     * @param {string} message  -  Message to log.
-     */
-    AuthenticationContext.prototype.info = function (message) {
-        this.log(this.CONSTANTS.LOGGING_LEVEL.INFO, message, null);
-    };
-
-    /**
-     * Logs messages when Logging Level is set to 3.
-     * @param {string} message  -  Message to log.
-     */
-    AuthenticationContext.prototype.verbose = function (message) {
-        this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE, message, null);
-    };
-
-    /**
-    * Logs Pii messages when Logging Level is set to 0 and window.piiLoggingEnabled is set to true.
-    * @param {string} message  -  Message to log.
-    * @param {string} error  -  Error to log.
-    */
-    AuthenticationContext.prototype.errorPii = function (message, error) {
-        this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR, message, error, true);
-    };
-
-    /**
-     * Logs  Pii messages when Logging Level is set to 1 and window.piiLoggingEnabled is set to true.
-     * @param {string} message  -  Message to log.
-     */
-    AuthenticationContext.prototype.warnPii = function (message) {
-        this.log(this.CONSTANTS.LOGGING_LEVEL.WARN, message, null, true);
-    };
-
-    /**
-     * Logs messages when Logging Level is set to 2 and window.piiLoggingEnabled is set to true.
-     * @param {string} message  -  Message to log.
-     */
-    AuthenticationContext.prototype.infoPii = function (message) {
-        this.log(this.CONSTANTS.LOGGING_LEVEL.INFO, message, null, true);
-    };
-
-    /**
-     * Logs messages when Logging Level is set to 3 and window.piiLoggingEnabled is set to true.
-     * @param {string} message  -  Message to log.
-     */
-    AuthenticationContext.prototype.verbosePii = function (message) {
-        this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE, message, null, true);
-    };
-    /**
-     * Returns the library version.
-     * @ignore
-     */
-    AuthenticationContext.prototype._libVersion = function () {
-        return '1.0.17';
-    };
-
-    /**
-     * Returns a reference of Authentication Context as a result of a require call.
-     * @ignore
-     */
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = AuthenticationContext;
-        module.exports.inject = function (conf) {
-            return new AuthenticationContext(conf);
-        };
-    }
-
-    return AuthenticationContext;
-
-}());
-
-
-/***/ }),
-/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cachingConfigurationProvider__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cachingConfigurationProvider__ = __webpack_require__(1);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__cachingConfigurationProvider__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__spListConfigurationProvider__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__spListConfigurationProvider__ = __webpack_require__(9);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__spListConfigurationProvider__["a"]; });
 
 
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 11 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cachingConfigurationProvider__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cachingConfigurationProvider__ = __webpack_require__(1);
 
 /**
  * A configuration provider which loads configuration values from a SharePoint list

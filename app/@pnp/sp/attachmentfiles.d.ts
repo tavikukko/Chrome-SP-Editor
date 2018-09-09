@@ -1,4 +1,4 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 export interface AttachmentFileInfo {
     name: string;
     content: string | Blob | ArrayBuffer;
@@ -8,12 +8,6 @@ export interface AttachmentFileInfo {
  *
  */
 export declare class AttachmentFiles extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the AttachmentFiles class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this attachments collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets a Attachment File by filename
      *
@@ -45,6 +39,7 @@ export declare class AttachmentFiles extends SharePointQueryableCollection {
  *
  */
 export declare class AttachmentFile extends SharePointQueryableInstance {
+    delete: (eTag?: string) => Promise<void>;
     /**
      * Gets the contents of the file as text
      *
@@ -69,13 +64,7 @@ export declare class AttachmentFile extends SharePointQueryableInstance {
      * @param content The value to set for the file contents
      */
     setContent(content: string | ArrayBuffer | Blob): Promise<AttachmentFile>;
-    /**
-     * Delete this attachment file
-     *
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    delete(eTag?: string): Promise<void>;
-    private getParsed<T>(parser);
+    private getParsed;
 }
 export interface AttachmentFileAddResult {
     file: AttachmentFile;

@@ -52,16 +52,16 @@ export declare class AdalClient extends BearerTokenFetchClient {
     /**
      * Ensures we have created and setup the adal AuthenticationContext instance
      */
-    private ensureAuthContext();
+    private ensureAuthContext;
     /**
      * Ensures the current user is logged in
      */
-    private login();
+    private login;
     /**
      * Parses out the root of the request url to use as the resource when getting the token
      *
      * After: https://gist.github.com/jlong/2428561
      * @param url The url to parse
      */
-    private getResource(url);
+    private getResource;
 }

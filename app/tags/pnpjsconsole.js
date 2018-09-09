@@ -8,7 +8,7 @@ riot.tag("pnpjsconsole", `
 
     this.init = function () {
 
-      require(['vs/editor/editor.main'], function () {
+      require(['vs/editor/editor.main','vs/language/typescript/tsWorker'], function () {
 
         var loadDeclaration = function loadDeclaration() {
           var loadDeclaration = function (path) {
@@ -69,8 +69,8 @@ pnp.sp.web.get().then(w => {
 });
 
 // using @pnp/common
-import { Util } from "@pnp/common";
-console.log(Util.getGUID());
+import { getGUID } from "@pnp/common";
+console.log(getGUID());
 
 // using @pnp/logging
 import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
@@ -80,6 +80,8 @@ Logger.write("This is logging a simple string", LogLevel.Info);
 
 // using @pnp/graph (modern page in browser)
 import { graph } from "@pnp/graph"
+
+if ((window as any).moduleLoaderPromise)
 (window as any).moduleLoaderPromise.then(e => {
     graph.setup({
         spfxContext: e.context
@@ -89,6 +91,7 @@ import { graph } from "@pnp/graph"
         console.log(grps);
     })
 })
+else console.log("to work with graph, switch to modern page!")
 
 // using @pnp/sp-taxonomy
 import { taxonomy } from "@pnp/sp-taxonomy"

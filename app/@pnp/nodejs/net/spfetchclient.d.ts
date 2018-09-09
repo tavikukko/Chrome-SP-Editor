@@ -12,7 +12,7 @@ export declare enum SPOAuthEnv {
     China = 1,
     Germany = 2,
     USDef = 3,
-    USGov = 4,
+    USGov = 4
 }
 /**
  * Fetch client for use within nodejs, requires you register a client id and secret with app only permissions
@@ -32,8 +32,8 @@ export declare class SPFetchClient implements HttpClientImpl {
      */
     getAddInOnlyAccessToken(): Promise<AuthToken>;
     getAuthHostUrl(env: SPOAuthEnv): string;
-    private getRealm();
-    private getAuthUrl(realm);
-    private getFormattedPrincipal(principalName, hostName, realm);
-    private toDate(epoch);
+    private getRealm;
+    private getAuthUrl;
+    private getFormattedPrincipal;
+    private toDate;
 }

@@ -27,7 +27,7 @@ export declare class ConsoleListener implements LogListener {
      *
      * @param entry The information to format into a string
      */
-    private format(entry);
+    private format;
 }
 /**
  * Implementation of LogListener which logs to the supplied function

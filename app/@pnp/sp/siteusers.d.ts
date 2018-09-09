@@ -15,23 +15,17 @@ export interface UserUpdateResult {
  */
 export declare class SiteUsers extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the SiteUsers class
+     * Gets a user from the collection by id
      *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this user collection
+     * @param id The id of the user to retrieve
      */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
+    getById(id: number): SiteUser;
     /**
      * Gets a user from the collection by email
      *
      * @param email The email address of the user to retrieve
      */
     getByEmail(email: string): SiteUser;
-    /**
-     * Gets a user from the collection by id
-     *
-     * @param id The id of the user to retrieve
-     */
-    getById(id: number): SiteUser;
     /**
      * Gets a user from the collection by login name
      *
@@ -73,18 +67,17 @@ export declare class SiteUser extends SharePointQueryableInstance {
     *
     * @param properties A plain object of property names and values to update for the user
     */
-    update(properties: TypedHash<any>): Promise<UserUpdateResult>;
+    update: (props: TypedHash<any>) => Promise<UserUpdateResult>;
     /**
      * Delete this user
      *
      */
-    delete(): Promise<void>;
+    delete: () => Promise<void>;
 }
 /**
  * Represents the current user
  */
 export declare class CurrentUser extends SharePointQueryableInstance {
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
 }
 export interface SiteUserProps {
     Email: string;

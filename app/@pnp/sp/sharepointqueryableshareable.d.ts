@@ -77,8 +77,8 @@ export declare class SharePointQueryableShareable extends SharePointQueryable {
      * @param group The Group type
      */
     protected getRoleValue(role: SharingRole, group: RoleType): Promise<string>;
-    private getShareObjectWeb(candidate);
-    private sendShareObjectRequest(options);
+    private getShareObjectWeb;
+    private sendShareObjectRequest;
 }
 export declare class SharePointQueryableShareableWeb extends SharePointQueryableSecurable {
     /**

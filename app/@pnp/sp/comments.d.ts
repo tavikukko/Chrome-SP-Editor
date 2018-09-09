@@ -1,4 +1,4 @@
-import { SharePointQueryableCollection, SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 export interface CommentAuthorData {
     email: string;
     id: number;
@@ -38,23 +38,17 @@ export interface CommentInfo {
  */
 export declare class Comments extends SharePointQueryableCollection<CommentData[]> {
     /**
-     * Creates a new instance of the Comments class
+     * Adds a new comment to this collection
      *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
+     * @param info Comment information to add
      */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
+    add(info: string | CommentInfo): Promise<Comment & CommentData>;
     /**
      * Gets a comment by id
      *
      * @param id Id of the comment to load
      */
     getById(id: string | number): Comment;
-    /**
-     * Adds a new comment to this collection
-     *
-     * @param info Comment information to add
-     */
-    add(info: string | CommentInfo): Promise<Comment & CommentData>;
     /**
      * Deletes all the comments in this collection
      */
@@ -82,12 +76,6 @@ export declare class Comment extends SharePointQueryableInstance {
  * Represents a Collection of comments
  */
 export declare class Replies extends SharePointQueryableCollection<CommentData[]> {
-    /**
-     * Creates a new instance of the Comments class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Adds a new reply to this collection
      *

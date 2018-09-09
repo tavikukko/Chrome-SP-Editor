@@ -20,7 +20,7 @@ export declare enum GroupType {
     /**
      * Security
      */
-    Security = 2,
+    Security = 2
 }
 /**
  * Describes a collection of Field objects

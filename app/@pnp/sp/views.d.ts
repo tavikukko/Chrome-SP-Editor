@@ -1,16 +1,10 @@
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 import { TypedHash } from "@pnp/common";
 /**
  * Describes the views available in the current context
  *
  */
 export declare class Views extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the Views class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets a view by guid id
      *
@@ -43,12 +37,12 @@ export declare class View extends SharePointQueryableInstance {
      *
      * @param properties A plain object hash of values to update for the view
      */
-    update(properties: TypedHash<any>): Promise<ViewUpdateResult>;
+    update: (props: TypedHash<any>) => Promise<ViewUpdateResult>;
     /**
      * Delete this view
      *
      */
-    delete(): Promise<void>;
+    delete: () => Promise<void>;
     /**
      * Returns the list view as HTML.
      *
@@ -56,7 +50,6 @@ export declare class View extends SharePointQueryableInstance {
     renderAsHtml(): Promise<string>;
 }
 export declare class ViewFields extends SharePointQueryableCollection {
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets a value that specifies the XML schema that represents the collection.
      */

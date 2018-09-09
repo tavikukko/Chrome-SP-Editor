@@ -1,26 +1,20 @@
 import { TypedHash } from "@pnp/common";
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 /**
  * Describes a collection of content types
  *
  */
 export declare class ContentTypes extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the ContentTypes class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this content types collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
-    /**
-     * Gets a ContentType by content type id
-     */
-    getById(id: string): ContentType;
-    /**
      * Adds an existing contenttype to a content type collection
      *
      * @param contentTypeId in the following format, for example: 0x010102
      */
     addAvailableContentType(contentTypeId: string): Promise<ContentTypeAddResult>;
+    /**
+     * Gets a ContentType by content type id
+     */
+    getById(id: string): ContentType;
     /**
      * Adds a new content type to the collection
      *
@@ -57,7 +51,7 @@ export declare class ContentType extends SharePointQueryableInstance {
     /**
      * Delete this content type
      */
-    delete(): Promise<void>;
+    delete: () => Promise<void>;
 }
 export interface ContentTypeAddResult {
     contentType: ContentType;
@@ -67,12 +61,6 @@ export interface ContentTypeAddResult {
  * Represents a collection of field link instances
  */
 export declare class FieldLinks extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the ContentType class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this content type instance
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets a FieldLink by GUID id
      *
