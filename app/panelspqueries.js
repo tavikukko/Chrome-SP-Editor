@@ -2079,7 +2079,7 @@ var getSiteCollections = function getSiteCollections() {
               window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
             }
             else {
-              var q = $pnp.SearchQueryBuilder.create("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
+              var q = $pnp.SearchQueryBuilder("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
 
               $pnp.sp.search(q).then(re => {
                 fetch(spHostUrl + "/_vti_bin/client.svc/ProcessQuery", {
@@ -2114,7 +2114,7 @@ var getSiteCollections = function getSiteCollections() {
                         hubsiteQuery += "DepartmentId:{" + id + "}";
                       });
 
-                      var q2 = $pnp.SearchQueryBuilder.create("contentclass:STS_Site AND ( " + hubsiteQuery + " )", { TrimDuplicates: false, SelectProperties: ["DepartmentId", "Url"] });
+                      var q2 = $pnp.SearchQueryBuilder("contentclass:STS_Site AND ( " + hubsiteQuery + " )", { TrimDuplicates: false, SelectProperties: ["DepartmentId", "Url"] });
 
                       $pnp.sp.search(q2).then(re2 => {
                         var deps = [];
