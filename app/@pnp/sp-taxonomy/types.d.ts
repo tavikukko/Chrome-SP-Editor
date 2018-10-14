@@ -70,3 +70,4 @@ export interface ChangeInformation {
     StartTime?: string;
     WithinTimeSpan?: TimeSpan;
 }
+//# sourceMappingURL=types.d.ts.map

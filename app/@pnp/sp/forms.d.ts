@@ -17,3 +17,4 @@ export declare class Forms extends SharePointQueryableCollection {
  */
 export declare class Form extends SharePointQueryableInstance {
 }
+//# sourceMappingURL=forms.d.ts.map

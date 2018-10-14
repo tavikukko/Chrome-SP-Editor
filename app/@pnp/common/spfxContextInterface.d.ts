@@ -18,3 +18,4 @@ export interface ISPFXContext {
         };
     };
 }
+//# sourceMappingURL=spfxcontextinterface.d.ts.map

@@ -74,3 +74,4 @@ export interface PersonalResultSuggestion {
     readonly TypeId?: string;
     readonly Url?: string;
 }
+//# sourceMappingURL=searchsuggest.d.ts.map

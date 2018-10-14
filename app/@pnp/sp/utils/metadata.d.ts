@@ -3,3 +3,4 @@ export declare function metadata(type: string): {
         "type": string;
     };
 };
+//# sourceMappingURL=metadata.d.ts.map

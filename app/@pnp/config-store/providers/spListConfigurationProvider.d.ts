@@ -33,3 +33,4 @@ export default class SPListConfigurationProvider implements IConfigurationProvid
      */
     asCaching(cacheKey?: string): CachingConfigurationProvider;
 }
+//# sourceMappingURL=spListConfigurationProvider.d.ts.map

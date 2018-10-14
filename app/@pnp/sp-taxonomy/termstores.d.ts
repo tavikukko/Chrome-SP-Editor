@@ -176,3 +176,4 @@ export declare class TermStore extends ClientSvcQueryable implements ITermStore 
      */
     getChanges(info: ChangeInformation): Promise<ChangedItem[]>;
 }
+//# sourceMappingURL=termstores.d.ts.map

@@ -81,3 +81,4 @@ export interface SiteGroupAddResult {
     group: SiteGroup;
     data: any;
 }
+//# sourceMappingURL=sitegroups.d.ts.map

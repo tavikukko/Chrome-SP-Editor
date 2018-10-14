@@ -63,3 +63,4 @@ export declare class WebPartDefinition extends SharePointQueryableInstance {
 }
 export declare class WebPart extends SharePointQueryableInstance {
 }
+//# sourceMappingURL=webparts.d.ts.map

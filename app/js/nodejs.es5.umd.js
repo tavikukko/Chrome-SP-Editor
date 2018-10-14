@@ -1,6 +1,6 @@
 /**
 @license
- * @pnp/nodejs v1.2.1 - pnp - provides functionality enabling the @pnp libraries within nodejs
+ * @pnp/nodejs v1.2.3 - pnp - provides functionality enabling the @pnp libraries within nodejs
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2018 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -124,7 +124,7 @@
                         if (eps.length > 0) {
                             return eps[0].location;
                         }
-                        throw new Error("Auth URL Endpoint could not be determined from data.");
+                        throw Error("Auth URL Endpoint could not be determined from data.");
                     });
                 };
                 SPFetchClient.prototype.getFormattedPrincipal = function (principalName, hostName, realm) {

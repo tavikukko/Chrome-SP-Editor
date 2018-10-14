@@ -140,3 +140,4 @@ export declare class ClientSvcQueryable<GetType = any> extends Queryable<GetType
      */
     private invokeMethodImpl;
 }
+//# sourceMappingURL=clintsvcqueryable.d.ts.map

@@ -83,3 +83,4 @@ export declare class Replies extends SharePointQueryableCollection<CommentData[]
      */
     add(info: string | CommentInfo): Promise<Comment & CommentData>;
 }
+//# sourceMappingURL=comments.d.ts.map

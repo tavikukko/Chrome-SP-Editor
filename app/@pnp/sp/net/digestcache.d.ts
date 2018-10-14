@@ -10,3 +10,4 @@ export declare class DigestCache {
     getDigest(webUrl: string): Promise<string>;
     clear(): void;
 }
+//# sourceMappingURL=digestcache.d.ts.map

@@ -309,3 +309,4 @@ export declare enum TemplateFileType {
     FormPage = 2,
     ClientSidePage = 3
 }
+//# sourceMappingURL=files.d.ts.map

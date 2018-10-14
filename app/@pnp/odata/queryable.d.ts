@@ -151,3 +151,4 @@ export declare abstract class ODataQueryable<BatchType extends ODataBatch, GetTy
      */
     protected readonly batch: BatchType | null;
 }
+//# sourceMappingURL=queryable.d.ts.map

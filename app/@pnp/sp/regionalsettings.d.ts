@@ -53,3 +53,4 @@ export declare class TimeZones extends SharePointQueryableCollection {
      */
     getById(id: number): Promise<TimeZone>;
 }
+//# sourceMappingURL=regionalsettings.d.ts.map

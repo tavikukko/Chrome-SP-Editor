@@ -17,3 +17,4 @@ export interface LogEntry {
      */
     data?: any;
 }
+//# sourceMappingURL=logentry.d.ts.map

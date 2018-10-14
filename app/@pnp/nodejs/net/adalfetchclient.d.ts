@@ -18,3 +18,4 @@ export declare class AdalFetchClient implements HttpClientImpl {
     fetch(url: string, options: any): Promise<Response>;
     acquireToken(): Promise<AADToken>;
 }
+//# sourceMappingURL=adalfetchclient.d.ts.map

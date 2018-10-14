@@ -64,3 +64,4 @@ export interface OpenWebByIdResult {
     data: any;
     web: Web;
 }
+//# sourceMappingURL=site.d.ts.map

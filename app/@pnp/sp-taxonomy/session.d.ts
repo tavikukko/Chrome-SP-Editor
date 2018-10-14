@@ -56,3 +56,4 @@ export declare class Session extends ClientSvcQueryable implements ITaxonomySess
      */
     getDefaultSiteCollectionTermStore(): ITermStore;
 }
+//# sourceMappingURL=session.d.ts.map

@@ -56,3 +56,4 @@ export interface AppAddResult {
     data: any;
     file: File;
 }
+//# sourceMappingURL=appcatalog.d.ts.map

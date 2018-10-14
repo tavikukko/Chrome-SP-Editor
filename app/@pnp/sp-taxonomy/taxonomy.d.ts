@@ -7,3 +7,4 @@ export * from "./terms";
 export * from "./termsets";
 export * from "./termstores";
 export * from "./types";
+//# sourceMappingURL=taxonomy.d.ts.map

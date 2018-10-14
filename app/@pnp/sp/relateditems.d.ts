@@ -56,3 +56,4 @@ export declare class RelatedItemManagerImpl extends SharePointQueryable implemen
     addSingleLinkFromUrl(sourceItemUrl: string, targetListName: string, targetItemId: number, tryAddReverseLink?: boolean): Promise<void>;
     deleteSingleLink(sourceListName: string, sourceItemId: number, sourceWebUrl: string, targetListName: string, targetItemId: number, targetWebUrl: string, tryDeleteReverseLink?: boolean): Promise<void>;
 }
+//# sourceMappingURL=relateditems.d.ts.map

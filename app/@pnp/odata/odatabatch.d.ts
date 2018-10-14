@@ -48,3 +48,4 @@ export declare abstract class ODataBatch {
     execute(): Promise<void>;
     protected abstract executeImpl(): Promise<void>;
 }
+//# sourceMappingURL=odatabatch.d.ts.map

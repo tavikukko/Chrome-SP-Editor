@@ -238,3 +238,4 @@ export declare class SharePointQueryableShareableFolder extends FileFolderShared
      */
     shareWith(loginNames: string | string[], role?: SharingRole, requireSignin?: boolean, shareEverything?: boolean, emailData?: SharingEmailData): Promise<SharingResult>;
 }
+//# sourceMappingURL=sharepointqueryableshareable.d.ts.map

@@ -17,3 +17,4 @@ export declare function objectToMap<K, V>(o: any): Map<K, V>;
  * @param maps One or more maps to merge into the target
  */
 export declare function mergeMaps<K, V>(target: Map<K, V>, ...maps: Map<K, V>[]): Map<K, V>;
+//# sourceMappingURL=collections.d.ts.map

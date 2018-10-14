@@ -127,3 +127,4 @@ export declare class SharePointQueryableInstance extends SharePointQueryable {
 export declare function defaultPath(path: string): <T extends new (...args: any[]) => {}>(target: T) => {
     new (...args: any[]): {};
 } & T;
+//# sourceMappingURL=sharepointqueryable.d.ts.map

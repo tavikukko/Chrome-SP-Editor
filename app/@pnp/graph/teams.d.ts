@@ -37,3 +37,4 @@ export interface TeamCreateResult {
     group: Group;
     team: Team;
 }
+//# sourceMappingURL=teams.d.ts.map

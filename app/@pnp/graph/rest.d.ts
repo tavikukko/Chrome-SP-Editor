@@ -13,3 +13,4 @@ export declare class GraphRest extends GraphQueryable {
     setup(config: GraphConfiguration): void;
 }
 export declare let graph: GraphRest;
+//# sourceMappingURL=rest.d.ts.map

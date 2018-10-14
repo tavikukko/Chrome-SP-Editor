@@ -21,3 +21,4 @@ export declare class Member extends GraphQueryableInstance {
 export declare class Owners extends Members {
     constructor(baseUrl: string | GraphQueryable, path?: string);
 }
+//# sourceMappingURL=members.d.ts.map

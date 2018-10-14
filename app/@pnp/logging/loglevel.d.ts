@@ -8,3 +8,4 @@ export declare const enum LogLevel {
     Error = 3,
     Off = 99
 }
+//# sourceMappingURL=loglevel.d.ts.map

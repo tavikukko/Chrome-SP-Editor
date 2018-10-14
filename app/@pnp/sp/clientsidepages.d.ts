@@ -331,3 +331,4 @@ export declare module ClientSideWebpartPropertyTypes {
         zoomLevel?: number;
     }
 }
+//# sourceMappingURL=clientsidepages.d.ts.map

@@ -16,3 +16,4 @@ export declare class Photo extends GraphQueryableInstance {
      */
     setContent(content: ArrayBuffer | Blob): Promise<void>;
 }
+//# sourceMappingURL=photos.d.ts.map

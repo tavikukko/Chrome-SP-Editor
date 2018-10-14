@@ -13,3 +13,4 @@ export declare class SPBatch extends ODataBatch {
     static ParseResponse(body: string): Promise<Response[]>;
     protected executeImpl(): Promise<void>;
 }
+//# sourceMappingURL=batch.d.ts.map

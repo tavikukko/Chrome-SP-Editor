@@ -57,3 +57,4 @@ export interface UserCustomActionUpdateResult {
     data: any;
     action: UserCustomAction;
 }
+//# sourceMappingURL=usercustomactions.d.ts.map

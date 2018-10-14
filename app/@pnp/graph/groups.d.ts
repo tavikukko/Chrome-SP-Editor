@@ -146,3 +146,4 @@ export interface GroupAddResult {
     group: Group;
     data: any;
 }
+//# sourceMappingURL=groups.d.ts.map

@@ -44,3 +44,4 @@ export interface SubscriptionUpdateResult {
     subscription: Subscription;
     data: any;
 }
+//# sourceMappingURL=subscriptions.d.ts.map

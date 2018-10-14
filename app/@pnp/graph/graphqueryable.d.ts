@@ -126,3 +126,4 @@ export declare class GraphQueryableInstance<GetType = any> extends GraphQueryabl
      */
     expand(...expands: string[]): this;
 }
+//# sourceMappingURL=graphqueryable.d.ts.map

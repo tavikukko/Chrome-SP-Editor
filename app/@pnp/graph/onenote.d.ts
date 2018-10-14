@@ -81,3 +81,4 @@ export interface SectionAddResult {
     data: any;
     section: Section;
 }
+//# sourceMappingURL=onenote.d.ts.map

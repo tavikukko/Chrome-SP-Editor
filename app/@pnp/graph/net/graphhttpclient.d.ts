@@ -9,3 +9,4 @@ export declare class GraphHttpClient implements RequestClient {
     patch(url: string, options?: FetchOptions): Promise<Response>;
     delete(url: string, options?: FetchOptions): Promise<Response>;
 }
+//# sourceMappingURL=graphhttpclient.d.ts.map

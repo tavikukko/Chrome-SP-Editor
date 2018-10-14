@@ -9,3 +9,4 @@ export declare class ObjectPathBatch extends ODataBatch implements IObjectPathBa
     constructor(parentUrl: string, _batchId?: string);
     protected executeImpl(): Promise<void>;
 }
+//# sourceMappingURL=batch.d.ts.map

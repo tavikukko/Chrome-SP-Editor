@@ -1492,3 +1492,4 @@ export interface LikeData {
     email: string;
     creationDate: string;
 }
+//# sourceMappingURL=types.d.ts.map

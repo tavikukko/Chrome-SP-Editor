@@ -6,3 +6,4 @@ export { GraphConfiguration, GraphConfigurationPart, } from "./config/graphlibco
 export * from "./teams";
 export * from "./types";
 export * from "./onenote";
+//# sourceMappingURL=graph.d.ts.map

@@ -123,3 +123,4 @@ export declare class PnPClientStorage {
     readonly session: PnPClientStore;
     private getStore;
 }
+//# sourceMappingURL=storage.d.ts.map

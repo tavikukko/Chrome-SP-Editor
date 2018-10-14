@@ -48,3 +48,4 @@ export interface CreateWikiPageResult {
     data: any;
     file: File;
 }
+//# sourceMappingURL=utilities.d.ts.map

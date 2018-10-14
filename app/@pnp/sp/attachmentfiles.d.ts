@@ -70,3 +70,4 @@ export interface AttachmentFileAddResult {
     file: AttachmentFile;
     data: any;
 }
+//# sourceMappingURL=attachmentfiles.d.ts.map

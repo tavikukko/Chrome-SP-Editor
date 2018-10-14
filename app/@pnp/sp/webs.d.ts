@@ -183,6 +183,11 @@ export declare class Web extends SharePointQueryableShareableWeb {
      */
     readonly associatedVisitorGroup: SiteGroup;
     /**
+     * Gets the default document library for this web
+     *
+     */
+    readonly defaultDocumentLibrary: List;
+    /**
      * Gets a folder by server relative url
      *
      * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
@@ -368,3 +373,4 @@ export interface WebEnsureUserResult {
     data: SiteUserProps;
     user: SiteUser;
 }
+//# sourceMappingURL=webs.d.ts.map

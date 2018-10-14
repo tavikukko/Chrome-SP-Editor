@@ -5,3 +5,4 @@
  *
  */
 export declare function toAbsoluteUrl(candidateUrl: string): Promise<string>;
+//# sourceMappingURL=toabsoluteurl.d.ts.map

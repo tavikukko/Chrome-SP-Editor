@@ -73,3 +73,4 @@ export declare class FieldLinks extends SharePointQueryableCollection {
  */
 export declare class FieldLink extends SharePointQueryableInstance {
 }
+//# sourceMappingURL=contenttypes.d.ts.map

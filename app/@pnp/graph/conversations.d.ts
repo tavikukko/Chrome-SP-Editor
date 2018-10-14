@@ -121,3 +121,4 @@ export declare class Senders extends GraphQueryableCollection {
      */
     remove(id: string): Promise<void>;
 }
+//# sourceMappingURL=conversations.d.ts.map

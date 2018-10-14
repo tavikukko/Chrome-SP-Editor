@@ -127,3 +127,4 @@ export interface RoleDefinitionAddResult {
  */
 export declare class RoleDefinitionBindings extends SharePointQueryableCollection {
 }
+//# sourceMappingURL=roles.d.ts.map

@@ -18,3 +18,4 @@ export declare class Attachments extends GraphQueryableCollection {
 }
 export declare class Attachment extends GraphQueryableInstance {
 }
+//# sourceMappingURL=attachments.d.ts.map

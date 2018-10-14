@@ -12,3 +12,4 @@ export declare class SPRequestExecutorClient implements HttpClientImpl {
      */
     private convertToResponse;
 }
+//# sourceMappingURL=sprequestexecutorclient.d.ts.map

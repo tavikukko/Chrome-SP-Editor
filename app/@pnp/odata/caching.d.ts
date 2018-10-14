@@ -20,3 +20,4 @@ export declare class CachingParserWrapper<T> implements ODataParser<T> {
     parse(response: Response): Promise<T>;
     protected cacheData(data: any): any;
 }
+//# sourceMappingURL=caching.d.ts.map

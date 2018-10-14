@@ -218,3 +218,4 @@ export declare class PagedItemCollection<T> {
      */
     getNext(): Promise<PagedItemCollection<T>>;
 }
+//# sourceMappingURL=items.d.ts.map

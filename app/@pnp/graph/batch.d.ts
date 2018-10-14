@@ -6,3 +6,4 @@ export declare class GraphBatch extends ODataBatch {
     private formatRequests;
     private _parseResponse;
 }
+//# sourceMappingURL=batch.d.ts.map

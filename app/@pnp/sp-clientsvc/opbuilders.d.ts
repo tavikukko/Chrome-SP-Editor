@@ -38,3 +38,4 @@ export declare class MethodParams implements IMethodParamsBuilder {
     private a;
 }
 export declare function method(name: string, params: IMethodParamsBuilder, ...actions: string[]): IObjectPath;
+//# sourceMappingURL=opbuilders.d.ts.map

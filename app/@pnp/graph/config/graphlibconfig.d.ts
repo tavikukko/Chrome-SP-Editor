@@ -19,3 +19,4 @@ export declare class GraphRuntimeConfigImpl {
     readonly fetchClientFactory: () => HttpClientImpl;
 }
 export declare let GraphRuntimeConfig: GraphRuntimeConfigImpl;
+//# sourceMappingURL=graphlibconfig.d.ts.map

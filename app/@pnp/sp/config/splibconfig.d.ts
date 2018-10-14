@@ -24,3 +24,4 @@ export declare class SPRuntimeConfigImpl {
     readonly fetchClientFactory: () => HttpClientImpl;
 }
 export declare let SPRuntimeConfig: SPRuntimeConfigImpl;
+//# sourceMappingURL=splibconfig.d.ts.map

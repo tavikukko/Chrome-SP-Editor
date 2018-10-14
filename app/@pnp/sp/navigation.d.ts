@@ -91,3 +91,4 @@ export declare class NavigationService extends SharePointQueryable implements IN
      */
     getMenuNodeKey(currentUrl: string, mapProviderName?: string): Promise<string>;
 }
+//# sourceMappingURL=navigation.d.ts.map

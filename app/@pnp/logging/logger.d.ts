@@ -53,3 +53,4 @@ export declare class Logger {
      */
     static error(err: Error): void;
 }
+//# sourceMappingURL=logger.d.ts.map

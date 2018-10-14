@@ -38,3 +38,4 @@ export interface TeamProperties {
         "allowCustomMemes"?: boolean;
     };
 }
+//# sourceMappingURL=types.d.ts.map

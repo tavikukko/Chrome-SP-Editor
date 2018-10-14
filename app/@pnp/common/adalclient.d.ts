@@ -1,5 +1,5 @@
 import { BearerTokenFetchClient, FetchOptions } from "./netutil";
-import { ISPFXContext } from "./spfxContextInterface";
+import { ISPFXContext } from "./spfxcontextinterface";
 /**
  * Azure AD Client for use in the browser
  */
@@ -65,3 +65,4 @@ export declare class AdalClient extends BearerTokenFetchClient {
      */
     private getResource;
 }
+//# sourceMappingURL=adalclient.d.ts.map

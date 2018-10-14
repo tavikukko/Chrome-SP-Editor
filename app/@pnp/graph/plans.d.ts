@@ -10,3 +10,4 @@ export declare class Plans extends GraphQueryableCollection {
 }
 export declare class Plan extends GraphQueryableInstance {
 }
+//# sourceMappingURL=plans.d.ts.map

@@ -97,3 +97,4 @@ export declare class SPRest {
     private create;
 }
 export declare const sp: SPRest;
+//# sourceMappingURL=rest.d.ts.map

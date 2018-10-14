@@ -83,7 +83,7 @@ export declare function stringIsNullOrEmpty(s: string): boolean;
  * @param html HTML to search
  * @param attrName The name of the attribute to find
  */
-export declare function getAttrValueFromString(html: string, attrName: string): string;
+export declare function getAttrValueFromString(html: string, attrName: string): string | null;
 /**
  * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
  *
@@ -109,3 +109,4 @@ export declare function hOP(o: any, p: string): boolean;
  * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
  */
 export declare function getHashCode(s: string): number;
+//# sourceMappingURL=util.d.ts.map

@@ -309,3 +309,4 @@ export interface MySocialData {
     MyFollowedDocumentsUri: string;
     MyFollowedSitesUri: string;
 }
+//# sourceMappingURL=social.d.ts.map

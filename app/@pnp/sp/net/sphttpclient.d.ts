@@ -10,3 +10,4 @@ export declare class SPHttpClient implements RequestClient {
     patch(url: string, options?: FetchOptions): Promise<Response>;
     delete(url: string, options?: FetchOptions): Promise<Response>;
 }
+//# sourceMappingURL=sphttpclient.d.ts.map

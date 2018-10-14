@@ -25,3 +25,4 @@ export declare class SPRestAddIn extends SPRest {
     private _cdImpl;
 }
 export declare const sp: SPRestAddIn;
+//# sourceMappingURL=sprestaddin.d.ts.map

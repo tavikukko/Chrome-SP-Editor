@@ -49,3 +49,4 @@ export declare class FunctionListener implements LogListener {
      */
     log(entry: LogEntry): void;
 }
+//# sourceMappingURL=listeners.d.ts.map

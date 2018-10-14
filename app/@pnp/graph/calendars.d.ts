@@ -33,3 +33,4 @@ export declare class Event extends GraphQueryableInstance {
      */
     delete(): Promise<void>;
 }
+//# sourceMappingURL=calendars.d.ts.map

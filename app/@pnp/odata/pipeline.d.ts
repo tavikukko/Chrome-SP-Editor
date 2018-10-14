@@ -30,7 +30,7 @@ export declare function setResult<T>(context: RequestContext<T>, value: any): Pr
  *
  * @param context Current context
  */
-export declare function pipe<T>(context: RequestContext<T>): Promise<T | null>;
+export declare function pipe<T>(context: RequestContext<T>): Promise<T>;
 /**
  * decorator factory applied to methods in the pipeline to control behavior
  */
@@ -57,3 +57,4 @@ export declare class PipelineMethods {
     static logEnd<T>(context: RequestContext<T>): Promise<RequestContext<T>>;
 }
 export declare function getDefaultPipeline(): (typeof PipelineMethods.logStart)[];
+//# sourceMappingURL=pipeline.d.ts.map

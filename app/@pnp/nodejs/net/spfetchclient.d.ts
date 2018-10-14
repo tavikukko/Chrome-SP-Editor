@@ -37,3 +37,4 @@ export declare class SPFetchClient implements HttpClientImpl {
     private getFormattedPrincipal;
     private toDate;
 }
+//# sourceMappingURL=spfetchclient.d.ts.map

@@ -114,3 +114,4 @@ export declare class Term extends ClientSvcQueryable implements ITerm {
         Name: string;
     }): Promise<ITermData & ITerm>;
 }
+//# sourceMappingURL=terms.d.ts.map

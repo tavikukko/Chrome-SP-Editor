@@ -1,5 +1,5 @@
 import { TypedHash } from "./collections";
-import { ISPFXContext } from "./spfxContextInterface";
+import { ISPFXContext } from "./spfxcontextinterface";
 export interface LibraryConfiguration {
     /**
      * Allows caching to be global disabled, default: false
@@ -44,3 +44,4 @@ export declare class RuntimeConfigImpl {
     readonly spfxContext: ISPFXContext;
 }
 export declare let RuntimeConfig: RuntimeConfigImpl;
+//# sourceMappingURL=libconfig.d.ts.map

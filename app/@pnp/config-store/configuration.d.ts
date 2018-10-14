@@ -62,3 +62,4 @@ export declare class Settings {
      */
     getJSON(key: string): any;
 }
+//# sourceMappingURL=configuration.d.ts.map

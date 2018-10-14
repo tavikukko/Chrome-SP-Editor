@@ -106,3 +106,4 @@ declare const Def: {
  * Enables use of the import pnp from syntax
  */
 export default Def;
+//# sourceMappingURL=pnpjs.d.ts.map

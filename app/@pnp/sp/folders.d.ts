@@ -96,3 +96,4 @@ export interface FolderUpdateResult {
     folder: Folder;
     data: any;
 }
+//# sourceMappingURL=folders.d.ts.map

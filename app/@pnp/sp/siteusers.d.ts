@@ -89,3 +89,4 @@ export interface SiteUserProps {
     PrincipalType: number;
     Title: string;
 }
+//# sourceMappingURL=siteusers.d.ts.map
