@@ -83,15 +83,27 @@ riot.tag("search", `
                         </div>
                       </div>
                       <div>
-                      <label for="code">Search payload preview:</label>
+						<label for="code">Search payload preview:</label>
 <pre id="code">
 { prewPayload }
 </pre>
                       </div>
                     </div>
-                  </div>
                 </div>
-              </div>
+				
+				<!-- This is where search index updates start -->
+				<div class="panel panel-default">
+					<div class="panel-heading">Reindexing</i></div>
+						<div class="panel-body">
+							<div class="form-group">
+							  <button onclick="{ reIndexWeb }" type="button" class="btn btn-primary btn-md" id="reIndexWebBtn" >Reindex this web  <i class="{ searching ? 'fa fa-refresh fa-spin' : 'fa fa-refresh' }"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			  </div>
+				
+		  </div>
 
             <virtual if="{ elapsedTime > 0 }">
               <div class="panel panel-default">
@@ -146,6 +158,16 @@ riot.tag("search", `
       this.init();
     }.bind(this));
 
+	this.reIndexWeb = function (e) {
+		console.log("reIndexWeb started");
+		
+		var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateSchemaForWeb;
+		script += " exescript(updateSchemaForWeb);";
+		chrome.devtools.inspectedWindow.eval(script);
+		
+		console.log("reIndexWeb end");
+    }.bind(this);
+	
     this.init = function () {
 
       port.onMessage.addListener(function (message) {
@@ -177,6 +199,16 @@ riot.tag("search", `
               document.getElementById("runsearchbtn").scrollIntoView();
             }
             break;
+		  case 'updateSchemaForWeb':
+			   if (message.success) {
+				  // var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateSchemaForWeb;
+				  // script += " exescript(updateSchemaForWeb);";
+				  // chrome.devtools.inspectedWindow.eval(script);
+				  console.log("Got it!");
+				 } else {
+					 console.log({message});
+				 }
+			break;
         }
       }.bind(this));
 
