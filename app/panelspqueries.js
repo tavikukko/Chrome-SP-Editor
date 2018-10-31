@@ -91,7 +91,11 @@ var getCustomActions = function getCustomActions() {
   });
 };
 
-// updateSchemaForWeb
+/**
+ * updateSchemaForWeb
+ * 
+ * This function is used on "Search" tab to force a reindexing of a web
+ */
 var updateSchemaForWeb = function updateSchemaForWeb() {
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
@@ -121,12 +125,6 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
           curVal = curVal+1;
 
           try {
-            // var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateWebProperties;
-            // script += " exescript(updateWebProperties, 'vti_x005f_searchversion', '" + curVal + "');";
-            // chrome.devtools.inspectedWindow.eval(script);
-
-            //exescript(updateWebProperties, 'vti_x005f_searchversion', curVal);
-
             // copypaste code starts here
 
             var prop = 'vti_searchversion';
@@ -183,15 +181,15 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
                           var error = JSON.parse(xhr2.responseText)[0];
                           if (error.ErrorInfo) {
                             alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                            window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                            window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
                           } else {
                             alertify.delay(5000).success("Property updated successfully!");
-                            window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+                            window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: true, result: null, source: 'chrome-sp-editor' }), '*');
                           }
                         }
                         else {
                           alertify.delay(10000).error(xhr2.responseText);
-                          window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                          window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
                         }
                       }
                         ;
@@ -207,11 +205,11 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
                     alertify.delay(10000).error(error.data.responseBody.error.message.value);
                   else
                     alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-                  window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+                  window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
                 });
               }).catch(function (error) {
                 alertify.delay(10000).error(error.data.responseBody.error.message.value);
-                window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+                window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
               });
 
             }, function () {
@@ -219,8 +217,6 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
             });
 
             // copypaste code ends here
-
-            console.log("Updated!");
           } catch (error) {
             console.log({error});
           } finally {
@@ -229,21 +225,10 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
 
           break;
         }
-        
-        console.log(x);
       }
       
       if (found === false) {
-        console.log("Didn't find it, let's create it.");
         try {
-          // var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addWebProperties;
-          // script += " exescript(addWebProperties, 'vti_x005f_searchversion', '0');";
-          // chrome.devtools.inspectedWindow.eval(script);
-
-          // exescript(addWebProperties, 'vti_x005f_searchversion', '0');
-
-          //updatesearchschemaforweb(false, 'vti_x005f_searchversion', '0');
-
           // Copypaste code starts from here
           var prop = 'vti_searchversion';
           var value = 0;
@@ -297,16 +282,16 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
                       var error = JSON.parse(xhr2.responseText)[0];
                       if (error.ErrorInfo) {
                         alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                        window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                        window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
                       }
                       else {
                         alertify.delay(5000).success("Property added successfully!");
-                        window.postMessage(JSON.stringify({ function: 'addWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+                        window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: true, result: null, source: 'chrome-sp-editor' }), '*');
                       }
                     }
                     else {
                       alertify.delay(10000).error(xhr2.responseText);
-                      window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                      window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
                     }
                   }
                     ;
@@ -322,28 +307,22 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
                 alertify.delay(10000).error(error.data.responseBody.error.message.value);
               else
                 alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-              window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+              window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
             });
           }).catch(function (error) {
             if (error.data.responseBody.hasOwnProperty('error'))
               alertify.delay(10000).error(error.data.responseBody.error.message.value);
             else
               alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-            window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+            window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
           });
           // copypaste code ends here
-
-          console.log("Created!");
         } catch (error) {
           console.log({error});
         } finally {
           
         }
       } 
-
-      // var propertyBag = arr.filter(function (el) {
-      // return el.prop !== "odata.editLink" && el.prop !== "odata.id" && el.prop !== "odata.type" && el.prop !== "__metadata";
-      // });
 
       window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: true, result: propertyBag, source: 'chrome-sp-editor' }), '*');
 

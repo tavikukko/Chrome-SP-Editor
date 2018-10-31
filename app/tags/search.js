@@ -93,9 +93,10 @@ riot.tag("search", `
 				
 				<!-- This is where search index updates start -->
 				<div class="panel panel-default">
-					<div class="panel-heading">Reindexing</i></div>
+					<div class="panel-heading">Request Reindex</i></div>
 						<div class="panel-body">
-							<div class="form-group">
+              <div class="form-group">
+                <p>This section makes it possible to request a full reindex of the current web. This is useful, if the incremental crawl keeps forgetting to pick up some of the items.</p>
 							  <button onclick="{ reIndexWeb }" type="button" class="btn btn-primary btn-md" id="reIndexWebBtn" >Reindex this web  <i class="{ searching ? 'fa fa-refresh fa-spin' : 'fa fa-refresh' }"></i></button>
 							</div>
 						</div>
@@ -199,16 +200,13 @@ riot.tag("search", `
               document.getElementById("runsearchbtn").scrollIntoView();
             }
             break;
-		  case 'updateSchemaForWeb':
-			   if (message.success) {
-				  // var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateSchemaForWeb;
-				  // script += " exescript(updateSchemaForWeb);";
-				  // chrome.devtools.inspectedWindow.eval(script);
-				  console.log("Got it!");
-				 } else {
-					 console.log({message});
-				 }
-			break;
+          case 'updateSchemaForWeb':
+            if (message.success) {
+              console.log({message});
+            } else {
+              console.log({message});
+            }
+            break;
         }
       }.bind(this));
 
