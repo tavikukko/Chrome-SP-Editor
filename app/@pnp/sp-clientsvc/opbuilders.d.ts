@@ -8,6 +8,7 @@ export interface IMethodParamsBuilder {
     string(value: string): this;
     number(value: number): this;
     boolean(value: boolean): this;
+    strArray(values: string[]): this;
     objectPath(inputIndex: number): this;
     toArray(): {
         type: PropertyType;
@@ -30,6 +31,7 @@ export declare class MethodParams implements IMethodParamsBuilder {
     string(value: string): this;
     number(value: number): this;
     boolean(value: boolean): this;
+    strArray(values: string[]): this;
     objectPath(inputIndex: number): this;
     toArray(): {
         type: PropertyType;

@@ -1,14 +1,12 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { TypedHash } from "@pnp/common";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
 export declare class Calendars extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
 }
 export declare class Calendar extends GraphQueryableInstance {
     readonly events: Events;
 }
 export declare class Events extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     getById(id: string): Event;
     /**
      * Adds a new event to the collection

@@ -1,6 +1,5 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 export declare class Members extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through
      * the members navigation property. You can add users or other groups.
@@ -19,6 +18,5 @@ export declare class Members extends GraphQueryableCollection {
 export declare class Member extends GraphQueryableInstance {
 }
 export declare class Owners extends Members {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
 }
 //# sourceMappingURL=members.d.ts.map

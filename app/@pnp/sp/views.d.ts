@@ -48,6 +48,12 @@ export declare class View extends SharePointQueryableInstance {
      *
      */
     renderAsHtml(): Promise<string>;
+    /**
+     * Sets the view schema
+     *
+     * @param viewXml The view XML to set
+     */
+    setViewXml(viewXml: string): Promise<void>;
 }
 export declare class ViewFields extends SharePointQueryableCollection {
     /**

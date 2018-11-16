@@ -8,7 +8,6 @@ export interface OneNoteMethods {
  * Represents a onenote entity
  */
 export declare class OneNote extends GraphQueryableInstance implements OneNoteMethods {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     readonly notebooks: Notebooks;
     readonly sections: Sections;
     readonly pages: Pages;
@@ -18,7 +17,6 @@ export declare class OneNote extends GraphQueryableInstance implements OneNoteMe
  *
  */
 export declare class Notebooks extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Gets a notebook instance by id
      *
@@ -45,7 +43,6 @@ export declare class Notebook extends GraphQueryableInstance {
  *
  */
 export declare class Sections extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Gets a section instance by id
      *
@@ -71,7 +68,6 @@ export declare class Section extends GraphQueryableInstance {
  *
  */
 export declare class Pages extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
 }
 export interface NotebookAddResult {
     data: any;

@@ -1,3 +1,12 @@
+/**
+ * @license
+ * v1.2.6
+ * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
+ * Copyright (c) 2018 Microsoft
+ * docs: https://pnp.github.io/pnpjs/
+ * source: https://github.com/pnp/pnpjs
+ * bugs: https://github.com/pnp/pnpjs/issues
+ */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -91,22 +100,24 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./build/packages/graph/es5/index.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./build/packages-es5/graph/index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./build/packages/common/es5/index.js":
+/***/ "./build/packages-es5/common/index.js":
 /*!********************************************!*\
-  !*** ./build/packages/common/es5/index.js ***!
+  !*** ./build/packages-es5/common/index.js ***!
   \********************************************/
-/*! exports provided: AdalClient, objectToMap, mergeMaps, setup, RuntimeConfigImpl, RuntimeConfig, mergeHeaders, mergeOptions, FetchClient, BearerTokenFetchClient, PnPClientStorageWrapper, PnPClientStorage, getCtxCallback, dateAdd, combine, getRandomString, getGUID, isFunc, objectDefinedNotNull, isArray, extend, isUrlAbsolute, stringIsNullOrEmpty, getAttrValueFromString, sanitizeGuid, jsS, hOP, getHashCode */
+/*! exports provided: AdalClient, SPFxAdalClient, objectToMap, mergeMaps, setup, RuntimeConfigImpl, RuntimeConfig, mergeHeaders, mergeOptions, FetchClient, BearerTokenFetchClient, PnPClientStorageWrapper, PnPClientStorage, getCtxCallback, dateAdd, combine, getRandomString, getGUID, isFunc, objectDefinedNotNull, isArray, extend, isUrlAbsolute, stringIsNullOrEmpty, getAttrValueFromString, sanitizeGuid, jsS, hOP, getHashCode */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "./build/packages/common/es5/src/common.js");
+/* harmony import */ var _src_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/common */ "./build/packages-es5/common/src/common.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AdalClient", function() { return _src_common__WEBPACK_IMPORTED_MODULE_0__["AdalClient"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SPFxAdalClient", function() { return _src_common__WEBPACK_IMPORTED_MODULE_0__["SPFxAdalClient"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "objectToMap", function() { return _src_common__WEBPACK_IMPORTED_MODULE_0__["objectToMap"]; });
 
@@ -167,19 +178,20 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./build/packages/common/es5/src/adalclient.js":
+/***/ "./build/packages-es5/common/src/adalclient.js":
 /*!*****************************************************!*\
-  !*** ./build/packages/common/es5/src/adalclient.js ***!
+  !*** ./build/packages-es5/common/src/adalclient.js ***!
   \*****************************************************/
-/*! exports provided: AdalClient */
+/*! exports provided: AdalClient, SPFxAdalClient */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdalClient", function() { return AdalClient; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SPFxAdalClient", function() { return SPFxAdalClient; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _netutil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./netutil */ "./build/packages/common/es5/src/netutil.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util */ "./build/packages/common/es5/src/util.js");
+/* harmony import */ var _netutil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./netutil */ "./build/packages-es5/common/src/netutil.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util */ "./build/packages-es5/common/src/util.js");
 /* harmony import */ var adal_angular_dist_adal_min_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! adal-angular/dist/adal.min.js */ "./node_modules/adal-angular/dist/adal.min.js");
 /* harmony import */ var adal_angular_dist_adal_min_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(adal_angular_dist_adal_min_js__WEBPACK_IMPORTED_MODULE_3__);
 
@@ -187,6 +199,17 @@ __webpack_require__.r(__webpack_exports__);
 
 // @ts-ignore
 
+/**
+ * Parses out the root of the request url to use as the resource when getting the token
+ *
+ * After: https://gist.github.com/jlong/2428561
+ * @param url The url to parse
+ */
+function getResource(url) {
+    var parser = document.createElement("a");
+    parser.href = url;
+    return parser.protocol + "//" + parser.hostname;
+}
 /**
  * Azure AD Client for use in the browser
  */
@@ -208,19 +231,14 @@ var AdalClient = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * Creates a new AdalClient using the values of the supplied SPFx context
+     * Creates a new AdalClient using the values of the supplied SPFx context (requires SPFx >= 1.6)
      *
      * @param spfxContext Current SPFx context
-     * @param clientId Optional client id to use instead of the built-in SPFx id
-     * @description Using this method and the default clientId requires that the features described in
-     * this article https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient are activated in the tenant. If not you can
-     * creat your own app, grant permissions and use that clientId here along with the SPFx context
+     * @description Using this method requires that the features described in this article
+     * https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient are activated in the tenant.
      */
-    AdalClient.fromSPFxContext = function (spfxContext, cliendId) {
-        if (cliendId === void 0) { cliendId = "c58637bb-e2e1-4312-8a00-04b5ffcd3403"; }
-        // this "magic" client id is the one to which permissions are granted behind the scenes
-        // this redirectUrl is the page as used by spfx
-        return new AdalClient(cliendId, spfxContext.pageContext.aadInfo.tenantId.toString(), Object(_util__WEBPACK_IMPORTED_MODULE_2__["combine"])(window.location.origin, "/_forms/spfxsinglesignon.aspx"));
+    AdalClient.fromSPFxContext = function (spfxContext) {
+        return new SPFxAdalClient(spfxContext);
     };
     /**
      * Conducts the fetch opertation against the AAD secured resource
@@ -234,7 +252,7 @@ var AdalClient = /** @class */ (function (_super) {
             throw Error("You must supply absolute urls to AdalClient.fetch.");
         }
         // the url we are calling is the resource
-        return this.getToken(this.getResource(url)).then(function (token) {
+        return this.getToken(getResource(url)).then(function (token) {
             _this.token = token;
             return _super.prototype.fetch.call(_this, url, options);
         });
@@ -326,30 +344,59 @@ var AdalClient = /** @class */ (function (_super) {
         return this._loginPromise;
     };
     /**
-     * Parses out the root of the request url to use as the resource when getting the token
-     *
-     * After: https://gist.github.com/jlong/2428561
-     * @param url The url to parse
-     */
-    AdalClient.prototype.getResource = function (url) {
-        var parser = document.createElement("a");
-        parser.href = url;
-        return parser.protocol + "//" + parser.hostname;
-    };
-    /**
      * Our auth context
      */
     AdalClient._authContext = null;
     return AdalClient;
 }(_netutil__WEBPACK_IMPORTED_MODULE_1__["BearerTokenFetchClient"]));
 
+/**
+ * Client wrapping the aadTokenProvider available from SPFx >= 1.6
+ */
+var SPFxAdalClient = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](SPFxAdalClient, _super);
+    /**
+     *
+     * @param context provide the appropriate SPFx Context object
+     */
+    function SPFxAdalClient(context) {
+        var _this = _super.call(this, null) || this;
+        _this.context = context;
+        return _this;
+    }
+    /**
+     * Executes a fetch request using the supplied url and options
+     *
+     * @param url Absolute url of the request
+     * @param options Any options
+     */
+    SPFxAdalClient.prototype.fetch = function (url, options) {
+        var _this = this;
+        return this.getToken(getResource(url)).then(function (token) {
+            _this.token = token;
+            return _super.prototype.fetch.call(_this, url, options);
+        });
+    };
+    /**
+     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
+     *
+     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
+     */
+    SPFxAdalClient.prototype.getToken = function (resource) {
+        return this.context.aadTokenProviderFactory.getTokenProvider().then(function (provider) {
+            return provider.getToken(resource);
+        });
+    };
+    return SPFxAdalClient;
+}(_netutil__WEBPACK_IMPORTED_MODULE_1__["BearerTokenFetchClient"]));
+
 //# sourceMappingURL=adalclient.js.map
 
 /***/ }),
 
-/***/ "./build/packages/common/es5/src/collections.js":
+/***/ "./build/packages-es5/common/src/collections.js":
 /*!******************************************************!*\
-  !*** ./build/packages/common/es5/src/collections.js ***!
+  !*** ./build/packages-es5/common/src/collections.js ***!
   \******************************************************/
 /*! exports provided: objectToMap, mergeMaps */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -358,7 +405,7 @@ var AdalClient = /** @class */ (function (_super) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "objectToMap", function() { return objectToMap; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mergeMaps", function() { return mergeMaps; });
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./build/packages/common/es5/src/util.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./build/packages-es5/common/src/util.js");
 
 /**
  * Used to calculate the object properties, with polyfill if needed
@@ -397,31 +444,33 @@ function mergeMaps(target) {
 
 /***/ }),
 
-/***/ "./build/packages/common/es5/src/common.js":
+/***/ "./build/packages-es5/common/src/common.js":
 /*!*************************************************!*\
-  !*** ./build/packages/common/es5/src/common.js ***!
+  !*** ./build/packages-es5/common/src/common.js ***!
   \*************************************************/
-/*! exports provided: AdalClient, objectToMap, mergeMaps, setup, RuntimeConfigImpl, RuntimeConfig, mergeHeaders, mergeOptions, FetchClient, BearerTokenFetchClient, PnPClientStorageWrapper, PnPClientStorage, getCtxCallback, dateAdd, combine, getRandomString, getGUID, isFunc, objectDefinedNotNull, isArray, extend, isUrlAbsolute, stringIsNullOrEmpty, getAttrValueFromString, sanitizeGuid, jsS, hOP, getHashCode */
+/*! exports provided: AdalClient, SPFxAdalClient, objectToMap, mergeMaps, setup, RuntimeConfigImpl, RuntimeConfig, mergeHeaders, mergeOptions, FetchClient, BearerTokenFetchClient, PnPClientStorageWrapper, PnPClientStorage, getCtxCallback, dateAdd, combine, getRandomString, getGUID, isFunc, objectDefinedNotNull, isArray, extend, isUrlAbsolute, stringIsNullOrEmpty, getAttrValueFromString, sanitizeGuid, jsS, hOP, getHashCode */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _adalclient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./adalclient */ "./build/packages/common/es5/src/adalclient.js");
+/* harmony import */ var _adalclient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./adalclient */ "./build/packages-es5/common/src/adalclient.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AdalClient", function() { return _adalclient__WEBPACK_IMPORTED_MODULE_0__["AdalClient"]; });
 
-/* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./collections */ "./build/packages/common/es5/src/collections.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SPFxAdalClient", function() { return _adalclient__WEBPACK_IMPORTED_MODULE_0__["SPFxAdalClient"]; });
+
+/* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./collections */ "./build/packages-es5/common/src/collections.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "objectToMap", function() { return _collections__WEBPACK_IMPORTED_MODULE_1__["objectToMap"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeMaps", function() { return _collections__WEBPACK_IMPORTED_MODULE_1__["mergeMaps"]; });
 
-/* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libconfig */ "./build/packages/common/es5/src/libconfig.js");
+/* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libconfig */ "./build/packages-es5/common/src/libconfig.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setup", function() { return _libconfig__WEBPACK_IMPORTED_MODULE_2__["setup"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RuntimeConfigImpl", function() { return _libconfig__WEBPACK_IMPORTED_MODULE_2__["RuntimeConfigImpl"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return _libconfig__WEBPACK_IMPORTED_MODULE_2__["RuntimeConfig"]; });
 
-/* harmony import */ var _netutil__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./netutil */ "./build/packages/common/es5/src/netutil.js");
+/* harmony import */ var _netutil__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./netutil */ "./build/packages-es5/common/src/netutil.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return _netutil__WEBPACK_IMPORTED_MODULE_3__["mergeHeaders"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeOptions", function() { return _netutil__WEBPACK_IMPORTED_MODULE_3__["mergeOptions"]; });
@@ -430,12 +479,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BearerTokenFetchClient", function() { return _netutil__WEBPACK_IMPORTED_MODULE_3__["BearerTokenFetchClient"]; });
 
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./storage */ "./build/packages/common/es5/src/storage.js");
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./storage */ "./build/packages-es5/common/src/storage.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PnPClientStorageWrapper", function() { return _storage__WEBPACK_IMPORTED_MODULE_4__["PnPClientStorageWrapper"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return _storage__WEBPACK_IMPORTED_MODULE_4__["PnPClientStorage"]; });
 
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./build/packages/common/es5/src/util.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./build/packages-es5/common/src/util.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCtxCallback", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["getCtxCallback"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "dateAdd", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["dateAdd"]; });
@@ -478,9 +527,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./build/packages/common/es5/src/libconfig.js":
+/***/ "./build/packages-es5/common/src/libconfig.js":
 /*!****************************************************!*\
-  !*** ./build/packages/common/es5/src/libconfig.js ***!
+  !*** ./build/packages-es5/common/src/libconfig.js ***!
   \****************************************************/
 /*! exports provided: setup, RuntimeConfigImpl, RuntimeConfig */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -490,7 +539,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setup", function() { return setup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RuntimeConfigImpl", function() { return RuntimeConfigImpl; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return RuntimeConfig; });
-/* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./collections */ "./build/packages/common/es5/src/collections.js");
+/* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./collections */ "./build/packages-es5/common/src/collections.js");
 
 function setup(config) {
     RuntimeConfig.extend(config);
@@ -577,9 +626,9 @@ var RuntimeConfig = _runtimeConfig;
 
 /***/ }),
 
-/***/ "./build/packages/common/es5/src/netutil.js":
+/***/ "./build/packages-es5/common/src/netutil.js":
 /*!**************************************************!*\
-  !*** ./build/packages/common/es5/src/netutil.js ***!
+  !*** ./build/packages-es5/common/src/netutil.js ***!
   \**************************************************/
 /*! exports provided: mergeHeaders, mergeOptions, FetchClient, BearerTokenFetchClient */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -591,7 +640,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FetchClient", function() { return FetchClient; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BearerTokenFetchClient", function() { return BearerTokenFetchClient; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./build/packages/common/es5/src/util.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./build/packages-es5/common/src/util.js");
 
 
 function mergeHeaders(target, source) {
@@ -653,13 +702,13 @@ var BearerTokenFetchClient = /** @class */ (function (_super) {
 }(FetchClient));
 
 //# sourceMappingURL=netutil.js.map
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
-/***/ "./build/packages/common/es5/src/storage.js":
+/***/ "./build/packages-es5/common/src/storage.js":
 /*!**************************************************!*\
-  !*** ./build/packages/common/es5/src/storage.js ***!
+  !*** ./build/packages-es5/common/src/storage.js ***!
   \**************************************************/
 /*! exports provided: PnPClientStorageWrapper, PnPClientStorage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -668,8 +717,8 @@ var BearerTokenFetchClient = /** @class */ (function (_super) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PnPClientStorageWrapper", function() { return PnPClientStorageWrapper; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return PnPClientStorage; });
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./build/packages/common/es5/src/util.js");
-/* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./libconfig */ "./build/packages/common/es5/src/libconfig.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./build/packages-es5/common/src/util.js");
+/* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./libconfig */ "./build/packages-es5/common/src/libconfig.js");
 
 
 /**
@@ -918,9 +967,9 @@ var PnPClientStorage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./build/packages/common/es5/src/util.js":
+/***/ "./build/packages-es5/common/src/util.js":
 /*!***********************************************!*\
-  !*** ./build/packages/common/es5/src/util.js ***!
+  !*** ./build/packages-es5/common/src/util.js ***!
   \***********************************************/
 /*! exports provided: getCtxCallback, dateAdd, combine, getRandomString, getGUID, isFunc, objectDefinedNotNull, isArray, extend, isUrlAbsolute, stringIsNullOrEmpty, getAttrValueFromString, sanitizeGuid, jsS, hOP, getHashCode */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1142,7 +1191,7 @@ function sanitizeGuid(guid) {
     return matches === null ? guid : matches[1];
 }
 /**
- * Shorthand for oToS
+ * Shorthand for JSON.stringify
  *
  * @param o Any type of object
  */
@@ -1159,7 +1208,7 @@ function hOP(o, p) {
     return Object.hasOwnProperty.call(o, p);
 }
 /**
- * Generates a ~unique hash code for this ObjectPathQueue
+ * Generates a ~unique hash code
  *
  * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
  */
@@ -1181,16 +1230,16 @@ function getHashCode(s) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/index.js":
+/***/ "./build/packages-es5/graph/index.js":
 /*!*******************************************!*\
-  !*** ./build/packages/graph/es5/index.js ***!
+  !*** ./build/packages-es5/graph/index.js ***!
   \*******************************************/
-/*! exports provided: graph, GraphRest, GroupType, Group, Groups, GraphBatch, GraphQueryable, GraphQueryableCollection, GraphQueryableInstance, GraphQueryableSearchableCollection, Teams, Team, GraphEndpoints, OneNote, Notebooks, Notebook, Sections, Section, Pages */
+/*! exports provided: graph, GraphRest, GroupType, Group, Groups, GraphBatch, GraphQueryable, GraphQueryableCollection, GraphQueryableInstance, GraphQueryableSearchableCollection, Teams, Team, GraphEndpoints, OneNote, Notebooks, Notebook, Sections, Section, Pages, Contacts, Contact, ContactFolders, ContactFolder, ChildFolders, Drives, Drive, Root, DriveItems, DriveItem, Children, DriveList, Recent, SharedWithMe, DriveSearch, Thumbnails, Planner, Plans, Plan, Tasks, Task, Buckets, Bucket, Details */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_graph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/graph */ "./build/packages/graph/es5/src/graph.js");
+/* harmony import */ var _src_graph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/graph */ "./build/packages-es5/graph/src/graph.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "graph", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["graph"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphRest", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["GraphRest"]; });
@@ -1229,14 +1278,62 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Pages", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Pages"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Contacts", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Contacts"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Contact", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Contact"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ContactFolders", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["ContactFolders"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ContactFolder", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["ContactFolder"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ChildFolders", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["ChildFolders"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Drives", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Drives"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Drive", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Drive"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Root", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Root"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DriveItems", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["DriveItems"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DriveItem", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["DriveItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Children", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Children"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DriveList", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["DriveList"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Recent", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Recent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SharedWithMe", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["SharedWithMe"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DriveSearch", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["DriveSearch"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Thumbnails", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Thumbnails"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Planner", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Planner"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Plans", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Plans"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Plan", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Plan"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Tasks", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Tasks"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Task", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Task"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Buckets", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Buckets"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Bucket", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Bucket"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Details", function() { return _src_graph__WEBPACK_IMPORTED_MODULE_0__["Details"]; });
+
 
 //# sourceMappingURL=index.js.map
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/attachments.js":
+/***/ "./build/packages-es5/graph/src/attachments.js":
 /*!*****************************************************!*\
-  !*** ./build/packages/graph/es5/src/attachments.js ***!
+  !*** ./build/packages-es5/graph/src/attachments.js ***!
   \*****************************************************/
 /*! exports provided: Attachments, Attachment */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1246,16 +1343,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Attachments", function() { return Attachments; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Attachment", function() { return Attachment; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
 
 
 var Attachments = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Attachments, _super);
-    function Attachments(baseUrl, path) {
-        if (path === void 0) { path = "attachments"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Attachments() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Gets a member of the group by id
@@ -1280,6 +1376,9 @@ var Attachments = /** @class */ (function (_super) {
             }),
         });
     };
+    Attachments = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("attachments")
+    ], Attachments);
     return Attachments;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -1295,9 +1394,9 @@ var Attachment = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/batch.js":
+/***/ "./build/packages-es5/graph/src/batch.js":
 /*!***********************************************!*\
-  !*** ./build/packages/graph/es5/src/batch.js ***!
+  !*** ./build/packages-es5/graph/src/batch.js ***!
   \***********************************************/
 /*! exports provided: GraphBatch */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1306,11 +1405,11 @@ var Attachment = /** @class */ (function (_super) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphBatch", function() { return GraphBatch; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _pnp_odata__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/odata */ "./build/packages/odata/es5/index.js");
-/* harmony import */ var _pnp_logging__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/logging */ "./build/packages/logging/es5/index.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
-/* harmony import */ var _config_graphlibconfig__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./config/graphlibconfig */ "./build/packages/graph/es5/src/config/graphlibconfig.js");
-/* harmony import */ var _net_graphhttpclient__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./net/graphhttpclient */ "./build/packages/graph/es5/src/net/graphhttpclient.js");
+/* harmony import */ var _pnp_odata__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/odata */ "./build/packages-es5/odata/index.js");
+/* harmony import */ var _pnp_logging__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/logging */ "./build/packages-es5/logging/index.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
+/* harmony import */ var _config_graphlibconfig__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./config/graphlibconfig */ "./build/packages-es5/graph/src/config/graphlibconfig.js");
+/* harmony import */ var _net_graphhttpclient__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./net/graphhttpclient */ "./build/packages-es5/graph/src/net/graphhttpclient.js");
 
 
 
@@ -1319,61 +1418,45 @@ __webpack_require__.r(__webpack_exports__);
 
 var GraphBatch = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](GraphBatch, _super);
-    function GraphBatch(batchUrl) {
-        if (batchUrl === void 0) { batchUrl = "https://graph.microsoft.com/beta/$batch"; }
+    function GraphBatch(batchUrl, maxRequests) {
+        if (batchUrl === void 0) { batchUrl = "https://graph.microsoft.com/v1.0/$batch"; }
+        if (maxRequests === void 0) { maxRequests = 20; }
         var _this = _super.call(this) || this;
         _this.batchUrl = batchUrl;
+        _this.maxRequests = maxRequests;
         return _this;
     }
-    GraphBatch.prototype.executeImpl = function () {
-        var _this = this;
-        _pnp_logging__WEBPACK_IMPORTED_MODULE_2__["Logger"].write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
-        var client = new _net_graphhttpclient__WEBPACK_IMPORTED_MODULE_5__["GraphHttpClient"]();
-        var batchRequest = {
-            requests: this.formatRequests(),
-        };
-        var batchOptions = {
-            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["jsS"])(batchRequest),
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            method: "POST",
-        };
-        _pnp_logging__WEBPACK_IMPORTED_MODULE_2__["Logger"].write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
-        // let nextLinkFlag = false;
-        return client.fetch(this.batchUrl, batchOptions)
-            .then(function (r) { return r.json(); })
-            .then(this._parseResponse)
-            .then(function (parsedResponse) {
-            _pnp_logging__WEBPACK_IMPORTED_MODULE_2__["Logger"].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
-            return parsedResponse.responses.reduce(function (chain, response, index) {
-                var request = _this.requests[index];
-                if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["objectDefinedNotNull"])(request)) {
-                    _pnp_logging__WEBPACK_IMPORTED_MODULE_2__["Logger"].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched request " + request.method + " " + request.url + ".", 0 /* Verbose */);
-                    return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
-                }
-                else {
-                    // do we have a next url? if no this is an error
-                    if (parsedResponse.nextLink) {
-                        throw Error("Could not properly parse responses to match requests in batch.");
-                    }
-                    // nextLinkFlag = true;
-                    // keep the chain moving, but don't add anything for this request yet
-                    // here we need to process the next link - so what do we do?
-                    // need to append a .then()
-                    // TODO::
-                    return chain;
-                }
-            }, Promise.resolve());
-        });
+    /**
+     * Urls come to the batch absolute, but the processor expects relative
+     * @param url Url to ensure is relative
+     */
+    GraphBatch.makeUrlRelative = function (url) {
+        if (!Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["isUrlAbsolute"])(url)) {
+            // already not absolute, just give it back
+            return url;
+        }
+        var index = url.indexOf(".com/v1.0/");
+        if (index < 0) {
+            index = url.indexOf(".com/beta/");
+            if (index > -1) {
+                // beta url
+                return url.substr(index + 10);
+            }
+        }
+        else {
+            // v1.0 url
+            return url.substr(index + 9);
+        }
+        // no idea
+        return url;
     };
-    GraphBatch.prototype.formatRequests = function () {
-        return this.requests.map(function (reqInfo, index) {
+    GraphBatch.formatRequests = function (requests) {
+        var _this = this;
+        return requests.map(function (reqInfo, index) {
             var requestFragment = {
                 id: "" + ++index,
                 method: reqInfo.method,
-                url: reqInfo.url,
+                url: _this.makeUrlRelative(reqInfo.url),
             };
             var headers = {};
             // merge global config headers
@@ -1398,10 +1481,9 @@ var GraphBatch = /** @class */ (function (_super) {
             return requestFragment;
         });
     };
-    GraphBatch.prototype._parseResponse = function (graphResponse) {
-        var _this = this;
+    GraphBatch.parseResponse = function (requests, graphResponse) {
         return new Promise(function (resolve) {
-            var parsedResponses = new Array(_this.requests.length).fill(null);
+            var parsedResponses = new Array(requests.length).fill(null);
             for (var i = 0; i < graphResponse.responses.length; ++i) {
                 var response = graphResponse.responses[i];
                 // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
@@ -1411,10 +1493,7 @@ var GraphBatch = /** @class */ (function (_super) {
                     parsedResponses[responseId] = new Response();
                 }
                 else {
-                    parsedResponses[responseId] = new Response(null, {
-                        headers: response.headers,
-                        status: response.status,
-                    });
+                    parsedResponses[responseId] = new Response(JSON.stringify(response.body), response);
                 }
             }
             resolve({
@@ -1423,6 +1502,50 @@ var GraphBatch = /** @class */ (function (_super) {
             });
         });
     };
+    GraphBatch.prototype.executeImpl = function () {
+        var _this = this;
+        _pnp_logging__WEBPACK_IMPORTED_MODULE_2__["Logger"].write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
+        if (this.requests.length < 1) {
+            _pnp_logging__WEBPACK_IMPORTED_MODULE_2__["Logger"].write("Resolving empty batch.", 1 /* Info */);
+            return Promise.resolve();
+        }
+        var client = new _net_graphhttpclient__WEBPACK_IMPORTED_MODULE_5__["GraphHttpClient"]();
+        // create a working copy of our requests
+        var requests = this.requests.slice();
+        // this is the root of our promise chain
+        var promise = Promise.resolve();
+        var _loop_1 = function () {
+            var requestsChunk = requests.splice(0, this_1.maxRequests);
+            var batchRequest = {
+                requests: GraphBatch.formatRequests(requestsChunk),
+            };
+            var batchOptions = {
+                body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["jsS"])(batchRequest),
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            };
+            _pnp_logging__WEBPACK_IMPORTED_MODULE_2__["Logger"].write("[" + this_1.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
+            client.fetch(this_1.batchUrl, batchOptions)
+                .then(function (r) { return r.json(); })
+                .then(function (j) { return GraphBatch.parseResponse(requestsChunk, j); })
+                .then(function (parsedResponse) {
+                _pnp_logging__WEBPACK_IMPORTED_MODULE_2__["Logger"].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
+                parsedResponse.responses.reduce(function (chain, response, index) {
+                    var request = requestsChunk[index];
+                    _pnp_logging__WEBPACK_IMPORTED_MODULE_2__["Logger"].write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched request " + request.method + " " + request.url + ".", 0 /* Verbose */);
+                    return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
+                }, promise);
+            });
+        };
+        var this_1 = this;
+        while (requests.length > 0) {
+            _loop_1();
+        }
+        return promise;
+    };
     return GraphBatch;
 }(_pnp_odata__WEBPACK_IMPORTED_MODULE_1__["ODataBatch"]));
 
@@ -1430,9 +1553,9 @@ var GraphBatch = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/calendars.js":
+/***/ "./build/packages-es5/graph/src/calendars.js":
 /*!***************************************************!*\
-  !*** ./build/packages/graph/es5/src/calendars.js ***!
+  !*** ./build/packages-es5/graph/src/calendars.js ***!
   \***************************************************/
 /*! exports provided: Calendars, Calendar, Events, Event */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1444,18 +1567,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Events", function() { return Events; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Event", function() { return Event; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
 
 
 // import { Attachments } from "./attachments";
 var Calendars = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Calendars, _super);
-    function Calendars(baseUrl, path) {
-        if (path === void 0) { path = "calendars"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Calendars() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    Calendars = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("calendars")
+    ], Calendars);
     return Calendars;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -1476,9 +1601,8 @@ var Calendar = /** @class */ (function (_super) {
 
 var Events = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Events, _super);
-    function Events(baseUrl, path) {
-        if (path === void 0) { path = "events"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Events() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Events.prototype.getById = function (id) {
         return new Event(this, id);
@@ -1499,6 +1623,9 @@ var Events = /** @class */ (function (_super) {
             };
         });
     };
+    Events = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("events")
+    ], Events);
     return Events;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -1537,9 +1664,9 @@ var Event = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/config/graphlibconfig.js":
+/***/ "./build/packages-es5/graph/src/config/graphlibconfig.js":
 /*!***************************************************************!*\
-  !*** ./build/packages/graph/es5/src/config/graphlibconfig.js ***!
+  !*** ./build/packages-es5/graph/src/config/graphlibconfig.js ***!
   \***************************************************************/
 /*! exports provided: setup, GraphRuntimeConfigImpl, GraphRuntimeConfig */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1549,7 +1676,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setup", function() { return setup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphRuntimeConfigImpl", function() { return GraphRuntimeConfigImpl; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphRuntimeConfig", function() { return GraphRuntimeConfig; });
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
 function setup(config) {
     _pnp_common__WEBPACK_IMPORTED_MODULE_0__["RuntimeConfig"].extend(config);
@@ -1592,9 +1719,9 @@ var GraphRuntimeConfig = new GraphRuntimeConfigImpl();
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/contacts.js":
+/***/ "./build/packages-es5/graph/src/contacts.js":
 /*!**************************************************!*\
-  !*** ./build/packages/graph/es5/src/contacts.js ***!
+  !*** ./build/packages-es5/graph/src/contacts.js ***!
   \**************************************************/
 /*! exports provided: Contacts, Contact, ContactFolders, ContactFolder, ChildFolders */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1607,16 +1734,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContactFolder", function() { return ContactFolder; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ChildFolders", function() { return ChildFolders; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
 
 
 var Contacts = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Contacts, _super);
-    function Contacts(baseUrl, path) {
-        if (path === void 0) { path = "contacts"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Contacts() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Contacts.prototype.getById = function (id) {
         return new Contact(this, id);
@@ -1648,6 +1774,9 @@ var Contacts = /** @class */ (function (_super) {
             };
         });
     };
+    Contacts = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("contacts")
+    ], Contacts);
     return Contacts;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -1677,9 +1806,8 @@ var Contact = /** @class */ (function (_super) {
 
 var ContactFolders = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](ContactFolders, _super);
-    function ContactFolders(baseUrl, path) {
-        if (path === void 0) { path = "contactFolders"; }
-        return _super.call(this, baseUrl, path) || this;
+    function ContactFolders() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     ContactFolders.prototype.getById = function (id) {
         return new ContactFolder(this, id);
@@ -1705,6 +1833,9 @@ var ContactFolders = /** @class */ (function (_super) {
             };
         });
     };
+    ContactFolders = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("contactFolders")
+    ], ContactFolders);
     return ContactFolders;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -1754,9 +1885,8 @@ var ContactFolder = /** @class */ (function (_super) {
 
 var ChildFolders = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](ChildFolders, _super);
-    function ChildFolders(baseUrl, path) {
-        if (path === void 0) { path = "childFolders"; }
-        return _super.call(this, baseUrl, path) || this;
+    function ChildFolders() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     ChildFolders.prototype.getById = function (id) {
         return new ContactFolder(this, id);
@@ -1782,6 +1912,9 @@ var ChildFolders = /** @class */ (function (_super) {
             };
         });
     };
+    ChildFolders = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("childFolders")
+    ], ChildFolders);
     return ChildFolders;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
 
@@ -1789,9 +1922,9 @@ var ChildFolders = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/conversations.js":
+/***/ "./build/packages-es5/graph/src/conversations.js":
 /*!*******************************************************!*\
-  !*** ./build/packages/graph/es5/src/conversations.js ***!
+  !*** ./build/packages-es5/graph/src/conversations.js ***!
   \*******************************************************/
 /*! exports provided: Conversations, Threads, Posts, Conversation, Thread, Post, Senders */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1806,18 +1939,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Post", function() { return Post; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Senders", function() { return Senders; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
-/* harmony import */ var _attachments__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./attachments */ "./build/packages/graph/es5/src/attachments.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
+/* harmony import */ var _attachments__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./attachments */ "./build/packages-es5/graph/src/attachments.js");
 
 
 
 
 var Conversations = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Conversations, _super);
-    function Conversations(baseUrl, path) {
-        if (path === void 0) { path = "conversations"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Conversations() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Create a new conversation by including a thread and a post.
@@ -1837,14 +1969,16 @@ var Conversations = /** @class */ (function (_super) {
     Conversations.prototype.getById = function (id) {
         return new Conversation(this, id);
     };
+    Conversations = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("conversations")
+    ], Conversations);
     return Conversations;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
 var Threads = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Threads, _super);
-    function Threads(baseUrl, path) {
-        if (path === void 0) { path = "threads"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Threads() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Gets a thread from this collection by id
@@ -1865,14 +1999,16 @@ var Threads = /** @class */ (function (_super) {
             body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(properties),
         });
     };
+    Threads = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("threads")
+    ], Threads);
     return Threads;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
 var Posts = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Posts, _super);
-    function Posts(baseUrl, path) {
-        if (path === void 0) { path = "posts"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Posts() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Gets a thread from this collection by id
@@ -1893,6 +2029,9 @@ var Posts = /** @class */ (function (_super) {
             body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(properties),
         });
     };
+    Posts = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("posts")
+    ], Posts);
     return Posts;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -2038,31 +2177,31 @@ var Senders = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/graph.js":
+/***/ "./build/packages-es5/graph/src/graph.js":
 /*!***********************************************!*\
-  !*** ./build/packages/graph/es5/src/graph.js ***!
+  !*** ./build/packages-es5/graph/src/graph.js ***!
   \***********************************************/
-/*! exports provided: graph, GraphRest, GroupType, Group, Groups, GraphBatch, GraphQueryable, GraphQueryableCollection, GraphQueryableInstance, GraphQueryableSearchableCollection, Teams, Team, GraphEndpoints, OneNote, Notebooks, Notebook, Sections, Section, Pages */
+/*! exports provided: graph, GraphRest, GroupType, Group, Groups, GraphBatch, GraphQueryable, GraphQueryableCollection, GraphQueryableInstance, GraphQueryableSearchableCollection, Teams, Team, GraphEndpoints, OneNote, Notebooks, Notebook, Sections, Section, Pages, Contacts, Contact, ContactFolders, ContactFolder, ChildFolders, Drives, Drive, Root, DriveItems, DriveItem, Children, DriveList, Recent, SharedWithMe, DriveSearch, Thumbnails, Planner, Plans, Plan, Tasks, Task, Buckets, Bucket, Details */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _rest__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rest */ "./build/packages/graph/es5/src/rest.js");
+/* harmony import */ var _rest__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rest */ "./build/packages-es5/graph/src/rest.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "graph", function() { return _rest__WEBPACK_IMPORTED_MODULE_0__["graph"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphRest", function() { return _rest__WEBPACK_IMPORTED_MODULE_0__["GraphRest"]; });
 
-/* harmony import */ var _groups__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./groups */ "./build/packages/graph/es5/src/groups.js");
+/* harmony import */ var _groups__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./groups */ "./build/packages-es5/graph/src/groups.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GroupType", function() { return _groups__WEBPACK_IMPORTED_MODULE_1__["GroupType"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Group", function() { return _groups__WEBPACK_IMPORTED_MODULE_1__["Group"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Groups", function() { return _groups__WEBPACK_IMPORTED_MODULE_1__["Groups"]; });
 
-/* harmony import */ var _batch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./batch */ "./build/packages/graph/es5/src/batch.js");
+/* harmony import */ var _batch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./batch */ "./build/packages-es5/graph/src/batch.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphBatch", function() { return _batch__WEBPACK_IMPORTED_MODULE_2__["GraphBatch"]; });
 
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQueryable", function() { return _graphqueryable__WEBPACK_IMPORTED_MODULE_3__["GraphQueryable"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQueryableCollection", function() { return _graphqueryable__WEBPACK_IMPORTED_MODULE_3__["GraphQueryableCollection"]; });
@@ -2071,15 +2210,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQueryableSearchableCollection", function() { return _graphqueryable__WEBPACK_IMPORTED_MODULE_3__["GraphQueryableSearchableCollection"]; });
 
-/* harmony import */ var _teams__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./teams */ "./build/packages/graph/es5/src/teams.js");
+/* harmony import */ var _teams__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./teams */ "./build/packages-es5/graph/src/teams.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Teams", function() { return _teams__WEBPACK_IMPORTED_MODULE_4__["Teams"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Team", function() { return _teams__WEBPACK_IMPORTED_MODULE_4__["Team"]; });
 
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./types */ "./build/packages/graph/es5/src/types.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./types */ "./build/packages-es5/graph/src/types.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphEndpoints", function() { return _types__WEBPACK_IMPORTED_MODULE_5__["GraphEndpoints"]; });
 
-/* harmony import */ var _onenote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./onenote */ "./build/packages/graph/es5/src/onenote.js");
+/* harmony import */ var _onenote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./onenote */ "./build/packages-es5/graph/src/onenote.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OneNote", function() { return _onenote__WEBPACK_IMPORTED_MODULE_6__["OneNote"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Notebooks", function() { return _onenote__WEBPACK_IMPORTED_MODULE_6__["Notebooks"]; });
@@ -2092,6 +2231,60 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Pages", function() { return _onenote__WEBPACK_IMPORTED_MODULE_6__["Pages"]; });
 
+/* harmony import */ var _contacts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./contacts */ "./build/packages-es5/graph/src/contacts.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Contacts", function() { return _contacts__WEBPACK_IMPORTED_MODULE_7__["Contacts"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Contact", function() { return _contacts__WEBPACK_IMPORTED_MODULE_7__["Contact"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ContactFolders", function() { return _contacts__WEBPACK_IMPORTED_MODULE_7__["ContactFolders"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ContactFolder", function() { return _contacts__WEBPACK_IMPORTED_MODULE_7__["ContactFolder"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ChildFolders", function() { return _contacts__WEBPACK_IMPORTED_MODULE_7__["ChildFolders"]; });
+
+/* harmony import */ var _onedrive__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./onedrive */ "./build/packages-es5/graph/src/onedrive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Drives", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["Drives"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Drive", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["Drive"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Root", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["Root"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DriveItems", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["DriveItems"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DriveItem", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["DriveItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Children", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["Children"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DriveList", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["DriveList"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Recent", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["Recent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SharedWithMe", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["SharedWithMe"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DriveSearch", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["DriveSearch"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Thumbnails", function() { return _onedrive__WEBPACK_IMPORTED_MODULE_8__["Thumbnails"]; });
+
+/* harmony import */ var _planner__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./planner */ "./build/packages-es5/graph/src/planner.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Planner", function() { return _planner__WEBPACK_IMPORTED_MODULE_9__["Planner"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Plans", function() { return _planner__WEBPACK_IMPORTED_MODULE_9__["Plans"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Plan", function() { return _planner__WEBPACK_IMPORTED_MODULE_9__["Plan"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Tasks", function() { return _planner__WEBPACK_IMPORTED_MODULE_9__["Tasks"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Task", function() { return _planner__WEBPACK_IMPORTED_MODULE_9__["Task"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Buckets", function() { return _planner__WEBPACK_IMPORTED_MODULE_9__["Buckets"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Bucket", function() { return _planner__WEBPACK_IMPORTED_MODULE_9__["Bucket"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Details", function() { return _planner__WEBPACK_IMPORTED_MODULE_9__["Details"]; });
+
+
+
+
 
 
 
@@ -2103,11 +2296,11 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/graphqueryable.js":
+/***/ "./build/packages-es5/graph/src/graphqueryable.js":
 /*!********************************************************!*\
-  !*** ./build/packages/graph/es5/src/graphqueryable.js ***!
+  !*** ./build/packages-es5/graph/src/graphqueryable.js ***!
   \********************************************************/
-/*! exports provided: GraphQueryable, GraphQueryableCollection, GraphQueryableSearchableCollection, GraphQueryableInstance */
+/*! exports provided: GraphQueryable, GraphQueryableCollection, GraphQueryableSearchableCollection, GraphQueryableInstance, defaultPath */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2116,11 +2309,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphQueryableCollection", function() { return GraphQueryableCollection; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphQueryableSearchableCollection", function() { return GraphQueryableSearchableCollection; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphQueryableInstance", function() { return GraphQueryableInstance; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultPath", function() { return defaultPath; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
-/* harmony import */ var _pnp_odata__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/odata */ "./build/packages/odata/es5/index.js");
-/* harmony import */ var _net_graphhttpclient__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./net/graphhttpclient */ "./build/packages/graph/es5/src/net/graphhttpclient.js");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./types */ "./build/packages/graph/es5/src/types.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
+/* harmony import */ var _pnp_odata__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/odata */ "./build/packages-es5/odata/index.js");
+/* harmony import */ var _net_graphhttpclient__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./net/graphhttpclient */ "./build/packages-es5/graph/src/net/graphhttpclient.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./types */ "./build/packages-es5/graph/src/types.js");
 
 
 
@@ -2151,6 +2345,36 @@ var GraphQueryable = /** @class */ (function (_super) {
         }
         return _this;
     }
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    GraphQueryable.prototype.select = function () {
+        var selects = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            selects[_i] = arguments[_i];
+        }
+        if (selects.length > 0) {
+            this.query.set("$select", selects.join(","));
+        }
+        return this;
+    };
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    GraphQueryable.prototype.expand = function () {
+        var expands = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            expands[_i] = arguments[_i];
+        }
+        if (expands.length > 0) {
+            this.query.set("$expand", expands.join(","));
+        }
+        return this;
+    };
     /**
      * Creates a new instance of the supplied factory and extends this into that new instance
      *
@@ -2192,13 +2416,7 @@ var GraphQueryable = /** @class */ (function (_super) {
      */
     GraphQueryable.prototype.clone = function (factory, additionalPath, includeBatch) {
         if (includeBatch === void 0) { includeBatch = true; }
-        var clone = new factory(this, additionalPath);
-        clone.configure(this._options);
-        // TODO:: include batching info in clone
-        if (includeBatch) {
-            clone = clone.inBatch(this._batch);
-        }
-        return clone;
+        return _super.prototype._clone.call(this, new factory(this, additionalPath), { includeBatch: includeBatch });
     };
     GraphQueryable.prototype.setEndpoint = function (endpoint) {
         this._url = _types__WEBPACK_IMPORTED_MODULE_4__["GraphEndpoints"].ensure(this._url, endpoint);
@@ -2251,36 +2469,6 @@ var GraphQueryableCollection = /** @class */ (function (_super) {
         return this;
     };
     /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    GraphQueryableCollection.prototype.select = function () {
-        var selects = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            selects[_i] = arguments[_i];
-        }
-        if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
-        }
-        return this;
-    };
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    GraphQueryableCollection.prototype.expand = function () {
-        var expands = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            expands[_i] = arguments[_i];
-        }
-        if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
-        }
-        return this;
-    };
-    /**
      * Orders based on the supplied fields
      *
      * @param orderby The name of the field on which to sort
@@ -2309,7 +2497,7 @@ var GraphQueryableCollection = /** @class */ (function (_super) {
      * @param num Number of items to skip
      */
     GraphQueryableCollection.prototype.skip = function (num) {
-        this.query.set("$top", num.toString());
+        this.query.set("$skip", num.toString());
         return this;
     };
     /**
@@ -2357,46 +2545,36 @@ var GraphQueryableInstance = /** @class */ (function (_super) {
     function GraphQueryableInstance() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    GraphQueryableInstance.prototype.select = function () {
-        var selects = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            selects[_i] = arguments[_i];
-        }
-        if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
-        }
-        return this;
-    };
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    GraphQueryableInstance.prototype.expand = function () {
-        var expands = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            expands[_i] = arguments[_i];
-        }
-        if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
-        }
-        return this;
-    };
     return GraphQueryableInstance;
 }(GraphQueryable));
 
+/**
+ * Decorator used to specify the default path for Queryable objects
+ *
+ * @param path
+ */
+function defaultPath(path) {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](class_1, _super);
+            function class_1() {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                return _super.call(this, args[0], args.length > 1 && args[1] !== undefined ? args[1] : path) || this;
+            }
+            return class_1;
+        }(target));
+    };
+}
 //# sourceMappingURL=graphqueryable.js.map
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/groups.js":
+/***/ "./build/packages-es5/graph/src/groups.js":
 /*!************************************************!*\
-  !*** ./build/packages/graph/es5/src/groups.js ***!
+  !*** ./build/packages-es5/graph/src/groups.js ***!
   \************************************************/
 /*! exports provided: GroupType, Groups, Group */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2407,15 +2585,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Groups", function() { return Groups; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Group", function() { return Group; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _members__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./members */ "./build/packages/graph/es5/src/members.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
-/* harmony import */ var _calendars__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./calendars */ "./build/packages/graph/es5/src/calendars.js");
-/* harmony import */ var _conversations__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./conversations */ "./build/packages/graph/es5/src/conversations.js");
-/* harmony import */ var _plans__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./plans */ "./build/packages/graph/es5/src/plans.js");
-/* harmony import */ var _photos__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./photos */ "./build/packages/graph/es5/src/photos.js");
-/* harmony import */ var _teams__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./teams */ "./build/packages/graph/es5/src/teams.js");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./types */ "./build/packages/graph/es5/src/types.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _members__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./members */ "./build/packages-es5/graph/src/members.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
+/* harmony import */ var _calendars__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./calendars */ "./build/packages-es5/graph/src/calendars.js");
+/* harmony import */ var _conversations__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./conversations */ "./build/packages-es5/graph/src/conversations.js");
+/* harmony import */ var _planner__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./planner */ "./build/packages-es5/graph/src/planner.js");
+/* harmony import */ var _photos__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./photos */ "./build/packages-es5/graph/src/photos.js");
+/* harmony import */ var _teams__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./teams */ "./build/packages-es5/graph/src/teams.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./types */ "./build/packages-es5/graph/src/types.js");
 
 
 
@@ -2447,9 +2625,8 @@ var GroupType;
  */
 var Groups = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Groups, _super);
-    function Groups(baseUrl, path) {
-        if (path === void 0) { path = "groups"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Groups() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Gets a group from the collection using the specified id
@@ -2491,6 +2668,9 @@ var Groups = /** @class */ (function (_super) {
             };
         });
     };
+    Groups = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("groups")
+    ], Groups);
     return Groups;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -2537,7 +2717,7 @@ var Group = /** @class */ (function (_super) {
          * The collection of plans for this group
          */
         get: function () {
-            return new _plans__WEBPACK_IMPORTED_MODULE_6__["Plans"](this);
+            return new _planner__WEBPACK_IMPORTED_MODULE_6__["Plans"](this, "planner/plans");
         },
         enumerable: true,
         configurable: true
@@ -2692,70 +2872,9 @@ var Group = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/me.js":
-/*!********************************************!*\
-  !*** ./build/packages/graph/es5/src/me.js ***!
-  \********************************************/
-/*! exports provided: Me */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Me", function() { return Me; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _onenote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./onenote */ "./build/packages/graph/es5/src/onenote.js");
-/* harmony import */ var _contacts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./contacts */ "./build/packages/graph/es5/src/contacts.js");
-
-
-
-
-var Me = /** @class */ (function (_super) {
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Me, _super);
-    function Me(baseUrl, path) {
-        if (path === void 0) { path = "me"; }
-        return _super.call(this, baseUrl, path) || this;
-    }
-    Object.defineProperty(Me.prototype, "onenote", {
-        /**
-        * The onenote associated with me
-        */
-        get: function () {
-            return new _onenote__WEBPACK_IMPORTED_MODULE_2__["OneNote"](this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Me.prototype, "contacts", {
-        /**
-        * The Contacts associated with the user
-        */
-        get: function () {
-            return new _contacts__WEBPACK_IMPORTED_MODULE_3__["Contacts"](this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Me.prototype, "contactFolders", {
-        /**
-         * The Contact Folders associated with the user
-         */
-        get: function () {
-            return new _contacts__WEBPACK_IMPORTED_MODULE_3__["ContactFolders"](this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return Me;
-}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
-
-//# sourceMappingURL=me.js.map
-
-/***/ }),
-
-/***/ "./build/packages/graph/es5/src/members.js":
+/***/ "./build/packages-es5/graph/src/members.js":
 /*!*************************************************!*\
-  !*** ./build/packages/graph/es5/src/members.js ***!
+  !*** ./build/packages-es5/graph/src/members.js ***!
   \*************************************************/
 /*! exports provided: Members, Member, Owners */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2766,17 +2885,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Member", function() { return Member; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Owners", function() { return Owners; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
 
 
 var Members = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Members, _super);
-    function Members(baseUrl, path) {
-        if (path === void 0) { path = "members"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Members() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    Members_1 = Members;
     /**
      * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through
      * the members navigation property. You can add users or other groups.
@@ -2785,7 +2904,7 @@ var Members = /** @class */ (function (_super) {
      * @param id Full @odata.id of the directoryObject, user, or group object you want to add (ex: https://graph.microsoft.com/v1.0/directoryObjects/${id})
      */
     Members.prototype.add = function (id) {
-        return this.clone(Members, "$ref").postCore({
+        return this.clone(Members_1, "$ref").postCore({
             body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])({
                 "@odata.id": id,
             }),
@@ -2799,6 +2918,10 @@ var Members = /** @class */ (function (_super) {
     Members.prototype.getById = function (id) {
         return new Member(this, id);
     };
+    var Members_1;
+    Members = Members_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("members")
+    ], Members);
     return Members;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -2812,10 +2935,12 @@ var Member = /** @class */ (function (_super) {
 
 var Owners = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Owners, _super);
-    function Owners(baseUrl, path) {
-        if (path === void 0) { path = "owners"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Owners() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    Owners = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("owners")
+    ], Owners);
     return Owners;
 }(Members));
 
@@ -2823,9 +2948,9 @@ var Owners = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/net/graphhttpclient.js":
+/***/ "./build/packages-es5/graph/src/net/graphhttpclient.js":
 /*!*************************************************************!*\
-  !*** ./build/packages/graph/es5/src/net/graphhttpclient.js ***!
+  !*** ./build/packages-es5/graph/src/net/graphhttpclient.js ***!
   \*************************************************************/
 /*! exports provided: GraphHttpClient */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2833,8 +2958,8 @@ var Owners = /** @class */ (function (_super) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphHttpClient", function() { return GraphHttpClient; });
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
-/* harmony import */ var _config_graphlibconfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config/graphlibconfig */ "./build/packages/graph/es5/src/config/graphlibconfig.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
+/* harmony import */ var _config_graphlibconfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config/graphlibconfig */ "./build/packages-es5/graph/src/config/graphlibconfig.js");
 
 
 var GraphHttpClient = /** @class */ (function () {
@@ -2919,9 +3044,307 @@ var GraphHttpClient = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/onenote.js":
+/***/ "./build/packages-es5/graph/src/onedrive.js":
+/*!**************************************************!*\
+  !*** ./build/packages-es5/graph/src/onedrive.js ***!
+  \**************************************************/
+/*! exports provided: Drives, Drive, Root, DriveItems, DriveItem, Children, DriveList, Recent, SharedWithMe, DriveSearch, Thumbnails */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Drives", function() { return Drives; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Drive", function() { return Drive; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Root", function() { return Root; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DriveItems", function() { return DriveItems; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DriveItem", function() { return DriveItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Children", function() { return Children; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DriveList", function() { return DriveList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Recent", function() { return Recent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SharedWithMe", function() { return SharedWithMe; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DriveSearch", function() { return DriveSearch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Thumbnails", function() { return Thumbnails; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
+
+
+
+/**
+ * Describes a collection of Drive objects
+ *
+ */
+var Drives = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Drives, _super);
+    function Drives() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets a Drive instance by id
+     *
+     * @param id Drive id
+     */
+    Drives.prototype.getById = function (id) {
+        return new Drive(this, id);
+    };
+    Drives = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("drives")
+    ], Drives);
+    return Drives;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
+
+/**
+ * Describes a Drive instance
+ *
+ */
+var Drive = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Drive, _super);
+    function Drive() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Drive.prototype, "root", {
+        get: function () {
+            return new Root(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Drive.prototype, "items", {
+        get: function () {
+            return new DriveItems(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Drive.prototype, "list", {
+        get: function () {
+            return new DriveList(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Drive.prototype, "recent", {
+        get: function () {
+            return new Recent(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Drive.prototype, "sharedWithMe", {
+        get: function () {
+            return new SharedWithMe(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Drive = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("drive")
+    ], Drive);
+    return Drive;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+
+/**
+ * Describes a Root instance
+ *
+ */
+var Root = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Root, _super);
+    function Root() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Root.prototype, "children", {
+        get: function () {
+            return new Children(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Root.prototype.search = function (query) {
+        return new DriveSearch(this, "search(q='" + query + "')");
+    };
+    Root = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("root")
+    ], Root);
+    return Root;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+
+/**
+ * Describes a collection of Drive Item objects
+ *
+ */
+var DriveItems = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](DriveItems, _super);
+    function DriveItems() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets a Drive Item instance by id
+     *
+     * @param id Drive Item id
+     */
+    DriveItems.prototype.getById = function (id) {
+        return new DriveItem(this, id);
+    };
+    DriveItems = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("items")
+    ], DriveItems);
+    return DriveItems;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+
+/**
+ * Describes a Drive Item instance
+ *
+ */
+var DriveItem = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](DriveItem, _super);
+    function DriveItem() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(DriveItem.prototype, "children", {
+        get: function () {
+            return new Children(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DriveItem.prototype, "thumbnails", {
+        get: function () {
+            return new Thumbnails(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Deletes this Drive Item
+     */
+    DriveItem.prototype.delete = function () {
+        return this.deleteCore();
+    };
+    /**
+     * Update the properties of a Drive item
+     *
+     * @param properties Set of properties of this Drive Item to update
+     */
+    DriveItem.prototype.update = function (properties) {
+        return this.patchCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(properties),
+        });
+    };
+    /**
+     * Move the Drive item and optionally update the properties
+     *
+     * @param parentReference Should contain Id of new parent folder
+     * @param properties Optional set of properties of this Drive Item to update
+     */
+    DriveItem.prototype.move = function (parentReference, properties) {
+        var patchBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])({}, parentReference);
+        if (properties) {
+            patchBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])({}, properties);
+        }
+        return this.patchCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(patchBody),
+        });
+    };
+    return DriveItem;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+
+/**
+ * Return a collection of DriveItems in the children relationship of a DriveItem
+ *
+ */
+var Children = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Children, _super);
+    function Children() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+    * Create a new folder or DriveItem in a Drive with a specified parent item or path
+    * Currently only Folder or File works
+    * @param name The name of the Drive Item.
+    * @param properties Type of Drive Item to create.
+    * */
+    Children.prototype.add = function (name, driveItemType) {
+        var _this = this;
+        var postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])({
+            name: name,
+        }, driveItemType);
+        return this.postCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(postBody),
+        }).then(function (r) {
+            return {
+                data: r,
+                driveItem: new DriveItem(_this, r.id),
+            };
+        });
+    };
+    Children = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("children")
+    ], Children);
+    return Children;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
+
+var DriveList = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](DriveList, _super);
+    function DriveList() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    DriveList = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("list")
+    ], DriveList);
+    return DriveList;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryable"]));
+
+var Recent = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Recent, _super);
+    function Recent() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Recent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("recent")
+    ], Recent);
+    return Recent;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+
+var SharedWithMe = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](SharedWithMe, _super);
+    function SharedWithMe() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SharedWithMe = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("sharedWithMe")
+    ], SharedWithMe);
+    return SharedWithMe;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+
+var DriveSearch = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](DriveSearch, _super);
+    function DriveSearch() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    DriveSearch = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("search")
+    ], DriveSearch);
+    return DriveSearch;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+
+var Thumbnails = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Thumbnails, _super);
+    function Thumbnails() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Thumbnails = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("thumbnails")
+    ], Thumbnails);
+    return Thumbnails;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+
+//# sourceMappingURL=onedrive.js.map
+
+/***/ }),
+
+/***/ "./build/packages-es5/graph/src/onenote.js":
 /*!*************************************************!*\
-  !*** ./build/packages/graph/es5/src/onenote.js ***!
+  !*** ./build/packages-es5/graph/src/onenote.js ***!
   \*************************************************/
 /*! exports provided: OneNote, Notebooks, Notebook, Sections, Section, Pages */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2935,8 +3358,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Section", function() { return Section; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Pages", function() { return Pages; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
 
 
@@ -2945,9 +3368,8 @@ __webpack_require__.r(__webpack_exports__);
  */
 var OneNote = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](OneNote, _super);
-    function OneNote(baseUrl, path) {
-        if (path === void 0) { path = "onenote"; }
-        return _super.call(this, baseUrl, path) || this;
+    function OneNote() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(OneNote.prototype, "notebooks", {
         get: function () {
@@ -2970,6 +3392,9 @@ var OneNote = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    OneNote = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("onenote")
+    ], OneNote);
     return OneNote;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
 
@@ -2979,9 +3404,8 @@ var OneNote = /** @class */ (function (_super) {
  */
 var Notebooks = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Notebooks, _super);
-    function Notebooks(baseUrl, path) {
-        if (path === void 0) { path = "notebooks"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Notebooks() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Gets a notebook instance by id
@@ -3010,6 +3434,9 @@ var Notebooks = /** @class */ (function (_super) {
             };
         });
     };
+    Notebooks = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("notebooks")
+    ], Notebooks);
     return Notebooks;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -3038,9 +3465,8 @@ var Notebook = /** @class */ (function (_super) {
  */
 var Sections = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Sections, _super);
-    function Sections(baseUrl, path) {
-        if (path === void 0) { path = "sections"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Sections() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Gets a section instance by id
@@ -3069,6 +3495,9 @@ var Sections = /** @class */ (function (_super) {
             };
         });
     };
+    Sections = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("sections")
+    ], Sections);
     return Sections;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -3090,10 +3519,12 @@ var Section = /** @class */ (function (_super) {
  */
 var Pages = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Pages, _super);
-    function Pages(baseUrl, path) {
-        if (path === void 0) { path = "pages"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Pages() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    Pages = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("pages")
+    ], Pages);
     return Pages;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
@@ -3101,9 +3532,9 @@ var Pages = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/photos.js":
+/***/ "./build/packages-es5/graph/src/photos.js":
 /*!************************************************!*\
-  !*** ./build/packages/graph/es5/src/photos.js ***!
+  !*** ./build/packages-es5/graph/src/photos.js ***!
   \************************************************/
 /*! exports provided: Photo */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3112,28 +3543,28 @@ var Pages = /** @class */ (function (_super) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Photo", function() { return Photo; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _pnp_odata__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/odata */ "./build/packages/odata/es5/index.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _pnp_odata__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/odata */ "./build/packages-es5/odata/index.js");
 
 
 
 var Photo = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Photo, _super);
-    function Photo(baseUrl, path) {
-        if (path === void 0) { path = "photo"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Photo() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    Photo_1 = Photo;
     /**
      * Gets the image bytes as a blob (browser)
      */
     Photo.prototype.getBlob = function () {
-        return this.clone(Photo, "$value", false).get(new _pnp_odata__WEBPACK_IMPORTED_MODULE_2__["BlobParser"]());
+        return this.clone(Photo_1, "$value", false).get(new _pnp_odata__WEBPACK_IMPORTED_MODULE_2__["BlobParser"]());
     };
     /**
      * Gets the image file byets as a Buffer (node.js)
      */
     Photo.prototype.getBuffer = function () {
-        return this.clone(Photo, "$value", false).get(new _pnp_odata__WEBPACK_IMPORTED_MODULE_2__["BufferParser"]());
+        return this.clone(Photo_1, "$value", false).get(new _pnp_odata__WEBPACK_IMPORTED_MODULE_2__["BufferParser"]());
     };
     /**
      * Sets the file bytes
@@ -3141,10 +3572,14 @@ var Photo = /** @class */ (function (_super) {
      * @param content Image file contents, max 4 MB
      */
     Photo.prototype.setContent = function (content) {
-        return this.clone(Photo, "$value", false).patchCore({
+        return this.clone(Photo_1, "$value", false).patchCore({
             body: content,
         });
     };
+    var Photo_1;
+    Photo = Photo_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("photo")
+    ], Photo);
     return Photo;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
 
@@ -3152,53 +3587,316 @@ var Photo = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/plans.js":
-/*!***********************************************!*\
-  !*** ./build/packages/graph/es5/src/plans.js ***!
-  \***********************************************/
-/*! exports provided: Plans, Plan */
+/***/ "./build/packages-es5/graph/src/planner.js":
+/*!*************************************************!*\
+  !*** ./build/packages-es5/graph/src/planner.js ***!
+  \*************************************************/
+/*! exports provided: Planner, Plans, Plan, Tasks, Task, Buckets, Bucket, Details */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Planner", function() { return Planner; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Plans", function() { return Plans; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Plan", function() { return Plan; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Tasks", function() { return Tasks; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Task", function() { return Task; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Buckets", function() { return Buckets; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Bucket", function() { return Bucket; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Details", function() { return Details; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
+
+
+var Planner = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Planner, _super);
+    function Planner() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Planner.prototype, "plans", {
+        // Should Only be able to get by id, or else error occur
+        get: function () {
+            return new Plans(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Planner.prototype, "tasks", {
+        // Should Only be able to get by id, or else error occur
+        get: function () {
+            return new Tasks(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Planner.prototype, "buckets", {
+        // Should Only be able to get by id, or else error occur
+        get: function () {
+            return new Buckets(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Planner = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("planner")
+    ], Planner);
+    return Planner;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
 var Plans = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Plans, _super);
-    function Plans(baseUrl, path) {
-        if (path === void 0) { path = "planner/plans"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Plans() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    /**
-     * Gets a plan from this collection by id
-     *
-     * @param id Plan's id
-     */
     Plans.prototype.getById = function (id) {
         return new Plan(this, id);
     };
+    /**
+     * Create a new Planner Plan.
+     *
+     * @param owner Id of Group object.
+     * @param title The Title of the Plan.
+     */
+    Plans.prototype.add = function (owner, title) {
+        var _this = this;
+        var postBody = {
+            owner: owner,
+            title: title,
+        };
+        return this.postCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(postBody),
+        }).then(function (r) {
+            return {
+                data: r,
+                plan: _this.getById(r.id),
+            };
+        });
+    };
+    Plans = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("plans")
+    ], Plans);
     return Plans;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
 
+/**
+ * Should not be able to get by Id
+ */
 var Plan = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Plan, _super);
     function Plan() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Object.defineProperty(Plan.prototype, "tasks", {
+        get: function () {
+            return new Tasks(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Plan.prototype, "buckets", {
+        get: function () {
+            return new Buckets(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Plan.prototype, "details", {
+        get: function () {
+            return new Details(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Deletes this Plan
+     */
+    Plan.prototype.delete = function () {
+        return this.deleteCore();
+    };
+    /**
+     * Update the properties of a Plan
+     *
+     * @param properties Set of properties of this Plan to update
+     */
+    Plan.prototype.update = function (properties) {
+        return this.patchCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(properties),
+        });
+    };
     return Plan;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
 
-//# sourceMappingURL=plans.js.map
+var Tasks = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Tasks, _super);
+    function Tasks() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Tasks.prototype.getById = function (id) {
+        return new Task(this, id);
+    };
+    /**
+     * Create a new Planner Task.
+     *
+     * @param planId Id of Plan.
+     * @param title The Title of the Task.
+     * @param assignments Assign the task
+     * @param bucketId Id of Bucket
+     */
+    Tasks.prototype.add = function (planId, title, assignments, bucketId) {
+        var _this = this;
+        var postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])({
+            planId: planId,
+            title: title,
+        }, assignments);
+        if (bucketId) {
+            postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])(postBody, {
+                bucketId: bucketId,
+            });
+        }
+        return this.postCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(postBody),
+        }).then(function (r) {
+            return {
+                data: r,
+                task: _this.getById(r.id),
+            };
+        });
+    };
+    Tasks = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("tasks")
+    ], Tasks);
+    return Tasks;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
+
+var Task = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Task, _super);
+    function Task() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Deletes this Task
+     */
+    Task.prototype.delete = function () {
+        return this.deleteCore();
+    };
+    /**
+     * Update the properties of a Task
+     *
+     * @param properties Set of properties of this Task to update
+     */
+    Task.prototype.update = function (properties) {
+        return this.patchCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(properties),
+        });
+    };
+    Object.defineProperty(Task.prototype, "details", {
+        get: function () {
+            return new Details(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Task;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+
+var Buckets = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Buckets, _super);
+    function Buckets() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Create a new Bucket.
+     *
+     * @param name Name of Bucket object.
+     * @param planId The Id of the Plan.
+     * @param oderHint Hint used to order items of this type in a list view.
+     */
+    Buckets.prototype.add = function (name, planId, orderHint) {
+        var _this = this;
+        var postBody = {
+            name: name,
+            orderHint: orderHint ? orderHint : "",
+            planId: planId,
+        };
+        return this.postCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(postBody),
+        }).then(function (r) {
+            return {
+                bucket: _this.getById(r.id),
+                data: r,
+            };
+        });
+    };
+    Buckets.prototype.getById = function (id) {
+        return new Bucket(this, id);
+    };
+    Buckets = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("buckets")
+    ], Buckets);
+    return Buckets;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
+
+var Bucket = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Bucket, _super);
+    function Bucket() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Deletes this Bucket
+     */
+    Bucket.prototype.delete = function () {
+        return this.deleteCore();
+    };
+    /**
+     * Update the properties of a Bucket
+     *
+     * @param properties Set of properties of this Bucket to update
+     */
+    Bucket.prototype.update = function (properties) {
+        return this.patchCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(properties),
+        });
+    };
+    Object.defineProperty(Bucket.prototype, "tasks", {
+        get: function () {
+            return new Tasks(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Bucket;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+
+var Details = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Details, _super);
+    function Details() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Update the Details of a Task
+     *
+     * @param properties Set of properties of this Details to update
+     */
+    Details.prototype.update = function (properties) {
+        return this.patchCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(properties),
+        });
+    };
+    Details = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["defaultPath"])("details")
+    ], Details);
+    return Details;
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
+
+//# sourceMappingURL=planner.js.map
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/rest.js":
+/***/ "./build/packages-es5/graph/src/rest.js":
 /*!**********************************************!*\
-  !*** ./build/packages/graph/es5/src/rest.js ***!
+  !*** ./build/packages-es5/graph/src/rest.js ***!
   \**********************************************/
 /*! exports provided: GraphRest, graph */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3208,12 +3906,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphRest", function() { return GraphRest; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "graph", function() { return graph; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _config_graphlibconfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config/graphlibconfig */ "./build/packages/graph/es5/src/config/graphlibconfig.js");
-/* harmony import */ var _groups__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./groups */ "./build/packages/graph/es5/src/groups.js");
-/* harmony import */ var _me__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./me */ "./build/packages/graph/es5/src/me.js");
-/* harmony import */ var _teams__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./teams */ "./build/packages/graph/es5/src/teams.js");
-/* harmony import */ var _users__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./users */ "./build/packages/graph/es5/src/users.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _config_graphlibconfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config/graphlibconfig */ "./build/packages-es5/graph/src/config/graphlibconfig.js");
+/* harmony import */ var _groups__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./groups */ "./build/packages-es5/graph/src/groups.js");
+/* harmony import */ var _teams__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./teams */ "./build/packages-es5/graph/src/teams.js");
+/* harmony import */ var _users__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./users */ "./build/packages-es5/graph/src/users.js");
+/* harmony import */ var _planner__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./planner */ "./build/packages-es5/graph/src/planner.js");
+/* harmony import */ var _batch__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./batch */ "./build/packages-es5/graph/src/batch.js");
+
 
 
 
@@ -3235,25 +3935,35 @@ var GraphRest = /** @class */ (function (_super) {
     });
     Object.defineProperty(GraphRest.prototype, "teams", {
         get: function () {
-            return new _teams__WEBPACK_IMPORTED_MODULE_5__["Teams"]();
+            return new _teams__WEBPACK_IMPORTED_MODULE_4__["Teams"]();
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(GraphRest.prototype, "me", {
         get: function () {
-            return new _me__WEBPACK_IMPORTED_MODULE_4__["Me"](this);
+            return new _users__WEBPACK_IMPORTED_MODULE_5__["User"](this, "me");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GraphRest.prototype, "planner", {
+        get: function () {
+            return new _planner__WEBPACK_IMPORTED_MODULE_6__["Planner"](this);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(GraphRest.prototype, "users", {
         get: function () {
-            return new _users__WEBPACK_IMPORTED_MODULE_6__["Users"](this);
+            return new _users__WEBPACK_IMPORTED_MODULE_5__["Users"](this);
         },
         enumerable: true,
         configurable: true
     });
+    GraphRest.prototype.createBatch = function () {
+        return new _batch__WEBPACK_IMPORTED_MODULE_7__["GraphBatch"]();
+    };
     GraphRest.prototype.setup = function (config) {
         Object(_config_graphlibconfig__WEBPACK_IMPORTED_MODULE_2__["setup"])(config);
     };
@@ -3265,9 +3975,9 @@ var graph = new GraphRest("v1.0");
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/teams.js":
+/***/ "./build/packages-es5/graph/src/teams.js":
 /*!***********************************************!*\
-  !*** ./build/packages/graph/es5/src/teams.js ***!
+  !*** ./build/packages-es5/graph/src/teams.js ***!
   \***********************************************/
 /*! exports provided: Teams, Team */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3277,12 +3987,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Teams", function() { return Teams; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Team", function() { return Team; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _rest__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rest */ "./build/packages/graph/es5/src/rest.js");
-/* harmony import */ var _groups__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./groups */ "./build/packages/graph/es5/src/groups.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./types */ "./build/packages/graph/es5/src/types.js");
-/* harmony import */ var _pnp_odata__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @pnp/odata */ "./build/packages/odata/es5/index.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
+/* harmony import */ var _rest__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rest */ "./build/packages-es5/graph/src/rest.js");
+/* harmony import */ var _groups__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./groups */ "./build/packages-es5/graph/src/groups.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./types */ "./build/packages-es5/graph/src/types.js");
+/* harmony import */ var _pnp_odata__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @pnp/odata */ "./build/packages-es5/odata/index.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
 
 
@@ -3318,10 +4028,10 @@ var Teams = /** @class */ (function () {
  */
 var Team = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Team, _super);
-    function Team(baseUrl, path) {
-        if (path === void 0) { path = "team"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Team() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    Team_1 = Team;
     /**
      * Updates this team instance's properties
      *
@@ -3330,7 +4040,7 @@ var Team = /** @class */ (function (_super) {
     // TODO:: update properties to be typed once type is available in graph-types
     Team.prototype.update = function (properties) {
         var _this = this;
-        return this.clone(Team, "").setEndpoint(_types__WEBPACK_IMPORTED_MODULE_4__["GraphEndpoints"].Beta).patchCore({
+        return this.clone(Team_1, "").setEndpoint(_types__WEBPACK_IMPORTED_MODULE_4__["GraphEndpoints"].Beta).patchCore({
             body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["jsS"])(properties),
         }).then(function (data) {
             return {
@@ -3348,8 +4058,12 @@ var Team = /** @class */ (function (_super) {
     Team.prototype.get = function (parser, options) {
         if (parser === void 0) { parser = new _pnp_odata__WEBPACK_IMPORTED_MODULE_5__["ODataDefaultParser"](); }
         if (options === void 0) { options = {}; }
-        return this.clone(Team, "").setEndpoint(_types__WEBPACK_IMPORTED_MODULE_4__["GraphEndpoints"].Beta).getCore(parser, options);
+        return this.clone(Team_1, "").setEndpoint(_types__WEBPACK_IMPORTED_MODULE_4__["GraphEndpoints"].Beta).getCore(parser, options);
     };
+    var Team_1;
+    Team = Team_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_3__["defaultPath"])("team")
+    ], Team);
     return Team;
 }(_graphqueryable__WEBPACK_IMPORTED_MODULE_3__["GraphQueryableInstance"]));
 
@@ -3357,9 +4071,9 @@ var Team = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/types.js":
+/***/ "./build/packages-es5/graph/src/types.js":
 /*!***********************************************!*\
-  !*** ./build/packages/graph/es5/src/types.js ***!
+  !*** ./build/packages-es5/graph/src/types.js ***!
   \***********************************************/
 /*! exports provided: GraphEndpoints */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3390,9 +4104,9 @@ var GraphEndpoints = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./build/packages/graph/es5/src/users.js":
+/***/ "./build/packages-es5/graph/src/users.js":
 /*!***********************************************!*\
-  !*** ./build/packages/graph/es5/src/users.js ***!
+  !*** ./build/packages-es5/graph/src/users.js ***!
   \***********************************************/
 /*! exports provided: Users, User */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3402,9 +4116,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Users", function() { return Users; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "User", function() { return User; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages/graph/es5/src/graphqueryable.js");
-/* harmony import */ var _contacts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./contacts */ "./build/packages/graph/es5/src/contacts.js");
-/* harmony import */ var _onenote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./onenote */ "./build/packages/graph/es5/src/onenote.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
+/* harmony import */ var _graphqueryable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./graphqueryable */ "./build/packages-es5/graph/src/graphqueryable.js");
+/* harmony import */ var _contacts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./contacts */ "./build/packages-es5/graph/src/contacts.js");
+/* harmony import */ var _onenote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./onenote */ "./build/packages-es5/graph/src/onenote.js");
+/* harmony import */ var _onedrive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./onedrive */ "./build/packages-es5/graph/src/onedrive.js");
+/* harmony import */ var _planner__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./planner */ "./build/packages-es5/graph/src/planner.js");
+
+
+
 
 
 
@@ -3415,9 +4135,8 @@ __webpack_require__.r(__webpack_exports__);
  */
 var Users = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](Users, _super);
-    function Users(baseUrl, path) {
-        if (path === void 0) { path = "users"; }
-        return _super.call(this, baseUrl, path) || this;
+    function Users() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * Gets a user from the collection using the specified id
@@ -3427,8 +4146,11 @@ var Users = /** @class */ (function (_super) {
     Users.prototype.getById = function (id) {
         return new User(this, id);
     };
+    Users = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_graphqueryable__WEBPACK_IMPORTED_MODULE_2__["defaultPath"])("users")
+    ], Users);
     return Users;
-}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableCollection"]));
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_2__["GraphQueryableCollection"]));
 
 /**
  * Represents a user entity
@@ -3443,7 +4165,7 @@ var User = /** @class */ (function (_super) {
         * The onenote associated with me
         */
         get: function () {
-            return new _onenote__WEBPACK_IMPORTED_MODULE_3__["OneNote"](this);
+            return new _onenote__WEBPACK_IMPORTED_MODULE_4__["OneNote"](this);
         },
         enumerable: true,
         configurable: true
@@ -3453,7 +4175,7 @@ var User = /** @class */ (function (_super) {
         * The Contacts associated with the user
         */
         get: function () {
-            return new _contacts__WEBPACK_IMPORTED_MODULE_2__["Contacts"](this);
+            return new _contacts__WEBPACK_IMPORTED_MODULE_3__["Contacts"](this);
         },
         enumerable: true,
         configurable: true
@@ -3463,28 +4185,74 @@ var User = /** @class */ (function (_super) {
         * The Contact Folders associated with the user
         */
         get: function () {
-            return new _contacts__WEBPACK_IMPORTED_MODULE_2__["ContactFolders"](this);
+            return new _contacts__WEBPACK_IMPORTED_MODULE_3__["ContactFolders"](this);
         },
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(User.prototype, "drive", {
+        /**
+        * The default Drive associated with the user
+        */
+        get: function () {
+            return new _onedrive__WEBPACK_IMPORTED_MODULE_5__["Drive"](this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "drives", {
+        /**
+        * The Drives the user has available
+        */
+        get: function () {
+            return new _onedrive__WEBPACK_IMPORTED_MODULE_5__["Drives"](this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "tasks", {
+        /**
+        * The Tasks the user has available
+        */
+        get: function () {
+            return new _planner__WEBPACK_IMPORTED_MODULE_6__["Tasks"](this, "planner/tasks");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Updates this user
+     *
+     * @param properties Properties used to update this user
+     */
+    User.prototype.update = function (properties) {
+        return this.patchCore({
+            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["jsS"])(properties),
+        });
+    };
+    /**
+     * Deletes this user
+     */
+    User.prototype.delete = function () {
+        return this.deleteCore();
+    };
     return User;
-}(_graphqueryable__WEBPACK_IMPORTED_MODULE_1__["GraphQueryableInstance"]));
+}(_graphqueryable__WEBPACK_IMPORTED_MODULE_2__["GraphQueryableInstance"]));
 
 //# sourceMappingURL=users.js.map
 
 /***/ }),
 
-/***/ "./build/packages/logging/es5/index.js":
+/***/ "./build/packages-es5/logging/index.js":
 /*!*********************************************!*\
-  !*** ./build/packages/logging/es5/index.js ***!
+  !*** ./build/packages-es5/logging/index.js ***!
   \*********************************************/
 /*! exports provided: Logger, LogLevel, ConsoleListener, FunctionListener */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_logging__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/logging */ "./build/packages/logging/es5/src/logging.js");
+/* harmony import */ var _src_logging__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/logging */ "./build/packages-es5/logging/src/logging.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Logger", function() { return _src_logging__WEBPACK_IMPORTED_MODULE_0__["Logger"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LogLevel", function() { return _src_logging__WEBPACK_IMPORTED_MODULE_0__["LogLevel"]; });
@@ -3498,9 +4266,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./build/packages/logging/es5/src/listeners.js":
+/***/ "./build/packages-es5/logging/src/listeners.js":
 /*!*****************************************************!*\
-  !*** ./build/packages/logging/es5/src/listeners.js ***!
+  !*** ./build/packages-es5/logging/src/listeners.js ***!
   \*****************************************************/
 /*! exports provided: ConsoleListener, FunctionListener */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3581,9 +4349,9 @@ var FunctionListener = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./build/packages/logging/es5/src/logger.js":
+/***/ "./build/packages-es5/logging/src/logger.js":
 /*!**************************************************!*\
-  !*** ./build/packages/logging/es5/src/logger.js ***!
+  !*** ./build/packages-es5/logging/src/logger.js ***!
   \**************************************************/
 /*! exports provided: Logger */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3725,22 +4493,22 @@ var LoggerImpl = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./build/packages/logging/es5/src/logging.js":
+/***/ "./build/packages-es5/logging/src/logging.js":
 /*!***************************************************!*\
-  !*** ./build/packages/logging/es5/src/logging.js ***!
+  !*** ./build/packages-es5/logging/src/logging.js ***!
   \***************************************************/
 /*! exports provided: Logger, LogLevel, ConsoleListener, FunctionListener */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./logger */ "./build/packages/logging/es5/src/logger.js");
+/* harmony import */ var _logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./logger */ "./build/packages-es5/logging/src/logger.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Logger", function() { return _logger__WEBPACK_IMPORTED_MODULE_0__["Logger"]; });
 
-/* harmony import */ var _loglevel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./loglevel */ "./build/packages/logging/es5/src/loglevel.js");
+/* harmony import */ var _loglevel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./loglevel */ "./build/packages-es5/logging/src/loglevel.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LogLevel", function() { return _loglevel__WEBPACK_IMPORTED_MODULE_1__["LogLevel"]; });
 
-/* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./listeners */ "./build/packages/logging/es5/src/listeners.js");
+/* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./listeners */ "./build/packages-es5/logging/src/listeners.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConsoleListener", function() { return _listeners__WEBPACK_IMPORTED_MODULE_2__["ConsoleListener"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FunctionListener", function() { return _listeners__WEBPACK_IMPORTED_MODULE_2__["FunctionListener"]; });
@@ -3752,9 +4520,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./build/packages/logging/es5/src/loglevel.js":
+/***/ "./build/packages-es5/logging/src/loglevel.js":
 /*!****************************************************!*\
-  !*** ./build/packages/logging/es5/src/loglevel.js ***!
+  !*** ./build/packages-es5/logging/src/loglevel.js ***!
   \****************************************************/
 /*! exports provided: LogLevel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3777,16 +4545,16 @@ var LogLevel;
 
 /***/ }),
 
-/***/ "./build/packages/odata/es5/index.js":
+/***/ "./build/packages-es5/odata/index.js":
 /*!*******************************************!*\
-  !*** ./build/packages/odata/es5/index.js ***!
+  !*** ./build/packages-es5/odata/index.js ***!
   \*******************************************/
 /*! exports provided: CachingOptions, CachingParserWrapper, HttpRequestError, ODataParserBase, ODataDefaultParser, TextParser, BlobParser, JSONParser, BufferParser, LambdaParser, setResult, pipe, requestPipelineMethod, PipelineMethods, getDefaultPipeline, Queryable, ODataQueryable, ODataBatch */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_odata__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/odata */ "./build/packages/odata/es5/src/odata.js");
+/* harmony import */ var _src_odata__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/odata */ "./build/packages-es5/odata/src/odata.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CachingOptions", function() { return _src_odata__WEBPACK_IMPORTED_MODULE_0__["CachingOptions"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CachingParserWrapper", function() { return _src_odata__WEBPACK_IMPORTED_MODULE_0__["CachingParserWrapper"]; });
@@ -3828,9 +4596,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./build/packages/odata/es5/src/caching.js":
+/***/ "./build/packages-es5/odata/src/caching.js":
 /*!*************************************************!*\
-  !*** ./build/packages/odata/es5/src/caching.js ***!
+  !*** ./build/packages-es5/odata/src/caching.js ***!
   \*************************************************/
 /*! exports provided: CachingOptions, CachingParserWrapper */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3839,7 +4607,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CachingOptions", function() { return CachingOptions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CachingParserWrapper", function() { return CachingParserWrapper; });
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
 var CachingOptions = /** @class */ (function () {
     function CachingOptions(key) {
@@ -3885,21 +4653,21 @@ var CachingParserWrapper = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./build/packages/odata/es5/src/odata.js":
+/***/ "./build/packages-es5/odata/src/odata.js":
 /*!***********************************************!*\
-  !*** ./build/packages/odata/es5/src/odata.js ***!
+  !*** ./build/packages-es5/odata/src/odata.js ***!
   \***********************************************/
 /*! exports provided: CachingOptions, CachingParserWrapper, HttpRequestError, ODataParserBase, ODataDefaultParser, TextParser, BlobParser, JSONParser, BufferParser, LambdaParser, setResult, pipe, requestPipelineMethod, PipelineMethods, getDefaultPipeline, Queryable, ODataQueryable, ODataBatch */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _caching__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./caching */ "./build/packages/odata/es5/src/caching.js");
+/* harmony import */ var _caching__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./caching */ "./build/packages-es5/odata/src/caching.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CachingOptions", function() { return _caching__WEBPACK_IMPORTED_MODULE_0__["CachingOptions"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CachingParserWrapper", function() { return _caching__WEBPACK_IMPORTED_MODULE_0__["CachingParserWrapper"]; });
 
-/* harmony import */ var _parsers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parsers */ "./build/packages/odata/es5/src/parsers.js");
+/* harmony import */ var _parsers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parsers */ "./build/packages-es5/odata/src/parsers.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HttpRequestError", function() { return _parsers__WEBPACK_IMPORTED_MODULE_1__["HttpRequestError"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ODataParserBase", function() { return _parsers__WEBPACK_IMPORTED_MODULE_1__["ODataParserBase"]; });
@@ -3916,7 +4684,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LambdaParser", function() { return _parsers__WEBPACK_IMPORTED_MODULE_1__["LambdaParser"]; });
 
-/* harmony import */ var _pipeline__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pipeline */ "./build/packages/odata/es5/src/pipeline.js");
+/* harmony import */ var _pipeline__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pipeline */ "./build/packages-es5/odata/src/pipeline.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setResult", function() { return _pipeline__WEBPACK_IMPORTED_MODULE_2__["setResult"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pipe", function() { return _pipeline__WEBPACK_IMPORTED_MODULE_2__["pipe"]; });
@@ -3927,12 +4695,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getDefaultPipeline", function() { return _pipeline__WEBPACK_IMPORTED_MODULE_2__["getDefaultPipeline"]; });
 
-/* harmony import */ var _queryable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./queryable */ "./build/packages/odata/es5/src/queryable.js");
+/* harmony import */ var _queryable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./queryable */ "./build/packages-es5/odata/src/queryable.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Queryable", function() { return _queryable__WEBPACK_IMPORTED_MODULE_3__["Queryable"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ODataQueryable", function() { return _queryable__WEBPACK_IMPORTED_MODULE_3__["ODataQueryable"]; });
 
-/* harmony import */ var _odatabatch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./odatabatch */ "./build/packages/odata/es5/src/odatabatch.js");
+/* harmony import */ var _odatabatch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./odatabatch */ "./build/packages-es5/odata/src/odatabatch.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ODataBatch", function() { return _odatabatch__WEBPACK_IMPORTED_MODULE_4__["ODataBatch"]; });
 
 
@@ -3944,9 +4712,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./build/packages/odata/es5/src/odatabatch.js":
+/***/ "./build/packages-es5/odata/src/odatabatch.js":
 /*!****************************************************!*\
-  !*** ./build/packages/odata/es5/src/odatabatch.js ***!
+  !*** ./build/packages-es5/odata/src/odatabatch.js ***!
   \****************************************************/
 /*! exports provided: ODataBatch */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3954,7 +4722,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ODataBatch", function() { return ODataBatch; });
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
 var ODataBatch = /** @class */ (function () {
     function ODataBatch(_batchId) {
@@ -4047,9 +4815,9 @@ var ODataBatch = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./build/packages/odata/es5/src/parsers.js":
+/***/ "./build/packages-es5/odata/src/parsers.js":
 /*!*************************************************!*\
-  !*** ./build/packages/odata/es5/src/parsers.js ***!
+  !*** ./build/packages-es5/odata/src/parsers.js ***!
   \*************************************************/
 /*! exports provided: HttpRequestError, ODataParserBase, ODataDefaultParser, TextParser, BlobParser, JSONParser, BufferParser, LambdaParser */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -4065,7 +4833,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BufferParser", function() { return BufferParser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LambdaParser", function() { return LambdaParser; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
 
 
 var HttpRequestError = /** @class */ (function (_super) {
@@ -4080,6 +4848,11 @@ var HttpRequestError = /** @class */ (function (_super) {
         _this.isHttpRequestError = true;
         return _this;
     }
+    HttpRequestError.init = function (r) {
+        return r.clone().text().then(function (t) {
+            return new HttpRequestError("Error making HttpClient request in queryable [" + r.status + "] " + r.statusText + " ::> " + t, r.clone());
+        });
+    };
     return HttpRequestError;
 }(Error));
 
@@ -4116,7 +4889,7 @@ var ODataParserBase = /** @class */ (function () {
      */
     ODataParserBase.prototype.handleError = function (r, reject) {
         if (!r.ok) {
-            reject(new HttpRequestError("Error making HttpClient request in queryable: [" + r.status + "] " + r.statusText, r.clone()));
+            HttpRequestError.init(r).then(reject);
         }
         return r.ok;
     };
@@ -4217,9 +4990,9 @@ var LambdaParser = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./build/packages/odata/es5/src/pipeline.js":
+/***/ "./build/packages-es5/odata/src/pipeline.js":
 /*!**************************************************!*\
-  !*** ./build/packages/odata/es5/src/pipeline.js ***!
+  !*** ./build/packages-es5/odata/src/pipeline.js ***!
   \**************************************************/
 /*! exports provided: setResult, pipe, requestPipelineMethod, PipelineMethods, getDefaultPipeline */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -4232,9 +5005,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PipelineMethods", function() { return PipelineMethods; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDefaultPipeline", function() { return getDefaultPipeline; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
-/* harmony import */ var _pnp_logging__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/logging */ "./build/packages/logging/es5/index.js");
-/* harmony import */ var _caching__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./caching */ "./build/packages/odata/es5/src/caching.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
+/* harmony import */ var _pnp_logging__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/logging */ "./build/packages-es5/logging/index.js");
+/* harmony import */ var _caching__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./caching */ "./build/packages-es5/odata/src/caching.js");
 
 
 
@@ -4457,9 +5230,9 @@ function getDefaultPipeline() {
 
 /***/ }),
 
-/***/ "./build/packages/odata/es5/src/queryable.js":
+/***/ "./build/packages-es5/odata/src/queryable.js":
 /*!***************************************************!*\
-  !*** ./build/packages/odata/es5/src/queryable.js ***!
+  !*** ./build/packages-es5/odata/src/queryable.js ***!
   \***************************************************/
 /*! exports provided: Queryable, ODataQueryable */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -4469,9 +5242,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Queryable", function() { return Queryable; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ODataQueryable", function() { return ODataQueryable; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/common */ "./build/packages/common/es5/index.js");
-/* harmony import */ var _parsers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./parsers */ "./build/packages/odata/es5/src/parsers.js");
-/* harmony import */ var _pipeline__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pipeline */ "./build/packages/odata/es5/src/pipeline.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
+/* harmony import */ var _parsers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./parsers */ "./build/packages-es5/odata/src/parsers.js");
+/* harmony import */ var _pipeline__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pipeline */ "./build/packages-es5/odata/src/pipeline.js");
 
 
 
@@ -4484,6 +5257,8 @@ var Queryable = /** @class */ (function () {
         this._parentUrl = "";
         this._useCaching = false;
         this._cachingOptions = null;
+        this._cloneParentWasCaching = false;
+        this._cloneParentCacheOptions = null;
     }
     /**
     * Gets the currentl url
@@ -4547,6 +5322,14 @@ var Queryable = /** @class */ (function () {
     Queryable.prototype.getCore = function (parser, options) {
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["JSONParser"](); }
         if (options === void 0) { options = {}; }
+        // Fix for #304 - when we clone objects we in some cases then execute a get request
+        // in these cases the caching settings were getting dropped from the request
+        // this tracks if the object from which this was clones was caching and applies that to an immediate get request
+        // does not affect objects cloned from this as we are using different fields to track the settings so it won't
+        // be triggered
+        if (this._cloneParentWasCaching) {
+            this.usingCaching(this._cloneParentCacheOptions);
+        }
         return this.toRequestContext("GET", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
     };
     Queryable.prototype.postCore = function (options, parser) {
@@ -4599,6 +5382,19 @@ var Queryable = /** @class */ (function () {
         this._url = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["combine"])(this._parentUrl, path || "");
         this.configureFrom(parent);
     };
+    /**
+     * Configures a cloned object from this instance
+     *
+     * @param clone
+     */
+    Queryable.prototype._clone = function (clone, _0) {
+        clone.configureFrom(this);
+        if (this._useCaching) {
+            clone._cloneParentWasCaching = true;
+            clone._cloneParentCacheOptions = this._cachingOptions;
+        }
+        return clone;
+    };
     return Queryable;
 }());
 
@@ -4648,27 +5444,27 @@ var ODataQueryable = /** @class */ (function (_super) {
     ODataQueryable.prototype.getCore = function (parser, options) {
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["ODataDefaultParser"](); }
         if (options === void 0) { options = {}; }
-        return this.toRequestContext("GET", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
+        return _super.prototype.getCore.call(this, parser, options);
     };
     ODataQueryable.prototype.postCore = function (options, parser) {
         if (options === void 0) { options = {}; }
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["ODataDefaultParser"](); }
-        return this.toRequestContext("POST", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
+        return _super.prototype.postCore.call(this, options, parser);
     };
     ODataQueryable.prototype.patchCore = function (options, parser) {
         if (options === void 0) { options = {}; }
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["ODataDefaultParser"](); }
-        return this.toRequestContext("PATCH", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
+        return _super.prototype.patchCore.call(this, options, parser);
     };
     ODataQueryable.prototype.deleteCore = function (options, parser) {
         if (options === void 0) { options = {}; }
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["ODataDefaultParser"](); }
-        return this.toRequestContext("DELETE", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
+        return _super.prototype.deleteCore.call(this, options, parser);
     };
     ODataQueryable.prototype.putCore = function (options, parser) {
         if (options === void 0) { options = {}; }
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["ODataDefaultParser"](); }
-        return this.toRequestContext("PUT", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
+        return _super.prototype.putCore.call(this, options, parser);
     };
     /**
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
@@ -4701,6 +5497,18 @@ var ODataQueryable = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    /**
+     * Configures a cloned object from this instance
+     *
+     * @param clone
+     */
+    ODataQueryable.prototype._clone = function (clone, cloneSettings) {
+        clone = _super.prototype._clone.call(this, clone, cloneSettings);
+        if (cloneSettings.includeBatch) {
+            clone = clone.inBatch(this._batch);
+        }
+        return clone;
+    };
     return ODataQueryable;
 }(Queryable));
 
@@ -4713,11 +5521,11 @@ var ODataQueryable = /** @class */ (function (_super) {
   !*** ./node_modules/adal-angular/dist/adal.min.js ***!
   \****************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 /*! adal-angular v1.0.17 2018-02-27 */
 var AuthenticationContext=function(){"use strict";return AuthenticationContext=function(a){if(this.REQUEST_TYPE={LOGIN:"LOGIN",RENEW_TOKEN:"RENEW_TOKEN",UNKNOWN:"UNKNOWN"},this.RESPONSE_TYPE={ID_TOKEN_TOKEN:"id_token token",TOKEN:"token"},this.CONSTANTS={ACCESS_TOKEN:"access_token",EXPIRES_IN:"expires_in",ID_TOKEN:"id_token",ERROR_DESCRIPTION:"error_description",SESSION_STATE:"session_state",ERROR:"error",STORAGE:{TOKEN_KEYS:"adal.token.keys",ACCESS_TOKEN_KEY:"adal.access.token.key",EXPIRATION_KEY:"adal.expiration.key",STATE_LOGIN:"adal.state.login",STATE_RENEW:"adal.state.renew",NONCE_IDTOKEN:"adal.nonce.idtoken",SESSION_STATE:"adal.session.state",USERNAME:"adal.username",IDTOKEN:"adal.idtoken",ERROR:"adal.error",ERROR_DESCRIPTION:"adal.error.description",LOGIN_REQUEST:"adal.login.request",LOGIN_ERROR:"adal.login.error",RENEW_STATUS:"adal.token.renew.status",ANGULAR_LOGIN_REQUEST:"adal.angular.login.request"},RESOURCE_DELIMETER:"|",CACHE_DELIMETER:"||",LOADFRAME_TIMEOUT:6e3,TOKEN_RENEW_STATUS_CANCELED:"Canceled",TOKEN_RENEW_STATUS_COMPLETED:"Completed",TOKEN_RENEW_STATUS_IN_PROGRESS:"In Progress",LOGGING_LEVEL:{ERROR:0,WARN:1,INFO:2,VERBOSE:3},LEVEL_STRING_MAP:{0:"ERROR:",1:"WARNING:",2:"INFO:",3:"VERBOSE:"},POPUP_WIDTH:483,POPUP_HEIGHT:600},AuthenticationContext.prototype._singletonInstance)return AuthenticationContext.prototype._singletonInstance;if(AuthenticationContext.prototype._singletonInstance=this,this.instance="https://login.microsoftonline.com/",this.config={},this.callback=null,this.popUp=!1,this.isAngular=!1,this._user=null,this._activeRenewals={},this._loginInProgress=!1,this._acquireTokenInProgress=!1,this._renewStates=[],this._callBackMappedToRenewStates={},this._callBacksMappedToRenewStates={},this._openedWindows=[],this._requestType=this.REQUEST_TYPE.LOGIN,window._adalInstance=this,a.displayCall&&"function"!=typeof a.displayCall)throw new Error("displayCall is not a function");if(!a.clientId)throw new Error("clientId is required");this.config=this._cloneConfig(a),void 0===this.config.navigateToLoginRequestUrl&&(this.config.navigateToLoginRequestUrl=!0),this.config.popUp&&(this.popUp=!0),this.config.callback&&"function"==typeof this.config.callback&&(this.callback=this.config.callback),this.config.instance&&(this.instance=this.config.instance),this.config.loginResource||(this.config.loginResource=this.config.clientId),this.config.redirectUri||(this.config.redirectUri=window.location.href.split("?")[0].split("#")[0]),this.config.postLogoutRedirectUri||(this.config.postLogoutRedirectUri=window.location.href.split("?")[0].split("#")[0]),this.config.anonymousEndpoints||(this.config.anonymousEndpoints=[]),this.config.isAngular&&(this.isAngular=this.config.isAngular),this.config.loadFrameTimeout&&(this.CONSTANTS.LOADFRAME_TIMEOUT=this.config.loadFrameTimeout)},"undefined"!=typeof window&&(window.Logging={piiLoggingEnabled:!1,level:0,log:function(a){}}),AuthenticationContext.prototype.login=function(){if(this._loginInProgress)return void this.info("Login in progress");this._loginInProgress=!0;var a=this._guid();this.config.state=a,this._idTokenNonce=this._guid();var b=this._getItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST);b&&""!==b?this._saveItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST,""):b=window.location.href,this.verbose("Expected state: "+a+" startPage:"+b),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,b),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,a,!0),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"");var c=this._getNavigateUrl("id_token",null)+"&nonce="+encodeURIComponent(this._idTokenNonce);this.config.displayCall?this.config.displayCall(c):this.popUp?(this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,""),this._renewStates.push(a),this.registerCallback(a,this.config.clientId,this.callback),this._loginPopup(c)):this.promptUser(c)},AuthenticationContext.prototype._openPopup=function(a,b,c,d){try{var e=window.screenLeft?window.screenLeft:window.screenX,f=window.screenTop?window.screenTop:window.screenY,g=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,h=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight,i=g/2-c/2+e,j=h/2-d/2+f,k=window.open(a,b,"width="+c+", height="+d+", top="+j+", left="+i);return k.focus&&k.focus(),k}catch(a){return this.warn("Error opening popup, "+a.message),this._loginInProgress=!1,this._acquireTokenInProgress=!1,null}},AuthenticationContext.prototype._handlePopupError=function(a,b,c,d,e){this.warn(d),this._saveItem(this.CONSTANTS.STORAGE.ERROR,c),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,d),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,e),b&&this._activeRenewals[b]&&(this._activeRenewals[b]=null),this._loginInProgress=!1,this._acquireTokenInProgress=!1,a&&a(d,null,c)},AuthenticationContext.prototype._loginPopup=function(a,b,c){var d=this._openPopup(a,"login",this.CONSTANTS.POPUP_WIDTH,this.CONSTANTS.POPUP_HEIGHT),e=c||this.callback;if(null==d){var f="Popup Window is null. This can happen if you are using IE";return void this._handlePopupError(e,b,"Error opening popup",f,f)}if(this._openedWindows.push(d),-1!=this.config.redirectUri.indexOf("#"))var g=this.config.redirectUri.split("#")[0];else var g=this.config.redirectUri;var h=this,i=window.setInterval(function(){if(!d||d.closed||void 0===d.closed){var a="Popup Window closed",c="Popup Window closed by UI action/ Popup Window handle destroyed due to cross zone navigation in IE/Edge";return h.isAngular&&h._broadcast("adal:popUpClosed",c+h.CONSTANTS.RESOURCE_DELIMETER+a),h._handlePopupError(e,b,a,c,c),void window.clearInterval(i)}try{var f=d.location;if(-1!=encodeURI(f.href).indexOf(encodeURI(g)))return h.isAngular?h._broadcast("adal:popUpHashChanged",f.hash):h.handleWindowCallback(f.hash),window.clearInterval(i),h._loginInProgress=!1,h._acquireTokenInProgress=!1,h.info("Closing popup window"),h._openedWindows=[],void d.close()}catch(a){}},1)},AuthenticationContext.prototype._broadcast=function(a,b){!function(){function a(a,b){b=b||{bubbles:!1,cancelable:!1,detail:void 0};var c=document.createEvent("CustomEvent");return c.initCustomEvent(a,b.bubbles,b.cancelable,b.detail),c}if("function"==typeof window.CustomEvent)return!1;a.prototype=window.Event.prototype,window.CustomEvent=a}();var c=new CustomEvent(a,{detail:b});window.dispatchEvent(c)},AuthenticationContext.prototype.loginInProgress=function(){return this._loginInProgress},AuthenticationContext.prototype._hasResource=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS);return b&&!this._isEmpty(b)&&b.indexOf(a+this.CONSTANTS.RESOURCE_DELIMETER)>-1},AuthenticationContext.prototype.getCachedToken=function(a){if(!this._hasResource(a))return null;var b=this._getItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a),c=this._getItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a),d=this.config.expireOffsetSeconds||300;return c&&c>this._now()+d?b:(this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a,""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a,0),null)},AuthenticationContext.prototype.getCachedUser=function(){if(this._user)return this._user;var a=this._getItem(this.CONSTANTS.STORAGE.IDTOKEN);return this._user=this._createUser(a),this._user},AuthenticationContext.prototype.registerCallback=function(a,b,c){this._activeRenewals[b]=a,this._callBacksMappedToRenewStates[a]||(this._callBacksMappedToRenewStates[a]=[]);var d=this;this._callBacksMappedToRenewStates[a].push(c),this._callBackMappedToRenewStates[a]||(this._callBackMappedToRenewStates[a]=function(c,e,f,g){d._activeRenewals[b]=null;for(var h=0;h<d._callBacksMappedToRenewStates[a].length;++h)try{d._callBacksMappedToRenewStates[a][h](c,e,f,g)}catch(f){d.warn(f)}d._callBacksMappedToRenewStates[a]=null,d._callBackMappedToRenewStates[a]=null})},AuthenticationContext.prototype._renewToken=function(a,b,c){this.info("renewToken is called for resource:"+a);var d=this._addAdalFrame("adalRenewFrame"+a),e=this._guid()+"|"+a;this.config.state=e,this._renewStates.push(e),this.verbose("Renew token Expected state: "+e),c=c||"token";var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl(c,a),"prompt");c===this.RESPONSE_TYPE.ID_TOKEN_TOKEN&&(this._idTokenNonce=this._guid(),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),f+="&nonce="+encodeURIComponent(this._idTokenNonce)),f+="&prompt=none",f=this._addHintParameters(f),this.registerCallback(e,a,b),this.verbosePii("Navigate to:"+f),d.src="about:blank",this._loadFrameTimeout(f,"adalRenewFrame"+a,a)},AuthenticationContext.prototype._renewIdToken=function(a,b){this.info("renewIdToken is called");var c=this._addAdalFrame("adalIdTokenFrame"),d=this._guid()+"|"+this.config.clientId;this._idTokenNonce=this._guid(),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),this.config.state=d,this._renewStates.push(d),this.verbose("Renew Idtoken Expected state: "+d);var e=null===b||void 0===b?null:this.config.clientId,b=b||"id_token",f=this._urlRemoveQueryStringParameter(this._getNavigateUrl(b,e),"prompt");f+="&prompt=none",f=this._addHintParameters(f),f+="&nonce="+encodeURIComponent(this._idTokenNonce),this.registerCallback(d,this.config.clientId,a),this.verbosePii("Navigate to:"+f),c.src="about:blank",this._loadFrameTimeout(f,"adalIdTokenFrame",this.config.clientId)},AuthenticationContext.prototype._urlContainsQueryStringParameter=function(a,b){return new RegExp("[\\?&]"+a+"=").test(b)},AuthenticationContext.prototype._urlRemoveQueryStringParameter=function(a,b){var c=new RegExp("(\\&"+b+"=)[^&]+");return a=a.replace(c,""),c=new RegExp("("+b+"=)[^&]+&"),a=a.replace(c,""),c=new RegExp("("+b+"=)[^&]+"),a=a.replace(c,"")},AuthenticationContext.prototype._loadFrameTimeout=function(a,b,c){this.verbose("Set loading state to pending for: "+c),this._saveItem(this.CONSTANTS.STORAGE.RENEW_STATUS+c,this.CONSTANTS.TOKEN_RENEW_STATUS_IN_PROGRESS),this._loadFrame(a,b);var d=this;setTimeout(function(){if(d._getItem(d.CONSTANTS.STORAGE.RENEW_STATUS+c)===d.CONSTANTS.TOKEN_RENEW_STATUS_IN_PROGRESS){d.verbose("Loading frame has timed out after: "+d.CONSTANTS.LOADFRAME_TIMEOUT/1e3+" seconds for resource "+c);var a=d._activeRenewals[c];a&&d._callBackMappedToRenewStates[a]&&d._callBackMappedToRenewStates[a]("Token renewal operation failed due to timeout",null,"Token Renewal Failed"),d._saveItem(d.CONSTANTS.STORAGE.RENEW_STATUS+c,d.CONSTANTS.TOKEN_RENEW_STATUS_CANCELED)}},d.CONSTANTS.LOADFRAME_TIMEOUT)},AuthenticationContext.prototype._loadFrame=function(a,b){var c=this;c.info("LoadFrame: "+b);var d=b;setTimeout(function(){var b=c._addAdalFrame(d);""!==b.src&&"about:blank"!==b.src||(b.src=a,c._loadFrame(a,d))},500)},AuthenticationContext.prototype.acquireToken=function(a,b){if(this._isEmpty(a))return this.warn("resource is required"),void b("resource is required",null,"resource is required");var c=this.getCachedToken(a);return c?(this.info("Token is already in cache for resource:"+a),void b(null,c,null)):this._user||this.config.extraQueryParameter&&-1!==this.config.extraQueryParameter.indexOf("login_hint")?void(this._activeRenewals[a]?this.registerCallback(this._activeRenewals[a],a,b):(this._requestType=this.REQUEST_TYPE.RENEW_TOKEN,a===this.config.clientId?this._user?(this.verbose("renewing idtoken"),this._renewIdToken(b)):(this.verbose("renewing idtoken and access_token"),this._renewIdToken(b,this.RESPONSE_TYPE.ID_TOKEN_TOKEN)):this._user?(this.verbose("renewing access_token"),this._renewToken(a,b)):(this.verbose("renewing idtoken and access_token"),this._renewToken(a,b,this.RESPONSE_TYPE.ID_TOKEN_TOKEN)))):(this.warn("User login is required"),void b("User login is required",null,"login required"))},AuthenticationContext.prototype.acquireTokenPopup=function(a,b,c,d){if(this._isEmpty(a))return this.warn("resource is required"),void d("resource is required",null,"resource is required");if(!this._user)return this.warn("User login is required"),void d("User login is required",null,"login required");if(this._acquireTokenInProgress)return this.warn("Acquire token interactive is already in progress"),void d("Acquire token interactive is already in progress",null,"Acquire token interactive is already in progress");var e=this._guid()+"|"+a;this.config.state=e,this._renewStates.push(e),this._requestType=this.REQUEST_TYPE.RENEW_TOKEN,this.verbose("Renew token Expected state: "+e);var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl("token",a),"prompt");if(f+="&prompt=select_account",b&&(f+=b),c&&-1===f.indexOf("&claims"))f+="&claims="+encodeURIComponent(c);else if(c&&-1!==f.indexOf("&claims"))throw new Error("Claims cannot be passed as an extraQueryParameter");f=this._addHintParameters(f),this._acquireTokenInProgress=!0,this.info("acquireToken interactive is called for the resource "+a),this.registerCallback(e,a,d),this._loginPopup(f,a,d)},AuthenticationContext.prototype.acquireTokenRedirect=function(a,b,c){if(this._isEmpty(a))return this.warn("resource is required"),void d("resource is required",null,"resource is required");var d=this.callback;if(!this._user)return this.warn("User login is required"),void d("User login is required",null,"login required");if(this._acquireTokenInProgress)return this.warn("Acquire token interactive is already in progress"),void d("Acquire token interactive is already in progress",null,"Acquire token interactive is already in progress");var e=this._guid()+"|"+a;this.config.state=e,this.verbose("Renew token Expected state: "+e);var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl("token",a),"prompt");if(f+="&prompt=select_account",b&&(f+=b),c&&-1===f.indexOf("&claims"))f+="&claims="+encodeURIComponent(c);else if(c&&-1!==f.indexOf("&claims"))throw new Error("Claims cannot be passed as an extraQueryParameter");f=this._addHintParameters(f),this._acquireTokenInProgress=!0,this.info("acquireToken interactive is called for the resource "+a),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,window.location.href),this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,e,!0),this.promptUser(f)},AuthenticationContext.prototype.promptUser=function(a){a?(this.infoPii("Navigate to:"+a),window.location.replace(a)):this.info("Navigate url is empty")},AuthenticationContext.prototype.clearCache=function(){this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,""),this._saveItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST,""),this._saveItem(this.CONSTANTS.STORAGE.SESSION_STATE,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,""),this._renewStates=[],this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,""),this._saveItem(this.CONSTANTS.STORAGE.IDTOKEN,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,""),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,"");var a=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS);if(!this._isEmpty(a)){a=a.split(this.CONSTANTS.RESOURCE_DELIMETER);for(var b=0;b<a.length&&""!==a[b];b++)this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a[b],""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a[b],0)}this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,"")},AuthenticationContext.prototype.clearCacheForResource=function(a){this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,""),this._hasResource(a)&&(this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a,""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a,0))},AuthenticationContext.prototype.logOut=function(){this.clearCache(),this._user=null;var a;if(this.config.logOutUri)a=this.config.logOutUri;else{var b="common",c="";this.config.tenant&&(b=this.config.tenant),this.config.postLogoutRedirectUri&&(c="post_logout_redirect_uri="+encodeURIComponent(this.config.postLogoutRedirectUri)),a=this.instance+b+"/oauth2/logout?"+c}this.infoPii("Logout navigate to: "+a),this.promptUser(a)},AuthenticationContext.prototype._isEmpty=function(a){return void 0===a||!a||0===a.length},AuthenticationContext.prototype.getUser=function(a){if("function"!=typeof a)throw new Error("callback is not a function");if(this._user)return void a(null,this._user);var b=this._getItem(this.CONSTANTS.STORAGE.IDTOKEN);this._isEmpty(b)?(this.warn("User information is not available"),a("User information is not available",null)):(this.info("User exists in cache: "),this._user=this._createUser(b),a(null,this._user))},AuthenticationContext.prototype._addHintParameters=function(a){if(this._user&&this._user.profile)if(this._user.profile.sid&&-1!==a.indexOf("&prompt=none"))this._urlContainsQueryStringParameter("sid",a)||(a+="&sid="+encodeURIComponent(this._user.profile.sid));else if(this._user.profile.upn&&(this._urlContainsQueryStringParameter("login_hint",a)||(a+="&login_hint="+encodeURIComponent(this._user.profile.upn)),!this._urlContainsQueryStringParameter("domain_hint",a)&&this._user.profile.upn.indexOf("@")>-1)){var b=this._user.profile.upn.split("@");a+="&domain_hint="+encodeURIComponent(b[b.length-1])}return a},AuthenticationContext.prototype._createUser=function(a){var b=null,c=this._extractIdToken(a);return c&&c.hasOwnProperty("aud")&&(c.aud.toLowerCase()===this.config.clientId.toLowerCase()?(b={userName:"",profile:c},c.hasOwnProperty("upn")?b.userName=c.upn:c.hasOwnProperty("email")&&(b.userName=c.email)):this.warn("IdToken has invalid aud field")),b},AuthenticationContext.prototype._getHash=function(a){return a.indexOf("#/")>-1?a=a.substring(a.indexOf("#/")+2):a.indexOf("#")>-1&&(a=a.substring(1)),a},AuthenticationContext.prototype.isCallback=function(a){a=this._getHash(a);var b=this._deserialize(a);return b.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION)||b.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)||b.hasOwnProperty(this.CONSTANTS.ID_TOKEN)},AuthenticationContext.prototype.getLoginError=function(){return this._getItem(this.CONSTANTS.STORAGE.LOGIN_ERROR)},AuthenticationContext.prototype.getRequestInfo=function(a){a=this._getHash(a);var b=this._deserialize(a),c={valid:!1,parameters:{},stateMatch:!1,stateResponse:"",requestType:this.REQUEST_TYPE.UNKNOWN};if(b&&(c.parameters=b,b.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION)||b.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)||b.hasOwnProperty(this.CONSTANTS.ID_TOKEN))){c.valid=!0;var d="";if(!b.hasOwnProperty("state"))return this.warn("No state returned"),c;if(this.verbose("State: "+b.state),d=b.state,c.stateResponse=d,this._matchState(c))return c;if(!c.stateMatch&&window.parent){c.requestType=this._requestType;for(var e=this._renewStates,f=0;f<e.length;f++)if(e[f]===c.stateResponse){c.stateMatch=!0;break}}}return c},AuthenticationContext.prototype._matchNonce=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN);if(b){b=b.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<b.length;c++)if(b[c]===a.profile.nonce)return!0}return!1},AuthenticationContext.prototype._matchState=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.STATE_LOGIN);if(b){b=b.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<b.length;c++)if(b[c]===a.stateResponse)return a.requestType=this.REQUEST_TYPE.LOGIN,a.stateMatch=!0,!0}var d=this._getItem(this.CONSTANTS.STORAGE.STATE_RENEW);if(d){d=d.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<d.length;c++)if(d[c]===a.stateResponse)return a.requestType=this.REQUEST_TYPE.RENEW_TOKEN,a.stateMatch=!0,!0}return!1},AuthenticationContext.prototype._getResourceFromState=function(a){if(a){var b=a.indexOf("|");if(b>-1&&b+1<a.length)return a.substring(b+1)}return""},AuthenticationContext.prototype.saveTokenFromHash=function(a){this.info("State status:"+a.stateMatch+"; Request type:"+a.requestType),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"");var b=this._getResourceFromState(a.stateResponse);if(a.parameters.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION))this.infoPii("Error :"+a.parameters.error+"; Error description:"+a.parameters[this.CONSTANTS.ERROR_DESCRIPTION]),this._saveItem(this.CONSTANTS.STORAGE.ERROR,a.parameters.error),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,a.parameters[this.CONSTANTS.ERROR_DESCRIPTION]),a.requestType===this.REQUEST_TYPE.LOGIN&&(this._loginInProgress=!1,this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,a.parameters.error_description));else if(a.stateMatch){this.info("State is right"),a.parameters.hasOwnProperty(this.CONSTANTS.SESSION_STATE)&&this._saveItem(this.CONSTANTS.STORAGE.SESSION_STATE,a.parameters[this.CONSTANTS.SESSION_STATE]);var c;a.parameters.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)&&(this.info("Fragment has access token"),this._hasResource(b)||(c=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS)||"",this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,c+b+this.CONSTANTS.RESOURCE_DELIMETER)),this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+b,a.parameters[this.CONSTANTS.ACCESS_TOKEN]),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+b,this._expiresIn(a.parameters[this.CONSTANTS.EXPIRES_IN]))),a.parameters.hasOwnProperty(this.CONSTANTS.ID_TOKEN)&&(this.info("Fragment has id token"),this._loginInProgress=!1,this._user=this._createUser(a.parameters[this.CONSTANTS.ID_TOKEN]),this._user&&this._user.profile?this._matchNonce(this._user)?(this._saveItem(this.CONSTANTS.STORAGE.IDTOKEN,a.parameters[this.CONSTANTS.ID_TOKEN]),b=this.config.loginResource?this.config.loginResource:this.config.clientId,this._hasResource(b)||(c=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS)||"",this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,c+b+this.CONSTANTS.RESOURCE_DELIMETER)),this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+b,a.parameters[this.CONSTANTS.ID_TOKEN]),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+b,this._user.profile.exp)):(this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,"Nonce received: "+this._user.profile.nonce+" is not same as requested: "+this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN)),this._user=null):(a.parameters.error="invalid id_token",a.parameters.error_description="Invalid id_token. id_token: "+a.parameters[this.CONSTANTS.ID_TOKEN],this._saveItem(this.CONSTANTS.STORAGE.ERROR,"invalid id_token"),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"Invalid id_token. id_token: "+a.parameters[this.CONSTANTS.ID_TOKEN])))}else a.parameters.error="Invalid_state",a.parameters.error_description="Invalid_state. state: "+a.stateResponse,this._saveItem(this.CONSTANTS.STORAGE.ERROR,"Invalid_state"),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"Invalid_state. state: "+a.stateResponse);this._saveItem(this.CONSTANTS.STORAGE.RENEW_STATUS+b,this.CONSTANTS.TOKEN_RENEW_STATUS_COMPLETED)},AuthenticationContext.prototype.getResourceForEndpoint=function(a){if(this.config&&this.config.anonymousEndpoints)for(var b=0;b<this.config.anonymousEndpoints.length;b++)if(a.indexOf(this.config.anonymousEndpoints[b])>-1)return null;if(this.config&&this.config.endpoints)for(var c in this.config.endpoints)if(a.indexOf(c)>-1)return this.config.endpoints[c];return a.indexOf("http://")>-1||a.indexOf("https://")>-1?this._getHostFromUri(a)===this._getHostFromUri(this.config.redirectUri)?this.config.loginResource:null:this.config.loginResource},AuthenticationContext.prototype._getHostFromUri=function(a){var b=String(a).replace(/^(https?:)\/\//,"");return b=b.split("/")[0]},AuthenticationContext.prototype.handleWindowCallback=function(a){if(null==a&&(a=window.location.hash),this.isCallback(a)){var b=null,c=!1;this._openedWindows.length>0&&this._openedWindows[this._openedWindows.length-1].opener&&this._openedWindows[this._openedWindows.length-1].opener._adalInstance?(b=this._openedWindows[this._openedWindows.length-1].opener._adalInstance,c=!0):window.parent&&window.parent._adalInstance&&(b=window.parent._adalInstance);var d,e,f=b.getRequestInfo(a),g=null;e=c||window.parent!==window?b._callBackMappedToRenewStates[f.stateResponse]:b.callback,b.info("Returned from redirect url"),b.saveTokenFromHash(f),f.requestType===this.REQUEST_TYPE.RENEW_TOKEN&&window.parent?(window.parent!==window?b.verbose("Window is in iframe, acquiring token silently"):b.verbose("acquiring token interactive in progress"),d=f.parameters[b.CONSTANTS.ACCESS_TOKEN]||f.parameters[b.CONSTANTS.ID_TOKEN],g=b.CONSTANTS.ACCESS_TOKEN):f.requestType===this.REQUEST_TYPE.LOGIN&&(d=f.parameters[b.CONSTANTS.ID_TOKEN],g=b.CONSTANTS.ID_TOKEN);var h=f.parameters[b.CONSTANTS.ERROR_DESCRIPTION],i=f.parameters[b.CONSTANTS.ERROR];try{e&&e(h,d,i,g)}catch(a){b.error("Error occurred in user defined callback function: "+a)}window.parent!==window||c||(b.config.navigateToLoginRequestUrl?window.location.href=b._getItem(b.CONSTANTS.STORAGE.LOGIN_REQUEST):window.location.hash="")}},AuthenticationContext.prototype._getNavigateUrl=function(a,b){var c="common";this.config.tenant&&(c=this.config.tenant);var d=this.instance+c+"/oauth2/authorize"+this._serialize(a,this.config,b)+this._addLibMetadata();return this.info("Navigate url:"+d),d},AuthenticationContext.prototype._extractIdToken=function(a){var b=this._decodeJwt(a);if(!b)return null;try{var c=b.JWSPayload,d=this._base64DecodeStringUrlSafe(c);return d?JSON.parse(d):(this.info("The returned id_token could not be base64 url safe decoded."),null)}catch(a){this.error("The returned id_token could not be decoded",a)}return null},AuthenticationContext.prototype._base64DecodeStringUrlSafe=function(a){return a=a.replace(/-/g,"+").replace(/_/g,"/"),window.atob?decodeURIComponent(escape(window.atob(a))):decodeURIComponent(escape(this._decode(a)))},AuthenticationContext.prototype._decode=function(a){var b="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";a=String(a).replace(/=+$/,"");var c=a.length;if(c%4==1)throw new Error("The token to be decoded is not correctly encoded.");for(var d,e,f,g,h,i,j,k,l="",m=0;m<c;m+=4){if(d=b.indexOf(a.charAt(m)),e=b.indexOf(a.charAt(m+1)),f=b.indexOf(a.charAt(m+2)),g=b.indexOf(a.charAt(m+3)),m+2===c-1){h=d<<18|e<<12|f<<6,i=h>>16&255,j=h>>8&255,l+=String.fromCharCode(i,j);break}if(m+1===c-1){h=d<<18|e<<12,i=h>>16&255,l+=String.fromCharCode(i);break}h=d<<18|e<<12|f<<6|g,i=h>>16&255,j=h>>8&255,k=255&h,l+=String.fromCharCode(i,j,k)}return l},AuthenticationContext.prototype._decodeJwt=function(a){if(this._isEmpty(a))return null;var b=/^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/,c=b.exec(a);return!c||c.length<4?(this.warn("The returned id_token is not parseable."),null):{header:c[1],JWSPayload:c[2],JWSSig:c[3]}},AuthenticationContext.prototype._convertUrlSafeToRegularBase64EncodedString=function(a){return a.replace("-","+").replace("_","/")},AuthenticationContext.prototype._serialize=function(a,b,c){var d=[];if(null!==b){d.push("?response_type="+a),d.push("client_id="+encodeURIComponent(b.clientId)),c&&d.push("resource="+encodeURIComponent(c)),d.push("redirect_uri="+encodeURIComponent(b.redirectUri)),d.push("state="+encodeURIComponent(b.state)),b.hasOwnProperty("slice")&&d.push("slice="+encodeURIComponent(b.slice)),b.hasOwnProperty("extraQueryParameter")&&d.push(b.extraQueryParameter);var e=b.correlationId?b.correlationId:this._guid();d.push("client-request-id="+encodeURIComponent(e))}return d.join("&")},AuthenticationContext.prototype._deserialize=function(a){var b,c=/\+/g,d=/([^&=]+)=([^&]*)/g,e=function(a){return decodeURIComponent(a.replace(c," "))},f={};for(b=d.exec(a);b;)f[e(b[1])]=e(b[2]),b=d.exec(a);return f},AuthenticationContext.prototype._decimalToHex=function(a){for(var b=a.toString(16);b.length<2;)b="0"+b;return b},AuthenticationContext.prototype._guid=function(){var a=window.crypto||window.msCrypto;if(a&&a.getRandomValues){var b=new Uint8Array(16);return a.getRandomValues(b),b[6]|=64,b[6]&=79,b[8]|=128,b[8]&=191,this._decimalToHex(b[0])+this._decimalToHex(b[1])+this._decimalToHex(b[2])+this._decimalToHex(b[3])+"-"+this._decimalToHex(b[4])+this._decimalToHex(b[5])+"-"+this._decimalToHex(b[6])+this._decimalToHex(b[7])+"-"+this._decimalToHex(b[8])+this._decimalToHex(b[9])+"-"+this._decimalToHex(b[10])+this._decimalToHex(b[11])+this._decimalToHex(b[12])+this._decimalToHex(b[13])+this._decimalToHex(b[14])+this._decimalToHex(b[15])}for(var c="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",d="0123456789abcdef",e=0,f="",g=0;g<36;g++)"-"!==c[g]&&"4"!==c[g]&&(e=16*Math.random()|0),"x"===c[g]?f+=d[e]:"y"===c[g]?(e&=3,e|=8,f+=d[e]):f+=c[g];return f},AuthenticationContext.prototype._expiresIn=function(a){return a||(a=3599),this._now()+parseInt(a,10)},AuthenticationContext.prototype._now=function(){return Math.round((new Date).getTime()/1e3)},AuthenticationContext.prototype._addAdalFrame=function(a){if(void 0!==a){this.info("Add adal frame to document:"+a);var b=document.getElementById(a);if(!b){if(document.createElement&&document.documentElement&&(window.opera||-1===window.navigator.userAgent.indexOf("MSIE 5.0"))){var c=document.createElement("iframe");c.setAttribute("id",a),c.setAttribute("aria-hidden","true"),c.style.visibility="hidden",c.style.position="absolute",c.style.width=c.style.height=c.borderWidth="0px",b=document.getElementsByTagName("body")[0].appendChild(c)}else document.body&&document.body.insertAdjacentHTML&&document.body.insertAdjacentHTML("beforeEnd",'<iframe name="'+a+'" id="'+a+'" style="display:none"></iframe>');window.frames&&window.frames[a]&&(b=window.frames[a])}return b}},AuthenticationContext.prototype._saveItem=function(a,b,c){if(this.config&&this.config.cacheLocation&&"localStorage"===this.config.cacheLocation){if(!this._supportsLocalStorage())return this.info("Local storage is not supported"),!1;if(c){var d=this._getItem(a)||"";localStorage.setItem(a,d+b+this.CONSTANTS.CACHE_DELIMETER)}else localStorage.setItem(a,b);return!0}return this._supportsSessionStorage()?(sessionStorage.setItem(a,b),!0):(this.info("Session storage is not supported"),!1)},AuthenticationContext.prototype._getItem=function(a){return this.config&&this.config.cacheLocation&&"localStorage"===this.config.cacheLocation?this._supportsLocalStorage()?localStorage.getItem(a):(this.info("Local storage is not supported"),null):this._supportsSessionStorage()?sessionStorage.getItem(a):(this.info("Session storage is not supported"),null)},AuthenticationContext.prototype._supportsLocalStorage=function(){try{return!!window.localStorage&&(window.localStorage.setItem("storageTest","A"),"A"==window.localStorage.getItem("storageTest")&&(window.localStorage.removeItem("storageTest"),!window.localStorage.getItem("storageTest")))}catch(a){return!1}},AuthenticationContext.prototype._supportsSessionStorage=function(){try{return!!window.sessionStorage&&(window.sessionStorage.setItem("storageTest","A"),"A"==window.sessionStorage.getItem("storageTest")&&(window.sessionStorage.removeItem("storageTest"),!window.sessionStorage.getItem("storageTest")))}catch(a){return!1}},AuthenticationContext.prototype._cloneConfig=function(a){if(null===a||"object"!=typeof a)return a;var b={};for(var c in a)a.hasOwnProperty(c)&&(b[c]=a[c]);return b},AuthenticationContext.prototype._addLibMetadata=function(){return"&x-client-SKU=Js&x-client-Ver="+this._libVersion()},AuthenticationContext.prototype.log=function(a,b,c,d){if(a<=Logging.level){if(!Logging.piiLoggingEnabled&&d)return;var e=(new Date).toUTCString(),f="";f=this.config.correlationId?e+":"+this.config.correlationId+"-"+this._libVersion()+"-"+this.CONSTANTS.LEVEL_STRING_MAP[a]+" "+b:e+":"+this._libVersion()+"-"+this.CONSTANTS.LEVEL_STRING_MAP[a]+" "+b,c&&(f+="\nstack:\n"+c.stack),Logging.log(f)}},AuthenticationContext.prototype.error=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b)},AuthenticationContext.prototype.warn=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null)},AuthenticationContext.prototype.info=function(a){
-this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null)},AuthenticationContext.prototype.verbose=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null)},AuthenticationContext.prototype.errorPii=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b,!0)},AuthenticationContext.prototype.warnPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null,!0)},AuthenticationContext.prototype.infoPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null,!0)},AuthenticationContext.prototype.verbosePii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null,!0)},AuthenticationContext.prototype._libVersion=function(){return"1.0.17"},"undefined"!=typeof module&&module.exports&&(module.exports=AuthenticationContext,module.exports.inject=function(a){return new AuthenticationContext(a)}),AuthenticationContext}();
+this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null)},AuthenticationContext.prototype.verbose=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null)},AuthenticationContext.prototype.errorPii=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b,!0)},AuthenticationContext.prototype.warnPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null,!0)},AuthenticationContext.prototype.infoPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null,!0)},AuthenticationContext.prototype.verbosePii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null,!0)},AuthenticationContext.prototype._libVersion=function(){return"1.0.17"},true&&module.exports&&(module.exports=AuthenticationContext,module.exports.inject=function(a){return new AuthenticationContext(a)}),AuthenticationContext}();
 
 /***/ }),
 

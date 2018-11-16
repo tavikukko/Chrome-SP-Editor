@@ -24,15 +24,21 @@ export declare class AttachmentFiles extends SharePointQueryableCollection {
     /**
      * Adds multiple new attachment to the collection. Not supported for batching.
      *
-     * @files name The collection of files to add
+     * @param files The collection of files to add
      */
     addMultiple(files: AttachmentFileInfo[]): Promise<void>;
     /**
      * Delete multiple attachments from the collection. Not supported for batching.
      *
-     * @files name The collection of files to delete
+     * @param files The collection of files to delete
      */
     deleteMultiple(...files: string[]): Promise<void>;
+    /**
+     * Delete multiple attachments from the collection and send to recycle bin. Not supported for batching.
+     *
+     * @param files The collection of files to be deleted and sent to recycle bin
+     */
+    recycleMultiple(...files: string[]): Promise<void>;
 }
 /**
  * Describes a single attachment file instance
@@ -64,6 +70,12 @@ export declare class AttachmentFile extends SharePointQueryableInstance {
      * @param content The value to set for the file contents
      */
     setContent(content: string | ArrayBuffer | Blob): Promise<AttachmentFile>;
+    /**
+     * Delete this attachment file and send it to recycle bin
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    recycle(eTag?: string): Promise<void>;
     private getParsed;
 }
 export interface AttachmentFileAddResult {

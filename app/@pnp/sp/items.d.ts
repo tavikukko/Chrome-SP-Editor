@@ -6,6 +6,7 @@ import { ContentType } from "./contenttypes";
 import { TypedHash } from "@pnp/common";
 import { ListItemFormUpdateValue, LikeData } from "./types";
 import { AttachmentFiles } from "./attachmentfiles";
+import { List } from "./lists";
 import { Comments } from "./comments";
 /**
  * Describes a collection of Item objects
@@ -121,6 +122,7 @@ export declare class Item extends SharePointQueryableShareableItem {
      * Gets the collection of versions associated with this item
      */
     readonly versions: ItemVersions;
+    readonly list: List;
     /**
      * Updates this list intance with the supplied properties
      *
@@ -159,6 +161,10 @@ export declare class Item extends SharePointQueryableShareableItem {
      * @param newDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
      */
     validateUpdateListItem(formValues: ListItemFormUpdateValue[], newDocumentUpdate?: boolean): Promise<ListItemFormUpdateValue[]>;
+    /**
+     * Get the like by information for a modern site page
+     */
+    getLikedByInformation(): Promise<void>;
     /**
      * Ensures we have the proper list item entity type name, either from the value provided or from the list
      *

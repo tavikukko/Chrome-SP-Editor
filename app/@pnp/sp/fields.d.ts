@@ -146,6 +146,14 @@ export declare class Fields extends SharePointQueryableCollection {
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
     addBoolean(title: string, properties?: FieldCreationProperties): Promise<FieldAddResult>;
+    /**
+    * Creates a secondary (dependent) lookup field, based on the Id of the primary lookup field.
+    *
+    * @param displayName The display name of the new field.
+    * @param primaryLookupFieldId The guid of the primary Lookup Field.
+    * @param showField Which field to show from the lookup list.
+    */
+    addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<FieldAddResult>;
 }
 /**
  * Describes a single of Field instance

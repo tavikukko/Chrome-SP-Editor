@@ -52,6 +52,7 @@ export interface ITermStore extends IClientSvcQueryable {
     getTermInTermSet(termId: string, termSetId: string): ITerm;
     getTermGroupById(id: string): ITermGroup;
     getTerms(info: ILabelMatchInfo): ITerms;
+    getTermsById(...ids: string[]): any;
     getTermSetById(id: string): ITermSet;
     getTermSetsByName(name: string, lcid: number): ITermSets;
     rollbackAll(): Promise<void>;
@@ -103,6 +104,12 @@ export declare class TermStore extends ClientSvcQueryable implements ITermStore 
      * @param id
      */
     getTermById(id: string): ITerm;
+    /**
+     * Provides access to an ITermSet by id
+     *
+     * @param id
+     */
+    getTermsById(...ids: string[]): ITerms;
     /**
      * Gets a term from a term set based on the supplied ids
      *

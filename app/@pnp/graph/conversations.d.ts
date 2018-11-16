@@ -10,7 +10,6 @@ export interface PostForwardInfo {
     toRecipients: IRecipient[];
 }
 export declare class Conversations extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Create a new conversation by including a thread and a post.
      *
@@ -25,7 +24,6 @@ export declare class Conversations extends GraphQueryableCollection {
     getById(id: string): Conversation;
 }
 export declare class Threads extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Gets a thread from this collection by id
      *
@@ -43,7 +41,6 @@ export declare class Threads extends GraphQueryableCollection {
     }>;
 }
 export declare class Posts extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Gets a thread from this collection by id
      *

@@ -37,4 +37,6 @@ export { UtilityMethod, CreateWikiPageResult, } from "./utilities";
 export { View, Views, ViewFields, ViewAddResult, ViewUpdateResult, } from "./views";
 export { WebPartDefinitions, WebPartDefinition, WebPart, } from "./webparts";
 export { Web, WebAddResult, WebUpdateResult, GetCatalogResult, WebEnsureUserResult, } from "./webs";
+export { SiteScripts, SiteScriptUtilityMethods, SiteScriptInfo, SiteScriptUpdateInfo, } from "./sitescripts";
+export { SiteDesigns, SiteDesignsUtilityMethods, SiteDesignCreationInfo, SiteDesignUpdateInfo, SiteDesignInfo, SiteDesignPrincipals, } from "./sitedesigns";
 //# sourceMappingURL=sp.d.ts.map

@@ -8,6 +8,7 @@ export declare class HttpRequestError extends Error {
     statusText: string;
     isHttpRequestError: boolean;
     constructor(message: string, response: Response, status?: number, statusText?: string);
+    static init(r: Response): Promise<HttpRequestError>;
 }
 export declare abstract class ODataParserBase<T> implements ODataParser<T> {
     parse(r: Response): Promise<T>;

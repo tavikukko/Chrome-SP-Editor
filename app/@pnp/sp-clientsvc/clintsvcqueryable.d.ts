@@ -86,6 +86,14 @@ export declare class ClientSvcQueryable<GetType = any> extends Queryable<GetType
      */
     protected invokeMethod<T>(methodName: string, params?: IMethodParamsBuilder | null, ...actions: string[]): Promise<T>;
     /**
+     * Invokes a method action that returns a single result and does not have an associated query (ex: GetDescription on Term)
+     *
+     * @param methodName Name of the method to invoke
+     * @param params Method parameters
+     * @param actions Any additional actions to execute in addition to the method invocation (set property for example)
+     */
+    protected invokeMethodAction<T>(methodName: string, params?: IMethodParamsBuilder | null, ...actions: string[]): Promise<T>;
+    /**
      * Invokes the specified non-query method on the server
      *
      * @param methodName Name of the method to invoke

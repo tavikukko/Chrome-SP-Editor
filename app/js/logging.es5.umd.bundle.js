@@ -1,3 +1,12 @@
+/**
+ * @license
+ * v1.2.6
+ * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
+ * Copyright (c) 2018 Microsoft
+ * docs: https://pnp.github.io/pnpjs/
+ * source: https://github.com/pnp/pnpjs
+ * bugs: https://github.com/pnp/pnpjs/issues
+ */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -91,21 +100,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./build/packages/logging/es5/index.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./build/packages-es5/logging/index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./build/packages/logging/es5/index.js":
+/***/ "./build/packages-es5/logging/index.js":
 /*!*********************************************!*\
-  !*** ./build/packages/logging/es5/index.js ***!
+  !*** ./build/packages-es5/logging/index.js ***!
   \*********************************************/
 /*! exports provided: Logger, LogLevel, ConsoleListener, FunctionListener */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_logging__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/logging */ "./build/packages/logging/es5/src/logging.js");
+/* harmony import */ var _src_logging__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/logging */ "./build/packages-es5/logging/src/logging.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Logger", function() { return _src_logging__WEBPACK_IMPORTED_MODULE_0__["Logger"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LogLevel", function() { return _src_logging__WEBPACK_IMPORTED_MODULE_0__["LogLevel"]; });
@@ -119,9 +128,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./build/packages/logging/es5/src/listeners.js":
+/***/ "./build/packages-es5/logging/src/listeners.js":
 /*!*****************************************************!*\
-  !*** ./build/packages/logging/es5/src/listeners.js ***!
+  !*** ./build/packages-es5/logging/src/listeners.js ***!
   \*****************************************************/
 /*! exports provided: ConsoleListener, FunctionListener */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -202,9 +211,9 @@ var FunctionListener = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./build/packages/logging/es5/src/logger.js":
+/***/ "./build/packages-es5/logging/src/logger.js":
 /*!**************************************************!*\
-  !*** ./build/packages/logging/es5/src/logger.js ***!
+  !*** ./build/packages-es5/logging/src/logger.js ***!
   \**************************************************/
 /*! exports provided: Logger */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -346,22 +355,22 @@ var LoggerImpl = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./build/packages/logging/es5/src/logging.js":
+/***/ "./build/packages-es5/logging/src/logging.js":
 /*!***************************************************!*\
-  !*** ./build/packages/logging/es5/src/logging.js ***!
+  !*** ./build/packages-es5/logging/src/logging.js ***!
   \***************************************************/
 /*! exports provided: Logger, LogLevel, ConsoleListener, FunctionListener */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./logger */ "./build/packages/logging/es5/src/logger.js");
+/* harmony import */ var _logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./logger */ "./build/packages-es5/logging/src/logger.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Logger", function() { return _logger__WEBPACK_IMPORTED_MODULE_0__["Logger"]; });
 
-/* harmony import */ var _loglevel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./loglevel */ "./build/packages/logging/es5/src/loglevel.js");
+/* harmony import */ var _loglevel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./loglevel */ "./build/packages-es5/logging/src/loglevel.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LogLevel", function() { return _loglevel__WEBPACK_IMPORTED_MODULE_1__["LogLevel"]; });
 
-/* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./listeners */ "./build/packages/logging/es5/src/listeners.js");
+/* harmony import */ var _listeners__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./listeners */ "./build/packages-es5/logging/src/listeners.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConsoleListener", function() { return _listeners__WEBPACK_IMPORTED_MODULE_2__["ConsoleListener"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FunctionListener", function() { return _listeners__WEBPACK_IMPORTED_MODULE_2__["FunctionListener"]; });
@@ -373,9 +382,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./build/packages/logging/es5/src/loglevel.js":
+/***/ "./build/packages-es5/logging/src/loglevel.js":
 /*!****************************************************!*\
-  !*** ./build/packages/logging/es5/src/loglevel.js ***!
+  !*** ./build/packages-es5/logging/src/loglevel.js ***!
   \****************************************************/
 /*! exports provided: LogLevel */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {

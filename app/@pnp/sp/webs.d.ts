@@ -340,6 +340,27 @@ export declare class Web extends SharePointQueryableShareableWeb {
      * @param title Display title of the new page
      */
     addClientSidePageByPath(pageName: string, listRelativePath: string, title?: string): Promise<ClientSidePage>;
+    /**
+     * Creates the default associated groups (Members, Owners, Visitors) and gives them the default permissions on the site.
+     * The target site must have unique permissions and no associated members / owners / visitors groups
+     *
+     * @param siteOwner The user login name to be added to the site Owners group. Default is the current user
+     * @param siteOwner2 The second user login name to be added to the site Owners group. Default is empty
+     * @param groupNameSeed The base group name. E.g. 'TestSite' would produce 'TestSite Members' etc.
+     */
+    createDefaultAssociatedGroups(siteOwner?: string, siteOwner2?: string, groupNameSeed?: string): Promise<void>;
+    /**
+     * Gets hub site data for the current web.
+     *
+     * @param forceRefresh Default value is false. When false, the data is returned from the server's cache.
+     * When true, the cache is refreshed with the latest updates and then returned.
+     * Use this if you just made changes and need to see those changes right away.
+     */
+    hubSiteData(forceRefresh?: boolean): Promise<void>;
+    /**
+     * Applies theme updates from the parent hub site collection.
+     */
+    syncHubSiteTheme(): Promise<void>;
 }
 /**
  * Result from adding a web

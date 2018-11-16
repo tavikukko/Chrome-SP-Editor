@@ -110,6 +110,18 @@ export declare class ClientSidePage extends File {
      */
     findControl<T extends ClientSidePart = ClientSidePart>(predicate: (c: ClientSidePart) => boolean): T;
     /**
+     * Like the modern site page
+     */
+    like(): Promise<void>;
+    /**
+     * Unlike the modern site page
+     */
+    unlike(): Promise<void>;
+    /**
+     * Get the liked by information for a modern site page
+     */
+    getLikedByInformation(): Promise<void>;
+    /**
      * Sets the comments flag for a page
      *
      * @param on If true comments are enabled, false they are disabled

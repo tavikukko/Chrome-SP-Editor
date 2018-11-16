@@ -1,5 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { MenuNodeCollection } from "./types";
+import { TypedHash } from "@pnp/common";
 /**
  * Result from adding a navigation node
  *
@@ -48,6 +49,16 @@ export declare class NavigationNode extends SharePointQueryableInstance {
      * Deletes this node and any child nodes
      */
     delete(): Promise<void>;
+    /**
+     * Updates this node
+     *
+     * @param properties Properties used to update this node
+     */
+    update(properties: TypedHash<string | number | boolean>): Promise<NavNodeUpdateResult>;
+}
+export interface NavNodeUpdateResult {
+    data: any;
+    node: NavigationNode;
 }
 /**
  * Exposes the navigation components

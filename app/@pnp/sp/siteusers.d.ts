@@ -53,15 +53,21 @@ export declare class SiteUsers extends SharePointQueryableCollection {
     add(loginName: string): Promise<SiteUser>;
 }
 /**
- * Describes a single user
+ * Base class for a user
  *
  */
-export declare class SiteUser extends SharePointQueryableInstance {
+export declare class UserBase extends SharePointQueryableInstance {
     /**
      * Gets the groups for this user
      *
      */
     readonly groups: SiteGroups;
+}
+/**
+ * Describes a single user
+ *
+ */
+export declare class SiteUser extends UserBase {
     /**
     * Updates this user instance with the supplied properties
     *
@@ -77,7 +83,7 @@ export declare class SiteUser extends SharePointQueryableInstance {
 /**
  * Represents the current user
  */
-export declare class CurrentUser extends SharePointQueryableInstance {
+export declare class CurrentUser extends UserBase {
 }
 export interface SiteUserProps {
     Email: string;

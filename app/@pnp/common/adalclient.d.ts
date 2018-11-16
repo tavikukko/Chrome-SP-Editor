@@ -27,15 +27,13 @@ export declare class AdalClient extends BearerTokenFetchClient {
      */
     constructor(clientId: string, tenant: string, redirectUri: string);
     /**
-     * Creates a new AdalClient using the values of the supplied SPFx context
+     * Creates a new AdalClient using the values of the supplied SPFx context (requires SPFx >= 1.6)
      *
      * @param spfxContext Current SPFx context
-     * @param clientId Optional client id to use instead of the built-in SPFx id
-     * @description Using this method and the default clientId requires that the features described in
-     * this article https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient are activated in the tenant. If not you can
-     * creat your own app, grant permissions and use that clientId here along with the SPFx context
+     * @description Using this method requires that the features described in this article
+     * https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient are activated in the tenant.
      */
-    static fromSPFxContext(spfxContext: ISPFXContext | any, cliendId?: string): AdalClient;
+    static fromSPFxContext(spfxContext: ISPFXContext | any): SPFxAdalClient;
     /**
      * Conducts the fetch opertation against the AAD secured resource
      *
@@ -57,12 +55,29 @@ export declare class AdalClient extends BearerTokenFetchClient {
      * Ensures the current user is logged in
      */
     private login;
+}
+/**
+ * Client wrapping the aadTokenProvider available from SPFx >= 1.6
+ */
+export declare class SPFxAdalClient extends BearerTokenFetchClient {
+    private context;
     /**
-     * Parses out the root of the request url to use as the resource when getting the token
      *
-     * After: https://gist.github.com/jlong/2428561
-     * @param url The url to parse
+     * @param context provide the appropriate SPFx Context object
      */
-    private getResource;
+    constructor(context: ISPFXContext);
+    /**
+     * Executes a fetch request using the supplied url and options
+     *
+     * @param url Absolute url of the request
+     * @param options Any options
+     */
+    fetch(url: string, options: FetchOptions): Promise<Response>;
+    /**
+     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
+     *
+     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
+     */
+    getToken(resource: string): Promise<string>;
 }
 //# sourceMappingURL=adalclient.d.ts.map

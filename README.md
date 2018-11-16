@@ -8,6 +8,9 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 4.4.0 New feature in Search
+    * Request reindex for web, thanks [@koskila](https://github.com/koskila) for the contribution.
+    * Updated PnPjs to 1.2.6
 - 4.3.2 Updated PnPjs to 1.2.3
 - 4.3.1 Bug fix in Modern Properties
 - 4.3.0 Updated PnPjs to 1.2.1 and monaco editor to 0.14.3 

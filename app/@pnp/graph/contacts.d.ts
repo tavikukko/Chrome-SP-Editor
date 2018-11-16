@@ -1,8 +1,7 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { TypedHash } from "@pnp/common";
 import { Contact as IContact, ContactFolder as IContactFolder, EmailAddress } from "@microsoft/microsoft-graph-types";
 export declare class Contacts extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     getById(id: string): Contact;
     /**
     * Create a new Contact for the user.
@@ -28,7 +27,6 @@ export declare class Contact extends GraphQueryableInstance {
     update(properties: TypedHash<string | number | boolean | string[]>): Promise<void>;
 }
 export declare class ContactFolders extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     getById(id: string): ContactFolder;
     /**
      * Create a new Contact Folder for the user.
@@ -59,7 +57,6 @@ export declare class ContactFolder extends GraphQueryableInstance {
     update(properties: TypedHash<string | number | boolean | string[]>): Promise<void>;
 }
 export declare class ChildFolders extends GraphQueryableInstance {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     getById(id: string): ContactFolder;
     /**
      * Create a new Child Folder in Contact folder.

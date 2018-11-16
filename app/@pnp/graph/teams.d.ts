@@ -1,5 +1,5 @@
 import { Group } from "./groups";
-import { GraphQueryable, GraphQueryableInstance } from "./graphqueryable";
+import { GraphQueryableInstance } from "./graphqueryable";
 import { TeamProperties } from "./types";
 import { ODataParser } from "@pnp/odata";
 import { FetchOptions } from "@pnp/common";
@@ -13,7 +13,6 @@ export declare class Teams {
  * Represents a Microsoft Team
  */
 export declare class Team extends GraphQueryableInstance<TeamProperties> {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Updates this team instance's properties
      *

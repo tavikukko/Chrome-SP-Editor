@@ -45,8 +45,10 @@ export declare class SharePointQueryableShareable extends SharePointQueryable {
      * Get Sharing Information.
      *
      * @param request The SharingInformationRequest Object.
+     * @param expands Expand more fields.
+     *
      */
-    getSharingInformation(request?: SharingInformationRequest): Promise<SharingInformation>;
+    getSharingInformation(request?: SharingInformationRequest, expands?: string[]): Promise<SharingInformation>;
     /**
      * Gets the sharing settings of an item.
      *
@@ -140,8 +142,10 @@ export declare class SharePointQueryableShareableItem extends SharePointQueryabl
      * Get Sharing Information.
      *
      * @param request The SharingInformationRequest Object.
+     * @param expands Expand more fields.
+     *
      */
-    getSharingInformation(request?: SharingInformationRequest): Promise<SharingInformation>;
+    getSharingInformation(request?: SharingInformationRequest, expands?: string[]): Promise<SharingInformation>;
     /**
      * Gets the sharing settings of an item.
      *
@@ -184,8 +188,10 @@ export declare class FileFolderShared extends SharePointQueryableInstance {
      * Get Sharing Information.
      *
      * @param request The SharingInformationRequest Object.
+     * @param expands Expand more fields.
+     *
      */
-    getSharingInformation(request?: SharingInformationRequest): Promise<SharingInformation>;
+    getSharingInformation(request?: SharingInformationRequest, expands?: string[]): Promise<SharingInformation>;
     /**
      * Gets the sharing settings of an item.
      *

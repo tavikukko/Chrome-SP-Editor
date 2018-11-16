@@ -28,6 +28,14 @@ export declare abstract class Queryable<GetType> {
      * Any options that were supplied when caching was enabled
      */
     protected _cachingOptions: ICachingOptions | null;
+    /**
+     * Flag used to indicate if the object from which this was cloned's _usingCaching flag was true
+     */
+    protected _cloneParentWasCaching: boolean;
+    /**
+     * The cache options from the clone parent if it was caching
+     */
+    protected _cloneParentCacheOptions: ICachingOptions | null;
     constructor();
     /**
      * Gets the full url with query information
@@ -92,6 +100,12 @@ export declare abstract class Queryable<GetType> {
      */
     protected extend(parent: Queryable<any>, path?: string): void;
     /**
+     * Configures a cloned object from this instance
+     *
+     * @param clone
+     */
+    protected _clone(clone: Queryable<any>, _0: any): any;
+    /**
      * Converts the current instance to a request context
      *
      * @param verb The request verb
@@ -150,5 +164,13 @@ export declare abstract class ODataQueryable<BatchType extends ODataBatch, GetTy
      *
      */
     protected readonly batch: BatchType | null;
+    /**
+     * Configures a cloned object from this instance
+     *
+     * @param clone
+     */
+    protected _clone(clone: ODataQueryable<any, any>, cloneSettings: {
+        includeBatch: boolean;
+    }): any;
 }
 //# sourceMappingURL=queryable.d.ts.map

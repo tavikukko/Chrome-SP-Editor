@@ -1,6 +1,5 @@
-import { GraphQueryable, GraphQueryableInstance } from "./graphqueryable";
+import { GraphQueryableInstance } from "./graphqueryable";
 export declare class Photo extends GraphQueryableInstance {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Gets the image bytes as a blob (browser)
      */

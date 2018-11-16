@@ -1,7 +1,6 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { Attachment as IAttachment } from "@microsoft/microsoft-graph-types";
 export declare class Attachments extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Gets a member of the group by id
      *

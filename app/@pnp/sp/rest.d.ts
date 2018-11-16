@@ -7,6 +7,8 @@ import { UserProfileQuery } from "./userprofiles";
 import { INavigationService } from "./navigation";
 import { SPBatch } from "./batch";
 import { SocialMethods } from "./social";
+import { SiteScriptUtilityMethods } from "./sitescripts";
+import { SiteDesignsUtilityMethods } from "./sitedesigns";
 import { UtilityMethods } from "./utilities";
 import { SPConfiguration } from "./config/splibconfig";
 import { ICachingOptions } from "@pnp/odata";
@@ -88,6 +90,14 @@ export declare class SPRest {
      * Static utilities methods from SP.Utilities.Utility
      */
     readonly utility: UtilityMethods;
+    /**
+     * Access to sitescripts methods
+     */
+    readonly siteScripts: SiteScriptUtilityMethods;
+    /**
+     * Access to sitedesigns methods
+     */
+    readonly siteDesigns: SiteDesignsUtilityMethods;
     /**
      * Handles creating and configuring the objects returned from this class
      *
