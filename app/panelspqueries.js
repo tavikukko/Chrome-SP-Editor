@@ -93,12 +93,12 @@ var getCustomActions = function getCustomActions() {
 
 /**
  * updateSchemaForWeb
- * 
+ *
  * This function is used on "Search" tab to force a reindexing of a web
  */
 var updateSchemaForWeb = function updateSchemaForWeb() {
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -113,223 +113,96 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then(function (result) {
-    
-      var found = false;
-      for (x in result.AllProperties) {
+    $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then((result) => {
 
-        if (x.toString().indexOf("vti_x005f_searchversion") >= 0) {
-          found = true;
-          
-          var curVal = parseInt(result.AllProperties["vti_x005f_searchversion"]);
-          curVal = curVal+1;
+      var allProps = [];
+      for (aProp in result.AllProperties){
+        allProps.push({ prop: aProp.replace(/_x005f_/g, '_').replace(/OData_/g, ''), value: result.AllProperties[aProp] });
+      }
+      var prop = 'vti_searchversion';
+      var value = 0;
 
-          try {
-            // copypaste code starts here
+      var searchversion = allProps.filter((el) => {
+        return el.prop === "vti_searchversion";
+      });
 
-            var prop = 'vti_searchversion';
-            var value = curVal;
+      if (searchversion.length > 0) {
+        value = parseInt(searchversion[0].value);
+        value = value + 1;
+      }
 
-            $pnp.setup({
-              sp: {
-                headers: {
-                  "Accept": "application/json; odata=verbose"
+      alertify.logPosition('bottom right');
+      alertify.maxLogItems(2);
+
+      alertify.confirm("Really want to reindex current web?\n<i>" + _spPageContextInfo.webAbsoluteUrl + "</i>", () => {
+
+        alertify.delay(5000).log("Updating " + prop + " webproperty with value " + value);
+
+        var webid = "";
+        var siteid = "";
+        $pnp.sp.site.get().then((data) => {
+          siteid = data.Id;
+          $pnp.sp.web.get().then((data) => {
+            webid = data.Id;
+
+            var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+            var payload = `
+              <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+                <Actions>
+                  <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                    <Parameters>
+                      <Parameter Type="String">${prop}</Parameter>
+                      <Parameter Type="String">${value}</Parameter>
+                    </Parameters>
+                  </Method>
+                  <Method Name="Update" Id="10" ObjectPathId="2" />
+                </Actions>
+                <ObjectPaths>
+                  <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+                  <Property Id="4" ParentId="2" Name="AllProperties" />
+                </ObjectPaths>
+              </Request>`;
+
+            var client = new $pnp.SPHttpClient();
+            client.post(endpoint, {
+              headers: {
+                'Accept': '*/*',
+                'Content-Type': 'text/xml;charset="UTF-8"',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              body: payload
+            })
+              .then((r) => { return r.json(); })
+              .then((r) => {
+                if (r[0].ErrorInfo) {
+                  alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+                  window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+                } else {
+                  alertify.delay(5000).success("Property updated successfully!");
+                  window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: true, result: null, source: 'chrome-sp-editor' }), '*');
                 }
-              }
-            });
-
-            alertify.logPosition('bottom right');
-            alertify.maxLogItems(2);
-
-            alertify.confirm("Really want to update <b>" + prop + "</b> property?", function () {
-
-              alertify.delay(5000).log("Updating " + prop + " webproperty...");
-
-              var webid = "";
-              var siteid = "";
-              $pnp.sp.site.get().then(function (data) {
-                siteid = data.Id;
-                $pnp.sp.web.get().then(function (data) {
-                  webid = data.Id;
-                  var guid = function () {
-                    function s4() {
-                      return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-                    }
-                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-                  }
-
-                  var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
-
-                  var xhr = new XMLHttpRequest();
-                  xhr.open('POST', spHostUrl + '/_api/contextinfo');
-                  xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-                  xhr.onload = function () {
-                    if (xhr.status === 200) {
-                      var uuid = guid();
-                      var data = JSON.parse(xhr.responseText);
-
-                      var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-                      var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-                      var xhr2 = new XMLHttpRequest();
-                      xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-                      xhr2.setRequestHeader('Content-Type', 'application/xml');
-                      xhr2.setRequestHeader('SPRequestGuid', uuid);
-                      xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-                      xhr2.onload = function () {
-                        if (xhr2.status === 200) {
-                          var error = JSON.parse(xhr2.responseText)[0];
-                          if (error.ErrorInfo) {
-                            alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                            window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                          } else {
-                            alertify.delay(5000).success("Property updated successfully!");
-                            window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                          }
-                        }
-                        else {
-                          alertify.delay(10000).error(xhr2.responseText);
-                          window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                        }
-                      }
-                        ;
-                      var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-                      xhr2.send(payload);
-                    }
-                  }
-                    ;
-                  xhr.send();
-
-                }).catch(function (error) {
-                  if (error.data.responseBody.hasOwnProperty('error'))
-                    alertify.delay(10000).error(error.data.responseBody.error.message.value);
-                  else
-                    alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-                  window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
-                });
-              }).catch(function (error) {
-                alertify.delay(10000).error(error.data.responseBody.error.message.value);
-                window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
               });
 
-            }, function () {
-              // user clicked "cancel"
-            });
-
-            // copypaste code ends here
-          } catch (error) {
-            console.log({error});
-          } finally {
-            
-          }
-
-          break;
-        }
-      }
-      
-      if (found === false) {
-        try {
-          // Copypaste code starts from here
-          var prop = 'vti_searchversion';
-          var value = 0;
-
-          $pnp.setup({
-            sp: {
-              headers: {
-                "Accept": "application/json; odata=verbose"
-              }
-            }
-          });
-
-          alertify.logPosition('bottom right');
-          alertify.maxLogItems(2);
-
-          alertify.delay(5000).log("Adding " + prop + " webproperty...");
-
-          var webid = "";
-          var siteid = "";
-          $pnp.sp.site.get().then(function (data) {
-            siteid = data.Id;
-            $pnp.sp.web.get().then(function (data) {
-              webid = data.Id;
-              var guid = function () {
-                function s4() {
-                  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-                }
-                return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-              }
-
-              var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
-
-              var xhr = new XMLHttpRequest();
-              xhr.open('POST', spHostUrl + '/_api/contextinfo');
-              xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-              xhr.onload = function () {
-                if (xhr.status === 200) {
-                  var uuid = guid();
-                  var data = JSON.parse(xhr.responseText);
-
-                  var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-                  var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-                  var xhr2 = new XMLHttpRequest();
-                  xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-                  xhr2.setRequestHeader('Content-Type', 'application/xml');
-                  xhr2.setRequestHeader('SPRequestGuid', uuid);
-                  xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-                  xhr2.onload = function () {
-                    if (xhr2.status === 200) {
-                      var error = JSON.parse(xhr2.responseText)[0];
-                      if (error.ErrorInfo) {
-                        alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                        window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                      }
-                      else {
-                        alertify.delay(5000).success("Property added successfully!");
-                        window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                      }
-                    }
-                    else {
-                      alertify.delay(10000).error(xhr2.responseText);
-                      window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                    }
-                  }
-                    ;
-                  var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-                  xhr2.send(payload);
-                }
-              }
-                ;
-              xhr.send();
-
-            }).catch(function (error) {
-              if (error.data.responseBody.hasOwnProperty('error'))
-                alertify.delay(10000).error(error.data.responseBody.error.message.value);
-              else
-                alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-              window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
-            });
-          }).catch(function (error) {
+          }).catch((error) => {
             if (error.data.responseBody.hasOwnProperty('error'))
               alertify.delay(10000).error(error.data.responseBody.error.message.value);
             else
               alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
             window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
           });
-          // copypaste code ends here
-        } catch (error) {
-          console.log({error});
-        } finally {
-          
-        }
-      } 
+        }).catch((error) => {
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+        });
 
-      window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: true, result: propertyBag, source: 'chrome-sp-editor' }), '*');
+      }, () => {
+        // user clicked "cancel"
+      });
 
-		 }).catch(function (error) {
-		   window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
-		 });
-	 });
+    }).catch((error) => {
+      window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+    });
+  });
 };
 
 var addCustomAction = function addCustomAction() {
@@ -576,6 +449,7 @@ var getWebProperties = function getWebProperties() {
 };
 
 // addWebProperties
+// TODO: refactor
 var addWebProperties = function addWebProperties() {
 
   var prop = arguments[1];
@@ -673,6 +547,7 @@ var addWebProperties = function addWebProperties() {
 };
 
 // updateWebProperties
+// TODO: refactor
 var updateWebProperties = function updateWebProperties() {
 
   var prop = arguments[1];
@@ -773,6 +648,7 @@ var updateWebProperties = function updateWebProperties() {
 };
 
 // deleteWebProperties
+// TODO: refactor
 var deleteWebProperties = function deleteWebProperties() {
   var prop = arguments[1];
 
@@ -874,6 +750,7 @@ var deleteWebProperties = function deleteWebProperties() {
 };
 
 // addToIndexedPropertyKeys
+// TODO: refactor
 var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
   var prop = arguments[1];
   var remove = arguments[2];
@@ -1116,6 +993,7 @@ var getLists = function getLists() {
 };
 
 // addListProperties
+// TODO: refactor
 var addListProperties = function addListProperties() {
 
   var prop = arguments[1];
@@ -1194,6 +1072,7 @@ var addListProperties = function addListProperties() {
 };
 
 // updateListProperties
+// TODO: refactor
 var updateListProperties = function updateListProperties() {
 
   var prop = arguments[1];
@@ -1277,6 +1156,7 @@ var updateListProperties = function updateListProperties() {
 };
 
 // deleteListProperties
+// TODO: refactor
 var deleteListProperties = function deleteListProperties() {
 
   var prop = arguments[1];
@@ -1361,6 +1241,7 @@ var deleteListProperties = function deleteListProperties() {
 };
 
 // addToIndexedListPropertyKeys
+// TODO: refactor
 var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
   var prop = arguments[1];
   var listId = arguments[2];
@@ -2279,6 +2160,7 @@ var updateApp = function updateApp() {
 };
 
 // getSiteCollections
+// TODO: refactor
 var getSiteCollections = function getSiteCollections() {
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
@@ -2417,6 +2299,7 @@ var getSiteCollections = function getSiteCollections() {
 };
 
 // updateSiteCollection
+// TODO: refactor
 var updateSiteCollection = function updateSiteCollection() {
   var web = arguments[1];
   var value = arguments[2];
@@ -2479,6 +2362,7 @@ var updateSiteCollection = function updateSiteCollection() {
 };
 
 // enableDisableCDN
+// TODO: refactor
 var enableDisableCDN = function enableDisableCDN() {
   var cdnType = arguments[1];
   var enable = (arguments[2] == 'true') ? 1 : 0;
@@ -2555,6 +2439,7 @@ var enableDisableCDN = function enableDisableCDN() {
   });
 };
 //addOrigin
+// TODO: refactor
 var addOrigin = function addOrigin() {
   var private = arguments[1] === 'Private' ? 1 : 0;
   var origin = arguments[2];
@@ -2614,6 +2499,9 @@ var addOrigin = function addOrigin() {
     xhr.send();
   });
 };
+
+// remove origin
+// TODO: refactor
 var removeOrigin = function removeOrigin() {
   var private = arguments[1] === 'Private' ? 1 : 0;
   var origin = arguments[2];
