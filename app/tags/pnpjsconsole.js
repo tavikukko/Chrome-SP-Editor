@@ -79,6 +79,9 @@ Logger.activeLogLevel = LogLevel.Verbose;
 Logger.write("This is logging a simple string", LogLevel.Info);
 
 // using @pnp/graph (modern page in browser)
+// before using @pnp/graph, you need to grant needed API permissions
+// to 'SharePoint Online Client Extensibility Web Application Principal' AAD Application
+// from https://aad.portal.azure.com
 import { graph } from "@pnp/graph"
 
 if ((window as any).moduleLoaderPromise)

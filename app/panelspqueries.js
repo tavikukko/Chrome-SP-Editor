@@ -449,13 +449,12 @@ var getWebProperties = function getWebProperties() {
 };
 
 // addWebProperties
-// TODO: refactor
 var addWebProperties = function addWebProperties() {
 
   var prop = arguments[1];
   var value = arguments[2];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -474,68 +473,57 @@ var addWebProperties = function addWebProperties() {
 
     var webid = "";
     var siteid = "";
-    $pnp.sp.site.get().then(function (data) {
+    $pnp.sp.site.get().then((data) => {
       siteid = data.Id;
-      $pnp.sp.web.get().then(function (data) {
+      $pnp.sp.web.get().then((data) => {
         webid = data.Id;
-        var guid = function () {
-          function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-          }
-          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        }
 
-        var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+        var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+        var payload = `
+          <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+            <Actions>
+              <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                <Parameters>
+                  <Parameter Type="String">${prop}</Parameter>
+                  <Parameter Type="String">${value}</Parameter>
+                </Parameters>
+              </Method>
+              <Method Name="Update" Id="10" ObjectPathId="2" />
+            </Actions>
+            <ObjectPaths>
+              <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+              <Property Id="4" ParentId="2" Name="AllProperties" />
+            </ObjectPaths>
+          </Request>`;
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', spHostUrl + '/_api/contextinfo');
-        xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            var uuid = guid();
-            var data = JSON.parse(xhr.responseText);
-
-            var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-            var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-            xhr2.setRequestHeader('Content-Type', 'application/xml');
-            xhr2.setRequestHeader('SPRequestGuid', uuid);
-            xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-            xhr2.onload = function () {
-              if (xhr2.status === 200) {
-                var error = JSON.parse(xhr2.responseText)[0];
-                if (error.ErrorInfo) {
-                  alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                  window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                }
-                else {
-                  alertify.delay(5000).success("Property added successfully!");
-                  window.postMessage(JSON.stringify({ function: 'addWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                }
-              }
-              else {
-                alertify.delay(10000).error(xhr2.responseText);
-                window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-              }
+        var client = new $pnp.SPHttpClient();
+        client.post(endpoint, {
+          headers: {
+            'Accept': '*/*',
+            'Content-Type': 'text/xml;charset="UTF-8"',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: payload
+        })
+          .then((r) => { return r.json(); })
+          .then((r) => {
+            if (r[0].ErrorInfo) {
+              alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+              window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+            } else {
+              alertify.delay(5000).success("Property added successfully!");
+              window.postMessage(JSON.stringify({ function: 'addWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }
-              ;
-            var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-            xhr2.send(payload);
-          }
-        }
-          ;
-        xhr.send();
+          });
 
-      }).catch(function (error) {
+      }).catch((error) => {
         if (error.data.responseBody.hasOwnProperty('error'))
           alertify.delay(10000).error(error.data.responseBody.error.message.value);
         else
           alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
-    }).catch(function (error) {
+    }).catch((error) => {
       if (error.data.responseBody.hasOwnProperty('error'))
         alertify.delay(10000).error(error.data.responseBody.error.message.value);
       else
@@ -547,13 +535,12 @@ var addWebProperties = function addWebProperties() {
 };
 
 // updateWebProperties
-// TODO: refactor
 var updateWebProperties = function updateWebProperties() {
 
   var prop = arguments[1];
   var value = arguments[2];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -568,7 +555,7 @@ var updateWebProperties = function updateWebProperties() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    alertify.confirm("Really want to update <b>" + prop + "</b> property?", function () {
+    alertify.confirm("Really want to update <b>" + prop + "</b> property?", () => {
 
       alertify.delay(5000).log("Updating " + prop + " webproperty...");
 
@@ -578,63 +565,53 @@ var updateWebProperties = function updateWebProperties() {
         siteid = data.Id;
         $pnp.sp.web.get().then(function (data) {
           webid = data.Id;
-          var guid = function () {
-            function s4() {
-              return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            }
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-          }
 
-          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+          var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+          var payload = `
+            <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+              <Actions>
+                <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                  <Parameters>
+                    <Parameter Type="String">${prop}</Parameter>
+                    <Parameter Type="String">${value}</Parameter>
+                  </Parameters>
+                </Method>
+                <Method Name="Update" Id="10" ObjectPathId="2" />
+              </Actions>
+              <ObjectPaths>
+                <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+                <Property Id="4" ParentId="2" Name="AllProperties" />
+              </ObjectPaths>
+            </Request>`;
 
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', spHostUrl + '/_api/contextinfo');
-          xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-          xhr.onload = function () {
-            if (xhr.status === 200) {
-              var uuid = guid();
-              var data = JSON.parse(xhr.responseText);
-
-              var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-              var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-              var xhr2 = new XMLHttpRequest();
-              xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-              xhr2.setRequestHeader('Content-Type', 'application/xml');
-              xhr2.setRequestHeader('SPRequestGuid', uuid);
-              xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-              xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                  var error = JSON.parse(xhr2.responseText)[0];
-                  if (error.ErrorInfo) {
-                    alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                    window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                  } else {
-                    alertify.delay(5000).success("Property updated successfully!");
-                    window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                  }
-                }
-                else {
-                  alertify.delay(10000).error(xhr2.responseText);
-                  window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                }
+          var client = new $pnp.SPHttpClient();
+          client.post(endpoint, {
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'text/xml;charset="UTF-8"',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: payload
+          })
+            .then((r) => { return r.json(); })
+            .then((r) => {
+              if (r[0].ErrorInfo) {
+                alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+                window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+              } else {
+                alertify.delay(5000).success("Property updated successfully!");
+                window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
               }
-                ;
-              var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-              xhr2.send(payload);
-            }
-          }
-            ;
-          xhr.send();
+            });
 
-        }).catch(function (error) {
+        }).catch((error) => {
           if (error.data.responseBody.hasOwnProperty('error'))
             alertify.delay(10000).error(error.data.responseBody.error.message.value);
           else
             alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
-      }).catch(function (error) {
+      }).catch((error) => {
         alertify.delay(10000).error(error.data.responseBody.error.message.value);
         window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
@@ -648,11 +625,10 @@ var updateWebProperties = function updateWebProperties() {
 };
 
 // deleteWebProperties
-// TODO: refactor
 var deleteWebProperties = function deleteWebProperties() {
   var prop = arguments[1];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -667,83 +643,71 @@ var deleteWebProperties = function deleteWebProperties() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    alertify.confirm("Really want to delete <b>" + prop + "</b> property?", function () {
+    alertify.confirm("Really want to delete <b>" + prop + "</b> property?", () => {
 
       var webid = "";
       var siteid = "";
 
       alertify.delay(5000).log("Removing " + prop + " from webproperties...");
 
-      $pnp.sp.site.get().then(function (data) {
+      $pnp.sp.site.get().then((data) => {
         siteid = data.Id;
-        $pnp.sp.web.get().then(function (data) {
+        $pnp.sp.web.get().then((data) => {
           webid = data.Id;
-          var guid = function () {
-            function s4() {
-              return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            }
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-          }
 
-          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+          var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+          var payload = `
+            <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+              <Actions>
+                <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                  <Parameters>
+                    <Parameter Type="String">${prop}</Parameter>
+                    <Parameter Type="Null" />
+                  </Parameters>
+                </Method>
+                <Method Name="Update" Id="10" ObjectPathId="2" />
+              </Actions>
+              <ObjectPaths>
+                <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+                <Property Id="4" ParentId="2" Name="AllProperties" />
+              </ObjectPaths>
+            </Request>`;
 
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', spHostUrl + '/_api/contextinfo');
-          xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-          xhr.onload = function () {
-            if (xhr.status === 200) {
-              var uuid = guid();
-              var data = JSON.parse(xhr.responseText);
-
-              var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-              var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-              var xhr2 = new XMLHttpRequest();
-              xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-              xhr2.setRequestHeader('Content-Type', 'application/xml');
-              xhr2.setRequestHeader('SPRequestGuid', uuid);
-              xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-              xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                  var error = JSON.parse(xhr2.responseText)[0];
-                  if (error.ErrorInfo) {
-                    alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                    window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                  } else {
-                    alertify.delay(5000).success("Property deleted successfully!");
-                    if (prop != "vti_indexedpropertykeys")
-                      addToIndexedPropertyKeys.apply(this, ['', prop, true]);
-                    window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                  }
-                }
-                else {
-                  alertify.delay(10000).error(xhr2.responseText);
-                  window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                }
+          var client = new $pnp.SPHttpClient();
+          client.post(endpoint, {
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'text/xml;charset="UTF-8"',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: payload
+          })
+            .then((r) => { return r.json(); })
+            .then((r) => {
+              if (r[0].ErrorInfo) {
+                alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+                window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+              } else {
+                alertify.delay(5000).success("Property deleted successfully!");
+                window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
               }
-                ;
-              var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="Null" /></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-              xhr2.send(payload);
-            }
-          }
-            ;
-          xhr.send();
+            });
 
-        }).catch(function (error) {
+        }).catch((error) => {
           if (error.data.responseBody.hasOwnProperty('error'))
             alertify.delay(10000).error(error.data.responseBody.error.message.value);
           else
             alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
-      }).catch(function (error) {
+      }).catch((error) => {
         if (error.data.responseBody.hasOwnProperty('error'))
           alertify.delay(10000).error(error.data.responseBody.error.message.value);
         else
           alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
-    }, function () {
+    }, () => {
       // user clicked "cancel"
     });
   });
