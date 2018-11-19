@@ -714,12 +714,11 @@ var deleteWebProperties = function deleteWebProperties() {
 };
 
 // addToIndexedPropertyKeys
-// TODO: refactor
 var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
   var prop = arguments[1];
   var remove = arguments[2];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
@@ -734,7 +733,7 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then(function (result) {
+    $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then((result) => {
 
       var arr = [];
       for (x in result.AllProperties)
@@ -781,61 +780,53 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
 
       var webid = "";
       var siteid = "";
-      $pnp.sp.site.get().then(function (data) {
+      $pnp.sp.site.get().then((data) => {
         siteid = data.Id;
-        $pnp.sp.web.get().then(function (data) {
+        $pnp.sp.web.get().then((data) => {
           webid = data.Id;
-          var guid = function () {
-            function s4() {
-              return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            }
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-          }
 
-          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+          var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+          var payload = `
+            <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+              <Actions>
+                <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                  <Parameters>
+                    <Parameter Type="String">vti_indexedpropertykeys</Parameter>
+                    <Parameter Type="String">${newIndexValue}</Parameter>
+                  </Parameters>
+                </Method>
+                <Method Name="Update" Id="10" ObjectPathId="2" />
+              </Actions>
+              <ObjectPaths>
+                <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+                <Property Id="4" ParentId="2" Name="AllProperties" />
+              </ObjectPaths>
+            </Request>`;
 
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', spHostUrl + '/_api/contextinfo');
-          xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-          xhr.onload = function () {
-            if (xhr.status === 200) {
-              var uuid = guid();
-              var data = JSON.parse(xhr.responseText);
-
-              var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-              var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-              var xhr2 = new XMLHttpRequest();
-              xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-              xhr2.setRequestHeader('Content-Type', 'application/xml');
-              xhr2.setRequestHeader('SPRequestGuid', uuid);
-              xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-              xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                  var error = JSON.parse(xhr2.responseText)[0];
-                  if (error.ErrorInfo) {
-                    alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                    window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                  } else {
-                    if (remove)
-                      alertify.delay(5000).success("Property removed from vti_indexedpropertykeys successfully!");
-                    else
-                      alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!");
-                    window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                  }
+          var client = new $pnp.SPHttpClient();
+          client.post(endpoint, {
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'text/xml;charset="UTF-8"',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: payload
+          })
+            .then((r) => { return r.json(); })
+            .then((r) => {
+              if (r[0].ErrorInfo) {
+                alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+                window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+              } else {
+                if (remove) {
+                  alertify.delay(5000).success("Property removed from vti_indexedpropertykeys successfully!");
                 }
                 else {
-                  alertify.delay(10000).error(xhr2.responseText);
-                  window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                  alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!");
                 }
+                window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
               }
-                ;
-              var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">vti_indexedpropertykeys</Parameter><Parameter Type="String">' + newIndexValue + '</Parameter></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-              xhr2.send(payload);
-            }
-          }
-            ;
-          xhr.send();
+            });
 
         }).catch(function (error) {
           if (error.data.responseBody.hasOwnProperty('error'))
