@@ -2388,64 +2388,61 @@ var getSiteCollections = function getSiteCollections() {
 };
 
 // updateSiteCollection
-// TODO: refactor
 var updateSiteCollection = function updateSiteCollection() {
   var web = arguments[1];
   var value = arguments[2];
 
-  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
-    var alertify = modules[0];
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
-    var guid = function () {
-      function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      }
-      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload = `
+      <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+        <Actions>
+          <SetProperty Id="7" ObjectPathId="3" Name="DenyAddAndCustomizePages">
+            <Parameter Type="Enum">${value}</Parameter>
+          </SetProperty>
+          <ObjectPath Id="9" ObjectPathId="8" />
+          <ObjectIdentityQuery Id="10" ObjectPathId="3" />
+          <Query Id="11" ObjectPathId="8">
+            <Query SelectAllProperties="true">
+              <Properties>
+                <Property Name="IsComplete" ScalarProperty="true" />
+                <Property Name="PollingInterval" ScalarProperty="true" />
+              </Properties>
+            </Query>
+          </Query>
+        </Actions>
+        <ObjectPaths>
+          <Identity Id="3" Name="${web}" />
+          <Method Id="8" ParentId="3" Name="Update" />
+        </ObjectPaths>
+      </Request>
+    `;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', spHostUrl + '/_api/contextinfo');
-    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        var uuid = guid();
-        var data = JSON.parse(xhr.responseText);
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+        } else {
+          window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+        }
+      });
 
-        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-        xhr2.setRequestHeader('Content-Type', 'application/xml');
-        xhr2.setRequestHeader('SPRequestGuid', uuid);
-        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-        xhr2.onload = function () {
-          if (xhr2.status === 200) {
-            var error = JSON.parse(xhr2.responseText)[0];
-
-            if (error.ErrorInfo) {
-              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-              window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-          }
-          else {
-            alertify.delay(10000).error(xhr2.responseText);
-            window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        };
-        var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName=".NET Library" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><SetProperty Id="7" ObjectPathId="3" Name="DenyAddAndCustomizePages"><Parameter Type="Enum">' + value + '</Parameter></SetProperty><ObjectPath Id="9" ObjectPathId="8" /><ObjectIdentityQuery Id="10" ObjectPathId="3" /><Query Id="11" ObjectPathId="8"><Query SelectAllProperties="true"><Properties><Property Name="IsComplete" ScalarProperty="true" /><Property Name="PollingInterval" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="3" Name="' + web + '" /><Method Id="8" ParentId="3" Name="Update" /></ObjectPaths></Request>';
-
-        xhr2.send(payload);
-      }
-    };
-    xhr.send();
   });
 };
 
