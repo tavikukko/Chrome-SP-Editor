@@ -23,7 +23,8 @@ var getCustomActions = function getCustomActions() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -105,7 +106,8 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -116,7 +118,7 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
     $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then((result) => {
 
       var allProps = [];
-      for (aProp in result.AllProperties){
+      for (aProp in result.AllProperties) {
         allProps.push({ prop: aProp.replace(/_x005f_/g, '_').replace(/OData_/g, ''), value: result.AllProperties[aProp] });
       }
       var prop = 'vti_searchversion';
@@ -227,7 +229,8 @@ var addCustomAction = function addCustomAction() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -308,7 +311,8 @@ var removeCustomAction = function removeCustomAction() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -363,7 +367,8 @@ var addFile = function addFile() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -400,7 +405,8 @@ var getWebProperties = function getWebProperties() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -461,7 +467,8 @@ var addWebProperties = function addWebProperties() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -547,7 +554,8 @@ var updateWebProperties = function updateWebProperties() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -635,7 +643,8 @@ var deleteWebProperties = function deleteWebProperties() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -689,7 +698,7 @@ var deleteWebProperties = function deleteWebProperties() {
                 window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
               } else {
                 alertify.delay(5000).success("Property deleted successfully!");
-                if (prop != "vti_indexedpropertykeys"){
+                if (prop != "vti_indexedpropertykeys") {
                   addToIndexedPropertyKeys.apply(this, ['', prop, true]);
                 }
                 window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
@@ -728,7 +737,8 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -866,7 +876,8 @@ var getListProperties = function getListProperties() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -924,7 +935,8 @@ var getLists = function getLists() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -964,7 +976,8 @@ var addListProperties = function addListProperties() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -974,8 +987,8 @@ var addListProperties = function addListProperties() {
 
     alertify.delay(5000).log("Adding " + prop + " listproperty...");
 
-      var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
-      var payload = `
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload = `
       <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
         <Actions>
           <ObjectPath Id="1" ObjectPathId="0" />
@@ -1006,25 +1019,25 @@ var addListProperties = function addListProperties() {
         </ObjectPaths>
       </Request>`;
 
-      var client = new $pnp.SPHttpClient();
-      client.post(endpoint, {
-        headers: {
-          'Accept': '*/*',
-          'Content-Type': 'text/xml;charset="UTF-8"',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: payload
-      })
-        .then((r) => { return r.json(); })
-        .then((r) => {
-          if (r[0].ErrorInfo) {
-            alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
-            window.postMessage(JSON.stringify({ function: 'addListProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
-          } else {
-            alertify.delay(5000).success("List property added successfully!");
-            window.postMessage(JSON.stringify({ function: 'addListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        });
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'addListProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+        } else {
+          alertify.delay(5000).success("List property added successfully!");
+          window.postMessage(JSON.stringify({ function: 'addListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+        }
+      });
   });
 };
 
@@ -1042,7 +1055,8 @@ var updateListProperties = function updateListProperties() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1124,7 +1138,8 @@ var deleteListProperties = function deleteListProperties() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1184,7 +1199,7 @@ var deleteListProperties = function deleteListProperties() {
             window.postMessage(JSON.stringify({ function: 'deleteListProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
           } else {
             alertify.delay(5000).success("List property removed successfully!");
-            if (prop != "vti_indexedpropertykeys"){
+            if (prop != "vti_indexedpropertykeys") {
               addToIndexedListPropertyKeys.apply(this, ['', prop, listId, true]);
             }
             window.postMessage(JSON.stringify({ function: 'deleteListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
@@ -1209,7 +1224,8 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1264,8 +1280,8 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
           alertify.delay(5000).log("Adding '<b>" + prop + "</b>' to vti_indexedpropertykeys...");
 
 
-      var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
-      var payload = `
+        var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+        var payload = `
       <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
         <Actions>
           <ObjectPath Id="1" ObjectPathId="0" />
@@ -1296,30 +1312,30 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
         </ObjectPaths>
       </Request>`;
 
-      var client = new $pnp.SPHttpClient();
-      client.post(endpoint, {
-        headers: {
-          'Accept': '*/*',
-          'Content-Type': 'text/xml;charset="UTF-8"',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: payload
-      })
-        .then((r) => { return r.json(); })
-        .then((r) => {
-          if (r[0].ErrorInfo) {
-            alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
-            window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
-          } else {
-            if (remove) {
-              alertify.delay(5000).success("Property removed from vti_indexedpropertykeys successfully!");
+        var client = new $pnp.SPHttpClient();
+        client.post(endpoint, {
+          headers: {
+            'Accept': '*/*',
+            'Content-Type': 'text/xml;charset="UTF-8"',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: payload
+        })
+          .then((r) => { return r.json(); })
+          .then((r) => {
+            if (r[0].ErrorInfo) {
+              alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+              window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+            } else {
+              if (remove) {
+                alertify.delay(5000).success("Property removed from vti_indexedpropertykeys successfully!");
+              }
+              else {
+                alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!"); window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+              }
+              window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }
-            else {
-              alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!"); window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        });
+          });
 
       }).catch(function (error) {
         if (error.data.responseBody.hasOwnProperty('error'))
@@ -1392,7 +1408,8 @@ var getSubscriptions = function getSubscriptions() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1443,7 +1460,8 @@ var addSubscriptions = function addSubscriptions() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1481,7 +1499,8 @@ var removeSubscription = function removeSubscription() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1521,7 +1540,8 @@ var updateSubscription = function updateSubscription() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1580,7 +1600,8 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1720,7 +1741,8 @@ var deleteWebpart = function deleteWebpart() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1780,7 +1802,8 @@ var getFolders = function getFolders() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1874,7 +1897,8 @@ var getFileContent = function getFileContent() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -1920,7 +1944,8 @@ var updateEditorFile = function updateEditorFile() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -2009,7 +2034,8 @@ var getApps = function getApps() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -2047,7 +2073,8 @@ var getApp = function getApp() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -2092,7 +2119,8 @@ var updateApp = function updateApp() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });
@@ -3085,7 +3113,8 @@ var runSearch = function runSearch() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+          "X-ClientService-ClientTag": "SPEditor"
         }
       }
     });

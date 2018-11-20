@@ -36,7 +36,8 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
         $pnp.setup({
           sp: {
             headers: {
-              "Accept": "application/json; odata=verbose"
+              "Accept": "application/json; odata=verbose",
+              "X-ClientService-ClientTag": "SPEditor"
             }
           }
         });
