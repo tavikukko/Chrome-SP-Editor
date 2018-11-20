@@ -2147,7 +2147,6 @@ var updateApp = function updateApp() {
 };
 
 // getSiteCollections
-// TODO: refactor
 var getSiteCollections = function getSiteCollections() {
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
@@ -2164,125 +2163,228 @@ var getSiteCollections = function getSiteCollections() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', spHostUrl + '/_api/contextinfo');
-    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        var uuid = guid();
-        var data = JSON.parse(xhr.responseText);
+    var uuid = guid();
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload = `
+        <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+          <Actions>
+            <ObjectPath Id="264" ObjectPathId="263" />
+            <ObjectPath Id="266" ObjectPathId="265" />
+            <Query Id="267" ObjectPathId="265">
+              <Query SelectAllProperties="false">
+                <Properties />
+              </Query>
+              <ChildItemQuery SelectAllProperties="false">
+                <Properties>
+                  <Property Name="DenyAddAndCustomizePages" ScalarProperty="true" />
+                  <Property Name="Template" ScalarProperty="true" />
+                  <Property Name="Title" ScalarProperty="true" />
+                  <Property Name="Url" ScalarProperty="true" />
+                </Properties>
+              </ChildItemQuery>
+            </Query>
+            <ObjectPath Id="283" ObjectPathId="282" />
+            <ObjectPath Id="285" ObjectPathId="284" />
+            <Query Id="286" ObjectPathId="284">
+              <Query SelectAllProperties="false">
+                <Properties />
+              </Query>
+              <ChildItemQuery SelectAllProperties="false">
+                <Properties>
+                  <Property Name="DenyAddAndCustomizePages" ScalarProperty="true" />
+                  <Property Name="Template" ScalarProperty="true" />
+                  <Property Name="Title" ScalarProperty="true" />
+                  <Property Name="Url" ScalarProperty="true" />
+                </Properties>
+              </ChildItemQuery>
+            </Query>
+            <ObjectPath Id="36" ObjectPathId="35" />
+            <Query Id="37" ObjectPathId="35">
+              <Query SelectAllProperties="true">
+                <Properties />
+              </Query>
+            </Query>
+            <Method Name="GetTenantCdnPolicies" Id="33" ObjectPathId="29">
+              <Parameters>
+                <Parameter Type="Enum">0</Parameter>
+              </Parameters>
+            </Method>
+            <Method Name="GetTenantCdnOrigins" Id="34" ObjectPathId="29">
+              <Parameters>
+                <Parameter Type="Enum">0</Parameter>
+              </Parameters>
+            </Method>
+            <Method Name="GetTenantCdnEnabled" Id="48" ObjectPathId="44">
+              <Parameters>
+                <Parameter Type="Enum">0</Parameter>
+              </Parameters>
+            </Method>
+            <Method Name="GetTenantCdnEnabled" Id="63" ObjectPathId="59">
+              <Parameters>
+                <Parameter Type="Enum">1</Parameter>
+              </Parameters>
+            </Method>
+            <Method Name="GetTenantCdnOrigins" Id="68" ObjectPathId="64">
+              <Parameters>
+                <Parameter Type="Enum">1</Parameter>
+              </Parameters>
+            </Method>
+            <ObjectPath Id="2" ObjectPathId="1" />
+            <ObjectPath Id="4" ObjectPathId="3" />
+            <Query Id="5" ObjectPathId="3">
+              <Query SelectAllProperties="true">
+                <Properties />
+              </Query>
+              <ChildItemQuery SelectAllProperties="true">
+                <Properties />
+              </ChildItemQuery>
+            </Query>
+          </Actions>
+          <ObjectPaths>
+            <Constructor Id="263" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            <Method Id="265" ParentId="263" Name="GetSitePropertiesFromSharePointByFilter">
+              <Parameters>
+                <Parameter Type="String"> Template -eq "GROUP#0" </Parameter>
+                <Parameter Type="Null" />
+                <Parameter Type="Boolean">false</Parameter>
+              </Parameters>
+            </Method>
+            <Constructor Id="282" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            <Method Id="284" ParentId="282" Name="GetSitePropertiesFromSharePointByFilter">
+              <Parameters>
+                <Parameter Type="String"> Template -eq "SITEPAGEPUBLISHING#0" </Parameter>
+                <Parameter Type="Null" />
+                <Parameter Type="Boolean">false</Parameter>
+              </Parameters>
+            </Method>
+            <Constructor Id="29" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            <Constructor Id="35" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            <Identity Id="44" Name="${uuid}|908bed80-a04a-4433-b4a0-883d9847d110:${_spPageContextInfo.siteSubscriptionId}&#xA;Tenant" />
+            <Identity Id="59" Name="${uuid}|908bed80-a04a-4433-b4a0-883d9847d110:${_spPageContextInfo.siteSubscriptionId}&#xA;Tenant" />
+            <Identity Id="64" Name="${uuid}|908bed80-a04a-4433-b4a0-883d9847d110:${_spPageContextInfo.siteSubscriptionId}&#xA;Tenant" />
+            <Constructor Id="1" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            <Method Id="3" ParentId="1" Name="GetHubSitesProperties" />
+          </ObjectPaths>
+        </Request>
+        `;
 
-        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+        } else {
+        }
 
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-        xhr2.setRequestHeader('Content-Type', 'application/xml');
-        xhr2.setRequestHeader('SPRequestGuid', uuid);
-        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-        xhr2.onload = function () {
-          if (xhr2.status === 200) {
-            var error = JSON.parse(xhr2.responseText)[0];
-            if (error.ErrorInfo) {
-              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-              window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              var q = $pnp.SearchQueryBuilder("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
+        var q = $pnp.SearchQueryBuilder("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
 
-              $pnp.sp.search(q).then(re => {
-                fetch(spHostUrl + "/_vti_bin/client.svc/ProcessQuery", {
-                  method: 'post',
-                  credentials: 'include',
-                  headers: {
-                    'X-RequestDigest': data.d.GetContextWebInformation.FormDigestValue,
-                    'Content-Type': 'application/xml'
-                  },
-                  body: '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><Query Id="21" ObjectPathId="6"><Query SelectAllProperties="true"><Properties><Property Name="storageentitiesindex" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + re.PrimarySearchResults[0].siteid + ':web:' + re.PrimarySearchResults[0].webid + '" /><Property Id="6" ParentId="4" Name="AllProperties" /></ObjectPaths></Request>'
-                }).then(response => {
-                  if (!response.ok) { throw response }
-                  return response.json();
-                }).catch(err => {
-                  err.json().then(errorMessage => {
-                    alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
-                    window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+        $pnp.sp.search(q).then(re => {
+
+          var payload2 = `
+            <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+              <Actions>
+                <Query Id="21" ObjectPathId="6">
+                  <Query SelectAllProperties="true">
+                    <Properties>
+                      <Property Name="storageentitiesindex" ScalarProperty="true" />
+                    </Properties>
+                  </Query>
+                </Query>
+              </Actions>
+              <ObjectPaths>
+                <Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${re.PrimarySearchResults[0].siteid}:web:${re.PrimarySearchResults[0].webid}" />
+                <Property Id="6" ParentId="4" Name="AllProperties" />
+              </ObjectPaths>
+            </Request>
+          `
+          var client = new $pnp.SPHttpClient();
+          client.post(endpoint, {
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'text/xml;charset="UTF-8"',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: payload2
+          })
+            .then((res) => { return res.json(); })
+            .then((res) => {
+              if (res[0].ErrorInfo) {
+                alertify.delay(10000).error(res[0].ErrorInfo.ErrorMessage);
+                window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+              } else {
+              }
+
+              var tenantProps = "";
+
+              if (res.length > 1) tenantProps = res[2].storageentitiesindex;
+              var hubsites = r[32]._Child_Items_;
+
+              if (hubsites.length > 0) {
+                var hubsiteQuery = "";
+
+                hubsites.forEach(function (hubsite) {
+                  if (hubsiteQuery.length > 0) hubsiteQuery += " OR "
+                  var id = hubsite.SiteId.substring(6, hubsite.SiteId.length - 2)
+                  hubsiteQuery += "DepartmentId:{" + id + "}";
+                });
+
+                var q2 = $pnp.SearchQueryBuilder("contentclass:STS_Site AND ( " + hubsiteQuery + " )", { TrimDuplicates: false, SelectProperties: ["DepartmentId", "Url"] });
+
+                $pnp.sp.search(q2).then(re2 => {
+                  var deps = [];
+                  re2.PrimarySearchResults.forEach(hub => {
+                    deps.push({ Url: hub.Url, DepartmentId: hub.DepartmentId })
                   })
-                })
-                  .then(res => {
-                    var tenantProps = "";
-                    if (res.length > 1) tenantProps = res[2].storageentitiesindex;
 
-                    var hubsites = JSON.parse(xhr2.responseText)[32]._Child_Items_;
+                  var datas = {
+                    webs: r[6]._Child_Items_.concat(r[12]._Child_Items_),
+                    publicCDN: r[22],
+                    publicCDNOrigins: r[20],
+                    tenantObjectId: r[16]._ObjectIdentity_,
+                    privateCDN: r[24],
+                    privateCDNOrigins: r[26],
+                    appCatalogSiteId: re.PrimarySearchResults[0].siteid,
+                    appCatalogWebId: re.PrimarySearchResults[0].webid,
+                    appCatalogUrl: re.PrimarySearchResults[0].url,
+                    tenantProperties: tenantProps,
+                    hubsites: hubsites,
+                    departmentIds: deps
+                  };
 
-                    if (hubsites.length > 0) {
-                      var hubsiteQuery = "";
+                  window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+                });
 
-                      hubsites.forEach(function (hubsite) {
-                        if (hubsiteQuery.length > 0) hubsiteQuery += " OR "
-                        var id = hubsite.SiteId.substring(6, hubsite.SiteId.length - 2)
-                        hubsiteQuery += "DepartmentId:{" + id + "}";
-                      });
-
-                      var q2 = $pnp.SearchQueryBuilder("contentclass:STS_Site AND ( " + hubsiteQuery + " )", { TrimDuplicates: false, SelectProperties: ["DepartmentId", "Url"] });
-
-                      $pnp.sp.search(q2).then(re2 => {
-                        var deps = [];
-                        re2.PrimarySearchResults.forEach(hub => {
-                          deps.push({ Url: hub.Url, DepartmentId: hub.DepartmentId })
-                        })
-
-                        var datas = {
-                          webs: JSON.parse(xhr2.responseText)[6]._Child_Items_.concat(JSON.parse(xhr2.responseText)[12]._Child_Items_),
-                          publicCDN: JSON.parse(xhr2.responseText)[22],
-                          publicCDNOrigins: JSON.parse(xhr2.responseText)[20],
-                          tenantObjectId: JSON.parse(xhr2.responseText)[16]._ObjectIdentity_,
-                          privateCDN: JSON.parse(xhr2.responseText)[24],
-                          privateCDNOrigins: JSON.parse(xhr2.responseText)[26],
-                          appCatalogSiteId: re.PrimarySearchResults[0].siteid,
-                          appCatalogWebId: re.PrimarySearchResults[0].webid,
-                          appCatalogUrl: re.PrimarySearchResults[0].url,
-                          tenantProperties: tenantProps,
-                          hubsites: hubsites,
-                          departmentIds: deps
-                        };
-
-                        window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
-                      });
-
-                    } else {
-                      var datas = {
-                        webs: JSON.parse(xhr2.responseText)[6]._Child_Items_.concat(JSON.parse(xhr2.responseText)[12]._Child_Items_),
-                        publicCDN: JSON.parse(xhr2.responseText)[22],
-                        publicCDNOrigins: JSON.parse(xhr2.responseText)[20],
-                        tenantObjectId: JSON.parse(xhr2.responseText)[16]._ObjectIdentity_,
-                        privateCDN: JSON.parse(xhr2.responseText)[24],
-                        privateCDNOrigins: JSON.parse(xhr2.responseText)[26],
-                        appCatalogSiteId: re.PrimarySearchResults[0].siteid,
-                        appCatalogWebId: re.PrimarySearchResults[0].webid,
-                        appCatalogUrl: re.PrimarySearchResults[0].url,
-                        tenantProperties: tenantProps,
-                        hubsites: hubsites,
-                        departmentIds: []
-                      };
-                      window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
-                    }
-                  })
-              });
-            }
-          }
-          else {
-            alertify.delay(10000).error(xhr2.responseText);
-            window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        };
-        var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="264" ObjectPathId="263" /><ObjectPath Id="266" ObjectPathId="265" /><Query Id="267" ObjectPathId="265"><Query SelectAllProperties="false"><Properties /></Query><ChildItemQuery SelectAllProperties="false"><Properties><Property Name="DenyAddAndCustomizePages" ScalarProperty="true" /><Property Name="Template" ScalarProperty="true" /><Property Name="Title" ScalarProperty="true" /><Property Name="Url" ScalarProperty="true" /></Properties></ChildItemQuery></Query><ObjectPath Id="283" ObjectPathId="282" /><ObjectPath Id="285" ObjectPathId="284" /><Query Id="286" ObjectPathId="284"><Query SelectAllProperties="false"><Properties /></Query><ChildItemQuery SelectAllProperties="false"><Properties><Property Name="DenyAddAndCustomizePages" ScalarProperty="true" /><Property Name="Template" ScalarProperty="true" /><Property Name="Title" ScalarProperty="true" /><Property Name="Url" ScalarProperty="true" /></Properties></ChildItemQuery></Query><ObjectPath Id="36" ObjectPathId="35" /><Query Id="37" ObjectPathId="35"><Query SelectAllProperties="true"><Properties /></Query></Query><Method Name="GetTenantCdnPolicies" Id="33" ObjectPathId="29"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnOrigins" Id="34" ObjectPathId="29"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnEnabled" Id="48" ObjectPathId="44"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnEnabled" Id="63" ObjectPathId="59"><Parameters><Parameter Type="Enum">1</Parameter></Parameters></Method><Method Name="GetTenantCdnOrigins" Id="68" ObjectPathId="64"><Parameters><Parameter Type="Enum">1</Parameter></Parameters></Method><ObjectPath Id="2" ObjectPathId="1" /><ObjectPath Id="4" ObjectPathId="3" /><Query Id="5" ObjectPathId="3"><Query SelectAllProperties="true"><Properties /></Query><ChildItemQuery SelectAllProperties="true"><Properties /></ChildItemQuery></Query></Actions><ObjectPaths><Constructor Id="263" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="265" ParentId="263" Name="GetSitePropertiesFromSharePointByFilter"><Parameters><Parameter Type="String"> Template -eq "GROUP#0" </Parameter><Parameter Type="Null" /><Parameter Type="Boolean">false</Parameter></Parameters></Method><Constructor Id="282" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="284" ParentId="282" Name="GetSitePropertiesFromSharePointByFilter"><Parameters><Parameter Type="String"> Template -eq "SITEPAGEPUBLISHING#0" </Parameter><Parameter Type="Null" /><Parameter Type="Boolean">false</Parameter></Parameters></Method><Constructor Id="29" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Constructor Id="35" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Identity Id="44" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Identity Id="59" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Identity Id="64" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Constructor Id="1" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="3" ParentId="1" Name="GetHubSitesProperties" /></ObjectPaths></Request>';
-
-        xhr2.send(payload);
-      }
-    };
-    xhr.send();
+              } else {
+                var datas = {
+                  webs: r[6]._Child_Items_.concat(r[12]._Child_Items_),
+                  publicCDN: r[22],
+                  publicCDNOrigins: r[20],
+                  tenantObjectId: r[16]._ObjectIdentity_,
+                  privateCDN: r[24],
+                  privateCDNOrigins: r[26],
+                  appCatalogSiteId: re.PrimarySearchResults[0].siteid,
+                  appCatalogWebId: re.PrimarySearchResults[0].webid,
+                  appCatalogUrl: re.PrimarySearchResults[0].url,
+                  tenantProperties: tenantProps,
+                  hubsites: hubsites,
+                  departmentIds: []
+                };
+                window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+              }
+            })
+        });
+      });
   });
+
 };
 
 // updateSiteCollection
@@ -2293,7 +2395,6 @@ var updateSiteCollection = function updateSiteCollection() {
 
   Promise.all([SystemJS.import(alertify)]).then(function (modules) {
     var alertify = modules[0];
-
 
     var guid = function () {
       function s4() {
