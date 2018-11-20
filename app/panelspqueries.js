@@ -24,7 +24,7 @@ var getCustomActions = function getCustomActions() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -107,7 +107,7 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -170,7 +170,8 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
               headers: {
                 'Accept': '*/*',
                 'Content-Type': 'text/xml;charset="UTF-8"',
-                'X-Requested-With': 'XMLHttpRequest'
+                'X-Requested-With': 'XMLHttpRequest',
+
               },
               body: payload
             })
@@ -230,7 +231,7 @@ var addCustomAction = function addCustomAction() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -312,7 +313,7 @@ var removeCustomAction = function removeCustomAction() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -368,7 +369,7 @@ var addFile = function addFile() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -406,7 +407,7 @@ var getWebProperties = function getWebProperties() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -468,7 +469,7 @@ var addWebProperties = function addWebProperties() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -508,7 +509,8 @@ var addWebProperties = function addWebProperties() {
           headers: {
             'Accept': '*/*',
             'Content-Type': 'text/xml;charset="UTF-8"',
-            'X-Requested-With': 'XMLHttpRequest'
+            'X-Requested-With': 'XMLHttpRequest',
+
           },
           body: payload
         })
@@ -555,7 +557,7 @@ var updateWebProperties = function updateWebProperties() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -597,7 +599,8 @@ var updateWebProperties = function updateWebProperties() {
             headers: {
               'Accept': '*/*',
               'Content-Type': 'text/xml;charset="UTF-8"',
-              'X-Requested-With': 'XMLHttpRequest'
+              'X-Requested-With': 'XMLHttpRequest',
+
             },
             body: payload
           })
@@ -644,7 +647,7 @@ var deleteWebProperties = function deleteWebProperties() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -687,7 +690,8 @@ var deleteWebProperties = function deleteWebProperties() {
             headers: {
               'Accept': '*/*',
               'Content-Type': 'text/xml;charset="UTF-8"',
-              'X-Requested-With': 'XMLHttpRequest'
+              'X-Requested-With': 'XMLHttpRequest',
+
             },
             body: payload
           })
@@ -738,7 +742,7 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -821,7 +825,8 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
             headers: {
               'Accept': '*/*',
               'Content-Type': 'text/xml;charset="UTF-8"',
-              'X-Requested-With': 'XMLHttpRequest'
+              'X-Requested-With': 'XMLHttpRequest',
+
             },
             body: payload
           })
@@ -877,7 +882,7 @@ var getListProperties = function getListProperties() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -936,7 +941,7 @@ var getLists = function getLists() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -977,7 +982,7 @@ var addListProperties = function addListProperties() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1024,7 +1029,8 @@ var addListProperties = function addListProperties() {
       headers: {
         'Accept': '*/*',
         'Content-Type': 'text/xml;charset="UTF-8"',
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+
       },
       body: payload
     })
@@ -1056,7 +1062,7 @@ var updateListProperties = function updateListProperties() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1105,7 +1111,8 @@ var updateListProperties = function updateListProperties() {
         headers: {
           'Accept': '*/*',
           'Content-Type': 'text/xml;charset="UTF-8"',
-          'X-Requested-With': 'XMLHttpRequest'
+          'X-Requested-With': 'XMLHttpRequest',
+
         },
         body: payload
       })
@@ -1139,7 +1146,7 @@ var deleteListProperties = function deleteListProperties() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1188,7 +1195,8 @@ var deleteListProperties = function deleteListProperties() {
         headers: {
           'Accept': '*/*',
           'Content-Type': 'text/xml;charset="UTF-8"',
-          'X-Requested-With': 'XMLHttpRequest'
+          'X-Requested-With': 'XMLHttpRequest',
+
         },
         body: payload
       })
@@ -1225,7 +1233,7 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1317,7 +1325,8 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
           headers: {
             'Accept': '*/*',
             'Content-Type': 'text/xml;charset="UTF-8"',
-            'X-Requested-With': 'XMLHttpRequest'
+            'X-Requested-With': 'XMLHttpRequest',
+
           },
           body: payload
         })
@@ -1409,7 +1418,7 @@ var getSubscriptions = function getSubscriptions() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1461,7 +1470,7 @@ var addSubscriptions = function addSubscriptions() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1500,7 +1509,7 @@ var removeSubscription = function removeSubscription() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1541,7 +1550,7 @@ var updateSubscription = function updateSubscription() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1601,7 +1610,7 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1742,7 +1751,7 @@ var deleteWebpart = function deleteWebpart() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1803,7 +1812,7 @@ var getFolders = function getFolders() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1898,7 +1907,7 @@ var getFileContent = function getFileContent() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -1945,7 +1954,7 @@ var updateEditorFile = function updateEditorFile() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -2035,7 +2044,7 @@ var getApps = function getApps() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -2074,7 +2083,7 @@ var getApp = function getApp() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -2120,7 +2129,7 @@ var updateApp = function updateApp() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });
@@ -2273,7 +2282,8 @@ var getSiteCollections = function getSiteCollections() {
       headers: {
         'Accept': '*/*',
         'Content-Type': 'text/xml;charset="UTF-8"',
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+
       },
       body: payload
     })
@@ -2311,7 +2321,8 @@ var getSiteCollections = function getSiteCollections() {
             headers: {
               'Accept': '*/*',
               'Content-Type': 'text/xml;charset="UTF-8"',
-              'X-Requested-With': 'XMLHttpRequest'
+              'X-Requested-With': 'XMLHttpRequest',
+
             },
             body: payload2
           })
@@ -2429,7 +2440,8 @@ var updateSiteCollection = function updateSiteCollection() {
       headers: {
         'Accept': '*/*',
         'Content-Type': 'text/xml;charset="UTF-8"',
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+
       },
       body: payload
     })
@@ -2509,7 +2521,8 @@ var enableDisableCDN = function enableDisableCDN() {
       headers: {
         'Accept': '*/*',
         'Content-Type': 'text/xml;charset="UTF-8"',
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+
       },
       body: payload
     })
@@ -2561,7 +2574,8 @@ var addOrigin = function addOrigin() {
       headers: {
         'Accept': '*/*',
         'Content-Type': 'text/xml;charset="UTF-8"',
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+
       },
       body: payload
     })
@@ -2612,7 +2626,8 @@ var removeOrigin = function removeOrigin() {
       headers: {
         'Accept': '*/*',
         'Content-Type': 'text/xml;charset="UTF-8"',
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+
       },
       body: payload
     })
@@ -2648,7 +2663,8 @@ var updateTenantProperty = function updateTenantProperty() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2657,7 +2673,8 @@ var updateTenantProperty = function updateTenantProperty() {
           credentials: 'include',
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
-            'Content-Type': 'application/xml'
+            'Content-Type': 'application/xml',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.7206.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="4" ObjectPathId="3" /><ObjectPath Id="6" ObjectPathId="5" /><ObjectPath Id="8" ObjectPathId="7" /><Method Name="SetStorageEntity" Id="9" ObjectPathId="7"><Parameters><Parameter Type="String">' + key + '</Parameter><Parameter Type="String">' + value + '</Parameter><Parameter Type="String">' + desc + '</Parameter><Parameter Type="String">' + comm + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="3" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="5" ParentId="3" Name="GetSiteByUrl"><Parameters><Parameter Type="String">' + appCatalogUrl + '</Parameter></Parameters></Method><Property Id="7" ParentId="5" Name="RootWeb" /></ObjectPaths></Request>'
         }).then(response => {
@@ -2675,7 +2692,8 @@ var updateTenantProperty = function updateTenantProperty() {
             credentials: 'include',
             headers: {
               'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
-              'Content-Type': 'application/xml'
+              'Content-Type': 'application/xml',
+              'X-ClientService-ClientTag': 'SPEditor'
             },
             body: '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><Query Id="21" ObjectPathId="6"><Query SelectAllProperties="true"><Properties><Property Name="storageentitiesindex" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="6" ParentId="4" Name="AllProperties" /></ObjectPaths></Request>'
           }).then(response2 => {
@@ -2714,7 +2732,8 @@ var removeTenantProperty = function removeTenantProperty() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2723,7 +2742,8 @@ var removeTenantProperty = function removeTenantProperty() {
           credentials: 'include',
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
-            'Content-Type': 'application/xml'
+            'Content-Type': 'application/xml',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.7206.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="11" ObjectPathId="10" /><ObjectPath Id="13" ObjectPathId="12" /><ObjectPath Id="15" ObjectPathId="14" /><Method Name="RemoveStorageEntity" Id="16" ObjectPathId="14"><Parameters><Parameter Type="String">' + key + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="10" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="12" ParentId="10" Name="GetSiteByUrl"><Parameters><Parameter Type="String">' + appCatalogUrl + '</Parameter></Parameters></Method><Property Id="14" ParentId="12" Name="RootWeb" /></ObjectPaths></Request>'
         }).then(response => {
@@ -2742,7 +2762,8 @@ var removeTenantProperty = function removeTenantProperty() {
             credentials: 'include',
             headers: {
               'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
-              'Content-Type': 'application/xml'
+              'Content-Type': 'application/xml',
+              'X-ClientService-ClientTag': 'SPEditor'
             },
             body: '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><Query Id="21" ObjectPathId="6"><Query SelectAllProperties="true"><Properties><Property Name="storageentitiesindex" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="6" ParentId="4" Name="AllProperties" /></ObjectPaths></Request>'
           }).then(response2 => {
@@ -2777,7 +2798,8 @@ var getDesigns = function getDesigns() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2787,7 +2809,8 @@ var getDesigns = function getDesigns() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
         }).then(response => {
           return response.json();
@@ -2817,7 +2840,8 @@ var getDesign = function getDesign() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2827,7 +2851,8 @@ var getDesign = function getDesign() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: JSON.stringify({ 'id': designId }),
         }).then(response => {
@@ -2858,7 +2883,8 @@ var createDesign = function createDesign() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2868,7 +2894,8 @@ var createDesign = function createDesign() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: info,
         }).then(response => {
@@ -2899,7 +2926,8 @@ var updateDesign = function updateDesign() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2909,7 +2937,8 @@ var updateDesign = function updateDesign() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: info,
         }).then(response => {
@@ -2939,7 +2968,8 @@ var deleteDesign = function deleteDesign() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2949,7 +2979,8 @@ var deleteDesign = function deleteDesign() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: JSON.stringify({ 'id': designId }),
         }).then(response => {
@@ -2978,7 +3009,8 @@ var getScripts = function getScripts() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2988,7 +3020,8 @@ var getScripts = function getScripts() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
         }).then(response => {
           return response.json();
@@ -3017,7 +3050,8 @@ var getScript = function getScript() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -3027,7 +3061,8 @@ var getScript = function getScript() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: JSON.stringify({ 'id': scriptId }),
         }).then(response => {
@@ -3059,7 +3094,8 @@ var addScript = function addScript() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -3071,6 +3107,7 @@ var addScript = function addScript() {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
             'Content-Type': 'text/xml',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: content,
         }).then(response => {
@@ -3115,7 +3152,8 @@ var updateScript = function updateScript() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -3127,6 +3165,7 @@ var updateScript = function updateScript() {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
             'Content-Type': 'application/json;charset=utf-8',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: JSON.stringify(updateInfo),
         }).then(response => {
@@ -3157,7 +3196,8 @@ var deleteScript = function deleteScript() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -3167,7 +3207,8 @@ var deleteScript = function deleteScript() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: JSON.stringify({ 'id': scriptId }),
         }).then(response => {
@@ -3196,7 +3237,7 @@ var runSearch = function runSearch() {
       sp: {
         headers: {
           "Accept": "application/json; odata=verbose",
-          "X-ClientService-ClientTag": "SPEditor"
+
         }
       }
     });

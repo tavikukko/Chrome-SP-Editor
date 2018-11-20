@@ -3401,7 +3401,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.2.6");
+                    headers.append("X-ClientService-ClientTag", "SPEditor");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -7451,7 +7451,7 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.2.6");
+            headers.append("X-ClientService-ClientTag", "SPEditor");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service

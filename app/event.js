@@ -37,7 +37,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
           sp: {
             headers: {
               "Accept": "application/json; odata=verbose",
-              "X-ClientService-ClientTag": "SPEditor"
+
             }
           }
         });
