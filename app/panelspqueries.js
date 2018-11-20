@@ -2447,201 +2447,185 @@ var updateSiteCollection = function updateSiteCollection() {
 };
 
 // enableDisableCDN
-// TODO: refactor
 var enableDisableCDN = function enableDisableCDN() {
   var cdnType = arguments[1];
   var enable = (arguments[2] == 'true') ? 1 : 0;
 
-  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
-    var alertify = modules[0];
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
-    var guid = function () {
-      function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      }
-      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload;
+    var typeVal = cdnType == "Public" ? 0 : 1;
+    var enableVal = enable ? true : false;;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', spHostUrl + '/_api/contextinfo');
-    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        var uuid = guid();
-        var data = JSON.parse(xhr.responseText);
+    if (enable) {
+      payload = `
+          <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+            <Actions>
+              <ObjectPath Id="54" ObjectPathId="53" />
+              <Method Name="SetTenantCdnEnabled" Id="55" ObjectPathId="53">
+                <Parameters>
+                  <Parameter Type="Enum">${typeVal}</Parameter>
+                  <Parameter Type="Boolean">${enableVal}</Parameter>
+                </Parameters>
+              </Method>
+              <Method Name="CreateTenantCdnDefaultOrigins" Id="56" ObjectPathId="53">
+                <Parameters>
+                  <Parameter Type="Enum">0</Parameter>
+                </Parameters>
+              </Method>
+            </Actions>
+            <ObjectPaths>
+              <Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            </ObjectPaths>
+          </Request>
+        `;
+    }
+    else {
+      payload = `
+          <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+            <Actions>
+              <Method Name="SetTenantCdnEnabled" Id="143" ObjectPathId="140">
+              <Parameters>
+              <Parameter Type="Enum">${typeVal}</Parameter>
+              <Parameter Type="Boolean">${enableVal}</Parameter>
+              </Parameters>
+              </Method>
+            </Actions>
+            <ObjectPaths>
+              <Constructor Id="140" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            </ObjectPaths>
+          </Request>
+        `;
+    }
 
-        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-        xhr2.setRequestHeader('Content-Type', 'application/xml');
-        xhr2.setRequestHeader('SPRequestGuid', uuid);
-        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-        xhr2.onload = function () {
-          if (xhr2.status === 200) {
-            var error = JSON.parse(xhr2.responseText)[0];
-
-            if (error.ErrorInfo) {
-              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-              window.postMessage(JSON.stringify({ function: 'enableDisableCDN', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              window.postMessage(JSON.stringify({ function: 'enableDisableCDN', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-          }
-          else {
-            alertify.delay(10000).error(xhr2.responseText);
-            window.postMessage(JSON.stringify({ function: 'enableDisableCDN', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        };
-        var payload = "";
-
-        if (cdnType == "Public") {
-          if (enable) {
-            payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="54" ObjectPathId="53" /><Method Name="SetTenantCdnEnabled" Id="55" ObjectPathId="53"><Parameters><Parameter Type="Enum">0</Parameter><Parameter Type="Boolean">true</Parameter></Parameters></Method><Method Name="CreateTenantCdnDefaultOrigins" Id="56" ObjectPathId="53"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>';
-          }
-          else {
-            payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><Method Name="SetTenantCdnEnabled" Id="143" ObjectPathId="140"><Parameters><Parameter Type="Enum">0</Parameter><Parameter Type="Boolean">false</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="140" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>';
-          }
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'enableDisableCDN', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+        } else {
+          window.postMessage(JSON.stringify({ function: 'enableDisableCDN', success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }
-        else {
-          if (enable) {
-            payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="16" ObjectPathId="15" /><Method Name="SetTenantCdnEnabled" Id="17" ObjectPathId="15"><Parameters><Parameter Type="Enum">1</Parameter><Parameter Type="Boolean">true</Parameter></Parameters></Method><Method Name="CreateTenantCdnDefaultOrigins" Id="18" ObjectPathId="15"><Parameters><Parameter Type="Enum">1</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="15" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>';
-          }
-          else {
-            payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><Method Name="SetTenantCdnEnabled" Id="28" ObjectPathId="25"><Parameters><Parameter Type="Enum">1</Parameter><Parameter Type="Boolean">false</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="25" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>'
-          }
-        }
-        xhr2.send(payload);
-      }
-    };
-    xhr.send();
+      });
+
   });
 };
+
 //addOrigin
-// TODO: refactor
 var addOrigin = function addOrigin() {
   var private = arguments[1] === 'Private' ? 1 : 0;
   var origin = arguments[2];
-  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
-    var alertify = modules[0];
 
-    var guid = function () {
-      function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      }
-      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
-    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', spHostUrl + '/_api/contextinfo');
-    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload = `
+      <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+        <Actions>
+          <ObjectPath Id="54" ObjectPathId="53" />
+          <Method Name="AddTenantCdnOrigin" Id="55" ObjectPathId="53">
+            <Parameters>
+              <Parameter Type="Enum">${private}</Parameter>
+              <Parameter Type="String">${origin}</Parameter>
+            </Parameters>
+          </Method>
+        </Actions>
+        <ObjectPaths>
+          <Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+        </ObjectPaths>
+      </Request>
+    `;
 
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-
-        var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="54" ObjectPathId="53" /><Method Name="AddTenantCdnOrigin" Id="55" ObjectPathId="53"><Parameters><Parameter Type="Enum">' + private + '</Parameter><Parameter Type="String">' + origin + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>'
-        var uuid = guid();
-        var data = JSON.parse(xhr.responseText);
-
-        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-        xhr2.setRequestHeader('Content-Type', 'application/xml');
-        xhr2.setRequestHeader('SPRequestGuid', uuid);
-        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-        xhr2.onload = function () {
-          if (xhr2.status === 200) {
-            var error = JSON.parse(xhr2.responseText)[0];
-
-            if (error.ErrorInfo) {
-              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-              window.postMessage(JSON.stringify({ function: 'addOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              window.postMessage(JSON.stringify({ function: 'addOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-          }
-          else {
-            alertify.delay(10000).error(xhr2.responseText);
-            window.postMessage(JSON.stringify({ function: 'addOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        };
-
-        xhr2.send(payload);
-      }
-    };
-    xhr.send();
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'addOrigin', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+        } else {
+          window.postMessage(JSON.stringify({ function: 'addOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+        }
+      });
   });
 };
 
 // remove origin
-// TODO: refactor
 var removeOrigin = function removeOrigin() {
   var private = arguments[1] === 'Private' ? 1 : 0;
   var origin = arguments[2];
-  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
-    var alertify = modules[0];
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
-    var guid = function () {
-      function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      }
-      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
-    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', spHostUrl + '/_api/contextinfo');
-    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+    origin = origin.replace(" (configuration pending)", "");
 
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="54" ObjectPathId="53" /><Method Name="RemoveTenantCdnOrigin" Id="55" ObjectPathId="53"><Parameters><Parameter Type="Enum">' + private + '</Parameter><Parameter Type="String">' + origin + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>'
-        var uuid = guid();
-        var data = JSON.parse(xhr.responseText);
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload = `
+      <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+        <Actions>
+          <ObjectPath Id="54" ObjectPathId="53" />
+          <Method Name="RemoveTenantCdnOrigin" Id="55" ObjectPathId="53">
+            <Parameters><Parameter Type="Enum">${private}</Parameter>
+              <Parameter Type="String">${origin}</Parameter>
+            </Parameters>
+          </Method>
+        </Actions>
+        <ObjectPaths>
+          <Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+        </ObjectPaths>
+      </Request>
+    `;
 
-        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'removeOrigin', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+        } else {
+          window.postMessage(JSON.stringify({ function: 'removeOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+        }
+      });
 
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-        xhr2.setRequestHeader('Content-Type', 'application/xml');
-        xhr2.setRequestHeader('SPRequestGuid', uuid);
-        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-        xhr2.onload = function () {
-          if (xhr2.status === 200) {
-            var error = JSON.parse(xhr2.responseText)[0];
-
-            if (error.ErrorInfo) {
-              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-              window.postMessage(JSON.stringify({ function: 'removeOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              window.postMessage(JSON.stringify({ function: 'removeOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-          }
-          else {
-            alertify.delay(10000).error(xhr2.responseText);
-            window.postMessage(JSON.stringify({ function: 'removeOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        };
-        xhr2.send(payload);
-      }
-    };
-    xhr.send();
   });
 };
 
