@@ -88,17 +88,3 @@ function addscriptlink(scope, scriptsequence, scriptpath) {
     script += " exescript(addCustomAction, '" + scope + "', '" + scriptpath + "', '" + scriptsequence + "');";
     chrome.devtools.inspectedWindow.eval(script);
 }
-
-function updatesearchschemaforweb(recursive, propName, propVal) {
-  if (!recursive) {
-    if (propVal == 0) {
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addWebProperties;
-      script += " exescript(addWebProperties, 'vti_x005f_searchversion', '0');";
-      chrome.devtools.inspectedWindow.eval(script);
-    } else {
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateWebProperties;
-      script += " exescript(updateWebProperties, 'vti_x005f_searchversion', '" + propVal + "');";
-      chrome.devtools.inspectedWindow.eval(script);
-    }
-  }
-}
