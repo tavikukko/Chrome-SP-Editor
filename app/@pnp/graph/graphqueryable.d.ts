@@ -18,6 +18,18 @@ export declare class GraphQueryable<GetType = any> extends ODataQueryable<GraphB
      */
     constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    select(...selects: string[]): this;
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    expand(...expands: string[]): this;
+    /**
      * Creates a new instance of the supplied factory and extends this into that new instance
      *
      * @param factory constructor for the new queryable
@@ -63,18 +75,6 @@ export declare class GraphQueryableCollection<GetType = any[]> extends GraphQuer
      */
     filter(filter: string): this;
     /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    select(...selects: string[]): this;
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    expand(...expands: string[]): this;
-    /**
      * Orders based on the supplied fields
      *
      * @param orderby The name of the field on which to sort
@@ -113,16 +113,13 @@ export declare class GraphQueryableSearchableCollection extends GraphQueryableCo
  *
  */
 export declare class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetType> {
-    /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    select(...selects: string[]): this;
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    expand(...expands: string[]): this;
 }
+/**
+ * Decorator used to specify the default path for Queryable objects
+ *
+ * @param path
+ */
+export declare function defaultPath(path: string): <T extends new (...args: any[]) => {}>(target: T) => {
+    new (...args: any[]): {};
+} & T;
+//# sourceMappingURL=graphqueryable.d.ts.map

@@ -1,11 +1,8 @@
-import { Dictionary, FetchOptions, ConfigOptions } from "@pnp/common";
+import { FetchOptions, ConfigOptions } from "@pnp/common";
 import { ODataParser } from "./parsers";
 import { ICachingOptions } from "./caching";
 import { ODataBatch } from "./odatabatch";
 import { RequestContext } from "./pipeline";
-export declare class AlreadyInBatchException extends Error {
-    constructor(msg?: string);
-}
 export declare abstract class Queryable<GetType> {
     /**
      * Additional options to be set before sending actual http request
@@ -14,7 +11,7 @@ export declare abstract class Queryable<GetType> {
     /**
      * Tracks the query parts of the url
      */
-    protected _query: Dictionary<string>;
+    protected _query: Map<string, string>;
     /**
      * Tracks the url as it is built
      */
@@ -31,6 +28,14 @@ export declare abstract class Queryable<GetType> {
      * Any options that were supplied when caching was enabled
      */
     protected _cachingOptions: ICachingOptions | null;
+    /**
+     * Flag used to indicate if the object from which this was cloned's _usingCaching flag was true
+     */
+    protected _cloneParentWasCaching: boolean;
+    /**
+     * The cache options from the clone parent if it was caching
+     */
+    protected _cloneParentCacheOptions: ICachingOptions | null;
     constructor();
     /**
      * Gets the full url with query information
@@ -52,7 +57,7 @@ export declare abstract class Queryable<GetType> {
      * Provides access to the query builder for this url
      *
      */
-    readonly query: Dictionary<string>;
+    readonly query: Map<string, string>;
     /**
      * Sets custom options for current object and all derived objects accessible via chaining
      *
@@ -94,6 +99,12 @@ export declare abstract class Queryable<GetType> {
      * @param path Additional path
      */
     protected extend(parent: Queryable<any>, path?: string): void;
+    /**
+     * Configures a cloned object from this instance
+     *
+     * @param clone
+     */
+    protected _clone(clone: Queryable<any>, _0: any): any;
     /**
      * Converts the current instance to a request context
      *
@@ -153,4 +164,13 @@ export declare abstract class ODataQueryable<BatchType extends ODataBatch, GetTy
      *
      */
     protected readonly batch: BatchType | null;
+    /**
+     * Configures a cloned object from this instance
+     *
+     * @param clone
+     */
+    protected _clone(clone: ODataQueryable<any, any>, cloneSettings: {
+        includeBatch: boolean;
+    }): any;
 }
+//# sourceMappingURL=queryable.d.ts.map

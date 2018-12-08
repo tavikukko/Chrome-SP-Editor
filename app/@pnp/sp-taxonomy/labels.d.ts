@@ -81,3 +81,4 @@ export declare class Label extends ClientSvcQueryable implements ILabel {
      */
     delete(): Promise<void>;
 }
+//# sourceMappingURL=labels.d.ts.map

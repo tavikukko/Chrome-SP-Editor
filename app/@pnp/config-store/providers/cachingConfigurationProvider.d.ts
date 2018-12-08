@@ -28,5 +28,6 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
      * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
      */
     getConfiguration(): Promise<TypedHash<string>>;
-    private selectPnPCache();
+    private selectPnPCache;
 }
+//# sourceMappingURL=cachingConfigurationProvider.d.ts.map

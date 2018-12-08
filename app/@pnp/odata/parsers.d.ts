@@ -1,20 +1,18 @@
-/**
- * Represents an exception with an HttpClient request
- *
- */
-export declare class ProcessHttpClientResponseException extends Error {
-    readonly status: number;
-    readonly statusText: string;
-    readonly data: any;
-    constructor(status: number, statusText: string, data: any);
-}
 export interface ODataParser<T> {
     hydrate?: (d: any) => T;
     parse(r: Response): Promise<T>;
 }
+export declare class HttpRequestError extends Error {
+    response: Response;
+    status: number;
+    statusText: string;
+    isHttpRequestError: boolean;
+    constructor(message: string, response: Response, status?: number, statusText?: string);
+    static init(r: Response): Promise<HttpRequestError>;
+}
 export declare abstract class ODataParserBase<T> implements ODataParser<T> {
     parse(r: Response): Promise<T>;
-    protected parseImpl(r: Response, resolve: (value?: T | PromiseLike<T>) => void, reject: (value?: T | PromiseLike<T>) => void): void;
+    protected parseImpl(r: Response, resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: Error) => void): void;
     /**
      * Handles a response with ok === false by parsing the body and creating a ProcessHttpClientResponseException
      * which is passed to the reject delegate. This method returns true if there is no error, otherwise false
@@ -22,7 +20,7 @@ export declare abstract class ODataParserBase<T> implements ODataParser<T> {
      * @param r Current response object
      * @param reject reject delegate for the surrounding promise
      */
-    protected handleError(r: Response, reject: (reason?: any) => void): boolean;
+    protected handleError(r: Response, reject: (err?: Error) => void): boolean;
     /**
      * Normalizes the json response by removing the various nested levels
      *
@@ -44,8 +42,9 @@ export declare class JSONParser extends ODataParserBase<any> {
 export declare class BufferParser extends ODataParserBase<ArrayBuffer> {
     protected parseImpl(r: Response, resolve: (value: any) => void): void;
 }
-export declare class LambdaParser<T = any> implements ODataParser<T> {
+export declare class LambdaParser<T = any> extends ODataParserBase<T> {
     private parser;
     constructor(parser: (r: Response) => Promise<T>);
-    parse(r: Response): Promise<T>;
+    protected parseImpl(r: Response, resolve: (value: any) => void): void;
 }
+//# sourceMappingURL=parsers.d.ts.map

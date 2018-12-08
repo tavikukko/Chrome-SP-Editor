@@ -1,4 +1,4 @@
-import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableInstance } from "./sharepointqueryable";
 import { Web } from "./webs";
 import { UserCustomActions } from "./usercustomactions";
 import { ContextInfo, DocumentLibraryInformation } from "./types";
@@ -9,12 +9,6 @@ import { Features } from "./features";
  *
  */
 export declare class Site extends SharePointQueryableInstance {
-    /**
-     * Creates a new instance of the Site class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this site collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets the root web of the site collection
      *
@@ -62,6 +56,50 @@ export declare class Site extends SharePointQueryableInstance {
      * @param webId The GUID id of the web to open
      */
     openWebById(webId: string): Promise<OpenWebByIdResult>;
+    /**
+     * Associates a site collection to a hub site.
+     *
+     * @param siteId Id of the hub site collection you want to join.
+     * If you want to disassociate the site collection from hub site, then
+     * pass the siteId as 00000000-0000-0000-0000-000000000000
+     */
+    joinHubSite(siteId: string): Promise<void>;
+    /**
+     * Registers the current site collection as hub site collection
+     */
+    registerHubSite(): Promise<void>;
+    /**
+     * Unregisters the current site collection as hub site collection.
+     */
+    unRegisterHubSite(): Promise<void>;
+    /**
+     * Creates a Modern communication site.
+     *
+     * @param title The title of the site to create
+     * @param lcid The language to use for the site. If not specified will default to 1033 (English).
+     * @param shareByEmailEnabled If set to true, it will enable sharing files via Email. By default it is set to false
+     * @param url The fully qualified URL (e.g. https://yourtenant.sharepoint.com/sites/mysitecollection) of the site.
+     * @param description The description of the communication site.
+     * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
+     * @param siteDesignId The Guid of the site design to be used.
+     *                     You can use the below default OOTB GUIDs:
+     *                     Topic: null
+     *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
+     *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
+     */
+    createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: "", classification?: "", siteDesignId?: ""): Promise<void>;
+    /**
+     * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
+     *
+     * @param displayName The title or display name of the Modern team site to be created
+     * @param alias Alias of the underlying Office 365 Group
+     * @param isPublic Defines whether the Office 365 Group will be public (default), or private.
+     * @param lcid The language to use for the site. If not specified will default to English (1033).
+     * @param description The description of the site to be created.
+     * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
+     * @param owners The Owners of the site to be created
+     */
+    createModernTeamSite(displayName: string, alias: string, isPublic?: boolean, lcid?: number, description?: string, classification?: string, owners?: string[]): Promise<void>;
 }
 /**
  * The result of opening a web by id: contains the data returned as well as a chainable web instance
@@ -70,3 +108,4 @@ export interface OpenWebByIdResult {
     data: any;
     web: Web;
 }
+//# sourceMappingURL=site.d.ts.map

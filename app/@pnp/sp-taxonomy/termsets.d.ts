@@ -106,3 +106,4 @@ export declare class TermSet extends ClientSvcQueryable implements ITermSet {
      */
     update(properties: TermSetUpdateProps): Promise<ITermSetData & ITermSet>;
 }
+//# sourceMappingURL=termsets.d.ts.map

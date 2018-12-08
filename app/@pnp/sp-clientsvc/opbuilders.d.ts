@@ -8,6 +8,7 @@ export interface IMethodParamsBuilder {
     string(value: string): this;
     number(value: number): this;
     boolean(value: boolean): this;
+    strArray(values: string[]): this;
     objectPath(inputIndex: number): this;
     toArray(): {
         type: PropertyType;
@@ -30,11 +31,13 @@ export declare class MethodParams implements IMethodParamsBuilder {
     string(value: string): this;
     number(value: number): this;
     boolean(value: boolean): this;
+    strArray(values: string[]): this;
     objectPath(inputIndex: number): this;
     toArray(): {
         type: PropertyType;
         value: string;
     }[];
-    private a(type, value);
+    private a;
 }
 export declare function method(name: string, params: IMethodParamsBuilder, ...actions: string[]): IObjectPath;
+//# sourceMappingURL=opbuilders.d.ts.map

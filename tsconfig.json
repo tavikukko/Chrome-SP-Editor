@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "baseUrl": "./",
+    "paths": {
+     "@pnp/common": ["app/@pnp/common"],
+     "@pnp/config-store": ["app/@pnp/config-store"],
+     "@pnp/graph": ["app/@pnp/graph"],
+     "@pnp/logging": ["app/@pnp/logging"],
+     "@pnp/nodejs": ["app/@pnp/nodejs"],
+     "@pnp/odata": ["app/@pnp/odata"],
+     "@pnp/pnpjs": ["app/@pnp/pnpjs"],
+     "@pnp/sp": ["app/@pnp/sp"],
+     "@pnp/sp-addinhelpers": ["app/@pnp/sp-addinhelpers"],
+     "@pnp/sp-clientsvc": ["app/@pnp/sp-clientsvc"],
+     "@pnp/sp-taxonomy": ["app/@pnp/sp-taxonomy"],
+     }
+  }
+}

@@ -1,8 +1,8 @@
-import { FetchOptions, RequestClient } from "@pnp/common";
+import { FetchOptions, RequestClient, HttpClientImpl } from "@pnp/common";
 export declare class SPHttpClient implements RequestClient {
-    private _digestCache;
     private _impl;
-    constructor();
+    private _digestCache;
+    constructor(_impl?: HttpClientImpl);
     fetch(url: string, options?: FetchOptions): Promise<Response>;
     fetchRaw(url: string, options?: FetchOptions): Promise<Response>;
     get(url: string, options?: FetchOptions): Promise<Response>;
@@ -10,3 +10,4 @@ export declare class SPHttpClient implements RequestClient {
     patch(url: string, options?: FetchOptions): Promise<Response>;
     delete(url: string, options?: FetchOptions): Promise<Response>;
 }
+//# sourceMappingURL=sphttpclient.d.ts.map

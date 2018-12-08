@@ -1,4 +1,4 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SiteGroups } from "./sitegroups";
 import { BasePermissions } from "./types";
 import { TypedHash } from "@pnp/common";
@@ -8,11 +8,11 @@ import { TypedHash } from "@pnp/common";
  */
 export declare class RoleAssignments extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the RoleAssignments class
+     * Gets the role assignment associated with the specified principal id from the collection.
      *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this role assignments collection
+     * @param id The id of the role assignment
      */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
+    getById(id: number): RoleAssignment;
     /**
      * Adds a new role assignment with the specified principal and role definitions to the collection
      *
@@ -29,12 +29,6 @@ export declare class RoleAssignments extends SharePointQueryableCollection {
      *
      */
     remove(principalId: number, roleDefId: number): Promise<void>;
-    /**
-     * Gets the role assignment associated with the specified principal id from the collection.
-     *
-     * @param id The id of the role assignment
-     */
-    getById(id: number): RoleAssignment;
 }
 /**
  * Describes a role assignment
@@ -55,20 +49,13 @@ export declare class RoleAssignment extends SharePointQueryableInstance {
      * Deletes this role assignment
      *
      */
-    delete(): Promise<void>;
+    delete: () => Promise<void>;
 }
 /**
  * Describes a collection of role definitions
  *
  */
 export declare class RoleDefinitions extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the RoleDefinitions class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this role definitions collection
-     *
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets the role definition with the specified id from the collection
      *
@@ -107,16 +94,16 @@ export declare class RoleDefinitions extends SharePointQueryableCollection {
  */
 export declare class RoleDefinition extends SharePointQueryableInstance {
     /**
+     * Deletes this role definition
+     *
+     */
+    delete: () => Promise<void>;
+    /**
      * Updates this role definition with the supplied properties
      *
      * @param properties A plain object hash of values to update for the role definition
      */
     update(properties: TypedHash<any>): Promise<RoleDefinitionUpdateResult>;
-    /**
-     * Deletes this role definition
-     *
-     */
-    delete(): Promise<void>;
 }
 /**
  * Result from updating a role definition
@@ -139,10 +126,5 @@ export interface RoleDefinitionAddResult {
  *
  */
 export declare class RoleDefinitionBindings extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the RoleDefinitionBindings class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this role definition bindings collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
 }
+//# sourceMappingURL=roles.d.ts.map

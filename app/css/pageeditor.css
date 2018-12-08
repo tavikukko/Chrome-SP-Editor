@@ -428,3 +428,21 @@ input:checked + .mslider:before {
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
+#accordion .glyphicon { margin-right:10px; }
+.panel-collapse>.list-group .list-group-item:first-child {border-top-right-radius: 0;border-top-left-radius: 0;}
+.panel-collapse>.list-group .list-group-item {border-width: 1px 0;}
+.panel-collapse>.list-group {margin-bottom: 0;}
+.panel-collapse .list-group-item {border-radius:0;}
+
+.table {
+  margin-bottom: 0px;
+}
+
+.key {
+  font-weight: bold;
+}
+
+.is-breakable {
+  word-break: break-word;
+}

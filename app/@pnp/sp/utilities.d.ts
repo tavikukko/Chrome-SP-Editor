@@ -17,11 +17,15 @@ export interface UtilityMethods {
     createEmailBodyForInvitation(pageAddress: string): Promise<string>;
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<PrincipalInfo[]>;
     createWikiPage(info: WikiPageCreationInformation): Promise<CreateWikiPageResult>;
+    containsInvalidFileFolderChars(input: string, onPremise?: boolean): boolean;
+    stripInvalidFileFolderChars(input: string, replacer?: string, onPremise?: boolean): string;
 }
 /**
  * Allows for calling of the static SP.Utilities.Utility methods by supplying the method name
  */
 export declare class UtilityMethod extends SharePointQueryable implements UtilityMethods {
+    private static readonly InvalidFileFolderNameCharsOnlineRegex;
+    private static readonly InvalidFileFolderNameCharsOnPremiseRegex;
     /**
      * Creates a new instance of the Utility method class
      *
@@ -29,7 +33,7 @@ export declare class UtilityMethod extends SharePointQueryable implements Utilit
      * @param methodName The static method name to call on the utility class
      */
     constructor(baseUrl: string | SharePointQueryable, methodName: string);
-    private static getBaseUrl(candidate);
+    private static getBaseUrl;
     excute<T>(props: any): Promise<T>;
     /**
      * Sends an email based on the supplied properties
@@ -43,8 +47,26 @@ export declare class UtilityMethod extends SharePointQueryable implements Utilit
     createEmailBodyForInvitation(pageAddress: string): Promise<string>;
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<PrincipalInfo[]>;
     createWikiPage(info: WikiPageCreationInformation): Promise<CreateWikiPageResult>;
+    /**
+     * Checks if file or folder name contains invalid characters
+     *
+     * @param input File or folder name to check
+     * @param onPremise Set to true for SharePoint On-Premise
+     * @returns True if contains invalid chars, false otherwise
+     */
+    containsInvalidFileFolderChars(input: string, onPremise?: boolean): boolean;
+    /**
+     * Removes invalid characters from file or folder name
+     *
+     * @param input File or folder name
+     * @param replacer Value that will replace invalid characters
+     * @param onPremise Set to true for SharePoint On-Premise
+     * @returns File or folder name with replaced invalid characters
+     */
+    stripInvalidFileFolderChars(input: string, replacer?: string, onPremise?: boolean): string;
 }
 export interface CreateWikiPageResult {
     data: any;
     file: File;
 }
+//# sourceMappingURL=utilities.d.ts.map

@@ -1,5 +1,6 @@
 import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { MenuNodeCollection } from "./types";
+import { TypedHash } from "@pnp/common";
 /**
  * Result from adding a navigation node
  *
@@ -48,18 +49,22 @@ export declare class NavigationNode extends SharePointQueryableInstance {
      * Deletes this node and any child nodes
      */
     delete(): Promise<void>;
+    /**
+     * Updates this node
+     *
+     * @param properties Properties used to update this node
+     */
+    update(properties: TypedHash<string | number | boolean>): Promise<NavNodeUpdateResult>;
+}
+export interface NavNodeUpdateResult {
+    data: any;
+    node: NavigationNode;
 }
 /**
  * Exposes the navigation components
  *
  */
 export declare class Navigation extends SharePointQueryable {
-    /**
-     * Creates a new instance of the Navigation class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of these navigation components
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets the quicklaunch navigation nodes for the current context
      *
@@ -97,3 +102,4 @@ export declare class NavigationService extends SharePointQueryable implements IN
      */
     getMenuNodeKey(currentUrl: string, mapProviderName?: string): Promise<string>;
 }
+//# sourceMappingURL=navigation.d.ts.map

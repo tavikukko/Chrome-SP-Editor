@@ -20,3 +20,4 @@ export declare class ProcessQueryParser<T = any> {
      */
     protected getParsedResultById<R = any>(parsed: any[], id: number): R;
 }
+//# sourceMappingURL=parsers.d.ts.map

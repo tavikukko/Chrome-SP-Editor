@@ -117,12 +117,6 @@ export declare class ObjectPathQueue {
      * Gets the index of the Current context in the queue, can be used to establish parent -> child rels
      */
     readonly contextIndex: number;
-    /**
-     * Generates a ~unique hash code for this ObjectPathQueue
-     *
-     * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
-     */
-    hash(): number;
     toBody(): string;
     /**
      * Conducts the string replacements for id, parent id, and path id
@@ -135,3 +129,4 @@ export declare class ObjectPathQueue {
      */
     protected dirty(): void;
 }
+//# sourceMappingURL=objectpath.d.ts.map

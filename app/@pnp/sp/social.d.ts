@@ -1,4 +1,4 @@
-import { SharePointQueryable, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableInstance } from "./sharepointqueryable";
 export interface SocialMethods {
     my: MySocialQueryMethods;
     getFollowedSitesUri(): Promise<string>;
@@ -11,12 +11,6 @@ export interface SocialMethods {
  * Exposes social following methods
  */
 export declare class SocialQuery extends SharePointQueryableInstance implements SocialMethods {
-    /**
-     * Creates a new instance of the SocialQuery class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this social query
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     readonly my: MySocialQueryMethods;
     /**
      * Gets a URI to a site that lists the current user's followed sites.
@@ -49,7 +43,7 @@ export declare class SocialQuery extends SharePointQueryableInstance implements 
      *
      * @param actorInfo The actor to create request body
      */
-    private createSocialActorInfoRequestBody(actorInfo);
+    private createSocialActorInfoRequestBody;
 }
 /**
  * Defines the public methods exposed by the my endpoint
@@ -81,12 +75,6 @@ export interface MySocialQueryMethods {
     suggestions(): Promise<SocialActor[]>;
 }
 export declare class MySocialQuery extends SharePointQueryableInstance implements MySocialQueryMethods {
-    /**
-     * Creates a new instance of the SocialQuery class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this social query
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets users, documents, sites, and tags that the current user is following.
      *
@@ -127,7 +115,7 @@ export declare const enum SocialActorType {
     User = 0,
     Document = 1,
     Site = 2,
-    Tag = 3,
+    Tag = 3
 }
 /**
  * Social actor type
@@ -150,7 +138,7 @@ export declare const enum SocialActorTypes {
     /**
      * The set includes only items created within the last 24 hours
      */
-    WithinLast24Hours = 1073741824,
+    WithinLast24Hours = 1073741824
 }
 /**
  * Result from following
@@ -160,7 +148,7 @@ export declare const enum SocialFollowResult {
     Ok = 0,
     AlreadyFollowing = 1,
     LimitReached = 2,
-    InternalError = 3,
+    InternalError = 3
 }
 /**
  * Specifies an exception or status code.
@@ -241,7 +229,7 @@ export declare const enum SocialStatusCode {
     /**
      * The operation failed because the server could not access the database.
      */
-    DatabaseError = 18,
+    DatabaseError = 18
 }
 export interface SocialActor {
     /**
@@ -321,3 +309,4 @@ export interface MySocialData {
     MyFollowedDocumentsUri: string;
     MyFollowedSitesUri: string;
 }
+//# sourceMappingURL=social.d.ts.map

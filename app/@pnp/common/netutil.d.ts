@@ -34,7 +34,8 @@ export declare class FetchClient implements HttpClientImpl {
  */
 export declare class BearerTokenFetchClient extends FetchClient {
     private _token;
-    constructor(_token: string);
+    constructor(_token: string | null);
     token: string;
     fetch(url: string, options?: FetchOptions): Promise<Response>;
 }
+//# sourceMappingURL=netutil.d.ts.map

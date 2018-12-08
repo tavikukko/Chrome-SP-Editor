@@ -1,3 +1,3 @@
 export * from "./configuration";
 export * from "./providers/index";
-export * from "./exceptions";
+//# sourceMappingURL=configstore.d.ts.map

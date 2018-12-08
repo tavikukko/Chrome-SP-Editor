@@ -6,3 +6,4 @@ export * from "./opbuilders";
 export * from "./parsers";
 export * from "./types";
 export * from "./utils";
+//# sourceMappingURL=clientsvc.d.ts.map

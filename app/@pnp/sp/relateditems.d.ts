@@ -32,7 +32,6 @@ export interface RelatedItemManger {
     deleteSingleLink(sourceListName: string, sourceItemId: number, sourceWebUrl: string, targetListName: string, targetItemId: number, targetWebUrl: string, tryDeleteReverseLink?: boolean): Promise<void>;
 }
 export declare class RelatedItemManagerImpl extends SharePointQueryable implements RelatedItemManger {
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     static FromUrl(url: string): RelatedItemManagerImpl;
     getRelatedItems(sourceListName: string, sourceItemId: number): Promise<RelatedItem[]>;
     getPageOneRelatedItems(sourceListName: string, sourceItemId: number): Promise<RelatedItem[]>;
@@ -57,3 +56,4 @@ export declare class RelatedItemManagerImpl extends SharePointQueryable implemen
     addSingleLinkFromUrl(sourceItemUrl: string, targetListName: string, targetItemId: number, tryAddReverseLink?: boolean): Promise<void>;
     deleteSingleLink(sourceListName: string, sourceItemId: number, sourceWebUrl: string, targetListName: string, targetItemId: number, targetWebUrl: string, tryDeleteReverseLink?: boolean): Promise<void>;
 }
+//# sourceMappingURL=relateditems.d.ts.map

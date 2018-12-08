@@ -1,5 +1,5 @@
 import { TypedHash } from "./collections";
-import { ISPFXContext } from "./spfxContextInterface";
+import { ISPFXContext } from "./spfxcontextinterface";
 export interface LibraryConfiguration {
     /**
      * Allows caching to be global disabled, default: false
@@ -29,7 +29,7 @@ export interface LibraryConfiguration {
 export declare function setup(config: LibraryConfiguration): void;
 export declare class RuntimeConfigImpl {
     private _v;
-    constructor();
+    constructor(_v?: Map<string, any>);
     /**
      *
      * @param config The set of properties to add to the globa configuration instance
@@ -44,3 +44,4 @@ export declare class RuntimeConfigImpl {
     readonly spfxContext: ISPFXContext;
 }
 export declare let RuntimeConfig: RuntimeConfigImpl;
+//# sourceMappingURL=libconfig.d.ts.map

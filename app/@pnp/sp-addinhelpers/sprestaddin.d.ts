@@ -22,6 +22,7 @@ export declare class SPRestAddIn extends SPRest {
      * @param hostWebUrl The absolute url of the host web
      * @param urlPart String part to append to the url "site" | "web"
      */
-    private _cdImpl<T>(factory, addInWebUrl, hostWebUrl, urlPart);
+    private _cdImpl;
 }
 export declare const sp: SPRestAddIn;
+//# sourceMappingURL=sprestaddin.d.ts.map

@@ -9,12 +9,6 @@ import { Item } from "./items";
  */
 export declare class Folders extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the Folders class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
-    /**
      * Gets a folder by folder name
      *
      */
@@ -72,7 +66,7 @@ export declare class Folder extends SharePointQueryableShareableFolder {
      *
      */
     readonly uniqueContentTypeOrder: SharePointQueryableCollection;
-    update(properties: TypedHash<string | number | boolean>): Promise<FolderUpdateResult>;
+    update: (props: TypedHash<string | number | boolean>) => Promise<FolderUpdateResult>;
     /**
     * Delete this folder
     *
@@ -102,3 +96,4 @@ export interface FolderUpdateResult {
     folder: Folder;
     data: any;
 }
+//# sourceMappingURL=folders.d.ts.map

@@ -1,4 +1,4 @@
-var pnp = "var speditorpnp = '" + chrome.extension.getURL('app/js/pnp.js') + "';";
+var pnp = "var speditorpnp = '" + chrome.extension.getURL('app/js/pnpjs.es5.umd.bundle.js') + "';";
 var sj = "var sj = '" + chrome.extension.getURL('app/js/system.js') + "';";
 var alertify = "var alertify = '" + chrome.extension.getURL('app/js/alertify.js') + "';";
 
@@ -23,7 +23,8 @@ var getCustomActions = function getCustomActions() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -91,6 +92,122 @@ var getCustomActions = function getCustomActions() {
   });
 };
 
+/**
+ * updateSchemaForWeb
+ *
+ * This function is used on "Search" tab to force a reindexing of a web
+ */
+var updateSchemaForWeb = function updateSchemaForWeb() {
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose",
+
+        }
+      }
+    });
+
+    alertify.logPosition('bottom right');
+    alertify.maxLogItems(2);
+
+    $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then((result) => {
+
+      var allProps = [];
+      for (aProp in result.AllProperties) {
+        allProps.push({ prop: aProp.replace(/_x005f_/g, '_').replace(/OData_/g, ''), value: result.AllProperties[aProp] });
+      }
+      var prop = 'vti_searchversion';
+      var value = 0;
+
+      var searchversion = allProps.filter((el) => {
+        return el.prop === "vti_searchversion";
+      });
+
+      if (searchversion.length > 0) {
+        value = parseInt(searchversion[0].value);
+        value = value + 1;
+      }
+
+      alertify.logPosition('bottom right');
+      alertify.maxLogItems(2);
+
+      alertify.confirm("Really want to reindex current web?\n<i>" + _spPageContextInfo.webAbsoluteUrl + "</i>", () => {
+
+        alertify.delay(5000).log("Updating " + prop + " webproperty with value " + value);
+
+        var webid = "";
+        var siteid = "";
+        $pnp.sp.site.get().then((data) => {
+          siteid = data.Id;
+          $pnp.sp.web.get().then((data) => {
+            webid = data.Id;
+
+            var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+            var payload = `
+              <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+                <Actions>
+                  <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                    <Parameters>
+                      <Parameter Type="String">${prop}</Parameter>
+                      <Parameter Type="String">${value}</Parameter>
+                    </Parameters>
+                  </Method>
+                  <Method Name="Update" Id="10" ObjectPathId="2" />
+                </Actions>
+                <ObjectPaths>
+                  <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+                  <Property Id="4" ParentId="2" Name="AllProperties" />
+                </ObjectPaths>
+              </Request>`;
+
+            var client = new $pnp.SPHttpClient();
+            client.post(endpoint, {
+              headers: {
+                'Accept': '*/*',
+                'Content-Type': 'text/xml;charset="UTF-8"',
+                'X-Requested-With': 'XMLHttpRequest',
+
+              },
+              body: payload
+            })
+              .then((r) => { return r.json(); })
+              .then((r) => {
+                if (r[0].ErrorInfo) {
+                  alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+                  window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+                } else {
+                  alertify.delay(5000).success("Property updated successfully!");
+                  window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+                }
+              });
+
+          }).catch((error) => {
+            if (error.data.responseBody.hasOwnProperty('error'))
+              alertify.delay(10000).error(error.data.responseBody.error.message.value);
+            else
+              alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+            window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+          });
+        }).catch((error) => {
+          alertify.delay(10000).error(error.data.responseBody.error.message.value);
+          window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+        });
+
+      }, () => {
+        // user clicked "cancel"
+      });
+
+    }).catch((error) => {
+      window.postMessage(JSON.stringify({ function: 'updateSchemaForWeb', success: false, result: error, source: 'chrome-sp-editor' }), '*');
+    });
+  });
+};
+
 var addCustomAction = function addCustomAction() {
 
   var scope = arguments[1];
@@ -113,7 +230,8 @@ var addCustomAction = function addCustomAction() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -194,7 +312,8 @@ var removeCustomAction = function removeCustomAction() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -249,7 +368,8 @@ var addFile = function addFile() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -286,7 +406,8 @@ var getWebProperties = function getWebProperties() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -340,14 +461,15 @@ var addWebProperties = function addWebProperties() {
   var prop = arguments[1];
   var value = arguments[2];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -359,68 +481,58 @@ var addWebProperties = function addWebProperties() {
 
     var webid = "";
     var siteid = "";
-    $pnp.sp.site.get().then(function (data) {
+    $pnp.sp.site.get().then((data) => {
       siteid = data.Id;
-      $pnp.sp.web.get().then(function (data) {
+      $pnp.sp.web.get().then((data) => {
         webid = data.Id;
-        var guid = function () {
-          function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-          }
-          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        }
 
-        var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+        var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+        var payload = `
+          <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+            <Actions>
+              <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                <Parameters>
+                  <Parameter Type="String">${prop}</Parameter>
+                  <Parameter Type="String">${value}</Parameter>
+                </Parameters>
+              </Method>
+              <Method Name="Update" Id="10" ObjectPathId="2" />
+            </Actions>
+            <ObjectPaths>
+              <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+              <Property Id="4" ParentId="2" Name="AllProperties" />
+            </ObjectPaths>
+          </Request>`;
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', spHostUrl + '/_api/contextinfo');
-        xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            var uuid = guid();
-            var data = JSON.parse(xhr.responseText);
+        var client = new $pnp.SPHttpClient();
+        client.post(endpoint, {
+          headers: {
+            'Accept': '*/*',
+            'Content-Type': 'text/xml;charset="UTF-8"',
+            'X-Requested-With': 'XMLHttpRequest',
 
-            var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-            var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-            xhr2.setRequestHeader('Content-Type', 'application/xml');
-            xhr2.setRequestHeader('SPRequestGuid', uuid);
-            xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-            xhr2.onload = function () {
-              if (xhr2.status === 200) {
-                var error = JSON.parse(xhr2.responseText)[0];
-                if (error.ErrorInfo) {
-                  alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                  window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                }
-                else {
-                  alertify.delay(5000).success("Property added successfully!");
-                  window.postMessage(JSON.stringify({ function: 'addWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                }
-              }
-              else {
-                alertify.delay(10000).error(xhr2.responseText);
-                window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-              }
+          },
+          body: payload
+        })
+          .then((r) => { return r.json(); })
+          .then((r) => {
+            if (r[0].ErrorInfo) {
+              alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+              window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+            } else {
+              alertify.delay(5000).success("Property added successfully!");
+              window.postMessage(JSON.stringify({ function: 'addWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }
-              ;
-            var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-            xhr2.send(payload);
-          }
-        }
-          ;
-        xhr.send();
+          });
 
-      }).catch(function (error) {
+      }).catch((error) => {
         if (error.data.responseBody.hasOwnProperty('error'))
           alertify.delay(10000).error(error.data.responseBody.error.message.value);
         else
           alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
-    }).catch(function (error) {
+    }).catch((error) => {
       if (error.data.responseBody.hasOwnProperty('error'))
         alertify.delay(10000).error(error.data.responseBody.error.message.value);
       else
@@ -437,14 +549,15 @@ var updateWebProperties = function updateWebProperties() {
   var prop = arguments[1];
   var value = arguments[2];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -452,7 +565,7 @@ var updateWebProperties = function updateWebProperties() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    alertify.confirm("Really want to update <b>" + prop + "</b> property?", function () {
+    alertify.confirm("Really want to update <b>" + prop + "</b> property?", () => {
 
       alertify.delay(5000).log("Updating " + prop + " webproperty...");
 
@@ -462,63 +575,54 @@ var updateWebProperties = function updateWebProperties() {
         siteid = data.Id;
         $pnp.sp.web.get().then(function (data) {
           webid = data.Id;
-          var guid = function () {
-            function s4() {
-              return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            }
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-          }
 
-          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+          var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+          var payload = `
+            <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+              <Actions>
+                <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                  <Parameters>
+                    <Parameter Type="String">${prop}</Parameter>
+                    <Parameter Type="String">${value}</Parameter>
+                  </Parameters>
+                </Method>
+                <Method Name="Update" Id="10" ObjectPathId="2" />
+              </Actions>
+              <ObjectPaths>
+                <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+                <Property Id="4" ParentId="2" Name="AllProperties" />
+              </ObjectPaths>
+            </Request>`;
 
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', spHostUrl + '/_api/contextinfo');
-          xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-          xhr.onload = function () {
-            if (xhr.status === 200) {
-              var uuid = guid();
-              var data = JSON.parse(xhr.responseText);
+          var client = new $pnp.SPHttpClient();
+          client.post(endpoint, {
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'text/xml;charset="UTF-8"',
+              'X-Requested-With': 'XMLHttpRequest',
 
-              var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-              var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-              var xhr2 = new XMLHttpRequest();
-              xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-              xhr2.setRequestHeader('Content-Type', 'application/xml');
-              xhr2.setRequestHeader('SPRequestGuid', uuid);
-              xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-              xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                  var error = JSON.parse(xhr2.responseText)[0];
-                  if (error.ErrorInfo) {
-                    alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                    window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                  } else {
-                    alertify.delay(5000).success("Property updated successfully!");
-                    window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                  }
-                }
-                else {
-                  alertify.delay(10000).error(xhr2.responseText);
-                  window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                }
+            },
+            body: payload
+          })
+            .then((r) => { return r.json(); })
+            .then((r) => {
+              if (r[0].ErrorInfo) {
+                alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+                window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+              } else {
+                alertify.delay(5000).success("Property updated successfully!");
+                window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
               }
-                ;
-              var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-              xhr2.send(payload);
-            }
-          }
-            ;
-          xhr.send();
+            });
 
-        }).catch(function (error) {
+        }).catch((error) => {
           if (error.data.responseBody.hasOwnProperty('error'))
             alertify.delay(10000).error(error.data.responseBody.error.message.value);
           else
             alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
-      }).catch(function (error) {
+      }).catch((error) => {
         alertify.delay(10000).error(error.data.responseBody.error.message.value);
         window.postMessage(JSON.stringify({ function: 'updateWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
@@ -535,14 +639,15 @@ var updateWebProperties = function updateWebProperties() {
 var deleteWebProperties = function deleteWebProperties() {
   var prop = arguments[1];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -550,83 +655,75 @@ var deleteWebProperties = function deleteWebProperties() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    alertify.confirm("Really want to delete <b>" + prop + "</b> property?", function () {
+    alertify.confirm("Really want to delete <b>" + prop + "</b> property?", () => {
 
       var webid = "";
       var siteid = "";
 
       alertify.delay(5000).log("Removing " + prop + " from webproperties...");
 
-      $pnp.sp.site.get().then(function (data) {
+      $pnp.sp.site.get().then((data) => {
         siteid = data.Id;
-        $pnp.sp.web.get().then(function (data) {
+        $pnp.sp.web.get().then((data) => {
           webid = data.Id;
-          var guid = function () {
-            function s4() {
-              return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            }
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-          }
 
-          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+          var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+          var payload = `
+            <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+              <Actions>
+                <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                  <Parameters>
+                    <Parameter Type="String">${prop}</Parameter>
+                    <Parameter Type="Null" />
+                  </Parameters>
+                </Method>
+                <Method Name="Update" Id="10" ObjectPathId="2" />
+              </Actions>
+              <ObjectPaths>
+                <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+                <Property Id="4" ParentId="2" Name="AllProperties" />
+              </ObjectPaths>
+            </Request>`;
 
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', spHostUrl + '/_api/contextinfo');
-          xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-          xhr.onload = function () {
-            if (xhr.status === 200) {
-              var uuid = guid();
-              var data = JSON.parse(xhr.responseText);
+          var client = new $pnp.SPHttpClient();
+          client.post(endpoint, {
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'text/xml;charset="UTF-8"',
+              'X-Requested-With': 'XMLHttpRequest',
 
-              var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-              var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-              var xhr2 = new XMLHttpRequest();
-              xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-              xhr2.setRequestHeader('Content-Type', 'application/xml');
-              xhr2.setRequestHeader('SPRequestGuid', uuid);
-              xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-              xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                  var error = JSON.parse(xhr2.responseText)[0];
-                  if (error.ErrorInfo) {
-                    alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                    window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                  } else {
-                    alertify.delay(5000).success("Property deleted successfully!");
-                    if (prop != "vti_indexedpropertykeys")
-                      addToIndexedPropertyKeys.apply(this, ['', prop, true]);
-                    window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                  }
+            },
+            body: payload
+          })
+            .then((r) => { return r.json(); })
+            .then((r) => {
+              if (r[0].ErrorInfo) {
+                alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+                window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+              } else {
+                alertify.delay(5000).success("Property deleted successfully!");
+                if (prop != "vti_indexedpropertykeys") {
+                  addToIndexedPropertyKeys.apply(this, ['', prop, true]);
                 }
-                else {
-                  alertify.delay(10000).error(xhr2.responseText);
-                  window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                }
+                window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
               }
-                ;
-              var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="Null" /></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-              xhr2.send(payload);
-            }
-          }
-            ;
-          xhr.send();
+            });
 
-        }).catch(function (error) {
+        }).catch((error) => {
           if (error.data.responseBody.hasOwnProperty('error'))
             alertify.delay(10000).error(error.data.responseBody.error.message.value);
           else
             alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
           window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
-      }).catch(function (error) {
+      }).catch((error) => {
         if (error.data.responseBody.hasOwnProperty('error'))
           alertify.delay(10000).error(error.data.responseBody.error.message.value);
         else
           alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
         window.postMessage(JSON.stringify({ function: 'deleteWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
       });
-    }, function () {
+    }, () => {
       // user clicked "cancel"
     });
   });
@@ -637,14 +734,15 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
   var prop = arguments[1];
   var remove = arguments[2];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -652,7 +750,7 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then(function (result) {
+    $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then((result) => {
 
       var arr = [];
       for (x in result.AllProperties)
@@ -688,7 +786,7 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
         }
       }
       else {
-        if (propertyBag[0].value.indexOf(b64encoded) == -1) return;
+        if (propertyBag[0].value.indexOf(b64encoded + "|") == -1) return;
         newIndexValue = propertyBag[0].value.replace(b64encoded + "|", "");
       }
 
@@ -699,61 +797,54 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
 
       var webid = "";
       var siteid = "";
-      $pnp.sp.site.get().then(function (data) {
+      $pnp.sp.site.get().then((data) => {
         siteid = data.Id;
-        $pnp.sp.web.get().then(function (data) {
+        $pnp.sp.web.get().then((data) => {
           webid = data.Id;
-          var guid = function () {
-            function s4() {
-              return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            }
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-          }
 
-          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+          var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+          var payload = `
+            <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+              <Actions>
+                <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                  <Parameters>
+                    <Parameter Type="String">vti_indexedpropertykeys</Parameter>
+                    <Parameter Type="String">${newIndexValue}</Parameter>
+                  </Parameters>
+                </Method>
+                <Method Name="Update" Id="10" ObjectPathId="2" />
+              </Actions>
+              <ObjectPaths>
+                <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+                <Property Id="4" ParentId="2" Name="AllProperties" />
+              </ObjectPaths>
+            </Request>`;
 
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', spHostUrl + '/_api/contextinfo');
-          xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-          xhr.onload = function () {
-            if (xhr.status === 200) {
-              var uuid = guid();
-              var data = JSON.parse(xhr.responseText);
+          var client = new $pnp.SPHttpClient();
+          client.post(endpoint, {
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'text/xml;charset="UTF-8"',
+              'X-Requested-With': 'XMLHttpRequest',
 
-              var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-              var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-              var xhr2 = new XMLHttpRequest();
-              xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-              xhr2.setRequestHeader('Content-Type', 'application/xml');
-              xhr2.setRequestHeader('SPRequestGuid', uuid);
-              xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-              xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                  var error = JSON.parse(xhr2.responseText)[0];
-                  if (error.ErrorInfo) {
-                    alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-                    window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                  } else {
-                    if (remove)
-                      alertify.delay(5000).success("Property removed from vti_indexedpropertykeys successfully!");
-                    else
-                      alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!");
-                    window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                  }
+            },
+            body: payload
+          })
+            .then((r) => { return r.json(); })
+            .then((r) => {
+              if (r[0].ErrorInfo) {
+                alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+                window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+              } else {
+                if (remove) {
+                  alertify.delay(5000).success("Property removed from vti_indexedpropertykeys successfully!");
                 }
                 else {
-                  alertify.delay(10000).error(xhr2.responseText);
-                  window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
+                  alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!");
                 }
+                window.postMessage(JSON.stringify({ function: 'addToIndexedPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
               }
-                ;
-              var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><Method Name="SetFieldValue" Id="9" ObjectPathId="4"><Parameters><Parameter Type="String">vti_indexedpropertykeys</Parameter><Parameter Type="String">' + newIndexValue + '</Parameter></Parameters></Method><Method Name="Update" Id="10" ObjectPathId="2" /></Actions><ObjectPaths><Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="4" ParentId="2" Name="AllProperties" /></ObjectPaths></Request>';
-              xhr2.send(payload);
-            }
-          }
-            ;
-          xhr.send();
+            });
 
         }).catch(function (error) {
           if (error.data.responseBody.hasOwnProperty('error'))
@@ -790,7 +881,8 @@ var getListProperties = function getListProperties() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -848,7 +940,8 @@ var getLists = function getLists() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -881,14 +974,15 @@ var addListProperties = function addListProperties() {
   var value = arguments[2];
   var listId = arguments[3];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -898,57 +992,58 @@ var addListProperties = function addListProperties() {
 
     alertify.delay(5000).log("Adding " + prop + " listproperty...");
 
-    $pnp.sp.web.get().then(function (data) {
-      var guid = function () {
-        function s4() {
-          return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload = `
+      <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+        <Actions>
+          <ObjectPath Id="1" ObjectPathId="0" />
+          <ObjectPath Id="3" ObjectPathId="2" />
+          <ObjectPath Id="5" ObjectPathId="4" />
+          <ObjectPath Id="7" ObjectPathId="6" />
+          <ObjectPath Id="9" ObjectPathId="8" />
+          <ObjectPath Id="11" ObjectPathId="10" />
+          <Method Name="SetFieldValue" Id="12" ObjectPathId="10">
+            <Parameters>
+              <Parameter Type="String">${prop}</Parameter>
+              <Parameter Type="String">${value}</Parameter>
+            </Parameters>
+          </Method>
+          <Method Name="Update" Id="13" ObjectPathId="8" />
+        </Actions>
+        <ObjectPaths>
+          <StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" />
+          <Property Id="2" ParentId="0" Name="Web" />
+          <Property Id="4" ParentId="2" Name="Lists" />
+          <Method Id="6" ParentId="4" Name="GetById">
+            <Parameters>
+              <Parameter Type="String">${listId}</Parameter>
+            </Parameters>
+          </Method>
+          <Property Id="8" ParentId="6" Name="RootFolder" />
+          <Property Id="10" ParentId="8" Name="Properties" />
+        </ObjectPaths>
+      </Request>`;
+
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest',
+
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'addListProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+        } else {
+          alertify.delay(5000).success("List property added successfully!");
+          window.postMessage(JSON.stringify({ function: 'addListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-      }
-
-      var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
-
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', spHostUrl + '/_api/contextinfo');
-      xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-      xhr.onload = function () {
-        if (xhr.status === 200) {
-          var uuid = guid();
-          var data = JSON.parse(xhr.responseText);
-
-          var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-          var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-          var xhr2 = new XMLHttpRequest();
-          xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-          xhr2.setRequestHeader('Content-Type', 'application/xml');
-          xhr2.setRequestHeader('SPRequestGuid', uuid);
-          xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-          xhr2.onload = function () {
-            if (xhr2.status === 200) {
-              alertify.delay(5000).success("List property added successfully!");
-              window.postMessage(JSON.stringify({ function: 'addListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              alertify.delay(10000).error(xhr2.responseText);
-              window.postMessage(JSON.stringify({ function: 'addListProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-            }
-          }
-            ;
-          var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><ObjectPath Id="1" ObjectPathId="0" /><ObjectPath Id="3" ObjectPathId="2" /><ObjectPath Id="5" ObjectPathId="4" /><ObjectPath Id="7" ObjectPathId="6" /><ObjectPath Id="9" ObjectPathId="8" /><ObjectPath Id="11" ObjectPathId="10" /><Method Name="SetFieldValue" Id="12" ObjectPathId="10"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="13" ObjectPathId="8" /></Actions><ObjectPaths><StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" /><Property Id="2" ParentId="0" Name="Web" /><Property Id="4" ParentId="2" Name="Lists" /><Method Id="6" ParentId="4" Name="GetById"><Parameters><Parameter Type="String">' + listId + '</Parameter></Parameters></Method><Property Id="8" ParentId="6" Name="RootFolder" /><Property Id="10" ParentId="8" Name="Properties" /></ObjectPaths></Request>';
-          xhr2.send(payload);
-        }
-      }
-        ;
-      xhr.send();
-
-    }).catch(function (error) {
-      if (error.data.responseBody.hasOwnProperty('error'))
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
-      else
-        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-      window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
-    });
+      });
   });
 };
 
@@ -959,14 +1054,15 @@ var updateListProperties = function updateListProperties() {
   var value = arguments[2];
   var listId = arguments[3];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -974,61 +1070,62 @@ var updateListProperties = function updateListProperties() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    alertify.confirm("Really want to update <b>" + prop + "</b> property?", function () {
+    alertify.confirm("Really want to update <b>" + prop + "</b> property?", () => {
 
       alertify.delay(5000).log("Updating " + prop + " listproperty...");
 
-      $pnp.sp.web.get().then(function (data) {
-        var guid = function () {
-          function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+      var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+      var payload = `
+      <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+        <Actions>
+          <ObjectPath Id="1" ObjectPathId="0" />
+          <ObjectPath Id="3" ObjectPathId="2" />
+          <ObjectPath Id="5" ObjectPathId="4" />
+          <ObjectPath Id="7" ObjectPathId="6" />
+          <ObjectPath Id="9" ObjectPathId="8" />
+          <ObjectPath Id="11" ObjectPathId="10" />
+          <Method Name="SetFieldValue" Id="12" ObjectPathId="10">
+            <Parameters>
+              <Parameter Type="String">${prop}</Parameter>
+              <Parameter Type="String">${value}</Parameter>
+            </Parameters>
+          </Method>
+          <Method Name="Update" Id="13" ObjectPathId="8" />
+        </Actions>
+        <ObjectPaths>
+          <StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" />
+          <Property Id="2" ParentId="0" Name="Web" />
+          <Property Id="4" ParentId="2" Name="Lists" />
+          <Method Id="6" ParentId="4" Name="GetById">
+            <Parameters>
+              <Parameter Type="String">${listId}</Parameter>
+            </Parameters>
+          </Method>
+          <Property Id="8" ParentId="6" Name="RootFolder" />
+          <Property Id="10" ParentId="8" Name="Properties" />
+        </ObjectPaths>
+      </Request>`;
+
+      var client = new $pnp.SPHttpClient();
+      client.post(endpoint, {
+        headers: {
+          'Accept': '*/*',
+          'Content-Type': 'text/xml;charset="UTF-8"',
+          'X-Requested-With': 'XMLHttpRequest',
+
+        },
+        body: payload
+      })
+        .then((r) => { return r.json(); })
+        .then((r) => {
+          if (r[0].ErrorInfo) {
+            alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+            window.postMessage(JSON.stringify({ function: 'updateListProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+          } else {
+            alertify.delay(5000).success("List property updated successfully!");
+            window.postMessage(JSON.stringify({ function: 'updateListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
           }
-          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        }
-
-        var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', spHostUrl + '/_api/contextinfo');
-        xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            var uuid = guid();
-            var data = JSON.parse(xhr.responseText);
-
-            var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-            var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-            xhr2.setRequestHeader('Content-Type', 'application/xml');
-            xhr2.setRequestHeader('SPRequestGuid', uuid);
-            xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-            xhr2.onload = function () {
-              if (xhr2.status === 200) {
-                alertify.delay(5000).success("List property updated successfully!");
-                window.postMessage(JSON.stringify({ function: 'updateListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-              }
-              else {
-                alertify.delay(10000).error(xhr2.responseText);
-                window.postMessage(JSON.stringify({ function: 'updateListProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-              }
-            }
-              ;
-            var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><ObjectPath Id="1" ObjectPathId="0" /><ObjectPath Id="3" ObjectPathId="2" /><ObjectPath Id="5" ObjectPathId="4" /><ObjectPath Id="7" ObjectPathId="6" /><ObjectPath Id="9" ObjectPathId="8" /><ObjectPath Id="11" ObjectPathId="10" /><Method Name="SetFieldValue" Id="12" ObjectPathId="10"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="String">' + value + '</Parameter></Parameters></Method><Method Name="Update" Id="13" ObjectPathId="8" /></Actions><ObjectPaths><StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" /><Property Id="2" ParentId="0" Name="Web" /><Property Id="4" ParentId="2" Name="Lists" /><Method Id="6" ParentId="4" Name="GetById"><Parameters><Parameter Type="String">' + listId + '</Parameter></Parameters></Method><Property Id="8" ParentId="6" Name="RootFolder" /><Property Id="10" ParentId="8" Name="Properties" /></ObjectPaths></Request>';
-            xhr2.send(payload);
-          }
-        }
-          ;
-        xhr.send();
-
-      }).catch(function (error) {
-        if (error.data.responseBody.hasOwnProperty('error'))
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
-        else
-          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-        window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
-      });
+        });
     }, function () {
       // user clicked "cancel"
     });
@@ -1041,14 +1138,15 @@ var deleteListProperties = function deleteListProperties() {
   var prop = arguments[1];
   var listId = arguments[2];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
 
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1056,64 +1154,66 @@ var deleteListProperties = function deleteListProperties() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    alertify.confirm("Really want to remove <b>" + prop + "</b> property?", function () {
+    alertify.confirm("Really want to remove <b>" + prop + "</b> property?", () => {
 
       alertify.delay(5000).log("Removing " + prop + " listproperty...");
 
-      $pnp.sp.web.get().then(function (data) {
-        var guid = function () {
-          function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-          }
-          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        }
+      var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+      var payload = `
+      <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+        <Actions>
+          <ObjectPath Id="1" ObjectPathId="0" />
+          <ObjectPath Id="3" ObjectPathId="2" />
+          <ObjectPath Id="5" ObjectPathId="4" />
+          <ObjectPath Id="7" ObjectPathId="6" />
+          <ObjectPath Id="9" ObjectPathId="8" />
+          <ObjectPath Id="11" ObjectPathId="10" />
+          <Method Name="SetFieldValue" Id="12" ObjectPathId="10">
+            <Parameters>
+              <Parameter Type="String">${prop}</Parameter>
+              <Parameter Type="Null" />
+            </Parameters>
+          </Method>
+          <Method Name="Update" Id="13" ObjectPathId="8" />
+        </Actions>
+        <ObjectPaths>
+          <StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" />
+          <Property Id="2" ParentId="0" Name="Web" />
+          <Property Id="4" ParentId="2" Name="Lists" />
+          <Method Id="6" ParentId="4" Name="GetById">
+            <Parameters>
+              <Parameter Type="String">${listId}</Parameter>
+            </Parameters>
+          </Method>
+          <Property Id="8" ParentId="6" Name="RootFolder" />
+          <Property Id="10" ParentId="8" Name="Properties" />
+        </ObjectPaths>
+      </Request>`;
 
-        var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+      var client = new $pnp.SPHttpClient();
+      client.post(endpoint, {
+        headers: {
+          'Accept': '*/*',
+          'Content-Type': 'text/xml;charset="UTF-8"',
+          'X-Requested-With': 'XMLHttpRequest',
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', spHostUrl + '/_api/contextinfo');
-        xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            var uuid = guid();
-            var data = JSON.parse(xhr.responseText);
-
-            var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-            var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-            xhr2.setRequestHeader('Content-Type', 'application/xml');
-            xhr2.setRequestHeader('SPRequestGuid', uuid);
-            xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-            xhr2.onload = function () {
-              if (xhr2.status === 200) {
-                alertify.delay(5000).success("List property removed successfully!");
-                if (prop != "vti_indexedpropertykeys")
-                  addToIndexedListPropertyKeys.apply(this, ['', prop, listId, true]);
-                window.postMessage(JSON.stringify({ function: 'deleteListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-              }
-              else {
-                alertify.delay(10000).error(xhr2.responseText);
-                window.postMessage(JSON.stringify({ function: 'deleteListProperties', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-              }
+        },
+        body: payload
+      })
+        .then((r) => { return r.json(); })
+        .then((r) => {
+          if (r[0].ErrorInfo) {
+            alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+            window.postMessage(JSON.stringify({ function: 'deleteListProperties', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+          } else {
+            alertify.delay(5000).success("List property removed successfully!");
+            if (prop != "vti_indexedpropertykeys") {
+              addToIndexedListPropertyKeys.apply(this, ['', prop, listId, true]);
             }
-              ;
-            var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><ObjectPath Id="1" ObjectPathId="0" /><ObjectPath Id="3" ObjectPathId="2" /><ObjectPath Id="5" ObjectPathId="4" /><ObjectPath Id="7" ObjectPathId="6" /><ObjectPath Id="9" ObjectPathId="8" /><ObjectPath Id="11" ObjectPathId="10" /><Method Name="SetFieldValue" Id="12" ObjectPathId="10"><Parameters><Parameter Type="String">' + prop + '</Parameter><Parameter Type="Null" /></Parameters></Method><Method Name="Update" Id="13" ObjectPathId="8" /></Actions><ObjectPaths><StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" /><Property Id="2" ParentId="0" Name="Web" /><Property Id="4" ParentId="2" Name="Lists" /><Method Id="6" ParentId="4" Name="GetById"><Parameters><Parameter Type="String">' + listId + '</Parameter></Parameters></Method><Property Id="8" ParentId="6" Name="RootFolder" /><Property Id="10" ParentId="8" Name="Properties" /></ObjectPaths></Request>';
-            xhr2.send(payload);
+            window.postMessage(JSON.stringify({ function: 'deleteListProperties', success: true, result: null, source: 'chrome-sp-editor' }), '*');
           }
-        }
-          ;
-        xhr.send();
-
-      }).catch(function (error) {
-        if (error.data.responseBody.hasOwnProperty('error'))
-          alertify.delay(10000).error(error.data.responseBody.error.message.value);
-        else
-          alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-        window.postMessage(JSON.stringify({ function: 'addWebProperties', success: false, result: error, source: 'chrome-sp-editor' }), '*');
-      });
-    }, function () {
+        });
+    }, () => {
       // user clicked "cancel"
     });
   });
@@ -1132,7 +1232,8 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1186,60 +1287,65 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
         else
           alertify.delay(5000).log("Adding '<b>" + prop + "</b>' to vti_indexedpropertykeys...");
 
-        $pnp.sp.web.get().then(function (data) {
-          var guid = function () {
-            function s4() {
-              return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            }
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-          }
 
-          var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+        var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+        var payload = `
+      <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+        <Actions>
+          <ObjectPath Id="1" ObjectPathId="0" />
+          <ObjectPath Id="3" ObjectPathId="2" />
+          <ObjectPath Id="5" ObjectPathId="4" />
+          <ObjectPath Id="7" ObjectPathId="6" />
+          <ObjectPath Id="9" ObjectPathId="8" />
+          <ObjectPath Id="11" ObjectPathId="10" />
+          <Method Name="SetFieldValue" Id="12" ObjectPathId="10">
+            <Parameters>
+              <Parameter Type="String">vti_indexedpropertykeys</Parameter>
+              <Parameter Type="String">${newIndexValue}</Parameter>
+            </Parameters>
+          </Method>
+          <Method Name="Update" Id="13" ObjectPathId="8" />
+        </Actions>
+        <ObjectPaths>
+          <StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" />
+          <Property Id="2" ParentId="0" Name="Web" />
+          <Property Id="4" ParentId="2" Name="Lists" />
+          <Method Id="6" ParentId="4" Name="GetById">
+            <Parameters>
+              <Parameter Type="String">${listId}</Parameter>
+            </Parameters>
+          </Method>
+          <Property Id="8" ParentId="6" Name="RootFolder" />
+          <Property Id="10" ParentId="8" Name="Properties" />
+        </ObjectPaths>
+      </Request>`;
 
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', spHostUrl + '/_api/contextinfo');
-          xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-          xhr.onload = function () {
-            if (xhr.status === 200) {
-              var uuid = guid();
-              var data = JSON.parse(xhr.responseText);
+        var client = new $pnp.SPHttpClient();
+        client.post(endpoint, {
+          headers: {
+            'Accept': '*/*',
+            'Content-Type': 'text/xml;charset="UTF-8"',
+            'X-Requested-With': 'XMLHttpRequest',
 
-              var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-              var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-              var xhr2 = new XMLHttpRequest();
-              xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-              xhr2.setRequestHeader('Content-Type', 'application/xml');
-              xhr2.setRequestHeader('SPRequestGuid', uuid);
-              xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-              xhr2.onload = function () {
-                if (xhr2.status === 200) {
-                  if (remove)
-                    alertify.delay(5000).success("Property removed from vti_indexedpropertykeys successfully!");
-                  else
-                    alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!");
-                  window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-                }
-                else {
-                  alertify.delay(10000).error(xhr2.responseText);
-                  window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: false, result: xhr2.responseText, source: 'chrome-sp-editor' }), '*');
-                }
+          },
+          body: payload
+        })
+          .then((r) => { return r.json(); })
+          .then((r) => {
+            if (r[0].ErrorInfo) {
+              alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+              window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+            } else {
+              if (remove) {
+                alertify.delay(5000).success("Property removed from vti_indexedpropertykeys successfully!");
               }
-                ;
-              var payload = '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="' + SchemaVersion + '" LibraryVersion="' + LibraryVersion + '" ApplicationName="Javascript Library"><Actions><ObjectPath Id="1" ObjectPathId="0" /><ObjectPath Id="3" ObjectPathId="2" /><ObjectPath Id="5" ObjectPathId="4" /><ObjectPath Id="7" ObjectPathId="6" /><ObjectPath Id="9" ObjectPathId="8" /><ObjectPath Id="11" ObjectPathId="10" /><Method Name="SetFieldValue" Id="12" ObjectPathId="10"><Parameters><Parameter Type="String">vti_indexedpropertykeys</Parameter><Parameter Type="String">' + newIndexValue + '</Parameter></Parameters></Method><Method Name="Update" Id="13" ObjectPathId="8" /></Actions><ObjectPaths><StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" /><Property Id="2" ParentId="0" Name="Web" /><Property Id="4" ParentId="2" Name="Lists" /><Method Id="6" ParentId="4" Name="GetById"><Parameters><Parameter Type="String">' + listId + '</Parameter></Parameters></Method><Property Id="8" ParentId="6" Name="RootFolder" /><Property Id="10" ParentId="8" Name="Properties" /></ObjectPaths></Request>';
-              xhr2.send(payload);
+              else {
+                alertify.delay(5000).success("Property added to vti_indexedpropertykeys successfully!"); window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+              }
+              window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: true, result: null, source: 'chrome-sp-editor' }), '*');
             }
-          }
-            ;
-          xhr.send();
+          });
 
-        }).catch(function (error) {
-          if (error.data.responseBody.hasOwnProperty('error'))
-            alertify.delay(10000).error(error.data.responseBody.error.message.value);
-          else
-            alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-          window.postMessage(JSON.stringify({ function: 'addToIndexedListPropertyKeys', success: false, result: error, source: 'chrome-sp-editor' }), '*');
-        });
       }).catch(function (error) {
         if (error.data.responseBody.hasOwnProperty('error'))
           alertify.delay(10000).error(error.data.responseBody.error.message.value);
@@ -1311,7 +1417,8 @@ var getSubscriptions = function getSubscriptions() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1362,7 +1469,8 @@ var addSubscriptions = function addSubscriptions() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1400,7 +1508,8 @@ var removeSubscription = function removeSubscription() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1440,7 +1549,8 @@ var updateSubscription = function updateSubscription() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1499,7 +1609,8 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1639,7 +1750,8 @@ var deleteWebpart = function deleteWebpart() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1699,7 +1811,8 @@ var getFolders = function getFolders() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1793,7 +1906,8 @@ var getFileContent = function getFileContent() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1839,7 +1953,8 @@ var updateEditorFile = function updateEditorFile() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1928,7 +2043,8 @@ var getApps = function getApps() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -1966,7 +2082,8 @@ var getApp = function getApp() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -2011,7 +2128,8 @@ var updateApp = function updateApp() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose"
+          "Accept": "application/json; odata=verbose",
+
         }
       }
     });
@@ -2054,125 +2172,230 @@ var getSiteCollections = function getSiteCollections() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', spHostUrl + '/_api/contextinfo');
-    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        var uuid = guid();
-        var data = JSON.parse(xhr.responseText);
+    var uuid = guid();
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload = `
+        <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+          <Actions>
+            <ObjectPath Id="264" ObjectPathId="263" />
+            <ObjectPath Id="266" ObjectPathId="265" />
+            <Query Id="267" ObjectPathId="265">
+              <Query SelectAllProperties="false">
+                <Properties />
+              </Query>
+              <ChildItemQuery SelectAllProperties="false">
+                <Properties>
+                  <Property Name="DenyAddAndCustomizePages" ScalarProperty="true" />
+                  <Property Name="Template" ScalarProperty="true" />
+                  <Property Name="Title" ScalarProperty="true" />
+                  <Property Name="Url" ScalarProperty="true" />
+                </Properties>
+              </ChildItemQuery>
+            </Query>
+            <ObjectPath Id="283" ObjectPathId="282" />
+            <ObjectPath Id="285" ObjectPathId="284" />
+            <Query Id="286" ObjectPathId="284">
+              <Query SelectAllProperties="false">
+                <Properties />
+              </Query>
+              <ChildItemQuery SelectAllProperties="false">
+                <Properties>
+                  <Property Name="DenyAddAndCustomizePages" ScalarProperty="true" />
+                  <Property Name="Template" ScalarProperty="true" />
+                  <Property Name="Title" ScalarProperty="true" />
+                  <Property Name="Url" ScalarProperty="true" />
+                </Properties>
+              </ChildItemQuery>
+            </Query>
+            <ObjectPath Id="36" ObjectPathId="35" />
+            <Query Id="37" ObjectPathId="35">
+              <Query SelectAllProperties="true">
+                <Properties />
+              </Query>
+            </Query>
+            <Method Name="GetTenantCdnPolicies" Id="33" ObjectPathId="29">
+              <Parameters>
+                <Parameter Type="Enum">0</Parameter>
+              </Parameters>
+            </Method>
+            <Method Name="GetTenantCdnOrigins" Id="34" ObjectPathId="29">
+              <Parameters>
+                <Parameter Type="Enum">0</Parameter>
+              </Parameters>
+            </Method>
+            <Method Name="GetTenantCdnEnabled" Id="48" ObjectPathId="44">
+              <Parameters>
+                <Parameter Type="Enum">0</Parameter>
+              </Parameters>
+            </Method>
+            <Method Name="GetTenantCdnEnabled" Id="63" ObjectPathId="59">
+              <Parameters>
+                <Parameter Type="Enum">1</Parameter>
+              </Parameters>
+            </Method>
+            <Method Name="GetTenantCdnOrigins" Id="68" ObjectPathId="64">
+              <Parameters>
+                <Parameter Type="Enum">1</Parameter>
+              </Parameters>
+            </Method>
+            <ObjectPath Id="2" ObjectPathId="1" />
+            <ObjectPath Id="4" ObjectPathId="3" />
+            <Query Id="5" ObjectPathId="3">
+              <Query SelectAllProperties="true">
+                <Properties />
+              </Query>
+              <ChildItemQuery SelectAllProperties="true">
+                <Properties />
+              </ChildItemQuery>
+            </Query>
+          </Actions>
+          <ObjectPaths>
+            <Constructor Id="263" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            <Method Id="265" ParentId="263" Name="GetSitePropertiesFromSharePointByFilter">
+              <Parameters>
+                <Parameter Type="String"> Template -eq "GROUP#0" </Parameter>
+                <Parameter Type="Null" />
+                <Parameter Type="Boolean">false</Parameter>
+              </Parameters>
+            </Method>
+            <Constructor Id="282" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            <Method Id="284" ParentId="282" Name="GetSitePropertiesFromSharePointByFilter">
+              <Parameters>
+                <Parameter Type="String"> Template -eq "SITEPAGEPUBLISHING#0" </Parameter>
+                <Parameter Type="Null" />
+                <Parameter Type="Boolean">false</Parameter>
+              </Parameters>
+            </Method>
+            <Constructor Id="29" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            <Constructor Id="35" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            <Identity Id="44" Name="${uuid}|908bed80-a04a-4433-b4a0-883d9847d110:${_spPageContextInfo.siteSubscriptionId}&#xA;Tenant" />
+            <Identity Id="59" Name="${uuid}|908bed80-a04a-4433-b4a0-883d9847d110:${_spPageContextInfo.siteSubscriptionId}&#xA;Tenant" />
+            <Identity Id="64" Name="${uuid}|908bed80-a04a-4433-b4a0-883d9847d110:${_spPageContextInfo.siteSubscriptionId}&#xA;Tenant" />
+            <Constructor Id="1" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            <Method Id="3" ParentId="1" Name="GetHubSitesProperties" />
+          </ObjectPaths>
+        </Request>
+        `;
 
-        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest',
 
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-        xhr2.setRequestHeader('Content-Type', 'application/xml');
-        xhr2.setRequestHeader('SPRequestGuid', uuid);
-        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-        xhr2.onload = function () {
-          if (xhr2.status === 200) {
-            var error = JSON.parse(xhr2.responseText)[0];
-            if (error.ErrorInfo) {
-              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-              window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              var q = $pnp.SearchQueryBuilder.create("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+        } else {
+        }
 
-              $pnp.sp.search(q).then(re => {
-                fetch(spHostUrl + "/_vti_bin/client.svc/ProcessQuery", {
-                  method: 'post',
-                  credentials: 'include',
-                  headers: {
-                    'X-RequestDigest': data.d.GetContextWebInformation.FormDigestValue,
-                    'Content-Type': 'application/xml'
-                  },
-                  body: '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><Query Id="21" ObjectPathId="6"><Query SelectAllProperties="true"><Properties><Property Name="storageentitiesindex" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + re.PrimarySearchResults[0].siteid + ':web:' + re.PrimarySearchResults[0].webid + '" /><Property Id="6" ParentId="4" Name="AllProperties" /></ObjectPaths></Request>'
-                }).then(response => {
-                  if (!response.ok) { throw response }
-                  return response.json();
-                }).catch(err => {
-                  err.json().then(errorMessage => {
-                    alertify.delay(10000).error(errorMessage[0].ErrorInfo.ErrorMessage);
-                    window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+        var q = $pnp.SearchQueryBuilder("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
+
+        $pnp.sp.search(q).then(re => {
+
+          var payload2 = `
+            <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+              <Actions>
+                <Query Id="21" ObjectPathId="6">
+                  <Query SelectAllProperties="true">
+                    <Properties>
+                      <Property Name="storageentitiesindex" ScalarProperty="true" />
+                    </Properties>
+                  </Query>
+                </Query>
+              </Actions>
+              <ObjectPaths>
+                <Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${re.PrimarySearchResults[0].siteid}:web:${re.PrimarySearchResults[0].webid}" />
+                <Property Id="6" ParentId="4" Name="AllProperties" />
+              </ObjectPaths>
+            </Request>
+          `
+          var client = new $pnp.SPHttpClient();
+          client.post(endpoint, {
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'text/xml;charset="UTF-8"',
+              'X-Requested-With': 'XMLHttpRequest',
+
+            },
+            body: payload2
+          })
+            .then((res) => { return res.json(); })
+            .then((res) => {
+              if (res[0].ErrorInfo) {
+                alertify.delay(10000).error(res[0].ErrorInfo.ErrorMessage);
+                window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+              } else {
+              }
+
+              var tenantProps = "";
+
+              if (res.length > 1) tenantProps = res[2].storageentitiesindex;
+              var hubsites = r[32]._Child_Items_;
+
+              if (hubsites.length > 0) {
+                var hubsiteQuery = "";
+
+                hubsites.forEach(function (hubsite) {
+                  if (hubsiteQuery.length > 0) hubsiteQuery += " OR "
+                  var id = hubsite.SiteId.substring(6, hubsite.SiteId.length - 2)
+                  hubsiteQuery += "DepartmentId:{" + id + "}";
+                });
+
+                var q2 = $pnp.SearchQueryBuilder("contentclass:STS_Site AND ( " + hubsiteQuery + " )", { TrimDuplicates: false, SelectProperties: ["DepartmentId", "Url"] });
+
+                $pnp.sp.search(q2).then(re2 => {
+                  var deps = [];
+                  re2.PrimarySearchResults.forEach(hub => {
+                    deps.push({ Url: hub.Url, DepartmentId: hub.DepartmentId })
                   })
-                })
-                  .then(res => {
-                    var tenantProps = "";
-                    if (res.length > 1) tenantProps = res[2].storageentitiesindex;
 
-                    var hubsites = JSON.parse(xhr2.responseText)[32]._Child_Items_;
+                  var datas = {
+                    webs: r[6]._Child_Items_.concat(r[12]._Child_Items_),
+                    publicCDN: r[22],
+                    publicCDNOrigins: r[20],
+                    tenantObjectId: r[16]._ObjectIdentity_,
+                    privateCDN: r[24],
+                    privateCDNOrigins: r[26],
+                    appCatalogSiteId: re.PrimarySearchResults[0].siteid,
+                    appCatalogWebId: re.PrimarySearchResults[0].webid,
+                    appCatalogUrl: re.PrimarySearchResults[0].url,
+                    tenantProperties: tenantProps,
+                    hubsites: hubsites,
+                    departmentIds: deps
+                  };
 
-                    if (hubsites.length > 0) {
-                      var hubsiteQuery = "";
+                  window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+                });
 
-                      hubsites.forEach(function (hubsite) {
-                        if (hubsiteQuery.length > 0) hubsiteQuery += " OR "
-                        var id = hubsite.SiteId.substring(6, hubsite.SiteId.length - 2)
-                        hubsiteQuery += "DepartmentId:{" + id + "}";
-                      });
-
-                      var q2 = $pnp.SearchQueryBuilder.create("contentclass:STS_Site AND ( " + hubsiteQuery + " )", { TrimDuplicates: false, SelectProperties: ["DepartmentId", "Url"] });
-
-                      $pnp.sp.search(q2).then(re2 => {
-                        var deps = [];
-                        re2.PrimarySearchResults.forEach(hub => {
-                          deps.push({ Url: hub.Url, DepartmentId: hub.DepartmentId })
-                        })
-
-                        var datas = {
-                          webs: JSON.parse(xhr2.responseText)[6]._Child_Items_.concat(JSON.parse(xhr2.responseText)[12]._Child_Items_),
-                          publicCDN: JSON.parse(xhr2.responseText)[22],
-                          publicCDNOrigins: JSON.parse(xhr2.responseText)[20],
-                          tenantObjectId: JSON.parse(xhr2.responseText)[16]._ObjectIdentity_,
-                          privateCDN: JSON.parse(xhr2.responseText)[24],
-                          privateCDNOrigins: JSON.parse(xhr2.responseText)[26],
-                          appCatalogSiteId: re.PrimarySearchResults[0].siteid,
-                          appCatalogWebId: re.PrimarySearchResults[0].webid,
-                          appCatalogUrl: re.PrimarySearchResults[0].url,
-                          tenantProperties: tenantProps,
-                          hubsites: hubsites,
-                          departmentIds: deps
-                        };
-
-                        window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
-                      });
-
-                    } else {
-                      var datas = {
-                        webs: JSON.parse(xhr2.responseText)[6]._Child_Items_.concat(JSON.parse(xhr2.responseText)[12]._Child_Items_),
-                        publicCDN: JSON.parse(xhr2.responseText)[22],
-                        publicCDNOrigins: JSON.parse(xhr2.responseText)[20],
-                        tenantObjectId: JSON.parse(xhr2.responseText)[16]._ObjectIdentity_,
-                        privateCDN: JSON.parse(xhr2.responseText)[24],
-                        privateCDNOrigins: JSON.parse(xhr2.responseText)[26],
-                        appCatalogSiteId: re.PrimarySearchResults[0].siteid,
-                        appCatalogWebId: re.PrimarySearchResults[0].webid,
-                        appCatalogUrl: re.PrimarySearchResults[0].url,
-                        tenantProperties: tenantProps,
-                        hubsites: hubsites,
-                        departmentIds: []
-                      };
-                      window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
-                    }
-                  })
-              });
-            }
-          }
-          else {
-            alertify.delay(10000).error(xhr2.responseText);
-            window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        };
-        var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="264" ObjectPathId="263" /><ObjectPath Id="266" ObjectPathId="265" /><Query Id="267" ObjectPathId="265"><Query SelectAllProperties="false"><Properties /></Query><ChildItemQuery SelectAllProperties="false"><Properties><Property Name="DenyAddAndCustomizePages" ScalarProperty="true" /><Property Name="Template" ScalarProperty="true" /><Property Name="Title" ScalarProperty="true" /><Property Name="Url" ScalarProperty="true" /></Properties></ChildItemQuery></Query><ObjectPath Id="283" ObjectPathId="282" /><ObjectPath Id="285" ObjectPathId="284" /><Query Id="286" ObjectPathId="284"><Query SelectAllProperties="false"><Properties /></Query><ChildItemQuery SelectAllProperties="false"><Properties><Property Name="DenyAddAndCustomizePages" ScalarProperty="true" /><Property Name="Template" ScalarProperty="true" /><Property Name="Title" ScalarProperty="true" /><Property Name="Url" ScalarProperty="true" /></Properties></ChildItemQuery></Query><ObjectPath Id="36" ObjectPathId="35" /><Query Id="37" ObjectPathId="35"><Query SelectAllProperties="true"><Properties /></Query></Query><Method Name="GetTenantCdnPolicies" Id="33" ObjectPathId="29"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnOrigins" Id="34" ObjectPathId="29"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnEnabled" Id="48" ObjectPathId="44"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method><Method Name="GetTenantCdnEnabled" Id="63" ObjectPathId="59"><Parameters><Parameter Type="Enum">1</Parameter></Parameters></Method><Method Name="GetTenantCdnOrigins" Id="68" ObjectPathId="64"><Parameters><Parameter Type="Enum">1</Parameter></Parameters></Method><ObjectPath Id="2" ObjectPathId="1" /><ObjectPath Id="4" ObjectPathId="3" /><Query Id="5" ObjectPathId="3"><Query SelectAllProperties="true"><Properties /></Query><ChildItemQuery SelectAllProperties="true"><Properties /></ChildItemQuery></Query></Actions><ObjectPaths><Constructor Id="263" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="265" ParentId="263" Name="GetSitePropertiesFromSharePointByFilter"><Parameters><Parameter Type="String"> Template -eq "GROUP#0" </Parameter><Parameter Type="Null" /><Parameter Type="Boolean">false</Parameter></Parameters></Method><Constructor Id="282" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="284" ParentId="282" Name="GetSitePropertiesFromSharePointByFilter"><Parameters><Parameter Type="String"> Template -eq "SITEPAGEPUBLISHING#0" </Parameter><Parameter Type="Null" /><Parameter Type="Boolean">false</Parameter></Parameters></Method><Constructor Id="29" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Constructor Id="35" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Identity Id="44" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Identity Id="59" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Identity Id="64" Name="' + uuid + '|908bed80-a04a-4433-b4a0-883d9847d110:' + _spPageContextInfo.siteSubscriptionId + '&#xA;Tenant" /><Constructor Id="1" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="3" ParentId="1" Name="GetHubSitesProperties" /></ObjectPaths></Request>';
-
-        xhr2.send(payload);
-      }
-    };
-    xhr.send();
+              } else {
+                var datas = {
+                  webs: r[6]._Child_Items_.concat(r[12]._Child_Items_),
+                  publicCDN: r[22],
+                  publicCDNOrigins: r[20],
+                  tenantObjectId: r[16]._ObjectIdentity_,
+                  privateCDN: r[24],
+                  privateCDNOrigins: r[26],
+                  appCatalogSiteId: re.PrimarySearchResults[0].siteid,
+                  appCatalogWebId: re.PrimarySearchResults[0].webid,
+                  appCatalogUrl: re.PrimarySearchResults[0].url,
+                  tenantProperties: tenantProps,
+                  hubsites: hubsites,
+                  departmentIds: []
+                };
+                window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
+              }
+            })
+        });
+      });
   });
+
 };
 
 // updateSiteCollection
@@ -2180,60 +2403,58 @@ var updateSiteCollection = function updateSiteCollection() {
   var web = arguments[1];
   var value = arguments[2];
 
-  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
-    var alertify = modules[0];
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
-
-    var guid = function () {
-      function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      }
-      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload = `
+      <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+        <Actions>
+          <SetProperty Id="7" ObjectPathId="3" Name="DenyAddAndCustomizePages">
+            <Parameter Type="Enum">${value}</Parameter>
+          </SetProperty>
+          <ObjectPath Id="9" ObjectPathId="8" />
+          <ObjectIdentityQuery Id="10" ObjectPathId="3" />
+          <Query Id="11" ObjectPathId="8">
+            <Query SelectAllProperties="true">
+              <Properties>
+                <Property Name="IsComplete" ScalarProperty="true" />
+                <Property Name="PollingInterval" ScalarProperty="true" />
+              </Properties>
+            </Query>
+          </Query>
+        </Actions>
+        <ObjectPaths>
+          <Identity Id="3" Name="${web}" />
+          <Method Id="8" ParentId="3" Name="Update" />
+        </ObjectPaths>
+      </Request>
+    `;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', spHostUrl + '/_api/contextinfo');
-    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        var uuid = guid();
-        var data = JSON.parse(xhr.responseText);
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest',
 
-        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+        } else {
+          window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+        }
+      });
 
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-        xhr2.setRequestHeader('Content-Type', 'application/xml');
-        xhr2.setRequestHeader('SPRequestGuid', uuid);
-        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-        xhr2.onload = function () {
-          if (xhr2.status === 200) {
-            var error = JSON.parse(xhr2.responseText)[0];
-
-            if (error.ErrorInfo) {
-              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-              window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-          }
-          else {
-            alertify.delay(10000).error(xhr2.responseText);
-            window.postMessage(JSON.stringify({ function: 'updateSiteCollection', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        };
-        var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName=".NET Library" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><SetProperty Id="7" ObjectPathId="3" Name="DenyAddAndCustomizePages"><Parameter Type="Enum">' + value + '</Parameter></SetProperty><ObjectPath Id="9" ObjectPathId="8" /><ObjectIdentityQuery Id="10" ObjectPathId="3" /><Query Id="11" ObjectPathId="8"><Query SelectAllProperties="true"><Properties><Property Name="IsComplete" ScalarProperty="true" /><Property Name="PollingInterval" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="3" Name="' + web + '" /><Method Id="8" ParentId="3" Name="Update" /></ObjectPaths></Request>';
-
-        xhr2.send(payload);
-      }
-    };
-    xhr.send();
   });
 };
 
@@ -2242,192 +2463,184 @@ var enableDisableCDN = function enableDisableCDN() {
   var cdnType = arguments[1];
   var enable = (arguments[2] == 'true') ? 1 : 0;
 
-  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
-    var alertify = modules[0];
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
-    var guid = function () {
-      function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      }
-      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload;
+    var typeVal = cdnType == "Public" ? 0 : 1;
+    var enableVal = enable ? true : false;;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', spHostUrl + '/_api/contextinfo');
-    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        var uuid = guid();
-        var data = JSON.parse(xhr.responseText);
+    if (enable) {
+      payload = `
+          <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+            <Actions>
+              <ObjectPath Id="54" ObjectPathId="53" />
+              <Method Name="SetTenantCdnEnabled" Id="55" ObjectPathId="53">
+                <Parameters>
+                  <Parameter Type="Enum">${typeVal}</Parameter>
+                  <Parameter Type="Boolean">${enableVal}</Parameter>
+                </Parameters>
+              </Method>
+              <Method Name="CreateTenantCdnDefaultOrigins" Id="56" ObjectPathId="53">
+                <Parameters>
+                  <Parameter Type="Enum">0</Parameter>
+                </Parameters>
+              </Method>
+            </Actions>
+            <ObjectPaths>
+              <Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            </ObjectPaths>
+          </Request>
+        `;
+    }
+    else {
+      payload = `
+          <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+            <Actions>
+              <Method Name="SetTenantCdnEnabled" Id="143" ObjectPathId="140">
+              <Parameters>
+              <Parameter Type="Enum">${typeVal}</Parameter>
+              <Parameter Type="Boolean">${enableVal}</Parameter>
+              </Parameters>
+              </Method>
+            </Actions>
+            <ObjectPaths>
+              <Constructor Id="140" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+            </ObjectPaths>
+          </Request>
+        `;
+    }
 
-        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest',
 
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-        xhr2.setRequestHeader('Content-Type', 'application/xml');
-        xhr2.setRequestHeader('SPRequestGuid', uuid);
-        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-        xhr2.onload = function () {
-          if (xhr2.status === 200) {
-            var error = JSON.parse(xhr2.responseText)[0];
-
-            if (error.ErrorInfo) {
-              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-              window.postMessage(JSON.stringify({ function: 'enableDisableCDN', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              window.postMessage(JSON.stringify({ function: 'enableDisableCDN', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-          }
-          else {
-            alertify.delay(10000).error(xhr2.responseText);
-            window.postMessage(JSON.stringify({ function: 'enableDisableCDN', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        };
-        var payload = "";
-
-        if (cdnType == "Public") {
-          if (enable) {
-            payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="54" ObjectPathId="53" /><Method Name="SetTenantCdnEnabled" Id="55" ObjectPathId="53"><Parameters><Parameter Type="Enum">0</Parameter><Parameter Type="Boolean">true</Parameter></Parameters></Method><Method Name="CreateTenantCdnDefaultOrigins" Id="56" ObjectPathId="53"><Parameters><Parameter Type="Enum">0</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>';
-          }
-          else {
-            payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><Method Name="SetTenantCdnEnabled" Id="143" ObjectPathId="140"><Parameters><Parameter Type="Enum">0</Parameter><Parameter Type="Boolean">false</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="140" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>';
-          }
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'enableDisableCDN', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+        } else {
+          window.postMessage(JSON.stringify({ function: 'enableDisableCDN', success: true, result: null, source: 'chrome-sp-editor' }), '*');
         }
-        else {
-          if (enable) {
-            payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="16" ObjectPathId="15" /><Method Name="SetTenantCdnEnabled" Id="17" ObjectPathId="15"><Parameters><Parameter Type="Enum">1</Parameter><Parameter Type="Boolean">true</Parameter></Parameters></Method><Method Name="CreateTenantCdnDefaultOrigins" Id="18" ObjectPathId="15"><Parameters><Parameter Type="Enum">1</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="15" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>';
-          }
-          else {
-            payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><Method Name="SetTenantCdnEnabled" Id="28" ObjectPathId="25"><Parameters><Parameter Type="Enum">1</Parameter><Parameter Type="Boolean">false</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="25" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>'
-          }
-        }
-        xhr2.send(payload);
-      }
-    };
-    xhr.send();
+      });
+
   });
 };
+
 //addOrigin
 var addOrigin = function addOrigin() {
   var private = arguments[1] === 'Private' ? 1 : 0;
   var origin = arguments[2];
-  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
-    var alertify = modules[0];
 
-    var guid = function () {
-      function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      }
-      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
-    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', spHostUrl + '/_api/contextinfo');
-    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload = `
+      <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+        <Actions>
+          <ObjectPath Id="54" ObjectPathId="53" />
+          <Method Name="AddTenantCdnOrigin" Id="55" ObjectPathId="53">
+            <Parameters>
+              <Parameter Type="Enum">${private}</Parameter>
+              <Parameter Type="String">${origin}</Parameter>
+            </Parameters>
+          </Method>
+        </Actions>
+        <ObjectPaths>
+          <Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+        </ObjectPaths>
+      </Request>
+    `;
 
-    xhr.onload = function () {
-      if (xhr.status === 200) {
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest',
 
-        var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="54" ObjectPathId="53" /><Method Name="AddTenantCdnOrigin" Id="55" ObjectPathId="53"><Parameters><Parameter Type="Enum">' + private + '</Parameter><Parameter Type="String">' + origin + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>'
-        var uuid = guid();
-        var data = JSON.parse(xhr.responseText);
-
-        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
-
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-        xhr2.setRequestHeader('Content-Type', 'application/xml');
-        xhr2.setRequestHeader('SPRequestGuid', uuid);
-        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-        xhr2.onload = function () {
-          if (xhr2.status === 200) {
-            var error = JSON.parse(xhr2.responseText)[0];
-
-            if (error.ErrorInfo) {
-              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-              window.postMessage(JSON.stringify({ function: 'addOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              window.postMessage(JSON.stringify({ function: 'addOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-          }
-          else {
-            alertify.delay(10000).error(xhr2.responseText);
-            window.postMessage(JSON.stringify({ function: 'addOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        };
-
-        xhr2.send(payload);
-      }
-    };
-    xhr.send();
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'addOrigin', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+        } else {
+          window.postMessage(JSON.stringify({ function: 'addOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+        }
+      });
   });
 };
+
+// remove origin
 var removeOrigin = function removeOrigin() {
   var private = arguments[1] === 'Private' ? 1 : 0;
   var origin = arguments[2];
-  Promise.all([SystemJS.import(alertify)]).then(function (modules) {
-    var alertify = modules[0];
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
 
-    var guid = function () {
-      function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-      }
-      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
-    var spHostUrl = _spPageContextInfo.webAbsoluteUrl;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', spHostUrl + '/_api/contextinfo');
-    xhr.setRequestHeader('Accept', 'application/json; odata=verbose');
+    origin = origin.replace(" (configuration pending)", "");
 
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        var payload = '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.6420.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="54" ObjectPathId="53" /><Method Name="RemoveTenantCdnOrigin" Id="55" ObjectPathId="53"><Parameters><Parameter Type="Enum">' + private + '</Parameter><Parameter Type="String">' + origin + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /></ObjectPaths></Request>'
-        var uuid = guid();
-        var data = JSON.parse(xhr.responseText);
+    var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';
+    var payload = `
+      <Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009">
+        <Actions>
+          <ObjectPath Id="54" ObjectPathId="53" />
+          <Method Name="RemoveTenantCdnOrigin" Id="55" ObjectPathId="53">
+            <Parameters><Parameter Type="Enum">${private}</Parameter>
+              <Parameter Type="String">${origin}</Parameter>
+            </Parameters>
+          </Method>
+        </Actions>
+        <ObjectPaths>
+          <Constructor Id="53" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" />
+        </ObjectPaths>
+      </Request>
+    `;
 
-        var LibraryVersion = data.d.GetContextWebInformation.LibraryVersion;
-        var SchemaVersion = data.d.GetContextWebInformation.SupportedSchemaVersions.results.slice(-1).pop();
+    var client = new $pnp.SPHttpClient();
+    client.post(endpoint, {
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/xml;charset="UTF-8"',
+        'X-Requested-With': 'XMLHttpRequest',
 
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open('POST', spHostUrl + '/_vti_bin/client.svc/ProcessQuery');
-        xhr2.setRequestHeader('Content-Type', 'application/xml');
-        xhr2.setRequestHeader('SPRequestGuid', uuid);
-        xhr2.setRequestHeader('X-RequestDigest', data.d.GetContextWebInformation.FormDigestValue);
-        xhr2.onload = function () {
-          if (xhr2.status === 200) {
-            var error = JSON.parse(xhr2.responseText)[0];
+      },
+      body: payload
+    })
+      .then((r) => { return r.json(); })
+      .then((r) => {
+        if (r[0].ErrorInfo) {
+          alertify.delay(10000).error(r[0].ErrorInfo.ErrorMessage);
+          window.postMessage(JSON.stringify({ function: 'removeOrigin', success: false, result: r[0].ErrorInfo.ErrorMessage, source: 'chrome-sp-editor' }), '*');
+        } else {
+          window.postMessage(JSON.stringify({ function: 'removeOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
+        }
+      });
 
-            if (error.ErrorInfo) {
-              alertify.delay(10000).error(error.ErrorInfo.ErrorMessage);
-              window.postMessage(JSON.stringify({ function: 'removeOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-            else {
-              window.postMessage(JSON.stringify({ function: 'removeOrigin', success: true, result: null, source: 'chrome-sp-editor' }), '*');
-            }
-          }
-          else {
-            alertify.delay(10000).error(xhr2.responseText);
-            window.postMessage(JSON.stringify({ function: 'removeOrigin', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-          }
-        };
-        xhr2.send(payload);
-      }
-    };
-    xhr.send();
   });
 };
 
@@ -2450,7 +2663,8 @@ var updateTenantProperty = function updateTenantProperty() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2459,7 +2673,8 @@ var updateTenantProperty = function updateTenantProperty() {
           credentials: 'include',
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
-            'Content-Type': 'application/xml'
+            'Content-Type': 'application/xml',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.7206.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="4" ObjectPathId="3" /><ObjectPath Id="6" ObjectPathId="5" /><ObjectPath Id="8" ObjectPathId="7" /><Method Name="SetStorageEntity" Id="9" ObjectPathId="7"><Parameters><Parameter Type="String">' + key + '</Parameter><Parameter Type="String">' + value + '</Parameter><Parameter Type="String">' + desc + '</Parameter><Parameter Type="String">' + comm + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="3" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="5" ParentId="3" Name="GetSiteByUrl"><Parameters><Parameter Type="String">' + appCatalogUrl + '</Parameter></Parameters></Method><Property Id="7" ParentId="5" Name="RootWeb" /></ObjectPaths></Request>'
         }).then(response => {
@@ -2477,7 +2692,8 @@ var updateTenantProperty = function updateTenantProperty() {
             credentials: 'include',
             headers: {
               'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
-              'Content-Type': 'application/xml'
+              'Content-Type': 'application/xml',
+              'X-ClientService-ClientTag': 'SPEditor'
             },
             body: '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><Query Id="21" ObjectPathId="6"><Query SelectAllProperties="true"><Properties><Property Name="storageentitiesindex" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="6" ParentId="4" Name="AllProperties" /></ObjectPaths></Request>'
           }).then(response2 => {
@@ -2516,7 +2732,8 @@ var removeTenantProperty = function removeTenantProperty() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2525,7 +2742,8 @@ var removeTenantProperty = function removeTenantProperty() {
           credentials: 'include',
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
-            'Content-Type': 'application/xml'
+            'Content-Type': 'application/xml',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: '<Request AddExpandoFieldTypeSuffix="true" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SharePoint Online PowerShell (16.0.7206.0)" xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009"><Actions><ObjectPath Id="11" ObjectPathId="10" /><ObjectPath Id="13" ObjectPathId="12" /><ObjectPath Id="15" ObjectPathId="14" /><Method Name="RemoveStorageEntity" Id="16" ObjectPathId="14"><Parameters><Parameter Type="String">' + key + '</Parameter></Parameters></Method></Actions><ObjectPaths><Constructor Id="10" TypeId="{268004ae-ef6b-4e9b-8425-127220d84719}" /><Method Id="12" ParentId="10" Name="GetSiteByUrl"><Parameters><Parameter Type="String">' + appCatalogUrl + '</Parameter></Parameters></Method><Property Id="14" ParentId="12" Name="RootWeb" /></ObjectPaths></Request>'
         }).then(response => {
@@ -2544,7 +2762,8 @@ var removeTenantProperty = function removeTenantProperty() {
             credentials: 'include',
             headers: {
               'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
-              'Content-Type': 'application/xml'
+              'Content-Type': 'application/xml',
+              'X-ClientService-ClientTag': 'SPEditor'
             },
             body: '<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><Query Id="21" ObjectPathId="6"><Query SelectAllProperties="true"><Properties><Property Name="storageentitiesindex" ScalarProperty="true" /></Properties></Query></Query></Actions><ObjectPaths><Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:' + siteid + ':web:' + webid + '" /><Property Id="6" ParentId="4" Name="AllProperties" /></ObjectPaths></Request>'
           }).then(response2 => {
@@ -2579,7 +2798,8 @@ var getDesigns = function getDesigns() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2589,7 +2809,8 @@ var getDesigns = function getDesigns() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
         }).then(response => {
           return response.json();
@@ -2619,7 +2840,8 @@ var getDesign = function getDesign() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2629,7 +2851,8 @@ var getDesign = function getDesign() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: JSON.stringify({ 'id': designId }),
         }).then(response => {
@@ -2660,7 +2883,8 @@ var createDesign = function createDesign() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2670,7 +2894,8 @@ var createDesign = function createDesign() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: info,
         }).then(response => {
@@ -2701,7 +2926,8 @@ var updateDesign = function updateDesign() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2711,7 +2937,8 @@ var updateDesign = function updateDesign() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: info,
         }).then(response => {
@@ -2741,7 +2968,8 @@ var deleteDesign = function deleteDesign() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2751,7 +2979,8 @@ var deleteDesign = function deleteDesign() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: JSON.stringify({ 'id': designId }),
         }).then(response => {
@@ -2780,7 +3009,8 @@ var getScripts = function getScripts() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2790,7 +3020,8 @@ var getScripts = function getScripts() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
         }).then(response => {
           return response.json();
@@ -2819,7 +3050,8 @@ var getScript = function getScript() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2829,7 +3061,8 @@ var getScript = function getScript() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: JSON.stringify({ 'id': scriptId }),
         }).then(response => {
@@ -2861,7 +3094,8 @@ var addScript = function addScript() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2873,6 +3107,7 @@ var addScript = function addScript() {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
             'Content-Type': 'text/xml',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: content,
         }).then(response => {
@@ -2917,7 +3152,8 @@ var updateScript = function updateScript() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2929,6 +3165,7 @@ var updateScript = function updateScript() {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
             'Content-Type': 'application/json;charset=utf-8',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: JSON.stringify(updateInfo),
         }).then(response => {
@@ -2959,7 +3196,8 @@ var deleteScript = function deleteScript() {
       credentials: 'include',
       headers: {
         'Accept': 'application/json; odata=verbose',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-ClientService-ClientTag': 'SPEditor'
       }
     }).then(res => res.json())
       .then(res => {
@@ -2969,7 +3207,8 @@ var deleteScript = function deleteScript() {
           headers: {
             'X-RequestDigest': res.d.GetContextWebInformation.FormDigestValue,
             'Accept': 'application/json; odata=verbose',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-ClientService-ClientTag': 'SPEditor'
           },
           body: JSON.stringify({ 'id': scriptId }),
         }).then(response => {
@@ -2983,6 +3222,45 @@ var deleteScript = function deleteScript() {
 
         })
       })
+  });
+};
+
+var runSearch = function runSearch() {
+  var content = arguments[1];
+  var opts = JSON.parse(decodeURIComponent(content));
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose",
+
+        }
+      }
+    });
+
+    $pnp.sp.search(opts).then(function (r) {
+      //console.log(r)
+      var result = {
+        ElapsedTime: r.ElapsedTime,
+        PrimarySearchResults: r.PrimarySearchResults,
+        RawSearchResults: r.RawSearchResults,
+        RowCount: r.RowCount,
+        TotalRows: r.TotalRows,
+        TotalRowsIncludingDuplicates: r.TotalRowsIncludingDuplicates
+      }
+      window.postMessage(JSON.stringify({ function: 'runSearch', success: true, result: result, source: 'chrome-sp-editor' }), '*');
+    }).catch(function (error) {
+      if (error.data.responseBody.hasOwnProperty('error'))
+        alertify.delay(10000).error(error.data.responseBody.error.message.value);
+      else
+        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
+
+      window.postMessage(JSON.stringify({ function: "runSearch", success: false, result: error, source: 'chrome-sp-editor' }), '*');
+    });
   });
 };
 
@@ -3010,7 +3288,7 @@ function hideDimmer() {
     elem('dimmer').style.display = 'none';
 }
 
-var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman', 'modernproperties', 'sitedesigns', 'sitescriptscontainer'];
+var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman', 'modernproperties', 'sitedesigns', 'sitescriptscontainer', 'search'];
 
 function swap(visibleElement) {
   for (var i = 0; i < allElements.length; i++) {

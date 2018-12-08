@@ -1,5 +1,5 @@
 import { TypedHash } from "@pnp/common";
-import { SharePointQueryable, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableCollection } from "./sharepointqueryable";
 import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { Folders, Folder } from "./folders";
 import { Lists, List } from "./lists";
@@ -24,12 +24,6 @@ import { ClientSidePage, ClientSidePageComponent } from "./clientsidepages";
  */
 export declare class Webs extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the Webs class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, webPath?: string);
-    /**
      * Adds a new web to the collection
      *
      * @param title The new web's title
@@ -46,24 +40,12 @@ export declare class Webs extends SharePointQueryableCollection {
  *
  */
 export declare class WebInfos extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the WebInfos class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web infos collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, webPath?: string);
 }
 /**
  * Describes a web
  *
  */
 export declare class Web extends SharePointQueryableShareableWeb {
-    /**
-     * Creates a new instance of the Web class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Creates a new web instance from the given url by indexing the location of the /_api/
      * segment. If this is not found the method creates a new web with the entire string as
@@ -200,6 +182,11 @@ export declare class Web extends SharePointQueryableShareableWeb {
      *
      */
     readonly associatedVisitorGroup: SiteGroup;
+    /**
+     * Gets the default document library for this web
+     *
+     */
+    readonly defaultDocumentLibrary: List;
     /**
      * Gets a folder by server relative url
      *
@@ -353,6 +340,27 @@ export declare class Web extends SharePointQueryableShareableWeb {
      * @param title Display title of the new page
      */
     addClientSidePageByPath(pageName: string, listRelativePath: string, title?: string): Promise<ClientSidePage>;
+    /**
+     * Creates the default associated groups (Members, Owners, Visitors) and gives them the default permissions on the site.
+     * The target site must have unique permissions and no associated members / owners / visitors groups
+     *
+     * @param siteOwner The user login name to be added to the site Owners group. Default is the current user
+     * @param siteOwner2 The second user login name to be added to the site Owners group. Default is empty
+     * @param groupNameSeed The base group name. E.g. 'TestSite' would produce 'TestSite Members' etc.
+     */
+    createDefaultAssociatedGroups(siteOwner?: string, siteOwner2?: string, groupNameSeed?: string): Promise<void>;
+    /**
+     * Gets hub site data for the current web.
+     *
+     * @param forceRefresh Default value is false. When false, the data is returned from the server's cache.
+     * When true, the cache is refreshed with the latest updates and then returned.
+     * Use this if you just made changes and need to see those changes right away.
+     */
+    hubSiteData(forceRefresh?: boolean): Promise<void>;
+    /**
+     * Applies theme updates from the parent hub site collection.
+     */
+    syncHubSiteTheme(): Promise<void>;
 }
 /**
  * Result from adding a web
@@ -386,3 +394,4 @@ export interface WebEnsureUserResult {
     data: SiteUserProps;
     user: SiteUser;
 }
+//# sourceMappingURL=webs.d.ts.map

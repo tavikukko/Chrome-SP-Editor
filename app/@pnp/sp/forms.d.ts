@@ -1,15 +1,9 @@
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 /**
  * Describes a collection of Field objects
  *
  */
 export declare class Forms extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the Fields class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets a form by id
      *
@@ -23,3 +17,4 @@ export declare class Forms extends SharePointQueryableCollection {
  */
 export declare class Form extends SharePointQueryableInstance {
 }
+//# sourceMappingURL=forms.d.ts.map

@@ -5,3 +5,4 @@ import { IObjectPath } from "./objectpath";
  * @param objectPaths The object paths for which we want to generate a body
  */
 export declare function writeObjectPathBody(objectPaths: IObjectPath[]): string;
+//# sourceMappingURL=utils.d.ts.map

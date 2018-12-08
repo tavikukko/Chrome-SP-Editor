@@ -1,4 +1,4 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 export interface AttachmentFileInfo {
     name: string;
     content: string | Blob | ArrayBuffer;
@@ -8,12 +8,6 @@ export interface AttachmentFileInfo {
  *
  */
 export declare class AttachmentFiles extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the AttachmentFiles class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this attachments collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Gets a Attachment File by filename
      *
@@ -30,21 +24,28 @@ export declare class AttachmentFiles extends SharePointQueryableCollection {
     /**
      * Adds multiple new attachment to the collection. Not supported for batching.
      *
-     * @files name The collection of files to add
+     * @param files The collection of files to add
      */
     addMultiple(files: AttachmentFileInfo[]): Promise<void>;
     /**
      * Delete multiple attachments from the collection. Not supported for batching.
      *
-     * @files name The collection of files to delete
+     * @param files The collection of files to delete
      */
     deleteMultiple(...files: string[]): Promise<void>;
+    /**
+     * Delete multiple attachments from the collection and send to recycle bin. Not supported for batching.
+     *
+     * @param files The collection of files to be deleted and sent to recycle bin
+     */
+    recycleMultiple(...files: string[]): Promise<void>;
 }
 /**
  * Describes a single attachment file instance
  *
  */
 export declare class AttachmentFile extends SharePointQueryableInstance {
+    delete: (eTag?: string) => Promise<void>;
     /**
      * Gets the contents of the file as text
      *
@@ -70,14 +71,15 @@ export declare class AttachmentFile extends SharePointQueryableInstance {
      */
     setContent(content: string | ArrayBuffer | Blob): Promise<AttachmentFile>;
     /**
-     * Delete this attachment file
+     * Delete this attachment file and send it to recycle bin
      *
      * @param eTag Value used in the IF-Match header, by default "*"
      */
-    delete(eTag?: string): Promise<void>;
-    private getParsed<T>(parser);
+    recycle(eTag?: string): Promise<void>;
+    private getParsed;
 }
 export interface AttachmentFileAddResult {
     file: AttachmentFile;
     data: any;
 }
+//# sourceMappingURL=attachmentfiles.d.ts.map

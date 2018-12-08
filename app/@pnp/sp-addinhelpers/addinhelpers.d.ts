@@ -1,3 +1,3 @@
-export { SPRequestExecutorClient } from "./sprequestexecutorclient";
-export * from "./exceptions";
+export * from "./sprequestexecutorclient";
 export * from "./sprestaddin";
+//# sourceMappingURL=addinhelpers.d.ts.map

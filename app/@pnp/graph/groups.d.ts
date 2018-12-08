@@ -1,10 +1,10 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { Members, Owners } from "./members";
 import { TypedHash } from "@pnp/common";
 import { Calendar, Events } from "./calendars";
 import { Conversations, Senders } from "./conversations";
 import { Event as IEvent } from "@microsoft/microsoft-graph-types";
-import { Plans } from "./plans";
+import { Plans } from "./planner";
 import { Photo } from "./photos";
 import { Team } from "./teams";
 import { TeamProperties } from "./types";
@@ -20,14 +20,13 @@ export declare enum GroupType {
     /**
      * Security
      */
-    Security = 2,
+    Security = 2
 }
 /**
  * Describes a collection of Field objects
  *
  */
 export declare class Groups extends GraphQueryableCollection {
-    constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Gets a group from the collection using the specified id
      *
@@ -146,3 +145,4 @@ export interface GroupAddResult {
     group: Group;
     data: any;
 }
+//# sourceMappingURL=groups.d.ts.map

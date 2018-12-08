@@ -88,5 +88,3 @@ function addscriptlink(scope, scriptsequence, scriptpath) {
     script += " exescript(addCustomAction, '" + scope + "', '" + scriptpath + "', '" + scriptsequence + "');";
     chrome.devtools.inspectedWindow.eval(script);
 }
-
-

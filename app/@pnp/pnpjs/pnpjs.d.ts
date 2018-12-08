@@ -1,5 +1,5 @@
 import { Logger } from "@pnp/logging";
-import { Util, PnPClientStorage } from "@pnp/common";
+import { PnPClientStorage, dateAdd, combine, getCtxCallback, getRandomString, getGUID, isFunc, objectDefinedNotNull, isArray, extend, isUrlAbsolute, stringIsNullOrEmpty, getAttrValueFromString, sanitizeGuid } from "@pnp/common";
 import { Settings } from "@pnp/config-store";
 import { GraphRest } from "@pnp/graph";
 import { SPRestAddIn } from "@pnp/sp-addinhelpers";
@@ -19,7 +19,21 @@ export * from "@pnp/odata";
 /**
  * Utility methods
  */
-export declare const util: typeof Util;
+export declare const util: {
+    combine: typeof combine;
+    dateAdd: typeof dateAdd;
+    extend: typeof extend;
+    getAttrValueFromString: typeof getAttrValueFromString;
+    getCtxCallback: typeof getCtxCallback;
+    getGUID: typeof getGUID;
+    getRandomString: typeof getRandomString;
+    isArray: typeof isArray;
+    isFunc: typeof isFunc;
+    isUrlAbsolute: typeof isUrlAbsolute;
+    objectDefinedNotNull: typeof objectDefinedNotNull;
+    sanitizeGuid: typeof sanitizeGuid;
+    stringIsNullOrEmpty: typeof stringIsNullOrEmpty;
+};
 /**
  * Provides access to the SharePoint REST interface
  */
@@ -45,12 +59,51 @@ export declare const log: typeof Logger;
  */
 export declare const setup: (config: PnPConfiguration) => void;
 declare const Def: {
+    /**
+     * Global configuration instance to which providers can be added
+     */
     config: Settings;
+    /**
+     * Provides access to the Microsoft Graph REST interface
+     */
     graph: GraphRest;
+    /**
+     * Global logging instance to which subscribers can be registered and messages written
+     */
     log: typeof Logger;
+    /**
+     * Provides access to local and session storage
+     */
     setup: (config: PnPConfiguration) => void;
+    /**
+     * Provides access to the REST interface
+     */
     sp: SPRestAddIn;
+    /**
+     * Provides access to local and session storage
+     */
     storage: PnPClientStorage;
-    util: typeof Util;
+    /**
+     * Utility methods
+     */
+    util: {
+        combine: typeof combine;
+        dateAdd: typeof dateAdd;
+        extend: typeof extend;
+        getAttrValueFromString: typeof getAttrValueFromString;
+        getCtxCallback: typeof getCtxCallback;
+        getGUID: typeof getGUID;
+        getRandomString: typeof getRandomString;
+        isArray: typeof isArray;
+        isFunc: typeof isFunc;
+        isUrlAbsolute: typeof isUrlAbsolute;
+        objectDefinedNotNull: typeof objectDefinedNotNull;
+        sanitizeGuid: typeof sanitizeGuid;
+        stringIsNullOrEmpty: typeof stringIsNullOrEmpty;
+    };
 };
+/**
+ * Enables use of the import pnp from syntax
+ */
 export default Def;
+//# sourceMappingURL=pnpjs.d.ts.map

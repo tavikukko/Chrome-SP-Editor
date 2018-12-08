@@ -1,4 +1,4 @@
-import { SharePointQueryable, SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
+import { SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 import { TypedHash } from "@pnp/common";
 import { XmlSchemaFieldCreationInformation, DateTimeFieldFormatType, FieldTypes, CalendarType, UrlFieldFormatType, FieldUserSelectionMode, FieldCreationProperties, ChoiceFieldFormatType } from "./types";
 /**
@@ -7,11 +7,11 @@ import { XmlSchemaFieldCreationInformation, DateTimeFieldFormatType, FieldTypes,
  */
 export declare class Fields extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the Fields class
+     * Gets a field from the collection by id
      *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this fields collection
+     * @param id The Id of the list
      */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
+    getById(id: string): Field;
     /**
      * Gets a field from the collection by title
      *
@@ -24,12 +24,6 @@ export declare class Fields extends SharePointQueryableCollection {
      * @param name The case-sensitive internal name or title of the field
      */
     getByInternalNameOrTitle(name: string): Field;
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param title The Id of the list
-     */
-    getById(id: string): Field;
     /**
      * Creates a field based on the specified schema
      */
@@ -152,6 +146,14 @@ export declare class Fields extends SharePointQueryableCollection {
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
     addBoolean(title: string, properties?: FieldCreationProperties): Promise<FieldAddResult>;
+    /**
+    * Creates a secondary (dependent) lookup field, based on the Id of the primary lookup field.
+    *
+    * @param displayName The display name of the new field.
+    * @param primaryLookupFieldId The guid of the primary Lookup Field.
+    * @param showField Which field to show from the lookup list.
+    */
+    addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<FieldAddResult>;
 }
 /**
  * Describes a single of Field instance
@@ -159,17 +161,17 @@ export declare class Fields extends SharePointQueryableCollection {
  */
 export declare class Field extends SharePointQueryableInstance {
     /**
+     * Delete this fields
+     *
+     */
+    delete: () => Promise<void>;
+    /**
      * Updates this field intance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the list
      * @param fieldType The type value, required to update child field type properties
      */
     update(properties: TypedHash<string | number | boolean>, fieldType?: string): Promise<FieldUpdateResult>;
-    /**
-     * Delete this fields
-     *
-     */
-    delete(): Promise<void>;
     /**
      * Sets the value of the ShowInDisplayForm property for this field.
      */
@@ -194,3 +196,4 @@ export interface FieldUpdateResult {
     data: any;
     field: Field;
 }
+//# sourceMappingURL=fields.d.ts.map

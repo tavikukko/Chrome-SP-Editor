@@ -97,3 +97,4 @@ export declare class TermGroup extends ClientSvcQueryable implements ITermGroup 
      */
     update(properties: TermGroupUpdateProps): Promise<ITermGroupData & ITermGroup>;
 }
+//# sourceMappingURL=termgroup.d.ts.map

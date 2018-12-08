@@ -50,15 +50,15 @@ export declare class PnPClientStorageWrapper implements PnPClientStore {
     /**
      * Used to determine if the wrapped storage is available currently
      */
-    private test();
+    private test;
     /**
      * Creates the persistable to store
      */
-    private createPersistable(o, expire?);
+    private createPersistable;
     /**
      * Deletes expired items added by this library in this.store and sets a timeout to call itself
      */
-    private cacheExpirationHandler();
+    private cacheExpirationHandler;
 }
 /**
  * Interface which defines the operations provided by a client storage object
@@ -121,4 +121,6 @@ export declare class PnPClientStorage {
      * Provides access to the session storage of the browser
      */
     readonly session: PnPClientStore;
+    private getStore;
 }
+//# sourceMappingURL=storage.d.ts.map

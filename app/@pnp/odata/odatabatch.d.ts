@@ -11,9 +11,9 @@ export interface ODataBatchRequestInfo {
 }
 export declare abstract class ODataBatch {
     private _batchId;
-    protected _dependencies: Promise<void>[];
-    protected _requests: ODataBatchRequestInfo[];
-    protected _resolveBatchDependencies: Promise<void>[];
+    protected _deps: Promise<void>[];
+    protected _reqs: ODataBatchRequestInfo[];
+    protected _rDeps: Promise<void>[];
     constructor(_batchId?: string);
     readonly batchId: string;
     /**
@@ -26,8 +26,9 @@ export declare abstract class ODataBatch {
      * @param method Request method (GET, POST, etc)
      * @param options Any request options
      * @param parser The parser used to handle the eventual return from the query
+     * @param id An identifier used to track a request within a batch
      */
-    add<T>(url: string, method: string, options: FetchOptions, parser: ODataParser<T>, requestId: string): Promise<T>;
+    add<T>(url: string, method: string, options: FetchOptions, parser: ODataParser<T>, id: string): Promise<T>;
     /**
      * Adds a dependency insuring that some set of actions will occur before a batch is processed.
      * MUST be cleared using the returned resolve delegate to allow batches to run
@@ -47,3 +48,4 @@ export declare abstract class ODataBatch {
     execute(): Promise<void>;
     protected abstract executeImpl(): Promise<void>;
 }
+//# sourceMappingURL=odatabatch.d.ts.map

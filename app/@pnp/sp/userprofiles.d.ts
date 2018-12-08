@@ -150,3 +150,4 @@ export declare class UserProfileQuery extends SharePointQueryableInstance {
      */
     clientPeoplePickerSearchUser(queryParams: ClientPeoplePickerQueryParameters): Promise<PeoplePickerEntity[]>;
 }
+//# sourceMappingURL=userprofiles.d.ts.map

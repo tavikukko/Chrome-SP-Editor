@@ -15,23 +15,17 @@ export interface UserUpdateResult {
  */
 export declare class SiteUsers extends SharePointQueryableCollection {
     /**
-     * Creates a new instance of the SiteUsers class
+     * Gets a user from the collection by id
      *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this user collection
+     * @param id The id of the user to retrieve
      */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
+    getById(id: number): SiteUser;
     /**
      * Gets a user from the collection by email
      *
      * @param email The email address of the user to retrieve
      */
     getByEmail(email: string): SiteUser;
-    /**
-     * Gets a user from the collection by id
-     *
-     * @param id The id of the user to retrieve
-     */
-    getById(id: number): SiteUser;
     /**
      * Gets a user from the collection by login name
      *
@@ -59,32 +53,37 @@ export declare class SiteUsers extends SharePointQueryableCollection {
     add(loginName: string): Promise<SiteUser>;
 }
 /**
- * Describes a single user
+ * Base class for a user
  *
  */
-export declare class SiteUser extends SharePointQueryableInstance {
+export declare class UserBase extends SharePointQueryableInstance {
     /**
      * Gets the groups for this user
      *
      */
     readonly groups: SiteGroups;
+}
+/**
+ * Describes a single user
+ *
+ */
+export declare class SiteUser extends UserBase {
     /**
     * Updates this user instance with the supplied properties
     *
     * @param properties A plain object of property names and values to update for the user
     */
-    update(properties: TypedHash<any>): Promise<UserUpdateResult>;
+    update: (props: TypedHash<any>) => Promise<UserUpdateResult>;
     /**
      * Delete this user
      *
      */
-    delete(): Promise<void>;
+    delete: () => Promise<void>;
 }
 /**
  * Represents the current user
  */
-export declare class CurrentUser extends SharePointQueryableInstance {
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
+export declare class CurrentUser extends UserBase {
 }
 export interface SiteUserProps {
     Email: string;
@@ -96,3 +95,4 @@ export interface SiteUserProps {
     PrincipalType: number;
     Title: string;
 }
+//# sourceMappingURL=siteusers.d.ts.map

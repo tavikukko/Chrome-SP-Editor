@@ -55,3 +55,4 @@ export declare class SharePointQueryableSecurable extends SharePointQueryableIns
      */
     hasPermissions(value: BasePermissions, perm: PermissionKind): boolean;
 }
+//# sourceMappingURL=sharepointqueryablesecurable.d.ts.map

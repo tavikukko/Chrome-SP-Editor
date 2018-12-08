@@ -6,5 +6,6 @@ export declare const enum LogLevel {
     Info = 1,
     Warning = 2,
     Error = 3,
-    Off = 99,
+    Off = 99
 }
+//# sourceMappingURL=loglevel.d.ts.map

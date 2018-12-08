@@ -68,7 +68,7 @@ riot.tag("listproperties", `
           bytes.push(0);
         }
         var b64encoded = window.btoa(String.fromCharCode.apply(null, bytes));
-        if (this.indexedpropertykeys.value.indexOf(b64encoded) > -1) return true
+        if (this.indexedpropertykeys.value.indexOf(b64encoded+"|") > -1) return true
       }
       return false;
     }.bind(this);

@@ -1,4 +1,4 @@
-import { SearchQuery, SearchResults, SearchQueryBuilder } from "./search";
+import { SearchResults, SearchQueryInit } from "./search";
 import { SearchSuggestQuery, SearchSuggestResult } from "./searchsuggest";
 import { Site } from "./site";
 import { Web } from "./webs";
@@ -7,8 +7,11 @@ import { UserProfileQuery } from "./userprofiles";
 import { INavigationService } from "./navigation";
 import { SPBatch } from "./batch";
 import { SocialMethods } from "./social";
+import { SiteScriptUtilityMethods } from "./sitescripts";
+import { SiteDesignsUtilityMethods } from "./sitedesigns";
 import { UtilityMethods } from "./utilities";
 import { SPConfiguration } from "./config/splibconfig";
+import { ICachingOptions } from "@pnp/odata";
 /**
  * Root of the SharePoint REST module
  */
@@ -47,7 +50,14 @@ export declare class SPRest {
      *
      * @param query The SearchQuery definition
      */
-    search(query: string | SearchQuery | SearchQueryBuilder): Promise<SearchResults>;
+    search(query: SearchQueryInit): Promise<SearchResults>;
+    /**
+     * Executes the provided search query, caching the results
+     *
+     * @param query The SearchQuery definition
+     * @param options The set of caching options used to store the results
+     */
+    searchWithCaching(query: SearchQueryInit, options?: ICachingOptions): Promise<SearchResults>;
     /**
      * Begins a site collection scoped REST request
      *
@@ -81,11 +91,20 @@ export declare class SPRest {
      */
     readonly utility: UtilityMethods;
     /**
+     * Access to sitescripts methods
+     */
+    readonly siteScripts: SiteScriptUtilityMethods;
+    /**
+     * Access to sitedesigns methods
+     */
+    readonly siteDesigns: SiteDesignsUtilityMethods;
+    /**
      * Handles creating and configuring the objects returned from this class
      *
      * @param fm The factory method used to create the instance
      * @param path Optional additional path information to pass to the factory method
      */
-    private create<T>(fm, path?);
+    private create;
 }
 export declare const sp: SPRest;
+//# sourceMappingURL=rest.d.ts.map

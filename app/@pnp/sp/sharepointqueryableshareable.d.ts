@@ -45,8 +45,10 @@ export declare class SharePointQueryableShareable extends SharePointQueryable {
      * Get Sharing Information.
      *
      * @param request The SharingInformationRequest Object.
+     * @param expands Expand more fields.
+     *
      */
-    getSharingInformation(request?: SharingInformationRequest): Promise<SharingInformation>;
+    getSharingInformation(request?: SharingInformationRequest, expands?: string[]): Promise<SharingInformation>;
     /**
      * Gets the sharing settings of an item.
      *
@@ -77,8 +79,8 @@ export declare class SharePointQueryableShareable extends SharePointQueryable {
      * @param group The Group type
      */
     protected getRoleValue(role: SharingRole, group: RoleType): Promise<string>;
-    private getShareObjectWeb(candidate);
-    private sendShareObjectRequest(options);
+    private getShareObjectWeb;
+    private sendShareObjectRequest;
 }
 export declare class SharePointQueryableShareableWeb extends SharePointQueryableSecurable {
     /**
@@ -140,8 +142,10 @@ export declare class SharePointQueryableShareableItem extends SharePointQueryabl
      * Get Sharing Information.
      *
      * @param request The SharingInformationRequest Object.
+     * @param expands Expand more fields.
+     *
      */
-    getSharingInformation(request?: SharingInformationRequest): Promise<SharingInformation>;
+    getSharingInformation(request?: SharingInformationRequest, expands?: string[]): Promise<SharingInformation>;
     /**
      * Gets the sharing settings of an item.
      *
@@ -184,8 +188,10 @@ export declare class FileFolderShared extends SharePointQueryableInstance {
      * Get Sharing Information.
      *
      * @param request The SharingInformationRequest Object.
+     * @param expands Expand more fields.
+     *
      */
-    getSharingInformation(request?: SharingInformationRequest): Promise<SharingInformation>;
+    getSharingInformation(request?: SharingInformationRequest, expands?: string[]): Promise<SharingInformation>;
     /**
      * Gets the sharing settings of an item.
      *
@@ -238,3 +244,4 @@ export declare class SharePointQueryableShareableFolder extends FileFolderShared
      */
     shareWith(loginNames: string | string[], role?: SharingRole, requireSignin?: boolean, shareEverything?: boolean, emailData?: SharingEmailData): Promise<SharingResult>;
 }
+//# sourceMappingURL=sharepointqueryableshareable.d.ts.map

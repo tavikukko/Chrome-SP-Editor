@@ -202,7 +202,7 @@ export interface ChangeLogitemQuery {
 export declare enum ControlMode {
     Display = 1,
     Edit = 2,
-    New = 3,
+    New = 3
 }
 /**
  * Represents properties of a list item field and its value.
@@ -259,11 +259,11 @@ export declare enum FieldTypes {
     ThreadIndex = 27,
     WorkflowStatus = 28,
     AllDayEvent = 29,
-    WorkflowEventType = 30,
+    WorkflowEventType = 30
 }
 export declare enum DateTimeFieldFormatType {
     DateOnly = 0,
-    DateTime = 1,
+    DateTime = 1
 }
 /**
  * Specifies the control settings while adding a field.
@@ -296,7 +296,7 @@ export declare enum AddFieldOptions {
     /**
      * Specify to confirm that no other field has the same display name
      */
-    AddFieldCheckDisplayName = 32,
+    AddFieldCheckDisplayName = 32
 }
 export interface XmlSchemaFieldCreationInformation {
     Options?: AddFieldOptions;
@@ -317,11 +317,11 @@ export declare enum CalendarType {
     KoreaJapanLunar = 14,
     ChineseLunar = 15,
     SakaEra = 16,
-    UmAlQura = 23,
+    UmAlQura = 23
 }
 export declare enum UrlFieldFormatType {
     Hyperlink = 0,
-    Image = 1,
+    Image = 1
 }
 export interface BasePermissions {
     Low: number;
@@ -489,7 +489,7 @@ export declare enum PermissionKind {
     /**
      * Has all permissions on the Site. Not available through the user interface.
      */
-    FullMask = 65,
+    FullMask = 65
 }
 export interface FollowedContent {
     FollowedDocumentsUrl: string;
@@ -598,7 +598,7 @@ export declare const enum PrincipalType {
     /**
      * Enumeration whose value specifies all principal types.
      */
-    All = 15,
+    All = 15
 }
 /**
  * Specifies the source of a principal.
@@ -627,7 +627,7 @@ export declare const enum PrincipalSource {
     /**
      * Enumeration whose value specifies all principal sources.
      */
-    All = 15,
+    All = 15
 }
 export declare enum RoleType {
     None = 0,
@@ -635,7 +635,7 @@ export declare enum RoleType {
     Reader = 2,
     Contributor = 3,
     WebDesigner = 4,
-    Administrator = 5,
+    Administrator = 5
 }
 export interface PrincipalInfo {
     Department: string;
@@ -685,7 +685,7 @@ export declare enum PageType {
     NewForm = 8,
     NewFormDialog = 9,
     SolutionForm = 10,
-    PAGE_MAXITEMS = 11,
+    PAGE_MAXITEMS = 11
 }
 export interface ListFormData {
     ContentType?: string;
@@ -766,7 +766,7 @@ export declare enum SharingLinkKind {
     /**
      * Flexible sharing Link where properties can change without affecting link URL
      */
-    Flexible = 6,
+    Flexible = 6
 }
 export interface ShareObjectOptions {
     url?: string;
@@ -785,7 +785,7 @@ export declare enum SharingRole {
     None = 0,
     View = 1,
     Edit = 2,
-    Owner = 3,
+    Owner = 3
 }
 /**
  * Represents email data.
@@ -910,7 +910,7 @@ export declare enum SharingOperationStatusCode {
     /**
      * A SharePoint group cannot contain another SharePoint group.
      */
-    NestedGroupsNotSupported = -9,
+    NestedGroupsNotSupported = -9
 }
 export interface SharingResult {
     /**
@@ -1254,12 +1254,12 @@ export declare enum SPSharedObjectType {
     Item = 3,
     List = 4,
     Web = 5,
-    Max = 6,
+    Max = 6
 }
 export declare enum SharingDomainRestrictionMode {
     None = 0,
     AllowList = 1,
-    BlockList = 2,
+    BlockList = 2
 }
 export interface EmailProperties {
     To: string[];
@@ -1297,7 +1297,7 @@ export declare enum RenderListDataOptions {
     EnableMediaTAUrls = 4096,
     ParentInfo = 8192,
     PageContextInfo = 16384,
-    ClientSideComponentManifest = 32768,
+    ClientSideComponentManifest = 32768
 }
 export interface RenderListDataParameters {
     AllowMultipleValueFilterForTaxonomyFields?: boolean;
@@ -1335,7 +1335,7 @@ export interface MenuNodeCollection {
 }
 export declare enum FieldUserSelectionMode {
     PeopleAndGroups = 1,
-    PeopleOnly = 0,
+    PeopleOnly = 0
 }
 export interface FieldCreationProperties extends TypedHash<string | number | boolean> {
     DefaultFormula?: string;
@@ -1352,7 +1352,7 @@ export interface FieldCreationProperties extends TypedHash<string | number | boo
 }
 export declare enum ChoiceFieldFormatType {
     Dropdown = 0,
-    RadioButtons = 1,
+    RadioButtons = 1
 }
 /**
  * Client people picker query parameters
@@ -1478,7 +1478,7 @@ export declare const enum UrlZone {
     /**
      * Specifies an extranet zone.
      */
-    Extranet = 4,
+    Extranet = 4
 }
 export interface StorageEntity {
     Value: string | null;
@@ -1492,3 +1492,4 @@ export interface LikeData {
     email: string;
     creationDate: string;
 }
+//# sourceMappingURL=types.d.ts.map

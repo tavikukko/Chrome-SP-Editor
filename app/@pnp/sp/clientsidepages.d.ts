@@ -17,7 +17,7 @@ export declare const enum PromotedState {
     /**
      * Page that is promoted as news article
      */
-    Promoted = 2,
+    Promoted = 2
 }
 /**
  * Type describing the available page layout types for client side "modern" pages
@@ -110,31 +110,43 @@ export declare class ClientSidePage extends File {
      */
     findControl<T extends ClientSidePart = ClientSidePart>(predicate: (c: ClientSidePart) => boolean): T;
     /**
+     * Like the modern site page
+     */
+    like(): Promise<void>;
+    /**
+     * Unlike the modern site page
+     */
+    unlike(): Promise<void>;
+    /**
+     * Get the liked by information for a modern site page
+     */
+    getLikedByInformation(): Promise<void>;
+    /**
      * Sets the comments flag for a page
      *
      * @param on If true comments are enabled, false they are disabled
      */
-    private setCommentsOn(on);
+    private setCommentsOn;
     /**
      * Merges the control into the tree of sections and columns for this page
      *
      * @param control The control to merge
      */
-    private mergePartToTree(control);
+    private mergePartToTree;
     /**
      * Merges the supplied column into the tree
      *
      * @param column Column to merge
      * @param position The position data for the column
      */
-    private mergeColumnToTree(column);
+    private mergeColumnToTree;
     /**
      * Updates the properties of the underlying ListItem associated with this ClientSidePage
      *
      * @param properties Set of properties to update
      * @param eTag Value used in the IF-Match header, by default "*"
      */
-    private updateProperties(properties, eTag?);
+    private updateProperties;
 }
 export declare class CanvasSection {
     page: ClientSidePage;
@@ -331,3 +343,4 @@ export declare module ClientSideWebpartPropertyTypes {
         zoomLevel?: number;
     }
 }
+//# sourceMappingURL=clientsidepages.d.ts.map

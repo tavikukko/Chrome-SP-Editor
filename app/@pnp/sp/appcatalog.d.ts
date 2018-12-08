@@ -27,8 +27,10 @@ export declare class App extends SharePointQueryableInstance {
     /**
      * This method deploys an app on the app catalog.  It must be called in the context
      * of the tenant app catalog web or it will fail.
+     *
+     * @param skipFeatureDeployment Deploy the app to the entire tenant
      */
-    deploy(): Promise<void>;
+    deploy(skipFeatureDeployment?: boolean): Promise<void>;
     /**
      * This method retracts a deployed app on the app catalog.  It must be called in the context
      * of the tenant app catalog web or it will fail.
@@ -56,3 +58,4 @@ export interface AppAddResult {
     data: any;
     file: File;
 }
+//# sourceMappingURL=appcatalog.d.ts.map

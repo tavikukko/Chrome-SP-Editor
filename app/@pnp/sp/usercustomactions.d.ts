@@ -1,16 +1,10 @@
-import { SharePointQueryable, SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { TypedHash } from "@pnp/common";
 /**
  * Describes a collection of user custom actions
  *
  */
 export declare class UserCustomActions extends SharePointQueryableCollection {
-    /**
-     * Creates a new instance of the UserCustomActions class
-     *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this user custom actions collection
-     */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * Returns the user custom action with the specified id
      *
@@ -40,7 +34,7 @@ export declare class UserCustomAction extends SharePointQueryableInstance {
     *
     * @param properties An information object of property names and values to update for this user custom action
     */
-    update(properties: TypedHash<string | boolean | number>): Promise<UserCustomActionUpdateResult>;
+    update: (props: TypedHash<string | number | boolean>) => Promise<UserCustomActionUpdateResult>;
     /**
     * Removes this user custom action
     *
@@ -63,3 +57,4 @@ export interface UserCustomActionUpdateResult {
     data: any;
     action: UserCustomAction;
 }
+//# sourceMappingURL=usercustomactions.d.ts.map
