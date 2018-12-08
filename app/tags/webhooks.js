@@ -12,7 +12,7 @@ riot.tag("webhooks", `
                     </select>
                   </div>
                   <div class="col-xs-2">
-                    <input id="webhookclientstate" type="text" class="form-control" placeholder="ClientState (optional)">
+                    <input id="webhookclientstate" type="text" class="form-control" placeholder="ClientState">
                   </div>
                   <div class="col-xs-8">
                     <div class="input-group">

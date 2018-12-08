@@ -1478,6 +1478,17 @@ var addSubscriptions = function addSubscriptions() {
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
+    if (clientstate === "") {
+      alertify.delay(10000).error("ClientState empty. Please provide a string value for the webhook ClientState.");
+      return;
+    }
+
+    var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    if (!pattern.test(hookurl)) {
+      alertify.delay(10000).error("Please provide a correct webhook URL.");
+      return;
+    }
+
     var today = new Date();
     var expirationDate = new Date(today.setDate(today.getDate() + 90)).toISOString(); // expire in 3 months
 
