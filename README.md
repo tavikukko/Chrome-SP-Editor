@@ -8,6 +8,12 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 4.5.0 updates and bug fixes
+    * Updated PnPjs to 1.3.0
+    * Updated monaco editor 1.16.0
+    * Added max length (80) to webhook clientstate, thanks [@thomyg](https://github.com/thomyg) 
+    * Fixed issue with chrome devtool shorcuts popping up when hitting the shortcut when editing files, thanks [@johannes-z](https://github.com/johannes-z) for reporting
+    * Support for SP2019
 - 4.4.1 Refactoring
 - 4.4.0 New feature in Search
     * Request reindex for web, thanks [@koskila](https://github.com/koskila) for the contribution.

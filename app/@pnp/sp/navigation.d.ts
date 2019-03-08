@@ -84,7 +84,7 @@ export interface INavigationService {
  * Represents the top level navigation service
  */
 export declare class NavigationService extends SharePointQueryable implements INavigationService {
-    constructor(path?: string);
+    constructor(baseUrl: string | SharePointQueryable, path?: string);
     /**
      * The MenuState service operation returns a Menu-State (dump) of a SiteMapProvider on a site.
      *

@@ -17,7 +17,7 @@ export declare class UserCustomActions extends SharePointQueryableCollection {
      * @param properties The information object of property names and values which define the new user custom action
      *
      */
-    add(properties: TypedHash<string | boolean | number>): Promise<UserCustomActionAddResult>;
+    add(properties: TypedHash<any>): Promise<UserCustomActionAddResult>;
     /**
      * Deletes all user custom actions in the collection
      *
@@ -34,7 +34,7 @@ export declare class UserCustomAction extends SharePointQueryableInstance {
     *
     * @param properties An information object of property names and values to update for this user custom action
     */
-    update: (props: TypedHash<string | number | boolean>) => Promise<UserCustomActionUpdateResult>;
+    update: (props: TypedHash<any>) => Promise<UserCustomActionUpdateResult>;
     /**
     * Removes this user custom action
     *

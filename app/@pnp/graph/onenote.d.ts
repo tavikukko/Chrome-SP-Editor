@@ -1,4 +1,5 @@
 import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { Notebook as INotebook, Onenote as IOnenote, OnenoteSection as ISection } from "@microsoft/microsoft-graph-types";
 export interface OneNoteMethods {
     notebooks: Notebooks;
     sections: Sections;
@@ -7,7 +8,7 @@ export interface OneNoteMethods {
 /**
  * Represents a onenote entity
  */
-export declare class OneNote extends GraphQueryableInstance implements OneNoteMethods {
+export declare class OneNote extends GraphQueryableInstance<IOnenote> implements OneNoteMethods {
     readonly notebooks: Notebooks;
     readonly sections: Sections;
     readonly pages: Pages;
@@ -16,7 +17,7 @@ export declare class OneNote extends GraphQueryableInstance implements OneNoteMe
  * Describes a collection of Notebook objects
  *
  */
-export declare class Notebooks extends GraphQueryableCollection {
+export declare class Notebooks extends GraphQueryableCollection<INotebook[]> {
     /**
      * Gets a notebook instance by id
      *
@@ -34,7 +35,7 @@ export declare class Notebooks extends GraphQueryableCollection {
  * Describes a notebook instance
  *
  */
-export declare class Notebook extends GraphQueryableInstance {
+export declare class Notebook extends GraphQueryableInstance<INotebook> {
     constructor(baseUrl: string | GraphQueryable, path?: string);
     readonly sections: Sections;
 }
@@ -42,7 +43,7 @@ export declare class Notebook extends GraphQueryableInstance {
  * Describes a collection of Sections objects
  *
  */
-export declare class Sections extends GraphQueryableCollection {
+export declare class Sections extends GraphQueryableCollection<ISection[]> {
     /**
      * Gets a section instance by id
      *
@@ -60,7 +61,7 @@ export declare class Sections extends GraphQueryableCollection {
  * Describes a sections instance
  *
  */
-export declare class Section extends GraphQueryableInstance {
+export declare class Section extends GraphQueryableInstance<ISection> {
     constructor(baseUrl: string | GraphQueryable, path?: string);
 }
 /**

@@ -1,6 +1,6 @@
 import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { Attachment as IAttachment } from "@microsoft/microsoft-graph-types";
-export declare class Attachments extends GraphQueryableCollection {
+export declare class Attachments extends GraphQueryableCollection<IAttachment[]> {
     /**
      * Gets a member of the group by id
      *
@@ -15,6 +15,6 @@ export declare class Attachments extends GraphQueryableCollection {
      */
     addFile(name: string, bytes: string | Blob): Promise<IAttachment>;
 }
-export declare class Attachment extends GraphQueryableInstance {
+export declare class Attachment extends GraphQueryableInstance<IAttachment> {
 }
 //# sourceMappingURL=attachments.d.ts.map

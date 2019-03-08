@@ -99,7 +99,7 @@ export declare class SharePointQueryableCollection<GetType = any[]> extends Shar
  * Represents an instance that can be selected
  *
  */
-export declare class SharePointQueryableInstance extends SharePointQueryable {
+export declare class SharePointQueryableInstance<GetType = any> extends SharePointQueryable<GetType> {
     /**
      * Curries the update function into the common pieces
      *

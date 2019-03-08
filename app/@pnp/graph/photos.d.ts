@@ -1,5 +1,6 @@
 import { GraphQueryableInstance } from "./graphqueryable";
-export declare class Photo extends GraphQueryableInstance {
+import { Photo as IPhoto } from "@microsoft/microsoft-graph-types";
+export declare class Photo extends GraphQueryableInstance<IPhoto> {
     /**
      * Gets the image bytes as a blob (browser)
      */

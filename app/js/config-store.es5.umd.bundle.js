@@ -1,8 +1,8 @@
 /**
  * @license
- * v1.2.6
+ * v1.3.0
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
- * Copyright (c) 2018 Microsoft
+ * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
  * source: https://github.com/pnp/pnpjs
  * bugs: https://github.com/pnp/pnpjs/issues
@@ -1086,10 +1086,14 @@ function getRandomString(chars) {
  * Gets a random GUID value
  *
  * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+ * https://stackoverflow.com/a/8809472 updated to prevent collisions.
  */
 /* tslint:disable no-bitwise */
 function getGUID() {
-    var d = new Date().getTime();
+    var d = Date.now();
+    if (typeof performance !== "undefined" && typeof performance.now === "function") {
+        d += performance.now(); // use high-precision timer if available
+    }
     var guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
         var r = (d + Math.random() * 16) % 16 | 0;
         d = Math.floor(d / 16);

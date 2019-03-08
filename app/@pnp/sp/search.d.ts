@@ -363,7 +363,7 @@ export interface IRefiner {
         RefinementName: string;
         RefinementToken: string;
         RefinementValue: string;
-    };
+    }[];
 }
 export interface ResultTable {
     GroupTemplateId?: string;

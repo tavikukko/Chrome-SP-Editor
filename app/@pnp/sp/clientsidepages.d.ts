@@ -1,7 +1,9 @@
-import { List } from "./lists";
 import { File } from "./files";
 import { ItemUpdateResult } from "./items";
 import { TypedHash } from "@pnp/common";
+import { SharePointQueryable } from "./sharepointqueryable";
+import { List } from "./lists";
+import { Web } from "./webs";
 /**
  * Page promotion state
  */
@@ -26,69 +28,63 @@ export declare type ClientSidePageLayoutType = "Article" | "Home";
 /**
  * Column size factor. Max value is 12 (= one column), other options are 8,6,4 or 0
  */
-export declare type CanvasColumnFactorType = 0 | 2 | 4 | 6 | 8 | 12;
+export declare type CanvasColumnFactor = 0 | 2 | 4 | 6 | 8 | 12;
 /**
  * Represents the data and methods associated with client side "modern" pages
  */
-export declare class ClientSidePage extends File {
+export declare class ClientSidePage extends SharePointQueryable {
+    private json?;
     sections: CanvasSection[];
     commentsDisabled: boolean;
+    private _pageSettings;
+    private _layoutPart;
     /**
-     * Creates a new instance of the ClientSidePage class
+     * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY
      *
-     * @param baseUrl The url or SharePointQueryable which forms the parent of this web collection
-     * @param commentsDisabled Indicates if comments are disabled, not valid until load is called
      */
-    constructor(file: File, sections?: CanvasSection[], commentsDisabled?: boolean);
+    constructor(baseUrl: string | SharePointQueryable, path?: string, json?: Partial<IPageData>, noInit?: boolean, sections?: CanvasSection[], commentsDisabled?: boolean);
     /**
-     * Creates a new blank page within the supplied library
+     * Creates a new blank page within the supplied library [does not work with batching]
      *
-     * @param library The library in which to create the page
-     * @param pageName Filename of the page, such as "page.aspx"
+     * @param web Parent web in which we will create the page (we allow list here too matching the old api)
+     * @param pageName Filename of the page, such as "page"
      * @param title The display title of the page
      * @param pageLayoutType Layout type of the page to use
      */
-    static create(library: List, pageName: string, title: string, pageLayoutType?: ClientSidePageLayoutType): Promise<ClientSidePage>;
+    static create(web: Web | List, pageName: string, title: string, pageLayoutType?: ClientSidePageLayoutType): Promise<ClientSidePage>;
     /**
      * Creates a new ClientSidePage instance from the provided html content string
      *
      * @param html HTML markup representing the page
      */
     static fromFile(file: File): Promise<ClientSidePage>;
-    /**
-     * Converts a json object to an escaped string appropriate for use in attributes when storing client-side controls
-     *
-     * @param json The json object to encode into a string
-     */
-    static jsonToEscapedString(json: any): string;
-    /**
-     * Converts an escaped string from a client-side control attribute to a json object
-     *
-     * @param escapedString
-     */
-    static escapedStringToJson<T = any>(escapedString: string): T;
+    private static getDefaultLayoutPart;
+    private static getPoster;
+    pageLayout: ClientSidePageLayoutType;
+    bannerImageUrl: string;
+    bannerImageSourceType: number;
+    topicHeader: string;
+    title: string;
+    layoutType: LayoutType;
+    headerTextAlignment: TextAlignment;
+    showTopicHeader: boolean;
+    showPublishDate: boolean;
     /**
      * Add a section to this page
      */
     addSection(): CanvasSection;
-    /**
-     * Converts this page's content to html markup
-     */
-    toHtml(): string;
-    /**
-     * Loads this page instance's content from the supplied html
-     *
-     * @param html html string representing the page's content
-     */
-    fromHtml(html: string): this;
+    fromJSON(pageData: Partial<IPageData>): this;
     /**
      * Loads this page's content from the server
      */
-    load(): Promise<void>;
+    load(): Promise<ClientSidePage>;
     /**
-     * Persists the content changes (sections, columns, and controls)
+     * Persists the content changes (sections, columns, and controls) [does not work with batching]
+     *
+     * @param publish If true the page is published, if false the changes are persisted to SharePoint but not published
      */
-    save(): Promise<ItemUpdateResult>;
+    save(publish?: boolean): Promise<boolean>;
+    discardPageCheckout(): Promise<void>;
     /**
      * Enables comments on this page
      */
@@ -102,13 +98,13 @@ export declare class ClientSidePage extends File {
      *
      * @param id Instance id of the control to find
      */
-    findControlById<T extends ClientSidePart = ClientSidePart>(id: string): T;
+    findControlById<T extends ColumnControl<any> = ColumnControl<any>>(id: string): T;
     /**
      * Finds a control within this page's control tree using the supplied predicate
      *
      * @param predicate Takes a control and returns true or false, if true that control is returned by findControl
      */
-    findControl<T extends ClientSidePart = ClientSidePart>(predicate: (c: ClientSidePart) => boolean): T;
+    findControl<T extends ColumnControl<any> = ColumnControl<any>>(predicate: (c: ColumnControl<any>) => boolean): T;
     /**
      * Like the modern site page
      */
@@ -120,7 +116,20 @@ export declare class ClientSidePage extends File {
     /**
      * Get the liked by information for a modern site page
      */
-    getLikedByInformation(): Promise<void>;
+    getLikedByInformation(): Promise<any>;
+    /**
+     * Creates a copy of this page
+     *
+     * @param web The web where we will create the copy
+     * @param pageName The file name of the new page
+     * @param title The title of the new page
+     * @param publish If true the page will be published
+     */
+    copyPage(web: Web | List, pageName: string, title: string, publish?: boolean): Promise<ClientSidePage>;
+    protected getCanvasContent1(): string;
+    protected getLayoutWebpartsContent(): string;
+    protected setControls(controls: IClientSideControlBaseData[]): void;
+    protected getControls(): IClientSideControlBaseData[];
     /**
      * Sets the comments flag for a page
      *
@@ -140,16 +149,10 @@ export declare class ClientSidePage extends File {
      * @param position The position data for the column
      */
     private mergeColumnToTree;
-    /**
-     * Updates the properties of the underlying ListItem associated with this ClientSidePage
-     *
-     * @param properties Set of properties to update
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    private updateProperties;
+    private getItem;
 }
 export declare class CanvasSection {
-    page: ClientSidePage;
+    protected page: ClientSidePage;
     order: number;
     columns: CanvasColumn[];
     /**
@@ -164,89 +167,101 @@ export declare class CanvasSection {
     /**
      * Adds a new column to this section
      */
-    addColumn(factor: CanvasColumnFactorType): CanvasColumn;
+    addColumn(factor: CanvasColumnFactor): CanvasColumn;
     /**
      * Adds a control to the default column for this section
      *
      * @param control Control to add to the default column
      */
-    addControl(control: ClientSidePart): this;
-    toHtml(): string;
+    addControl(control: ColumnControl<any>): this;
     /**
      * Removes this section and all contained columns and controls from the collection
      */
     remove(): void;
 }
-export declare abstract class CanvasControl {
-    protected controlType: number;
-    dataVersion: string;
-    column: CanvasColumn;
-    order: number;
-    id: string;
-    controlData: ClientSideControlData;
-    constructor(controlType: number, dataVersion: string, column?: CanvasColumn, order?: number, id?: string, controlData?: ClientSideControlData);
-    /**
-     * Value of the control's "data-sp-controldata" attribute
-     */
-    readonly jsonData: string;
-    abstract toHtml(index: number): string;
-    fromHtml(html: string): void;
-    protected abstract getControlData(): ClientSideControlData;
-}
-export declare class CanvasColumn extends CanvasControl {
+export declare class CanvasColumn {
+    protected json: IClientSidePageColumnData;
+    controls: ColumnControl<any>[];
+    static Default: IClientSidePageColumnData;
+    private _section;
+    private _memId;
+    constructor(json?: IClientSidePageColumnData, controls?: ColumnControl<any>[]);
+    readonly data: IClientSidePageColumnData;
     section: CanvasSection;
     order: number;
-    factor: CanvasColumnFactorType;
-    controls: ClientSidePart[];
-    constructor(section: CanvasSection, order: number, factor?: CanvasColumnFactorType, controls?: ClientSidePart[], dataVersion?: string);
-    addControl(control: ClientSidePart): this;
-    getControl<T extends ClientSidePart>(index: number): T;
-    toHtml(): string;
-    fromHtml(html: string): void;
-    getControlData(): ClientSideControlData;
-    /**
-     * Removes this column and all contained controls from the collection
-     */
+    factor: CanvasColumnFactor;
+    addControl(control: ColumnControl<any>): this;
+    getControl<T extends ColumnControl<any>>(index: number): T;
     remove(): void;
 }
-/**
- * Abstract class with shared functionality for parts
- */
-export declare abstract class ClientSidePart extends CanvasControl {
-    /**
-     * Removes this column and all contained controls from the collection
-     */
+export declare abstract class ColumnControl<T extends ICanvasControlBaseData> {
+    protected json: T;
+    private _column;
+    constructor(json: T);
+    abstract order: number;
+    readonly id: string;
+    readonly data: T;
+    column: CanvasColumn | null;
     remove(): void;
+    protected setData(data: T): void;
+    protected abstract onColumnChange(col: CanvasColumn): void;
 }
-export declare class ClientSideText extends ClientSidePart {
-    private _text;
-    constructor(text?: string);
-    /**
-     * The text markup of this control
-     */
+export declare class ClientSideText extends ColumnControl<IClientSideTextData> {
+    static Default: IClientSideTextData;
+    constructor(text: string, json?: IClientSideTextData);
     text: string;
-    getControlData(): ClientSideControlData;
-    toHtml(index: number): string;
-    fromHtml(html: string): void;
+    order: number;
+    protected onColumnChange(col: CanvasColumn): void;
 }
-export declare class ClientSideWebpart extends ClientSidePart {
+export declare class ClientSideWebpart extends ColumnControl<IClientSideWebPartData> {
+    static Default: IClientSideWebPartData;
+    constructor(json?: IClientSideWebPartData);
+    static fromComponentDef(definition: ClientSidePageComponent): ClientSideWebpart;
     title: string;
     description: string;
-    propertieJson: TypedHash<any>;
-    webPartId: string;
-    protected htmlProperties: string;
-    protected serverProcessedContent: ServerProcessedContent;
-    protected canvasDataVersion: string;
-    constructor(title: string, description?: string, propertieJson?: TypedHash<any>, webPartId?: string, htmlProperties?: string, serverProcessedContent?: ServerProcessedContent, canvasDataVersion?: string);
-    static fromComponentDef(definition: ClientSidePageComponent): ClientSideWebpart;
-    import(component: ClientSidePageComponent): void;
+    order: number;
+    height: number;
+    width: number;
+    dataVersion: string;
     setProperties<T = any>(properties: T): this;
     getProperties<T = any>(): T;
-    toHtml(index: number): string;
-    fromHtml(html: string): void;
-    getControlData(): ClientSideControlData;
-    protected renderHtmlProperties(): string;
-    protected parseJsonProperties(props: TypedHash<any>): any;
+    protected onColumnChange(col: CanvasColumn): void;
+    protected import(component: ClientSidePageComponent): void;
+}
+export interface IPageData {
+    readonly "odata.metadata": string;
+    readonly "odata.type": "SP.Publishing.SitePage";
+    readonly "odata.id": string;
+    readonly "odata.editLink": string;
+    AbsoluteUrl: string;
+    AuthorByline: string[] | null;
+    BannerImageUrl: string;
+    ContentTypeId: null | string;
+    Description: string;
+    DoesUserHaveEditPermission: boolean;
+    FileName: string;
+    readonly FirstPublished: string;
+    readonly Id: number;
+    IsPageCheckedOutToCurrentUser: boolean;
+    IsWebWelcomePage: boolean;
+    readonly Modified: string;
+    PageLayoutType: ClientSidePageLayoutType;
+    Path: {
+        DecodedUrl: string;
+    };
+    PromotedState: number;
+    Title: string;
+    TopicHeader: null | string;
+    readonly UniqueId: string;
+    Url: string;
+    readonly Version: string;
+    readonly VersionInfo: {
+        readonly LastVersionCreated: string;
+        readonly LastVersionCreatedBy: string;
+    };
+    AlternativeUrlMap: string;
+    CanvasContent1: string;
+    LayoutWebpartsContent: string;
 }
 /**
  * Client side webpart object (retrieved via the _api/web/GetClientSideWebParts REST call)
@@ -277,33 +292,74 @@ export interface ClientSidePageComponent {
      */
     Status: number;
 }
-export interface ServerProcessedContent {
-    searchablePlainTexts: TypedHash<string>;
-    imageSources: TypedHash<string>;
-    links: TypedHash<string>;
+export interface IClientSideControlBaseData {
+    controlType: number;
 }
-export interface ClientSideControlPosition {
-    controlIndex?: number;
-    sectionFactor: CanvasColumnFactorType;
-    sectionIndex: number;
-    zoneIndex: number;
-}
-export interface ClientSideControlData {
-    controlType?: number;
-    id?: string;
-    editorType?: string;
-    position: ClientSideControlPosition;
-    webPartId?: string;
-    displayMode?: number;
-}
-export interface ClientSideWebpartData {
-    dataVersion: string;
-    description: string;
+export interface ICanvasControlBaseData extends IClientSideControlBaseData {
     id: string;
-    instanceId: string;
-    properties: any;
-    title: string;
-    serverProcessedContent?: ServerProcessedContent;
+    emphasis: IClientControlEmphasis;
+    displayMode: number;
+}
+export interface IClientSidePageSettingsSlice extends IClientSideControlBaseData {
+    pageSettingsSlice: {
+        "isDefaultDescription": boolean;
+        "isDefaultThumbnail": boolean;
+    };
+}
+export interface IClientSidePageColumnData extends IClientSideControlBaseData {
+    controlType: 0;
+    displayMode: number;
+    emphasis: IClientControlEmphasis;
+    position: {
+        zoneIndex: number;
+        sectionIndex: number;
+        sectionFactor: CanvasColumnFactor;
+        layoutIndex: number;
+    };
+}
+export interface IClientSideTextData extends ICanvasControlBaseData {
+    controlType: 4;
+    position: {
+        zoneIndex: number;
+        sectionIndex: number;
+        controlIndex: number;
+        sectionFactor?: CanvasColumnFactor;
+        layoutIndex: number;
+    };
+    anchorComponentId: string;
+    editorType: "CKEditor";
+    addedFromPersistedData: boolean;
+    innerHTML: string;
+}
+export interface IClientSideWebPartData<PropertiesType = any> extends ICanvasControlBaseData {
+    controlType: 3;
+    position: {
+        zoneIndex: number;
+        sectionIndex: number;
+        controlIndex: number;
+        sectionFactor?: CanvasColumnFactor;
+    };
+    webPartId: string;
+    reservedHeight: number;
+    reservedWidth: number;
+    addedFromPersistedData: boolean;
+    webPartData: {
+        id: string;
+        instanceId: string;
+        title: string;
+        description: string;
+        serverProcessedContent?: {
+            "htmlStrings": TypedHash<string>;
+            "searchablePlainTexts": TypedHash<string>;
+            "imageSources": TypedHash<string>;
+            "links": TypedHash<string>;
+        };
+        dataVersion: string;
+        properties: PropertiesType;
+    };
+}
+export interface IClientControlEmphasis {
+    zoneEmphasis?: number;
 }
 export declare module ClientSideWebpartPropertyTypes {
     /**
@@ -343,4 +399,6 @@ export declare module ClientSideWebpartPropertyTypes {
         zoomLevel?: number;
     }
 }
+export declare type LayoutType = "FullWidthImage" | "NoImage" | "ColorBlock" | "CutInShape";
+export declare type TextAlignment = "Left" | "Center";
 //# sourceMappingURL=clientsidepages.d.ts.map

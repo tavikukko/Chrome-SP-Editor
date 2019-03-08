@@ -15,7 +15,7 @@ export declare class Subscriptions extends SharePointQueryableCollection {
      *
      * @param notificationUrl The url to receive the notifications
      * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
-     * @param clientState A client specific string (defaults to pnp-js-core-subscription when omitted)
+     * @param clientState A client specific string (optional)
      */
     add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<SubscriptionAddResult>;
 }
@@ -27,9 +27,11 @@ export declare class Subscription extends SharePointQueryableInstance {
     /**
      * Renews this webhook subscription
      *
-     * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
+     * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months, optional)
+     * @param notificationUrl The url to receive the notifications (optional)
+     * @param clientState A client specific string (optional)
      */
-    update(expirationDate: string): Promise<SubscriptionUpdateResult>;
+    update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<SubscriptionUpdateResult>;
     /**
      * Removes this webhook subscription
      *

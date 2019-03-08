@@ -1,13 +1,5 @@
 import { HttpClientImpl } from "@pnp/common";
 /**
- * Payload from transient errors
- */
-export interface IRetryData {
-    retryCount: number;
-    error: any;
-    retryInterval: number;
-}
-/**
  * Fetch client that encapsulates the node-fetch library and also adds retry logic
  * when encountering transient errors.
  */

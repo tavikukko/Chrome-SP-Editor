@@ -39,4 +39,5 @@ export { WebPartDefinitions, WebPartDefinition, WebPart, } from "./webparts";
 export { Web, WebAddResult, WebUpdateResult, GetCatalogResult, WebEnsureUserResult, } from "./webs";
 export { SiteScripts, SiteScriptUtilityMethods, SiteScriptInfo, SiteScriptUpdateInfo, } from "./sitescripts";
 export { SiteDesigns, SiteDesignsUtilityMethods, SiteDesignCreationInfo, SiteDesignUpdateInfo, SiteDesignInfo, SiteDesignPrincipals, } from "./sitedesigns";
+export { HubSite, HubSites, } from "./hubsites";
 //# sourceMappingURL=sp.d.ts.map

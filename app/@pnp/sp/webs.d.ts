@@ -1,5 +1,5 @@
 import { TypedHash } from "@pnp/common";
-import { SharePointQueryableCollection } from "./sharepointqueryable";
+import { SharePointQueryableInstance, SharePointQueryableCollection } from "./sharepointqueryable";
 import { SharePointQueryableShareableWeb } from "./sharepointqueryableshareable";
 import { Folders, Folder } from "./folders";
 import { Lists, List } from "./lists";
@@ -9,7 +9,7 @@ import { SiteGroups, SiteGroup } from "./sitegroups";
 import { ContentTypes } from "./contenttypes";
 import { RoleDefinitions } from "./roles";
 import { File } from "./files";
-import { ChangeQuery, StorageEntity } from "./types";
+import { ChangeQuery, StorageEntity, HubSiteData as IHubSiteData } from "./types";
 import { SiteUsers, SiteUser, CurrentUser, SiteUserProps } from "./siteusers";
 import { UserCustomActions } from "./usercustomactions";
 import { SPBatch } from "./batch";
@@ -77,7 +77,7 @@ export declare class Web extends SharePointQueryableShareableWeb {
     /**
      * Allows access to the web's all properties collection
      */
-    readonly allProperties: SharePointQueryableCollection;
+    readonly allProperties: SharePointQueryableInstance;
     /**
      * Gets a collection of WebInfos for this web's subwebs
      *
@@ -315,11 +315,17 @@ export declare class Web extends SharePointQueryableShareableWeb {
      */
     removeStorageEntity(key: string): Promise<void>;
     /**
-     * Gets the app catalog for this web
+     * Gets the tenant app catalog for this web
      *
      * @param url Optional url or web containing the app catalog (default: current web)
      */
     getAppCatalog(url?: string | Web): AppCatalog;
+    /**
+     * Gets the site collection app catalog for this web
+     *
+     * @param url Optional url or web containing the app catalog (default: current web)
+     */
+    getSiteCollectionAppCatalog(url?: string | Web): AppCatalog;
     /**
      * Gets the collection of available client side web parts for this web instance
      */
@@ -331,7 +337,7 @@ export declare class Web extends SharePointQueryableShareableWeb {
      * @param title Display title of the new page
      * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
      */
-    addClientSidePage(pageName: string, title?: string, libraryTitle?: string): Promise<ClientSidePage>;
+    addClientSidePage(pageName: string, title?: string): Promise<ClientSidePage>;
     /**
      * Creates a new client side page using the library path
      *
@@ -339,7 +345,7 @@ export declare class Web extends SharePointQueryableShareableWeb {
      * @param listRelativePath The server relative path to the list's root folder (including /sites/ if applicable)
      * @param title Display title of the new page
      */
-    addClientSidePageByPath(pageName: string, listRelativePath: string, title?: string): Promise<ClientSidePage>;
+    addClientSidePageByPath(pageName: string, title?: string): Promise<ClientSidePage>;
     /**
      * Creates the default associated groups (Members, Owners, Visitors) and gives them the default permissions on the site.
      * The target site must have unique permissions and no associated members / owners / visitors groups
@@ -356,7 +362,7 @@ export declare class Web extends SharePointQueryableShareableWeb {
      * When true, the cache is refreshed with the latest updates and then returned.
      * Use this if you just made changes and need to see those changes right away.
      */
-    hubSiteData(forceRefresh?: boolean): Promise<void>;
+    hubSiteData(forceRefresh?: boolean): Promise<IHubSiteData>;
     /**
      * Applies theme updates from the parent hub site collection.
      */

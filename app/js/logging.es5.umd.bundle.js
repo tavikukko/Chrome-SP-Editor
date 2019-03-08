@@ -1,8 +1,8 @@
 /**
  * @license
- * v1.2.6
+ * v1.3.0
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
- * Copyright (c) 2018 Microsoft
+ * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
  * source: https://github.com/pnp/pnpjs
  * bugs: https://github.com/pnp/pnpjs/issues
@@ -175,7 +175,12 @@ var ConsoleListener = /** @class */ (function () {
         var msg = [];
         msg.push("Message: " + entry.message);
         if (entry.data !== undefined) {
-            msg.push(" Data: " + JSON.stringify(entry.data));
+            try {
+                msg.push(" Data: " + JSON.stringify(entry.data));
+            }
+            catch (e) {
+                msg.push(" Data: Error in stringify of supplied data " + e);
+            }
         }
         return msg.join("");
     };

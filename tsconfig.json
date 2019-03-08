@@ -14,6 +14,7 @@
      "@pnp/sp-addinhelpers": ["app/@pnp/sp-addinhelpers"],
      "@pnp/sp-clientsvc": ["app/@pnp/sp-clientsvc"],
      "@pnp/sp-taxonomy": ["app/@pnp/sp-taxonomy"],
+     "@microsoft/microsoft-graph-types": ["app/@microsoft/microsoft-graph-types"]
      }
   }
 }

@@ -66,7 +66,7 @@ export declare class Folder extends SharePointQueryableShareableFolder {
      *
      */
     readonly uniqueContentTypeOrder: SharePointQueryableCollection;
-    update: (props: TypedHash<string | number | boolean>) => Promise<FolderUpdateResult>;
+    update: (props: TypedHash<any>) => Promise<FolderUpdateResult>;
     /**
     * Delete this folder
     *

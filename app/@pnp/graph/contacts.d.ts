@@ -1,7 +1,7 @@
 import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { TypedHash } from "@pnp/common";
 import { Contact as IContact, ContactFolder as IContactFolder, EmailAddress } from "@microsoft/microsoft-graph-types";
-export declare class Contacts extends GraphQueryableCollection {
+export declare class Contacts extends GraphQueryableCollection<IContact[]> {
     getById(id: string): Contact;
     /**
     * Create a new Contact for the user.
@@ -14,7 +14,7 @@ export declare class Contacts extends GraphQueryableCollection {
     */
     add(givenName: string, surName: string, emailAddresses: EmailAddress[], businessPhones: string[], additionalProperties?: TypedHash<any>): Promise<ContactAddResult>;
 }
-export declare class Contact extends GraphQueryableInstance {
+export declare class Contact extends GraphQueryableInstance<IContact> {
     /**
      * Deletes this contact
      */
@@ -26,7 +26,7 @@ export declare class Contact extends GraphQueryableInstance {
      */
     update(properties: TypedHash<string | number | boolean | string[]>): Promise<void>;
 }
-export declare class ContactFolders extends GraphQueryableCollection {
+export declare class ContactFolders extends GraphQueryableCollection<IContactFolder[]> {
     getById(id: string): ContactFolder;
     /**
      * Create a new Contact Folder for the user.
@@ -36,7 +36,7 @@ export declare class ContactFolders extends GraphQueryableCollection {
      */
     add(displayName: string, parentFolderId?: string): Promise<ContactFolderAddResult>;
 }
-export declare class ContactFolder extends GraphQueryableInstance {
+export declare class ContactFolder extends GraphQueryableInstance<IContactFolder> {
     /**
      * Gets the contacts in this contact folder
      */
@@ -44,7 +44,7 @@ export declare class ContactFolder extends GraphQueryableInstance {
     /**
     * Gets the contacts in this contact folder
     */
-    readonly childFolders: ChildFolders;
+    readonly childFolders: ContactFolders;
     /**
      * Deletes this contact folder
      */
@@ -54,17 +54,7 @@ export declare class ContactFolder extends GraphQueryableInstance {
      *
      * @param properties Set of properties of this contact folder to update
      */
-    update(properties: TypedHash<string | number | boolean | string[]>): Promise<void>;
-}
-export declare class ChildFolders extends GraphQueryableInstance {
-    getById(id: string): ContactFolder;
-    /**
-     * Create a new Child Folder in Contact folder.
-     *
-     * @param displayName The folder's display name.
-     * @param parentFolderId The ID of the folder's parent folder.
-     */
-    add(displayName: string, parentFolderId?: string): Promise<ContactFolderAddResult>;
+    update(properties: IContactFolder): Promise<void>;
 }
 export interface ContactFolderAddResult {
     data: IContactFolder;

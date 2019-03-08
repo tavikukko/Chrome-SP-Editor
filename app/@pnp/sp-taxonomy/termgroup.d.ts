@@ -1,6 +1,11 @@
 import { ClientSvcQueryable, IClientSvcQueryable, ObjectPathQueue } from "@pnp/sp-clientsvc";
 import { ITermSet, ITermSetData, ITermSets } from "./termsets";
 import { ITermStore } from "./termstores";
+export interface ITermGroups extends IClientSvcQueryable {
+    get(): Promise<(ITermGroupData & ITermGroup)[]>;
+    getById(id: string): ITermGroup;
+    getByName(name: string): ITermGroup;
+}
 export interface ITermGroupData {
     CreatedDate?: string;
     Description?: string;
@@ -53,6 +58,27 @@ export interface ITermGroup extends IClientSvcQueryable {
 export declare type TermGroupUpdateProps = {
     Description?: string;
 };
+/**
+ * Term Groups collection in Term Store
+ */
+export declare class TermGroups extends ClientSvcQueryable implements ITermGroups {
+    /**
+     * Gets the groups in this collection
+     */
+    get(): Promise<(ITermGroupData & ITermGroup)[]>;
+    /**
+     * Gets a TermGroup from this collection by id
+     *
+     * @param id TermGroup id
+     */
+    getById(id: string): ITermGroup;
+    /**
+     * Gets a TermGroup from this collection by name
+     *
+     * @param name TErmGroup name
+     */
+    getByName(name: string): ITermGroup;
+}
 /**
  * Represents a group in the taxonomy heirarchy
  */

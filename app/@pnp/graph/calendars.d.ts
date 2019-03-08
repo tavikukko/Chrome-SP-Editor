@@ -1,12 +1,12 @@
 import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { TypedHash } from "@pnp/common";
-import { Event as IEvent } from "@microsoft/microsoft-graph-types";
-export declare class Calendars extends GraphQueryableCollection {
+import { Event as IEvent, Calendar as ICalendar } from "@microsoft/microsoft-graph-types";
+export declare class Calendars extends GraphQueryableCollection<ICalendar[]> {
 }
-export declare class Calendar extends GraphQueryableInstance {
+export declare class Calendar extends GraphQueryableInstance<ICalendar> {
     readonly events: Events;
 }
-export declare class Events extends GraphQueryableCollection {
+export declare class Events extends GraphQueryableCollection<IEvent[]> {
     getById(id: string): Event;
     /**
      * Adds a new event to the collection
@@ -19,7 +19,7 @@ export interface EventAddResult {
     data: IEvent;
     event: Event;
 }
-export declare class Event extends GraphQueryableInstance {
+export declare class Event extends GraphQueryableInstance<IEvent> {
     /**
      * Update the properties of an event object
      *

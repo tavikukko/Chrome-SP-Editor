@@ -1,5 +1,5 @@
-import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
-import { DriveItem as IDriveItem } from "@microsoft/microsoft-graph-types";
+import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
+import { DriveItem as IDriveItem, Drive as IDrive } from "@microsoft/microsoft-graph-types";
 import { TypedHash } from "@pnp/common";
 export interface IDriveItemsMethods {
     getById(id: string): DriveItem;
@@ -8,7 +8,7 @@ export interface IDriveItemsMethods {
  * Describes a collection of Drive objects
  *
  */
-export declare class Drives extends GraphQueryableCollection {
+export declare class Drives extends GraphQueryableCollection<IDrive[]> {
     /**
      * Gets a Drive instance by id
      *
@@ -20,7 +20,7 @@ export declare class Drives extends GraphQueryableCollection {
  * Describes a Drive instance
  *
  */
-export declare class Drive extends GraphQueryableInstance {
+export declare class Drive extends GraphQueryableInstance<IDrive> {
     readonly root: Root;
     readonly items: IDriveItemsMethods;
     readonly list: DriveList;
@@ -31,7 +31,7 @@ export declare class Drive extends GraphQueryableInstance {
  * Describes a Root instance
  *
  */
-export declare class Root extends GraphQueryableInstance {
+export declare class Root extends GraphQueryableInstance<IDrive> {
     readonly children: Children;
     search(query: string): DriveSearch;
 }
@@ -39,7 +39,7 @@ export declare class Root extends GraphQueryableInstance {
  * Describes a collection of Drive Item objects
  *
  */
-export declare class DriveItems extends GraphQueryableInstance implements IDriveItemsMethods {
+export declare class DriveItems extends GraphQueryableCollection implements IDriveItemsMethods {
     /**
      * Gets a Drive Item instance by id
      *
@@ -51,7 +51,7 @@ export declare class DriveItems extends GraphQueryableInstance implements IDrive
  * Describes a Drive Item instance
  *
  */
-export declare class DriveItem extends GraphQueryableInstance {
+export declare class DriveItem extends GraphQueryableInstance<IDriveItem> {
     readonly children: Children;
     readonly thumbnails: Thumbnails;
     /**
@@ -85,7 +85,7 @@ export declare class Children extends GraphQueryableCollection {
     * */
     add(name: string, driveItemType: IDriveItem): Promise<IDriveItemAddResult>;
 }
-export declare class DriveList extends GraphQueryable {
+export declare class DriveList extends GraphQueryableCollection {
 }
 export declare class Recent extends GraphQueryableInstance {
 }

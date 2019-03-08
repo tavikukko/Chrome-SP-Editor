@@ -12,6 +12,7 @@ import { SiteDesignsUtilityMethods } from "./sitedesigns";
 import { UtilityMethods } from "./utilities";
 import { SPConfiguration } from "./config/splibconfig";
 import { ICachingOptions } from "@pnp/odata";
+import { HubSites } from "./hubsites";
 /**
  * Root of the SharePoint REST module
  */
@@ -98,6 +99,10 @@ export declare class SPRest {
      * Access to sitedesigns methods
      */
     readonly siteDesigns: SiteDesignsUtilityMethods;
+    /**
+     * Access to Hub Site methods
+     */
+    readonly hubSites: HubSites;
     /**
      * Handles creating and configuring the objects returned from this class
      *

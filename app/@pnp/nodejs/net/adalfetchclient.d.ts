@@ -1,12 +1,5 @@
+import { AADToken } from "../types";
 import { HttpClientImpl } from "@pnp/common";
-export interface AADToken {
-    accessToken: string;
-    expiresIn: number;
-    expiresOn: string | Date;
-    isMRRT?: boolean;
-    resource: string;
-    tokenType: string;
-}
 export declare class AdalFetchClient implements HttpClientImpl {
     private _tenant;
     private _clientId;

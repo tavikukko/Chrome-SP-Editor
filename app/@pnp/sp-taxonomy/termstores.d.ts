@@ -1,5 +1,5 @@
 import { ClientSvcQueryable, IClientSvcQueryable, ObjectPathQueue } from "@pnp/sp-clientsvc";
-import { ITermGroup, ITermGroupData } from "./termgroup";
+import { ITermGroup, ITermGroupData, ITermGroups } from "./termgroup";
 import { ITerm, ITerms } from "./terms";
 import { ITermSet, ITermSets } from "./termsets";
 import { ChangeInformation, ChangedItem, ILabelMatchInfo } from "./types";
@@ -41,6 +41,7 @@ export interface ITermStore extends IClientSvcQueryable {
     readonly keywordsTermSet: ITermSet;
     readonly orphanedTermsTermSet: ITermSet;
     readonly systemGroup: ITermGroup;
+    readonly groups: ITermGroups;
     addGroup(name: string, id?: string): Promise<ITermGroup & ITermGroupData>;
     addLanguage(lcid: number): Promise<void>;
     commitAll(): Promise<void>;
@@ -81,6 +82,7 @@ export declare class TermStore extends ClientSvcQueryable implements ITermStore 
     readonly keywordsTermSet: ITermSet;
     readonly orphanedTermsTermSet: ITermSet;
     readonly systemGroup: ITermGroup;
+    readonly groups: ITermGroups;
     /**
      * Gets the term store data
      */

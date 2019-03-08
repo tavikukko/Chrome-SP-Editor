@@ -83,11 +83,11 @@ export declare class Site extends SharePointQueryableInstance {
      * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
      * @param siteDesignId The Guid of the site design to be used.
      *                     You can use the below default OOTB GUIDs:
-     *                     Topic: null
+     *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
      */
-    createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: "", classification?: "", siteDesignId?: ""): Promise<void>;
+    createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: string, classification?: string, siteDesignId?: string): Promise<void>;
     /**
      * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
      *

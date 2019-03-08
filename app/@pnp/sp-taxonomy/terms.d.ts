@@ -33,11 +33,13 @@ export interface ITerm extends IClientSvcQueryable {
     readonly pinSourceTermSet: ITermSet;
     readonly reusedTerms: ITerms;
     readonly sourceTerm: ITerm;
+    readonly terms: ITerms;
     readonly termSet: ITermSet;
     readonly termSets: ITermSets;
     createLabel(name: string, lcid: number, isDefault?: boolean): Promise<ILabelData & ILabel>;
     deprecate(doDeprecate: boolean): Promise<void>;
     get(): Promise<(ITermData & ITerm)>;
+    addTerm(name: string, lcid: number, isAvailableForTagging?: boolean, id?: string): Promise<ITerm & ITermData>;
     getDescription(lcid: number): Promise<string>;
     setDescription(description: string, lcid: number): Promise<void>;
     setLocalCustomProperty(name: string, value: string): Promise<void>;
@@ -67,6 +69,8 @@ export declare class Terms extends ClientSvcQueryable implements ITerms {
  * Represents the operations available on a given term
  */
 export declare class Term extends ClientSvcQueryable implements ITerm {
+    addTerm(name: string, lcid: number, isAvailableForTagging?: boolean, id?: string): Promise<ITerm & ITermData>;
+    readonly terms: ITerms;
     readonly labels: ILabels;
     readonly parent: ITerm;
     readonly pinSourceTermSet: ITermSet;

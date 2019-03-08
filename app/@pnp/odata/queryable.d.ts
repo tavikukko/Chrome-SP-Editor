@@ -2,7 +2,7 @@ import { FetchOptions, ConfigOptions } from "@pnp/common";
 import { ODataParser } from "./parsers";
 import { ICachingOptions } from "./caching";
 import { ODataBatch } from "./odatabatch";
-import { RequestContext } from "./pipeline";
+import { RequestContext, PipelineMethod } from "./pipeline";
 export declare abstract class Queryable<GetType> {
     /**
      * Additional options to be set before sending actual http request
@@ -36,6 +36,10 @@ export declare abstract class Queryable<GetType> {
      * The cache options from the clone parent if it was caching
      */
     protected _cloneParentCacheOptions: ICachingOptions | null;
+    /**
+     * If a specific request pipeline is set, it will be used
+     */
+    protected _requestPipeline: PipelineMethod<any>[] | null;
     constructor();
     /**
      * Gets the full url with query information
@@ -76,11 +80,18 @@ export declare abstract class Queryable<GetType> {
      * @param options Defines the options used when caching this request
      */
     usingCaching(options?: ICachingOptions): this;
+    /**
+     * Allows you to set a request specific processing pipeline
+     *
+     * @param pipeline The set of methods, in order, to execute a given request
+     */
+    withPipeline(pipeline: PipelineMethod<any>[]): this;
     protected getCore<T = GetType>(parser?: ODataParser<T>, options?: FetchOptions): Promise<T>;
     protected postCore<T = any>(options?: FetchOptions, parser?: ODataParser<T>): Promise<T>;
     protected patchCore<T = any>(options?: FetchOptions, parser?: ODataParser<T>): Promise<T>;
     protected deleteCore<T = any>(options?: FetchOptions, parser?: ODataParser<T>): Promise<T>;
     protected putCore<T = any>(options?: FetchOptions, parser?: ODataParser<T>): Promise<T>;
+    protected reqImpl<T>(method: string, options: FetchOptions, parser: ODataParser<T>): Promise<T>;
     /**
      * Appends the given string and normalizes "/" chars
      *
@@ -106,6 +117,10 @@ export declare abstract class Queryable<GetType> {
      */
     protected _clone(clone: Queryable<any>, _0: any): any;
     /**
+     * Handles getting the request pipeline to run for a given request
+     */
+    protected getRequestPipeline<T>(method: string, options: FetchOptions, parser: ODataParser<T>): Promise<PipelineMethod<T>[]>;
+    /**
      * Converts the current instance to a request context
      *
      * @param verb The request verb
@@ -120,6 +135,10 @@ export declare abstract class ODataQueryable<BatchType extends ODataBatch, GetTy
      * Tracks the batch of which this query may be part
      */
     protected _batch: BatchType | null;
+    /**
+     * Allows us to properly block batch execution until everything is loaded
+     */
+    protected _batchDependency: () => void | null;
     constructor();
     /**
      * Adds this query to the supplied batch

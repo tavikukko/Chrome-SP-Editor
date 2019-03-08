@@ -3,7 +3,7 @@ import { Members, Owners } from "./members";
 import { TypedHash } from "@pnp/common";
 import { Calendar, Events } from "./calendars";
 import { Conversations, Senders } from "./conversations";
-import { Event as IEvent } from "@microsoft/microsoft-graph-types";
+import { Event as IEvent, Group as IGroup } from "@microsoft/microsoft-graph-types";
 import { Plans } from "./planner";
 import { Photo } from "./photos";
 import { Team } from "./teams";
@@ -26,7 +26,7 @@ export declare enum GroupType {
  * Describes a collection of Field objects
  *
  */
-export declare class Groups extends GraphQueryableCollection {
+export declare class Groups extends GraphQueryableCollection<IGroup[]> {
     /**
      * Gets a group from the collection using the specified id
      *
@@ -46,7 +46,7 @@ export declare class Groups extends GraphQueryableCollection {
 /**
  * Represents a group entity
  */
-export declare class Group extends GraphQueryableInstance {
+export declare class Group extends GraphQueryableInstance<IGroup> {
     /**
      * The calendar associated with this group
      */
@@ -98,11 +98,27 @@ export declare class Group extends GraphQueryableInstance {
      */
     createTeam(properties: TeamProperties): Promise<any>;
     /**
+     * Returns all the groups and directory roles that the specified group is a member of. The check is transitive
+     *
+     * @param securityEnabledOnly
+     */
+    getMemberObjects(securityEnabledOnly?: boolean): Promise<{
+        value: string[];
+    }>;
+    /**
      * Return all the groups that the specified group is a member of. The check is transitive
      *
      * @param securityEnabledOnly
      */
     getMemberGroups(securityEnabledOnly?: boolean): Promise<{
+        value: string[];
+    }>;
+    /**
+     * Check for membership in a specified list of groups, and returns from that list those groups of which the specified user, group, or directory object is a member.
+     * This function is transitive.
+     * @param groupIds A collection that contains the object IDs of the groups in which to check membership. Up to 20 groups may be specified.
+     */
+    checkMemberGroups(groupIds: String[]): Promise<{
         value: string[];
     }>;
     /**
@@ -114,7 +130,7 @@ export declare class Group extends GraphQueryableInstance {
      *
      * @param properties Set of properties of this group to update
      */
-    update(properties: TypedHash<string | number | boolean | string[]>): Promise<void>;
+    update(properties: IGroup): Promise<void>;
     /**
      * Remove the group from the list of the current user's favorite groups. Supported for only Office 365 groups
      */

@@ -1,14 +1,18 @@
-import { TypedHash } from "@pnp/common";
 import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { Contacts, ContactFolders } from "./contacts";
 import { OneNoteMethods } from "./onenote";
 import { Drive, Drives } from "./onedrive";
 import { Tasks } from "./planner";
+import { Teams } from "./teams";
+import { User as IUser, Message as IMessage } from "@microsoft/microsoft-graph-types";
+import { Messages, MailboxSettings, MailFolders } from "./messages";
+import { DirectoryObjects } from "./directoryobjects";
+import { InsightsMethods } from "./insights";
 /**
  * Describes a collection of Users objects
  *
  */
-export declare class Users extends GraphQueryableCollection {
+export declare class Users extends GraphQueryableCollection<IUser[]> {
     /**
      * Gets a user from the collection using the specified id
      *
@@ -19,7 +23,7 @@ export declare class Users extends GraphQueryableCollection {
 /**
  * Represents a user entity
  */
-export declare class User extends GraphQueryableInstance {
+export declare class User extends GraphQueryableInstance<IUser> {
     /**
     * The onenote associated with me
     */
@@ -28,6 +32,38 @@ export declare class User extends GraphQueryableInstance {
     * The Contacts associated with the user
     */
     readonly contacts: Contacts;
+    /**
+    * The Teams associated with the user
+    */
+    readonly joinedTeams: Teams;
+    /**
+    * The groups and directory roles associated with the user
+    */
+    readonly memberOf: DirectoryObjects;
+    /**
+     * Returns all the groups and directory roles that the specified useris a member of. The check is transitive
+     *
+     * @param securityEnabledOnly
+     */
+    getMemberObjects(securityEnabledOnly?: boolean): Promise<{
+        value: string[];
+    }>;
+    /**
+     * Return all the groups that the specified user is a member of. The check is transitive
+     *
+     * @param securityEnabledOnly
+     */
+    getMemberGroups(securityEnabledOnly?: boolean): Promise<{
+        value: string[];
+    }>;
+    /**
+     * Check for membership in a specified list of groups, and returns from that list those groups of which the specified user, group, or directory object is a member.
+     * This function is transitive.
+     * @param groupIds A collection that contains the object IDs of the groups in which to check membership. Up to 20 groups may be specified.
+     */
+    checkMemberGroups(groupIds: String[]): Promise<{
+        value: string[];
+    }>;
     /**
     * The Contact Folders associated with the user
     */
@@ -45,14 +81,34 @@ export declare class User extends GraphQueryableInstance {
     */
     readonly tasks: Tasks;
     /**
+     * Get the messages in the signed-in user's mailbox
+     */
+    readonly messages: Messages;
+    /**
+     * Get the MailboxSettings in the signed-in user's mailbox
+     */
+    readonly mailboxSettings: MailboxSettings;
+    /**
+     * Get the MailboxSettings in the signed-in user's mailbox
+     */
+    readonly mailFolders: MailFolders;
+    /**
      * Updates this user
      *
      * @param properties Properties used to update this user
      */
-    update(properties: TypedHash<any>): Promise<void>;
+    update(properties: IUser): Promise<void>;
     /**
      * Deletes this user
      */
     delete(): Promise<void>;
+    /**
+     * Send the message specified in the request body. The message is saved in the Sent Items folder by default.
+     */
+    sendMail(message: IMessage): Promise<void>;
+    /**
+    * The Insights associated with me
+    */
+    readonly insights: InsightsMethods;
 }
 //# sourceMappingURL=users.d.ts.map

@@ -1,17 +1,17 @@
 {
-  "_from": "monaco-editor@latest",
-  "_id": "monaco-editor@0.14.3",
+  "_from": "monaco-editor",
+  "_id": "monaco-editor@0.16.0",
   "_inBundle": false,
-  "_integrity": "sha512-RhaO4xXmWn/p0WrkEOXe4PoZj6xOcvDYjoAh0e1kGUrQnP1IOpc0m86Ceuaa2CLEMDINqKijBSmqhvBQnsPLHQ==",
+  "_integrity": "sha512-a0ZksW1C5gTXOOJR/guKwzYrLJkJtMqzPb/W81YFSFHwbZ/ecVWdNguUkuyUuchzeKJRwqcizgVx++G9wmfofQ==",
   "_location": "/monaco-editor",
   "_phantomChildren": {},
   "_requested": {
     "type": "tag",
     "registry": true,
-    "raw": "monaco-editor@latest",
+    "raw": "monaco-editor",
     "name": "monaco-editor",
     "escapedName": "monaco-editor",
-    "rawSpec": "latest",
+    "rawSpec": "",
     "saveSpec": null,
     "fetchSpec": "latest"
   },
@@ -19,9 +19,9 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.14.3.tgz",
-  "_shasum": "7cc4a4096a3821f52fea9b10489b527ef3034e22",
-  "_spec": "monaco-editor@latest",
+  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.16.0.tgz",
+  "_shasum": "83538173c2427f62e0ea3e19a4864742ea457cd9",
+  "_spec": "monaco-editor",
   "_where": "/Users/tomi/development/pnpjs-1.1.0",
   "author": {
     "name": "Microsoft Corporation"
@@ -34,21 +34,21 @@
   "description": "A browser based code editor",
   "devDependencies": {
     "clean-css": "^4.2.1",
-    "event-stream": "^3.3.4",
-    "gulp": "^3.9.1",
-    "gulp-typedoc": "^2.2.0",
+    "event-stream": "3.3.4",
+    "gulp": "^4.0.0",
+    "gulp-typedoc": "^2.2.2",
     "http-server": "^0.11.1",
-    "monaco-css": "2.2.0",
-    "monaco-editor-core": "0.14.6",
-    "monaco-html": "2.2.0",
-    "monaco-json": "2.2.0",
-    "monaco-languages": "1.5.1",
-    "monaco-typescript": "3.2.0",
-    "rimraf": "^2.6.2",
-    "typedoc": "^0.11.1",
-    "typescript": "^3.0.1",
+    "monaco-css": "2.5.0",
+    "monaco-editor-core": "0.16.0",
+    "monaco-html": "2.5.0",
+    "monaco-json": "2.5.0",
+    "monaco-languages": "1.7.0",
+    "monaco-typescript": "3.4.1",
+    "rimraf": "^2.6.3",
+    "typedoc": "^0.14.2",
+    "typescript": "^3.3.3",
     "uncss": "^0.16.2",
-    "vinyl": "^0.5.3"
+    "vinyl": "^2.2.0"
   },
   "homepage": "https://github.com/Microsoft/monaco-editor#readme",
   "license": "MIT",
@@ -60,10 +60,11 @@
     "url": "git+https://github.com/Microsoft/monaco-editor.git"
   },
   "scripts": {
+    "build-website": "gulp build-website",
     "release": "gulp release",
     "simpleserver": "gulp simpleserver",
     "website": "gulp website"
   },
   "typings": "./esm/vs/editor/editor.api.d.ts",
-  "version": "0.14.3"
+  "version": "0.16.0"
 }

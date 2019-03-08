@@ -37,6 +37,7 @@ export declare function getRandomString(chars: number): string;
  * Gets a random GUID value
  *
  * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+ * https://stackoverflow.com/a/8809472 updated to prevent collisions.
  */
 export declare function getGUID(): string;
 /**

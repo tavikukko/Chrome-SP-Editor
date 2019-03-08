@@ -88,3 +88,12 @@ function addscriptlink(scope, scriptsequence, scriptpath) {
     script += " exescript(addCustomAction, '" + scope + "', '" + scriptpath + "', '" + scriptsequence + "');";
     chrome.devtools.inspectedWindow.eval(script);
 }
+
+document.addEventListener('keydown', function (e) {
+  switch (e.keyCode) {
+    case 191:
+      e.stopImmediatePropagation();
+      break;
+  }
+  return;
+}, true);

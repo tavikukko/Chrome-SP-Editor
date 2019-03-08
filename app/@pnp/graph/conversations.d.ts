@@ -1,7 +1,7 @@
 import { GraphQueryable, GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { TypedHash } from "@pnp/common";
 import { Attachments } from "./attachments";
-import { ConversationThread as IConversationThread, Post as IPost, Recipient as IRecipient } from "@microsoft/microsoft-graph-types";
+import { ConversationThread as IConversationThread, Post as IPost, Recipient as IRecipient, Conversation as IConversation, User as IUser } from "@microsoft/microsoft-graph-types";
 /**
  * Information used to forward a post
  */
@@ -9,7 +9,7 @@ export interface PostForwardInfo {
     comment?: string;
     toRecipients: IRecipient[];
 }
-export declare class Conversations extends GraphQueryableCollection {
+export declare class Conversations extends GraphQueryableCollection<IConversation[]> {
     /**
      * Create a new conversation by including a thread and a post.
      *
@@ -23,7 +23,7 @@ export declare class Conversations extends GraphQueryableCollection {
      */
     getById(id: string): Conversation;
 }
-export declare class Threads extends GraphQueryableCollection {
+export declare class Threads extends GraphQueryableCollection<IConversationThread[]> {
     /**
      * Gets a thread from this collection by id
      *
@@ -40,7 +40,7 @@ export declare class Threads extends GraphQueryableCollection {
         id: string;
     }>;
 }
-export declare class Posts extends GraphQueryableCollection {
+export declare class Posts extends GraphQueryableCollection<IPost[]> {
     /**
      * Gets a thread from this collection by id
      *
@@ -57,7 +57,7 @@ export declare class Posts extends GraphQueryableCollection {
         id: string;
     }>;
 }
-export declare class Conversation extends GraphQueryableInstance {
+export declare class Conversation extends GraphQueryableInstance<IConversation> {
     /**
      * Get all the threads in a group conversation.
      */
@@ -87,7 +87,7 @@ export declare class Thread extends GraphQueryableInstance {
      */
     delete(): Promise<void>;
 }
-export declare class Post extends GraphQueryableInstance {
+export declare class Post extends GraphQueryableInstance<IPost> {
     readonly attachments: Attachments;
     /**
      * Deletes this post
@@ -104,7 +104,7 @@ export declare class Post extends GraphQueryableInstance {
      */
     reply(post: IPost): Promise<void>;
 }
-export declare class Senders extends GraphQueryableCollection {
+export declare class Senders extends GraphQueryableCollection<IUser[]> {
     constructor(baseUrl: string | GraphQueryable, path?: string);
     /**
      * Add a new user or group to this senders collection

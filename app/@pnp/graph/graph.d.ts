@@ -9,4 +9,9 @@ export * from "./onenote";
 export * from "./contacts";
 export * from "./onedrive";
 export * from "./planner";
+export * from "./directoryobjects";
+export * from "./invitations";
+export * from "./subscriptions";
+export * from "./sites";
+export * from "./insights";
 //# sourceMappingURL=graph.d.ts.map

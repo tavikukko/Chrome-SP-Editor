@@ -90,7 +90,11 @@ export declare class ObjectPathQueue {
      */
     appendActionToLast(action: string): this;
     /**
-     * Creates a copy of this ObjectPathQueue
+     * Creates a linked copy of this ObjectPathQueue
+     */
+    copy(): ObjectPathQueue;
+    /**
+     * Creates an independent clone of this ObjectPathQueue
      */
     clone(): ObjectPathQueue;
     /**

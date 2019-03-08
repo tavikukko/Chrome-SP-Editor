@@ -1,8 +1,8 @@
 /**
  * @license
- * v1.2.6
+ * v1.3.0
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
- * Copyright (c) 2018 Microsoft
+ * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
  * source: https://github.com/pnp/pnpjs
  * bugs: https://github.com/pnp/pnpjs/issues
@@ -1086,10 +1086,14 @@ function getRandomString(chars) {
  * Gets a random GUID value
  *
  * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+ * https://stackoverflow.com/a/8809472 updated to prevent collisions.
  */
 /* tslint:disable no-bitwise */
 function getGUID() {
-    var d = new Date().getTime();
+    var d = Date.now();
+    if (typeof performance !== "undefined" && typeof performance.now === "function") {
+        d += performance.now(); // use high-precision timer if available
+    }
     var guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
         var r = (d + Math.random() * 16) % 16 | 0;
         d = Math.floor(d / 16);
@@ -1300,7 +1304,12 @@ var ConsoleListener = /** @class */ (function () {
         var msg = [];
         msg.push("Message: " + entry.message);
         if (entry.data !== undefined) {
-            msg.push(" Data: " + JSON.stringify(entry.data));
+            try {
+                msg.push(" Data: " + JSON.stringify(entry.data));
+            }
+            catch (e) {
+                msg.push(" Data: Error in stringify of supplied data " + e);
+            }
         }
         return msg.join("");
     };
@@ -1790,7 +1799,6 @@ var ODataBatch = /** @class */ (function () {
         // we need to check the dependencies twice due to how different engines handle things.
         // We can get a second set of promises added during the first set resolving
         return Promise.all(this._deps)
-            .then(function () { return Promise.all(_this._deps); })
             .then(function () { return _this.executeImpl(); })
             .then(function () { return Promise.all(_this._rDeps); })
             .then(function () { return void (0); });
@@ -2246,6 +2254,7 @@ var Queryable = /** @class */ (function () {
         this._cachingOptions = null;
         this._cloneParentWasCaching = false;
         this._cloneParentCacheOptions = null;
+        this._requestPipeline = null;
     }
     /**
     * Gets the currentl url
@@ -2306,38 +2315,54 @@ var Queryable = /** @class */ (function () {
         }
         return this;
     };
+    /**
+     * Allows you to set a request specific processing pipeline
+     *
+     * @param pipeline The set of methods, in order, to execute a given request
+     */
+    Queryable.prototype.withPipeline = function (pipeline) {
+        this._requestPipeline = pipeline.slice(0);
+        return this;
+    };
     Queryable.prototype.getCore = function (parser, options) {
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["JSONParser"](); }
         if (options === void 0) { options = {}; }
         // Fix for #304 - when we clone objects we in some cases then execute a get request
         // in these cases the caching settings were getting dropped from the request
-        // this tracks if the object from which this was clones was caching and applies that to an immediate get request
+        // this tracks if the object from which this was cloned was caching and applies that to an immediate get request
         // does not affect objects cloned from this as we are using different fields to track the settings so it won't
         // be triggered
         if (this._cloneParentWasCaching) {
             this.usingCaching(this._cloneParentCacheOptions);
         }
-        return this.toRequestContext("GET", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
+        return this.reqImpl("GET", options, parser);
     };
     Queryable.prototype.postCore = function (options, parser) {
         if (options === void 0) { options = {}; }
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["JSONParser"](); }
-        return this.toRequestContext("POST", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
+        return this.reqImpl("POST", options, parser);
     };
     Queryable.prototype.patchCore = function (options, parser) {
         if (options === void 0) { options = {}; }
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["JSONParser"](); }
-        return this.toRequestContext("PATCH", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
+        return this.reqImpl("PATCH", options, parser);
     };
     Queryable.prototype.deleteCore = function (options, parser) {
         if (options === void 0) { options = {}; }
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["JSONParser"](); }
-        return this.toRequestContext("DELETE", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
+        return this.reqImpl("DELETE", options, parser);
     };
     Queryable.prototype.putCore = function (options, parser) {
         if (options === void 0) { options = {}; }
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["JSONParser"](); }
-        return this.toRequestContext("PUT", options, parser, Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])()).then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
+        return this.reqImpl("PUT", options, parser);
+    };
+    Queryable.prototype.reqImpl = function (method, options, parser) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        return this.getRequestPipeline(method, options, parser)
+            .then(function (pipeline) { return _this.toRequestContext(method, options, parser, pipeline); })
+            .then(function (context) { return Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["pipe"])(context); });
     };
     /**
      * Appends the given string and normalizes "/" chars
@@ -2382,6 +2407,24 @@ var Queryable = /** @class */ (function () {
         }
         return clone;
     };
+    /**
+     * Handles getting the request pipeline to run for a given request
+     */
+    // @ts-ignore
+    // justified because we want to show that all these arguments are passed to the method so folks inheriting and potentially overriding
+    // clearly see how the method is invoked inside the class
+    Queryable.prototype.getRequestPipeline = function (method, options, parser) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        return new Promise(function (resolve) {
+            if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["objectDefinedNotNull"])(_this._requestPipeline) && Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["isArray"])(_this._requestPipeline)) {
+                resolve(_this._requestPipeline);
+            }
+            else {
+                resolve(Object(_pipeline__WEBPACK_IMPORTED_MODULE_3__["getDefaultPipeline"])());
+            }
+        });
+    };
     return Queryable;
 }());
 
@@ -2390,6 +2433,7 @@ var ODataQueryable = /** @class */ (function (_super) {
     function ODataQueryable() {
         var _this = _super.call(this) || this;
         _this._batch = null;
+        _this._batchDependency = null;
         return _this;
     }
     /**
@@ -2407,7 +2451,10 @@ var ODataQueryable = /** @class */ (function (_super) {
         if (this.batch !== null) {
             throw Error("This query is already part of a batch.");
         }
-        this._batch = batch;
+        if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["objectDefinedNotNull"])(batch)) {
+            this._batch = batch;
+            this._batchDependency = batch.addDependency();
+        }
         return this;
     };
     /**

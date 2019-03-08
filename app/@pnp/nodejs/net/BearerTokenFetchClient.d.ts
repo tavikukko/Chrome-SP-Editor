@@ -8,4 +8,4 @@ export declare class BearerTokenFetchClient implements HttpClientImpl {
     token: string;
     fetch(url: string, options?: FetchOptions): Promise<Response>;
 }
-//# sourceMappingURL=BearerTokenFetchClient.d.ts.map
+//# sourceMappingURL=bearertokenfetchclient.d.ts.map

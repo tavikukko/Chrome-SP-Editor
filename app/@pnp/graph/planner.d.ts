@@ -1,17 +1,17 @@
 import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { TypedHash } from "@pnp/common";
-import { PlannerPlan as IPlannerPlan, PlannerTask as IPlannerTask, PlannerBucket as IPlannerBucket } from "@microsoft/microsoft-graph-types";
+import { PlannerPlan as IPlannerPlan, PlannerTask as IPlannerTask, PlannerBucket as IPlannerBucket, Planner as IPlanner, PlannerPlanDetails as IPlannerPlanDetails } from "@microsoft/microsoft-graph-types";
 export interface IPlannerMethods {
     plans: Plans;
     tasks: Tasks;
     buckets: Buckets;
 }
-export declare class Planner extends GraphQueryableCollection implements IPlannerMethods {
+export declare class Planner extends GraphQueryableInstance<IPlanner> implements IPlannerMethods {
     readonly plans: Plans;
     readonly tasks: Tasks;
     readonly buckets: Buckets;
 }
-export declare class Plans extends GraphQueryableCollection {
+export declare class Plans extends GraphQueryableCollection<IPlannerPlan[]> {
     getById(id: string): Plan;
     /**
      * Create a new Planner Plan.
@@ -24,7 +24,7 @@ export declare class Plans extends GraphQueryableCollection {
 /**
  * Should not be able to get by Id
  */
-export declare class Plan extends GraphQueryableInstance {
+export declare class Plan extends GraphQueryableInstance<IPlannerPlan> {
     readonly tasks: Tasks;
     readonly buckets: Buckets;
     readonly details: Details;
@@ -37,9 +37,9 @@ export declare class Plan extends GraphQueryableInstance {
      *
      * @param properties Set of properties of this Plan to update
      */
-    update(properties: TypedHash<string | number | boolean | string[]>): Promise<void>;
+    update(properties: IPlanner): Promise<void>;
 }
-export declare class Tasks extends GraphQueryableCollection {
+export declare class Tasks extends GraphQueryableCollection<IPlannerTask[]> {
     getById(id: string): Task;
     /**
      * Create a new Planner Task.
@@ -51,7 +51,7 @@ export declare class Tasks extends GraphQueryableCollection {
      */
     add(planId: string, title: string, assignments?: TypedHash<any>, bucketId?: string): Promise<TaskAddResult>;
 }
-export declare class Task extends GraphQueryableInstance {
+export declare class Task extends GraphQueryableInstance<IPlannerTask> {
     /**
      * Deletes this Task
      */
@@ -61,10 +61,10 @@ export declare class Task extends GraphQueryableInstance {
      *
      * @param properties Set of properties of this Task to update
      */
-    update(properties: TypedHash<string | number | boolean | string[]>): Promise<void>;
+    update(properties: IPlannerTask): Promise<void>;
     readonly details: Details;
 }
-export declare class Buckets extends GraphQueryableCollection {
+export declare class Buckets extends GraphQueryableCollection<IPlannerBucket[]> {
     /**
      * Create a new Bucket.
      *
@@ -75,7 +75,7 @@ export declare class Buckets extends GraphQueryableCollection {
     add(name: string, planId: string, orderHint?: string): Promise<BucketAddResult>;
     getById(id: string): Bucket;
 }
-export declare class Bucket extends GraphQueryableInstance {
+export declare class Bucket extends GraphQueryableInstance<IPlannerBucket> {
     /**
      * Deletes this Bucket
      */
@@ -85,16 +85,10 @@ export declare class Bucket extends GraphQueryableInstance {
      *
      * @param properties Set of properties of this Bucket to update
      */
-    update(properties: TypedHash<string | number | boolean | string[]>): Promise<void>;
+    update(properties: IPlannerBucket): Promise<void>;
     readonly tasks: Tasks;
 }
-export declare class Details extends GraphQueryableCollection {
-    /**
-     * Update the Details of a Task
-     *
-     * @param properties Set of properties of this Details to update
-     */
-    update(properties: TypedHash<string | number | boolean | string[]>): Promise<void>;
+export declare class Details extends GraphQueryableCollection<IPlannerPlanDetails> {
 }
 export interface BucketAddResult {
     data: IPlannerBucket;

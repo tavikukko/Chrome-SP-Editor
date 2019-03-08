@@ -1,4 +1,5 @@
 import { TypedHash } from "@pnp/common";
+import { NavigationNode } from "./navigation";
 /**
  * Represents the unique sequential location of a change within the change log.
  */
@@ -264,6 +265,11 @@ export declare enum FieldTypes {
 export declare enum DateTimeFieldFormatType {
     DateOnly = 0,
     DateTime = 1
+}
+export declare enum DateTimeFieldFriendlyFormatType {
+    Unspecified = 0,
+    Disabled = 1,
+    Relative = 2
 }
 /**
  * Specifies the control settings while adding a field.
@@ -1491,5 +1497,23 @@ export interface LikeData {
     id: number;
     email: string;
     creationDate: string;
+}
+export interface HubSite {
+    Id: string;
+    Title: string;
+    SiteId: string;
+    TenantInstanceId: string;
+    SiteUrl: string;
+    LogoUrl: string;
+    Description: string;
+    Targets: string;
+}
+export interface HubSiteData {
+    ThemeKey: string;
+    Name: string;
+    Url: string;
+    LogoUrl: string;
+    UsesMetadataNavigation: boolean;
+    Navigation?: NavigationNode;
 }
 //# sourceMappingURL=types.d.ts.map

@@ -20,7 +20,11 @@ export declare class ClientSvcQueryable<GetType = any> extends Queryable<GetType
     /**
      * Tracks the batch of which this query may be part
      */
-    protected _batch: IObjectPathBatch;
+    protected _batch: IObjectPathBatch | null;
+    /**
+     * Allows us to properly block batch execution until everything is loaded
+     */
+    protected _batchDependency: () => void | null;
     constructor(parent?: ClientSvcQueryable | string, _objectPaths?: ObjectPathQueue | null);
     /**
      * Choose which fields to return
@@ -31,13 +35,6 @@ export declare class ClientSvcQueryable<GetType = any> extends Queryable<GetType
     /**
      * Adds this query to the supplied batch
      *
-     * @example
-     * ```
-     *
-     * let b = pnp.sp.createBatch();
-     * pnp.sp.web.inBatch(b).get().then(...);
-     * b.execute().then(...)
-     * ```
      */
     inBatch(batch: IObjectPathBatch): this;
     /**

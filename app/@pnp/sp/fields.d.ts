@@ -1,6 +1,6 @@
 import { SharePointQueryableCollection, SharePointQueryableInstance } from "./sharepointqueryable";
 import { TypedHash } from "@pnp/common";
-import { XmlSchemaFieldCreationInformation, DateTimeFieldFormatType, FieldTypes, CalendarType, UrlFieldFormatType, FieldUserSelectionMode, FieldCreationProperties, ChoiceFieldFormatType } from "./types";
+import { XmlSchemaFieldCreationInformation, DateTimeFieldFormatType, DateTimeFieldFriendlyFormatType, FieldTypes, CalendarType, UrlFieldFormatType, FieldUserSelectionMode, FieldCreationProperties, ChoiceFieldFormatType } from "./types";
 /**
  * Describes a collection of Field objects
  *
@@ -62,9 +62,10 @@ export declare class Fields extends SharePointQueryableCollection {
      * @param title The field title
      * @param displayFormat The format of the date and time that is displayed in the field.
      * @param calendarType Specifies the calendar type of the field.
+     * @param friendlyDisplayFormat The type of friendly display format that is used in the field.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    addDateTime(title: string, displayFormat?: DateTimeFieldFormatType, calendarType?: CalendarType, friendlyDisplayFormat?: number, properties?: FieldCreationProperties): Promise<FieldAddResult>;
+    addDateTime(title: string, displayFormat?: DateTimeFieldFormatType, calendarType?: CalendarType, friendlyDisplayFormat?: DateTimeFieldFriendlyFormatType, properties?: FieldCreationProperties): Promise<FieldAddResult>;
     /**
      * Adds a new SP.FieldNumber to the collection
      *
@@ -154,6 +155,13 @@ export declare class Fields extends SharePointQueryableCollection {
     * @param showField Which field to show from the lookup list.
     */
     addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<FieldAddResult>;
+    /**
+     * Adds a new SP.FieldLocation to the collection
+     *
+     * @param title The field title.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    addLocation(title: string, properties?: FieldCreationProperties): Promise<FieldAddResult>;
 }
 /**
  * Describes a single of Field instance
