@@ -1,0 +1,38 @@
+{
+  "name": "chrome-sp-editor",
+  "version": "1.0.0",
+  "description": "SP Editor == A Google Chrome Extension for creating and updating files (js, css) in SharePoint Online from Chrome Developer Tools",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tavikukko/Chrome-SP-Editor.git"
+  },
+  "author": "Tomi Tavela",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tavikukko/Chrome-SP-Editor/issues"
+  },
+  "homepage": "https://github.com/tavikukko/Chrome-SP-Editor#readme",
+  "devDependencies": {
+    "@pnp/common": "^1.3.1",
+    "@pnp/config-store": "^1.3.1",
+    "@pnp/graph": "^1.3.1",
+    "@pnp/logging": "^1.3.1",
+    "@pnp/nodejs": "^1.3.1",
+    "@pnp/odata": "^1.3.1",
+    "@pnp/pnpjs": "^1.3.1",
+    "@pnp/sp": "^1.3.1",
+    "@pnp/sp-addinhelpers": "^1.3.1",
+    "@pnp/sp-clientsvc": "^1.3.1",
+    "@pnp/sp-taxonomy": "^1.3.1",
+    "del": "^4.0.0",
+    "gulp": "^4.0.0",
+    "monaco-editor": "^0.16.2"
+  }
+}

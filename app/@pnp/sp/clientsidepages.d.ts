@@ -24,7 +24,7 @@ export declare const enum PromotedState {
 /**
  * Type describing the available page layout types for client side "modern" pages
  */
-export declare type ClientSidePageLayoutType = "Article" | "Home";
+export declare type ClientSidePageLayoutType = "Article" | "Home" | "SingleWebPartAppPage" | "RepostPage";
 /**
  * Column size factor. Max value is 12 (= one column), other options are 8,6,4 or 0
  */
@@ -59,7 +59,7 @@ export declare class ClientSidePage extends SharePointQueryable {
      */
     static fromFile(file: File): Promise<ClientSidePage>;
     private static getDefaultLayoutPart;
-    private static getPoster;
+    private static initFrom;
     pageLayout: ClientSidePageLayoutType;
     bannerImageUrl: string;
     bannerImageSourceType: number;
@@ -126,10 +126,24 @@ export declare class ClientSidePage extends SharePointQueryable {
      * @param publish If true the page will be published
      */
     copyPage(web: Web | List, pageName: string, title: string, publish?: boolean): Promise<ClientSidePage>;
+    /**
+     * Sets the modern page banner image
+     *
+     * @param url Url of the image to display
+     * @param altText Alt text to describe the image
+     * @param bannerProps Additional properties to control display of the banner
+     */
+    setBannerImage(url: string, props?: {
+        altText?: string;
+        imageSourceType?: number;
+        translateX?: number;
+        translateY?: number;
+    }): void;
     protected getCanvasContent1(): string;
     protected getLayoutWebpartsContent(): string;
     protected setControls(controls: IClientSideControlBaseData[]): void;
     protected getControls(): IClientSideControlBaseData[];
+    private getEmphasisObj;
     /**
      * Sets the comments flag for a page
      *
@@ -153,13 +167,15 @@ export declare class ClientSidePage extends SharePointQueryable {
 }
 export declare class CanvasSection {
     protected page: ClientSidePage;
-    order: number;
     columns: CanvasColumn[];
+    private _emphasis;
     /**
      * Used to track this object inside the collection at runtime
      */
     private _memId;
-    constructor(page: ClientSidePage, order: number, columns?: CanvasColumn[]);
+    private _order;
+    constructor(page: ClientSidePage, order: number, columns?: CanvasColumn[], _emphasis?: 0 | 1 | 2 | 3);
+    order: number;
     /**
      * Default column (this.columns[0]) for this section
      */
@@ -174,6 +190,7 @@ export declare class CanvasSection {
      * @param control Control to add to the default column
      */
     addControl(control: ColumnControl<any>): this;
+    emphasis: 0 | 1 | 2 | 3;
     /**
      * Removes this section and all contained columns and controls from the collection
      */
@@ -359,7 +376,7 @@ export interface IClientSideWebPartData<PropertiesType = any> extends ICanvasCon
     };
 }
 export interface IClientControlEmphasis {
-    zoneEmphasis?: number;
+    zoneEmphasis?: 0 | 1 | 2 | 3;
 }
 export declare module ClientSideWebpartPropertyTypes {
     /**

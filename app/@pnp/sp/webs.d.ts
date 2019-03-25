@@ -188,6 +188,12 @@ export declare class Web extends SharePointQueryableShareableWeb {
      */
     readonly defaultDocumentLibrary: List;
     /**
+     * Gets a folder by id
+     *
+     * @param uniqueId The uniqueId of the folder
+     */
+    getFolderById(uniqueId: string): Folder;
+    /**
      * Gets a folder by server relative url
      *
      * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
@@ -202,6 +208,12 @@ export declare class Web extends SharePointQueryableShareableWeb {
      * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
      */
     getFolderByServerRelativePath(folderRelativeUrl: string): Folder;
+    /**
+     * Gets a file by id
+     *
+     * @param uniqueId The uniqueId of the file
+     */
+    getFileById(uniqueId: string): File;
     /**
      * Gets a file by server relative url
      *

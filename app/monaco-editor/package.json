@@ -1,28 +1,27 @@
 {
-  "_from": "monaco-editor",
-  "_id": "monaco-editor@0.16.0",
+  "_from": "monaco-editor@^0.16.2",
+  "_id": "monaco-editor@0.16.2",
   "_inBundle": false,
-  "_integrity": "sha512-a0ZksW1C5gTXOOJR/guKwzYrLJkJtMqzPb/W81YFSFHwbZ/ecVWdNguUkuyUuchzeKJRwqcizgVx++G9wmfofQ==",
+  "_integrity": "sha512-NtGrFzf54jADe7qsWh3lazhS7Kj0XHkJUGBq9fA/Jbwc+sgVcyfsYF6z2AQ7hPqDC+JmdOt/OwFjBnRwqXtx6w==",
   "_location": "/monaco-editor",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "range",
     "registry": true,
-    "raw": "monaco-editor",
+    "raw": "monaco-editor@^0.16.2",
     "name": "monaco-editor",
     "escapedName": "monaco-editor",
-    "rawSpec": "",
+    "rawSpec": "^0.16.2",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "^0.16.2"
   },
   "_requiredBy": [
-    "#USER",
-    "/"
+    "#DEV:/"
   ],
-  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.16.0.tgz",
-  "_shasum": "83538173c2427f62e0ea3e19a4864742ea457cd9",
-  "_spec": "monaco-editor",
-  "_where": "/Users/tomi/development/pnpjs-1.1.0",
+  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.16.2.tgz",
+  "_shasum": "950084ed82eeaef1c8c9d3c1bcab849fe11b2415",
+  "_spec": "monaco-editor@^0.16.2",
+  "_where": "/Users/tomi/development/Chrome-SP-Editor",
   "author": {
     "name": "Microsoft Corporation"
   },
@@ -39,9 +38,9 @@
     "gulp-typedoc": "^2.2.2",
     "http-server": "^0.11.1",
     "monaco-css": "2.5.0",
-    "monaco-editor-core": "0.16.0",
-    "monaco-html": "2.5.0",
-    "monaco-json": "2.5.0",
+    "monaco-editor-core": "0.16.1",
+    "monaco-html": "2.5.1",
+    "monaco-json": "2.5.1",
     "monaco-languages": "1.7.0",
     "monaco-typescript": "3.4.1",
     "rimraf": "^2.6.3",
@@ -66,5 +65,5 @@
     "website": "gulp website"
   },
   "typings": "./esm/vs/editor/editor.api.d.ts",
-  "version": "0.16.0"
+  "version": "0.16.2"
 }

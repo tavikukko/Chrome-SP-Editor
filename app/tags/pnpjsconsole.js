@@ -62,6 +62,25 @@ sp.web.select("Title").get().then(w => {
     console.log("Web Title: " + w.Title);
 });
 
+// using SPHttpClient for testing SP REST APIs
+import { SPHttpClient } from '@pnp/sp';
+(async () => {
+    const siteObj = await sp.web.select('Url').get();
+    const endpoint = siteObj.Url + '/_api/web'; // add your endpoint here
+    // const payload = { key: 1 };
+    const client = new SPHttpClient();
+    const response = await client.post(endpoint, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        // body: JSON.stringify(payload),
+    })
+    const result = await response.json();
+    console.log(result);
+})()
+    .catch(console.warn);
+
 // using @pnp/pnpjs
 import pnp from "@pnp/pnpjs";
 pnp.sp.web.get().then(w => {

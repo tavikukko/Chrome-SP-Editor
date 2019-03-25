@@ -87,7 +87,7 @@ export declare class Site extends SharePointQueryableInstance {
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
      */
-    createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: string, classification?: string, siteDesignId?: string): Promise<void>;
+    createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: string, classification?: string, siteDesignId?: string, hubSiteId?: string): Promise<void>;
     /**
      * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
      *
@@ -99,7 +99,7 @@ export declare class Site extends SharePointQueryableInstance {
      * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
      * @param owners The Owners of the site to be created
      */
-    createModernTeamSite(displayName: string, alias: string, isPublic?: boolean, lcid?: number, description?: string, classification?: string, owners?: string[]): Promise<void>;
+    createModernTeamSite(displayName: string, alias: string, isPublic?: boolean, lcid?: number, description?: string, classification?: string, owners?: string[], hubSiteId?: string): Promise<void>;
 }
 /**
  * The result of opening a web by id: contains the data returned as well as a chainable web instance

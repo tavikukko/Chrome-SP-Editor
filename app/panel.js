@@ -62,6 +62,7 @@ chrome.runtime.getPackageDirectoryEntry(function (directoryEntry) {
   }
 
   getDir(directoryEntry, 'app/@pnp');
+  getDir(directoryEntry, 'app/@microsoft');
 
 });
 // this is called from multiple tabs, so it will be here

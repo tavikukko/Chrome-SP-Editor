@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.0
+ * v1.3.1
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -798,18 +798,14 @@ var PnPClientStorageWrapper = /** @class */ (function () {
         if (!this.enabled) {
             return getter();
         }
-        return new Promise(function (resolve) {
-            var o = _this.get(key);
-            if (o == null) {
-                getter().then(function (d) {
-                    _this.put(key, d, expire);
-                    resolve(d);
-                });
-            }
-            else {
-                resolve(o);
-            }
-        });
+        var o = this.get(key);
+        if (o === null) {
+            return getter().then(function (d) {
+                _this.put(key, d, expire);
+                return d;
+            });
+        }
+        return Promise.resolve(o);
     };
     /**
      * Deletes any expired items placed in the store by the pnp library, leaves other items untouched

@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.0
+ * v1.3.1
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -798,18 +798,14 @@ var PnPClientStorageWrapper = /** @class */ (function () {
         if (!this.enabled) {
             return getter();
         }
-        return new Promise(function (resolve) {
-            var o = _this.get(key);
-            if (o == null) {
-                getter().then(function (d) {
-                    _this.put(key, d, expire);
-                    resolve(d);
-                });
-            }
-            else {
-                resolve(o);
-            }
-        });
+        var o = this.get(key);
+        if (o === null) {
+            return getter().then(function (d) {
+                _this.put(key, d, expire);
+                return d;
+            });
+        }
+        return Promise.resolve(o);
     };
     /**
      * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
@@ -3453,7 +3449,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.0");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.1");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -3595,6 +3591,14 @@ var ClientSidePage = /** @class */ (function (_super) {
         _this.json = json;
         _this.sections = sections;
         _this.commentsDisabled = commentsDisabled;
+        // ensure we have a good url to build on for the pages api
+        if (typeof baseUrl === "string") {
+            _this._parentUrl = "";
+            _this._url = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["combine"])(Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__["extractWebUrl"])(baseUrl), path);
+        }
+        else {
+            _this.extend(ClientSidePage.initFrom(baseUrl, null), path);
+        }
         // set a default page settings slice
         _this._pageSettings = { controlType: 0, pageSettingsSlice: { isDefaultDescription: true, isDefaultThumbnail: true } };
         // set a default layout part
@@ -3622,7 +3626,7 @@ var ClientSidePage = /** @class */ (function (_super) {
                         // patched because previously we used the full page name with the .aspx at the end
                         // this allows folk's existing code to work after the re-write to the new API
                         pageName = pageName.replace(/\.aspx$/i, "");
-                        return [4 /*yield*/, ClientSidePage.getPoster(web, "_api/sitepages/pages").postCore({
+                        return [4 /*yield*/, ClientSidePage.initFrom(web, "_api/sitepages/pages").postCore({
                                 body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(Object.assign(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.Publishing.SitePage"), {
                                     PageLayoutType: pageLayoutType,
                                 })),
@@ -3649,7 +3653,7 @@ var ClientSidePage = /** @class */ (function (_super) {
     ClientSidePage.fromFile = function (file) {
         return file.getItem().then(function (i) {
             var page = new ClientSidePage(Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__["extractWebUrl"])(file.toUrl()), "", { Id: i.Id }, true);
-            return page.load();
+            return page.configureFrom(file).load();
         });
     };
     ClientSidePage.getDefaultLayoutPart = function () {
@@ -3673,11 +3677,8 @@ var ClientSidePage = /** @class */ (function (_super) {
             title: "Title area",
         };
     };
-    ClientSidePage.getPoster = function (baseUrl, url) {
-        if (typeof baseUrl !== "string") {
-            baseUrl = Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__["extractWebUrl"])(baseUrl.toUrl());
-        }
-        return new ClientSidePage(baseUrl, url);
+    ClientSidePage.initFrom = function (o, url) {
+        return (new ClientSidePage(Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__["extractWebUrl"])(o.toUrl()), url)).configureFrom(o);
     };
     Object.defineProperty(ClientSidePage.prototype, "pageLayout", {
         get: function () {
@@ -3694,6 +3695,12 @@ var ClientSidePage = /** @class */ (function (_super) {
             return this.json.BannerImageUrl;
         },
         set: function (value) {
+            delete this._layoutPart.serverProcessedContent.customMetadata.imageSource;
+            delete this._layoutPart.properties.webId;
+            delete this._layoutPart.properties.siteId;
+            delete this._layoutPart.properties.listId;
+            delete this._layoutPart.properties.uniqueId;
+            this._layoutPart.serverProcessedContent.imageSources = { imageSource: value };
             this.json.BannerImageUrl = value;
         },
         enumerable: true,
@@ -3858,20 +3865,20 @@ var ClientSidePage = /** @class */ (function (_super) {
         // }
         // we try and check out the page for the user
         if (!this.json.IsPageCheckedOutToCurrentUser) {
-            promise = promise.then(function (_) { return (ClientSidePage.getPoster(_this, "_api/sitepages/pages(" + _this.json.Id + ")/checkoutpage")).postCore(); });
+            promise = promise.then(function (_) { return (ClientSidePage.initFrom(_this, "_api/sitepages/pages(" + _this.json.Id + ")/checkoutpage")).postCore(); });
         }
-        promise = promise.then(function (_) { return (ClientSidePage.getPoster(_this, "_api/sitepages/pages(" + _this.json.Id + ")/savepage")).postCore({
+        promise = promise.then(function (_) { return (ClientSidePage.initFrom(_this, "_api/sitepages/pages(" + _this.json.Id + ")/savepage")).postCore({
             body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(Object.assign(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.Publishing.SitePage"), {
                 AuthorByline: _this.json.AuthorByline,
                 BannerImageUrl: _this.json.BannerImageUrl,
                 CanvasContent1: _this.getCanvasContent1(),
                 LayoutWebpartsContent: _this.getLayoutWebpartsContent(),
-                Title: _this.json.Title,
-                TopicHeader: _this.json.TopicHeader,
+                Title: _this.title,
+                TopicHeader: _this.topicHeader,
             })),
         }); });
         if (publish) {
-            promise = promise.then(function (_) { return (ClientSidePage.getPoster(_this, "_api/sitepages/pages(" + _this.json.Id + ")/publish")).postCore(); }).then(function (r) {
+            promise = promise.then(function (_) { return (ClientSidePage.initFrom(_this, "_api/sitepages/pages(" + _this.json.Id + ")/publish")).postCore(); }).then(function (r) {
                 if (r) {
                     _this.json.IsPageCheckedOutToCurrentUser = false;
                 }
@@ -3884,7 +3891,7 @@ var ClientSidePage = /** @class */ (function (_super) {
         if (this.json.Id === null) {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
-        return ClientSidePage.getPoster(this, "_api/sitepages/pages(" + this.json.Id + ")/discardPage").postCore({
+        return ClientSidePage.initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/discardPage").postCore({
             body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.Publishing.SitePage")),
         }).then(function (d) {
             _this.fromJSON(d);
@@ -3990,6 +3997,31 @@ var ClientSidePage = /** @class */ (function (_super) {
             });
         });
     };
+    /**
+     * Sets the modern page banner image
+     *
+     * @param url Url of the image to display
+     * @param altText Alt text to describe the image
+     * @param bannerProps Additional properties to control display of the banner
+     */
+    ClientSidePage.prototype.setBannerImage = function (url, props) {
+        this.bannerImageUrl = url;
+        this.bannerImageSourceType = 2; // this seems to always be true, so default?
+        if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["objectDefinedNotNull"])(props)) {
+            if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(props, "translateX")) {
+                this._layoutPart.properties.translateX = props.translateX;
+            }
+            if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(props, "translateY")) {
+                this._layoutPart.properties.translateY = props.translateY;
+            }
+            if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(props, "imageSourceType")) {
+                this.bannerImageSourceType = props.imageSourceType;
+            }
+            if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(props, "altText")) {
+                this._layoutPart.properties.altText = props.altText;
+            }
+        }
+    };
     ClientSidePage.prototype.getCanvasContent1 = function () {
         return JSON.stringify(this.getControls());
     };
@@ -4028,9 +4060,11 @@ var ClientSidePage = /** @class */ (function (_super) {
                         break;
                 }
             }
+            reindex(this.sections);
         }
     };
     ClientSidePage.prototype.getControls = function () {
+        var _this = this;
         // reindex things
         reindex(this.sections);
         // rollup the control changes
@@ -4038,19 +4072,29 @@ var ClientSidePage = /** @class */ (function (_super) {
         this.sections.forEach(function (section) {
             section.columns.forEach(function (column) {
                 if (column.controls.length < 1) {
+                    // empty column
                     canvasData.push({
                         displayMode: column.data.displayMode,
-                        emphasis: column.data.emphasis,
+                        emphasis: _this.getEmphasisObj(section.emphasis),
                         position: column.data.position,
                     });
                 }
                 else {
-                    column.controls.forEach(function (control) { return canvasData.push(control.data); });
+                    column.controls.forEach(function (control) {
+                        control.data.emphasis = _this.getEmphasisObj(section.emphasis);
+                        canvasData.push(control.data);
+                    });
                 }
             });
         });
         canvasData.push(this._pageSettings);
         return canvasData;
+    };
+    ClientSidePage.prototype.getEmphasisObj = function (value) {
+        if (value < 1 || value > 3) {
+            return {};
+        }
+        return { zoneEmphasis: value };
     };
     /**
      * Sets the comments flag for a page
@@ -4094,13 +4138,10 @@ var ClientSidePage = /** @class */ (function (_super) {
         else {
             section = sections[0];
         }
+        section.emphasis = control.data.emphasis.zoneEmphasis || 0;
         var columns = section.columns.filter(function (c) { return c.order === sectionIndex; });
         if (columns.length < 1) {
-            // create empty column
-            column = new CanvasColumn();
-            column.data.position.sectionIndex = sectionIndex;
-            column.data.position.sectionFactor = sectionFactor;
-            section.columns.push(column);
+            column = section.addColumn(sectionFactor);
         }
         else {
             column = columns[0];
@@ -4120,6 +4161,7 @@ var ClientSidePage = /** @class */ (function (_super) {
         var sections = this.sections.filter(function (s) { return s.order === order; });
         if (sections.length < 1) {
             section = new CanvasSection(this, order);
+            section.emphasis = column.data.emphasis.zoneEmphasis || 0;
             this.sections.push(section);
         }
         else {
@@ -4134,11 +4176,11 @@ var ClientSidePage = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
         }
-        var initer = ClientSidePage.getPoster(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
+        var initer = ClientSidePage.initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
         return initer.postCore().then(function (listData) {
-            var item = (new _lists__WEBPACK_IMPORTED_MODULE_5__["List"](listData["odata.id"])).items.getById(_this.json.Id);
+            var item = (new _lists__WEBPACK_IMPORTED_MODULE_5__["List"](listData["odata.id"])).configureFrom(_this).items.getById(_this.json.Id);
             return item.select.apply(item, selects).get().then(function (d) {
-                return Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])(new _items__WEBPACK_IMPORTED_MODULE_1__["Item"](Object(_odata__WEBPACK_IMPORTED_MODULE_6__["odataUrlFrom"])(d)), d);
+                return Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])((new _items__WEBPACK_IMPORTED_MODULE_1__["Item"](Object(_odata__WEBPACK_IMPORTED_MODULE_6__["odataUrlFrom"])(d))).configureFrom(_this), d);
             });
         });
     };
@@ -4146,13 +4188,28 @@ var ClientSidePage = /** @class */ (function (_super) {
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_3__["SharePointQueryable"]));
 
 var CanvasSection = /** @class */ (function () {
-    function CanvasSection(page, order, columns) {
+    function CanvasSection(page, order, columns, _emphasis) {
         if (columns === void 0) { columns = []; }
+        if (_emphasis === void 0) { _emphasis = 0; }
         this.page = page;
-        this.order = order;
         this.columns = columns;
+        this._emphasis = _emphasis;
         this._memId = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["getGUID"])();
+        this._order = order;
     }
+    Object.defineProperty(CanvasSection.prototype, "order", {
+        get: function () {
+            return this._order;
+        },
+        set: function (value) {
+            this._order = value;
+            for (var i = 0; i < this.columns.length; i++) {
+                this.columns[i].data.position.zoneIndex = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(CanvasSection.prototype, "defaultColumn", {
         /**
          * Default column (this.columns[0]) for this section
@@ -4174,7 +4231,7 @@ var CanvasSection = /** @class */ (function () {
         column.section = this;
         column.data.position.zoneIndex = this.order;
         column.data.position.sectionFactor = factor;
-        column.data.position.sectionIndex = getNextOrder(this.columns);
+        column.order = getNextOrder(this.columns);
         this.columns.push(column);
         return column;
     };
@@ -4187,6 +4244,16 @@ var CanvasSection = /** @class */ (function () {
         this.defaultColumn.addControl(control);
         return this;
     };
+    Object.defineProperty(CanvasSection.prototype, "emphasis", {
+        get: function () {
+            return this._emphasis;
+        },
+        set: function (value) {
+            this._emphasis = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Removes this section and all contained columns and controls from the collection
      */
@@ -4230,6 +4297,10 @@ var CanvasColumn = /** @class */ (function () {
         },
         set: function (value) {
             this.data.position.sectionIndex = value;
+            for (var i = 0; i < this.controls.length; i++) {
+                this.controls[i].data.position.zoneIndex = this.data.position.zoneIndex;
+                this.controls[i].data.position.sectionIndex = value;
+            }
         },
         enumerable: true,
         configurable: true
@@ -4315,7 +4386,12 @@ var ClientSideText = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](ClientSideText, _super);
     function ClientSideText(text, json) {
         if (json === void 0) { json = JSON.parse(JSON.stringify(ClientSideText.Default)); }
-        var _this = _super.call(this, json) || this;
+        var _this = this;
+        if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["stringIsNullOrEmpty"])(json.id)) {
+            json.id = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["getGUID"])();
+            json.anchorComponentId = json.id;
+        }
+        _this = _super.call(this, json) || this;
         _this.text = text;
         return _this;
     }
@@ -5746,13 +5822,14 @@ var File = /** @class */ (function (_super) {
      * Gets the associated list item for this folder, loading the default properties
      */
     File.prototype.getItem = function () {
+        var _this = this;
         var selects = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
         }
         var q = this.listItemAllFields;
         return q.select.apply(q, selects).get().then(function (d) {
-            return Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["extend"])(new _items__WEBPACK_IMPORTED_MODULE_5__["Item"](Object(_odata__WEBPACK_IMPORTED_MODULE_7__["odataUrlFrom"])(d)), d);
+            return Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["extend"])((new _items__WEBPACK_IMPORTED_MODULE_5__["Item"](Object(_odata__WEBPACK_IMPORTED_MODULE_7__["odataUrlFrom"])(d))).configureFrom(_this), d);
         });
     };
     /**
@@ -7720,11 +7797,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.0");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.1");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.0");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.1");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -10367,16 +10444,18 @@ var Site = /** @class */ (function (_super) {
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
      */
-    Site.prototype.createCommunicationSite = function (title, lcid, shareByEmailEnabled, url, description, classification, siteDesignId) {
+    Site.prototype.createCommunicationSite = function (title, lcid, shareByEmailEnabled, url, description, classification, siteDesignId, hubSiteId) {
         var _this = this;
         if (lcid === void 0) { lcid = 1033; }
         if (shareByEmailEnabled === void 0) { shareByEmailEnabled = false; }
         if (description === void 0) { description = ""; }
         if (classification === void 0) { classification = ""; }
         if (siteDesignId === void 0) { siteDesignId = "00000000-0000-0000-0000-000000000000"; }
+        if (hubSiteId === void 0) { hubSiteId = "00000000-0000-0000-0000-000000000000"; }
         var props = {
             Classification: classification,
             Description: description,
+            HubSiteId: hubSiteId,
             Lcid: lcid,
             ShareByEmailEnabled: shareByEmailEnabled,
             SiteDesignId: siteDesignId,
@@ -10416,12 +10495,13 @@ var Site = /** @class */ (function (_super) {
      * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
      * @param owners The Owners of the site to be created
      */
-    Site.prototype.createModernTeamSite = function (displayName, alias, isPublic, lcid, description, classification, owners) {
+    Site.prototype.createModernTeamSite = function (displayName, alias, isPublic, lcid, description, classification, owners, hubSiteId) {
         var _this = this;
         if (isPublic === void 0) { isPublic = true; }
         if (lcid === void 0) { lcid = 1033; }
         if (description === void 0) { description = ""; }
         if (classification === void 0) { classification = ""; }
+        if (hubSiteId === void 0) { hubSiteId = "00000000-0000-0000-0000-000000000000"; }
         var postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["jsS"])({
             alias: alias,
             displayName: displayName,
@@ -10429,7 +10509,7 @@ var Site = /** @class */ (function (_super) {
             optionalParams: {
                 Classification: classification,
                 CreationOptions: {
-                    "results": ["SPSiteLanguage:" + lcid],
+                    "results": ["SPSiteLanguage:" + lcid, "HubSiteId:" + hubSiteId],
                 },
                 Description: description,
                 Owners: {
@@ -13923,6 +14003,14 @@ var Web = /** @class */ (function (_super) {
         configurable: true
     });
     /**
+     * Gets a folder by id
+     *
+     * @param uniqueId The uniqueId of the folder
+     */
+    Web.prototype.getFolderById = function (uniqueId) {
+        return new _folders__WEBPACK_IMPORTED_MODULE_4__["Folder"](this, "getFolderById('" + uniqueId + "')");
+    };
+    /**
      * Gets a folder by server relative url
      *
      * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
@@ -13940,6 +14028,14 @@ var Web = /** @class */ (function (_super) {
      */
     Web.prototype.getFolderByServerRelativePath = function (folderRelativeUrl) {
         return new _folders__WEBPACK_IMPORTED_MODULE_4__["Folder"](this, "getFolderByServerRelativePath(decodedUrl='" + folderRelativeUrl + "')");
+    };
+    /**
+     * Gets a file by id
+     *
+     * @param uniqueId The uniqueId of the file
+     */
+    Web.prototype.getFileById = function (uniqueId) {
+        return new _files__WEBPACK_IMPORTED_MODULE_12__["File"](this, "getFileById('" + uniqueId + "')");
     };
     /**
      * Gets a file by server relative url
