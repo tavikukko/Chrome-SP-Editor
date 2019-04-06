@@ -1509,11 +1509,15 @@ export interface HubSite {
     Targets: string;
 }
 export interface HubSiteData {
-    ThemeKey: string;
-    Name: string;
-    Url: string;
-    LogoUrl: string;
-    UsesMetadataNavigation: boolean;
-    Navigation?: NavigationNode;
+    headerEmphasis: string | null;
+    logoUrl: string | null;
+    megaMenuEnabled: boolean;
+    name: string;
+    navigation: NavigationNode[];
+    requiresJoinApproval: boolean;
+    siteDesignId: string;
+    themeKey: string | null;
+    url: string;
+    usesMetadataNavigation: boolean;
 }
 //# sourceMappingURL=types.d.ts.map

@@ -104,6 +104,10 @@ export declare class SPRest {
      */
     readonly hubSites: HubSites;
     /**
+     * Gets the Web instance representing the tenant app catalog web
+     */
+    getTenantAppCatalogWeb(): Promise<Web>;
+    /**
      * Handles creating and configuring the objects returned from this class
      *
      * @param fm The factory method used to create the instance

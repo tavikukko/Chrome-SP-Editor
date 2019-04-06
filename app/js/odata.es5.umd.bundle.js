@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.1
+ * v1.3.2
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1795,6 +1795,7 @@ var ODataBatch = /** @class */ (function () {
         // we need to check the dependencies twice due to how different engines handle things.
         // We can get a second set of promises added during the first set resolving
         return Promise.all(this._deps)
+            .then(function () { return Promise.all(_this._deps); })
             .then(function () { return _this.executeImpl(); })
             .then(function () { return Promise.all(_this._rDeps); })
             .then(function () { return void (0); });
@@ -2449,7 +2450,6 @@ var ODataQueryable = /** @class */ (function (_super) {
         }
         if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["objectDefinedNotNull"])(batch)) {
             this._batch = batch;
-            this._batchDependency = batch.addDependency();
         }
         return this;
     };
@@ -2495,6 +2495,13 @@ var ODataQueryable = /** @class */ (function (_super) {
         if (options === void 0) { options = {}; }
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["ODataDefaultParser"](); }
         return _super.prototype.putCore.call(this, options, parser);
+    };
+    ODataQueryable.prototype.reqImpl = function (method, options, parser) {
+        if (options === void 0) { options = {}; }
+        if (this.hasBatch) {
+            this._batchDependency = this.addBatchDependency();
+        }
+        return _super.prototype.reqImpl.call(this, method, options, parser);
     };
     /**
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function

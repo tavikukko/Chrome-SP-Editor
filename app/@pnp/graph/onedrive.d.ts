@@ -1,5 +1,5 @@
 import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
-import { DriveItem as IDriveItem, Drive as IDrive } from "@microsoft/microsoft-graph-types";
+import { Drive as IDrive } from "@microsoft/microsoft-graph-types";
 import { TypedHash } from "@pnp/common";
 export interface IDriveItemsMethods {
     getById(id: string): DriveItem;
@@ -51,7 +51,7 @@ export declare class DriveItems extends GraphQueryableCollection implements IDri
  * Describes a Drive Item instance
  *
  */
-export declare class DriveItem extends GraphQueryableInstance<IDriveItem> {
+export declare class DriveItem extends GraphQueryableInstance<any> {
     readonly children: Children;
     readonly thumbnails: Thumbnails;
     /**
@@ -83,7 +83,7 @@ export declare class Children extends GraphQueryableCollection {
     * @param name The name of the Drive Item.
     * @param properties Type of Drive Item to create.
     * */
-    add(name: string, driveItemType: IDriveItem): Promise<IDriveItemAddResult>;
+    add(name: string, driveItemType: any): Promise<IDriveItemAddResult>;
 }
 export declare class DriveList extends GraphQueryableCollection {
 }
@@ -96,7 +96,7 @@ export declare class DriveSearch extends GraphQueryableInstance {
 export declare class Thumbnails extends GraphQueryableInstance {
 }
 export interface IDriveItemAddResult {
-    data: IDriveItem;
+    data: any;
     driveItem: DriveItem;
 }
 //# sourceMappingURL=onedrive.d.ts.map

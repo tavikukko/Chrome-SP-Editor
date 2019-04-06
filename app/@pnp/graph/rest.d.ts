@@ -8,6 +8,7 @@ import { GraphBatch } from "./batch";
 import { DirectoryObjects } from "./directoryobjects";
 import { IInvitationsMethods } from "./invitations";
 import { Subscriptions } from "./subscriptions";
+import { ISecurityMethods } from "./security";
 import { ISitesMethods } from "./sites";
 export declare class GraphRest extends GraphQueryable {
     constructor(baseUrl: string | GraphQueryable, path?: string);
@@ -21,6 +22,7 @@ export declare class GraphRest extends GraphQueryable {
     readonly subscriptions: Subscriptions;
     createBatch(): GraphBatch;
     setup(config: GraphConfiguration): void;
+    readonly security: ISecurityMethods;
     readonly sites: ISitesMethods;
 }
 export declare let graph: GraphRest;

@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.1
+ * v1.3.2
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1795,6 +1795,7 @@ var ODataBatch = /** @class */ (function () {
         // we need to check the dependencies twice due to how different engines handle things.
         // We can get a second set of promises added during the first set resolving
         return Promise.all(this._deps)
+            .then(function () { return Promise.all(_this._deps); })
             .then(function () { return _this.executeImpl(); })
             .then(function () { return Promise.all(_this._rDeps); })
             .then(function () { return void (0); });
@@ -2449,7 +2450,6 @@ var ODataQueryable = /** @class */ (function (_super) {
         }
         if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["objectDefinedNotNull"])(batch)) {
             this._batch = batch;
-            this._batchDependency = batch.addDependency();
         }
         return this;
     };
@@ -2495,6 +2495,13 @@ var ODataQueryable = /** @class */ (function (_super) {
         if (options === void 0) { options = {}; }
         if (parser === void 0) { parser = new _parsers__WEBPACK_IMPORTED_MODULE_2__["ODataDefaultParser"](); }
         return _super.prototype.putCore.call(this, options, parser);
+    };
+    ODataQueryable.prototype.reqImpl = function (method, options, parser) {
+        if (options === void 0) { options = {}; }
+        if (this.hasBatch) {
+            this._batchDependency = this.addBatchDependency();
+        }
+        return _super.prototype.reqImpl.call(this, method, options, parser);
     };
     /**
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
@@ -3449,7 +3456,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.1");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.2");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -3520,7 +3527,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_metadata__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/metadata */ "./build/packages-es5/sp/src/utils/metadata.js");
 /* harmony import */ var _lists__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lists */ "./build/packages-es5/sp/src/lists.js");
 /* harmony import */ var _odata__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./odata */ "./build/packages-es5/sp/src/odata.js");
-/* harmony import */ var _utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/extractweburl */ "./build/packages-es5/sp/src/utils/extractweburl.js");
+/* harmony import */ var _webs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./webs */ "./build/packages-es5/sp/src/webs.js");
+/* harmony import */ var _utils_extractweburl__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utils/extractweburl */ "./build/packages-es5/sp/src/utils/extractweburl.js");
+/* harmony import */ var _site__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./site */ "./build/packages-es5/sp/src/site.js");
+
+
 
 
 
@@ -3591,10 +3602,11 @@ var ClientSidePage = /** @class */ (function (_super) {
         _this.json = json;
         _this.sections = sections;
         _this.commentsDisabled = commentsDisabled;
+        _this._bannerImageDirty = false;
         // ensure we have a good url to build on for the pages api
         if (typeof baseUrl === "string") {
             _this._parentUrl = "";
-            _this._url = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["combine"])(Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__["extractWebUrl"])(baseUrl), path);
+            _this._url = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["combine"])(Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_8__["extractWebUrl"])(baseUrl), path);
         }
         else {
             _this.extend(ClientSidePage.initFrom(baseUrl, null), path);
@@ -3652,19 +3664,17 @@ var ClientSidePage = /** @class */ (function (_super) {
      */
     ClientSidePage.fromFile = function (file) {
         return file.getItem().then(function (i) {
-            var page = new ClientSidePage(Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__["extractWebUrl"])(file.toUrl()), "", { Id: i.Id }, true);
+            var page = new ClientSidePage(Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_8__["extractWebUrl"])(file.toUrl()), "", { Id: i.Id }, true);
             return page.configureFrom(file).load();
         });
     };
     ClientSidePage.getDefaultLayoutPart = function () {
-        var layoutId = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["getGUID"])();
         return {
             dataVersion: "1.4",
             description: "Title Region Description",
-            id: layoutId,
-            instanceId: layoutId,
+            id: "cbe7b0a9-3504-44dd-a3a3-0e5cacd07788",
+            instanceId: "cbe7b0a9-3504-44dd-a3a3-0e5cacd07788",
             properties: {
-                authorByline: [],
                 authors: [],
                 layoutType: "FullWidthImage",
                 showPublishDate: false,
@@ -3678,7 +3688,7 @@ var ClientSidePage = /** @class */ (function (_super) {
         };
     };
     ClientSidePage.initFrom = function (o, url) {
-        return (new ClientSidePage(Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__["extractWebUrl"])(o.toUrl()), url)).configureFrom(o);
+        return (new ClientSidePage(Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_8__["extractWebUrl"])(o.toUrl()), url)).configureFrom(o);
     };
     Object.defineProperty(ClientSidePage.prototype, "pageLayout", {
         get: function () {
@@ -3695,13 +3705,8 @@ var ClientSidePage = /** @class */ (function (_super) {
             return this.json.BannerImageUrl;
         },
         set: function (value) {
-            delete this._layoutPart.serverProcessedContent.customMetadata.imageSource;
-            delete this._layoutPart.properties.webId;
-            delete this._layoutPart.properties.siteId;
-            delete this._layoutPart.properties.listId;
-            delete this._layoutPart.properties.uniqueId;
-            this._layoutPart.serverProcessedContent.imageSources = { imageSource: value };
             this.json.BannerImageUrl = value;
+            this._bannerImageDirty = true;
         },
         enumerable: true,
         configurable: true
@@ -3718,7 +3723,7 @@ var ClientSidePage = /** @class */ (function (_super) {
     });
     Object.defineProperty(ClientSidePage.prototype, "topicHeader", {
         get: function () {
-            return this.json.TopicHeader;
+            return Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["objectDefinedNotNull"])(this.json.TopicHeader) ? this.json.TopicHeader : "";
         },
         set: function (value) {
             this.json.TopicHeader = value;
@@ -3833,6 +3838,49 @@ var ClientSidePage = /** @class */ (function (_super) {
         }
         // we will chain our work on this promise
         var promise = Promise.resolve({});
+        if (this._bannerImageDirty) {
+            // we have to do these gymnastics to set the banner image url
+            promise = promise.then(function (_) { return new Promise(function (resolve, reject) {
+                var origImgUrl = _this.json.BannerImageUrl;
+                var site = new _site__WEBPACK_IMPORTED_MODULE_9__["Site"](Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_8__["extractWebUrl"])(_this.toUrl()));
+                var web = new _webs__WEBPACK_IMPORTED_MODULE_7__["Web"](Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_8__["extractWebUrl"])(_this.toUrl()));
+                var imgFile = web.getFileByServerRelativePath(origImgUrl);
+                var siteId = "";
+                var webId = "";
+                var imgId = "";
+                var listId = "";
+                var webUrl = "";
+                Promise.all([
+                    site.select("Id", "Url").get().then(function (r) { return siteId = r.Id; }),
+                    web.select("Id", "Url").get().then(function (r) { webId = r.Id; webUrl = r.Url; }),
+                    imgFile.listItemAllFields.select("UniqueId", "ParentList/Id").expand("ParentList").get().then(function (r) { imgId = r.UniqueId; listId = r.ParentList.Id; }),
+                ]).then(function () {
+                    var f = new _sharepointqueryable__WEBPACK_IMPORTED_MODULE_3__["SharePointQueryable"](webUrl, "_layouts/15/getpreview.ashx");
+                    f.query.set("guidSite", "" + siteId);
+                    f.query.set("guidWeb", "" + webId);
+                    f.query.set("guidFile", "" + imgId);
+                    _this.bannerImageUrl = f.toUrlAndQuery();
+                    if (!Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["objectDefinedNotNull"])(_this._layoutPart.serverProcessedContent)) {
+                        _this._layoutPart.serverProcessedContent = {};
+                    }
+                    _this._layoutPart.serverProcessedContent.imageSources = { imageSource: origImgUrl };
+                    if (!Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["objectDefinedNotNull"])(_this._layoutPart.serverProcessedContent.customMetadata)) {
+                        _this._layoutPart.serverProcessedContent.customMetadata = {};
+                    }
+                    _this._layoutPart.serverProcessedContent.customMetadata.imageSource = {
+                        listId: listId,
+                        siteId: siteId,
+                        uniqueId: imgId,
+                        webId: webId,
+                    };
+                    _this._layoutPart.properties.webId = webId;
+                    _this._layoutPart.properties.siteId = siteId;
+                    _this._layoutPart.properties.listId = listId;
+                    _this._layoutPart.properties.uniqueId = imgId;
+                    resolve();
+                }).catch(reject);
+            }); });
+        }
         // we need to update our authors if they have changed
         // if (this._layoutPart.properties.authors === null && this._layoutPart.properties.authorByline.length > 0) {
         //     promise = promise.then(_ => new Promise(resolve => {
@@ -3867,16 +3915,23 @@ var ClientSidePage = /** @class */ (function (_super) {
         if (!this.json.IsPageCheckedOutToCurrentUser) {
             promise = promise.then(function (_) { return (ClientSidePage.initFrom(_this, "_api/sitepages/pages(" + _this.json.Id + ")/checkoutpage")).postCore(); });
         }
-        promise = promise.then(function (_) { return (ClientSidePage.initFrom(_this, "_api/sitepages/pages(" + _this.json.Id + ")/savepage")).postCore({
-            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(Object.assign(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.Publishing.SitePage"), {
-                AuthorByline: _this.json.AuthorByline,
-                BannerImageUrl: _this.json.BannerImageUrl,
+        promise = promise.then(function (_) {
+            var saveBody = Object.assign(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.Publishing.SitePage"), {
+                AuthorByline: _this.json.AuthorByline || [],
+                BannerImageUrl: _this.bannerImageUrl,
                 CanvasContent1: _this.getCanvasContent1(),
                 LayoutWebpartsContent: _this.getLayoutWebpartsContent(),
                 Title: _this.title,
                 TopicHeader: _this.topicHeader,
-            })),
-        }); });
+            });
+            var updater = ClientSidePage.initFrom(_this, "_api/sitepages/pages(" + _this.json.Id + ")/savepage");
+            updater.configure({
+                headers: {
+                    "if-match": "*",
+                },
+            });
+            return updater.postCore({ body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(saveBody) });
+        });
         if (publish) {
             promise = promise.then(function (_) { return (ClientSidePage.initFrom(_this, "_api/sitepages/pages(" + _this.json.Id + ")/publish")).postCore(); }).then(function (r) {
                 if (r) {
@@ -3884,6 +3939,10 @@ var ClientSidePage = /** @class */ (function (_super) {
                 }
             });
         }
+        promise = promise.then(function (_) {
+            // these are post-save actions
+            _this._bannerImageDirty = false;
+        });
         return promise;
     };
     ClientSidePage.prototype.discardPageCheckout = function () {
@@ -6556,18 +6615,7 @@ var Items = /** @class */ (function (_super) {
         var removeDependency = this.addBatchDependency();
         return this.ensureListItemEntityTypeName(listItemEntityTypeFullName).then(function (listItemEntityType) {
             var postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["jsS"])(Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["extend"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_12__["metadata"])(listItemEntityType), properties));
-            // we need to create a compound dependency clearing function to clear both the batch dependency assigned to this object
-            // and the one created during the clone. See https://github.com/pnp/pnpjs/issues/468 for details.
-            var clonedReq = _this.clone(Items_1, "");
-            if (clonedReq.hasBatch) {
-                var r_1 = clonedReq._batchDependency;
-                var compoundDep = function () {
-                    _this._batchDependency();
-                    r_1();
-                };
-                clonedReq._batchDependency = compoundDep;
-            }
-            var promise = clonedReq.postCore({ body: postBody }).then(function (data) {
+            var promise = _this.clone(Items_1, "").postCore({ body: postBody }).then(function (data) {
                 return {
                     data: data,
                     item: _this.getById(data.Id),
@@ -7797,11 +7845,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.1");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.2");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.1");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.2");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -8520,6 +8568,15 @@ var SPRest = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    /**
+     * Gets the Web instance representing the tenant app catalog web
+     */
+    SPRest.prototype.getTenantAppCatalogWeb = function () {
+        var _this = this;
+        return this.create(_webs__WEBPACK_IMPORTED_MODULE_3__["Web"], "_api/SP_TenantSettings_Current").get().then(function (r) {
+            return (new _webs__WEBPACK_IMPORTED_MODULE_3__["Web"](r.CorporateCatalogUrl)).configure(_this._options);
+        });
+    };
     /**
      * Handles creating and configuring the objects returned from this class
      *
@@ -14302,7 +14359,11 @@ var Web = /** @class */ (function (_super) {
      */
     Web.prototype.hubSiteData = function (forceRefresh) {
         if (forceRefresh === void 0) { forceRefresh = false; }
-        return this.clone(Web_1, "hubSiteData(" + forceRefresh + ")").get();
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                return [2 /*return*/, this.clone(Web_1, "hubSiteData(" + forceRefresh + ")").get().then(function (r) { return JSON.parse(r); })];
+            });
+        });
     };
     /**
      * Applies theme updates from the parent hub site collection.

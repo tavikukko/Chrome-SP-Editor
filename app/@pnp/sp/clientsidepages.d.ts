@@ -38,6 +38,7 @@ export declare class ClientSidePage extends SharePointQueryable {
     commentsDisabled: boolean;
     private _pageSettings;
     private _layoutPart;
+    private _bannerImageDirty;
     /**
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY
      *

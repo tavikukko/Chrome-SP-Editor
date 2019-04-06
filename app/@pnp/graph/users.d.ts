@@ -7,6 +7,7 @@ import { Teams } from "./teams";
 import { User as IUser, Message as IMessage } from "@microsoft/microsoft-graph-types";
 import { Messages, MailboxSettings, MailFolders } from "./messages";
 import { DirectoryObjects } from "./directoryobjects";
+import { People } from "./people";
 import { InsightsMethods } from "./insights";
 /**
  * Describes a collection of Users objects
@@ -106,6 +107,10 @@ export declare class User extends GraphQueryableInstance<IUser> {
      * Send the message specified in the request body. The message is saved in the Sent Items folder by default.
      */
     sendMail(message: IMessage): Promise<void>;
+    /**
+    * People ordered by their relevance to the user
+    */
+    readonly people: People;
     /**
     * The Insights associated with me
     */

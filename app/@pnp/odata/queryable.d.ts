@@ -169,6 +169,7 @@ export declare abstract class ODataQueryable<BatchType extends ODataBatch, GetTy
     protected patchCore<T = any>(options?: FetchOptions, parser?: ODataParser<T>): Promise<T>;
     protected deleteCore<T = any>(options?: FetchOptions, parser?: ODataParser<T>): Promise<T>;
     protected putCore<T = any>(options?: FetchOptions, parser?: ODataParser<T>): Promise<T>;
+    protected reqImpl<T>(method: string, options: FetchOptions, parser: ODataParser<T>): Promise<T>;
     /**
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
     */

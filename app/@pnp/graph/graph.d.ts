@@ -12,6 +12,8 @@ export * from "./planner";
 export * from "./directoryobjects";
 export * from "./invitations";
 export * from "./subscriptions";
+export * from "./security";
+export * from "./people";
 export * from "./sites";
 export * from "./insights";
 //# sourceMappingURL=graph.d.ts.map

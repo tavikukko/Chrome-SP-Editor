@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.1
+ * v1.3.2
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -8,10 +8,12 @@
  * bugs: https://github.com/pnp/pnpjs/issues
  */
 (function (global, factory) {
-            typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jsonwebtoken'), require('adal-node'), require('@pnp/common'), require('@pnp/logging')) :
-            typeof define === 'function' && define.amd ? define(['exports', 'jsonwebtoken', 'adal-node', '@pnp/common', '@pnp/logging'], factory) :
-            (factory((global.pnp = global.pnp || {}, global.pnp.nodejs = {}),global.jwt,global.adalNode,global.pnp.common,global.pnp.logging));
-}(this, (function (exports,jwt,adalNode,common,logging) { 'use strict';
+            typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jsonwebtoken'), require('@pnp/common'), require('https-proxy-agent'), require('node-fetch'), require('adal-node'), require('@pnp/logging')) :
+            typeof define === 'function' && define.amd ? define(['exports', 'jsonwebtoken', '@pnp/common', 'https-proxy-agent', 'node-fetch', 'adal-node', '@pnp/logging'], factory) :
+            (factory((global.pnp = global.pnp || {}, global.pnp.nodejs = {}),global.jwt,global.pnp.common,global.HttpProxyAgent,global.nodeFetch,global.adalNode,global.pnp.logging));
+}(this, (function (exports,jwt,common,HttpProxyAgent,nodeFetch,adalNode,logging) { 'use strict';
+
+            nodeFetch = nodeFetch && nodeFetch.hasOwnProperty('default') ? nodeFetch['default'] : nodeFetch;
 
             var global$1 = (typeof global !== "undefined" ? global :
                         typeof self !== "undefined" ? self :
@@ -2040,7 +2042,7 @@
             }
 
             var u = require("url");
-            var nodeFetch = require("node-fetch").default;
+            var nodeFetch$1 = require("node-fetch").default;
             var MapCacheManager = /** @class */ (function () {
                 function MapCacheManager() {
                     this.map = new Map();
@@ -2109,7 +2111,7 @@
                                 body.push("client_id=" + formattedClientId);
                                 body.push("client_secret=" + encodeURIComponent(params.clientSecret));
                                 body.push("resource=" + resource);
-                                return [4 /*yield*/, nodeFetch(params.stsUri, {
+                                return [4 /*yield*/, nodeFetch$1(params.stsUri, {
                                         body: body.join("&"),
                                         headers: {
                                             "Content-Type": "application/x-www-form-urlencoded",
@@ -2205,7 +2207,29 @@
                 return ProviderHostedRequestContext;
             }());
 
-            var nodeFetch$1 = require("node-fetch").default;
+            var proxyUrl = "";
+            function configureProxyOptions(opts) {
+                if (!common.stringIsNullOrEmpty(proxyUrl)) {
+                    common.mergeOptions(opts, {
+                        agent: new HttpProxyAgent(proxyUrl),
+                    });
+                }
+                return opts;
+            }
+            /**
+             * Sets the given url as a proxy on all requests
+             *
+             * @param url The url of the proxy
+             */
+            function setProxyUrl(url) {
+                proxyUrl = url;
+            }
+
+            function fetch(url, options) {
+                options = configureProxyOptions(options);
+                return nodeFetch(url, options);
+            }
+
             var AdalFetchClient = /** @class */ (function () {
                 function AdalFetchClient(_tenant, _clientId, _secret, _resource, _authority) {
                     if (_resource === void 0) { _resource = "https://graph.microsoft.com"; }
@@ -2233,7 +2257,7 @@
                     }
                     return this.acquireToken().then(function (token) {
                         options.headers.set("Authorization", token.tokenType + " " + token.accessToken);
-                        return nodeFetch$1(url, options);
+                        return fetch(url, options);
                     });
                 };
                 AdalFetchClient.prototype.acquireToken = function () {
@@ -2252,7 +2276,6 @@
                 return AdalFetchClient;
             }());
 
-            var nodeFetch$2 = require("node-fetch").default;
             /**
              * Makes requests using the fetch API adding the supplied token to the Authorization header
              */
@@ -2276,12 +2299,11 @@
                     common.mergeHeaders(headers, options.headers);
                     headers.set("Authorization", "Bearer " + this._token);
                     options.headers = headers;
-                    return nodeFetch$2(url, options);
+                    return fetch(url, options);
                 };
                 return BearerTokenFetchClient;
             }());
 
-            var nodeFetch$3 = require("node-fetch").default;
             /**
              * Fetch client that encapsulates the node-fetch library and also adds retry logic
              * when encountering transient errors.
@@ -2316,8 +2338,8 @@
                                         return __generator(this, function (_a) {
                                             switch (_a.label) {
                                                 case 0:
-                                                    _a.trys.push([0, 2, , 7]);
-                                                    return [4 /*yield*/, nodeFetch$3(url, options || {})];
+                                                    _a.trys.push([0, 2, , 6]);
+                                                    return [4 /*yield*/, fetch(url, options || {})];
                                                 case 1: 
                                                 // Try to make the request...
                                                 return [2 /*return*/, _a.sent()];
@@ -2329,7 +2351,7 @@
                                                     if (!err_1.code) {
                                                         throw err_1;
                                                     }
-                                                    if (!(["ETIMEDOUT", "ESOCKETTIMEDOUT", "ECONNREFUSED", "ECONNRESET"].indexOf(err_1.code.toUpperCase()) > -1)) return [3 /*break*/, 6];
+                                                    if (!(["ETIMEDOUT", "ESOCKETTIMEDOUT", "ECONNREFUSED", "ECONNRESET"].indexOf(err_1.code.toUpperCase()) > -1)) return [3 /*break*/, 5];
                                                     logging.Logger.write("Attempt #" + retry.retryCount + " - Retrying error code: " + err_1.code + "...", 0 /* Verbose */);
                                                     if (!this.shouldRetry(retry)) return [3 /*break*/, 5];
                                                     return [4 /*yield*/, this.delay(retry.retryInterval)];
@@ -2337,10 +2359,8 @@
                                                     _a.sent();
                                                     return [4 /*yield*/, wrapper(retry)];
                                                 case 4: return [2 /*return*/, _a.sent()];
-                                                case 5: // max amount of retries reached, so throw the error
-                                                throw err_1;
-                                                case 6: return [3 /*break*/, 7];
-                                                case 7: return [2 /*return*/];
+                                                case 5: throw err_1;
+                                                case 6: return [2 /*return*/];
                                             }
                                         });
                                     }); };
@@ -2513,6 +2533,7 @@
             })(global$1);
 
             exports.ProviderHostedRequestContext = ProviderHostedRequestContext;
+            exports.setProxyUrl = setProxyUrl;
             exports.AdalFetchClient = AdalFetchClient;
             exports.BearerTokenFetchClient = BearerTokenFetchClient;
             exports.NodeFetchClient = NodeFetchClient;
