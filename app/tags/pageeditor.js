@@ -172,7 +172,7 @@ riot.tag("pageeditor", `
         webpartXmlEditor.setValue("");
         webpartXmlEditor.setScrollTop(0);
         webpartXmlEditor.setScrollLeft(0);
-        var script = exescript + ' ' + loadWebpart;
+        var script = exescript + ' ' + sj + ' ' + loadWebpart;
         script += " exescript(loadWebpart, '" + webpart.id + "');";
         chrome.devtools.inspectedWindow.eval(script);
       }
@@ -225,7 +225,7 @@ riot.tag("pageeditor", `
 
       scheduleDimmer();
 
-      var script = exescript + ' ' + saveWebpart;
+      var script = exescript + ' ' + sj + ' ' + saveWebpart;
       script += " exescript(saveWebpart, '" + webpart.id + "', '" + encodeURIComponent(wpContents).replace(/'/g, "%27") + "', '" + (zone.id || '') + "');";
       chrome.devtools.inspectedWindow.eval(script);
 
@@ -262,7 +262,7 @@ riot.tag("pageeditor", `
 
       scheduleDimmer();
 
-      var script = exescript + ' ' + deleteWebpart;
+      var script = exescript + ' ' + sj + ' ' + deleteWebpart;
       script += " exescript(deleteWebpart, '" + this.selectedWp.id + "');";
       chrome.devtools.inspectedWindow.eval(script);
 
@@ -327,7 +327,7 @@ riot.tag("pageeditor", `
 
       scheduleDimmer();
 
-      var script = exescript + ' ' + changeWebpartPosition;
+      var script = exescript + ' ' + sj + ' ' + changeWebpartPosition;
       script += " exescript(changeWebpartPosition, " + JSON.stringify(newZone.webparts.map(wp => wp.id)) + ", '" + newZoneId + "');";
       chrome.devtools.inspectedWindow.eval(script);
     };
