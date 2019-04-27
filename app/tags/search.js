@@ -22,6 +22,10 @@ riot.tag("search", `
                           <input ref="selectproperties" type="text" class="form-control" id="selectproperties" placeholder="eg. Title,contentclass" onKeyUp="{ buildPayload }">
                         </div>
                         <div class="form-group">
+                        <label for="refinementfilters">Refinement Filters:</label>
+                          <input ref="refinementfilters" type="text" class="form-control" id="refinementfilters" placeholder='eg. filetype:equals("docx")' onKeyUp="{ buildPayload }">
+                        </div>
+                        <div class="form-group">
                           <button onclick="{ runSearch }" type="button" class="btn btn-primary btn-md" id="runsearchbtn" >Run search  <i class="{ searching ? 'fa fa-refresh fa-spin' : 'fa fa-refresh' }"></i></button>
                         </div>
 
@@ -248,6 +252,11 @@ riot.tag("search", `
         searchOpts["SelectProperties"] = selProps;
       }
 
+      if (this.refs.refinementfilters.value.length > 0) {
+        var refFilters = this.refs.refinementfilters.value;
+        searchOpts["RefinementFilters"] = refFilters;
+      }
+
       var content = encodeURIComponent(JSON.stringify(searchOpts));
 
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + runSearch;
@@ -316,6 +325,11 @@ riot.tag("search", `
         selProps.push("OriginalPath");
         selProps.push("Title");
         searchOpts["SelectProperties"] = selProps;
+      }
+
+      if (this.refs.refinementfilters.value.length > 0) {
+        var refFilters = this.refs.refinementfilters.value;
+        searchOpts["RefinementFilters"] = refFilters;
       }
 
       this.prewPayload = JSON.stringify(searchOpts, null, 2);
