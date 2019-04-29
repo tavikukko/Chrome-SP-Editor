@@ -94,7 +94,7 @@ riot.tag("search", `
                       </div>
                     </div>
                 </div>
-				
+
 				<!-- This is where search index updates start -->
 				<div class="panel panel-default">
 					<div class="panel-heading">Request Reindex</i></div>
@@ -107,7 +107,7 @@ riot.tag("search", `
 					</div>
 				</div>
 			  </div>
-				
+
 		  </div>
 
             <virtual if="{ elapsedTime > 0 }">
@@ -165,14 +165,14 @@ riot.tag("search", `
 
 	this.reIndexWeb = function (e) {
 		console.log("reIndexWeb started");
-		
+
 		var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateSchemaForWeb;
 		script += " exescript(updateSchemaForWeb);";
 		chrome.devtools.inspectedWindow.eval(script);
-		
+
 		console.log("reIndexWeb end");
     }.bind(this);
-	
+
     this.init = function () {
 
       port.onMessage.addListener(function (message) {
@@ -253,7 +253,7 @@ riot.tag("search", `
       }
 
       if (this.refs.refinementfilters.value.length > 0) {
-        var refFilters = this.refs.refinementfilters.value;
+        var refFilters = this.refs.refinementfilters.value.split(',');
         searchOpts["RefinementFilters"] = refFilters;
       }
 
@@ -328,7 +328,7 @@ riot.tag("search", `
       }
 
       if (this.refs.refinementfilters.value.length > 0) {
-        var refFilters = this.refs.refinementfilters.value;
+        var refFilters = this.refs.refinementfilters.value.split(',');
         searchOpts["RefinementFilters"] = refFilters;
       }
 
