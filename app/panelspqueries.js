@@ -23,8 +23,7 @@ var getCustomActions = function getCustomActions() {
     $pnp.setup({
       sp: {
         headers: {
-          "Accept": "application/json; odata=verbose",
-
+          "Accept": "application/json; odata=verbose"
         }
       }
     });
