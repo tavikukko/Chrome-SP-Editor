@@ -10,25 +10,52 @@ riot.tag("search", `
                           <textarea ref="searchString" class="form-control rounded-0" id="searchString" rows="5" placeholder="eg. contentclass:STS_List_*" onKeyDown="{ onEnter }" onKeyUp="{ buildPayload }"></textarea>
                         </div>
                         <div class="form-group">
-                          <label for="rowlimit">Row limit:</label>
+                          <label for="rowlimit">RowLimit:</label>
                           <input value=10 ref="rowlimit" type="text" class="form-control" id="rowlimit" placeholder="Row limit" onKeyUp="{ buildPayload }">
                         </div>
                         <div class="form-group">
-                        <label for="startrow">Start row:</label>
+                        <label for="startrow">StartRow:</label>
                           <input value=0 ref="startrow" type="text" class="form-control" id="startrow" placeholder="Start" onKeyUp="{ buildPayload }">
                         </div>
                         <div class="form-group">
-                        <label for="selectproperties">Select properties:</label>
+                        <label for="selectproperties">SelectProperties:</label>
                           <input ref="selectproperties" type="text" class="form-control" id="selectproperties" placeholder="eg. Title,contentclass" onKeyUp="{ buildPayload }">
                         </div>
                         <div class="form-group">
-                        <label for="refinementfilters">Refinement Filters:</label>
+                        <label for="sortList">SortList:</label><i>  (0=Ascending,1=Descending)</i>
+                          <input ref="sortList" type="text" class="form-control" id="sortList" placeholder="eg. firstName:0,LastName:1" onKeyUp="{ buildPayload }">
+                        </div>
+                        <div class="form-group">
+                        <label for="refinementfilters">RefinementFilters:</label>
                           <input ref="refinementfilters" type="text" class="form-control" id="refinementfilters" placeholder='eg. and(lastname:equals("burr"),firstname:equals("bill"))' onKeyUp="{ buildPayload }">
                         </div>
                         <div class="form-group">
                         <label for="sourceid">SourceId:</label>
-                          <input ref="sourceid" type="text" class="form-control" id="sourceid" placeholder='eg. b09a7990-05ea-4af9-81ef-edfab16c4e31' onKeyUp="{ buildPayload }">
+                          <div class="input-group">
+                            <input ref="sourceid" type="text" class="form-control" id="sourceid" placeholder='eg. b09a7990-05ea-4af9-81ef-edfab16c4e31' onKeyUp="{ buildPayload }">
+                            <div class="input-group-btn">
+                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select <span class="caret"></span></button>
+                              <ul class="dropdown-menu dropdown-menu-right">
+                                <li onclick="{ addSourceId }" ><a data-id="e7ec8cee-ded8-43c9-beb5-436b54b31e84" href="#">Documents</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="5dc9f503-801e-4ced-8a2c-5d1237132419" href="#">ItemsMatchingContentType</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="e1327b9c-2b8c-4b23-99c9-3730cb29c3f7" href="#">ItemsMatchingTag</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="48fec42e-4a92-48ce-8363-c2703a40e67d" href="#">ItemsRelatedToCurrentUser</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="5c069288-1d17-454a-8ac6-9c642a065f48" href="#">ItemsWithSameKeywordAsThisItem</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="b09a7990-05ea-4af9-81ef-edfab16c4e31" href="#">LocalPeopleResults</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="203fba36-2763-4060-9931-911ac8c0583b" href="#">LocalReportsAndDataResults</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="8413cd39-2156-4e00-b54d-11efd9abdb89" href="#">LocalSharePointResults</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="78b793ce-7956-4669-aa3b-451fc5defebf" href="#">LocalVideoResults</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="5e34578e-4d08-4edc-8bf3-002acf3cdbcc" href="#">Pages</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="38403c8c-3975-41a8-826e-717f2d41568a" href="#">Pictures</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="97c71db1-58ce-4891-8b64-585bc2326c12" href="#">Popular</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="ba63bbae-fa9c-42c0-b027-9a878f16557c" href="#">RecentlyChangedItems</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="ec675252-14fa-4fbe-84dd-8d098ed74181" href="#">RecommendedItems</a></li>
+                                <li onclick="{ addSourceId }" ><a data-id="9479bf85-e257-4318-b5a8-81a180f5faa1" href="#">Wiki</a></li>
+                              </ul>
+                            </div>
+                          </div>
                         </div>
+
                         <div class="form-group">
                           <button onclick="{ runSearch }" type="button" class="btn btn-primary btn-md" id="runsearchbtn" >Run search  <i class="{ searching ? 'fa fa-refresh fa-spin' : 'fa fa-refresh' }"></i></button>
                         </div>
@@ -206,6 +233,9 @@ riot.tag("search", `
 
               this.update();
               document.getElementById("runsearchbtn").scrollIntoView();
+            } else {
+              this.searching = false;
+              this.update();
             }
             break;
           case 'updateSchemaForWeb':
@@ -263,6 +293,19 @@ riot.tag("search", `
         searchOpts["SourceId"] = this.refs.sourceid.value;
       }
 
+      if (this.refs.sortList.value.length > 0) {
+        var sortList = this.refs.sortList.value.split(',').map(item => {
+          var keyVal = item.split(':')
+          var sortItem = {
+            Property: keyVal[0].trim(),
+            Direction: keyVal[1] ? keyVal[1] : 0,
+          }
+          return sortItem
+        });
+
+        searchOpts["SortList"] = sortList;
+      }
+
       var content = encodeURIComponent(JSON.stringify(searchOpts));
 
       var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + runSearch;
@@ -273,6 +316,12 @@ riot.tag("search", `
       this.update();
 
     }.bind(this);
+
+
+    this.addSourceId = function (e) {
+      this.refs.sourceid.value = e.target.dataset.id
+    }.bind(this);
+
 
     this.openLink = function (e) {
       let obj = e.item.result.props.find(o => o.key === 'OriginalPath');
@@ -338,6 +387,19 @@ riot.tag("search", `
 
       if (this.refs.sourceid.value.length > 0) {
         searchOpts["SourceId"] = this.refs.sourceid.value;
+      }
+
+      if (this.refs.sortList.value.length > 0) {
+        var sortList = this.refs.sortList.value.split(',').map(item => {
+          var keyVal = item.split(':')
+          var sortItem = {
+            Property: keyVal[0].trim(),
+            Direction: keyVal[1] ? keyVal[1] : 0,
+          }
+          return sortItem
+        });
+
+        searchOpts["SortList"] = sortList;
       }
 
       this.prewPayload = JSON.stringify(searchOpts, null, 2);

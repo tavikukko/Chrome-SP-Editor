@@ -3242,7 +3242,6 @@ var runSearch = function runSearch() {
     });
 
     $pnp.sp.search(opts).then(function (r) {
-      //console.log(r)
       var result = {
         ElapsedTime: r.ElapsedTime,
         PrimarySearchResults: r.PrimarySearchResults,
@@ -3253,12 +3252,8 @@ var runSearch = function runSearch() {
       }
       window.postMessage(JSON.stringify({ function: 'runSearch', success: true, result: result, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
-      if (error.data.responseBody.hasOwnProperty('error'))
-        alertify.delay(10000).error(error.data.responseBody.error.message.value);
-      else
-        alertify.delay(10000).error(error.data.responseBody['odata.error'].message.value);
-
-      window.postMessage(JSON.stringify({ function: "runSearch", success: false, result: error, source: 'chrome-sp-editor' }), '*');
+        alertify.delay(10000).error('Error exucuting the search query');
+        window.postMessage(JSON.stringify({ function: "runSearch", success: false, result: error, source: 'chrome-sp-editor' }), '*');
     });
   });
 };
