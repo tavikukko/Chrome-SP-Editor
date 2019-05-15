@@ -23,7 +23,11 @@ riot.tag("search", `
                         </div>
                         <div class="form-group">
                         <label for="refinementfilters">Refinement Filters:</label>
-                          <input ref="refinementfilters" type="text" class="form-control" id="refinementfilters" placeholder='eg. filetype:equals("docx")' onKeyUp="{ buildPayload }">
+                          <input ref="refinementfilters" type="text" class="form-control" id="refinementfilters" placeholder='eg. and(lastname:equals("burr"),firstname:equals("bill"))' onKeyUp="{ buildPayload }">
+                        </div>
+                        <div class="form-group">
+                        <label for="sourceid">SourceId:</label>
+                          <input ref="sourceid" type="text" class="form-control" id="sourceid" placeholder='eg. b09a7990-05ea-4af9-81ef-edfab16c4e31' onKeyUp="{ buildPayload }">
                         </div>
                         <div class="form-group">
                           <button onclick="{ runSearch }" type="button" class="btn btn-primary btn-md" id="runsearchbtn" >Run search  <i class="{ searching ? 'fa fa-refresh fa-spin' : 'fa fa-refresh' }"></i></button>
@@ -245,16 +249,18 @@ riot.tag("search", `
           searchOpts[option[0].defaultValue] = false;
       });
 
-      if (this.refs.selectproperties.value.length > 0) {
-        var selProps = this.refs.selectproperties.value.split(',');
+        var selProps = this.refs.selectproperties.value.length > 0 ? this.refs.selectproperties.value.split(',').map(item => item.trim()) : []
         selProps.push("OriginalPath");
         selProps.push("Title");
         searchOpts["SelectProperties"] = selProps;
-      }
 
       if (this.refs.refinementfilters.value.length > 0) {
-        var refFilters = this.refs.refinementfilters.value.split(',');
+        var refFilters = this.refs.refinementfilters.value.split(';').map(item => item.replace(/'/g, '"'));
         searchOpts["RefinementFilters"] = refFilters;
+      }
+
+      if (this.refs.sourceid.value.length > 0) {
+        searchOpts["SourceId"] = this.refs.sourceid.value;
       }
 
       var content = encodeURIComponent(JSON.stringify(searchOpts));
@@ -320,16 +326,18 @@ riot.tag("search", `
           searchOpts[option[0].defaultValue] = false;
       });
 
-      if (this.refs.selectproperties.value.length > 0) {
-        var selProps = this.refs.selectproperties.value.split(',');
+        var selProps = this.refs.selectproperties.value.length > 0 ? this.refs.selectproperties.value.split(',').map(item => item.trim()) : []
         selProps.push("OriginalPath");
         selProps.push("Title");
         searchOpts["SelectProperties"] = selProps;
-      }
 
       if (this.refs.refinementfilters.value.length > 0) {
-        var refFilters = this.refs.refinementfilters.value.split(',');
+        var refFilters = this.refs.refinementfilters.value.split(';').map(item => item.replace(/'/g, '"'));
         searchOpts["RefinementFilters"] = refFilters;
+      }
+
+      if (this.refs.sourceid.value.length > 0) {
+        searchOpts["SourceId"] = this.refs.sourceid.value;
       }
 
       this.prewPayload = JSON.stringify(searchOpts, null, 2);
