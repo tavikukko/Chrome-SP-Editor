@@ -7,32 +7,32 @@ riot.tag("search", `
                       <div class="panel-heading">Query</div>
                       <div class="panel-body">
                         <div class="form-group">
-                          <textarea ref="searchString" class="form-control rounded-0" id="searchString" rows="5" placeholder="eg. contentclass:STS_List_*" onKeyDown="{ onEnter }" onKeyUp="{ buildPayload }"></textarea>
+                          <textarea ref="searchString" class="form-control rounded-0" id="searchString" rows="5" placeholder="eg. contentclass:STS_List_*" onKeyDown="{ onEnter }" onKeyUp="{ generatePreview }"></textarea>
                         </div>
                         <div class="form-group">
                           <label for="rowlimit">RowLimit:</label>
-                          <input value=10 ref="rowlimit" type="text" class="form-control" id="rowlimit" placeholder="Row limit" onKeyUp="{ buildPayload }">
+                          <input value=10 ref="rowlimit" type="text" class="form-control" id="rowlimit" placeholder="Row limit" onKeyUp="{ generatePreview }">
                         </div>
                         <div class="form-group">
                         <label for="startrow">StartRow:</label>
-                          <input value=0 ref="startrow" type="text" class="form-control" id="startrow" placeholder="Start" onKeyUp="{ buildPayload }">
+                          <input value=0 ref="startrow" type="text" class="form-control" id="startrow" placeholder="Start" onKeyUp="{ generatePreview }">
                         </div>
                         <div class="form-group">
                         <label for="selectproperties">SelectProperties:</label>
-                          <input ref="selectproperties" type="text" class="form-control" id="selectproperties" placeholder="eg. Title,contentclass" onKeyUp="{ buildPayload }">
+                          <input ref="selectproperties" type="text" class="form-control" id="selectproperties" placeholder="eg. Title,contentclass" onKeyUp="{ generatePreview }">
                         </div>
                         <div class="form-group">
                         <label for="sortList">SortList:</label><i>  (0=Ascending,1=Descending)</i>
-                          <input ref="sortList" type="text" class="form-control" id="sortList" placeholder="eg. firstName:0,LastName:1" onKeyUp="{ buildPayload }">
+                          <input ref="sortList" type="text" class="form-control" id="sortList" placeholder="eg. firstName:0,LastName:1" onKeyUp="{ generatePreview }">
                         </div>
                         <div class="form-group">
                         <label for="refinementfilters">RefinementFilters:</label>
-                          <input ref="refinementfilters" type="text" class="form-control" id="refinementfilters" placeholder='eg. and(lastname:equals("burr"),firstname:equals("bill"))' onKeyUp="{ buildPayload }">
+                          <input ref="refinementfilters" type="text" class="form-control" id="refinementfilters" placeholder='eg. and(lastname:equals("burr"),firstname:equals("bill"))' onKeyUp="{ generatePreview }">
                         </div>
                         <div class="form-group">
                         <label for="sourceid">SourceId:</label>
                           <div class="input-group">
-                            <input ref="sourceid" type="text" class="form-control" id="sourceid" placeholder='eg. b09a7990-05ea-4af9-81ef-edfab16c4e31' onKeyUp="{ buildPayload }">
+                            <input ref="sourceid" type="text" class="form-control" id="sourceid" placeholder='eg. b09a7990-05ea-4af9-81ef-edfab16c4e31' onKeyUp="{ generatePreview }">
                             <div class="input-group-btn">
                               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select <span class="caret"></span></button>
                               <ul class="dropdown-menu dropdown-menu-right">
@@ -194,16 +194,6 @@ riot.tag("search", `
       this.init();
     }.bind(this));
 
-	this.reIndexWeb = function (e) {
-		console.log("reIndexWeb started");
-
-		var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateSchemaForWeb;
-		script += " exescript(updateSchemaForWeb);";
-		chrome.devtools.inspectedWindow.eval(script);
-
-		console.log("reIndexWeb end");
-    }.bind(this);
-
     this.init = function () {
 
       port.onMessage.addListener(function (message) {
@@ -240,9 +230,9 @@ riot.tag("search", `
             break;
           case 'updateSchemaForWeb':
             if (message.success) {
-              console.log({message});
+              console.log({ message });
             } else {
-              console.log({message});
+              console.log({ message });
             }
             break;
         }
@@ -255,7 +245,7 @@ riot.tag("search", `
 
       });
 
-      this.buildPayload();
+      this.generatePreview();
 
     }.bind(this);
 
@@ -264,47 +254,7 @@ riot.tag("search", `
       this.elapsedTime = 0;
       this.update();
 
-      var searchOpts = {
-        Querytext: this.refs.searchString.value.length > 0 ? this.refs.searchString.value : " ",
-        RowLimit: Number(this.refs.rowlimit.value),
-        StartRow: Number(this.refs.startrow.value),
-        ClientType: "ContentSearchRegular"
-      };
-
-      $('input[ref="option"]').each(function (e) {
-        var option = $(this);
-        if (option.data('checked') == 2 && !option.prop('indeterminate') && option.prop('checked'))
-          searchOpts[option[0].defaultValue] = true;
-        else if (option.data('checked') == 0 && !option.prop('indeterminate') && !option.prop('checked'))
-          searchOpts[option[0].defaultValue] = false;
-      });
-
-        var selProps = this.refs.selectproperties.value.length > 0 ? this.refs.selectproperties.value.split(',').map(item => item.trim()) : []
-        selProps.push("OriginalPath");
-        selProps.push("Title");
-        searchOpts["SelectProperties"] = selProps;
-
-      if (this.refs.refinementfilters.value.length > 0) {
-        var refFilters = this.refs.refinementfilters.value.split(';').map(item => item.replace(/'/g, '"'));
-        searchOpts["RefinementFilters"] = refFilters;
-      }
-
-      if (this.refs.sourceid.value.length > 0) {
-        searchOpts["SourceId"] = this.refs.sourceid.value;
-      }
-
-      if (this.refs.sortList.value.length > 0) {
-        var sortList = this.refs.sortList.value.split(',').map(item => {
-          var keyVal = item.split(':')
-          var sortItem = {
-            Property: keyVal[0].trim(),
-            Direction: keyVal[1] ? keyVal[1] : 0,
-          }
-          return sortItem
-        });
-
-        searchOpts["SortList"] = sortList;
-      }
+      var searchOpts = this.generatePayload()
 
       var content = encodeURIComponent(JSON.stringify(searchOpts));
 
@@ -317,22 +267,27 @@ riot.tag("search", `
 
     }.bind(this);
 
-
     this.addSourceId = function (e) {
-      this.refs.sourceid.value = e.target.dataset.id
+      this.refs.sourceid.value = e.target.dataset.id;
+      this.generatePreview();
     }.bind(this);
-
 
     this.openLink = function (e) {
       let obj = e.item.result.props.find(o => o.key === 'OriginalPath');
       chrome.tabs.create({ url: obj.value });
     }.bind(this);
 
+    this.reIndexWeb = function (e) {
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + updateSchemaForWeb;
+      script += " exescript(updateSchemaForWeb);";
+      chrome.devtools.inspectedWindow.eval(script);
+    }.bind(this);
+
     this.onEnter = function (e) {
       if (e.keyCode === 13) {
         e.preventDefault();
         this.runSearch();
-      } else this.buildPayload();
+      } else this.generatePreview();
     }
 
     this.onselect = function (e) {
@@ -356,10 +311,16 @@ riot.tag("search", `
           el.prop('indeterminate', false);
           el.prop('checked', false);
       }
-      this.buildPayload();
+      this.generatePreview();
     }
 
-    this.buildPayload = function (e) {
+    this.generatePreview = function (e) {
+      var searchOpts = this.generatePayload()
+      this.prewPayload = JSON.stringify(searchOpts, null, 2);
+      this.update();
+    }
+
+    this.generatePayload = function (e) {
       var searchOpts = {
         Querytext: this.refs.searchString.value.length > 0 ? this.refs.searchString.value : " ",
         RowLimit: Number(this.refs.rowlimit.value),
@@ -375,10 +336,27 @@ riot.tag("search", `
           searchOpts[option[0].defaultValue] = false;
       });
 
-        var selProps = this.refs.selectproperties.value.length > 0 ? this.refs.selectproperties.value.split(',').map(item => item.trim()) : []
-        selProps.push("OriginalPath");
-        selProps.push("Title");
-        searchOpts["SelectProperties"] = selProps;
+      var selProps = this.refs.selectproperties.value.length > 0 ? this.refs.selectproperties.value.split(',').map(item => item.trim()) : []
+      selProps.push("OriginalPath");
+      selProps.push("Title");
+      searchOpts["SelectProperties"] = selProps;
+
+      if (this.refs.sortList.value.length > 0) {
+        var sortList = [];
+        this.refs.sortList.value.split(',').forEach(item => {
+          var keyVal = item.split(':')
+          var property = keyVal[0].trim();
+          if (property.length > 0) {
+            var sortItem = {
+              Property: property,
+              Direction: keyVal[1] && Number(keyVal[1].trim()) ? Number(keyVal[1].trim()) : 0,
+            }
+            sortList.push(sortItem);
+          }
+        });
+        if (sortList.length > 0)
+          searchOpts["SortList"] = sortList;
+      }
 
       if (this.refs.refinementfilters.value.length > 0) {
         var refFilters = this.refs.refinementfilters.value.split(';').map(item => item.replace(/'/g, '"'));
@@ -389,22 +367,7 @@ riot.tag("search", `
         searchOpts["SourceId"] = this.refs.sourceid.value;
       }
 
-      if (this.refs.sortList.value.length > 0) {
-        var sortList = this.refs.sortList.value.split(',').map(item => {
-          var keyVal = item.split(':')
-          var sortItem = {
-            Property: keyVal[0].trim(),
-            Direction: keyVal[1] ? keyVal[1] : 0,
-          }
-          return sortItem
-        });
-
-        searchOpts["SortList"] = sortList;
-      }
-
-      this.prewPayload = JSON.stringify(searchOpts, null, 2);
-
-      this.update();
+      return searchOpts;
     }
 
   });
