@@ -56,13 +56,13 @@ riot.tag("spquicklinks", `
                         that.update();
                         this.getPagesInfo(currUrl).then(pagesUrl => {
                             if (pagesUrl.indexOf("undefined") === -1) {
-                                that.links.splice(11, 0, { title: "SitePages Library Settings", url: currUrl + pagesUrl, target: "_blank", css: "pointer-cursor" });
+                                that.links.splice(11, 0, { title: "SitePages Settings", url: currUrl + pagesUrl, target: "_blank", css: "pointer-cursor" });
                                 that.update();
                             }
                             else{
                                 this.getClassicPagesInfo(currUrl).then(pagesUrl => {
                                     if (pagesUrl.indexOf("undefined") === -1) {
-                                        that.links.splice(11, 0, { title: "SitePages Library Settings", url: currUrl + pagesUrl, target: "_blank", css: "pointer-cursor" });
+                                        that.links.splice(11, 0, { title: "Pages Settings", url: currUrl + pagesUrl, target: "_blank", css: "pointer-cursor" });
                                         that.update();
                                     }
                                 });
