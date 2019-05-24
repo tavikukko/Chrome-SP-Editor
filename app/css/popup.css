@@ -1,0 +1,16 @@
+.content{
+    font-size: 12px;
+}
+
+.bottom-info{
+    font-size: 10px; 
+    padding:0 10px;
+}
+
+.pointer-cursor{
+    cursor: pointer;
+}
+
+.normal-cursor{
+    cursor: default;
+}
