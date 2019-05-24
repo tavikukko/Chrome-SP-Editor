@@ -1,12 +1,14 @@
 riot.tag("spquicklinks", `
+<div class="content">
 <ul if={!info} class="list-group">
-  <li each="{link in links}" class="list-group-item {link.css}" style="cursor: pointer;" onclick="{browse}" data-id="{link.url}" data-target="{link.target}" >{link.title}</li>
+  <li each="{link in links}" class="list-group-item {link.css}" onclick="{browse}" data-id="{link.url}" data-target="{link.target}" >{link.title}</li>
 </ul>
-<p if={!info}  style="font-size: 10px; padding-left:10px;"> 
-  Full Chrome-SP-Editor press f12 and select SharePoint tab..
+<p if={!info} class="bottom-info"> 
+  To use full Chrome-SP-Editor powers close this popup, press F12 and select SharePoint tab..
 </p>
 <div if={info} class="panel-body"> 
   Could not load links, propably because this ain't a SharePoint site..
+</div>
 </div>`,
     function (opts) {
 
@@ -22,29 +24,91 @@ riot.tag("spquicklinks", `
                     this.update();
                 }
                 if (this.info === false) {
-                    var tenant = currUrl.substring(0,currUrl.indexOf(".sharepoint.com"));
+                    this.fullUrl = currUrl;
+                    currUrl = this.trimUrl(currUrl);
 
-                    this.admin = tenant+"-admin";
-                    this.my = tenant+"-my";
+                    var tenant = currUrl.substring(0, currUrl.indexOf(".sharepoint.com"));
+
+                    this.admin = tenant.indexOf("-admin") > -1 ? tenant : tenant + "-admin";
+                    this.admin = this.admin.replace("-my", "");
+                    this.my = tenant.indexOf("-my") > -1 ? tenant : tenant + "-my";
+                    this.my = this.my.replace("-admin", "");
+
                     var that = this;
-
                     this.getAppCatalogUrl(currUrl).then(appCatalogUrl => {
+
                         that.links = [
-                            { title: "Tenant Links", url: "", target: "", css: "disabled" },
-                            { title: "Admin Center", url: this.admin + ".sharepoint.com/_layouts/15/online/AdminHome.aspx#/home", target: "_blank" },
-                            { title: "Classic Admin Center", url: this.admin + ".sharepoint.com/_layouts/15/online/SiteCollections.aspx", target: "_blank" },
-                            { title: "User Profiles", url: this.admin + ".sharepoint.com/_layouts/15/tenantprofileadmin/manageuserprofileserviceapplication.aspx", target: "_blank" },
-                            { title: "Current User Profile", url: this.my + ".sharepoint.com/_layouts/15/editprofile.aspx", target: "_blank" },
-                            { title: "Tenant Term Store", url: this.admin + ".sharepoint.com/_layouts/15/termstoremanager.aspx", target: "_blank" },
-                            { title: "Tenant Search Administration", url: this.admin + ".sharepoint.com/_layouts/15/searchadmin/TA_SearchAdministration.aspx", target: "_blank" },
-                            { title: "Tenant App Catalog", url: appCatalogUrl, target: "_blank" },
-                            { title: "Load local SPFx", url: currUrl + "?loadSPFX=true&debugManifestsFile=https://localhost:4321/temp/manifests.js", target: "_self" }
+                            { title: "Tenant", url: "", target: "", css: "disabled normal-cursor" },
+                            { title: "Admin Center", url: this.admin + ".sharepoint.com/_layouts/15/online/AdminHome.aspx#/home", target: "_blank", css: "pointer-cursor" },
+                            { title: "Classic Admin Center", url: this.admin + ".sharepoint.com/_layouts/15/online/SiteCollections.aspx", target: "_blank", css: "pointer-cursor" },
+                            { title: "User Profiles", url: this.admin + ".sharepoint.com/_layouts/15/tenantprofileadmin/manageuserprofileserviceapplication.aspx", target: "_blank", css: "pointer-cursor" },
+                            { title: "Term Store", url: this.admin + ".sharepoint.com/_layouts/15/termstoremanager.aspx", target: "_blank", css: "pointer-cursor" },
+                            { title: "Search Administration", url: this.admin + ".sharepoint.com/_layouts/15/searchadmin/TA_SearchAdministration.aspx", target: "_blank", css: "pointer-cursor" },
+                            { title: "App Catalog", url: appCatalogUrl, target: "_blank", css: "pointer-cursor" },
+                            { title: "Current User", url: "", target: "", css: "disabled normal-cursor" },
+                            { title: "Edit User Profile", url: this.my + ".sharepoint.com/_layouts/15/editprofile.aspx", target: "_blank", css: "pointer-cursor" },
+                            { title: "Current Site", url: "", target: "", css: "disabled normal-cursor" },
+                            { title: "Site Settings", url: currUrl + "/_layouts/15/settings.aspx", target: "_blank", css: "pointer-cursor" },
+
+                            { title: "SPFx", url: "", target: "", css: "disabled normal-cursor" },
+                            { title: "Load local SPFx", url: this.fullUrl + "?loadSPFX=true&debugManifestsFile=https://localhost:4321/temp/manifests.js", target: "_self", css: "pointer-cursor" }
                         ]
                         that.update();
+                        this.getPagesInfo(currUrl).then(pagesUrl => {
+                            if (pagesUrl.indexOf("undefined") === -1) {
+                                that.links.splice(11, 0, { title: "SitePages Library Settings", url: currUrl + pagesUrl, target: "_blank", css: "pointer-cursor" });
+                                that.update();
+                            }
+                            else{
+                                this.getClassicPagesInfo(currUrl).then(pagesUrl => {
+                                    if (pagesUrl.indexOf("undefined") === -1) {
+                                        that.links.splice(11, 0, { title: "SitePages Library Settings", url: currUrl + pagesUrl, target: "_blank", css: "pointer-cursor" });
+                                        that.update();
+                                    }
+                                });
+                            }
+                        });                       
                     });
+
                 }
             });
 
+        }.bind(this);
+
+        this.getPagesInfo = function (url) {
+            var apiUrl = url + "/_api/web/lists/getbytitle('Site%20Pages')?$select=Id";
+            return new Promise(function (resolve, reject) {
+                fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        "Accept": "application/json;odata=nometadata",
+                        "Content-Type": "application/json;odata=nometadata",
+                        "X-ClientService-ClientTag": "SPEditor",
+                        "Cache-Control": "no-cache"
+                    }
+                }).then(response => response.json())
+                    .then(function (r) {
+                        resolve("/_layouts/15/listedit.aspx?List=%7B" + r.Id + "%7D");
+                    })
+            });
+        }.bind(this);
+
+        this.getClassicPagesInfo = function (url) {
+            var classicApiUrl = url + "/_api/web/lists/getbytitle('Pages')?$select=Id";
+            return new Promise(function (resolve, reject) {
+                fetch(classicApiUrl, {
+                            method: 'GET',
+                            headers: {
+                                "Accept": "application/json;odata=nometadata",
+                                "Content-Type": "application/json;odata=nometadata",
+                                "X-ClientService-ClientTag": "SPEditor",
+                                "Cache-Control": "no-cache"
+                            }
+                        }).then(response => response.json())
+                            .then(function (r) {
+                                resolve("/_layouts/15/listedit.aspx?List=%7B" + r.Id + "%7D");
+                            })
+                      });
         }.bind(this);
 
         this.getCurrentTabUrl = function (e) {
@@ -54,7 +118,6 @@ riot.tag("spquicklinks", `
                 });
             });
         }.bind(this);
-
 
         this.getAppCatalogUrl = function (url) {
             return new Promise(function (resolve, reject) {
@@ -71,10 +134,7 @@ riot.tag("spquicklinks", `
                         resolve(r.CorporateCatalogUrl);
                     });
             });
-
-
         }.bind(this);
-
 
         this.browse = function (e) {
             if (e.target.dataset.target == "_blank")
@@ -88,6 +148,38 @@ riot.tag("spquicklinks", `
             }
 
         }.bind(this);
+
+        this.trimUrl = function (url) {
+            url = url.toLowerCase()
+            if (url.indexOf("/sitepages") > -1) {
+                url = url.substr(0, url.indexOf("/sitepages"));
+            }
+            if (url.indexOf("/lists") > -1) {
+                url = url.substr(0, url.indexOf("/lists"));
+            }
+            if (url.indexOf("/_layouts") > -1) {
+                url = url.substr(0, url.indexOf("/_layouts"));
+            }
+            if (url.indexOf("/style%20library") > -1) {
+                url = url.substr(0, url.indexOf("/style%20library"));
+            }
+            if (url.indexOf("/shared%20documents") > -1) {
+                url = url.substr(0, url.indexOf("/shared%20documents"));
+            }
+            if (url.indexOf("/siteassets") > -1) {
+                url = url.substr(0, url.indexOf("/siteassets"));
+            }
+            if (url.indexOf("/pages") > -1) {
+                url = url.substr(0, url.indexOf("/pages"));
+            }
+            if (url.indexOf("/formservertemplates") > -1) {
+                url = url.substr(0, url.indexOf("/formservertemplates"));
+            }
+            if (url.indexOf("/_catalogs") > -1) {
+                url = url.substr(0, url.indexOf("/_catalogs"));
+            }
+            return url;
+        }
     });
 
 riot.mount("spquicklinks");
