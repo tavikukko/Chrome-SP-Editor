@@ -3291,19 +3291,3 @@ function swap(visibleElement) {
   }
   document.getElementsByTagName(visibleElement)[0].style.display = 'block';
 }
-
-
-
-  var getPagesUrl = function getPagesUrl() {
-    _spPageContextInfo;
-    var actions = [];
-    actions.push(webactions);
-    actions.push(siteactions);
-    window.postMessage(JSON.stringify({
-      function: 'getPagesUrl',
-      success: true,
-      result: actions,
-      source: 'chrome-sp-editor'
-    }), '*');
-  }
-      
