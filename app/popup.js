@@ -11,7 +11,6 @@ riot.tag("spquicklinks", `
 </div>
 </div>`,
     function (opts) {
-
         this.on("mount", function () {
             this.init();
         });
@@ -31,7 +30,7 @@ riot.tag("spquicklinks", `
                     this.fullUrl = this.currSiteUrl;
 
                     // this.currSiteUrl trimmed url of site
-                    this.trimUrl();
+                    this.currSiteUrl = this.trimUrl();
 
                     var tenant = this.currSiteUrl.substring(0, this.currSiteUrl.indexOf(".sharepoint.com"));
 
@@ -66,34 +65,33 @@ riot.tag("spquicklinks", `
                     this.update();
 
                     var that = this;
-                    this.getAppCatalogUrl().then(appCatalogUrl => {
+                    that.getAppCatalogUrl().then(appCatalogUrl => {
                         if (appCatalogUrl.indexOf("undefined") === -1) {
-                            that.links.splice(6, 0, { title: "App Catalog", url: appCatalogUrl, target: "_blank", css: "pointer-cursor" });
+                            var index = that.links.findIndex(l => l.title === "Search administration");
+                            var i = index > -1 ? index + 1 : 6
+                            that.links.splice(i, 0, { title: "App Catalog", url: appCatalogUrl, target: "_blank", css: "pointer-cursor" });
                             that.update();
                         }
                     });
 
-                    try {
-                        this.getPagesInfo().then(pagesUrl => {
-                            if (pagesUrl !== undefined) {
-                                if (pagesUrl.indexOf("undefined") === -1) {
-                                    that.links.splice(11, 0, { title: "Site Pages - library settings", url: this.currSiteUrl + pagesUrl, target: "_blank", css: "pointer-cursor" });
-                                    that.update();
-                                }
-                                else {
-                                    this.getClassicPagesInfo().then(pagesUrl => {
-                                        if (pagesUrl.indexOf("undefined") === -1) {
-                                            that.links.splice(11, 0, { title: "Pages - library settings", url: this.currSiteUrl + pagesUrl, target: "_blank", css: "pointer-cursor" });
-                                            that.update();
-                                        }
-                                    });
-                                }
+                    that.getPagesInfo().then(pagesUrl => {
+                        var index = that.links.findIndex(l => l.title === "Recycle bin");
+                        var i = index > -1 ? index + 1 : 11
+                        if (pagesUrl !== undefined) {
+                            if (pagesUrl.indexOf("undefined") === -1) {
+                                that.links.splice(i, 0, { title: "Site Pages - library settings", url: this.currSiteUrl + pagesUrl, target: "_blank", css: "pointer-cursor" });
+                                that.update();
                             }
-                        });
-                    }
-                    catch{
-                        console.log("pagesUrl");
-                    }
+                            else {
+                                that.getClassicPagesInfo().then(pagesUrl => {
+                                    if (pagesUrl.indexOf("undefined") === -1) {
+                                        that.links.splice(i, 0, { title: "Pages - library settings", url: this.currSiteUrl + pagesUrl, target: "_blank", css: "pointer-cursor" });
+                                        that.update();
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
             });
         }.bind(this);
@@ -128,7 +126,7 @@ riot.tag("spquicklinks", `
                         "Cache-Control": "no-cache"
                     }
                 }).then(response => response.json())
-                    .then(lists =>  {
+                    .then(lists => {
                         if (lists !== undefined && lists.value !== undefined) {
                             var list = lists.value.filter(i => i.Title === "Pages");
                             resolve("/_layouts/15/listedit.aspx?List=%7B" + list[0].Id + "%7D");
@@ -177,40 +175,40 @@ riot.tag("spquicklinks", `
         }.bind(this);
 
         this.trimUrl = function () {
-            url = this.currSiteUrl.toLowerCase()
+            var url = this.currSiteUrl.toLowerCase()
             if (url.indexOf("/sitepages") > -1) {
-                this.currSiteUrl = url.substr(0, url.indexOf("/sitepages"));
+                url = url.substr(0, url.indexOf("/sitepages"));
             }
             if (url.indexOf("/lists") > -1) {
-                this.currSiteUrl = url.substr(0, url.indexOf("/lists"));
+                url = url.substr(0, url.indexOf("/lists"));
             }
             if (url.indexOf("/_layouts") > -1) {
-                this.currSiteUrl = url.substr(0, url.indexOf("/_layouts"));
+                url = url.substr(0, url.indexOf("/_layouts"));
             }
             if (url.indexOf("/style%20library") > -1) {
-                this.currSiteUrl = url.substr(0, url.indexOf("/style%20library"));
+                url = url.substr(0, url.indexOf("/style%20library"));
             }
             if (url.indexOf("/shared%20documents") > -1) {
-                this.currSiteUrl = url.substr(0, url.indexOf("/shared%20documents"));
+                url = url.substr(0, url.indexOf("/shared%20documents"));
             }
             if (url.indexOf("/siteassets") > -1) {
-                this.currSiteUrl = url.substr(0, url.indexOf("/siteassets"));
+                url = url.substr(0, url.indexOf("/siteassets"));
             }
-            //array of common pages libraries
+            // check array of common pages libraries
             var anyPages = this.pagesLibraries.find(u => url.indexOf(u) > -1);
             if (anyPages !== undefined) {
-                this.currSiteUrl = url.substr(0, url.indexOf(anyPages)-1);
+                url = url.substr(0, url.indexOf(anyPages) - 1);
             }
             if (url.indexOf("/formservertemplates") > -1) {
-                this.currSiteUrl = url.substr(0, url.indexOf("/formservertemplates"));
+                url = url.substr(0, url.indexOf("/formservertemplates"));
             }
             if (url.indexOf("/_catalogs") > -1) {
-                this.currSiteUrl = url.substr(0, url.indexOf("/_catalogs"));
+                url = url.substr(0, url.indexOf("/_catalogs"));
             }
             if (url.indexOf("?") > -1) {
-                this.currSiteUrl = url.substr(0, url.indexOf("?"))
+                url = url.substr(0, url.indexOf("?"));
             }
-            this.update();
+            return url;
         }
     });
 
