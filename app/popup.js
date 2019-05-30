@@ -13,9 +13,9 @@ riot.tag("spquicklinks", `
   <!-- Tab panes -->
   <div class="tab-content">
     <div class="tab-pane fade active in" id="links">
-      <ul if={!info} class="list-group">
-        <li each="{link in links}" class="list-group-item {link.css}" onclick="{browse}" data-id="{link.url}" data-target="{link.target}">{link.title}</li>
-      </ul>
+      <div if={!info} class="list-group">
+        <a href="#" each="{link in links}" class="list-group-item {link.css}" onclick="{browse}" data-id="{link.url}" data-target="{link.target}">{link.title}</a>
+      </div>
     </div>
     <div class="tab-pane fade" id="properties">
 
@@ -32,10 +32,10 @@ riot.tag("spquicklinks", `
   </div>
   <!-- info -->
   <p if={!info} class="bottom-info">
-    To use full Chrome-SP-Editor powers close this popup, press F12 and select SharePoint tab..
+    <b>To use full Chrome-SP-Editor powers close this popup, press F12 and select SharePoint tab..</b>
   </p>
   <div if={info} class="panel-body">
-    Could not load links, propably because this ain't a SharePoint site..
+    <b>Could not load links, propably because this ain't a SharePoint site..</b>
   </div>
 
 </div>`,
@@ -114,11 +114,13 @@ riot.tag("spquicklinks", `
               }
             });
           }
+
           Object.entries(this.ctx._spPageContextInfo).forEach(entry => {
             var key = entry[0];
             var value = JSON.stringify(entry[1]);
             this.props.push({ key: key, value: value })
           });
+
           this.props.sort((a, b) => a.key.localeCompare(b.key))
           this.update()
         }
