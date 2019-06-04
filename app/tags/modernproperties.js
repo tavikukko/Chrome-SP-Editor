@@ -97,13 +97,13 @@ riot.tag("modernproperties", `
       <h5 class="list-group-item-heading"><b>{ index }</h5 >
       <div class="row">
         <div class="col-xs-6">
-          <input keyup="{ updatevalue }" id="tenantPropertyValue" type="text" class="form-control" value="{ tenantProperty.Value }">
+          <input onKeyUp="{ updatevalue }" id="tenantPropertyValue" type="text" class="form-control" value="{ tenantProperty.Value }">
         </div>
         <div class="col-xs-2">
-        <input keyup="{ updatedesc }" id="tenantPropertyKey" type="text" class="form-control" value="{ tenantProperty.Description }">
+        <input onKeyUp="{ updatedesc }" id="tenantPropertyKey" type="text" class="form-control" value="{ tenantProperty.Description }">
       </div>
       <div class="col-xs-2">
-        <input keyup="{ updatecomm }" id="tenantPropertyValue" type="text" class="form-control" value="{ tenantProperty.Comment }">
+        <input onKeyUp="{ updatecomm }" id="tenantPropertyValue" type="text" class="form-control" value="{ tenantProperty.Comment }">
       </div>
         <div class="col-xs-2">
         <span class="input-group-btn">

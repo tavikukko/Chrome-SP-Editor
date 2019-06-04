@@ -20,7 +20,7 @@ riot.tag("spquicklinks", `
     <div class="tab-pane fade" id="properties">
 
     <ul if={!info} class="list-group">
-      <input keyup="{ filterprops }" id="filterprops" type="text" class="form-control" placeholder="search...">
+      <input onKeyUp="{ filterprops }" id="filterprops" type="text" class="form-control" placeholder="search...">
       <li class="list-group-item disabled normal-cursor"><b>number of properties: { this.filtered().length }</b></li>
       <virtual each="{ property in filtered() }">
         <li class="list-group-item normal-cursor"><b>{ property.key }:</b></li>

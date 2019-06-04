@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.2
+ * v1.3.3
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -8,10 +8,10 @@
  * bugs: https://github.com/pnp/pnpjs/issues
  */
 (function (global, factory) {
-            typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jsonwebtoken'), require('@pnp/common'), require('https-proxy-agent'), require('node-fetch'), require('adal-node'), require('@pnp/logging')) :
-            typeof define === 'function' && define.amd ? define(['exports', 'jsonwebtoken', '@pnp/common', 'https-proxy-agent', 'node-fetch', 'adal-node', '@pnp/logging'], factory) :
-            (factory((global.pnp = global.pnp || {}, global.pnp.nodejs = {}),global.jwt,global.pnp.common,global.HttpProxyAgent,global.nodeFetch,global.adalNode,global.pnp.logging));
-}(this, (function (exports,jwt,common,HttpProxyAgent,nodeFetch,adalNode,logging) { 'use strict';
+            typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jsonwebtoken'), require('@pnp/common'), require('https-proxy-agent'), require('node-fetch'), require('adal-node'), require('.'), require('@pnp/logging')) :
+            typeof define === 'function' && define.amd ? define(['exports', 'jsonwebtoken', '@pnp/common', 'https-proxy-agent', 'node-fetch', 'adal-node', '.', '@pnp/logging'], factory) :
+            (factory((global.pnp = global.pnp || {}, global.pnp.nodejs = {}),global.jwt,global.pnp.common,global.HttpProxyAgent,global.nodeFetch,global.adalNode,global._,global.pnp.logging));
+}(this, (function (exports,jwt,common,HttpProxyAgent,nodeFetch,adalNode,_,logging) { 'use strict';
 
             nodeFetch = nodeFetch && nodeFetch.hasOwnProperty('default') ? nodeFetch['default'] : nodeFetch;
 
@@ -53,28 +53,28 @@
             }
 
             function __generator(thisArg, body) {
-                var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+                var _$$1 = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
                 return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
                 function verb(n) { return function (v) { return step([n, v]); }; }
                 function step(op) {
                     if (f) throw new TypeError("Generator is already executing.");
-                    while (_) try {
+                    while (_$$1) try {
                         if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
                         if (y = 0, t) op = [op[0] & 2, t.value];
                         switch (op[0]) {
                             case 0: case 1: t = op; break;
-                            case 4: _.label++; return { value: op[1], done: false };
-                            case 5: _.label++; y = op[1]; op = [0]; continue;
-                            case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                            case 4: _$$1.label++; return { value: op[1], done: false };
+                            case 5: _$$1.label++; y = op[1]; op = [0]; continue;
+                            case 7: op = _$$1.ops.pop(); _$$1.trys.pop(); continue;
                             default:
-                                if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                                if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                                if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                                if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                                if (t[2]) _.ops.pop();
-                                _.trys.pop(); continue;
+                                if (!(t = _$$1.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _$$1 = 0; continue; }
+                                if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _$$1.label = op[1]; break; }
+                                if (op[0] === 6 && _$$1.label < t[1]) { _$$1.label = t[1]; t = op; break; }
+                                if (t && _$$1.label < t[2]) { _$$1.label = t[2]; _$$1.ops.push(op); break; }
+                                if (t[2]) _$$1.ops.pop();
+                                _$$1.trys.pop(); continue;
                         }
-                        op = body.call(thisArg, _);
+                        op = body.call(thisArg, _$$1);
                     } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
                     if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
                 }
@@ -2277,6 +2277,92 @@
             }());
 
             /**
+             *
+             * Creates a fetch client that will aquire an access token using the client credentials
+             * flow with a certificate as the credentials.  Used for app only or server-to-server api
+             * requests.
+             *
+             * See https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-oauth2-client-creds-grant-flow#service-to-service-access-token-request
+             */
+            var AdalCertificateFetchClient = /** @class */ (function () {
+                /**
+                 *
+                 * @param _tenant - Azure AD tenant id (guid)
+                 * @param _clientId - Client Id from Azure AD app registration
+                 * @param _thumbprint - Thumbprint of the client certificate
+                 * @param _privateKey - The private key for the client certificate used to sign requests
+                 * @param _resource - The resource the application is requesting access to i.e. https://graph.microsoft.com, https://<tenant>.sharepoint.com, etc
+                 * @param _authority - OAuth 2 authority.  Defaults to https://login.windows.net as is the authority in most cases
+                 * @param _fetchClient - The fetch client implementation to use when making HTTP request.  Defautls to NodeFetchClient to provide transient retries.
+                 */
+                function AdalCertificateFetchClient(_tenant, _clientId, _thumbprint, _privateKey, _resource, _authority, _fetchClient) {
+                    if (_resource === void 0) { _resource = "https://graph.microsoft.com"; }
+                    if (_authority === void 0) { _authority = "https://login.windows.net"; }
+                    if (_fetchClient === void 0) { _fetchClient = new _.NodeFetchClient(); }
+                    this._tenant = _tenant;
+                    this._clientId = _clientId;
+                    this._thumbprint = _thumbprint;
+                    this._privateKey = _privateKey;
+                    this._resource = _resource;
+                    this._authority = _authority;
+                    this._fetchClient = _fetchClient;
+                    this._authContext = new adalNode.AuthenticationContext(common.combine(this._authority, this._tenant));
+                }
+                AdalCertificateFetchClient.prototype.fetch = function (url, options) {
+                    if (options === void 0) { options = {}; }
+                    return __awaiter(this, void 0, void 0, function () {
+                        var token;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    if (!common.objectDefinedNotNull(options)) {
+                                        options = {
+                                            headers: new Headers(),
+                                        };
+                                    }
+                                    else if (!common.objectDefinedNotNull(options.headers)) {
+                                        options = common.extend(options, {
+                                            headers: new Headers(),
+                                        });
+                                    }
+                                    if (!common.isUrlAbsolute(url)) {
+                                        url = common.combine(this._resource, url);
+                                    }
+                                    return [4 /*yield*/, this.acquireToken()];
+                                case 1:
+                                    token = _a.sent();
+                                    options.headers.set("Authorization", token.tokenType + " " + token.accessToken);
+                                    return [4 /*yield*/, this._fetchClient.fetch(url, options)];
+                                case 2: return [2 /*return*/, _a.sent()];
+                            }
+                        });
+                    });
+                };
+                AdalCertificateFetchClient.prototype.acquireToken = function () {
+                    return __awaiter(this, void 0, void 0, function () {
+                        var _this = this;
+                        return __generator(this, function (_a) {
+                            return [2 /*return*/, new Promise(function (resolve, reject) {
+                                    _this._authContext.acquireTokenWithClientCertificate(_this._resource, _this._clientId, _this._privateKey, _this._thumbprint, function (err, token) {
+                                        if (err) {
+                                            reject(err);
+                                            return;
+                                        }
+                                        if (token.error) {
+                                            var tokenError = token;
+                                            reject(new Error("Error aquiring token.  Error: '" + tokenError.error + "' Error Description: " + tokenError.errorDescription));
+                                            return;
+                                        }
+                                        resolve(token);
+                                    });
+                                })];
+                        });
+                    });
+                };
+                return AdalCertificateFetchClient;
+            }());
+
+            /**
              * Makes requests using the fetch API adding the supplied token to the Authorization header
              */
             var BearerTokenFetchClient = /** @class */ (function () {
@@ -2535,6 +2621,7 @@
             exports.ProviderHostedRequestContext = ProviderHostedRequestContext;
             exports.setProxyUrl = setProxyUrl;
             exports.AdalFetchClient = AdalFetchClient;
+            exports.AdalCertificateFetchClient = AdalCertificateFetchClient;
             exports.BearerTokenFetchClient = BearerTokenFetchClient;
             exports.NodeFetchClient = NodeFetchClient;
             exports.SPFetchClient = SPFetchClient;

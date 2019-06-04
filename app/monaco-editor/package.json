@@ -1,32 +1,27 @@
 {
-  "_args": [
-    [
-      "monaco-editor@0.16.2",
-      "/Users/tomi/development/Chrome-SP-Editor"
-    ]
-  ],
-  "_development": true,
-  "_from": "monaco-editor@0.16.2",
-  "_id": "monaco-editor@0.16.2",
+  "_from": "monaco-editor",
+  "_id": "monaco-editor@0.17.0",
   "_inBundle": false,
-  "_integrity": "sha512-NtGrFzf54jADe7qsWh3lazhS7Kj0XHkJUGBq9fA/Jbwc+sgVcyfsYF6z2AQ7hPqDC+JmdOt/OwFjBnRwqXtx6w==",
+  "_integrity": "sha512-8BQQHCFxy3DF0GYFOy5BmcCWlwm/XaTMPbPbN4gwItFGctZErSfX82uQSBpojJSlPNyudB5Q5qnukoorD3/UuA==",
   "_location": "/monaco-editor",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "monaco-editor@0.16.2",
+    "raw": "monaco-editor",
     "name": "monaco-editor",
     "escapedName": "monaco-editor",
-    "rawSpec": "0.16.2",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "0.16.2"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
-    "#DEV:/"
+    "#USER",
+    "/"
   ],
-  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.16.2.tgz",
-  "_spec": "0.16.2",
+  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.17.0.tgz",
+  "_shasum": "d1d035c6f512ab88503cbee8213cab34b85ab954",
+  "_spec": "monaco-editor",
   "_where": "/Users/tomi/development/Chrome-SP-Editor",
   "author": {
     "name": "Microsoft Corporation"
@@ -34,6 +29,8 @@
   "bugs": {
     "url": "https://github.com/Microsoft/monaco-editor/issues"
   },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "A browser based code editor",
   "devDependencies": {
     "clean-css": "^4.2.1",
@@ -42,8 +39,8 @@
     "gulp-typedoc": "^2.2.2",
     "http-server": "^0.11.1",
     "monaco-css": "2.5.0",
-    "monaco-editor-core": "0.16.1",
-    "monaco-html": "2.5.1",
+    "monaco-editor-core": "0.17.0",
+    "monaco-html": "2.5.2",
     "monaco-json": "2.5.1",
     "monaco-languages": "1.7.0",
     "monaco-typescript": "3.4.1",
@@ -69,5 +66,5 @@
     "website": "gulp website"
   },
   "typings": "./esm/vs/editor/editor.api.d.ts",
-  "version": "0.16.2"
+  "version": "0.17.0"
 }

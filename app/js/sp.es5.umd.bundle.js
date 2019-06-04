@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.2
+ * v1.3.3
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -3257,7 +3257,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.2");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.3");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -3643,6 +3643,10 @@ var ClientSidePage = /** @class */ (function (_super) {
             // we have to do these gymnastics to set the banner image url
             promise = promise.then(function (_) { return new Promise(function (resolve, reject) {
                 var origImgUrl = _this.json.BannerImageUrl;
+                if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["isUrlAbsolute"])(origImgUrl)) {
+                    // do our best to make this a server relative url by removing the x.sharepoint.com part
+                    origImgUrl = origImgUrl.replace(/^https?:\/\/[a-z0-9\.]*?\.[a-z]{2,3}\//i, "/");
+                }
                 var site = new _site__WEBPACK_IMPORTED_MODULE_9__["Site"](Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_8__["extractWebUrl"])(_this.toUrl()));
                 var web = new _webs__WEBPACK_IMPORTED_MODULE_7__["Web"](Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_8__["extractWebUrl"])(_this.toUrl()));
                 var imgFile = web.getFileByServerRelativePath(origImgUrl);
@@ -3747,16 +3751,36 @@ var ClientSidePage = /** @class */ (function (_super) {
         return promise;
     };
     ClientSidePage.prototype.discardPageCheckout = function () {
-        var _this = this;
-        if (this.json.Id === null) {
-            throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
-        }
-        return ClientSidePage.initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/discardPage").postCore({
-            body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.Publishing.SitePage")),
-        }).then(function (d) {
-            _this.fromJSON(d);
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            var d;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (this.json.Id === null) {
+                            throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
+                        }
+                        return [4 /*yield*/, ClientSidePage.initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/discardPage").postCore({
+                                body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.Publishing.SitePage")),
+                            })];
+                    case 1:
+                        d = _a.sent();
+                        this.fromJSON(d);
+                        return [2 /*return*/];
+                }
+            });
         });
     };
+    ClientSidePage.prototype.promoteToNews = function () {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                return [2 /*return*/, this.promoteNewsImpl("promoteToNews")];
+            });
+        });
+    };
+    // API is currently broken on server side
+    // public async demoteFromNews(): Promise<boolean> {
+    //     return this.promoteNewsImpl("demoteFromNews");
+    // }
     /**
      * Enables comments on this page
      */
@@ -3965,6 +3989,25 @@ var ClientSidePage = /** @class */ (function (_super) {
         return this.getItem().then(function (i) {
             var updater = new _items__WEBPACK_IMPORTED_MODULE_1__["Item"](i, "SetCommentsDisabled(" + !on + ")");
             return updater.update({});
+        });
+    };
+    ClientSidePage.prototype.promoteNewsImpl = function (method) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            var d;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (this.json.Id === null) {
+                            throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
+                        }
+                        return [4 /*yield*/, ClientSidePage.initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/" + method).postCore({
+                                body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.Publishing.SitePage")),
+                            })];
+                    case 1:
+                        d = _a.sent();
+                        return [2 /*return*/, d];
+                }
+            });
         });
     };
     /**
@@ -4530,7 +4573,7 @@ var Comment = /** @class */ (function (_super) {
      * Deletes this comment
      */
     Comment.prototype.delete = function () {
-        return this.clone(Comment, "DeleteComment").postCore();
+        return this.deleteCore();
     };
     return Comment;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
@@ -7646,11 +7689,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.2");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.3");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.2");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.3");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {

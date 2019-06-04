@@ -6,7 +6,7 @@ riot.tag("files", `
             <div class="row">
                <div class="col-lg-6">
                   <div class="input-group">
-                     <input keyup="{ updatepath }" id="addfile" type="text" class="form-control" placeholder="myfile.js">
+                     <input onKeyUp="{ updatepath }" id="addfile" type="text" class="form-control" placeholder="myfile.js">
                      <span class="input-group-btn">
                         <button onclick="{ addfile }" id="addfilebtn" class="btn btn-default" type="button">Add</button>
                      </span>

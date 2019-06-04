@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.2
+ * v1.3.3
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -5856,6 +5856,16 @@ var User = /** @class */ (function (_super) {
         */
         get: function () {
             return new _people__WEBPACK_IMPORTED_MODULE_10__["People"](this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "directReports", {
+        /**
+        * People that have direct reports to the user
+        */
+        get: function () {
+            return new _people__WEBPACK_IMPORTED_MODULE_10__["People"](this, "directReports");
         },
         enumerable: true,
         configurable: true

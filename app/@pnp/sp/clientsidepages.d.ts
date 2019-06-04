@@ -86,6 +86,7 @@ export declare class ClientSidePage extends SharePointQueryable {
      */
     save(publish?: boolean): Promise<boolean>;
     discardPageCheckout(): Promise<void>;
+    promoteToNews(): Promise<boolean>;
     /**
      * Enables comments on this page
      */
@@ -151,6 +152,7 @@ export declare class ClientSidePage extends SharePointQueryable {
      * @param on If true comments are enabled, false they are disabled
      */
     private setCommentsOn;
+    private promoteNewsImpl;
     /**
      * Merges the control into the tree of sections and columns for this page
      *

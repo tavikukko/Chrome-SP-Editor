@@ -21,7 +21,7 @@ riot.tag("webproperties", `
             <hr>
               <div class="row">
                 <div class="col-xs-3">
-                  <input keyup="{ filterprops }" id="filterprops" type="text" class="form-control" placeholder="Filter properties">
+                  <input onKeyUp="{ filterprops }" id="filterprops" type="text" class="form-control" placeholder="Filter properties">
                 </div>
               </div>
             <hr>
@@ -30,7 +30,7 @@ riot.tag("webproperties", `
               <div class="row">
                 <label>{ property.prop }</label>
                 <div class="input-group">
-                  <input keyup="{ updatevalue }" type="text" class="form-control" aria-describedby="helpBlock" value="{ property.value }">
+                  <input onKeyUp="{ updatevalue }" type="text" class="form-control" aria-describedby="helpBlock" value="{ property.value }">
                   <span class="input-group-btn">
                     <button onclick="{ updateprop }" class="btn btn-default update-property" type="button">Update</button>
                     <button onclick="{ removeprop }" class="btn btn-default remove-property" type="button">Remove</button>

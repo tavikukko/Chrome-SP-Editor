@@ -29,7 +29,7 @@ riot.tag("listproperties", `
               <div each="{ property in properties }" class="form-group">
                 <label>{ property.prop }</label>
                 <div class="input-group">
-                  <input keyup="{ updatevalue }" type="text" class="form-control" aria-describedby="helpBlock" value="{ property.value }">
+                  <input onKeyUp="{ updatevalue }" type="text" class="form-control" aria-describedby="helpBlock" value="{ property.value }">
                   <span class="input-group-btn">
                     <button onclick="{ updateprop }" class="btn btn-default update-list-property" type="button">Update</button>
                     <button onclick="{ removeprop }" class="btn btn-default remove-list-property" type="button">Remove</button>

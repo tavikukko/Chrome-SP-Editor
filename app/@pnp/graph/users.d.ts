@@ -112,6 +112,10 @@ export declare class User extends GraphQueryableInstance<IUser> {
     */
     readonly people: People;
     /**
+    * People that have direct reports to the user
+    */
+    readonly directReports: People;
+    /**
     * The Insights associated with me
     */
     readonly insights: InsightsMethods;
