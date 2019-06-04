@@ -9,7 +9,7 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 
 ## Version history
 - 5.0.1 updates
-    * Updated PnPjs to 1.3.2
+    * Updated PnPjs to 1.3.3
     * Updated monaco-editor 0.17.0
     * Updated Riot 3.13.2
 - 5.0.0 New feature
