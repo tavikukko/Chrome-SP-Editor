@@ -1,3 +1,5 @@
+chrome.devtools.panels.create("SharePoint", null, "app/panel.html", null);
+
 String.prototype.hashCode = function () {
   var hash = 0, i, chr, len;
   if (this.length == 0) return hash;
@@ -163,22 +165,3 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
     });
   });
 });
-
-chrome.devtools.panels.create("SharePoint", "", "app/panel.html",
-  function (panel) {
-/*
-    var port = chrome.runtime.connect();
-
-    port.postMessage({
-      name: 'init',
-      tabId: chrome.devtools.inspectedWindow.tabId
-    });
-
-    var payload = { type: "autosavechange", content: false, tabId: chrome.devtools.inspectedWindow.tabId };
-    port.postMessage(payload);
-
-    payload = { type: "autopublishchange", content: false, tabId: chrome.devtools.inspectedWindow.tabId };
-    port.postMessage(payload);
-    */
-  }
-);

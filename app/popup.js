@@ -1,5 +1,5 @@
 riot.tag("spquicklinks", `
-<div class="content">
+<div class="links-content">
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
