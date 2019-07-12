@@ -41,6 +41,12 @@ export declare class GraphQueryable<GetType = any> extends ODataQueryable<GraphB
      */
     toUrlAndQuery(): string;
     /**
+     * Allows setting the endpoint (v1.0, beta)
+     *
+     * @param endpoint
+     */
+    setEndpoint(endpoint: "beta" | "v1.0"): this;
+    /**
      * Gets a parent for this instance as specified
      *
      * @param factory The contructor for the class to create
@@ -53,7 +59,6 @@ export declare class GraphQueryable<GetType = any> extends ODataQueryable<GraphB
      * @param includeBatch If true this instance's batch will be added to the cloned instance
      */
     protected clone<T extends GraphQueryable>(factory: GraphQueryableConstructor<T>, additionalPath?: string, includeBatch?: boolean): T;
-    protected setEndpoint(endpoint: string): this;
     /**
      * Converts the current instance to a request context
      *

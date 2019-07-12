@@ -5,6 +5,7 @@ import { File } from "./files";
 import { ContentType } from "./contenttypes";
 import { TypedHash } from "@pnp/common";
 import { ListItemFormUpdateValue, LikeData } from "./types";
+import { ODataParser } from "@pnp/odata";
 import { AttachmentFiles } from "./attachmentfiles";
 import { List } from "./lists";
 import { Comments } from "./comments";
@@ -36,7 +37,7 @@ export declare class Items extends SharePointQueryableCollection {
      * Gets a collection designed to aid in paging through data
      *
      */
-    getPaged<T = any[]>(): Promise<PagedItemCollection<T>>;
+    getPaged<T = any[]>(parser?: ODataParser<any>): Promise<PagedItemCollection<T>>;
     /**
      * Gets all the items in a list, regardless of count. Does not support batching or caching
      *
@@ -214,7 +215,8 @@ export declare class PagedItemCollection<T> {
     private parent;
     private nextUrl;
     results: T;
-    constructor(parent: Items, nextUrl: string, results: T);
+    private innerParser;
+    constructor(parent: Items, nextUrl: string, results: T, innerParser: ODataParser<T>);
     /**
      * If true there are more results available in the set, otherwise there are not
      */

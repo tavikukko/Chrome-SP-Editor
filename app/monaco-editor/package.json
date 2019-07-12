@@ -1,27 +1,27 @@
 {
-  "_from": "monaco-editor",
-  "_id": "monaco-editor@0.17.0",
+  "_from": "monaco-editor@0.17.1",
+  "_id": "monaco-editor@0.17.1",
   "_inBundle": false,
-  "_integrity": "sha512-8BQQHCFxy3DF0GYFOy5BmcCWlwm/XaTMPbPbN4gwItFGctZErSfX82uQSBpojJSlPNyudB5Q5qnukoorD3/UuA==",
+  "_integrity": "sha512-JAc0mtW7NeO+0SwPRcdkfDbWLgkqL9WfP1NbpP9wNASsW6oWqgZqNIWt4teymGjZIXTElx3dnQmUYHmVrJ7HxA==",
   "_location": "/monaco-editor",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "monaco-editor",
+    "raw": "monaco-editor@0.17.1",
     "name": "monaco-editor",
     "escapedName": "monaco-editor",
-    "rawSpec": "",
+    "rawSpec": "0.17.1",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "0.17.1"
   },
   "_requiredBy": [
-    "#USER",
-    "/"
+    "#DEV:/",
+    "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.17.0.tgz",
-  "_shasum": "d1d035c6f512ab88503cbee8213cab34b85ab954",
-  "_spec": "monaco-editor",
+  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.17.1.tgz",
+  "_shasum": "8fbe96ca54bfa75262706e044f8f780e904aa45c",
+  "_spec": "monaco-editor@0.17.1",
   "_where": "/Users/tomi/development/Chrome-SP-Editor",
   "author": {
     "name": "Microsoft Corporation"
@@ -43,7 +43,7 @@
     "monaco-html": "2.5.2",
     "monaco-json": "2.5.1",
     "monaco-languages": "1.7.0",
-    "monaco-typescript": "3.4.1",
+    "monaco-typescript": "3.5.0",
     "rimraf": "^2.6.3",
     "typedoc": "^0.14.2",
     "typescript": "^3.3.3",
@@ -66,5 +66,5 @@
     "website": "gulp website"
   },
   "typings": "./esm/vs/editor/editor.api.d.ts",
-  "version": "0.17.0"
+  "version": "0.17.1"
 }

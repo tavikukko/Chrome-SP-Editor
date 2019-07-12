@@ -8,6 +8,9 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 5.0.3 updates
+    * Updated PnPjs to 1.3.4
+    * Updated monaco-editor 0.17.1
 - 5.0.2 small adjustments
 - 5.0.1 updates
     * Updated PnPjs to 1.3.3

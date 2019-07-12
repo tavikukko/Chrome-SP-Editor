@@ -20,19 +20,21 @@
   },
   "homepage": "https://github.com/tavikukko/Chrome-SP-Editor#readme",
   "devDependencies": {
-    "@pnp/common": "^1.3.3",
-    "@pnp/config-store": "^1.3.3",
-    "@pnp/graph": "^1.3.3",
-    "@pnp/logging": "^1.3.3",
-    "@pnp/nodejs": "^1.3.3",
-    "@pnp/odata": "^1.3.3",
-    "@pnp/pnpjs": "^1.3.3",
-    "@pnp/sp": "^1.3.3",
-    "@pnp/sp-addinhelpers": "^1.3.3",
-    "@pnp/sp-clientsvc": "^1.3.3",
-    "@pnp/sp-taxonomy": "^1.3.3",
-    "del": "^4.1.1",
+    "@pnp/common": "^1.3.4",
+    "@pnp/config-store": "^1.3.4",
+    "@pnp/graph": "^1.3.4",
+    "@pnp/logging": "^1.3.4",
+    "@pnp/nodejs": "^1.3.4",
+    "@pnp/odata": "^1.3.4",
+    "@pnp/pnpjs": "^1.3.4",
+    "@pnp/sp": "^1.3.4",
+    "@pnp/sp-addinhelpers": "^1.3.4",
+    "@pnp/sp-clientsvc": "^1.3.4",
+    "@pnp/sp-taxonomy": "^1.3.4",
     "gulp": "^4.0.2",
-    "monaco-editor": "^0.17.0"
+    "monaco-editor": "^0.17.1"
+  },
+  "dependencies": {
+    "del": "^5.0.0"
   }
 }

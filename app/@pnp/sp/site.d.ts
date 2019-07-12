@@ -46,6 +46,11 @@ export declare class Site extends SharePointQueryableInstance {
      */
     getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string>;
     /**
+     * Deletes the current site
+     *
+     */
+    delete(): Promise<void>;
+    /**
      * Creates a new batch for requests within the context of this site collection
      *
      */
@@ -86,8 +91,9 @@ export declare class Site extends SharePointQueryableInstance {
      *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
+     * @param owner Required when creating the site using app-only context
      */
-    createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: string, classification?: string, siteDesignId?: string, hubSiteId?: string): Promise<void>;
+    createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: string, classification?: string, siteDesignId?: string, hubSiteId?: string, owner?: string): Promise<ISPSiteCreationResponse>;
     /**
      * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
      *
@@ -98,8 +104,9 @@ export declare class Site extends SharePointQueryableInstance {
      * @param description The description of the site to be created.
      * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
      * @param owners The Owners of the site to be created
+     * @param siteDesignId The ID of the site design to apply to the new site
      */
-    createModernTeamSite(displayName: string, alias: string, isPublic?: boolean, lcid?: number, description?: string, classification?: string, owners?: string[], hubSiteId?: string): Promise<void>;
+    createModernTeamSite(displayName: string, alias: string, isPublic?: boolean, lcid?: number, description?: string, classification?: string, owners?: string[], hubSiteId?: string, siteDesignId?: string): Promise<void>;
 }
 /**
  * The result of opening a web by id: contains the data returned as well as a chainable web instance
@@ -107,5 +114,13 @@ export declare class Site extends SharePointQueryableInstance {
 export interface OpenWebByIdResult {
     data: any;
     web: Web;
+}
+/**
+ * The result of creating a site collection
+ */
+export interface ISPSiteCreationResponse {
+    SiteId: string;
+    SiteStatus: number;
+    SiteUrl: string;
 }
 //# sourceMappingURL=site.d.ts.map

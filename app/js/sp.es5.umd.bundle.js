@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.3
+ * v1.3.4
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -1850,6 +1850,7 @@ var HttpRequestError = /** @class */ (function (_super) {
 
 var ODataParserBase = /** @class */ (function () {
     function ODataParserBase() {
+        this.rawJson = {};
     }
     ODataParserBase.prototype.parse = function (r) {
         var _this = this;
@@ -1891,6 +1892,7 @@ var ODataParserBase = /** @class */ (function () {
      * @param json json object to parse
      */
     ODataParserBase.prototype.parseODataJSON = function (json) {
+        this.rawJson = json;
         var result = json;
         if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["hOP"])(json, "d")) {
             if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["hOP"])(json.d, "results")) {
@@ -3257,7 +3259,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.3");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.4");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -4041,7 +4043,7 @@ var ClientSidePage = /** @class */ (function (_super) {
         else {
             section = sections[0];
         }
-        section.emphasis = control.data.emphasis.zoneEmphasis || 0;
+        section.emphasis = control.data.emphasis && control.data.emphasis.zoneEmphasis ? control.data.emphasis.zoneEmphasis : 0;
         var columns = section.columns.filter(function (c) { return c.order === sectionIndex; });
         if (columns.length < 1) {
             column = section.addColumn(sectionFactor);
@@ -4426,10 +4428,12 @@ var ClientSideWebpart = /** @class */ (function (_super) {
         return this.data.webPartData.properties;
     };
     ClientSideWebpart.prototype.onColumnChange = function (col) {
-        this.data.position.sectionFactor = col.factor;
-        this.data.position.controlIndex = getNextOrder(col.controls);
-        this.data.position.zoneIndex = col.data.position.zoneIndex;
-        this.data.position.sectionIndex = col.data.position.sectionIndex;
+        this.data.position = {
+            controlIndex: getNextOrder(col.controls),
+            sectionFactor: col.factor,
+            sectionIndex: col.data.position.sectionIndex,
+            zoneIndex: col.data.position.zoneIndex,
+        };
     };
     ClientSideWebpart.prototype.import = function (component) {
         var id = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["getGUID"])();
@@ -6397,8 +6401,9 @@ var Items = /** @class */ (function (_super) {
      * Gets a collection designed to aid in paging through data
      *
      */
-    Items.prototype.getPaged = function () {
-        return this.get(new PagedItemCollectionParser(this));
+    Items.prototype.getPaged = function (parser) {
+        if (parser === void 0) { parser = new _pnp_odata__WEBPACK_IMPORTED_MODULE_7__["ODataDefaultParser"](); }
+        return this.get(new PagedItemCollectionParser(this, parser));
     };
     /**
      * Gets all the items in a list, regardless of count. Does not support batching or caching
@@ -6780,10 +6785,11 @@ var ItemVersion = /** @class */ (function (_super) {
  * Provides paging functionality for list items
  */
 var PagedItemCollection = /** @class */ (function () {
-    function PagedItemCollection(parent, nextUrl, results) {
+    function PagedItemCollection(parent, nextUrl, results, innerParser) {
         this.parent = parent;
         this.nextUrl = nextUrl;
         this.results = results;
+        this.innerParser = innerParser;
     }
     Object.defineProperty(PagedItemCollection.prototype, "hasNext", {
         /**
@@ -6801,7 +6807,7 @@ var PagedItemCollection = /** @class */ (function () {
     PagedItemCollection.prototype.getNext = function () {
         if (this.hasNext) {
             var items = new Items(this.nextUrl, null).configureFrom(this.parent);
-            return items.getPaged();
+            return items.getPaged(this.innerParser);
         }
         return new Promise(function (r) { return r(null); });
     };
@@ -6810,21 +6816,22 @@ var PagedItemCollection = /** @class */ (function () {
 
 var PagedItemCollectionParser = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](PagedItemCollectionParser, _super);
-    function PagedItemCollectionParser(_parent) {
+    function PagedItemCollectionParser(_parent, innerParser) {
         var _this = _super.call(this) || this;
         _this._parent = _parent;
+        _this.innerParser = innerParser;
         return _this;
     }
     PagedItemCollectionParser.prototype.parse = function (r) {
         var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this.handleError(r, reject)) {
-                r.json().then(function (json) {
-                    var nextUrl = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["hOP"])(json, "d") && Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["hOP"])(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
-                    resolve(new PagedItemCollection(_this._parent, nextUrl, _this.parseODataJSON(json)));
-                });
-            }
-        });
+        return this.innerParser.parse(r).then(function (items) { return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](_this, void 0, void 0, function () {
+            var json, nextUrl;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                json = this.innerParser.rawJson;
+                nextUrl = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["hOP"])(json, "d") && Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["hOP"])(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
+                return [2 /*return*/, new PagedItemCollection(this._parent, nextUrl, items, this.innerParser)];
+            });
+        }); });
     };
     return PagedItemCollectionParser;
 }(_pnp_odata__WEBPACK_IMPORTED_MODULE_7__["ODataParserBase"]));
@@ -6878,6 +6885,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _odata__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./odata */ "./build/packages-es5/sp/src/odata.js");
 /* harmony import */ var _folders__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./folders */ "./build/packages-es5/sp/src/folders.js");
 /* harmony import */ var _utils_metadata__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./utils/metadata */ "./build/packages-es5/sp/src/utils/metadata.js");
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! .. */ "./build/packages-es5/sp/index.js");
+/* harmony import */ var _utils_toabsoluteurl__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./utils/toabsoluteurl */ "./build/packages-es5/sp/src/utils/toabsoluteurl.js");
+
+
 
 
 
@@ -7349,6 +7360,25 @@ var List = /** @class */ (function (_super) {
             return res;
         });
     };
+    /**
+    * Gets the site script syntax (JSON) for the current list
+    */
+    List.prototype.getSiteScript = function () {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            var rootFolder, absoluteListUrl;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(List).rootFolder.select("ServerRelativeUrl").get()];
+                    case 1:
+                        rootFolder = _a.sent();
+                        return [4 /*yield*/, Object(_utils_toabsoluteurl__WEBPACK_IMPORTED_MODULE_15__["toAbsoluteUrl"])(rootFolder.ServerRelativeUrl)];
+                    case 2:
+                        absoluteListUrl = _a.sent();
+                        return [2 /*return*/, new ___WEBPACK_IMPORTED_MODULE_14__["SiteScripts"](this, "").getSiteScriptFromList(absoluteListUrl)];
+                }
+            });
+        });
+    };
     return List;
 }(_sharepointqueryablesecurable__WEBPACK_IMPORTED_MODULE_8__["SharePointQueryableSecurable"]));
 
@@ -7689,11 +7719,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.3");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.4");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.3");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.4");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -8597,7 +8627,10 @@ var RoleDefinitions = /** @class */ (function (_super) {
     RoleDefinitions.prototype.add = function (name, description, order, basePermissions) {
         var _this = this;
         var postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["jsS"])({
-            BasePermissions: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["extend"])({ __metadata: { type: "SP.BasePermissions" } }, basePermissions),
+            BasePermissions: {
+                High: basePermissions.High.toString(),
+                Low: basePermissions.Low.toString(),
+            },
             Description: description,
             Name: name,
             Order: order,
@@ -8640,9 +8673,11 @@ var RoleDefinition = /** @class */ (function (_super) {
     /* tslint:disable no-string-literal */
     RoleDefinition.prototype.update = function (properties) {
         var _this = this;
-        var s = ["BasePermissions"];
-        if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["hOP"])(properties, s[0]) !== undefined) {
-            properties[s[0]] = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["extend"])({ __metadata: { type: "SP." + s[0] } }, properties[s[0]]);
+        if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["hOP"])(properties, "BasePermissions") !== undefined) {
+            properties["BasePermissions"] = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["extend"])({ __metadata: { type: "SP.BasePermissions" } }, {
+                High: properties["BasePermissions"].High.toString(),
+                Low: properties["BasePermissions"].Low.toString(),
+            });
         }
         var postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["jsS"])(Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["extend"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.RoleDefinition"), properties));
         return this.postCore({
@@ -10291,6 +10326,31 @@ var Site = /** @class */ (function (_super) {
         });
     };
     /**
+     * Deletes the current site
+     *
+     */
+    Site.prototype.delete = function () {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            var site, q;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(Site_1, "").select("Id").get()];
+                    case 1:
+                        site = _a.sent();
+                        q = new Site_1(this.parentUrl, "_api/SPSiteManager/Delete");
+                        return [4 /*yield*/, q.postCore({
+                                body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["jsS"])({
+                                    siteId: site.Id,
+                                }),
+                            })];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
      * Creates a new batch for requests within the context of this site collection
      *
      */
@@ -10344,8 +10404,9 @@ var Site = /** @class */ (function (_super) {
      *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
+     * @param owner Required when creating the site using app-only context
      */
-    Site.prototype.createCommunicationSite = function (title, lcid, shareByEmailEnabled, url, description, classification, siteDesignId, hubSiteId) {
+    Site.prototype.createCommunicationSite = function (title, lcid, shareByEmailEnabled, url, description, classification, siteDesignId, hubSiteId, owner) {
         var _this = this;
         if (lcid === void 0) { lcid = 1033; }
         if (shareByEmailEnabled === void 0) { shareByEmailEnabled = false; }
@@ -10358,6 +10419,7 @@ var Site = /** @class */ (function (_super) {
             Description: description,
             HubSiteId: hubSiteId,
             Lcid: lcid,
+            Owner: owner,
             ShareByEmailEnabled: shareByEmailEnabled,
             SiteDesignId: siteDesignId,
             Title: title,
@@ -10395,15 +10457,16 @@ var Site = /** @class */ (function (_super) {
      * @param description The description of the site to be created.
      * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
      * @param owners The Owners of the site to be created
+     * @param siteDesignId The ID of the site design to apply to the new site
      */
-    Site.prototype.createModernTeamSite = function (displayName, alias, isPublic, lcid, description, classification, owners, hubSiteId) {
+    Site.prototype.createModernTeamSite = function (displayName, alias, isPublic, lcid, description, classification, owners, hubSiteId, siteDesignId) {
         var _this = this;
         if (isPublic === void 0) { isPublic = true; }
         if (lcid === void 0) { lcid = 1033; }
         if (description === void 0) { description = ""; }
         if (classification === void 0) { classification = ""; }
         if (hubSiteId === void 0) { hubSiteId = "00000000-0000-0000-0000-000000000000"; }
-        var postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["jsS"])({
+        var postBody = {
             alias: alias,
             displayName: displayName,
             isPublic: isPublic,
@@ -10417,14 +10480,17 @@ var Site = /** @class */ (function (_super) {
                     "results": owners ? owners : [],
                 },
             },
-        });
+        };
+        if (siteDesignId) {
+            postBody.optionalParams.CreationOptions.results.push("implicit_formula_292aa8a00786498a87a5ca52d9f4214a_" + siteDesignId);
+        }
         return this.getRootWeb().then(function (d) { return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](_this, void 0, void 0, function () {
             var client, methodUrl;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
                 client = new _net_sphttpclient__WEBPACK_IMPORTED_MODULE_7__["SPHttpClient"]();
                 methodUrl = d.parentUrl + "/_api/GroupSiteManager/CreateGroupEx";
                 return [2 /*return*/, client.post(methodUrl, {
-                        body: postBody,
+                        body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["jsS"])(postBody),
                         headers: {
                             "Accept": "application/json;odata=verbose",
                             "Content-Type": "application/json;odata=verbose;charset=utf-8",
@@ -10456,6 +10522,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SiteDesigns", function() { return SiteDesigns; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sharepointqueryable */ "./build/packages-es5/sp/src/sharepointqueryable.js");
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/common */ "./build/packages-es5/common/index.js");
+
 
 
 /**
@@ -10632,6 +10700,87 @@ var SiteDesigns = /** @class */ (function (_super) {
                             "id": id,
                             "principalNames": principalNames,
                         })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * Adds a site design task on the specified web url to be invoked asynchronously.
+     * @param webUrl The absolute url of the web on where to create the task
+     * @param siteDesignId The ID of the site design to create a task for
+     */
+    SiteDesigns.prototype.addSiteDesignTask = function (webUrl, siteDesignId) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(SiteDesigns, "AddSiteDesignTask")
+                            .execute({ "webUrl": webUrl, "siteDesignId": siteDesignId })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * Adds a site design task on the current web to be invoked asynchronously.
+     * @param siteDesignId The ID of the site design to create a task for
+     */
+    SiteDesigns.prototype.addSiteDesignTaskToCurrentWeb = function (siteDesignId) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(SiteDesigns, "AddSiteDesignTaskToCurrentWeb")
+                            .execute({ "siteDesignId": siteDesignId })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * Retrieves the site design task, if the task has finished running null will be returned
+     * @param id The ID of the site design task
+     */
+    SiteDesigns.prototype.getSiteDesignTask = function (id) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            var task;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(SiteDesigns, "GetSiteDesignTask")
+                            .execute({ "taskId": id })];
+                    case 1:
+                        task = _a.sent();
+                        return [2 /*return*/, Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(task, "ID") ? task : null];
+                }
+            });
+        });
+    };
+    /**
+     * Retrieves a list of site design that have run on a specific web
+     * @param webUrl The url of the web where the site design was applied
+     * @param siteDesignId (Optional) the site design ID, if not provided will return all site design runs
+     */
+    SiteDesigns.prototype.getSiteDesignRun = function (webUrl, siteDesignId) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(SiteDesigns, "GetSiteDesignRun")
+                            .execute({ "webUrl": webUrl, siteDesignId: siteDesignId })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * Retrieves the status of a site design that has been run or is still running
+     * @param webUrl The url of the web where the site design was applied
+     * @param runId the run ID
+     */
+    SiteDesigns.prototype.getSiteDesignRunStatus = function (webUrl, runId) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(SiteDesigns, "GetSiteDesignRunStatus")
+                            .execute({ "webUrl": webUrl, runId: runId })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -10901,6 +11050,37 @@ var SiteScripts = /** @class */ (function (_super) {
                             siteScriptUpdateInfo.Content = JSON.stringify(content);
                         }
                         return [4 /*yield*/, this.clone(SiteScripts, "UpdateSiteScript").execute({ updateInfo: siteScriptUpdateInfo })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * Gets the site script syntax (JSON) for a specific list
+     * @param listUrl The absolute url of the list to retrieve site script
+     */
+    SiteScripts.prototype.getSiteScriptFromList = function (listUrl) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(SiteScripts, "GetSiteScriptFromList")
+                            .execute({ "listUrl": listUrl })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * Gets the site script syntax (JSON) for a specific web
+     * @param webUrl The absolute url of the web to retrieve site script
+     * @param extractInfo configuration object to specify what to extract
+     */
+    SiteScripts.prototype.getSiteScriptFromWeb = function (webUrl, extractInfo) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(SiteScripts, "getSiteScriptFromWeb")
+                            .execute({ "webUrl": webUrl, info: extractInfo })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -13512,6 +13692,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _appcatalog__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./appcatalog */ "./build/packages-es5/sp/src/appcatalog.js");
 /* harmony import */ var _regionalsettings__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./regionalsettings */ "./build/packages-es5/sp/src/regionalsettings.js");
 /* harmony import */ var _clientsidepages__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./clientsidepages */ "./build/packages-es5/sp/src/clientsidepages.js");
+/* harmony import */ var _sitedesigns__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./sitedesigns */ "./build/packages-es5/sp/src/sitedesigns.js");
+/* harmony import */ var _sitescripts__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./sitescripts */ "./build/packages-es5/sp/src/sitescripts.js");
+
+
 
 
 
@@ -14215,6 +14399,34 @@ var Web = /** @class */ (function (_super) {
     Web.prototype.syncHubSiteTheme = function () {
         return this.clone(Web_1, "syncHubSiteTheme").postCore();
     };
+    /**
+     * Retrieves a list of site design that have run on the current web
+     * @param siteDesignId (Optional) the site design ID, if not provided will return all site design runs
+     */
+    Web.prototype.getSiteDesignRuns = function (siteDesignId) {
+        return new _sitedesigns__WEBPACK_IMPORTED_MODULE_23__["SiteDesigns"](this, "").getSiteDesignRun(undefined, siteDesignId);
+    };
+    /**
+     * Gets the site script syntax (JSON) for a specific web
+     * @param extractInfo configuration object to specify what to extract
+     */
+    Web.prototype.getSiteScript = function (extractInfo) {
+        return new _sitescripts__WEBPACK_IMPORTED_MODULE_24__["SiteScripts"](this, "").getSiteScriptFromWeb(undefined, extractInfo);
+    };
+    /**
+     * Adds a site design task on the current web to be invoked asynchronously.
+     * @param siteDesignId The ID of the site design to create a task for
+     */
+    Web.prototype.addSiteDesignTask = function (siteDesignId) {
+        return new _sitedesigns__WEBPACK_IMPORTED_MODULE_23__["SiteDesigns"](this, "").addSiteDesignTaskToCurrentWeb(siteDesignId);
+    };
+    /**
+     * Retrieves the status of a site design that has been run or is still running
+     * @param runId the run ID
+     */
+    Web.prototype.getSiteDesignRunStatus = function (runId) {
+        return new _sitedesigns__WEBPACK_IMPORTED_MODULE_23__["SiteDesigns"](this, "").getSiteDesignRunStatus(undefined, runId);
+    };
     var Web_1;
     Web = Web_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_2__["defaultPath"])("_api/web")
@@ -14235,7 +14447,7 @@ var Web = /** @class */ (function (_super) {
 
 /*! adal-angular v1.0.17 2018-02-27 */
 var AuthenticationContext=function(){"use strict";return AuthenticationContext=function(a){if(this.REQUEST_TYPE={LOGIN:"LOGIN",RENEW_TOKEN:"RENEW_TOKEN",UNKNOWN:"UNKNOWN"},this.RESPONSE_TYPE={ID_TOKEN_TOKEN:"id_token token",TOKEN:"token"},this.CONSTANTS={ACCESS_TOKEN:"access_token",EXPIRES_IN:"expires_in",ID_TOKEN:"id_token",ERROR_DESCRIPTION:"error_description",SESSION_STATE:"session_state",ERROR:"error",STORAGE:{TOKEN_KEYS:"adal.token.keys",ACCESS_TOKEN_KEY:"adal.access.token.key",EXPIRATION_KEY:"adal.expiration.key",STATE_LOGIN:"adal.state.login",STATE_RENEW:"adal.state.renew",NONCE_IDTOKEN:"adal.nonce.idtoken",SESSION_STATE:"adal.session.state",USERNAME:"adal.username",IDTOKEN:"adal.idtoken",ERROR:"adal.error",ERROR_DESCRIPTION:"adal.error.description",LOGIN_REQUEST:"adal.login.request",LOGIN_ERROR:"adal.login.error",RENEW_STATUS:"adal.token.renew.status",ANGULAR_LOGIN_REQUEST:"adal.angular.login.request"},RESOURCE_DELIMETER:"|",CACHE_DELIMETER:"||",LOADFRAME_TIMEOUT:6e3,TOKEN_RENEW_STATUS_CANCELED:"Canceled",TOKEN_RENEW_STATUS_COMPLETED:"Completed",TOKEN_RENEW_STATUS_IN_PROGRESS:"In Progress",LOGGING_LEVEL:{ERROR:0,WARN:1,INFO:2,VERBOSE:3},LEVEL_STRING_MAP:{0:"ERROR:",1:"WARNING:",2:"INFO:",3:"VERBOSE:"},POPUP_WIDTH:483,POPUP_HEIGHT:600},AuthenticationContext.prototype._singletonInstance)return AuthenticationContext.prototype._singletonInstance;if(AuthenticationContext.prototype._singletonInstance=this,this.instance="https://login.microsoftonline.com/",this.config={},this.callback=null,this.popUp=!1,this.isAngular=!1,this._user=null,this._activeRenewals={},this._loginInProgress=!1,this._acquireTokenInProgress=!1,this._renewStates=[],this._callBackMappedToRenewStates={},this._callBacksMappedToRenewStates={},this._openedWindows=[],this._requestType=this.REQUEST_TYPE.LOGIN,window._adalInstance=this,a.displayCall&&"function"!=typeof a.displayCall)throw new Error("displayCall is not a function");if(!a.clientId)throw new Error("clientId is required");this.config=this._cloneConfig(a),void 0===this.config.navigateToLoginRequestUrl&&(this.config.navigateToLoginRequestUrl=!0),this.config.popUp&&(this.popUp=!0),this.config.callback&&"function"==typeof this.config.callback&&(this.callback=this.config.callback),this.config.instance&&(this.instance=this.config.instance),this.config.loginResource||(this.config.loginResource=this.config.clientId),this.config.redirectUri||(this.config.redirectUri=window.location.href.split("?")[0].split("#")[0]),this.config.postLogoutRedirectUri||(this.config.postLogoutRedirectUri=window.location.href.split("?")[0].split("#")[0]),this.config.anonymousEndpoints||(this.config.anonymousEndpoints=[]),this.config.isAngular&&(this.isAngular=this.config.isAngular),this.config.loadFrameTimeout&&(this.CONSTANTS.LOADFRAME_TIMEOUT=this.config.loadFrameTimeout)},"undefined"!=typeof window&&(window.Logging={piiLoggingEnabled:!1,level:0,log:function(a){}}),AuthenticationContext.prototype.login=function(){if(this._loginInProgress)return void this.info("Login in progress");this._loginInProgress=!0;var a=this._guid();this.config.state=a,this._idTokenNonce=this._guid();var b=this._getItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST);b&&""!==b?this._saveItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST,""):b=window.location.href,this.verbose("Expected state: "+a+" startPage:"+b),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,b),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,a,!0),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"");var c=this._getNavigateUrl("id_token",null)+"&nonce="+encodeURIComponent(this._idTokenNonce);this.config.displayCall?this.config.displayCall(c):this.popUp?(this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,""),this._renewStates.push(a),this.registerCallback(a,this.config.clientId,this.callback),this._loginPopup(c)):this.promptUser(c)},AuthenticationContext.prototype._openPopup=function(a,b,c,d){try{var e=window.screenLeft?window.screenLeft:window.screenX,f=window.screenTop?window.screenTop:window.screenY,g=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,h=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight,i=g/2-c/2+e,j=h/2-d/2+f,k=window.open(a,b,"width="+c+", height="+d+", top="+j+", left="+i);return k.focus&&k.focus(),k}catch(a){return this.warn("Error opening popup, "+a.message),this._loginInProgress=!1,this._acquireTokenInProgress=!1,null}},AuthenticationContext.prototype._handlePopupError=function(a,b,c,d,e){this.warn(d),this._saveItem(this.CONSTANTS.STORAGE.ERROR,c),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,d),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,e),b&&this._activeRenewals[b]&&(this._activeRenewals[b]=null),this._loginInProgress=!1,this._acquireTokenInProgress=!1,a&&a(d,null,c)},AuthenticationContext.prototype._loginPopup=function(a,b,c){var d=this._openPopup(a,"login",this.CONSTANTS.POPUP_WIDTH,this.CONSTANTS.POPUP_HEIGHT),e=c||this.callback;if(null==d){var f="Popup Window is null. This can happen if you are using IE";return void this._handlePopupError(e,b,"Error opening popup",f,f)}if(this._openedWindows.push(d),-1!=this.config.redirectUri.indexOf("#"))var g=this.config.redirectUri.split("#")[0];else var g=this.config.redirectUri;var h=this,i=window.setInterval(function(){if(!d||d.closed||void 0===d.closed){var a="Popup Window closed",c="Popup Window closed by UI action/ Popup Window handle destroyed due to cross zone navigation in IE/Edge";return h.isAngular&&h._broadcast("adal:popUpClosed",c+h.CONSTANTS.RESOURCE_DELIMETER+a),h._handlePopupError(e,b,a,c,c),void window.clearInterval(i)}try{var f=d.location;if(-1!=encodeURI(f.href).indexOf(encodeURI(g)))return h.isAngular?h._broadcast("adal:popUpHashChanged",f.hash):h.handleWindowCallback(f.hash),window.clearInterval(i),h._loginInProgress=!1,h._acquireTokenInProgress=!1,h.info("Closing popup window"),h._openedWindows=[],void d.close()}catch(a){}},1)},AuthenticationContext.prototype._broadcast=function(a,b){!function(){function a(a,b){b=b||{bubbles:!1,cancelable:!1,detail:void 0};var c=document.createEvent("CustomEvent");return c.initCustomEvent(a,b.bubbles,b.cancelable,b.detail),c}if("function"==typeof window.CustomEvent)return!1;a.prototype=window.Event.prototype,window.CustomEvent=a}();var c=new CustomEvent(a,{detail:b});window.dispatchEvent(c)},AuthenticationContext.prototype.loginInProgress=function(){return this._loginInProgress},AuthenticationContext.prototype._hasResource=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS);return b&&!this._isEmpty(b)&&b.indexOf(a+this.CONSTANTS.RESOURCE_DELIMETER)>-1},AuthenticationContext.prototype.getCachedToken=function(a){if(!this._hasResource(a))return null;var b=this._getItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a),c=this._getItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a),d=this.config.expireOffsetSeconds||300;return c&&c>this._now()+d?b:(this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a,""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a,0),null)},AuthenticationContext.prototype.getCachedUser=function(){if(this._user)return this._user;var a=this._getItem(this.CONSTANTS.STORAGE.IDTOKEN);return this._user=this._createUser(a),this._user},AuthenticationContext.prototype.registerCallback=function(a,b,c){this._activeRenewals[b]=a,this._callBacksMappedToRenewStates[a]||(this._callBacksMappedToRenewStates[a]=[]);var d=this;this._callBacksMappedToRenewStates[a].push(c),this._callBackMappedToRenewStates[a]||(this._callBackMappedToRenewStates[a]=function(c,e,f,g){d._activeRenewals[b]=null;for(var h=0;h<d._callBacksMappedToRenewStates[a].length;++h)try{d._callBacksMappedToRenewStates[a][h](c,e,f,g)}catch(f){d.warn(f)}d._callBacksMappedToRenewStates[a]=null,d._callBackMappedToRenewStates[a]=null})},AuthenticationContext.prototype._renewToken=function(a,b,c){this.info("renewToken is called for resource:"+a);var d=this._addAdalFrame("adalRenewFrame"+a),e=this._guid()+"|"+a;this.config.state=e,this._renewStates.push(e),this.verbose("Renew token Expected state: "+e),c=c||"token";var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl(c,a),"prompt");c===this.RESPONSE_TYPE.ID_TOKEN_TOKEN&&(this._idTokenNonce=this._guid(),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),f+="&nonce="+encodeURIComponent(this._idTokenNonce)),f+="&prompt=none",f=this._addHintParameters(f),this.registerCallback(e,a,b),this.verbosePii("Navigate to:"+f),d.src="about:blank",this._loadFrameTimeout(f,"adalRenewFrame"+a,a)},AuthenticationContext.prototype._renewIdToken=function(a,b){this.info("renewIdToken is called");var c=this._addAdalFrame("adalIdTokenFrame"),d=this._guid()+"|"+this.config.clientId;this._idTokenNonce=this._guid(),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),this.config.state=d,this._renewStates.push(d),this.verbose("Renew Idtoken Expected state: "+d);var e=null===b||void 0===b?null:this.config.clientId,b=b||"id_token",f=this._urlRemoveQueryStringParameter(this._getNavigateUrl(b,e),"prompt");f+="&prompt=none",f=this._addHintParameters(f),f+="&nonce="+encodeURIComponent(this._idTokenNonce),this.registerCallback(d,this.config.clientId,a),this.verbosePii("Navigate to:"+f),c.src="about:blank",this._loadFrameTimeout(f,"adalIdTokenFrame",this.config.clientId)},AuthenticationContext.prototype._urlContainsQueryStringParameter=function(a,b){return new RegExp("[\\?&]"+a+"=").test(b)},AuthenticationContext.prototype._urlRemoveQueryStringParameter=function(a,b){var c=new RegExp("(\\&"+b+"=)[^&]+");return a=a.replace(c,""),c=new RegExp("("+b+"=)[^&]+&"),a=a.replace(c,""),c=new RegExp("("+b+"=)[^&]+"),a=a.replace(c,"")},AuthenticationContext.prototype._loadFrameTimeout=function(a,b,c){this.verbose("Set loading state to pending for: "+c),this._saveItem(this.CONSTANTS.STORAGE.RENEW_STATUS+c,this.CONSTANTS.TOKEN_RENEW_STATUS_IN_PROGRESS),this._loadFrame(a,b);var d=this;setTimeout(function(){if(d._getItem(d.CONSTANTS.STORAGE.RENEW_STATUS+c)===d.CONSTANTS.TOKEN_RENEW_STATUS_IN_PROGRESS){d.verbose("Loading frame has timed out after: "+d.CONSTANTS.LOADFRAME_TIMEOUT/1e3+" seconds for resource "+c);var a=d._activeRenewals[c];a&&d._callBackMappedToRenewStates[a]&&d._callBackMappedToRenewStates[a]("Token renewal operation failed due to timeout",null,"Token Renewal Failed"),d._saveItem(d.CONSTANTS.STORAGE.RENEW_STATUS+c,d.CONSTANTS.TOKEN_RENEW_STATUS_CANCELED)}},d.CONSTANTS.LOADFRAME_TIMEOUT)},AuthenticationContext.prototype._loadFrame=function(a,b){var c=this;c.info("LoadFrame: "+b);var d=b;setTimeout(function(){var b=c._addAdalFrame(d);""!==b.src&&"about:blank"!==b.src||(b.src=a,c._loadFrame(a,d))},500)},AuthenticationContext.prototype.acquireToken=function(a,b){if(this._isEmpty(a))return this.warn("resource is required"),void b("resource is required",null,"resource is required");var c=this.getCachedToken(a);return c?(this.info("Token is already in cache for resource:"+a),void b(null,c,null)):this._user||this.config.extraQueryParameter&&-1!==this.config.extraQueryParameter.indexOf("login_hint")?void(this._activeRenewals[a]?this.registerCallback(this._activeRenewals[a],a,b):(this._requestType=this.REQUEST_TYPE.RENEW_TOKEN,a===this.config.clientId?this._user?(this.verbose("renewing idtoken"),this._renewIdToken(b)):(this.verbose("renewing idtoken and access_token"),this._renewIdToken(b,this.RESPONSE_TYPE.ID_TOKEN_TOKEN)):this._user?(this.verbose("renewing access_token"),this._renewToken(a,b)):(this.verbose("renewing idtoken and access_token"),this._renewToken(a,b,this.RESPONSE_TYPE.ID_TOKEN_TOKEN)))):(this.warn("User login is required"),void b("User login is required",null,"login required"))},AuthenticationContext.prototype.acquireTokenPopup=function(a,b,c,d){if(this._isEmpty(a))return this.warn("resource is required"),void d("resource is required",null,"resource is required");if(!this._user)return this.warn("User login is required"),void d("User login is required",null,"login required");if(this._acquireTokenInProgress)return this.warn("Acquire token interactive is already in progress"),void d("Acquire token interactive is already in progress",null,"Acquire token interactive is already in progress");var e=this._guid()+"|"+a;this.config.state=e,this._renewStates.push(e),this._requestType=this.REQUEST_TYPE.RENEW_TOKEN,this.verbose("Renew token Expected state: "+e);var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl("token",a),"prompt");if(f+="&prompt=select_account",b&&(f+=b),c&&-1===f.indexOf("&claims"))f+="&claims="+encodeURIComponent(c);else if(c&&-1!==f.indexOf("&claims"))throw new Error("Claims cannot be passed as an extraQueryParameter");f=this._addHintParameters(f),this._acquireTokenInProgress=!0,this.info("acquireToken interactive is called for the resource "+a),this.registerCallback(e,a,d),this._loginPopup(f,a,d)},AuthenticationContext.prototype.acquireTokenRedirect=function(a,b,c){if(this._isEmpty(a))return this.warn("resource is required"),void d("resource is required",null,"resource is required");var d=this.callback;if(!this._user)return this.warn("User login is required"),void d("User login is required",null,"login required");if(this._acquireTokenInProgress)return this.warn("Acquire token interactive is already in progress"),void d("Acquire token interactive is already in progress",null,"Acquire token interactive is already in progress");var e=this._guid()+"|"+a;this.config.state=e,this.verbose("Renew token Expected state: "+e);var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl("token",a),"prompt");if(f+="&prompt=select_account",b&&(f+=b),c&&-1===f.indexOf("&claims"))f+="&claims="+encodeURIComponent(c);else if(c&&-1!==f.indexOf("&claims"))throw new Error("Claims cannot be passed as an extraQueryParameter");f=this._addHintParameters(f),this._acquireTokenInProgress=!0,this.info("acquireToken interactive is called for the resource "+a),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,window.location.href),this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,e,!0),this.promptUser(f)},AuthenticationContext.prototype.promptUser=function(a){a?(this.infoPii("Navigate to:"+a),window.location.replace(a)):this.info("Navigate url is empty")},AuthenticationContext.prototype.clearCache=function(){this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,""),this._saveItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST,""),this._saveItem(this.CONSTANTS.STORAGE.SESSION_STATE,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,""),this._renewStates=[],this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,""),this._saveItem(this.CONSTANTS.STORAGE.IDTOKEN,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,""),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,"");var a=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS);if(!this._isEmpty(a)){a=a.split(this.CONSTANTS.RESOURCE_DELIMETER);for(var b=0;b<a.length&&""!==a[b];b++)this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a[b],""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a[b],0)}this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,"")},AuthenticationContext.prototype.clearCacheForResource=function(a){this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,""),this._hasResource(a)&&(this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a,""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a,0))},AuthenticationContext.prototype.logOut=function(){this.clearCache(),this._user=null;var a;if(this.config.logOutUri)a=this.config.logOutUri;else{var b="common",c="";this.config.tenant&&(b=this.config.tenant),this.config.postLogoutRedirectUri&&(c="post_logout_redirect_uri="+encodeURIComponent(this.config.postLogoutRedirectUri)),a=this.instance+b+"/oauth2/logout?"+c}this.infoPii("Logout navigate to: "+a),this.promptUser(a)},AuthenticationContext.prototype._isEmpty=function(a){return void 0===a||!a||0===a.length},AuthenticationContext.prototype.getUser=function(a){if("function"!=typeof a)throw new Error("callback is not a function");if(this._user)return void a(null,this._user);var b=this._getItem(this.CONSTANTS.STORAGE.IDTOKEN);this._isEmpty(b)?(this.warn("User information is not available"),a("User information is not available",null)):(this.info("User exists in cache: "),this._user=this._createUser(b),a(null,this._user))},AuthenticationContext.prototype._addHintParameters=function(a){if(this._user&&this._user.profile)if(this._user.profile.sid&&-1!==a.indexOf("&prompt=none"))this._urlContainsQueryStringParameter("sid",a)||(a+="&sid="+encodeURIComponent(this._user.profile.sid));else if(this._user.profile.upn&&(this._urlContainsQueryStringParameter("login_hint",a)||(a+="&login_hint="+encodeURIComponent(this._user.profile.upn)),!this._urlContainsQueryStringParameter("domain_hint",a)&&this._user.profile.upn.indexOf("@")>-1)){var b=this._user.profile.upn.split("@");a+="&domain_hint="+encodeURIComponent(b[b.length-1])}return a},AuthenticationContext.prototype._createUser=function(a){var b=null,c=this._extractIdToken(a);return c&&c.hasOwnProperty("aud")&&(c.aud.toLowerCase()===this.config.clientId.toLowerCase()?(b={userName:"",profile:c},c.hasOwnProperty("upn")?b.userName=c.upn:c.hasOwnProperty("email")&&(b.userName=c.email)):this.warn("IdToken has invalid aud field")),b},AuthenticationContext.prototype._getHash=function(a){return a.indexOf("#/")>-1?a=a.substring(a.indexOf("#/")+2):a.indexOf("#")>-1&&(a=a.substring(1)),a},AuthenticationContext.prototype.isCallback=function(a){a=this._getHash(a);var b=this._deserialize(a);return b.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION)||b.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)||b.hasOwnProperty(this.CONSTANTS.ID_TOKEN)},AuthenticationContext.prototype.getLoginError=function(){return this._getItem(this.CONSTANTS.STORAGE.LOGIN_ERROR)},AuthenticationContext.prototype.getRequestInfo=function(a){a=this._getHash(a);var b=this._deserialize(a),c={valid:!1,parameters:{},stateMatch:!1,stateResponse:"",requestType:this.REQUEST_TYPE.UNKNOWN};if(b&&(c.parameters=b,b.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION)||b.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)||b.hasOwnProperty(this.CONSTANTS.ID_TOKEN))){c.valid=!0;var d="";if(!b.hasOwnProperty("state"))return this.warn("No state returned"),c;if(this.verbose("State: "+b.state),d=b.state,c.stateResponse=d,this._matchState(c))return c;if(!c.stateMatch&&window.parent){c.requestType=this._requestType;for(var e=this._renewStates,f=0;f<e.length;f++)if(e[f]===c.stateResponse){c.stateMatch=!0;break}}}return c},AuthenticationContext.prototype._matchNonce=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN);if(b){b=b.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<b.length;c++)if(b[c]===a.profile.nonce)return!0}return!1},AuthenticationContext.prototype._matchState=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.STATE_LOGIN);if(b){b=b.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<b.length;c++)if(b[c]===a.stateResponse)return a.requestType=this.REQUEST_TYPE.LOGIN,a.stateMatch=!0,!0}var d=this._getItem(this.CONSTANTS.STORAGE.STATE_RENEW);if(d){d=d.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<d.length;c++)if(d[c]===a.stateResponse)return a.requestType=this.REQUEST_TYPE.RENEW_TOKEN,a.stateMatch=!0,!0}return!1},AuthenticationContext.prototype._getResourceFromState=function(a){if(a){var b=a.indexOf("|");if(b>-1&&b+1<a.length)return a.substring(b+1)}return""},AuthenticationContext.prototype.saveTokenFromHash=function(a){this.info("State status:"+a.stateMatch+"; Request type:"+a.requestType),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"");var b=this._getResourceFromState(a.stateResponse);if(a.parameters.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION))this.infoPii("Error :"+a.parameters.error+"; Error description:"+a.parameters[this.CONSTANTS.ERROR_DESCRIPTION]),this._saveItem(this.CONSTANTS.STORAGE.ERROR,a.parameters.error),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,a.parameters[this.CONSTANTS.ERROR_DESCRIPTION]),a.requestType===this.REQUEST_TYPE.LOGIN&&(this._loginInProgress=!1,this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,a.parameters.error_description));else if(a.stateMatch){this.info("State is right"),a.parameters.hasOwnProperty(this.CONSTANTS.SESSION_STATE)&&this._saveItem(this.CONSTANTS.STORAGE.SESSION_STATE,a.parameters[this.CONSTANTS.SESSION_STATE]);var c;a.parameters.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)&&(this.info("Fragment has access token"),this._hasResource(b)||(c=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS)||"",this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,c+b+this.CONSTANTS.RESOURCE_DELIMETER)),this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+b,a.parameters[this.CONSTANTS.ACCESS_TOKEN]),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+b,this._expiresIn(a.parameters[this.CONSTANTS.EXPIRES_IN]))),a.parameters.hasOwnProperty(this.CONSTANTS.ID_TOKEN)&&(this.info("Fragment has id token"),this._loginInProgress=!1,this._user=this._createUser(a.parameters[this.CONSTANTS.ID_TOKEN]),this._user&&this._user.profile?this._matchNonce(this._user)?(this._saveItem(this.CONSTANTS.STORAGE.IDTOKEN,a.parameters[this.CONSTANTS.ID_TOKEN]),b=this.config.loginResource?this.config.loginResource:this.config.clientId,this._hasResource(b)||(c=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS)||"",this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,c+b+this.CONSTANTS.RESOURCE_DELIMETER)),this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+b,a.parameters[this.CONSTANTS.ID_TOKEN]),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+b,this._user.profile.exp)):(this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,"Nonce received: "+this._user.profile.nonce+" is not same as requested: "+this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN)),this._user=null):(a.parameters.error="invalid id_token",a.parameters.error_description="Invalid id_token. id_token: "+a.parameters[this.CONSTANTS.ID_TOKEN],this._saveItem(this.CONSTANTS.STORAGE.ERROR,"invalid id_token"),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"Invalid id_token. id_token: "+a.parameters[this.CONSTANTS.ID_TOKEN])))}else a.parameters.error="Invalid_state",a.parameters.error_description="Invalid_state. state: "+a.stateResponse,this._saveItem(this.CONSTANTS.STORAGE.ERROR,"Invalid_state"),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"Invalid_state. state: "+a.stateResponse);this._saveItem(this.CONSTANTS.STORAGE.RENEW_STATUS+b,this.CONSTANTS.TOKEN_RENEW_STATUS_COMPLETED)},AuthenticationContext.prototype.getResourceForEndpoint=function(a){if(this.config&&this.config.anonymousEndpoints)for(var b=0;b<this.config.anonymousEndpoints.length;b++)if(a.indexOf(this.config.anonymousEndpoints[b])>-1)return null;if(this.config&&this.config.endpoints)for(var c in this.config.endpoints)if(a.indexOf(c)>-1)return this.config.endpoints[c];return a.indexOf("http://")>-1||a.indexOf("https://")>-1?this._getHostFromUri(a)===this._getHostFromUri(this.config.redirectUri)?this.config.loginResource:null:this.config.loginResource},AuthenticationContext.prototype._getHostFromUri=function(a){var b=String(a).replace(/^(https?:)\/\//,"");return b=b.split("/")[0]},AuthenticationContext.prototype.handleWindowCallback=function(a){if(null==a&&(a=window.location.hash),this.isCallback(a)){var b=null,c=!1;this._openedWindows.length>0&&this._openedWindows[this._openedWindows.length-1].opener&&this._openedWindows[this._openedWindows.length-1].opener._adalInstance?(b=this._openedWindows[this._openedWindows.length-1].opener._adalInstance,c=!0):window.parent&&window.parent._adalInstance&&(b=window.parent._adalInstance);var d,e,f=b.getRequestInfo(a),g=null;e=c||window.parent!==window?b._callBackMappedToRenewStates[f.stateResponse]:b.callback,b.info("Returned from redirect url"),b.saveTokenFromHash(f),f.requestType===this.REQUEST_TYPE.RENEW_TOKEN&&window.parent?(window.parent!==window?b.verbose("Window is in iframe, acquiring token silently"):b.verbose("acquiring token interactive in progress"),d=f.parameters[b.CONSTANTS.ACCESS_TOKEN]||f.parameters[b.CONSTANTS.ID_TOKEN],g=b.CONSTANTS.ACCESS_TOKEN):f.requestType===this.REQUEST_TYPE.LOGIN&&(d=f.parameters[b.CONSTANTS.ID_TOKEN],g=b.CONSTANTS.ID_TOKEN);var h=f.parameters[b.CONSTANTS.ERROR_DESCRIPTION],i=f.parameters[b.CONSTANTS.ERROR];try{e&&e(h,d,i,g)}catch(a){b.error("Error occurred in user defined callback function: "+a)}window.parent!==window||c||(b.config.navigateToLoginRequestUrl?window.location.href=b._getItem(b.CONSTANTS.STORAGE.LOGIN_REQUEST):window.location.hash="")}},AuthenticationContext.prototype._getNavigateUrl=function(a,b){var c="common";this.config.tenant&&(c=this.config.tenant);var d=this.instance+c+"/oauth2/authorize"+this._serialize(a,this.config,b)+this._addLibMetadata();return this.info("Navigate url:"+d),d},AuthenticationContext.prototype._extractIdToken=function(a){var b=this._decodeJwt(a);if(!b)return null;try{var c=b.JWSPayload,d=this._base64DecodeStringUrlSafe(c);return d?JSON.parse(d):(this.info("The returned id_token could not be base64 url safe decoded."),null)}catch(a){this.error("The returned id_token could not be decoded",a)}return null},AuthenticationContext.prototype._base64DecodeStringUrlSafe=function(a){return a=a.replace(/-/g,"+").replace(/_/g,"/"),window.atob?decodeURIComponent(escape(window.atob(a))):decodeURIComponent(escape(this._decode(a)))},AuthenticationContext.prototype._decode=function(a){var b="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";a=String(a).replace(/=+$/,"");var c=a.length;if(c%4==1)throw new Error("The token to be decoded is not correctly encoded.");for(var d,e,f,g,h,i,j,k,l="",m=0;m<c;m+=4){if(d=b.indexOf(a.charAt(m)),e=b.indexOf(a.charAt(m+1)),f=b.indexOf(a.charAt(m+2)),g=b.indexOf(a.charAt(m+3)),m+2===c-1){h=d<<18|e<<12|f<<6,i=h>>16&255,j=h>>8&255,l+=String.fromCharCode(i,j);break}if(m+1===c-1){h=d<<18|e<<12,i=h>>16&255,l+=String.fromCharCode(i);break}h=d<<18|e<<12|f<<6|g,i=h>>16&255,j=h>>8&255,k=255&h,l+=String.fromCharCode(i,j,k)}return l},AuthenticationContext.prototype._decodeJwt=function(a){if(this._isEmpty(a))return null;var b=/^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/,c=b.exec(a);return!c||c.length<4?(this.warn("The returned id_token is not parseable."),null):{header:c[1],JWSPayload:c[2],JWSSig:c[3]}},AuthenticationContext.prototype._convertUrlSafeToRegularBase64EncodedString=function(a){return a.replace("-","+").replace("_","/")},AuthenticationContext.prototype._serialize=function(a,b,c){var d=[];if(null!==b){d.push("?response_type="+a),d.push("client_id="+encodeURIComponent(b.clientId)),c&&d.push("resource="+encodeURIComponent(c)),d.push("redirect_uri="+encodeURIComponent(b.redirectUri)),d.push("state="+encodeURIComponent(b.state)),b.hasOwnProperty("slice")&&d.push("slice="+encodeURIComponent(b.slice)),b.hasOwnProperty("extraQueryParameter")&&d.push(b.extraQueryParameter);var e=b.correlationId?b.correlationId:this._guid();d.push("client-request-id="+encodeURIComponent(e))}return d.join("&")},AuthenticationContext.prototype._deserialize=function(a){var b,c=/\+/g,d=/([^&=]+)=([^&]*)/g,e=function(a){return decodeURIComponent(a.replace(c," "))},f={};for(b=d.exec(a);b;)f[e(b[1])]=e(b[2]),b=d.exec(a);return f},AuthenticationContext.prototype._decimalToHex=function(a){for(var b=a.toString(16);b.length<2;)b="0"+b;return b},AuthenticationContext.prototype._guid=function(){var a=window.crypto||window.msCrypto;if(a&&a.getRandomValues){var b=new Uint8Array(16);return a.getRandomValues(b),b[6]|=64,b[6]&=79,b[8]|=128,b[8]&=191,this._decimalToHex(b[0])+this._decimalToHex(b[1])+this._decimalToHex(b[2])+this._decimalToHex(b[3])+"-"+this._decimalToHex(b[4])+this._decimalToHex(b[5])+"-"+this._decimalToHex(b[6])+this._decimalToHex(b[7])+"-"+this._decimalToHex(b[8])+this._decimalToHex(b[9])+"-"+this._decimalToHex(b[10])+this._decimalToHex(b[11])+this._decimalToHex(b[12])+this._decimalToHex(b[13])+this._decimalToHex(b[14])+this._decimalToHex(b[15])}for(var c="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",d="0123456789abcdef",e=0,f="",g=0;g<36;g++)"-"!==c[g]&&"4"!==c[g]&&(e=16*Math.random()|0),"x"===c[g]?f+=d[e]:"y"===c[g]?(e&=3,e|=8,f+=d[e]):f+=c[g];return f},AuthenticationContext.prototype._expiresIn=function(a){return a||(a=3599),this._now()+parseInt(a,10)},AuthenticationContext.prototype._now=function(){return Math.round((new Date).getTime()/1e3)},AuthenticationContext.prototype._addAdalFrame=function(a){if(void 0!==a){this.info("Add adal frame to document:"+a);var b=document.getElementById(a);if(!b){if(document.createElement&&document.documentElement&&(window.opera||-1===window.navigator.userAgent.indexOf("MSIE 5.0"))){var c=document.createElement("iframe");c.setAttribute("id",a),c.setAttribute("aria-hidden","true"),c.style.visibility="hidden",c.style.position="absolute",c.style.width=c.style.height=c.borderWidth="0px",b=document.getElementsByTagName("body")[0].appendChild(c)}else document.body&&document.body.insertAdjacentHTML&&document.body.insertAdjacentHTML("beforeEnd",'<iframe name="'+a+'" id="'+a+'" style="display:none"></iframe>');window.frames&&window.frames[a]&&(b=window.frames[a])}return b}},AuthenticationContext.prototype._saveItem=function(a,b,c){if(this.config&&this.config.cacheLocation&&"localStorage"===this.config.cacheLocation){if(!this._supportsLocalStorage())return this.info("Local storage is not supported"),!1;if(c){var d=this._getItem(a)||"";localStorage.setItem(a,d+b+this.CONSTANTS.CACHE_DELIMETER)}else localStorage.setItem(a,b);return!0}return this._supportsSessionStorage()?(sessionStorage.setItem(a,b),!0):(this.info("Session storage is not supported"),!1)},AuthenticationContext.prototype._getItem=function(a){return this.config&&this.config.cacheLocation&&"localStorage"===this.config.cacheLocation?this._supportsLocalStorage()?localStorage.getItem(a):(this.info("Local storage is not supported"),null):this._supportsSessionStorage()?sessionStorage.getItem(a):(this.info("Session storage is not supported"),null)},AuthenticationContext.prototype._supportsLocalStorage=function(){try{return!!window.localStorage&&(window.localStorage.setItem("storageTest","A"),"A"==window.localStorage.getItem("storageTest")&&(window.localStorage.removeItem("storageTest"),!window.localStorage.getItem("storageTest")))}catch(a){return!1}},AuthenticationContext.prototype._supportsSessionStorage=function(){try{return!!window.sessionStorage&&(window.sessionStorage.setItem("storageTest","A"),"A"==window.sessionStorage.getItem("storageTest")&&(window.sessionStorage.removeItem("storageTest"),!window.sessionStorage.getItem("storageTest")))}catch(a){return!1}},AuthenticationContext.prototype._cloneConfig=function(a){if(null===a||"object"!=typeof a)return a;var b={};for(var c in a)a.hasOwnProperty(c)&&(b[c]=a[c]);return b},AuthenticationContext.prototype._addLibMetadata=function(){return"&x-client-SKU=Js&x-client-Ver="+this._libVersion()},AuthenticationContext.prototype.log=function(a,b,c,d){if(a<=Logging.level){if(!Logging.piiLoggingEnabled&&d)return;var e=(new Date).toUTCString(),f="";f=this.config.correlationId?e+":"+this.config.correlationId+"-"+this._libVersion()+"-"+this.CONSTANTS.LEVEL_STRING_MAP[a]+" "+b:e+":"+this._libVersion()+"-"+this.CONSTANTS.LEVEL_STRING_MAP[a]+" "+b,c&&(f+="\nstack:\n"+c.stack),Logging.log(f)}},AuthenticationContext.prototype.error=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b)},AuthenticationContext.prototype.warn=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null)},AuthenticationContext.prototype.info=function(a){
-this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null)},AuthenticationContext.prototype.verbose=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null)},AuthenticationContext.prototype.errorPii=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b,!0)},AuthenticationContext.prototype.warnPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null,!0)},AuthenticationContext.prototype.infoPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null,!0)},AuthenticationContext.prototype.verbosePii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null,!0)},AuthenticationContext.prototype._libVersion=function(){return"1.0.17"},true&&module.exports&&(module.exports=AuthenticationContext,module.exports.inject=function(a){return new AuthenticationContext(a)}),AuthenticationContext}();
+this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null)},AuthenticationContext.prototype.verbose=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null)},AuthenticationContext.prototype.errorPii=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b,!0)},AuthenticationContext.prototype.warnPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null,!0)},AuthenticationContext.prototype.infoPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null,!0)},AuthenticationContext.prototype.verbosePii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null,!0)},AuthenticationContext.prototype._libVersion=function(){return"1.0.17"}, true&&module.exports&&(module.exports=AuthenticationContext,module.exports.inject=function(a){return new AuthenticationContext(a)}),AuthenticationContext}();
 
 /***/ }),
 
@@ -14243,7 +14455,7 @@ this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null)},AuthenticationContext.protot
 /*!*****************************************!*\
   !*** ./node_modules/tslib/tslib.es6.js ***!
   \*****************************************/
-/*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault */
+/*! exports provided: __extends, __assign, __rest, __decorate, __param, __metadata, __awaiter, __generator, __exportStar, __values, __read, __spread, __spreadArrays, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14260,6 +14472,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__values", function() { return __values; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__read", function() { return __read; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spread", function() { return __spread; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spreadArrays", function() { return __spreadArrays; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__await", function() { return __await; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncGenerator", function() { return __asyncGenerator; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncDelegator", function() { return __asyncDelegator; });
@@ -14312,8 +14525,10 @@ function __rest(s, e) {
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
         t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
     return t;
 }
 
@@ -14407,6 +14622,14 @@ function __spread() {
     return ar;
 }
 
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
 function __await(v) {
     return this instanceof __await ? (this.v = v, this) : new __await(v);
 }
@@ -14473,7 +14696,7 @@ g = (function() {
 
 try {
 	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
+	g = g || new Function("return this")();
 } catch (e) {
 	// This works if the window reference is available
 	if (typeof window === "object") g = window;

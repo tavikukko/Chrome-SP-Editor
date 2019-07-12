@@ -1,6 +1,6 @@
 import { GraphQueryableInstance, GraphQueryableCollection } from "./graphqueryable";
 import { TypedHash } from "@pnp/common";
-import { Site as ISite, List as IList, ListItem as IListItem, ListItemVersion as IListItemVersion, ContentType as IContentType, ColumnDefinition as IColumnDefinition, ListInfo as IListInfo, FieldValueSet as IFieldValueSet, ColumnLink as IColumnLink } from "@microsoft/microsoft-graph-types";
+import { Site as ISite, List as IList, ListItem as IListItem, ListItemVersion as IListItemVersion, ContentType as IContentType, ColumnDefinition as IColumnDefinition, ListInfo as IListInfo, ColumnLink as IColumnLink } from "@microsoft/microsoft-graph-types";
 import { Drive, Drives, DriveItem } from "./onedrive";
 export interface ISitesMethods {
     root: GraphSite;
@@ -140,7 +140,7 @@ export declare class GraphItems extends GraphQueryableCollection<IListItem[]> {
     * @param additionalProperties A plain object collection of additional properties you want to set in list
     *
     * */
-    create(fields: IFieldValueSet): Promise<IItemCreationResult>;
+    create(fields: TypedHash<any>): Promise<IItemCreationResult>;
 }
 /**
  * Describes an Item object
@@ -165,7 +165,7 @@ export declare class GraphItem extends GraphQueryableInstance<IListItem> {
  * Describes a collection of Field objects
  *
  */
-export declare class GraphFields extends GraphQueryableCollection<IFieldValueSet[]> {
+export declare class GraphFields extends GraphQueryableCollection<any[]> {
 }
 /**
  * Describes a collection of Version objects

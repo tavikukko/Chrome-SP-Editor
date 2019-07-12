@@ -11,6 +11,7 @@ export declare class HttpRequestError extends Error {
     static init(r: Response): Promise<HttpRequestError>;
 }
 export declare abstract class ODataParserBase<T> implements ODataParser<T> {
+    protected rawJson: any;
     parse(r: Response): Promise<T>;
     protected parseImpl(r: Response, resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: Error) => void): void;
     /**
@@ -28,7 +29,7 @@ export declare abstract class ODataParserBase<T> implements ODataParser<T> {
      */
     protected parseODataJSON<U>(json: any): U;
 }
-export declare class ODataDefaultParser extends ODataParserBase<any> {
+export declare class ODataDefaultParser<T = any> extends ODataParserBase<T> {
 }
 export declare class TextParser extends ODataParserBase<string> {
     protected parseImpl(r: Response, resolve: (value: any) => void): void;

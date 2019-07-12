@@ -18,6 +18,8 @@ import { RelatedItemManger } from "./relateditems";
 import { AppCatalog } from "./appcatalog";
 import { RegionalSettings } from "./regionalsettings";
 import { ClientSidePage, ClientSidePageComponent } from "./clientsidepages";
+import { ISiteDesignRun, ISiteDesignTask, ISiteScriptActionStatus } from "./sitedesigns";
+import { ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from "./sitescripts";
 /**
  * Describes a collection of webs
  *
@@ -379,6 +381,26 @@ export declare class Web extends SharePointQueryableShareableWeb {
      * Applies theme updates from the parent hub site collection.
      */
     syncHubSiteTheme(): Promise<void>;
+    /**
+     * Retrieves a list of site design that have run on the current web
+     * @param siteDesignId (Optional) the site design ID, if not provided will return all site design runs
+     */
+    getSiteDesignRuns(siteDesignId?: string): Promise<ISiteDesignRun[]>;
+    /**
+     * Gets the site script syntax (JSON) for a specific web
+     * @param extractInfo configuration object to specify what to extract
+     */
+    getSiteScript(extractInfo?: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult>;
+    /**
+     * Adds a site design task on the current web to be invoked asynchronously.
+     * @param siteDesignId The ID of the site design to create a task for
+     */
+    addSiteDesignTask(siteDesignId: string): Promise<ISiteDesignTask>;
+    /**
+     * Retrieves the status of a site design that has been run or is still running
+     * @param runId the run ID
+     */
+    getSiteDesignRunStatus(runId: string): Promise<ISiteScriptActionStatus[]>;
 }
 /**
  * Result from adding a web

@@ -19,6 +19,20 @@ export interface SiteScriptUtilityMethods {
     getSiteScriptMetadata(id: string): Promise<SiteScriptInfo>;
     deleteSiteScript(id: string): Promise<void>;
     updateSiteScript(siteScriptUpdateInfo: SiteScriptUpdateInfo, content?: any): Promise<SiteScriptInfo>;
+    getSiteScriptFromList(listUrl: string): Promise<string>;
+    getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult>;
+}
+export interface ISiteScriptSerializationInfo {
+    IncludeBranding?: boolean;
+    IncludedLists?: string[];
+    IncludeLinksToExportedItems?: boolean;
+    IncludeRegionalSettings?: boolean;
+    IncludeSiteExternalSharingCapability?: boolean;
+    IncludeTheme?: boolean;
+}
+export interface ISiteScriptSerializationResult {
+    JSON: string;
+    Warnings: string[];
 }
 /**
  * Implements the site script API REST methods
@@ -65,5 +79,16 @@ export declare class SiteScripts extends SharePointQueryable implements SiteScri
      * @param content (Optional) A new JSON script defining the script actions. For more information, see Site design JSON schema.
      */
     updateSiteScript(siteScriptUpdateInfo: SiteScriptUpdateInfo, content?: any): Promise<SiteScriptInfo>;
+    /**
+     * Gets the site script syntax (JSON) for a specific list
+     * @param listUrl The absolute url of the list to retrieve site script
+     */
+    getSiteScriptFromList(listUrl: string): Promise<string>;
+    /**
+     * Gets the site script syntax (JSON) for a specific web
+     * @param webUrl The absolute url of the web to retrieve site script
+     * @param extractInfo configuration object to specify what to extract
+     */
+    getSiteScriptFromWeb(webUrl: string, extractInfo: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult>;
 }
 //# sourceMappingURL=sitescripts.d.ts.map

@@ -208,6 +208,10 @@ export declare class List extends SharePointQueryableSecurable {
      * @param checkInComment Optional check in comment.
      */
     addValidateUpdateItemUsingPath(formValues: ListItemFormUpdateValue[], decodedUrl: string, bNewDocumentUpdate?: boolean, checkInComment?: string): Promise<ListItemFormUpdateValue[]>;
+    /**
+    * Gets the site script syntax (JSON) for the current list
+    */
+    getSiteScript(): Promise<string>;
 }
 export interface ListAddResult {
     list: List;

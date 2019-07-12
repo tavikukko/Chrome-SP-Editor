@@ -8,6 +8,7 @@ import { User as IUser, Message as IMessage } from "@microsoft/microsoft-graph-t
 import { Messages, MailboxSettings, MailFolders } from "./messages";
 import { DirectoryObjects } from "./directoryobjects";
 import { People } from "./people";
+import { Photo } from "./photos";
 import { InsightsMethods } from "./insights";
 /**
  * Describes a collection of Users objects
@@ -33,6 +34,10 @@ export declare class User extends GraphQueryableInstance<IUser> {
     * The Contacts associated with the user
     */
     readonly contacts: Contacts;
+    /**
+    * The photo associated with the user
+    */
+    readonly photo: Photo;
     /**
     * The Teams associated with the user
     */
