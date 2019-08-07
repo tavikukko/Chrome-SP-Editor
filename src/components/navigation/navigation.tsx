@@ -33,14 +33,92 @@ class fabricNav extends React.Component<RouteComponentProps, IState> {
                 {
                   name: 'Home',
                   url: '/',
-                  icon: 'News',
+
                   key: 'key1',
                 },
                 {
                   name: 'Editor',
                   url: '/editor',
-                  icon: 'News',
+
                   key: 'key2',
+                },
+                {
+                  name: 'Script links',
+                  url: '/scriptlinks',
+
+                  key: 'key3',
+                },
+                {
+                  name: 'Files',
+                  url: '/files',
+
+                  key: 'key4',
+                },
+                {
+                  name: 'Web properties',
+                  url: '/webproperties',
+
+                  key: 'key5',
+                },
+                {
+                  name: 'List properties',
+                  url: '/listproperties',
+
+                  key: 'key6',
+                },
+                {
+                  name: 'Webhooks',
+                  url: '/webhooks',
+
+                  key: 'key7',
+                },
+                {
+                  name: 'PnP JS Console',
+                  url: '/pnpjsconsole',
+
+                  key: 'key8',
+                },
+                {
+                  name: 'Search',
+                  url: '/search',
+
+                  key: 'key9',
+                },
+                {
+                  name: 'Page editor',
+                  url: '/pageeditor',
+
+                  key: 'key10',
+                },
+                {
+                  name: 'File editor',
+                  url: '/fileeditor',
+
+                  key: 'key11',
+                },
+                {
+                  name: 'Modern properties',
+                  url: '/modernproperties',
+
+                  key: 'key12',
+                },
+                {
+                  name: 'Site designs',
+                  url: '/sitedesigns',
+
+                  key: 'key13',
+                },
+                {
+                  name: 'Site scripts',
+                  url: '/site scripts',
+
+                  key: 'key14',
+                },
+                {
+                  name: 'App catalog',
+                  url: '/appcatalog',
+
+                  key: 'key15',
                 }
               ]
             }
