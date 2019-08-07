@@ -1,7 +1,7 @@
 import React from 'react';
 import MonacoEditor from "react-monaco-editor";
 
-const EditorPage: React.FC = () => {
+const PnPjsConsole: React.FC = () => {
   return (
       <MonacoEditor
           height="600"
@@ -12,5 +12,5 @@ const EditorPage: React.FC = () => {
   );
 }
 
-export default EditorPage;
+export default PnPjsConsole;
 
