@@ -2,18 +2,12 @@ import React from "react"
 import { withRouter, RouteComponentProps } from "react-router"
 import { Nav } from "office-ui-fabric-react"
 
-interface IProps {
-  className: string
-}
-
-type Props = IProps & RouteComponentProps<{}>
-
 interface IState {
   readonly selectedKey: string | any
 }
 
-class fabricNav extends React.Component<Props, IState> {
-  constructor(props: Props) {
+class fabricNav extends React.Component<RouteComponentProps, IState> {
+  constructor(props: RouteComponentProps) {
     super(props)
 
     this.state = {
@@ -24,7 +18,6 @@ class fabricNav extends React.Component<Props, IState> {
   render() {
     const { selectedKey } = this.state
     return (
-      <div className={this.props.className}>
         <Nav
           selectedKey={selectedKey}
           onLinkClick={(event, element) => {
@@ -53,7 +46,6 @@ class fabricNav extends React.Component<Props, IState> {
             }
           ]}
         />
-      </div>
     )
   }
 }
