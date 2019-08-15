@@ -114,16 +114,40 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
 
     var exescript = function exescript(script) {
       var params = arguments;
-      if (typeof SystemJS == 'undefined') {
-        var s = document.createElement('script');
-        s.src = sj;
-        s.onload = function () {
-          script.apply(this, params);
-        };
-        (document.head || document.documentElement).appendChild(s);
+
+      if (window._spPageContextInfo) {
+
+        if (typeof SystemJS == 'undefined') {
+          var s = document.createElement('script');
+          s.src = sj;
+          s.onload = function () {
+            script.apply(this, params);
+          };
+          (document.head || document.documentElement).appendChild(s);
+        }
+        else script.apply(this, params);
       }
-      else script.apply(this, params);
-    }
+      else if (window.moduleLoaderPromise) {
+        // polyfill for _spPageContextInfo on modern sites
+        window.moduleLoaderPromise.then(function (e) {
+
+          window._spPageContextInfo = e.context._pageContext._legacyPageContext;
+
+          if (typeof SystemJS == 'undefined') {
+            var s = document.createElement('script');
+            s.src = sj;
+            s.onload = function () {
+              script.apply(this, params);
+            };
+            (document.head || document.documentElement).appendChild(s);
+          }
+          else script.apply(this, params);
+
+        });
+      }
+      else { alert("Could not get _spPageContextInfo, propably because this ain't a SharePoint site..") }
+
+    };
 
     var pnp = "var speditorpnp = '" + chrome.extension.getURL('app/js/pnpjs.es5.umd.bundle.js') + "';";
     var alertify = "var alertify = '" + chrome.extension.getURL('app/js/alertify.js') + "';";
