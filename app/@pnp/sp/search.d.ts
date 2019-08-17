@@ -343,7 +343,7 @@ export interface SearchResponse {
         ValueType: string;
     }[];
     PrimaryQueryResult?: ResultTableCollection;
-    SecondaryQueryResults?: ResultTableCollection;
+    SecondaryQueryResults?: ResultTableCollection[];
     SpellingSuggestion?: string;
     TriggeredRules?: any[];
 }

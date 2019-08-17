@@ -9,6 +9,7 @@ import { Messages, MailboxSettings, MailFolders } from "./messages";
 import { DirectoryObjects } from "./directoryobjects";
 import { People } from "./people";
 import { Photo } from "./photos";
+import { Calendar } from "./calendars";
 import { InsightsMethods } from "./insights";
 /**
  * Describes a collection of Users objects
@@ -34,6 +35,10 @@ export declare class User extends GraphQueryableInstance<IUser> {
     * The Contacts associated with the user
     */
     readonly contacts: Contacts;
+    /**
+     * The calendar associated with the user
+     */
+    readonly calendar: Calendar;
     /**
     * The photo associated with the user
     */

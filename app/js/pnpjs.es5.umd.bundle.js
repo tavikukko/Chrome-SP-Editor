@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.4
+ * v1.3.5
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -3827,6 +3827,10 @@ var GraphHttpClient = /** @class */ (function () {
         if (!headers.has("Content-Type")) {
             headers.append("Content-Type", "application/json");
         }
+        if (!headers.has("SdkVersion")) {
+            // this marks the requests for understanding by the service
+            headers.append("SdkVersion", "PnPCoreJS/1.3.5");
+        }
         var opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__["extend"])(options, { headers: headers });
         return this.fetchRaw(url, opts);
     };
@@ -5943,7 +5947,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _directoryobjects__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./directoryobjects */ "./build/packages-es5/graph/src/directoryobjects.js");
 /* harmony import */ var _people__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./people */ "./build/packages-es5/graph/src/people.js");
 /* harmony import */ var _photos__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./photos */ "./build/packages-es5/graph/src/photos.js");
-/* harmony import */ var _insights__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./insights */ "./build/packages-es5/graph/src/insights.js");
+/* harmony import */ var _calendars__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./calendars */ "./build/packages-es5/graph/src/calendars.js");
+/* harmony import */ var _insights__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./insights */ "./build/packages-es5/graph/src/insights.js");
+
 
 
 
@@ -6004,6 +6010,16 @@ var User = /** @class */ (function (_super) {
         */
         get: function () {
             return new _contacts__WEBPACK_IMPORTED_MODULE_3__["Contacts"](this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "calendar", {
+        /**
+         * The calendar associated with the user
+         */
+        get: function () {
+            return new _calendars__WEBPACK_IMPORTED_MODULE_12__["Calendar"](this, "calendar");
         },
         enumerable: true,
         configurable: true
@@ -6195,7 +6211,7 @@ var User = /** @class */ (function (_super) {
         * The Insights associated with me
         */
         get: function () {
-            return new _insights__WEBPACK_IMPORTED_MODULE_12__["Insights"](this);
+            return new _insights__WEBPACK_IMPORTED_MODULE_13__["Insights"](this);
         },
         enumerable: true,
         configurable: true
@@ -9555,7 +9571,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.4");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.5");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -14015,11 +14031,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.4");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.5");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.4");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.5");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
