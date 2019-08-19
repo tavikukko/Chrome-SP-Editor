@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ionic/react": "^4.8.0-rc.0",
+    "@ionic/react-router": "^4.8.0-rc.0",
+    "@uifabric/azure-themes": "^7.0.5",
+    "ionicons": "^4.6.2",
     "monaco-editor": "^0.17.1",
     "office-ui-fabric-react": "^7.20.1",
     "react": "^16.8.6",
