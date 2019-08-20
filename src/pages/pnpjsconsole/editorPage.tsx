@@ -3,6 +3,17 @@ import MonacoEditor from "react-monaco-editor";
 import { editor } from "monaco-editor";
 import * as editorApi from "monaco-editor/esm/vs/editor/editor.api";
 import { Stack } from "office-ui-fabric-react";
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonMenuToggle,
+  IonButton,
+  IonIcon,
+  IonContent,
+  IonMenuButton
+} from "@ionic/react";
+import { MenuControllerI } from "@ionic/core";
 
 export interface IEditorProps {}
 
@@ -17,17 +28,9 @@ export default class PnPjsConsole extends React.Component<IEditorProps> {
 
   constructor(props: any) {
     super(props);
-    window.addEventListener("resize", this.updateLayout);
   }
 
-  public componentWillUnmount() {
-    window.removeEventListener("resize", this.updateLayout);
-  }
 
-  private updateLayout = () => {
-    this.editor.layout();
-    this.editor.render();
-  };
 
   private editorDidMount = (
     editor: editor.IStandaloneCodeEditor,
@@ -148,26 +151,36 @@ taxonomy.termStores.get().then(ts => {
       language: "typescript",
       lineNumbers: "on",
       roundedSelection: true,
-      scrollBeyondLastLine: false,
+      scrollBeyondLastLine: true,
       readOnly: false,
-      theme: "vs-dark",
+      // theme: "vs-dark",
       fontSize: 16,
       // glyphMargin: true,
       renderIndentGuides: true,
-      suggestOnTriggerCharacters: true
+      suggestOnTriggerCharacters: true,
+      automaticLayout: true
     };
 
     return (
-      <MonacoEditor
-        language="typescript"
-        theme="vs-dark"
-        value={code}
-        width="100%"
-        height="100vh"
-        options={options}
-        onChange={this.onChange}
-        editorDidMount={this.editorDidMount}
-      />
+      <>
+        <IonHeader>
+          <IonToolbar>
+            <IonMenuButton slot="start" />
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <MonacoEditor
+            language="typescript"
+            // theme="vs-dark"
+            value={code}
+            width="100%"
+            height="100vh"
+            options={options}
+            onChange={this.onChange}
+            editorDidMount={this.editorDidMount}
+          />
+        </IonContent>
+      </>
     );
   }
 }

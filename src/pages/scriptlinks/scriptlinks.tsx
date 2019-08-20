@@ -20,6 +20,7 @@ import {
   TextField,
   Separator
 } from "office-ui-fabric-react";
+import { IonHeader, IonToolbar, IonMenuButton, IonContent } from "@ionic/react";
 
 const originalItems: IDocument[] = [];
 
@@ -47,7 +48,8 @@ class ScriptLinks extends React.Component<any, IAppState> {
       for (let i = 0; i < 10; i++) {
         originalItems.push({
           name: "~sitecollection/Style Library/Valo/riot.min.js?v=1.17",
-          nameId: i + 10000
+          nameId: i + 10000,
+          scope: (i % 2 == 0) ? 'Site Collection' : 'Current Web'
         });
       }
     }
@@ -79,6 +81,19 @@ class ScriptLinks extends React.Component<any, IAppState> {
         maxWidth: 350,
         minWidth: 210,
         name: "Path"
+      },
+      {
+        data: "string",
+        fieldName: "scope",
+        isPadded: true,
+        isResizable: true,
+        isRowHeader: true,
+        isSorted: true,
+        isSortedDescending: false,
+        key: "column3",
+        maxWidth: 350,
+        minWidth: 210,
+        name: "Scope"
       }
     ];
     this.state = {
@@ -93,105 +108,79 @@ class ScriptLinks extends React.Component<any, IAppState> {
     const { detailsListColumns, filteredItems } = this.state;
 
     return (
-      <Stack styles={{ root: { maxWidth: 800 } }} horizontal gap={60}>
-        <Stack gap={20} grow>
-          <Sticky stickyPosition={StickyPositionType.Header}>
-            Current web scriptlinks
-            <CommandBar
-              items={[
-                {
-                  key: "newItem",
-                  name: "New",
-                  cacheKey: "myCacheKey", // changing this key will invalidate this items cache
-                  iconProps: {
-                    iconName: "Add"
-                  },
-                  ariaLabel: "New",
-                  onClick: this._showNewPanel
-                }
-              ]}
-              overflowButtonProps={{ ariaLabel: "More commands" }}
-              ariaLabel={
-                "Use left and right arrow keys to navigate between commands"
-              }
+      <>
+        <IonHeader>
+          <IonToolbar>
+            <IonMenuButton slot="start" />
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <Stack horizontal gap={60}>
+            <Stack gap={20} grow>
+                <CommandBar
+                  items={[
+                    {
+                      key: "newItem",
+                      name: "New",
+                      cacheKey: "myCacheKey", // changing this key will invalidate this items cache
+                      iconProps: {
+                        iconName: "Add"
+                      },
+                      ariaLabel: "New",
+                      onClick: this._showNewPanel
+                    }
+                  ]}
+                  overflowButtonProps={{ ariaLabel: "More commands" }}
+                  ariaLabel={
+                    "Use left and right arrow keys to navigate between commands"
+                  }
+                />
+              <DetailsList
+                items={filteredItems}
+                columns={detailsListColumns}
+                selectionMode={SelectionMode.single}
+                setKey="set"
+                layoutMode={DetailsListLayoutMode.justified}
+                isHeaderVisible={true}
+                enterModalSelectionOnTouch={true}
+                onItemInvoked={this._showItemPanel}
+              />
+            </Stack>
+            <Panel
+              isOpen={this.state.showItemPanel}
+              type={PanelType.smallFixedFar}
+              onDismiss={this._hideItemPanel}
+              isLightDismiss={true}
+              isFooterAtBottom={true}
+              headerText="Panel with footer at bottom"
+              closeButtonAriaLabel="Close"
+              onRenderFooterContent={this._onRenderItemFooterContent}
             />
-          </Sticky>
-          <DetailsList
-            items={filteredItems}
-            columns={detailsListColumns}
-            selectionMode={SelectionMode.single}
-            setKey="set"
-            layoutMode={DetailsListLayoutMode.justified}
-            isHeaderVisible={true}
-            enterModalSelectionOnTouch={true}
-            onItemInvoked={this._showItemPanel}
-          />
-          <Separator />
-          <Sticky stickyPosition={StickyPositionType.Header}>
-            Site collection scriptlinks
-            <CommandBar
-              items={[
-                {
-                  key: "newItem",
-                  name: "New",
-                  cacheKey: "myCacheKey", // changing this key will invalidate this items cache
-                  iconProps: {
-                    iconName: "Add"
-                  },
-                  ariaLabel: "New",
-                  onClick: this._showNewPanel
-                }
-              ]}
-              overflowButtonProps={{ ariaLabel: "More commands" }}
-              ariaLabel={
-                "Use left and right arrow keys to navigate between commands"
-              }
-            />
-          </Sticky>
-          <DetailsList
-            items={filteredItems}
-            columns={detailsListColumns}
-            selectionMode={SelectionMode.single}
-            setKey="set"
-            layoutMode={DetailsListLayoutMode.justified}
-            isHeaderVisible={true}
-            enterModalSelectionOnTouch={true}
-            onItemInvoked={this._showItemPanel}
-          />
-        </Stack>
-        <Panel
-          isOpen={this.state.showItemPanel}
-          type={PanelType.smallFixedFar}
-          onDismiss={this._hideItemPanel}
-          isLightDismiss={true}
-          isFooterAtBottom={true}
-          headerText="Panel with footer at bottom"
-          closeButtonAriaLabel="Close"
-          onRenderFooterContent={this._onRenderItemFooterContent}
-        />
-        <Panel
-          isOpen={this.state.showNewPanel}
-          type={PanelType.smallFixedFar}
-          onDismiss={this._hideNewPanel}
-          isLightDismiss={true}
-          isFooterAtBottom={true}
-          headerText="Panel with footer at bottom"
-          closeButtonAriaLabel="Close"
-          onRenderFooterContent={this._onRenderNewFooterContent}
-        >
-          <Stack>
-            <TextField
-              label="Custom label rendering"
-              description="Click the (i) icon!"
-            />
+            <Panel
+              isOpen={this.state.showNewPanel}
+              type={PanelType.smallFixedFar}
+              onDismiss={this._hideNewPanel}
+              isLightDismiss={true}
+              isFooterAtBottom={true}
+              headerText="Panel with footer at bottom"
+              closeButtonAriaLabel="Close"
+              onRenderFooterContent={this._onRenderNewFooterContent}
+            >
+              <Stack>
+                <TextField
+                  label="Custom label rendering"
+                  description="Click the (i) icon!"
+                />
 
-            <TextField
-              label="Custom description rendering"
-              description="A colorful description!"
-            />
+                <TextField
+                  label="Custom description rendering"
+                  description="A colorful description!"
+                />
+              </Stack>
+            </Panel>
           </Stack>
-        </Panel>
-      </Stack>
+        </IonContent>
+      </>
     );
   }
   private _onRenderItemFooterContent = (): JSX.Element => {
