@@ -66,11 +66,12 @@ riot.tag("spquicklinks", `
           this.links = [
             { title: "Current site", url: "", target: "", css: "disabled normal-cursor" },
             { title: "Site settings", url: this.currSiteUrl + "/_layouts/15/settings.aspx", target: "_blank", css: "pointer-cursor" },
+            { title: "Site contents", url: this.currSiteUrl + "/_layouts/15/viewlsts.aspx", target: "_blank", css: "pointer-cursor" },
             { title: "Recycle bin", url: this.currSiteUrl + "/_layouts/15/AdminRecycleBin.aspx?view=5", target: "_blank", css: "pointer-cursor" },
             { title: "SPFx", url: "", target: "", css: "disabled normal-cursor" },
             { title: "Load debug manifest to current url", url: this.fullUrl + this.queryStr + "loadSPFX=true&debugManifestsFile=https://localhost:4321/temp/manifests.js", target: "_self", css: "pointer-cursor" },
             { title: "Remote workbench", url: this.currSiteUrl + "/_layouts/workbench.aspx", target: "_blank", css: "pointer-cursor" },
-            { title: "Local workbench", url: "https://localhost:4321/temp/workbench.html", target: "_blank", css: "pointer-cursor" }
+            { title: "Local workbench", url: "https://localhost:4321/temp/workbench.html", target: "_blank", css: "pointer-cursor" },
           ]
 
           // Add pages library
