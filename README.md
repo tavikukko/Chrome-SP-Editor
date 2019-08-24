@@ -8,11 +8,13 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 5.1.0 New feature in Quick links
+    * Change PageLayoutType for modern page (Home, Article, SingleWebPartAppPage)
 - 5.0.6 New link to Quick links
     * Link to Site contents
 - 5.0.5 updates
     * Updated PnPjs to 1.3.5
-- 5.0.4 added possibility to modify loadedjs/css also in modenr pages, thanks [@Gennady-G](https://github.com/Gennady-G)
+- 5.0.4 added possibility to modify loadedjs/css also in modern pages, thanks [@Gennady-G](https://github.com/Gennady-G)
 - 5.0.3 updates
     * Updated PnPjs to 1.3.4
     * Updated monaco-editor 0.17.1

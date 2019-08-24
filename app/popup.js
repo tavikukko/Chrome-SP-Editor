@@ -12,124 +12,155 @@ riot.tag("spquicklinks", `
   </ul>
   <!-- Tab panes -->
   <div class="tab-content">
+
     <div class="tab-pane fade active in" id="links">
       <div if={!info} class="list-group">
         <a href="#" each="{link in links}" class="list-group-item {link.css}" onclick="{browse}" data-id="{link.url}" data-target="{link.target}">{link.title}</a>
       </div>
     </div>
+
     <div class="tab-pane fade" id="properties">
-
-    <ul if={!info} class="list-group">
-      <input onKeyUp="{ filterprops }" id="filterprops" type="text" class="form-control" placeholder="search...">
-      <li class="list-group-item disabled normal-cursor"><b>number of properties: { this.filtered().length }</b></li>
-      <virtual each="{ property in filtered() }">
-        <li class="list-group-item normal-cursor"><b>{ property.key }:</b></li>
-        <li class="list-group-item normal-cursor">{ property.value }</li>
-      </virtual>
-    </ul>
-
+      <ul if={!info} class="list-group">
+        <li if="{ plo && plo.PageLayoutType }" class="list-group-item disabled normal-cursor"><b>Current Page Layout</b></li>
+        <div if="{ plo && plo.PageLayoutType }" class="input-group">
+          <select class="form-control" ref="pageLayout">
+            <option value="Home" selected="{plo.PageLayoutType === 'Home'}">Home Page Layout</option>
+            <option value="Article" selected="{plo.PageLayoutType === 'Article'}" >Article Page Layout</option>
+            <option value="SingleWebPartAppPage" selected="{plo.PageLayoutType === 'SingleWebPartAppPage'}">Single WebPart App Page Layout</option>
+          </select>
+          <span class="input-group-btn">
+            <button class="btn btn-ligth" type="button" tabindex="-1" onclick="{updateLayout}">
+            <i if="{ updating }" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i>
+            <virtual if="{ !updating }">Update</virtual>
+            </button>
+          </span>
+        </div>
+        <li class="list-group-item disabled normal-cursor"><b>Number of properties: { this.filtered().length }</b></li>
+        <input onKeyUp="{ filterprops }" id="filterprops" type="text" class="form-control" placeholder="Filter properties...">
+        <virtual each="{ property in filtered() }">
+          <li class="list-group-item normal-cursor"><b>{ property.key }:</b></li>
+          <li class="list-group-item normal-cursor">{ property.value }</li>
+        </virtual>
+      </ul>
     </div>
+
   </div>
   <!-- info -->
-  <p if={!info} class="bottom-info">
-    <b>To use full Chrome-SP-Editor powers close this popup, press F12 and select SharePoint tab..</b>
-  </p>
-  <div if={info} class="panel-body">
-    <b>Could not load links, propably because this ain't a SharePoint site..</b>
+  <div>
+    <p if={!info} class="bottom-info">
+      <b>To use full Chrome-SP-Editor powers close this popup, press F12 and select SharePoint tab..</b>
+    </p>
+    <div if={info} class="panel-body">
+      <b>Could not load links, propably because this ain't a SharePoint site..</b>
+    </div>
   </div>
-
 </div>`,
   function (opts) {
 
     this.filterstr = "";
     this.props = [];
+    this.ctx = {};
+    this.plo = {};
+    this.updating = false;
 
-    this.on("mount", function () {
+    this.on("mount", async function () {
+      this.fullUrl = await this.getCurrentTabUrl()
       this.init();
-    });
+    }.bind(this));
 
     this.listener = function (msg) {
-      this.ctx = JSON.parse(msg);
-      this.getCurrentTabUrl().then(tabUrl => {
-        this.fullUrl = tabUrl;
+      var res = JSON.parse(msg);
+
+      if (res._spPageContextInfo) {
+        this.ctx = res;
+
         this.info = false;
         // check sp url
-        if (this.ctx && this.ctx._spPageContextInfo) {
-          this.currSiteUrl = this.ctx._spPageContextInfo.webAbsoluteUrl;
+        this.currSiteUrl = this.ctx._spPageContextInfo.webAbsoluteUrl;
 
-          this.queryStr = "?";
-          if (this.fullUrl.indexOf("?") > -1) {
-            this.queryStr = "&";
-          }
+        this.queryStr = "?";
+        if (this.fullUrl.indexOf("?") > -1) {
+          this.queryStr = "&";
+        }
 
-          // init links
-          this.links = [
-            { title: "Current site", url: "", target: "", css: "disabled normal-cursor" },
-            { title: "Site settings", url: this.currSiteUrl + "/_layouts/15/settings.aspx", target: "_blank", css: "pointer-cursor" },
-            { title: "Site contents", url: this.currSiteUrl + "/_layouts/15/viewlsts.aspx", target: "_blank", css: "pointer-cursor" },
-            { title: "Recycle bin", url: this.currSiteUrl + "/_layouts/15/AdminRecycleBin.aspx?view=5", target: "_blank", css: "pointer-cursor" },
-            { title: "SPFx", url: "", target: "", css: "disabled normal-cursor" },
-            { title: "Load debug manifest to current url", url: this.fullUrl + this.queryStr + "loadSPFX=true&debugManifestsFile=https://localhost:4321/temp/manifests.js", target: "_self", css: "pointer-cursor" },
-            { title: "Remote workbench", url: this.currSiteUrl + "/_layouts/workbench.aspx", target: "_blank", css: "pointer-cursor" },
-            { title: "Local workbench", url: "https://localhost:4321/temp/workbench.html", target: "_blank", css: "pointer-cursor" },
-          ]
+        // init links
+        this.links = [
+          { title: "Current site", url: "", target: "", css: "disabled normal-cursor" },
+          { title: "Site settings", url: this.currSiteUrl + "/_layouts/15/settings.aspx", target: "_blank", css: "pointer-cursor" },
+          { title: "Site contents", url: this.currSiteUrl + "/_layouts/15/viewlsts.aspx", target: "_blank", css: "pointer-cursor" },
+          { title: "Recycle bin", url: this.currSiteUrl + "/_layouts/15/AdminRecycleBin.aspx?view=5", target: "_blank", css: "pointer-cursor" },
+          { title: "SPFx", url: "", target: "", css: "disabled normal-cursor" },
+          { title: "Load debug manifest to current url", url: this.fullUrl + this.queryStr + "loadSPFX=true&debugManifestsFile=https://localhost:4321/temp/manifests.js", target: "_self", css: "pointer-cursor" },
+          { title: "Remote workbench", url: this.currSiteUrl + "/_layouts/workbench.aspx", target: "_blank", css: "pointer-cursor" },
+          { title: "Local workbench", url: "https://localhost:4321/temp/workbench.html", target: "_blank", css: "pointer-cursor" },
+        ]
 
-          // Add pages library
-          if (this.ctx._spPageContextInfo.pageListId) {
-            var index = this.links.findIndex(l => l.title === "Recycle bin");
-            var i = index > -1 ? index + 1 : 11
-            this.pagesTitle = this.ctx._spPageContextInfo.sitePagesEnabled ? "Site Pages" : "Pages";
-            this.pagesUrl = "/_layouts/15/listedit.aspx?List=%7B" + this.ctx._spPageContextInfo.pageListId.replace("{", "").replace("}", "") + "%7D";
+        // Add pages library
+        if (this.ctx._spPageContextInfo.pageListId) {
+          var index = this.links.findIndex(l => l.title === "Recycle bin");
+          var i = index > -1 ? index + 1 : 11
+          this.pagesTitle = this.ctx._spPageContextInfo.sitePagesEnabled ? "Site Pages" : "Pages";
+          this.pagesUrl = "/_layouts/15/listedit.aspx?List=%7B" + this.ctx._spPageContextInfo.pageListId.replace("{", "").replace("}", "") + "%7D";
 
-            this.links.splice(i, 0, { title: this.pagesTitle + " - library settings", url: this.currSiteUrl + this.pagesUrl, target: "_blank", css: "pointer-cursor" });
-          }
+          this.links.splice(i, 0, { title: this.pagesTitle + " - library settings", url: this.currSiteUrl + this.pagesUrl, target: "_blank", css: "pointer-cursor" });
+        }
 
-          // add admin & edit user profile links if online
-          if (this.ctx._spPageContextInfo.isSPO) {
-            this.tenant = this.currSiteUrl.substring(0, this.currSiteUrl.indexOf("." + this.ctx._spPageContextInfo.webDomain));
-            this.admin = this.tenant.indexOf("-admin") > -1 ? this.tenant : this.tenant + "-admin";
-            this.admin = this.admin.replace("-my", "");
-            this.my = this.tenant.indexOf("-my") > -1 ? this.tenant : this.tenant + "-my";
-            this.my = this.my.replace("-admin", "");
+        // add admin & edit user profile links if online
+        if (this.ctx._spPageContextInfo.isSPO) {
+          this.tenant = this.currSiteUrl.substring(0, this.currSiteUrl.indexOf("." + this.ctx._spPageContextInfo.webDomain));
+          this.admin = this.tenant.indexOf("-admin") > -1 ? this.tenant : this.tenant + "-admin";
+          this.admin = this.admin.replace("-my", "");
+          this.my = this.tenant.indexOf("-my") > -1 ? this.tenant : this.tenant + "-my";
+          this.my = this.my.replace("-admin", "");
 
-            this.links.unshift({ title: "Edit user profile", url: `${this.my}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/editprofile.aspx`, target: "_blank", css: "pointer-cursor" });
-            this.links.unshift({ title: "Current user", url: "", target: "", css: "disabled normal-cursor" });
-            this.links.unshift({ title: "Search administration", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/searchadmin/TA_SearchAdministration.aspx`, target: "_blank", css: "pointer-cursor" });
-            this.links.unshift({ title: "Term store", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/termstoremanager.aspx`, target: "_blank", css: "pointer-cursor" });
-            this.links.unshift({ title: "User profiles", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/tenantprofileadmin/manageuserprofileserviceapplication.aspx`, target: "_blank", css: "pointer-cursor" });
-            this.links.unshift({ title: "Classic admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/SiteCollections.aspx`, target: "_blank", css: "pointer-cursor" });
-            this.links.unshift({ title: "Admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/AdminHome.aspx#/home`, target: "_blank", css: "pointer-cursor" });
-            this.links.unshift({ title: "Tenant", url: "", target: "", css: "disabled normal-cursor" });
-          }
-          this.update();
+          this.links.unshift({ title: "Edit user profile", url: `${this.my}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/editprofile.aspx`, target: "_blank", css: "pointer-cursor" });
+          this.links.unshift({ title: "Current user", url: "", target: "", css: "disabled normal-cursor" });
+          this.links.unshift({ title: "Search administration", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/searchadmin/TA_SearchAdministration.aspx`, target: "_blank", css: "pointer-cursor" });
+          this.links.unshift({ title: "Term store", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/termstoremanager.aspx`, target: "_blank", css: "pointer-cursor" });
+          this.links.unshift({ title: "User profiles", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/tenantprofileadmin/manageuserprofileserviceapplication.aspx`, target: "_blank", css: "pointer-cursor" });
+          this.links.unshift({ title: "Classic admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/SiteCollections.aspx`, target: "_blank", css: "pointer-cursor" });
+          this.links.unshift({ title: "Admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/AdminHome.aspx#/home`, target: "_blank", css: "pointer-cursor" });
+          this.links.unshift({ title: "Tenant", url: "", target: "", css: "disabled normal-cursor" });
+        }
+        this.update();
 
-          // find app catalog
-          if (this.ctx._spPageContextInfo.isSPO) {
-            var that = this;
-            that.getAppCatalogUrl().then(appCatalogUrl => {
-              if (appCatalogUrl && appCatalogUrl.indexOf("undefined") === -1) {
-                var index = that.links.findIndex(l => l.title === "Search administration");
-                var i = index > -1 ? index + 1 : 6
-                that.links.splice(i, 0, { title: "App Catalog", url: appCatalogUrl, target: "_blank", css: "pointer-cursor" });
-                that.update();
-              }
-            });
-          }
-
-          Object.entries(this.ctx._spPageContextInfo).forEach(entry => {
-            var key = entry[0];
-            var value = JSON.stringify(entry[1]);
-            this.props.push({ key: key, value: value })
+        // find app catalog
+        if (this.ctx._spPageContextInfo.isSPO) {
+          var that = this;
+          that.getAppCatalogUrl().then(appCatalogUrl => {
+            if (appCatalogUrl && appCatalogUrl.indexOf("undefined") === -1) {
+              var index = that.links.findIndex(l => l.title === "Search administration");
+              var i = index > -1 ? index + 1 : 6
+              that.links.splice(i, 0, { title: "App Catalog", url: appCatalogUrl, target: "_blank", css: "pointer-cursor" });
+              that.update();
+            }
           });
 
-          this.props.sort((a, b) => a.key.localeCompare(b.key))
-          this.update()
+          // get current page info
+          if (this.ctx._spPageContextInfo.webAbsoluteUrl && this.ctx._spPageContextInfo.serverRequestPath) {
+            this.getPageLayout(this.ctx._spPageContextInfo.webAbsoluteUrl, this.ctx._spPageContextInfo.serverRequestPath)
+          }
         }
-        else {
-          this.info = true;
-          this.update();
-        }
-      });
+
+        Object.entries(this.ctx._spPageContextInfo).forEach(entry => {
+          var key = entry[0];
+          var value = JSON.stringify(entry[1]);
+          this.props.push({ key: key, value: value })
+        });
+
+        this.props.sort((a, b) => a.key.localeCompare(b.key))
+        this.update()
+      }
+      else if (res.plo) {
+        this.plo = res.plo
+        this.update();
+      } else if (res.update) {
+        this.updating = false;
+        this.update();
+      } else {
+        this.info = true;
+        this.update();
+      }
     }.bind(this);
 
     this.init = function () {
@@ -155,7 +186,6 @@ riot.tag("spquicklinks", `
       var url = this.currSiteUrl;
       return new Promise(function (resolve, reject) {
         fetch(url + '/_api/SP_TenantSettings_Current', {
-          method: 'get',
           headers: {
             'Accept': 'application/json;odata=nometadata',
             'Content-Type': 'application/json',
@@ -169,6 +199,17 @@ riot.tag("spquicklinks", `
       });
     }.bind(this);
 
+    this.getPageLayout = async function (siteUrl, serverRequestPath) {
+      let ploR = await fetch(siteUrl + "/_api/web/getFileByServerRelativeUrl('" + serverRequestPath + "')/listItemAllFields?$select=PageLayoutType", {
+        headers: {
+          accept: 'application/json;odata=nometadata',
+          'content-type': 'application/json;odata=nometadata',
+        }
+      })
+      this.plo = await ploR.json();
+      this.update()
+    }.bind(this);
+
     this.browse = function (e) {
       if (e.target.dataset.target == "_blank")
         chrome.tabs.create({
@@ -180,6 +221,16 @@ riot.tag("spquicklinks", `
         });
       }
 
+    }.bind(this);
+
+    this.updateLayout = function (e) {
+      this.updating = true;
+      this.update();
+      if (this.refs && this.refs.pageLayout && this.refs.pageLayout.value) {
+        chrome.tabs.executeScript({
+          code: "updateLayout('" + this.ctx._spPageContextInfo.webAbsoluteUrl + "', '" + this.ctx._spPageContextInfo.serverRequestPath + "', '" + this.refs.pageLayout.value + "');"
+        });
+      }
     }.bind(this);
 
     this.filterprops = function (e) {
