@@ -64,14 +64,28 @@ riot.tag("spquicklinks", `
     this.updating = false;
 
     this.on("mount", async function () {
-      this.fullUrl = await this.getCurrentTabUrl()
+      const tabInfo = await this.getCurrentTabUrl()
+      this.fullUrl = tabInfo.url
+      this.tabId = tabInfo.tabId
       this.init();
+      // re-initialize incase of refreshing the page while popup is open.
+      chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+        if (this.tabId === tabId && changeInfo.status === 'complete' && changeInfo.url === undefined) {
+          chrome.tabs.executeScript(tabId, {
+            file: 'app/js/getContext.js'
+          });
+        }
+      }.bind(this));
     }.bind(this));
 
     this.listener = function (msg) {
       var res = JSON.parse(msg);
 
       if (res._spPageContextInfo) {
+        this.filterstr = "";
+        this.props = [];
+        this.ctx = {};
+
         this.ctx = res;
 
         this.info = false;
@@ -137,7 +151,7 @@ riot.tag("spquicklinks", `
           });
 
           // get current page info
-          if (this.ctx._spPageContextInfo.webAbsoluteUrl && this.ctx._spPageContextInfo.serverRequestPath) {
+          if (this.ctx._spPageContextInfo.webAbsoluteUrl && this.ctx._spPageContextInfo.serverRequestPath && this.ctx._spPageContextInfo.pageListId && this.ctx._spPageContextInfo.pageItemId > -1) {
             this.getPageLayout(this.ctx._spPageContextInfo.webAbsoluteUrl, this.ctx._spPageContextInfo.serverRequestPath)
           }
         }
@@ -152,6 +166,7 @@ riot.tag("spquicklinks", `
         this.update()
       }
       else if (res.plo) {
+        this.plo = {};
         this.plo = res.plo
         this.update();
       } else if (res.update) {
@@ -168,7 +183,7 @@ riot.tag("spquicklinks", `
         port.onMessage.addListener(this.listener);
       }.bind(this));
 
-      chrome.tabs.executeScript({
+      chrome.tabs.executeScript(this.tabId, {
         file: 'app/js/getContext.js'
       });
 
@@ -177,7 +192,7 @@ riot.tag("spquicklinks", `
     this.getCurrentTabUrl = function (e) {
       return new Promise(function (resolve, reject) {
         chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-          resolve(tabs[0].url.replace(/\/\s*$/, ""));
+          resolve({ url: tabs[0].url.replace(/\/\s*$/, ""), tabId: tabs[0].id });
         });
       });
     }.bind(this);
@@ -227,7 +242,7 @@ riot.tag("spquicklinks", `
       this.updating = true;
       this.update();
       if (this.refs && this.refs.pageLayout && this.refs.pageLayout.value) {
-        chrome.tabs.executeScript({
+        chrome.tabs.executeScript(this.tabId, {
           code: "updateLayout('" + this.ctx._spPageContextInfo.webAbsoluteUrl + "', '" + this.ctx._spPageContextInfo.serverRequestPath + "', '" + this.refs.pageLayout.value + "');"
         });
       }
