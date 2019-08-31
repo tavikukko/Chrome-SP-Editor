@@ -3258,6 +3258,58 @@ var runSearch = function runSearch() {
   });
 };
 
+var runSearchAllProps = function runSearchAllProps() {
+ var content = arguments[1];
+
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+    var $pnp = modules[0];
+    var alertify = modules[1];
+
+    $pnp.setup({
+      sp: {
+        headers: {
+          "Accept": "application/json; odata=verbose",
+        }
+      }
+    });
+
+    (async () => {
+      var opts = {
+        Querytext: `WorkId:${content}`,
+        RowLimit: 1,
+        Refiners: "managedproperties(filter=600/0/*)",
+      };
+
+      const r1 = await $pnp.sp.search(opts)
+
+      const entries = r1.RawSearchResults.PrimaryQueryResult.RefinementResults.Refiners.results[0].Entries.results
+      const allProps = entries.map(entry => entry.RefinementName);
+
+      const filteredProps = allProps.filter(value =>
+        value !== 'ClassificationLastScan' &&
+        value !== 'ClassificationCount' &&
+        value !== 'ClassificationConfidence'
+      );
+
+      const r = await $pnp.sp.search({
+        Querytext: `WorkId:${content}`, RowLimit: 1, SelectProperties: filteredProps
+      })
+
+      var result = {
+        ElapsedTime: r.ElapsedTime,
+        PrimarySearchResults: r.PrimarySearchResults,
+        RawSearchResults: r.RawSearchResults,
+        RowCount: r.RowCount,
+        TotalRows: r.TotalRows,
+        TotalRowsIncludingDuplicates: r.TotalRowsIncludingDuplicates
+      }
+
+      window.postMessage(JSON.stringify({ function: 'runSearchAllProps', success: true, result: result, source: 'chrome-sp-editor' }), '*');
+
+    })()
+  });
+};
+
 // helper functions
 function elem(elem) {
   return document.getElementById(elem);

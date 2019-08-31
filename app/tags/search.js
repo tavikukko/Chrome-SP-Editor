@@ -168,6 +168,12 @@ riot.tag("search", `
                             <td class="col-md-3 is-breakable"><!--<i class="badge badge-primary badge-pill">{x+1}</i>-->{ prop.key }</td>
                             <td class="col-md-9 is-breakable">{ prop.value }</td>
                           </tr>
+                          <tr>
+                            <td class="col-md-3 is-breakable">
+                            <button onclick="{ showAll }" type="button" class="btn btn-primary btn-md" id="showallhbtn" >Show all properties  <i class="{ searching ? 'fa fa-refresh fa-spin' : 'fa fa-refresh' }"></i></button>
+                            </td>
+                            <td class="col-md-9 is-breakable"></td>
+                          </tr>
                         </tbody>
                       </table>
 
@@ -228,6 +234,25 @@ riot.tag("search", `
               this.update();
             }
             break;
+          case 'runSearchAllProps':
+            if (message.success) {
+              message.result.PrimarySearchResults.forEach(function (obj) {
+                var rowProps = [];
+                for (var name in obj) {
+                  rowProps.push({ key: name, value: obj[name] });
+                }
+                this.searchResults.forEach((result, i) => {
+                  var item = result.props.findIndex(o => o.key === 'DocId' && o.value === obj["DocId"]);
+
+                  if (item > -1) {
+                    this.searchResults[i].props = rowProps;
+                  }
+                })
+              }.bind(this));
+            }
+            this.searching = false;
+            this.update();
+            break;
           case 'updateSchemaForWeb':
             if (message.success) {
               console.log({ message });
@@ -275,6 +300,20 @@ riot.tag("search", `
     this.openLink = function (e) {
       let obj = e.item.result.props.find(o => o.key === 'OriginalPath');
       chrome.tabs.create({ url: obj.value });
+    }.bind(this);
+
+    this.showAll = function (e) {
+      let obj = e.item.result.props.find(o => o.key === 'DocId');
+      if (obj && obj.value) {
+
+        var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + runSearchAllProps;
+        script += " exescript(runSearchAllProps, '" + obj.value + "');";
+        chrome.devtools.inspectedWindow.eval(script);
+
+        this.searching = true;
+        this.update();
+
+      }
     }.bind(this);
 
     this.reIndexWeb = function (e) {
