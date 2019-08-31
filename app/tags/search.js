@@ -220,7 +220,7 @@ riot.tag("search", `
                 for (var name in obj) {
                   rowProps.push({ key: name, value: obj[name] });
                 }
-                this.searchResults.push({ name: obj.Title, props: rowProps });
+                this.searchResults.push({ name: obj.Title, props: rowProps.sort((a,b) => (a.key.toLowerCase() > b.key.toLowerCase()) ? 1 : ((b.key.toLowerCase() > a.key.toLowerCase()) ? -1 : 0)) });
               }.bind(this));
 
               this.elapsedTime = message.result.ElapsedTime;
@@ -245,7 +245,7 @@ riot.tag("search", `
                   var item = result.props.findIndex(o => o.key === 'DocId' && o.value === obj["DocId"]);
 
                   if (item > -1) {
-                    this.searchResults[i].props = rowProps;
+                    this.searchResults[i].props = rowProps.sort((a,b) => (a.key.toLowerCase() > b.key.toLowerCase()) ? 1 : ((b.key.toLowerCase() > a.key.toLowerCase()) ? -1 : 0));
                   }
                 })
               }.bind(this));
