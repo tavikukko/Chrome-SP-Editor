@@ -165,7 +165,7 @@ riot.tag("search", `
                         </thead>
                         <tbody>
                           <tr each="{ prop, x in result.props }">
-                            <td class="col-md-3 is-breakable"><!--<i class="badge badge-primary badge-pill">{x+1}</i>-->{ prop.key }</td>
+                            <td class="col-md-3 is-breakable">{ x + 1 }. { prop.key }</td>
                             <td class="col-md-9 is-breakable">{ prop.value }</td>
                           </tr>
                           <tr>
@@ -214,7 +214,6 @@ riot.tag("search", `
             this.searching = false;
             this.update();
             if (message.success) {
-              //console.log(message.result)
               message.result.PrimarySearchResults.forEach(function (obj) {
                 var rowProps = [];
                 for (var name in obj) {
