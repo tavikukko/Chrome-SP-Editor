@@ -35,16 +35,12 @@ riot.tag("spquicklinks", `
             </button>
           </span>
         </div>
-        <li if="{ plo && (plo.PromotedState === 0 || plo.PromotedState === 2) }" class="list-group-item disabled normal-cursor"><b>Current Page Promoted State</b></li>
-        <div if="{ plo && (plo.PromotedState === 0 || plo.PromotedState === 2) }" class="input-group">
-          <select class="form-control" ref="promotedState">
-            <option value="0" selected="{plo.PromotedState === 0}">Site Page</option>
-            <option value="2" selected="{plo.PromotedState === 2}" >News Page</option>
-          </select>
+        <li if="{ plo && plo.PageLayoutType === 'Article' && plo.PromotedState === 2 }" class="list-group-item disabled normal-cursor"><b>Demote to Site Page</b></li>
+        <div if="{ plo && plo.PageLayoutType === 'Article' && plo.PromotedState === 2 }" class="input-group">
           <span class="input-group-btn">
-            <button class="btn btn-ligth" type="button" tabindex="-1" onclick="{updatePromotedState}">
+            <button class="btn btn-default" type="button" tabindex="-1" onclick="{updatePromotedState}">
             <i if="{ updatingPromoted }" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i>
-            <virtual if="{ !updatingPromoted }">Update</virtual>
+            <virtual if="{ !updatingPromoted }">Demote</virtual>
             </button>
           </span>
         </div>
@@ -187,9 +183,11 @@ riot.tag("spquicklinks", `
         this.update();
       } else if (res.update) {
         this.updatingLayout = false;
+        this.getPageLayout(this.ctx._spPageContextInfo.webAbsoluteUrl, this.ctx._spPageContextInfo.serverRequestPath)
         this.update();
       } else if (res.updatePromotedState) {
         this.updatingPromoted = false;
+        this.getPageLayout(this.ctx._spPageContextInfo.webAbsoluteUrl, this.ctx._spPageContextInfo.serverRequestPath)
         this.update();
       }
       else {
@@ -271,11 +269,9 @@ riot.tag("spquicklinks", `
     this.updatePromotedState = function (e) {
       this.updatingPromoted = true;
       this.update();
-      if (this.refs && this.refs.promotedState && this.refs.promotedState.value) {
         chrome.tabs.executeScript(this.tabId, {
-          code: "updatePromoted('" + this.ctx._spPageContextInfo.webAbsoluteUrl + "', '" + this.ctx._spPageContextInfo.serverRequestPath + "', " + this.refs.promotedState.value + ");"
+          code: "updatePromoted('" + this.ctx._spPageContextInfo.webAbsoluteUrl + "', '" + this.ctx._spPageContextInfo.serverRequestPath + "', 0);"
         });
-      }
     }.bind(this);
 
     this.filterprops = function (e) {
