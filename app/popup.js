@@ -30,11 +30,25 @@ riot.tag("spquicklinks", `
           </select>
           <span class="input-group-btn">
             <button class="btn btn-ligth" type="button" tabindex="-1" onclick="{updateLayout}">
-            <i if="{ updating }" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i>
-            <virtual if="{ !updating }">Update</virtual>
+            <i if="{ updatingLayout }" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i>
+            <virtual if="{ !updatingLayout }">Update</virtual>
             </button>
           </span>
         </div>
+        <li if="{ plo && (plo.PromotedState === 0 || plo.PromotedState === 2) }" class="list-group-item disabled normal-cursor"><b>Current Page Promoted State</b></li>
+        <div if="{ plo && (plo.PromotedState === 0 || plo.PromotedState === 2) }" class="input-group">
+          <select class="form-control" ref="promotedState">
+            <option value="0" selected="{plo.PromotedState === 0}">Site Page</option>
+            <option value="2" selected="{plo.PromotedState === 2}" >News Page</option>
+          </select>
+          <span class="input-group-btn">
+            <button class="btn btn-ligth" type="button" tabindex="-1" onclick="{updatePromotedState}">
+            <i if="{ updatingPromoted }" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i>
+            <virtual if="{ !updatingPromoted }">Update</virtual>
+            </button>
+          </span>
+        </div>
+
         <li class="list-group-item disabled normal-cursor"><b>Number of properties: { this.filtered().length }</b></li>
         <input onKeyUp="{ filterprops }" id="filterprops" type="text" class="form-control" placeholder="Filter properties...">
         <virtual each="{ property in filtered() }">
@@ -62,6 +76,8 @@ riot.tag("spquicklinks", `
     this.ctx = {};
     this.plo = {};
     this.updating = false;
+    this.updatingLayout = false;
+    this.updatingPromoted = false
 
     this.on("mount", async function () {
       const tabInfo = await this.getCurrentTabUrl()
@@ -170,9 +186,13 @@ riot.tag("spquicklinks", `
         this.plo = res.plo
         this.update();
       } else if (res.update) {
-        this.updating = false;
+        this.updatingLayout = false;
         this.update();
-      } else {
+      } else if (res.updatePromotedState) {
+        this.updatingPromoted = false;
+        this.update();
+      }
+      else {
         this.info = true;
         this.update();
       }
@@ -215,7 +235,7 @@ riot.tag("spquicklinks", `
     }.bind(this);
 
     this.getPageLayout = async function (siteUrl, serverRequestPath) {
-      let ploR = await fetch(siteUrl + "/_api/web/getFileByServerRelativeUrl('" + serverRequestPath + "')/listItemAllFields?$select=PageLayoutType", {
+      let ploR = await fetch(siteUrl + "/_api/web/getFileByServerRelativeUrl('" + serverRequestPath + "')/listItemAllFields?$select=PageLayoutType,PromotedState", {
         headers: {
           accept: 'application/json;odata=nometadata',
           'content-type': 'application/json;odata=nometadata',
@@ -239,11 +259,21 @@ riot.tag("spquicklinks", `
     }.bind(this);
 
     this.updateLayout = function (e) {
-      this.updating = true;
+      this.updatingLayout = true;
       this.update();
       if (this.refs && this.refs.pageLayout && this.refs.pageLayout.value) {
         chrome.tabs.executeScript(this.tabId, {
           code: "updateLayout('" + this.ctx._spPageContextInfo.webAbsoluteUrl + "', '" + this.ctx._spPageContextInfo.serverRequestPath + "', '" + this.refs.pageLayout.value + "');"
+        });
+      }
+    }.bind(this);
+
+    this.updatePromotedState = function (e) {
+      this.updatingPromoted = true;
+      this.update();
+      if (this.refs && this.refs.promotedState && this.refs.promotedState.value) {
+        chrome.tabs.executeScript(this.tabId, {
+          code: "updatePromoted('" + this.ctx._spPageContextInfo.webAbsoluteUrl + "', '" + this.ctx._spPageContextInfo.serverRequestPath + "', " + this.refs.promotedState.value + ");"
         });
       }
     }.bind(this);
