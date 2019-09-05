@@ -56,7 +56,7 @@ riot.tag("search", `
                           </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="btn-group" role="group">
                           <button onclick="{ runSearch }" type="button" class="btn btn-primary btn-md" id="runsearchbtn" >Run search  <i class="{ searching ? 'fa fa-refresh fa-spin' : 'fa fa-refresh' }"></i></button>
                         </div>
 
@@ -126,17 +126,26 @@ riot.tag("search", `
                     </div>
                 </div>
 
+        <div class="panel panel-default">
+          <div class="panel-heading">Search current page and show all available managed properties</div>
+          <div class="panel-body">
+            <div class="btn-group" role="group">
+              <button onclick="{ showAllCurrentPage }" type="button" class="btn btn-info btn-md" >Search current page <i class="{ searchingPage ? 'fa fa-refresh fa-spin' : 'fa fa-refresh' }"></i></button>
+            </div>
+          </div>
+        </div>
+
 				<!-- This is where search index updates start -->
 				<div class="panel panel-default">
-					<div class="panel-heading">Request Reindex</i></div>
+					<div class="panel-heading">Request Reindex</div>
 						<div class="panel-body">
               <div class="form-group">
                 <p>This section makes it possible to request a full reindex of the current web. This is useful, if the incremental crawl keeps forgetting to pick up some of the items.</p>
-							  <button onclick="{ reIndexWeb }" type="button" class="btn btn-primary btn-md" id="reIndexWebBtn" >Reindex this web  <i class="{ searching ? 'fa fa-refresh fa-spin' : 'fa fa-refresh' }"></i></button>
+							  <button onclick="{ reIndexWeb }" type="button" class="btn btn-primary btn-md" id="reIndexWebBtn" >Reindex this web</button>
 							</div>
 						</div>
 					</div>
-				</div>
+        </div>
 			  </div>
 
 		  </div>
@@ -194,6 +203,7 @@ riot.tag("search", `
     this.totalRows;
     this.totalRowsIncludingDuplicates;
     this.searching = false;
+    this.searchingPage = false;
     this.prewPayload = "";
 
     this.on("mount", function () {
@@ -211,7 +221,9 @@ riot.tag("search", `
 
         switch (message.function) {
           case 'runSearch':
+          case 'runSearchAllPropsCurPage':
             this.searching = false;
+            this.searchingPage = false;
             this.update();
             if (message.success) {
               message.result.PrimarySearchResults.forEach(function (obj) {
@@ -230,6 +242,7 @@ riot.tag("search", `
               document.getElementById("runsearchbtn").scrollIntoView();
             } else {
               this.searching = false;
+              this.searchingPage = false;
               this.update();
             }
             break;
@@ -250,6 +263,7 @@ riot.tag("search", `
               }.bind(this));
             }
             this.searching = false;
+            this.searchingPage = false;
             this.update();
             break;
           case 'updateSchemaForWeb':
@@ -313,6 +327,19 @@ riot.tag("search", `
         this.update();
 
       }
+    }.bind(this);
+
+    this.showAllCurrentPage = function (e) {
+      this.searchResults = [];
+      this.elapsedTime = 0;
+      this.update();
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + runSearchAllPropsCurPage;
+      script += " exescript(runSearchAllPropsCurPage);";
+      chrome.devtools.inspectedWindow.eval(script);
+
+      this.searchingPage = true;
+      this.update();
+
     }.bind(this);
 
     this.reIndexWeb = function (e) {
