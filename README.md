@@ -8,6 +8,9 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 5.4.1 bug fix & updates
+    * For some reason the uniqueId property disapeared from _spPageContextInfo... workaround was to fetch it
+    * Updated monaco-editor to 0.18.0
 - 5.4.0 New feature in search
     * Search current page and show all available managed properties
 - 5.3.1 Small adjustments

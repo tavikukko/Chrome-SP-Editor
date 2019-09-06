@@ -3326,8 +3326,17 @@ var runSearchAllPropsCurPage = function runSearchAllPropsCurPage() {
      let r = {};
 
      (async () => {
+
+       let page = { UniqueId: null };
+       if (_spPageContextInfo && _spPageContextInfo.serverRequestPath && _spPageContextInfo.serverRequestPath.toLowerCase().indexOf("_layouts/") == -1) {
+        const rp = await $pnp.sp.web.getFileByServerRelativePath(_spPageContextInfo.serverRequestPath).select("UniqueId").get();
+        if (rp && rp.UniqueId) {
+          page.UniqueId = rp.UniqueId;
+        }
+      }
+
        var opts = {
-         Querytext: `UniqueId:{${_spPageContextInfo.uniqueId}}`,
+         Querytext: `UniqueId:{${page.UniqueId}}`,
          RowLimit: 1,
          Refiners: "managedproperties(filter=600/0/*)",
        };
@@ -3344,7 +3353,7 @@ var runSearchAllPropsCurPage = function runSearchAllPropsCurPage() {
          );
 
          r = await $pnp.sp.search({
-           Querytext: `UniqueId:{${_spPageContextInfo.uniqueId}}`, RowLimit: 1, SelectProperties: filteredProps
+           Querytext: `UniqueId:{${page.UniqueId}}`, RowLimit: 1, SelectProperties: filteredProps
          })
        } else {
          r = r1
@@ -3360,7 +3369,8 @@ var runSearchAllPropsCurPage = function runSearchAllPropsCurPage() {
        }
 
        window.postMessage(JSON.stringify({ function: 'runSearchAllPropsCurPage', success: true, result: result, source: 'chrome-sp-editor' }), '*');
-     })()
+
+      })()
    });
  };
 
