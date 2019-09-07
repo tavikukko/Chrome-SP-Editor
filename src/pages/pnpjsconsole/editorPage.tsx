@@ -2,18 +2,15 @@ import React from "react";
 import MonacoEditor from "react-monaco-editor";
 import { editor } from "monaco-editor";
 import * as editorApi from "monaco-editor/esm/vs/editor/editor.api";
-import { Stack } from "office-ui-fabric-react";
 import {
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonMenuToggle,
-  IonButton,
-  IonIcon,
+
   IonContent,
-  IonMenuButton
+  IonPage,
+  IonGrid,
+  IonRow,
+  IonCol
 } from "@ionic/react";
-import { MenuControllerI } from "@ionic/core";
+import MyHeader from "../../components/navigation/header";
 
 export interface IEditorProps {}
 
@@ -163,23 +160,27 @@ taxonomy.termStores.get().then(ts => {
 
     return (
       <>
-        <IonHeader>
-          <IonToolbar>
-            <IonMenuButton slot="start" />
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          <MonacoEditor
-            language="typescript"
-            // theme="vs-dark"
-            value={code}
-            width="100%"
-            height="100vh"
-            options={options}
-            onChange={this.onChange}
-            editorDidMount={this.editorDidMount}
-          />
-        </IonContent>
+        <IonPage>
+          <MyHeader />
+          <IonContent>
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <MonacoEditor
+                    language="typescript"
+                    // theme="vs-dark"
+                    value={code}
+                    width="100%"
+                    height="100vh"
+                    options={options}
+                    onChange={this.onChange}
+                    editorDidMount={this.editorDidMount}
+                  />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonContent>
+        </IonPage>
       </>
     );
   }

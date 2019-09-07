@@ -18,13 +18,11 @@ class fabricNav extends React.Component<RouteComponentProps, IState> {
 
   render() {
     const { selectedKey } = this.state;
-    const menu = document.querySelector('ion-menu-controller') as any;
-
     return (
       <IonMenu contentId="main">
         <IonHeader>
           <IonToolbar>
-            <IonTitle>Menu</IonTitle>
+            <IonTitle></IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent class="outer-content">
@@ -33,6 +31,7 @@ class fabricNav extends React.Component<RouteComponentProps, IState> {
             selectedKey={selectedKey}
             onLinkClick={(event, element) => {
               if (event && element) {
+                const menu = document.querySelector('ion-menu-controller') as any;
                 menu && menu.close()
                 event.preventDefault();
                 if (selectedKey !== element.key) {

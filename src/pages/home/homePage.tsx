@@ -5,14 +5,8 @@ import { Dispatch } from "redux";
 import { HomeActions } from "../../store/home/types";
 import { addItemAsync } from "../../store/home/async-actions";
 import { PrimaryButton, TextField } from "office-ui-fabric-react";
-import {
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonMenuButton,
-  IonTitle,
-  IonContent
-} from "@ionic/react";
+import { IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
+import MyHeader from "../../components/navigation/header";
 
 const mapStateToProps = ({ home }: IRootState) => ({
   list: home.list,
@@ -52,25 +46,29 @@ class HomePage extends React.Component<Props, IHomeState> {
 
     return (
       <>
-        <IonHeader>
-          <IonToolbar>
-            <IonMenuButton slot="start" />
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          <TextField
-            label="Standard"
-            value={this.state.inputText}
-            onChange={this.onInputChange}
-          />
-          <PrimaryButton text="Add item" onClick={this.onAddClick} />
-          <ul>
-            {list.map(l => (
-              <li key={l}>{l}</li>
-            ))}
-          </ul>
-          {loading && <div>Loading...</div>}
-        </IonContent>
+        <IonPage>
+          <MyHeader />
+          <IonContent>
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <TextField
+                    label="Standard"
+                    value={this.state.inputText}
+                    onChange={this.onInputChange}
+                  />
+                  <PrimaryButton text="Add item" onClick={this.onAddClick} />
+                  <ul>
+                    {list.map(l => (
+                      <li key={l}>{l}</li>
+                    ))}
+                  </ul>
+                  {loading && <div>Loading...</div>}
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonContent>
+        </IonPage>
       </>
     );
   }
