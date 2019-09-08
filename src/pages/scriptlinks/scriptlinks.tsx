@@ -14,16 +14,10 @@ import {
 import { Panel, PanelType } from "office-ui-fabric-react/lib/Panel";
 import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
 import {
-  Sticky,
-  StickyPositionType,
   Stack,
   TextField,
-  Separator
 } from "office-ui-fabric-react";
 import {
-  IonHeader,
-  IonToolbar,
-  IonMenuButton,
   IonContent,
   IonPage,
   IonGrid,

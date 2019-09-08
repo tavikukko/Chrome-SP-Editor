@@ -4,7 +4,7 @@ import * as actions from './actions';
 export type HomeActions = ActionType<typeof actions>;
 
 export interface IHomeState {
-    list: string[]
+    list: string[],
     loading: boolean
 }
 

@@ -5,15 +5,8 @@ import HomePage from "./pages/home/homePage";
 import "./App.css";
 import { FabricNav } from "./components/navigation/navigation";
 import ScriptLinks from "./pages/scriptlinks/scriptlinks";
-import { Stack } from "office-ui-fabric-react";
 import {
   IonSplitPane,
-  IonMenu,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonRouterOutlet,
-  IonContent,
   IonPage,
   IonApp
 } from "@ionic/react";
@@ -38,7 +31,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import "./theme/variables.css";
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <IonApp>
       <IonReactRouter>

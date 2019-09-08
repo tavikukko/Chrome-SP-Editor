@@ -3,7 +3,6 @@ import MonacoEditor from "react-monaco-editor";
 import { editor } from "monaco-editor";
 import * as editorApi from "monaco-editor/esm/vs/editor/editor.api";
 import {
-
   IonContent,
   IonPage,
   IonGrid,
@@ -26,8 +25,6 @@ export default class PnPjsConsole extends React.Component<IEditorProps> {
   constructor(props: any) {
     super(props);
   }
-
-
 
   private editorDidMount = (
     editor: editor.IStandaloneCodeEditor,
