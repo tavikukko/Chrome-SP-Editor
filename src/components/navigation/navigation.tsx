@@ -59,11 +59,6 @@ class fabricNav extends React.Component<RouteComponentProps, IState> {
                     key: "key8"
                   },
                   {
-                    name: "PnP JS Console2",
-                    url: "/pnpjsconsole2",
-                    key: "key88"
-                  },
-                  {
                     name: "Files",
                     url: "/files",
                     key: "key4"

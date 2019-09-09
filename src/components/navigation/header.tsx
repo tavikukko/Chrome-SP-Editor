@@ -1,30 +1,19 @@
 import React from "react";
-import { IonHeader, IonToolbar, IonMenuButton } from "@ionic/react";
+import { IonHeader, IonToolbar, IonMenuButton, IonTitle } from "@ionic/react";
 
-const menuAction = async (event: any) => {
-  const homemenu = document.querySelector("ion-menu-controller") as any;
-  const enabled = await homemenu.isEnabled();
-  if (!enabled) {
-    homemenu.enable(true);
-    await homemenu.open();
-  } else {
-    const toggle = await homemenu.toggle();
-    if (!toggle) {
-      homemenu.enable(false);
-    } else {
-      event.preventDefault();
-    }
-  }
-};
-
-function MyHeader() {
+const Header = ({ title }: HeaderProps) => {
   return (
     <IonHeader>
       <IonToolbar>
         <IonMenuButton slot="start" autoHide={true} />
+        <IonTitle>{ title }</IonTitle>
       </IonToolbar>
     </IonHeader>
   );
 }
 
-export default MyHeader;
+interface HeaderProps {
+  title: string
+}
+
+export default Header;

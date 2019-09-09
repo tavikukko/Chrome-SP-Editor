@@ -13,18 +13,9 @@ import {
 } from "office-ui-fabric-react/lib/Button";
 import { Panel, PanelType } from "office-ui-fabric-react/lib/Panel";
 import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
-import {
-  Stack,
-  TextField,
-} from "office-ui-fabric-react";
-import {
-  IonContent,
-  IonPage,
-  IonGrid,
-  IonRow,
-  IonCol
-} from "@ionic/react";
-import MyHeader from "../../components/navigation/header";
+import { Stack, TextField } from "office-ui-fabric-react";
+import { IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
+import Header from "../../components/navigation/header";
 
 const originalItems: IDocument[] = [];
 
@@ -114,7 +105,7 @@ class ScriptLinks extends React.Component<any, IAppState> {
     return (
       <>
         <IonPage>
-          <MyHeader />
+          <Header title={"ScriptLinks"} />
           <IonContent>
             <IonGrid>
               <IonRow>

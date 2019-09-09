@@ -10,7 +10,7 @@ import { addItemAsync } from "../../store/home/async-actions";
 /* UI imports */
 import { PrimaryButton, TextField } from "office-ui-fabric-react";
 import { IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
-import MyHeader from "../../components/navigation/header";
+import Header from "../../components/navigation/header";
 
 /* component */
 const HomePage = ({ list, loading, addItem }: HomeProps) => {
@@ -27,12 +27,12 @@ const HomePage = ({ list, loading, addItem }: HomeProps) => {
     addItem(inputText);
     setInputText("");
   };
-
+  const greeting = 'Welcome to React';
   /* render */
   return (
     <>
       <IonPage>
-        <MyHeader />
+        <Header title={'Home'} />
         <IonContent>
           <IonGrid>
             <IonRow>

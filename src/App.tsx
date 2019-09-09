@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import PnPjsConsole from "./pages/pnpjsconsole/editorPage";
+import PnPjsConsole from "./pages/pnpjsconsole/pnpjsconsole";
+
 import HomePage from "./pages/home/homePage";
 import "./App.css";
 import { FabricNav } from "./components/navigation/navigation";

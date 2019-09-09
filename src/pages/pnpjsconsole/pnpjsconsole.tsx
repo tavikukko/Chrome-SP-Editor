@@ -1,37 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import MonacoEditor from "react-monaco-editor";
 import { editor } from "monaco-editor";
 import * as editorApi from "monaco-editor/esm/vs/editor/editor.api";
-import {
-  IonContent,
-  IonPage,
-  IonGrid,
-  IonRow,
-  IonCol
-} from "@ionic/react";
-import MyHeader from "../../components/navigation/header";
+import { IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
+import Header from "../../components/navigation/header";
 
-export interface IEditorProps {}
+const PnPjsConsole = () => {
 
-export default class PnPjsConsole extends React.Component<IEditorProps> {
-  private editor!: editor.IStandaloneCodeEditor;
+  const [editorCode, setEditorCode] = useState("");
 
-  public state: {
-    code: string;
-  } = {
-    code: ""
+  const options: editor.IEditorConstructionOptions = {
+    selectOnLineNumbers: true,
+    minimap: {
+      enabled: true
+    },
+    language: "typescript",
+    lineNumbers: "on",
+    roundedSelection: true,
+    scrollBeyondLastLine: true,
+    readOnly: false,
+    theme: "vs-ligth",
+    fontSize: 16,
+    renderIndentGuides: true,
+    suggestOnTriggerCharacters: true,
+    automaticLayout: true
   };
 
-  constructor(props: any) {
-    super(props);
-  }
+  const onChange = (newCode: string) => {
+    setEditorCode(newCode);
+  };
 
-  private editorDidMount = (
+  const editorDidMount = (
     editor: editor.IStandaloneCodeEditor,
     monaco: typeof editorApi
   ) => {
-    this.editor = editor;
-    editor.focus();
 
     monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
       noSemanticValidation: false,
@@ -47,9 +49,9 @@ export default class PnPjsConsole extends React.Component<IEditorProps> {
       typeRoots: ["node_modules/@pnp"]
     });
 
-    if (monaco.editor.getModel(monaco.Uri.parse("inmemory://tmp.ts"))) {
+    if (monaco.editor.getModel(monaco.Uri.parse("inmemory://tmp2.ts"))) {
       editor.setModel(
-        monaco.editor.getModel(monaco.Uri.parse("inmemory://tmp.ts"))
+        monaco.editor.getModel(monaco.Uri.parse("inmemory://tmp2.ts"))
       );
     } else {
       editor.setModel(
@@ -120,7 +122,7 @@ taxonomy.termStores.get().then(ts => {
     console.log(ts);
 })`,
           "typescript",
-          monaco.Uri.parse("inmemory://tmp.ts")
+          monaco.Uri.parse("inmemory://tmp2.ts")
         )
       );
     }
@@ -128,57 +130,31 @@ taxonomy.termStores.get().then(ts => {
     editor.focus();
   };
 
-  private onChange = (newCode: string, e: any) => {
-    this.setState({
-      code: newCode
-    });
-  };
+  return (
+    <>
+      <IonPage>
+      <Header title={'PnPjs Console'} />
+        <IonContent>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <MonacoEditor
+                  language="typescript"
+                  theme="vs-ligth"
+                  value={editorCode}
+                  width="100%"
+                  height="100vh"
+                  options={options}
+                  onChange={onChange}
+                  editorDidMount={editorDidMount}
+                />
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonContent>
+      </IonPage>
+    </>
+  );
+};
 
-  public render() {
-    const code = this.state.code;
-
-    const options: editor.IEditorConstructionOptions = {
-      selectOnLineNumbers: true,
-      minimap: {
-        enabled: true
-      },
-      language: "typescript",
-      lineNumbers: "on",
-      roundedSelection: true,
-      scrollBeyondLastLine: true,
-      readOnly: false,
-      // theme: "vs-dark",
-      fontSize: 16,
-      // glyphMargin: true,
-      renderIndentGuides: true,
-      suggestOnTriggerCharacters: true,
-      automaticLayout: true
-    };
-
-    return (
-      <>
-        <IonPage>
-          <MyHeader />
-          <IonContent>
-            <IonGrid>
-              <IonRow>
-                <IonCol>
-                  <MonacoEditor
-                    language="typescript"
-                    // theme="vs-dark"
-                    value={code}
-                    width="100%"
-                    height="100vh"
-                    options={options}
-                    onChange={this.onChange}
-                    editorDidMount={this.editorDidMount}
-                  />
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonContent>
-        </IonPage>
-      </>
-    );
-  }
-}
+export default PnPjsConsole;
