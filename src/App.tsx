@@ -41,6 +41,7 @@ const App = () => {
           <IonPage id="main">
             <Switch>
               <Route exact path="/" component={HomePage} />
+              <Route exact path="/index.html" component={HomePage} />
               <Route path="/scriptlinks" component={ScriptLinks} />
               <Route path="/pnpjsconsole" component={PnPjsConsole} />
             </Switch>

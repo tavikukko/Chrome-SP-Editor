@@ -1,61 +1,73 @@
 import React, { useState } from "react";
-import MonacoEditor from "react-monaco-editor";
 import { editor } from "monaco-editor";
-import * as editorApi from "monaco-editor/esm/vs/editor/editor.api";
+// import * as editorApi from "monaco-editor/esm/vs/editor/editor.api";
 import { IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
 import Header from "../../components/navigation/header";
+import { ControlledEditor } from "@monaco-editor/react";
+import { monaco } from "@monaco-editor/react";
+import {
+  CompilerOptions,
+  getDefaultCompilerOptions,
+  transpileModule,
+  TranspileOutput,
+  ModuleKind
+} from "typescript";
 
 const PnPjsConsole = () => {
+
+  monaco.config({
+    urls: {
+      monacoLoader: "",
+      monacoBase: "/vs"
+    }
+  });
 
   const [editorCode, setEditorCode] = useState("");
 
   const options: editor.IEditorConstructionOptions = {
-    selectOnLineNumbers: true,
-    minimap: {
-      enabled: true
-    },
     language: "typescript",
     lineNumbers: "on",
     roundedSelection: true,
-    scrollBeyondLastLine: true,
+    scrollBeyondLastLine: false,
     readOnly: false,
-    theme: "vs-ligth",
+    theme: "vs-dark",
     fontSize: 16,
+    //glyphMargin: true,
     renderIndentGuides: true,
-    suggestOnTriggerCharacters: true,
-    automaticLayout: true
+    suggestOnTriggerCharacters: true
   };
 
-  const onChange = (newCode: string) => {
-    setEditorCode(newCode);
+  const handleEditorChange = (ev: any, value: any) => {
+    setEditorCode(value);
+    return value;
   };
 
-  const editorDidMount = (
-    editor: editor.IStandaloneCodeEditor,
-    monaco: typeof editorApi
-  ) => {
-
-    monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+  async function handleEditorDidMount(_: any, editor: editor.IStandaloneCodeEditor) {
+    const monacoInst = await monaco.init();
+    monacoInst.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
       noSemanticValidation: false,
       noSyntaxValidation: false
     });
 
-    monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-      target: monaco.languages.typescript.ScriptTarget.ES2018,
+    monacoInst.languages.typescript.javascriptDefaults.setCompilerOptions({
+      target: monacoInst.languages.typescript.ScriptTarget.ES2018,
       allowNonTsExtensions: true,
-      moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-      module: monaco.languages.typescript.ModuleKind.CommonJS,
+      moduleResolution:
+        monacoInst.languages.typescript.ModuleResolutionKind.NodeJs,
+      module: monacoInst.languages.typescript.ModuleKind.CommonJS,
       noEmit: true,
       typeRoots: ["node_modules/@pnp"]
     });
 
-    if (monaco.editor.getModel(monaco.Uri.parse("inmemory://tmp2.ts"))) {
+    if (
+      monacoInst.editor.getModel(monacoInst.Uri.parse("inmemory://tmp2.ts"))
+    ) {
       editor.setModel(
-        monaco.editor.getModel(monaco.Uri.parse("inmemory://tmp2.ts"))
+        monacoInst.editor.getModel(monacoInst.Uri.parse("inmemory://tmp2.ts"))
       );
     } else {
       editor.setModel(
-        monaco.editor.createModel(
+        monacoInst.editor.createModel(
           `// Hit CTRL/CMD + D to run the code, view console for results
 // below there is some some sample snippets
 
@@ -122,31 +134,79 @@ taxonomy.termStores.get().then(ts => {
     console.log(ts);
 })`,
           "typescript",
-          monaco.Uri.parse("inmemory://tmp2.ts")
+          monacoInst.Uri.parse("inmemory://tmp2.ts")
         )
       );
     }
 
+    editor.addCommand(
+      monacoInst.KeyMod.CtrlCmd | monacoInst.KeyCode.KEY_D,
+      async () => {
+        const compilerOptions: CompilerOptions = getDefaultCompilerOptions();
+        const trasnpiled = transpileModule(editor.getModel()!.getValue(), {
+          compilerOptions
+        });
+        // compilerOptions: { module: ModuleKind.None }
+        var lines = trasnpiled.outputText.split("\n");
+        let code: any[] = [];
+        var prepnp = [];
+        lines.forEach(function(line) {
+          // remove imports
+          if (
+            line.toLowerCase().indexOf(" = require") == -1 &&
+            line.toLowerCase().indexOf("use strict") == -1 &&
+            line.toLowerCase().indexOf("__esmodule") == -1
+          ) {
+            code.push(line);
+          }
+          if (line.toLowerCase().indexOf(" = require") > -1) {
+            // fix imports
+
+            console.log(line);
+            let lineRe: any = line.match("var (.*) = require");
+            if (lineRe) {
+              let mod = -1;
+              mod = line.indexOf("@pnp/common") > -1 ? 0 : mod;
+              mod = line.indexOf("@pnp/config-store") > -1 ? 1 : mod;
+              mod = line.indexOf("@pnp/graph") > -1 ? 2 : mod;
+              mod = line.indexOf("@pnp/logging") > -1 ? 3 : mod;
+              mod = line.indexOf("@pnp/odata") > -1 ? 4 : mod;
+              mod = line.indexOf("@pnp/pnpjs") > -1 ? 5 : mod;
+              mod = line.indexOf("@pnp/sp-addinhelpers") > -1 ? 6 : mod;
+              mod = line.indexOf("@pnp/sp-clientsvc") > -1 ? 7 : mod;
+              mod = line.indexOf("@pnp/sp") > -1 ? 8 : mod;
+              mod = line.indexOf("@pnp/sp-taxonomy") > -1 ? 9 : mod;
+
+              prepnp.push("var " + lineRe[1] + " = modules[" + mod + "];");
+            }
+          }
+        });
+
+        code.pop();
+        console.log(code);
+      }
+    );
     editor.focus();
-  };
+
+  }
 
   return (
     <>
       <IonPage>
-      <Header title={'PnPjs Console'} />
+        <Header title={"PnPjs Console"} />
         <IonContent>
           <IonGrid>
             <IonRow>
               <IonCol>
-                <MonacoEditor
-                  language="typescript"
-                  theme="vs-ligth"
-                  value={editorCode}
-                  width="100%"
-                  height="100vh"
+                <ControlledEditor
+                  height="90vh"
                   options={options}
-                  onChange={onChange}
-                  editorDidMount={editorDidMount}
+                  theme={"light"}
+                  loading={""}
+                  // value={editorCode}
+                  onChange={handleEditorChange}
+                  editorDidMount={handleEditorDidMount}
+                  language="typescript"
                 />
               </IonCol>
             </IonRow>
