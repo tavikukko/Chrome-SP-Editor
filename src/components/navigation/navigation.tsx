@@ -31,7 +31,7 @@ class fabricNav extends React.Component<RouteComponentProps, IState> {
             selectedKey={selectedKey}
             onLinkClick={(event, element) => {
               if (event && element) {
-                const menu = document.querySelector('ion-menu-controller') as any;
+                const menu = document.querySelector('ion-menu') as any;
                 menu && menu.close()
                 event.preventDefault();
                 if (selectedKey !== element.key) {
