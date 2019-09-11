@@ -1,7 +1,13 @@
 import React from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import { Nav } from "office-ui-fabric-react";
-import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent } from "@ionic/react";
+import {
+  IonMenu,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent
+} from "@ionic/react";
 
 interface IState {
   readonly selectedKey: string | any;
@@ -22,7 +28,7 @@ class fabricNav extends React.Component<RouteComponentProps, IState> {
       <IonMenu contentId="main">
         <IonHeader>
           <IonToolbar>
-            <IonTitle></IonTitle>
+            <IonTitle>home</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent class="outer-content">
@@ -31,8 +37,8 @@ class fabricNav extends React.Component<RouteComponentProps, IState> {
             selectedKey={selectedKey}
             onLinkClick={(event, element) => {
               if (event && element) {
-                const menu = document.querySelector('ion-menu') as any;
-                menu && menu.close()
+                const menu = document.querySelector("ion-menu") as any;
+                menu && menu.close();
                 event.preventDefault();
                 if (selectedKey !== element.key) {
                   this.props.history.push(element.url);
