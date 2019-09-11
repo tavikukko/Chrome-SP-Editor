@@ -8,7 +8,7 @@ import {
   IonButtons,
 } from "@ionic/react";
 import { FontIcon } from "office-ui-fabric-react/lib/Icon";
-console.log(document.location);
+
 const Header = ({ title }: HeaderProps) => {
   return (
     <IonHeader>

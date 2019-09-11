@@ -23,8 +23,7 @@
     "bundles/sp-addinhelpers.es5.umd.bundle.js",
     "bundles/sp-clientsvc.es5.umd.bundle.js",
     "bundles/sp.es5.umd.bundle.js",
-    "bundles/sp-taxonomy.es5.umd.bundle.js",
-    "vs/loader.js"
+    "bundles/sp-taxonomy.es5.umd.bundle.js"
   ],
   "devtools_page": "devtools.html",
   "background": {

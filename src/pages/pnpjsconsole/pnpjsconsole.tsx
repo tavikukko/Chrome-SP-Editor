@@ -14,7 +14,6 @@ import {
 } from "typescript";
 
 const PnPjsConsole = () => {
-
   monaco.config({
     urls: {
       monacoLoader: "",
@@ -42,8 +41,63 @@ const PnPjsConsole = () => {
     return value;
   };
 
-  async function handleEditorDidMount(_: any, editor: editor.IStandaloneCodeEditor) {
+  const getExtensionDirectory = (): Promise<DirectoryEntry> =>
+    new Promise(resolve => chrome.runtime.getPackageDirectoryEntry(resolve));
+
+    const getDirectory = (dirEntry: DirectoryEntry, path: string, options?: Flags): Promise<DirectoryEntry> =>
+    new Promise(resolve => dirEntry.getDirectory(path,{},(entry: DirectoryEntry) => resolve(entry)));
+
+  const readDirRecursive = async (entry: DirectoryEntry, files: DirectoryEntry[] = []) => {
+    const entries = await readEntries(entry);
+
+    for (const key in entries) {
+      const childEntry = entries[key];
+
+      if (childEntry.isDirectory) {
+        await readDirRecursive(childEntry as DirectoryEntry, files);
+      } else {
+        files.push(childEntry);
+      }
+    }
+
+    return files;
+  };
+
+  const readEntries = (dir: DirectoryEntry): Promise<DirectoryEntry[]> => {
+    return new Promise(resolve => {
+      const reader = dir.createReader();
+      reader.readEntries(entries => resolve(entries as any));
+    });
+  };
+
+  const loadDeclarations = async (directoryEntry: DirectoryEntry, dir: string, monaco: any) => {
+    const subDirectoryEntry = await getDirectory(
+      directoryEntry,
+      dir.replace("/crxfs", "")
+    );
+    const entries = await readDirRecursive(subDirectoryEntry);
+
+    for (const entry of entries) {
+      var fullpath = entry.fullPath.replace("/crxfs/", "");
+      const file = await fetch(fullpath);
+      const content = await file.text();
+      monaco.languages.typescript.typescriptDefaults.addExtraLib(
+        content,
+        'file:///' + fullpath
+      );
+    }
+  };
+
+  async function handleEditorDidMount(
+    _: any,
+    editor: editor.IStandaloneCodeEditor
+  ) {
     const monacoInst = await monaco.init();
+
+    const directoryEntry = await getExtensionDirectory();
+    await loadDeclarations(directoryEntry, '@pnp', monacoInst);
+    await loadDeclarations(directoryEntry, '@microsoft', monacoInst);
+
     monacoInst.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
       noSemanticValidation: false,
       noSyntaxValidation: false
@@ -56,14 +110,14 @@ const PnPjsConsole = () => {
         monacoInst.languages.typescript.ModuleResolutionKind.NodeJs,
       module: monacoInst.languages.typescript.ModuleKind.CommonJS,
       noEmit: true,
-      typeRoots: ["node_modules/@pnp"]
+      typeRoots: ["node_modules/@pnp", "node_modules/@microsoft"]
     });
 
     if (
-      monacoInst.editor.getModel(monacoInst.Uri.parse("inmemory://tmp2.ts"))
+      monacoInst.editor.getModel(monacoInst.Uri.parse("file:///pnpjsconsole.ts"))
     ) {
       editor.setModel(
-        monacoInst.editor.getModel(monacoInst.Uri.parse("inmemory://tmp2.ts"))
+        monacoInst.editor.getModel(monacoInst.Uri.parse("file:///pnpjsconsole.ts"))
       );
     } else {
       editor.setModel(
@@ -134,7 +188,7 @@ taxonomy.termStores.get().then(ts => {
     console.log(ts);
 })`,
           "typescript",
-          monacoInst.Uri.parse("inmemory://tmp2.ts")
+          monacoInst.Uri.parse("file:///pnpjsconsole.ts")
         )
       );
     }
@@ -187,7 +241,6 @@ taxonomy.termStores.get().then(ts => {
       }
     );
     editor.focus();
-
   }
 
   return (
