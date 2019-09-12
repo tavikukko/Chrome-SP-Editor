@@ -8,9 +8,7 @@ import { monaco } from "@monaco-editor/react";
 import {
   CompilerOptions,
   getDefaultCompilerOptions,
-  transpileModule,
-  TranspileOutput,
-  ModuleKind
+  transpileModule
 } from "typescript";
 
 const PnPjsConsole = () => {
@@ -22,6 +20,20 @@ const PnPjsConsole = () => {
   });
 
   const [editorCode, setEditorCode] = useState("");
+
+  const mod_common = "var mod_common = '" + chrome.extension.getURL('bundles/common.es5.umd.bundle.js') + "';";
+  const mod_config = "var mod_config = '" + chrome.extension.getURL('bundles/config-store.es5.umd.bundle.js') + "';";
+  const mod_graph = "var mod_graph = '" + chrome.extension.getURL('bundles/graph.es5.umd.bundle.js') + "';";
+  const mod_logging = "var mod_logging = '" + chrome.extension.getURL('bundles/logging.es5.umd.bundle.js') + "';";
+  const mod_odata = "var mod_odata = '" + chrome.extension.getURL('bundles/odata.es5.umd.bundle.js') + "';";
+  const mod_pnpjs = "var mod_pnpjs = '" + chrome.extension.getURL('bundles/pnpjs.es5.umd.bundle.js') + "';";
+  const mod_addin = "var mod_addin = '" + chrome.extension.getURL('bundles/sp-addinhelpers.es5.umd.bundle.js') + "';";
+  const mod_client = "var mod_client = '" + chrome.extension.getURL('bundles/sp-clientsvc.es5.umd.bundle.js') + "';";
+  const mod_taxonomy = "var mod_taxonomy = '" + chrome.extension.getURL('bundles/sp-taxonomy.es5.umd.bundle.js') + "';";
+  const mod_sp = "var mod_sp = '" + chrome.extension.getURL('bundles/sp.es5.umd.bundle.js') + "';";
+  const sj = "var sj = '" + chrome.extension.getURL('bundles/system.js') + "';";
+
+
 
   const options: editor.IEditorConstructionOptions = {
     language: "typescript",
@@ -200,10 +212,9 @@ taxonomy.termStores.get().then(ts => {
         const trasnpiled = transpileModule(editor.getModel()!.getValue(), {
           compilerOptions
         });
-        // compilerOptions: { module: ModuleKind.None }
         var lines = trasnpiled.outputText.split("\n");
         let code: any[] = [];
-        var prepnp = [];
+        var prepnp: any[] = [];
         lines.forEach(function(line) {
           // remove imports
           if (
@@ -216,7 +227,6 @@ taxonomy.termStores.get().then(ts => {
           if (line.toLowerCase().indexOf(" = require") > -1) {
             // fix imports
 
-            console.log(line);
             let lineRe: any = line.match("var (.*) = require");
             if (lineRe) {
               let mod = -1;
@@ -237,7 +247,69 @@ taxonomy.termStores.get().then(ts => {
         });
 
         code.pop();
-        console.log(code);
+
+        const exescript = [
+          'var exescript = function (script) {',
+          '\t var params = arguments;',
+          '\t if ( window._spPageContextInfo && !window._spPageContextInfo.speditorctx ) {',
+
+          '\t\t if (typeof SystemJS == "undefined") {',
+          '\t\t\t var s = document.createElement("script");',
+          '\t\t\t s.src = sj;',
+          '\t\t\t s.onload = function () {',
+          '\t\t\t\t script.apply(this, params);',
+          '\t\t\t };',
+          '\t\t\t (document.head || document.documentElement).appendChild(s);',
+          '\t\t }',
+          '\t\t else script.apply(this, params);',
+          '\t }',
+          '\t else if ( window.moduleLoaderPromise ) {',
+          '\t\t window.moduleLoaderPromise.then(function (e) {',
+          '\t\t\t window._spPageContextInfo = e.context._pageContext._legacyPageContext;',
+          '\t\t\t window._spPageContextInfo.speditorctx = true;',
+          '\t\t\t if (typeof SystemJS == "undefined") {',
+          '\t\t\t\t var s = document.createElement("script");',
+          '\t\t\t\t s.src = sj;',
+          '\t\t\t\t s.onload = function () {',
+          '\t\t\t\t\t  script.apply(this, params);',
+          '\t\t\t\t };',
+          '\t\t\t\t (document.head || document.documentElement).appendChild(s);',
+          '\t\t\t }',
+          '\t\t\t else script.apply(this, params);',
+          '\t\t\ });',
+          '\t }',
+          '}',
+        ].join('\n');
+
+        const execme = [
+          'var execme = function execme() {',
+          '\tPromise.all([SystemJS.import(mod_common),SystemJS.import(mod_config),SystemJS.import(mod_graph),SystemJS.import(mod_logging),SystemJS.import(mod_odata),SystemJS.import(mod_pnpjs),SystemJS.import(mod_addin),SystemJS.import(mod_client),SystemJS.import(mod_sp),SystemJS.import(mod_taxonomy)]).then(function (modules) {',
+          '\t\t' + prepnp.join('\n'),
+          '\t\t// Your code starts here',
+          '\t\t// #####################',
+          '' + code.map(function (e) { return '\t\t\t' + e }).join('\n'),
+          '\t\t// #####################',
+          '\t\t// Your code ends here',
+          '\t});',
+          '};'].join('\n')
+
+          var script = mod_common + '\n' +
+          mod_config + '\n' +
+          mod_graph + '\n' +
+          mod_logging + '\n' +
+          mod_odata + '\n' +
+          mod_pnpjs + '\n' +
+          mod_addin + '\n' +
+          mod_client + '\n' +
+          mod_sp + '\n' +
+          mod_taxonomy + '\n' +
+          sj + '\n\n' +
+          exescript + '\n\n' +
+          execme + '\n\n';
+
+          script += "exescript(execme);";
+          chrome.devtools.inspectedWindow.eval(script);
+
       }
     );
     editor.focus();
