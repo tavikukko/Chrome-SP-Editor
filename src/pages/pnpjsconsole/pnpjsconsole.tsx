@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { editor } from "monaco-editor";
 // import * as editorApi from "monaco-editor/esm/vs/editor/editor.api";
 import { IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
@@ -11,6 +11,10 @@ import {
   transpileModule
 } from "typescript";
 
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+export type BuiltinTheme = 'light' | 'dark';
+
 const PnPjsConsole = () => {
   monaco.config({
     urls: {
@@ -19,7 +23,19 @@ const PnPjsConsole = () => {
     }
   });
 
+  const [monacoTheme, setMonacoTheme] = useState<BuiltinTheme | undefined>(prefersDark ? "dark" : "light");
   const [editorCode, setEditorCode] = useState("");
+
+  const toggleDarkTheme = (shouldAdd: boolean) => {
+    document.body.classList.toggle("dark", shouldAdd);
+    setMonacoTheme(shouldAdd ? "dark" : "light")
+  }
+
+  useEffect(() => {
+    toggleDarkTheme(prefersDark.matches);
+    prefersDark.addListener(mediaQuery => toggleDarkTheme(mediaQuery.matches));
+  });
+
 
   const mod_common = "var mod_common = '" + chrome.extension.getURL('bundles/common.es5.umd.bundle.js') + "';";
   const mod_config = "var mod_config = '" + chrome.extension.getURL('bundles/config-store.es5.umd.bundle.js') + "';";
@@ -32,8 +48,6 @@ const PnPjsConsole = () => {
   const mod_taxonomy = "var mod_taxonomy = '" + chrome.extension.getURL('bundles/sp-taxonomy.es5.umd.bundle.js') + "';";
   const mod_sp = "var mod_sp = '" + chrome.extension.getURL('bundles/sp.es5.umd.bundle.js') + "';";
   const sj = "var sj = '" + chrome.extension.getURL('bundles/system.js') + "';";
-
-
 
   const options: editor.IEditorConstructionOptions = {
     language: "typescript",
@@ -326,7 +340,7 @@ taxonomy.termStores.get().then(ts => {
                 <ControlledEditor
                   height="90vh"
                   options={options}
-                  theme={"light"}
+                  theme={monacoTheme}
                   loading={""}
                   // value={editorCode}
                   onChange={handleEditorChange}
