@@ -34,9 +34,9 @@ const HomePage = ({ list, loading, addItem }: HomeProps) => {
       <IonPage>
         <Header title={'Home'} />
         <IonContent>
-          <IonGrid>
-            <IonRow>
-              <IonCol>
+          <IonGrid color="primary">
+            <IonRow class="ion-no-padding">
+              <IonCol class="ion-no-padding">
                 <TextField
                   label="Standard"
                   value={inputText}

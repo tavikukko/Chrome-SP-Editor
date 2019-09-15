@@ -123,9 +123,6 @@ const ScriptLinks = ({ filteredItems }: HomeProps) => {
       <IonPage>
         <Header title={"ScriptLinks"} />
         <IonContent>
-          <IonGrid>
-            <IonRow>
-              <IonCol>
                 <CommandBar
                   items={[
                     {
@@ -154,9 +151,6 @@ const ScriptLinks = ({ filteredItems }: HomeProps) => {
                   enterModalSelectionOnTouch={true}
                   onItemInvoked={() => setShowItemPanel(true)}
                 />
-              </IonCol>
-            </IonRow>
-          </IonGrid>
         </IonContent>
       </IonPage>
 
