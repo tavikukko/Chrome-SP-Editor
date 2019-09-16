@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   DetailsList,
@@ -19,32 +19,18 @@ import Header from "../../components/navigation/header";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IRootState } from "../../store";
-import { useState } from "react";
+import { ScriptLinksActions, IScriptLinks } from "../../store/scriptlinks/types";
+import { addItemAsync } from "../../store/scriptlinks/async-actions";
+import { getItems } from "../../store/scriptlinks/async-actions";
 
-const originalItems: IScriptLinks[] = [];
-
-export interface IScriptLinks {
-  [key: string]: any;
-  path: string;
-  sequence: number;
-  scope: string;
-}
-
-const ScriptLinks = ({ filteredItems }: HomeProps) => {
+const ScriptLinks = ({ scriptlinks, getItems }: HomeProps) => {
   /* component props */
   const [showItemPanel, setShowItemPanel] = useState(false);
   const [showNewPanel, setShowNewPanel] = useState(false);
 
-  //  Populate filteredItems.
-  if (originalItems.length === 0) {
-    for (let i = 0; i < 10; i++) {
-      originalItems.push({
-        path: "~sitecollection/Style Library/Valo/riot.min.js?v=1.17",
-        sequence: i + 10000,
-        scope: i % 2 == 0 ? "Site Collection" : "Current Web"
-      });
-    }
-  }
+  useEffect(() => {
+    getItems()
+  }, [])
 
   // Populate columns
   const detailsListColumns: IColumn[] = [
@@ -123,34 +109,36 @@ const ScriptLinks = ({ filteredItems }: HomeProps) => {
       <IonPage>
         <Header title={"ScriptLinks"} />
         <IonContent>
-                <CommandBar
-                  items={[
-                    {
-                      key: "newItem",
-                      name: "New",
-                      cacheKey: "myCacheKey", // changing this key will invalidate this items cache
-                      iconProps: {
-                        iconName: "Add"
-                      },
-                      ariaLabel: "New",
-                      onClick: () => setShowNewPanel(true)
-                    }
-                  ]}
-                  overflowButtonProps={{ ariaLabel: "More commands" }}
-                  ariaLabel={
-                    "Use left and right arrow keys to navigate between commands"
-                  }
-                />
-                <DetailsList
-                  items={originalItems}
-                  columns={detailsListColumns}
-                  selectionMode={SelectionMode.none}
-                  setKey="set"
-                  layoutMode={DetailsListLayoutMode.justified}
-                  isHeaderVisible={true}
-                  enterModalSelectionOnTouch={true}
-                  onItemInvoked={() => setShowItemPanel(true)}
-                />
+          {/* Actions menu */}
+          <CommandBar
+            items={[
+              {
+                key: "newItem",
+                name: "New",
+                cacheKey: "myCacheKey", // changing this key will invalidate this items cache
+                iconProps: {
+                  iconName: "Add"
+                },
+                ariaLabel: "New",
+                onClick: () => setShowNewPanel(true)
+              }
+            ]}
+            overflowButtonProps={{ ariaLabel: "More commands" }}
+            ariaLabel={
+              "Use left and right arrow keys to navigate between commands"
+            }
+          />
+          {/* List of scriptLinks */}
+          <DetailsList
+            items={scriptlinks}
+            columns={detailsListColumns}
+            selectionMode={SelectionMode.none}
+            setKey="set"
+            layoutMode={DetailsListLayoutMode.justified}
+            isHeaderVisible={true}
+            enterModalSelectionOnTouch={true}
+            onItemInvoked={() => setShowItemPanel(true)}
+          />
         </IonContent>
       </IonPage>
 
@@ -195,13 +183,14 @@ const ScriptLinks = ({ filteredItems }: HomeProps) => {
 };
 
 /* types & redux */
-const mapStateToProps = ({ home }: IRootState) => ({
-  filteredItems: home.list,
-  loading: home.loading
+const mapStateToProps = ({ scriptLinks }: IRootState) => ({
+  scriptlinks: scriptLinks.scriptlinks,
+  loading: scriptLinks.loading
 });
 
-const mapDispatchToProps = (/*dispatch: Dispatch<HomeActions>*/) => ({
-  // addItem: (item: string) => addItemAsync(dispatch, item)
+const mapDispatchToProps = (dispatch: Dispatch<ScriptLinksActions>) => ({
+  addItem: (item: IScriptLinks) => addItemAsync(dispatch, item),
+  getItems: () => getItems(dispatch)
 });
 
 type HomeProps = ReturnType<typeof mapStateToProps> &
