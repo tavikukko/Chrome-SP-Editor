@@ -9,7 +9,7 @@
     "@uifabric/azure-themes": "^7.0.9",
     "ionicons": "^4.6.3",
     "monaco-editor": "^0.18.0",
-    "office-ui-fabric-react": "^7.33.0",
+    "office-ui-fabric-react": "^7.34.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-monaco-editor": "^0.31.0",
