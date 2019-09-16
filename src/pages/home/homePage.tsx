@@ -12,11 +12,13 @@ import { PrimaryButton, TextField } from "office-ui-fabric-react";
 import { IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
 import Header from "../../components/navigation/header";
 
-const jee = require('./testi')
+/* chrome integrations */
+import { exescript } from "../../utilities/chromecommon";
+import { getCustomActions } from "./chromescriptlinks";
+import { getSystemjsPath, getPnpjsPath } from "../../utilities/utilities";
 
 /* component */
 const HomePage = ({ list, loading, addItem }: HomeProps) => {
-
   /* component props */
   const [inputText, setInputText] = useState();
 
@@ -29,20 +31,43 @@ const HomePage = ({ list, loading, addItem }: HomeProps) => {
     addItem(inputText);
     setInputText("");
   };
+/*
+  var port = chrome.runtime.connect();
 
+  port.postMessage({
+    type: "init",
+    tabId: chrome.devtools.inspectedWindow.tabId
+  });
+  port.onMessage.addListener(function(message) {
+    alert("joo!");
+    if (
+      typeof message !== "object" ||
+      message === null ||
+      message === undefined ||
+      message.source === undefined
+    ) {
+      return;
+    }
+
+    switch (message.function) {
+      case "getCustomActions":
+        console.log(message);
+        break;
+    }
+  });
+*/
   const onInjectClick = () => {
-    console.log('' + require('./testi').koko)
-    const keke = 'console.log("chammoo"); ' + jee.koko + ' koko();';
-    chrome.devtools.inspectedWindow.eval(keke);
-
+    let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${getCustomActions}`;
+    script += " exescript(getCustomActions);";
+    console.log(script);
+    chrome.devtools.inspectedWindow.eval(script);
   };
 
-  const greeting = 'Welcome to React';
   /* render */
   return (
     <>
       <IonPage>
-        <Header title={'Home'} />
+        <Header title={"Home"} />
         <IonContent>
           <IonGrid color="primary">
             <IonRow class="ion-no-padding">
