@@ -12,6 +12,8 @@ import { PrimaryButton, TextField } from "office-ui-fabric-react";
 import { IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
 import Header from "../../components/navigation/header";
 
+const jee = require('./testi')
+
 /* component */
 const HomePage = ({ list, loading, addItem }: HomeProps) => {
 
@@ -27,6 +29,14 @@ const HomePage = ({ list, loading, addItem }: HomeProps) => {
     addItem(inputText);
     setInputText("");
   };
+
+  const onInjectClick = () => {
+    console.log('' + require('./testi').koko)
+    const keke = 'console.log("chammoo"); ' + jee.koko + ' koko();';
+    chrome.devtools.inspectedWindow.eval(keke);
+
+  };
+
   const greeting = 'Welcome to React';
   /* render */
   return (
@@ -43,6 +53,8 @@ const HomePage = ({ list, loading, addItem }: HomeProps) => {
                   onChange={(e, v) => onInputChange(v)}
                 />
                 <PrimaryButton text="Add item" onClick={onAddClick} />
+                <PrimaryButton text="Inject" onClick={onInjectClick} />
+
                 <ul>
                   {list.map(l => (
                     <li key={l}>{l}</li>
