@@ -12,11 +12,6 @@ import { PrimaryButton, TextField } from "office-ui-fabric-react";
 import { IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
 import Header from "../../components/navigation/header";
 
-/* chrome integrations */
-import { exescript } from "../../utilities/chromecommon";
-import { getCustomActions } from "./chromescriptlinks";
-import { getSystemjsPath, getPnpjsPath } from "../../utilities/utilities";
-
 /* component */
 const HomePage = ({ list, loading, addItem }: HomeProps) => {
   /* component props */
@@ -30,37 +25,6 @@ const HomePage = ({ list, loading, addItem }: HomeProps) => {
   const onAddClick = () => {
     addItem(inputText);
     setInputText("");
-  };
-/*
-  var port = chrome.runtime.connect();
-
-  port.postMessage({
-    type: "init",
-    tabId: chrome.devtools.inspectedWindow.tabId
-  });
-  port.onMessage.addListener(function(message) {
-    alert("joo!");
-    if (
-      typeof message !== "object" ||
-      message === null ||
-      message === undefined ||
-      message.source === undefined
-    ) {
-      return;
-    }
-
-    switch (message.function) {
-      case "getCustomActions":
-        console.log(message);
-        break;
-    }
-  });
-*/
-  const onInjectClick = () => {
-    let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${getCustomActions}`;
-    script += " exescript(getCustomActions);";
-    console.log(script);
-    chrome.devtools.inspectedWindow.eval(script);
   };
 
   /* render */
@@ -78,8 +42,6 @@ const HomePage = ({ list, loading, addItem }: HomeProps) => {
                   onChange={(e, v) => onInputChange(v)}
                 />
                 <PrimaryButton text="Add item" onClick={onAddClick} />
-                <PrimaryButton text="Inject" onClick={onInjectClick} />
-
                 <ul>
                   {list.map(l => (
                     <li key={l}>{l}</li>

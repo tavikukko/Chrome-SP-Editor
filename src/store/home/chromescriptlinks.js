@@ -13,8 +13,7 @@ export const getCustomActions = function getCustomActions() {
 
     const siteactions = await $pnp.sp.site.userCustomActions.get();
     const webactions = await $pnp.sp.web.userCustomActions.get();
-    var actions = siteactions.concat(webactions);
-
+    const actions = siteactions.concat(webactions);
     console.log(actions)
     window.postMessage(JSON.stringify({
       function: 'getCustomActions',
@@ -23,6 +22,13 @@ export const getCustomActions = function getCustomActions() {
       source: 'chrome-sp-editor'
     }), '*');
   })()
-    .catch(console.error);
+    .catch(e => {
+      window.postMessage(JSON.stringify({
+        function: 'getCustomActions',
+        success: false,
+        result: e,
+        source: 'chrome-sp-editor'
+      }), '*');
+    });
 }
 

@@ -1,13 +1,13 @@
 import { action } from 'typesafe-actions';
-import { Constants, IScriptLinks } from './types';
+import { Constants, IScriptLink } from './types';
 
-export function getItems(items: IScriptLinks[]) {
+export function getAllScriptLinks(items: IScriptLink[]) {
   return action(Constants.GET_ITEMS, {
       items
   });
 }
 
-export function addItemToList(item: IScriptLinks) {
+export function addItemToList(item: IScriptLink) {
     return action(Constants.ADD_ITEM, {
         item
     });

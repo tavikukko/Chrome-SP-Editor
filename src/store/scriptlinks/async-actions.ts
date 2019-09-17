@@ -1,26 +1,53 @@
 import { Dispatch } from 'redux';
 import * as actions from './actions';
-import { ScriptLinksActions, IScriptLinks } from './types';
+import { ScriptLinksActions, IScriptLink } from './types';
+import { getPnpjsPath, getSystemjsPath } from '../utilities/utilities';
+import { exescript } from '../utilities/chromecommon';
+import { getCustomActions } from '../home/chromescriptlinks';
 
-const sleep = async (timeout: number) => {
-  return new Promise((resolve) => setTimeout(() => resolve(), timeout));
-}
+export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions>) {
 
-export async function getItems(dispatch: Dispatch<ScriptLinksActions>) {
   dispatch(actions.setLoading(true));
-  await sleep(1000);
-  const items: IScriptLinks[] = [{
-    path: "~sitecollection/Style Library/Valo/riot.min.js?v=1.17",
-    sequence: 10000,
-    scope: "Current Web"
-  }]
-  dispatch(actions.getItems(items));
-  dispatch(actions.setLoading(false));
+  // add listener to receive the results from inspectedPage
+  (window as any).port.onMessage.addListener(function getAllScriptLinksCallback(message: any) {
+    if (
+      typeof message !== "object" ||
+      message === null ||
+      message === undefined ||
+      message.source === undefined
+    ) {
+      return;
+    }
+
+    switch (message.function) {
+      case "getCustomActions":
+        if (message.success) {
+          const scriptLinks: IScriptLink[] = message.result.map((uca: IScriptLink) => {
+            if (uca && uca.ScriptBlock && uca.ScriptBlock.toLocaleLowerCase().indexOf("href=\"") > -1) {
+              let url = uca.ScriptBlock.substring(uca.ScriptBlock.toLocaleLowerCase().indexOf("href=\""));
+              url = url.substring(url.indexOf("\"") + 1);
+              url = url.substring(0, url.indexOf("\""));
+              uca.Url = url;
+            } else {
+              uca.Url = uca.ScriptSrc;
+            }
+            uca.Scope = uca.Scope === '2' ? 'Current Web' : "Site Collection"
+            // TODO: what to do with other custom actions?
+            return uca
+          });
+          dispatch(actions.getAllScriptLinks(scriptLinks));
+          dispatch(actions.setLoading(false));
+        } else {
+          // TODO: handle errors
+        }
+        (window as any).port.onMessage.removeListener(getAllScriptLinksCallback)
+        break;
+    }
+  });
+
+  // execute script in inspectedWindow
+  let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${getCustomActions}`;
+  script += " exescript(getCustomActions);";
+  chrome.devtools.inspectedWindow.eval(script);
 }
 
-export async function addItemAsync(dispatch: Dispatch<ScriptLinksActions>, item: IScriptLinks) {
-  dispatch(actions.setLoading(true));
-  await sleep(1000);
-  dispatch(actions.addItemToList(item));
-  dispatch(actions.setLoading(false));
-}

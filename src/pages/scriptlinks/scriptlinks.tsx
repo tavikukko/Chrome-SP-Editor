@@ -19,11 +19,10 @@ import Header from "../../components/navigation/header";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IRootState } from "../../store";
-import { ScriptLinksActions, IScriptLinks } from "../../store/scriptlinks/types";
-import { addItemAsync } from "../../store/scriptlinks/async-actions";
-import { getItems } from "../../store/scriptlinks/async-actions";
+import { ScriptLinksActions } from "../../store/scriptlinks/types";
+import { getAllScriptLinks } from "../../store/scriptlinks/async-actions";
 
-const ScriptLinks = ({ scriptlinks, getItems }: HomeProps) => {
+const ScriptLinks = ({ scriptlinks, getAllScriptLinks: getItems }: HomeProps) => {
   /* component props */
   const [showItemPanel, setShowItemPanel] = useState(false);
   const [showNewPanel, setShowNewPanel] = useState(false);
@@ -36,7 +35,7 @@ const ScriptLinks = ({ scriptlinks, getItems }: HomeProps) => {
   const detailsListColumns: IColumn[] = [
     {
       data: "number",
-      fieldName: "sequence",
+      fieldName: "Sequence",
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
@@ -49,7 +48,7 @@ const ScriptLinks = ({ scriptlinks, getItems }: HomeProps) => {
     },
     {
       data: "string",
-      fieldName: "path",
+      fieldName: "Url",
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
@@ -58,11 +57,11 @@ const ScriptLinks = ({ scriptlinks, getItems }: HomeProps) => {
       key: "column1",
       maxWidth: 350,
       minWidth: 210,
-      name: "Path"
+      name: "ScriptSrc"
     },
     {
       data: "string",
-      fieldName: "scope",
+      fieldName: "Scope",
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
@@ -189,8 +188,7 @@ const mapStateToProps = ({ scriptLinks }: IRootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<ScriptLinksActions>) => ({
-  addItem: (item: IScriptLinks) => addItemAsync(dispatch, item),
-  getItems: () => getItems(dispatch)
+  getAllScriptLinks: () => getAllScriptLinks(dispatch)
 });
 
 type HomeProps = ReturnType<typeof mapStateToProps> &

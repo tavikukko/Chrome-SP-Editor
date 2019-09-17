@@ -10,6 +10,14 @@ import { initializeIcons } from "office-ui-fabric-react/lib/Icons";
 
 initializeIcons();
 
+// create global connection
+(window as any).port = chrome.runtime.connect();
+// send message for bg scrit to register the tab inspected
+(window as any).port.postMessage({
+  type: "init",
+  tabId: chrome.devtools.inspectedWindow.tabId
+});
+
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>

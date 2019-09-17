@@ -3,15 +3,20 @@ import * as actions from './actions';
 
 export type ScriptLinksActions = ActionType<typeof actions>;
 
-export interface IScriptLinks {
+export interface IScriptLink {
   [key: string]: any;
-  path: string;
-  sequence: number;
-  scope: string;
+  Name: string;
+  Scope: string;
+  ScriptBlock: string;
+  ScriptSrc: string;
+  Sequence: number;
+  Url: string;
+  Title: string;
+  Id: string;
 }
 
 export interface IScriptLinksState {
-  scriptlinks: IScriptLinks[],
+  scriptlinks: IScriptLink[],
   loading: boolean
 }
 
