@@ -3,7 +3,7 @@ import * as actions from './actions';
 import { ScriptLinksActions, IScriptLink } from './types';
 import { getPnpjsPath, getSystemjsPath } from '../utilities/utilities';
 import { exescript } from '../utilities/chromecommon';
-import { getCustomActions } from '../home/chromescriptlinks';
+import { getCustomActions } from './chromescriptlinks'
 
 export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions>) {
 

@@ -11,11 +11,11 @@ export const getCustomActions = function getCustomActions() {
       }
     });
 
-    const siteactions = await $pnp.sp.site.userCustomActions.
-                    select("Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title").get();
+    const siteactions = await $pnp.sp.site.userCustomActions
+                    .select("Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title").get();
     const webactions = await $pnp.sp.web.userCustomActions
                     .select("Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title").get();
-    
+
     const actions = siteactions.concat(webactions);
 
     window.postMessage(JSON.stringify({

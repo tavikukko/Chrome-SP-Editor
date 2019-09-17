@@ -22,13 +22,13 @@ import { IRootState } from "../../store";
 import { ScriptLinksActions } from "../../store/scriptlinks/types";
 import { getAllScriptLinks } from "../../store/scriptlinks/async-actions";
 
-const ScriptLinks = ({ scriptlinks, getAllScriptLinks: getItems }: HomeProps) => {
+const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => {
   /* component props */
   const [showItemPanel, setShowItemPanel] = useState(false);
   const [showNewPanel, setShowNewPanel] = useState(false);
 
   useEffect(() => {
-    getItems()
+    getAllScriptLinks()
   }, [])
 
   // Populate columns
@@ -137,6 +137,7 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks: getItems }: HomeProps) =>
             isHeaderVisible={true}
             enterModalSelectionOnTouch={true}
             onItemInvoked={() => setShowItemPanel(true)}
+
           />
         </IonContent>
       </IonPage>
