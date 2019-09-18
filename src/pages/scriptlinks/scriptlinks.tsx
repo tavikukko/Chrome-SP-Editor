@@ -4,7 +4,7 @@ import {
   DetailsList,
   DetailsListLayoutMode,
   IColumn,
-  SelectionMode
+  SelectionMode,
 } from "office-ui-fabric-react/lib/DetailsList";
 
 import {
@@ -13,14 +13,17 @@ import {
 } from "office-ui-fabric-react/lib/Button";
 import { Panel, PanelType } from "office-ui-fabric-react/lib/Panel";
 import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
-import { Stack, TextField } from "office-ui-fabric-react";
-import { IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
+import { Stack, TextField, MarqueeSelection, Overlay, IStyle, Spinner, SpinnerSize, IStackProps } from "office-ui-fabric-react";
+import { IonContent, IonPage } from "@ionic/react";
 import Header from "../../components/navigation/header";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IRootState } from "../../store";
 import { ScriptLinksActions, IScriptLink } from "../../store/scriptlinks/types";
 import { getAllScriptLinks } from "../../store/scriptlinks/async-actions";
+import {
+  Selection,
+} from 'office-ui-fabric-react/lib/utilities/selection'
 
 const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => {
   /* component props */
@@ -28,6 +31,7 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
   const [showNewPanel, setShowNewPanel] = useState(false);
   const [selectedItem, setSelectedItem] = useState<IScriptLink | undefined>();
 
+  const _selection: Selection = new Selection();
 
   useEffect(() => {
     getAllScriptLinks()
@@ -105,12 +109,39 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
     );
   };
 
+  interface IOverlayExampleStyles {
+    root: IStyle;
+  }
+
+  const exampleStyles: IOverlayExampleStyles = {
+    root: [
+      {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        zIndex: 10000,
+      }
+    ]
+  };
+
+  const stackProps: IStackProps = { verticalFill: true, verticalAlign: 'center' };
+
   return (
     <>
       <IonPage>
         <Header title={"ScriptLinks"} />
         <IonContent>
+          {loading &&
+            (<Overlay styles={exampleStyles} isDarkThemed={true}>
+              <Stack {...stackProps} >
+                <Spinner size={SpinnerSize.large} />
+              </Stack>
+            </Overlay>)
+          }
           {/* Actions menu */}
+
           <CommandBar
             items={[
               {
@@ -130,50 +161,53 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
             }
           />
           {/* List of scriptLinks */}
-          <DetailsList
-            items={scriptlinks}
-            columns={detailsListColumns}
-            selectionMode={SelectionMode.none}
-            setKey="set"
-            layoutMode={DetailsListLayoutMode.justified}
-            isHeaderVisible={true}
-            enterModalSelectionOnTouch={true}
-            onItemInvoked={(item: IScriptLink) => {
-              setSelectedItem(item)
-              setShowItemPanel(true)}}
-
-          />
+          <MarqueeSelection selection={_selection} isEnabled={true}>
+            <DetailsList
+              items={scriptlinks}
+              columns={detailsListColumns}
+              selectionMode={SelectionMode.none}
+              setKey="set"
+              layoutMode={DetailsListLayoutMode.justified}
+              isHeaderVisible={true}
+              enterModalSelectionOnTouch={true}
+              onItemInvoked={(item: IScriptLink) => {
+                setSelectedItem(item)
+                setShowItemPanel(true)
+              }}
+            />
+          </MarqueeSelection>
         </IonContent>
       </IonPage>
 
       {/* Panel to item details */}
       {selectedItem && (
-      <Panel
-        isOpen={showItemPanel}
-        type={PanelType.smallFixedFar}
-        onDismiss={() => {
-          setSelectedItem(undefined)
-          setShowItemPanel(false)}
-        }
-        isLightDismiss={true}
-        isFooterAtBottom={true}
-        headerText="Panel with footer at bottom"
-        closeButtonAriaLabel="Close"
-        onRenderFooterContent={_onRenderItemFooterContent}
-      >
-        <Stack>
-          <TextField
-            label="Custom label rendering"
-            description="Click the (i) icon!"
-            value={selectedItem.Url}
-          />
+        <Panel
+          isOpen={showItemPanel}
+          type={PanelType.smallFixedFar}
+          onDismiss={() => {
+            setSelectedItem(undefined)
+            setShowItemPanel(false)
+          }
+          }
+          isLightDismiss={true}
+          isFooterAtBottom={true}
+          headerText="Panel with footer at bottom"
+          closeButtonAriaLabel="Close"
+          onRenderFooterContent={_onRenderItemFooterContent}
+        >
+          <Stack>
+            <TextField
+              label="Custom label rendering"
+              description="Click the (i) icon!"
+              value={selectedItem.Url}
+            />
 
-          <TextField
-            label="Custom description rendering"
-            description="A colorful description!"
-          />
-        </Stack>
-      </Panel>
+            <TextField
+              label="Custom description rendering"
+              description="A colorful description!"
+            />
+          </Stack>
+        </Panel>
       )}
       {/* Panel to create new item */}
       <Panel
