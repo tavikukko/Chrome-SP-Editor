@@ -19,13 +19,15 @@ import Header from "../../components/navigation/header";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IRootState } from "../../store";
-import { ScriptLinksActions } from "../../store/scriptlinks/types";
+import { ScriptLinksActions, IScriptLink } from "../../store/scriptlinks/types";
 import { getAllScriptLinks } from "../../store/scriptlinks/async-actions";
 
 const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => {
   /* component props */
   const [showItemPanel, setShowItemPanel] = useState(false);
   const [showNewPanel, setShowNewPanel] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<IScriptLink | undefined>();
+
 
   useEffect(() => {
     getAllScriptLinks()
@@ -136,24 +138,43 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
             layoutMode={DetailsListLayoutMode.justified}
             isHeaderVisible={true}
             enterModalSelectionOnTouch={true}
-            onItemInvoked={() => setShowItemPanel(true)}
+            onItemInvoked={(item: IScriptLink) => {
+              setSelectedItem(item)
+              setShowItemPanel(true)}}
 
           />
         </IonContent>
       </IonPage>
 
       {/* Panel to item details */}
+      {selectedItem && (
       <Panel
         isOpen={showItemPanel}
         type={PanelType.smallFixedFar}
-        onDismiss={() => setShowItemPanel(false)}
+        onDismiss={() => {
+          setSelectedItem(undefined)
+          setShowItemPanel(false)}
+        }
         isLightDismiss={true}
         isFooterAtBottom={true}
         headerText="Panel with footer at bottom"
         closeButtonAriaLabel="Close"
         onRenderFooterContent={_onRenderItemFooterContent}
-      />
+      >
+        <Stack>
+          <TextField
+            label="Custom label rendering"
+            description="Click the (i) icon!"
+            value={selectedItem.Url}
+          />
 
+          <TextField
+            label="Custom description rendering"
+            description="A colorful description!"
+          />
+        </Stack>
+      </Panel>
+      )}
       {/* Panel to create new item */}
       <Panel
         isOpen={showNewPanel}
