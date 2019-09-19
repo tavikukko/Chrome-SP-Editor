@@ -9,11 +9,7 @@ import { Nav } from 'office-ui-fabric-react'
 import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 
-interface IState {
-  readonly selectedKey: string | any
-}
-
-const fabricNav = ({ history }: RouteComponentProps<any>) => {
+const fabricNav = ({ history }: RouteComponentProps) => {
 
   const [selectedKey, setSelectedKey] = useState('key1')
 
@@ -21,12 +17,11 @@ const fabricNav = ({ history }: RouteComponentProps<any>) => {
     <IonMenu contentId='main'>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>home</IonTitle>
+          <IonTitle>Menu</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent class='outer-content'>
         <Nav
-          // styles={{ root: { width: 250 } }}
           selectedKey={selectedKey}
           onLinkClick={(event, element) => {
             if (event && element) {
