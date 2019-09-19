@@ -1,73 +1,73 @@
-import React, { useState, useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
-import PnPjsConsole from "./pages/pnpjsconsole/pnpjsconsole";
+import React, { useEffect, useState } from 'react'
+import { Route, Switch } from 'react-router-dom'
+import PnPjsConsole from './pages/pnpjsconsole/pnpjsconsole'
 
-import HomePage from "./pages/home/homePage";
-import "./App.css";
-import { FabricNav } from "./components/navigation/navigation";
-import ScriptLinks from "./pages/scriptlinks/scriptlinks";
-import { IonSplitPane, IonPage, IonApp } from "@ionic/react";
-import { IonReactRouter } from "@ionic/react-router";
+import { IonApp, IonPage, IonSplitPane } from '@ionic/react'
+import { IonReactRouter } from '@ionic/react-router'
+import './App.css'
+import { FabricNav } from './components/navigation/navigation'
+import HomePage from './pages/home/homePage'
+import ScriptLinks from './pages/scriptlinks/scriptlinks'
 
 /* Core CSS required for Ionic components to work properly */
-import "@ionic/react/css/core.css";
+import '@ionic/react/css/core.css'
 
 /* Basic CSS for apps built with Ionic */
-import "@ionic/react/css/normalize.css";
-import "@ionic/react/css/structure.css";
-import "@ionic/react/css/typography.css";
+import '@ionic/react/css/normalize.css'
+import '@ionic/react/css/structure.css'
+import '@ionic/react/css/typography.css'
 
 /* Optional CSS utils that can be commented out */
-import "@ionic/react/css/padding.css";
-import "@ionic/react/css/float-elements.css";
-import "@ionic/react/css/text-alignment.css";
-import "@ionic/react/css/text-transformation.css";
-import "@ionic/react/css/flex-utils.css";
-import "@ionic/react/css/display.css";
+import '@ionic/react/css/display.css'
+import '@ionic/react/css/flex-utils.css'
+import '@ionic/react/css/float-elements.css'
+import '@ionic/react/css/padding.css'
+import '@ionic/react/css/text-alignment.css'
+import '@ionic/react/css/text-transformation.css'
 
 /* Theme variables */
-import "./theme/variables.css";
+import './theme/variables.css'
 
-import { Fabric } from "office-ui-fabric-react";
+import { Fabric } from 'office-ui-fabric-react'
 import {
   Customizer,
-  ICustomizations
-} from "office-ui-fabric-react/lib/Utilities";
+  ICustomizations,
+} from 'office-ui-fabric-react/lib/Utilities'
 
-import { createTheme } from "office-ui-fabric-react/lib/Styling";
+import { createTheme } from 'office-ui-fabric-react/lib/Styling'
 
 const fabricDark: ICustomizations = {
   settings: {
     theme: createTheme({
       palette: {
-        neutralLighterAlt: "#282828",
-        neutralLighter: "#313131",
-        neutralLight: "#3f3f3f",
-        neutralQuaternaryAlt: "#484848",
-        neutralQuaternary: "#4f4f4f",
-        neutralTertiaryAlt: "#6d6d6d",
-        neutralTertiary: "#c8c8c8",
-        neutralSecondary: "#d0d0d0",
-        neutralPrimaryAlt: "#dadada",
-        neutralPrimary: "#ffffff",
-        neutralDark: "#f4f4f4",
-        black: "#f8f8f8",
-        white: "#1f1f1f",
-        themePrimary: "#3a96dd",
-        themeLighterAlt: "#020609",
-        themeLighter: "#091823",
-        themeLight: "#112d43",
-        themeTertiary: "#235a85",
-        themeSecondary: "#3385c3",
-        themeDarkAlt: "#4ba0e1",
-        themeDark: "#65aee6",
-        themeDarker: "#8ac2ec",
-        accent: "#3a96dd"
-      }
-    })
+        neutralLighterAlt: '#282828',
+        neutralLighter: '#313131',
+        neutralLight: '#3f3f3f',
+        neutralQuaternaryAlt: '#484848',
+        neutralQuaternary: '#4f4f4f',
+        neutralTertiaryAlt: '#6d6d6d',
+        neutralTertiary: '#c8c8c8',
+        neutralSecondary: '#d0d0d0',
+        neutralPrimaryAlt: '#dadada',
+        neutralPrimary: '#ffffff',
+        neutralDark: '#f4f4f4',
+        black: '#f8f8f8',
+        white: '#1f1f1f',
+        themePrimary: '#3a96dd',
+        themeLighterAlt: '#020609',
+        themeLighter: '#091823',
+        themeLight: '#112d43',
+        themeTertiary: '#235a85',
+        themeSecondary: '#3385c3',
+        themeDarkAlt: '#4ba0e1',
+        themeDark: '#65aee6',
+        themeDarker: '#8ac2ec',
+        accent: '#3a96dd',
+      },
+    }),
   },
-  scopedSettings: {}
-};
+  scopedSettings: {},
+}
 
 const fabricDefault: ICustomizations = {
   settings: {
@@ -94,42 +94,42 @@ const fabricDefault: ICustomizations = {
         neutralPrimary: '#333333',
         neutralDark: '#272727',
         black: '#1d1d1d',
-        white: '#ffffff'
-      }
-    })
+        white: '#ffffff',
+      },
+    }),
   },
-  scopedSettings: {}
-};
+  scopedSettings: {},
+}
 
-const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
 
 const App = () => {
 
-  const [fabricTheme, setFabricTheme] = useState();
+  const [fabricTheme, setFabricTheme] = useState()
 
   const toggleDarkTheme = (shouldAdd: boolean) => {
-    document.body.classList.toggle("dark", shouldAdd);
+    document.body.classList.toggle('dark', shouldAdd)
     setFabricTheme(shouldAdd ? fabricDark : fabricDefault)
   }
 
   useEffect(() => {
-    toggleDarkTheme(prefersDark.matches);
-    prefersDark.addListener(mediaQuery => toggleDarkTheme(mediaQuery.matches));
-  });
+    toggleDarkTheme(prefersDark.matches)
+    prefersDark.addListener(mediaQuery => toggleDarkTheme(mediaQuery.matches))
+  })
 
   return (
     <IonApp>
       <Fabric>
         <Customizer {...fabricTheme}>
           <IonReactRouter>
-            <IonSplitPane contentId="main">
+            <IonSplitPane contentId='main'>
               <FabricNav />
-              <IonPage id="main">
+              <IonPage id='main'>
                 <Switch>
-                  <Route exact path="/" component={HomePage} />
-                  <Route exact path="/index.html" component={HomePage} />
-                  <Route path="/scriptlinks" component={ScriptLinks} />
-                  <Route path="/pnpjsconsole" component={PnPjsConsole} />
+                  <Route exact path='/' component={HomePage} />
+                  <Route exact path='/index.html' component={HomePage} />
+                  <Route path='/scriptlinks' component={ScriptLinks} />
+                  <Route path='/pnpjsconsole' component={PnPjsConsole} />
                 </Switch>
               </IonPage>
             </IonSplitPane>
@@ -137,7 +137,7 @@ const App = () => {
         </Customizer>
       </Fabric>
     </IonApp>
-  );
-};
+  )
+}
 
-export default App;
+export default App

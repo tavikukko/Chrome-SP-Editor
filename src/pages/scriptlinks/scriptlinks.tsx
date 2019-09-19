@@ -1,42 +1,46 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from 'react'
 
 import {
   DetailsList,
   DetailsListLayoutMode,
   IColumn,
   SelectionMode,
-} from "office-ui-fabric-react/lib/DetailsList";
+} from 'office-ui-fabric-react/lib/DetailsList'
 
+import { IonContent, IonPage } from '@ionic/react'
+import { IOverlayProps, IStackProps, IStyle, MarqueeSelection, Overlay, Spinner, SpinnerSize, Stack, TextField } from 'office-ui-fabric-react'
 import {
   DefaultButton,
-  PrimaryButton
-} from "office-ui-fabric-react/lib/Button";
-import { Panel, PanelType } from "office-ui-fabric-react/lib/Panel";
-import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
-import { Stack, TextField, MarqueeSelection, Overlay, IStyle, Spinner, SpinnerSize, IStackProps, IOverlayProps } from "office-ui-fabric-react";
-import { IonContent, IonPage } from "@ionic/react";
-import Header from "../../components/navigation/header";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { IRootState } from "../../store";
-import { ScriptLinksActions, IScriptLink } from "../../store/scriptlinks/types";
-import { getAllScriptLinks } from "../../store/scriptlinks/async-actions";
+  PrimaryButton,
+} from 'office-ui-fabric-react/lib/Button'
+import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar'
+import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel'
 import {
   Selection,
 } from 'office-ui-fabric-react/lib/utilities/selection'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import Header from '../../components/navigation/header'
+import { IRootState } from '../../store'
+import { getAllScriptLinks } from '../../store/scriptlinks/async-actions'
+import { IScriptLink, ScriptLinksActions } from '../../store/scriptlinks/types'
 
-const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => {
+const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: HomeProps) => {
   /* component props */
-  const [showItemPanel, setShowItemPanel] = useState(false);
-  const [showNewPanel, setShowNewPanel] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<IScriptLink | undefined>();
+  const [showItemPanel, setShowItemPanel] = useState(false)
+  const [showNewPanel, setShowNewPanel] = useState(false)
+  const [selectedItem, setSelectedItem] = useState<IScriptLink | undefined>()
+  const [selectedItems, setSelectedItems] = useState<IScriptLink[] | []>([])
 
-  // TODO: study this more
-  const _selection: Selection = new Selection();
+  const selection = useRef(new Selection({
+    onSelectionChanged: () => {
+      const newSelection = selection.current.getSelection() as typeof selectedItems
+      setSelectedItems(newSelection)
+    },
+  }))
 
-  // component styles
   interface IOverStyles {
-    root: IStyle;
+    root: IStyle
   }
 
   const overlayStyles: IOverStyles = {
@@ -48,60 +52,60 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
         bottom: 0,
         left: 0,
         zIndex: 10000,
-      }
-    ]
-  };
+      },
+    ],
+  }
 
-  const stackProps: IStackProps = { verticalFill: true, verticalAlign: 'center' };
+  const stackProps: IStackProps = { verticalFill: true, verticalAlign: 'center' }
   // TODO: get dark theme property from somewhere
-  const panelOverlayProps: IOverlayProps = { isDarkThemed: true };
+  const panelOverlayProps: IOverlayProps = { isDarkThemed: true }
 
   // Populate columns
   const detailsListColumns: IColumn[] = [
     {
-      data: "number",
-      fieldName: "Sequence",
+      data: 'number',
+      fieldName: 'Sequence',
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
       isSorted: true,
       isSortedDescending: false,
-      key: "column2",
+      key: 'column2',
       maxWidth: 100,
       minWidth: 100,
-      name: "Sequence"
+      name: 'Sequence',
     },
     {
-      data: "string",
-      fieldName: "Url",
+      data: 'string',
+      fieldName: 'Url',
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
       isSorted: true,
       isSortedDescending: false,
-      key: "column1",
+      key: 'column1',
       maxWidth: 350,
       minWidth: 210,
-      name: "ScriptSrc"
+      name: 'ScriptSrc',
     },
     {
-      data: "string",
-      fieldName: "Scope",
+      data: 'string',
+      fieldName: 'Scope',
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
       isSorted: true,
       isSortedDescending: false,
-      key: "column3",
+      key: 'column3',
       maxWidth: 350,
       minWidth: 210,
-      name: "Scope"
-    }
-  ];
+      name: 'Scope',
+    },
+  ]
 
   // load initial data
   useEffect(() => {
-    getAllScriptLinks()
+    scriptLinks()
   }, [])
 
   const _onRenderItemFooterContent = (): JSX.Element => {
@@ -109,7 +113,7 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
       <div>
         <PrimaryButton
           onClick={() => setShowItemPanel(false)}
-          style={{ marginRight: "8px" }}
+          style={{ marginRight: '8px' }}
         >
           Update
         </PrimaryButton>
@@ -117,26 +121,26 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
           Remove
         </DefaultButton>
       </div>
-    );
-  };
+    )
+  }
 
   const _onRenderNewFooterContent = (): JSX.Element => {
     return (
       <div>
         <PrimaryButton
           onClick={() => setShowNewPanel(false)}
-          style={{ marginRight: "8px" }}
+          style={{ marginRight: '8px' }}
         >
           Add
         </PrimaryButton>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <>
       <IonPage>
-        <Header title={"ScriptLinks"} />
+        <Header title={'ScriptLinks'} />
         <IonContent>
           {/* Actions menu */}
           {loading && (
@@ -149,28 +153,36 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
           <CommandBar
             items={[
               {
-                key: "newItem",
-                name: "New",
-                cacheKey: "myCacheKey", // changing this key will invalidate this items cache
+                key: 'newItem',
+                name: 'New',
+                cacheKey: 'myCacheKey', // changing this key will invalidate this items cache
                 iconProps: {
-                  iconName: "Add"
+                  iconName: 'Add',
                 },
-                ariaLabel: "New",
-                onClick: () => setShowNewPanel(true)
-              }
+                ariaLabel: 'New',
+                onClick: () => setShowNewPanel(true),
+              },
+              {
+                key: 'deleteRow',
+                text: 'Remove',
+                iconProps: { iconName: 'Delete' },
+                disabled: selectedItems.length < 1,
+                // onClick: () => deleteRows()
+              },
             ]}
-            overflowButtonProps={{ ariaLabel: "More commands" }}
+            overflowButtonProps={{ ariaLabel: 'More commands' }}
             ariaLabel={
-              "Use left and right arrow keys to navigate between commands"
+              'Use left and right arrow keys to navigate between commands'
             }
           />
           {/* List of scriptLinks */}
-          <MarqueeSelection selection={_selection} isEnabled={true}>
+          <MarqueeSelection selection={selection.current} isEnabled={true}>
             <DetailsList
+              selection={selection.current}
               items={scriptlinks}
               columns={detailsListColumns}
-              selectionMode={SelectionMode.none}
-              setKey="set"
+              selectionMode={SelectionMode.multiple}
+              setKey='set'
               layoutMode={DetailsListLayoutMode.justified}
               isHeaderVisible={true}
               enterModalSelectionOnTouch={true}
@@ -195,21 +207,21 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
           }
           isLightDismiss={true}
           isFooterAtBottom={true}
-          headerText="Panel with footer at bottom"
-          closeButtonAriaLabel="Close"
+          headerText='Panel with footer at bottom'
+          closeButtonAriaLabel='Close'
           onRenderFooterContent={_onRenderItemFooterContent}
           overlayProps={panelOverlayProps}
         >
           <Stack>
             <TextField
-              label="Custom label rendering"
-              description="Click the (i) icon!"
+              label='Custom label rendering'
+              description='Click the (i) icon!'
               value={selectedItem.Url}
             />
 
             <TextField
-              label="Custom description rendering"
-              description="A colorful description!"
+              label='Custom description rendering'
+              description='A colorful description!'
             />
           </Stack>
         </Panel>
@@ -221,42 +233,42 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
         onDismiss={() => setShowNewPanel(false)}
         isLightDismiss={true}
         isFooterAtBottom={true}
-        headerText="Panel with footer at bottom"
-        closeButtonAriaLabel="Close"
+        headerText='Panel with footer at bottom'
+        closeButtonAriaLabel='Close'
         onRenderFooterContent={_onRenderNewFooterContent}
         overlayProps={panelOverlayProps}
       >
         {/* Panel form */}
         <Stack>
           <TextField
-            label="Custom label rendering"
-            description="Click the (i) icon!"
+            label='Custom label rendering'
+            description='Click the (i) icon!'
           />
 
           <TextField
-            label="Custom description rendering"
-            description="A colorful description!"
+            label='Custom description rendering'
+            description='A colorful description!'
           />
         </Stack>
       </Panel>
     </>
-  );
-};
+  )
+}
 
 /* types & redux */
 const mapStateToProps = ({ scriptLinks }: IRootState) => ({
   scriptlinks: scriptLinks.scriptlinks,
-  loading: scriptLinks.loading
-});
+  loading: scriptLinks.loading,
+})
 
 const mapDispatchToProps = (dispatch: Dispatch<ScriptLinksActions>) => ({
-  getAllScriptLinks: () => getAllScriptLinks(dispatch)
-});
+  scriptLinks: () => getAllScriptLinks(dispatch),
+})
 
 type HomeProps = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
+  ReturnType<typeof mapDispatchToProps>
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(ScriptLinks);
+  mapDispatchToProps,
+)(ScriptLinks)
