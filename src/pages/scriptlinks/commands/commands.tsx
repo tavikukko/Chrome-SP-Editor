@@ -35,6 +35,6 @@ const Commands = ({ selectedItems, setShowNewPanel }: CommandsProps) => {
 interface CommandsProps {
   selectedItems: IScriptLink[]
   setShowNewPanel: Function
-};
+}
 
 export default Commands
