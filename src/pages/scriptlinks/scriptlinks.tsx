@@ -1,30 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react'
-
-import {
-  DetailsList,
-  DetailsListLayoutMode,
-  IColumn,
-  SelectionMode,
-} from 'office-ui-fabric-react/lib/DetailsList'
-
 import { IonContent, IonPage } from '@ionic/react'
-import { IOverlayProps, MarqueeSelection, Stack, TextField } from 'office-ui-fabric-react'
+import { IOverlayProps, Stack, TextField } from 'office-ui-fabric-react'
 import {
   DefaultButton,
   PrimaryButton,
 } from 'office-ui-fabric-react/lib/Button'
-import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar'
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel'
 import {
   Selection,
 } from 'office-ui-fabric-react/lib/utilities/selection'
+import React, { useEffect, useRef, useState } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import LoadingSpinner from '../../components/loadingSpinner/loadingSpinner'
 import Header from '../../components/navigation/header'
 import { IRootState } from '../../store'
 import { getAllScriptLinks } from '../../store/scriptlinks/async-actions'
 import { IScriptLink, ScriptLinksActions } from '../../store/scriptlinks/types'
-import LoadingSpinner from "../../components/loadingSpinner/loadingSpinner";
+import Commands from './commands/commands'
+import ScriptLinkList from './scriptLinkList/scriptLinkList'
 
 const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: HomeProps) => {
   /* component props */
@@ -42,49 +35,6 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: HomeProps) => {
 
   // TODO: get dark theme property from somewhere
   const panelOverlayProps: IOverlayProps = { isDarkThemed: true }
-
-  // Populate columns
-  const detailsListColumns: IColumn[] = [
-    {
-      data: 'number',
-      fieldName: 'Sequence',
-      isPadded: true,
-      isResizable: true,
-      isRowHeader: true,
-      isSorted: false,
-      isSortedDescending: false,
-      key: 'column2',
-      maxWidth: 100,
-      minWidth: 100,
-      name: 'Sequence',
-    },
-    {
-      data: 'string',
-      fieldName: 'Url',
-      isPadded: true,
-      isResizable: true,
-      isRowHeader: true,
-      isSorted: false,
-      isSortedDescending: false,
-      key: 'column1',
-      maxWidth: 350,
-      minWidth: 210,
-      name: 'ScriptSrc',
-    },
-    {
-      data: 'string',
-      fieldName: 'Scope',
-      isPadded: true,
-      isResizable: true,
-      isRowHeader: true,
-      isSorted: false,
-      isSortedDescending: false,
-      key: 'column3',
-      maxWidth: 350,
-      minWidth: 210,
-      name: 'Scope',
-    },
-  ]
 
   // load initial data
   useEffect(() => {
@@ -127,48 +77,9 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: HomeProps) => {
         <IonContent>
           {/* Actions menu */}
           <LoadingSpinner loading={loading} />
-          <CommandBar
-            items={[
-              {
-                key: 'newItem',
-                name: 'New',
-                cacheKey: 'myCacheKey', // changing this key will invalidate this items cache
-                iconProps: {
-                  iconName: 'Add',
-                },
-                ariaLabel: 'New',
-                onClick: () => setShowNewPanel(true),
-              },
-              {
-                key: 'deleteRow',
-                text: 'Remove',
-                iconProps: { iconName: 'Delete' },
-                disabled: selectedItems.length < 1,
-                // onClick: () => deleteRows()
-              },
-            ]}
-            overflowButtonProps={{ ariaLabel: 'More commands' }}
-            ariaLabel={
-              'Use left and right arrow keys to navigate between commands'
-            }
-          />
+          <Commands selectedItems={selectedItems} setShowNewPanel={setShowNewPanel} />
           {/* List of scriptLinks */}
-          <MarqueeSelection selection={selection.current} isEnabled={true}>
-            <DetailsList
-              selection={selection.current}
-              items={scriptlinks}
-              columns={detailsListColumns}
-              selectionMode={SelectionMode.multiple}
-              setKey='set'
-              layoutMode={DetailsListLayoutMode.justified}
-              isHeaderVisible={true}
-              enterModalSelectionOnTouch={true}
-              onItemInvoked={(item: IScriptLink) => {
-                setSelectedItem(item)
-                setShowItemPanel(true)
-              }}
-            />
-          </MarqueeSelection>
+          <ScriptLinkList scriptLinks={scriptlinks} selectionRef={selection} setSelectedItem={setSelectedItem} setShowItemPanel={setShowItemPanel} />
         </IonContent>
       </IonPage>
 
