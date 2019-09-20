@@ -1,18 +1,18 @@
-import { ActionType } from 'typesafe-actions';
-import * as actions from './actions';
+import { ActionType } from 'typesafe-actions'
+import * as actions from './actions'
 
-export type ScriptLinksActions = ActionType<typeof actions>;
+export type ScriptLinksActions = ActionType<typeof actions>
 
 export interface IScriptLink {
-  [key: string]: any;
-  Name: string;
-  Scope: string;
-  ScriptBlock: string;
-  ScriptSrc: string;
-  Sequence: number;
-  Url: string;
-  Title: string;
-  Id: string;
+  [key: string]: any
+  Name: string
+  Scope: string
+  ScriptBlock: string
+  ScriptSrc: string
+  Sequence: number
+  Url: string
+  Title: string
+  Id: string
 }
 
 export interface IScriptLinksState {

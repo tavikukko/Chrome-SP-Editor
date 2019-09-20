@@ -8,14 +8,14 @@
     "@monaco-editor/react": "github:tavikukko/monaco-react#master",
     "@uifabric/azure-themes": "^7.0.9",
     "ionicons": "^4.6.3",
-    "monaco-editor": "^0.18.0",
-    "office-ui-fabric-react": "^7.34.0",
+    "monaco-editor": "^0.18.1",
+    "office-ui-fabric-react": "^7.36.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-monaco-editor": "^0.31.0",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.1",
+    "react-scripts": "3.1.2",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "typesafe-actions": "^4.4.2",
@@ -53,6 +53,10 @@
     "@types/react-resize-detector": "^4.0.2",
     "@types/react-router-dom": "^4.3.5",
     "cra-build-watch": "^2.0.1",
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "tslint": "^5.20.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-react": "^4.1.0",
+    "tslint-react-recommended": "^1.0.15"
   }
 }

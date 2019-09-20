@@ -1,11 +1,11 @@
-import { ActionType } from 'typesafe-actions';
-import * as actions from './actions';
+import { ActionType } from 'typesafe-actions'
+import * as actions from './actions'
 
-export type HomeActions = ActionType<typeof actions>;
+export type HomeActions = ActionType<typeof actions>
 
 export interface IHomeState {
-    list: string[],
-    loading: boolean
+  list: string[],
+  loading: boolean
 }
 
 export enum Constants {

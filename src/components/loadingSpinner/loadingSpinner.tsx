@@ -8,7 +8,7 @@ const LoadingSpinner = ({loading}: SpinnerProps) => {
 
     interface IOverStyles {
         root: IStyle;
-      }
+    };
 
     const overlayStyles: IOverStyles = {
         root: [

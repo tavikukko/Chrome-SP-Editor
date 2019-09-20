@@ -1,12 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./store";
-import { initializeIcons } from "office-ui-fabric-react/lib/Icons";
+import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App'
+import './index.css'
+import * as serviceWorker from './serviceWorker'
+import store from './store'
 
 initializeIcons();
 
@@ -14,9 +14,9 @@ initializeIcons();
 (window as any).port = chrome.runtime.connect();
 // send message for bg scrit to register the tab inspected
 (window as any).port.postMessage({
-  type: "init",
-  tabId: chrome.devtools.inspectedWindow.tabId
-});
+  type: 'init',
+  tabId: chrome.devtools.inspectedWindow.tabId,
+})
 
 ReactDOM.render(
   <Provider store={store}>
@@ -24,10 +24,10 @@ ReactDOM.render(
       <App />
     </BrowserRouter>
   </Provider>,
-  document.getElementById("root")
-);
+  document.getElementById('root'),
+)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.unregister()
