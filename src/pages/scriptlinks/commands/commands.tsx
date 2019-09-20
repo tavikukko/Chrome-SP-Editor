@@ -1,4 +1,4 @@
-import { CommandBar } from 'office-ui-fabric-react';
+import { CommandBar } from 'office-ui-fabric-react'
 import React from 'react'
 import { IScriptLink } from '../../../store/scriptlinks/types'
 

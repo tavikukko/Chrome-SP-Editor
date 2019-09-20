@@ -1,5 +1,5 @@
 import { DetailsList, DetailsListLayoutMode, IColumn, MarqueeSelection, SelectionMode } from 'office-ui-fabric-react'
-import React, { useRef } from 'react'
+import React from 'react'
 import { IScriptLink } from '../../../store/scriptlinks/types'
 
 const ScriptLinkList = ({ scriptLinks, selectionRef, setSelectedItem, setShowItemPanel }: ScriptLinkListProps) => {
