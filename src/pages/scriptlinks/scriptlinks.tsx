@@ -13,7 +13,7 @@ import {
 } from "office-ui-fabric-react/lib/Button";
 import { Panel, PanelType } from "office-ui-fabric-react/lib/Panel";
 import { CommandBar } from "office-ui-fabric-react/lib/CommandBar";
-import { Stack, TextField, MarqueeSelection, Overlay, IStyle, Spinner, SpinnerSize, IStackProps, IOverlayProps } from "office-ui-fabric-react";
+import { Stack, TextField, MarqueeSelection, IStackProps, IOverlayProps } from "office-ui-fabric-react";
 import { IonContent, IonPage } from "@ionic/react";
 import Header from "../../components/navigation/header";
 import { connect } from "react-redux";
@@ -24,6 +24,7 @@ import { getAllScriptLinks } from "../../store/scriptlinks/async-actions";
 import {
   Selection,
 } from 'office-ui-fabric-react/lib/utilities/selection'
+import LoadingSpinner from "../../components/loadingSpinner/loadingSpinner";
 
 const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => {
   /* component props */
@@ -35,23 +36,6 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
   const _selection: Selection = new Selection();
 
   // component styles
-  interface IOverStyles {
-    root: IStyle;
-  }
-
-  const overlayStyles: IOverStyles = {
-    root: [
-      {
-        position: 'absolute',
-        top: -56,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        zIndex: 10000,
-      }
-    ]
-  };
-
   const stackProps: IStackProps = { verticalFill: true, verticalAlign: 'center' };
   // TODO: get dark theme property from somewhere
   const panelOverlayProps: IOverlayProps = { isDarkThemed: true };
@@ -101,7 +85,8 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
 
   // load initial data
   useEffect(() => {
-    getAllScriptLinks()
+    getAllScriptLinks();
+    debugger;
   }, [])
 
   const _onRenderItemFooterContent = (): JSX.Element => {
@@ -139,13 +124,7 @@ const ScriptLinks = ({ scriptlinks, getAllScriptLinks, loading }: HomeProps) => 
         <Header title={"ScriptLinks"} />
         <IonContent>
           {/* Actions menu */}
-          {loading && (
-            <Overlay styles={overlayStyles} isDarkThemed={true}>
-              <Stack {...stackProps} >
-                <Spinner size={SpinnerSize.large} />
-              </Stack>
-            </Overlay>)
-          }
+          <LoadingSpinner loading={loading} />
           <CommandBar
             items={[
               {
