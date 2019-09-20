@@ -1,5 +1,5 @@
 import { IonContent, IonPage } from '@ionic/react'
-import { IOverlayProps, Stack, TextField } from 'office-ui-fabric-react'
+import { Dropdown, IOverlayProps, Stack, TextField } from 'office-ui-fabric-react'
 import {
   DefaultButton,
   PrimaryButton,
@@ -19,7 +19,7 @@ import { IScriptLink, ScriptLinksActions } from '../../store/scriptlinks/types'
 import Commands from './commands/commands'
 import ScriptLinkList from './scriptLinkList/scriptLinkList'
 
-const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: HomeProps) => {
+const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: ScriptLinksProps) => {
   /* component props */
   const [showItemPanel, setShowItemPanel] = useState(false)
   const [showNewPanel, setShowNewPanel] = useState(false)
@@ -34,7 +34,7 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: HomeProps) => {
   }))
 
   // TODO: get dark theme property from somewhere
-  const panelOverlayProps: IOverlayProps = { isDarkThemed: true }
+  const panelOverlayProps: IOverlayProps = { isDarkThemed: false }
 
   // load initial data
   useEffect(() => {
@@ -43,30 +43,27 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: HomeProps) => {
 
   const _onRenderItemFooterContent = (): JSX.Element => {
     return (
-      <div>
+      <>
         <PrimaryButton
           onClick={() => setShowItemPanel(false)}
           style={{ marginRight: '8px' }}
-        >
-          Update
-        </PrimaryButton>
-        <DefaultButton onClick={() => setShowItemPanel(false)}>
-          Remove
-        </DefaultButton>
-      </div>
+          text={'Update'}
+        />
+        <DefaultButton
+          onClick={() => setShowItemPanel(false)}
+          text={'Remove'}
+        />
+      </>
     )
   }
 
   const _onRenderNewFooterContent = (): JSX.Element => {
     return (
-      <div>
         <PrimaryButton
           onClick={() => setShowNewPanel(false)}
           style={{ marginRight: '8px' }}
-        >
-          Add
-        </PrimaryButton>
-      </div>
+          text={'Add'}
+        />
     )
   }
 
@@ -75,15 +72,16 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: HomeProps) => {
       <IonPage>
         <Header title={'ScriptLinks'} />
         <IonContent>
-          {/* Actions menu */}
+          {/* Loading spinner overlay */}
           <LoadingSpinner loading={loading} />
+          {/* Actions menu */}
           <Commands selectedItems={selectedItems} setShowNewPanel={setShowNewPanel} />
           {/* List of scriptLinks */}
           <ScriptLinkList scriptLinks={scriptlinks} selectionRef={selection} setSelectedItem={setSelectedItem} setShowItemPanel={setShowItemPanel} />
         </IonContent>
       </IonPage>
 
-      {/* Panel to item details */}
+      {/* Panel item details */}
       {selectedItem && (
         <Panel
           isOpen={showItemPanel}
@@ -126,16 +124,27 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: HomeProps) => {
         onRenderFooterContent={_onRenderNewFooterContent}
         overlayProps={panelOverlayProps}
       >
-        {/* Panel form */}
+        {/* Panel new form */}
         <Stack>
           <TextField
-            label='Custom label rendering'
-            description='Click the (i) icon!'
+            label='Url'
+            description='Url of the file to be injected.'
+            placeholder='~sitecollection/Style Library/custom.js'
+            multiline
+            autoAdjustHeight
           />
-
           <TextField
-            label='Custom description rendering'
-            description='A colorful description!'
+            label='Sequence'
+            description='The sequence of the scriplink'
+            styles={{ fieldGroup: { width: 100 } }}
+          />
+          <Dropdown
+            placeholder='Select an option'
+            label='Dropdown with error message'
+            options={[
+              { key: '2', text: 'Current Web' },
+              { key: '3', text: 'Site Collection' },
+            ]}
           />
         </Stack>
       </Panel>
@@ -153,7 +162,7 @@ const mapDispatchToProps = (dispatch: Dispatch<ScriptLinksActions>) => ({
   scriptLinks: () => getAllScriptLinks(dispatch),
 })
 
-type HomeProps = ReturnType<typeof mapStateToProps> &
+type ScriptLinksProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps>
 
 export default connect(

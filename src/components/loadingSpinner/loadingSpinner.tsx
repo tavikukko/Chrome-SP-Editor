@@ -1,13 +1,13 @@
 import { IStackProps, IStyle, Overlay, Spinner, SpinnerSize, Stack } from 'office-ui-fabric-react'
 import React from 'react'
 
-const LoadingSpinner = ({ loading }: SpinnerProps) => {
+const LoadingSpinner = ({ loading, isDarkThemed }: SpinnerProps) => {
 
   const stackProps: IStackProps = { verticalFill: true, verticalAlign: 'center' }
 
   interface IOverStyles {
     root: IStyle
-  };
+  }
 
   const overlayStyles: IOverStyles = {
     root: [
@@ -23,21 +23,21 @@ const LoadingSpinner = ({ loading }: SpinnerProps) => {
   }
 
   return (
-    <React.Fragment>
+    <>
       {loading && (
-        <Overlay styles={overlayStyles} isDarkThemed={true}>
+        <Overlay styles={overlayStyles} isDarkThemed={isDarkThemed ? isDarkThemed : false}>
           <Stack {...stackProps} >
             <Spinner size={SpinnerSize.large} />
           </Stack>
         </Overlay>)
       }
-    </React.Fragment>
+    </>
   )
-
 }
 
 interface SpinnerProps {
   loading: boolean
+  isDarkThemed?: boolean
 }
 
 export default LoadingSpinner
