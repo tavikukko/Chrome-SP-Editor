@@ -34,7 +34,7 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: ScriptLinksProps) =>
   }))
 
   // TODO: get dark theme property from somewhere
-  const panelOverlayProps: IOverlayProps = { isDarkThemed: false }
+  const panelOverlayProps: IOverlayProps = { isDarkThemed: true }
 
   // load initial data
   useEffect(() => {

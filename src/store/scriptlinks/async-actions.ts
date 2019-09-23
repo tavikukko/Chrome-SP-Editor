@@ -10,6 +10,7 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions>) 
   dispatch(actions.setLoading(true));
   // add listener to receive the results from inspectedPage
   (window as any).port.onMessage.addListener(function getAllScriptLinksCallback(message: any) {
+
     if (
       typeof message !== 'object' ||
       message === null ||
@@ -20,7 +21,7 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions>) 
     }
 
     switch (message.function) {
-      case 'getCustomActions':
+      case getCustomActions.name:
         if (message.success) {
           const scriptLinks: IScriptLink[] = message.result.map((uca: IScriptLink) => {
             if (uca && uca.ScriptBlock && uca.ScriptBlock.toLocaleLowerCase().indexOf('href="') > -1) {
@@ -38,7 +39,8 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions>) 
           dispatch(actions.getAllScriptLinks(scriptLinks))
           dispatch(actions.setLoading(false))
         } else {
-          // TODO: handle errors
+          // dispatch error message? message.result
+          dispatch(actions.setLoading(false))
         }
         (window as any).port.onMessage.removeListener(getAllScriptLinksCallback)
         break
@@ -47,6 +49,6 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions>) 
 
   // execute script in inspectedWindow
   let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${getCustomActions}`
-  script += ' exescript(getCustomActions);'
+  script += ` exescript(${getCustomActions.name});`
   chrome.devtools.inspectedWindow.eval(script)
 }

@@ -25,7 +25,7 @@ const LoadingSpinner = ({ loading, isDarkThemed }: SpinnerProps) => {
   return (
     <>
       {loading && (
-        <Overlay styles={overlayStyles} isDarkThemed={isDarkThemed ? isDarkThemed : false}>
+        <Overlay styles={overlayStyles} isDarkThemed={isDarkThemed ? isDarkThemed : true}>
           <Stack {...stackProps} >
             <Spinner size={SpinnerSize.large} />
           </Stack>
