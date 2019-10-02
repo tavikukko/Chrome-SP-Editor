@@ -32,7 +32,6 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions>) 
             } else {
               uca.Url = uca.ScriptSrc
             }
-            uca.Scope = uca.Scope === '2' ? 'Current Web' : 'Site Collection'
             // TODO: what to do with other custom actions?
             return uca
           })

@@ -6,7 +6,7 @@ export type ScriptLinksActions = ActionType<typeof actions>
 export interface IScriptLink {
   [key: string]: any
   Name: string
-  Scope: string
+  Scope: number
   ScriptBlock: string
   ScriptSrc: string
   Sequence: number
