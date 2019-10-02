@@ -1,10 +1,4 @@
 import { IonContent, IonPage } from '@ionic/react'
-import { Dropdown, IOverlayProps, Stack, TextField } from 'office-ui-fabric-react'
-import {
-  DefaultButton,
-  PrimaryButton,
-} from 'office-ui-fabric-react/lib/Button'
-import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel'
 import {
   Selection,
 } from 'office-ui-fabric-react/lib/utilities/selection'
@@ -17,6 +11,8 @@ import { IRootState } from '../../store'
 import { getAllScriptLinks } from '../../store/scriptlinks/async-actions'
 import { IScriptLink, ScriptLinksActions } from '../../store/scriptlinks/types'
 import Commands from './commands/commands'
+import EditPanel from './editpanel/editpanel'
+import NewPanel from './newpanel/newpanel'
 import ScriptLinkList from './scriptLinkList/scriptLinkList'
 
 const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: ScriptLinksProps) => {
@@ -33,39 +29,10 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: ScriptLinksProps) =>
     },
   }))
 
-  // TODO: get dark theme property from somewhere
-  const panelOverlayProps: IOverlayProps = { isDarkThemed: true }
-
   // load initial data
   useEffect(() => {
     scriptLinks()
   }, [])
-
-  const _onRenderItemFooterContent = (): JSX.Element => {
-    return (
-      <>
-        <PrimaryButton
-          onClick={() => setShowItemPanel(false)}
-          style={{ marginRight: '8px' }}
-          text={'Update'}
-        />
-        <DefaultButton
-          onClick={() => setShowItemPanel(false)}
-          text={'Remove'}
-        />
-      </>
-    )
-  }
-
-  const _onRenderNewFooterContent = (): JSX.Element => {
-    return (
-        <PrimaryButton
-          onClick={() => setShowNewPanel(false)}
-          style={{ marginRight: '8px' }}
-          text={'Add'}
-        />
-    )
-  }
 
   return (
     <>
@@ -82,72 +49,9 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: ScriptLinksProps) =>
       </IonPage>
 
       {/* Panel item details */}
-      {selectedItem && (
-        <Panel
-          isOpen={showItemPanel}
-          type={PanelType.smallFixedFar}
-          onDismiss={() => {
-            setSelectedItem(undefined)
-            setShowItemPanel(false)
-          }
-          }
-          isLightDismiss={true}
-          isFooterAtBottom={true}
-          headerText='Panel with footer at bottom'
-          closeButtonAriaLabel='Close'
-          onRenderFooterContent={_onRenderItemFooterContent}
-          overlayProps={panelOverlayProps}
-        >
-          <Stack>
-            <TextField
-              label='Custom label rendering'
-              description='Click the (i) icon!'
-              value={selectedItem.Url}
-            />
-
-            <TextField
-              label='Custom description rendering'
-              description='A colorful description!'
-            />
-          </Stack>
-        </Panel>
-      )}
+      {selectedItem && <EditPanel showEditPanel={showItemPanel} setSelectedItem={setSelectedItem} setShowEditPanel={setShowItemPanel} selectedItem={selectedItem} />}
       {/* Panel to create new item */}
-      <Panel
-        isOpen={showNewPanel}
-        type={PanelType.smallFixedFar}
-        onDismiss={() => setShowNewPanel(false)}
-        isLightDismiss={true}
-        isFooterAtBottom={true}
-        headerText='Panel with footer at bottom'
-        closeButtonAriaLabel='Close'
-        onRenderFooterContent={_onRenderNewFooterContent}
-        overlayProps={panelOverlayProps}
-      >
-        {/* Panel new form */}
-        <Stack>
-          <TextField
-            label='Url'
-            description='Url of the file to be injected.'
-            placeholder='~sitecollection/Style Library/custom.js'
-            multiline
-            autoAdjustHeight
-          />
-          <TextField
-            label='Sequence'
-            description='The sequence of the scriplink'
-            styles={{ fieldGroup: { width: 100 } }}
-          />
-          <Dropdown
-            placeholder='Select an option'
-            label='Dropdown with error message'
-            options={[
-              { key: '2', text: 'Current Web' },
-              { key: '3', text: 'Site Collection' },
-            ]}
-          />
-        </Stack>
-      </Panel>
+      <NewPanel showNewPanel={showNewPanel} setShowNewPanel={setShowNewPanel} />
     </>
   )
 }
