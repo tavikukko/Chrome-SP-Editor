@@ -10,10 +10,10 @@ import Header from '../../components/navigation/header'
 import { IRootState } from '../../store'
 import { getAllScriptLinks } from '../../store/scriptlinks/async-actions'
 import { IScriptLink, ScriptLinksActions } from '../../store/scriptlinks/types'
-import Commands from './commands/commands'
-import EditPanel from './editpanel/editpanel'
-import NewPanel from './newpanel/newpanel'
-import ScriptLinkList from './scriptLinkList/scriptLinkList'
+import Commands from './components/commands'
+import EditPanel from './components/editpanel'
+import NewPanel from './components/newpanel'
+import ScriptLinkList from './components/scriptLinkList'
 
 const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: ScriptLinksProps) => {
   /* component props */
