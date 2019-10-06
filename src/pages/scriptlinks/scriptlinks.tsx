@@ -15,7 +15,7 @@ import EditPanel from './components/editpanel'
 import NewPanel from './components/newpanel'
 import ScriptLinkList from './components/scriptLinkList'
 
-const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: ScriptLinksProps) => {
+const ScriptLinks = ({ scriptlinks, getScriptLinks, loading }: ScriptLinksProps) => {
   /* component props */
   const [showItemPanel, setShowItemPanel] = useState(false)
   const [showNewPanel, setShowNewPanel] = useState(false)
@@ -31,7 +31,7 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: ScriptLinksProps) =>
 
   // load initial data
   useEffect(() => {
-    scriptLinks()
+    getScriptLinks()
   }, [])
 
   return (
@@ -63,7 +63,7 @@ const mapStateToProps = ({ scriptLinks }: IRootState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch<ScriptLinksActions>) => ({
-  scriptLinks: () => getAllScriptLinks(dispatch),
+  getScriptLinks: () => getAllScriptLinks(dispatch),
 })
 
 type ScriptLinksProps = ReturnType<typeof mapStateToProps> &

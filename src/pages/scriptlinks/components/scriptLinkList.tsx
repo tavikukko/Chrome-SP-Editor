@@ -68,8 +68,8 @@ const ScriptLinkList = ({ scriptLinks, selectionRef, setSelectedItem, setShowIte
 
 interface ScriptLinkListProps {
   scriptLinks: IScriptLink[]
-  setSelectedItem: any
-  setShowItemPanel: any
+  setSelectedItem: Function
+  setShowItemPanel: Function
   selectionRef: any
 }
 
