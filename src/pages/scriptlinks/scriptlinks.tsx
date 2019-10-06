@@ -49,7 +49,7 @@ const ScriptLinks = ({ scriptlinks, scriptLinks, loading }: ScriptLinksProps) =>
       </IonPage>
 
       {/* Panel item details */}
-      {selectedItem && <EditPanel showEditPanel={showItemPanel} setSelectedItem={setSelectedItem} setShowEditPanel={setShowItemPanel} selectedItem={selectedItem} />}
+      <EditPanel showEditPanel={showItemPanel} setSelectedItem={setSelectedItem} setShowEditPanel={setShowItemPanel} selectedItem={selectedItem} />
       {/* Panel to create new item */}
       <NewPanel showNewPanel={showNewPanel} setShowNewPanel={setShowNewPanel} />
     </>
