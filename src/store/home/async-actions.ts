@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import * as actions from './actions'
+import { addItemToList, setLoading } from './actions'
 import { HomeActions } from './types'
 
 const sleep = async (timeout: number) => {
@@ -7,8 +7,8 @@ const sleep = async (timeout: number) => {
 }
 
 export async function addItemAsync(dispatch: Dispatch<HomeActions>, item: string) {
-  dispatch(actions.setLoading(true))
+  dispatch(setLoading(true))
   await sleep(1000)
-  dispatch(actions.addItemToList(item))
-  dispatch(actions.setLoading(false))
+  dispatch(addItemToList(item))
+  dispatch(setLoading(false))
 }

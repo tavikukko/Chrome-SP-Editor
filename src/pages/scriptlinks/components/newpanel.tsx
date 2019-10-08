@@ -1,12 +1,14 @@
 import { Dropdown, IOverlayProps, Panel, PanelType, PrimaryButton, Stack, TextField } from 'office-ui-fabric-react'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { IRootState } from '../../../store'
 
 // TODO: add redux
 
 const NewPanel = ({ setShowNewPanel, showNewPanel }: NewPanelProps) => {
 
-  // TODO: get this from global state?
-  const panelOverlayProps: IOverlayProps = { isDarkThemed: false }
+  const { isDark } = useSelector((state: IRootState) => state.home)
+  const panelOverlayProps: IOverlayProps = { isDarkThemed: isDark }
 
   const _onRenderNewFooterContent = () => {
     return (

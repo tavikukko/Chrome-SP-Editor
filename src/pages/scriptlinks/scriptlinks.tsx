@@ -3,24 +3,26 @@ import {
   Selection,
 } from 'office-ui-fabric-react/lib/utilities/selection'
 import React, { useEffect, useRef, useState } from 'react'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
+import { useDispatch, useSelector } from 'react-redux'
 import LoadingSpinner from '../../components/loadingSpinner/loadingSpinner'
 import Header from '../../components/navigation/header'
 import { IRootState } from '../../store'
 import { getAllScriptLinks } from '../../store/scriptlinks/async-actions'
-import { IScriptLink, ScriptLinksActions } from '../../store/scriptlinks/types'
+import { IScriptLink } from '../../store/scriptlinks/types'
 import Commands from './components/commands'
 import EditPanel from './components/editpanel'
 import NewPanel from './components/newpanel'
 import ScriptLinkList from './components/scriptLinkList'
 
-const ScriptLinks = ({ scriptlinks, getScriptLinks, loading }: ScriptLinksProps) => {
+const ScriptLinks = () => {
   /* component props */
   const [showItemPanel, setShowItemPanel] = useState(false)
   const [showNewPanel, setShowNewPanel] = useState(false)
   const [selectedItem, setSelectedItem] = useState<IScriptLink | undefined>()
   const [selectedItems, setSelectedItems] = useState<IScriptLink[] | []>([])
+
+  const dispatch = useDispatch()
+  const { scriptlinks, loading } = useSelector((state: IRootState) => state.scriptLinks)
 
   const selection = useRef(new Selection({
     onSelectionChanged: () => {
@@ -31,7 +33,7 @@ const ScriptLinks = ({ scriptlinks, getScriptLinks, loading }: ScriptLinksProps)
 
   // load initial data
   useEffect(() => {
-    getScriptLinks()
+    getAllScriptLinks(dispatch)
   }, [])
 
   return (
@@ -56,20 +58,4 @@ const ScriptLinks = ({ scriptlinks, getScriptLinks, loading }: ScriptLinksProps)
   )
 }
 
-/* types & redux */
-const mapStateToProps = ({ scriptLinks }: IRootState) => ({
-  scriptlinks: scriptLinks.scriptlinks,
-  loading: scriptLinks.loading,
-})
-
-const mapDispatchToProps = (dispatch: Dispatch<ScriptLinksActions>) => ({
-  getScriptLinks: () => getAllScriptLinks(dispatch),
-})
-
-type ScriptLinksProps = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ScriptLinks)
+export default ScriptLinks

@@ -35,6 +35,8 @@ import {
 } from 'office-ui-fabric-react/lib/Utilities'
 
 import { createTheme } from 'office-ui-fabric-react/lib/Styling'
+import { useDispatch } from 'react-redux'
+import { setDarkMode } from './store/home/actions'
 
 const fabricDark: ICustomizations = {
   settings: {
@@ -107,9 +109,12 @@ const App = () => {
 
   const [fabricTheme, setFabricTheme] = useState()
 
+  const dispatch = useDispatch()
+
   const toggleDarkTheme = (shouldAdd: boolean) => {
     document.body.classList.toggle('dark', shouldAdd)
     setFabricTheme(shouldAdd ? fabricDark : fabricDefault)
+    dispatch(setDarkMode(shouldAdd))
   }
 
   useEffect(() => {
