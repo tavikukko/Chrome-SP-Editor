@@ -12,3 +12,9 @@ export function setLoading(loading: boolean) {
     loading,
   })
 }
+
+export function setDarkMode(isDark: boolean) {
+  return action(Constants.SET_DARK_MODE, {
+    isDark,
+  })
+}

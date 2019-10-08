@@ -5,10 +5,12 @@ export type HomeActions = ActionType<typeof actions>
 
 export interface IHomeState {
   list: string[],
-  loading: boolean
+  loading: boolean,
+  isDark: boolean
 }
 
 export enum Constants {
     ADD_ITEM = 'ADD_ITEM',
     SET_LOADING = 'SET_LOADING',
+    SET_DARK_MODE = 'SET_DARK_MODE',
 }

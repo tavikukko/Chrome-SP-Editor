@@ -115,7 +115,7 @@ const App = () => {
   useEffect(() => {
     toggleDarkTheme(prefersDark.matches)
     prefersDark.addListener(mediaQuery => toggleDarkTheme(mediaQuery.matches))
-  })
+  }, [])
 
   return (
     <IonApp>

@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 
 /* redux imports */
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addItemAsync } from '../../store/home/async-actions'
-import { HomeActions } from '../../store/home/types'
 import { IRootState } from '../../store/index'
 
 /* UI imports */
@@ -12,18 +10,20 @@ import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react'
 import { PrimaryButton, TextField } from 'office-ui-fabric-react'
 import Header from '../../components/navigation/header'
 
-/* component */
-const HomePage = ({ list, loading, addItem }: HomeProps) => {
-  /* component props */
+const HomePage = () => {
+  /* component state */
   const [inputText, setInputText] = useState()
+
+  /* redux */
+  const dispatch = useDispatch()
+  const { list, loading } = useSelector((state: IRootState) => state.home)
 
   /* compoent methods */
   const onInputChange = (newValue?: string) => {
     setInputText(newValue)
   }
-
   const onAddClick = () => {
-    addItem(inputText)
+    addItemAsync(dispatch, inputText)
     setInputText('')
   }
 
@@ -57,20 +57,4 @@ const HomePage = ({ list, loading, addItem }: HomeProps) => {
   )
 }
 
-/* types & redux */
-const mapStateToProps = ({ home }: IRootState) => ({
-  list: home.list,
-  loading: home.loading,
-})
-
-const mapDispatchToProps = (dispatch: Dispatch<HomeActions>) => ({
-  addItem: (item: string) => addItemAsync(dispatch, item),
-})
-
-type HomeProps = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(HomePage)
+export default HomePage

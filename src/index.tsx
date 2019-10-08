@@ -12,7 +12,7 @@ initializeIcons();
 
 // create global connection
 (window as any).port = chrome.runtime.connect();
-// send message for bg scrit to register the tab inspected
+// send message to background script to register the tab inspected
 (window as any).port.postMessage({
   type: 'init',
   tabId: chrome.devtools.inspectedWindow.tabId,
