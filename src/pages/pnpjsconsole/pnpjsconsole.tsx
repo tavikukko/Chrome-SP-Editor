@@ -2,15 +2,15 @@ import { IonContent, IonPage } from '@ionic/react'
 import { ControlledEditor } from '@monaco-editor/react'
 import { monaco } from '@monaco-editor/react'
 import { editor } from 'monaco-editor'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import {
   CompilerOptions,
   getDefaultCompilerOptions,
   transpileModule,
 } from 'typescript'
 import Header from '../../components/navigation/header'
-
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
+import { IRootState } from '../../store'
 
 export type BuiltinTheme = 'light' | 'dark'
 
@@ -22,19 +22,7 @@ const PnPjsConsole = () => {
     },
   })
 
-  const [monacoTheme, setMonacoTheme] = useState<BuiltinTheme | undefined>(
-    prefersDark ? 'dark' : 'light',
-  )
-
-  const toggleDarkTheme = (shouldAdd: boolean) => {
-    document.body.classList.toggle('dark', shouldAdd)
-    setMonacoTheme(shouldAdd ? 'dark' : 'light')
-  }
-
-  useEffect(() => {
-    toggleDarkTheme(prefersDark.matches)
-    prefersDark.addListener(mediaQuery => toggleDarkTheme(mediaQuery.matches))
-  }, [])
+  const { isDark } = useSelector((state: IRootState) => state.home)
 
   const mod_common = `var mod_common = '${chrome.extension.getURL('bundles/common.es5.umd.bundle.js')}';`
   const mod_config = `var mod_config = '${chrome.extension.getURL('bundles/config-store.es5.umd.bundle.js')}';`
@@ -347,7 +335,7 @@ taxonomy.termStores.get().then(ts => {
           <ControlledEditor
             height='90vh'
             options={options}
-            theme={monacoTheme}
+            theme={isDark ? 'dark' : 'light'}
             loading={''}
             // value={editorCode}
             onChange={handleEditorChange}
