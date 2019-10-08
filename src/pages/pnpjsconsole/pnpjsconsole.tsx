@@ -34,7 +34,7 @@ const PnPjsConsole = () => {
   useEffect(() => {
     toggleDarkTheme(prefersDark.matches)
     prefersDark.addListener(mediaQuery => toggleDarkTheme(mediaQuery.matches))
-  })
+  }, [])
 
   const mod_common = `var mod_common = '${chrome.extension.getURL('bundles/common.es5.umd.bundle.js')}';`
   const mod_config = `var mod_config = '${chrome.extension.getURL('bundles/config-store.es5.umd.bundle.js')}';`
