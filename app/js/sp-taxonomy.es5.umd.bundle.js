@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.5
+ * v1.3.6
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -4521,6 +4521,13 @@ var Term = /** @class */ (function (_super) {
     Term.prototype.update = function (properties) {
         return this.invokeUpdate(properties, Term);
     };
+    /**
+     * Deletes a this term
+     *
+     */
+    Term.prototype.delete = function () {
+        return this.invokeNonQuery("DeleteObject");
+    };
     return Term;
 }(_pnp_sp_clientsvc__WEBPACK_IMPORTED_MODULE_2__["ClientSvcQueryable"]));
 
@@ -5807,7 +5814,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.5");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.6");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -8544,7 +8551,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _files__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./files */ "./build/packages-es5/sp/src/files.js");
 /* harmony import */ var _odata__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./odata */ "./build/packages-es5/sp/src/odata.js");
 /* harmony import */ var _items__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./items */ "./build/packages-es5/sp/src/items.js");
-/* harmony import */ var _net_sphttpclient__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./net/sphttpclient */ "./build/packages-es5/sp/src/net/sphttpclient.js");
+/* harmony import */ var _utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/extractweburl */ "./build/packages-es5/sp/src/utils/extractweburl.js");
 
 
 
@@ -8580,10 +8587,26 @@ var Folders = /** @class */ (function (_super) {
      */
     Folders.prototype.add = function (url) {
         var _this = this;
-        return this.clone(Folders_1, "add('" + url + "')").postCore().then(function (response) {
+        return this.clone(Folders_1, "add('" + url + "')").postCore().then(function (data) {
             return {
-                data: response,
+                data: data,
                 folder: _this.getByName(url),
+            };
+        });
+    };
+    /**
+     * Adds a new folder by path and should be prefered over add
+     *
+     * @param serverRelativeUrl The server relative url of the new folder to create
+     * @param overwrite True to overwrite an existing folder, default false
+     */
+    Folders.prototype.addUsingPath = function (serverRelativeUrl, overwrite) {
+        var _this = this;
+        if (overwrite === void 0) { overwrite = false; }
+        return this.clone(Folders_1, "addUsingPath(DecodedUrl='" + serverRelativeUrl + "',overwrite=" + overwrite + ")").postCore().then(function (data) {
+            return {
+                data: data,
+                folder: new Folder(Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__["extractWebUrl"])(_this.toUrl()), "_api/web/getFolderByServerRelativePath(decodedUrl='" + serverRelativeUrl + "')"),
             };
         });
     };
@@ -8732,19 +8755,17 @@ var Folder = /** @class */ (function (_super) {
      * @param destUrl Absolute or relative URL of the destination path
      */
     Folder.prototype.moveTo = function (destUrl) {
-        var _this = this;
         return this.select("ServerRelativeUrl").get().then(function (_a) {
-            var srcUrl = _a.ServerRelativeUrl;
-            var client = new _net_sphttpclient__WEBPACK_IMPORTED_MODULE_7__["SPHttpClient"]();
-            var webBaseUrl = _this.toUrl().split("/_api")[0];
+            var srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
+            var webBaseUrl = Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__["extractWebUrl"])(absoluteUrl);
             var hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-            var methodUrl = webBaseUrl + "/_api/SP.MoveCopyUtil.MoveFolder()";
-            return client.post(methodUrl, {
+            var f = new Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolder()");
+            return f.postCore({
                 body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["jsS"])({
-                    destUrl: destUrl.indexOf("http") === 0 ? destUrl : "" + hostUrl + destUrl,
+                    destUrl: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["isUrlAbsolute"])(destUrl) ? destUrl : "" + hostUrl + destUrl,
                     srcUrl: "" + hostUrl + srcUrl,
                 }),
-            }).then(function (r) { return r.json(); });
+            });
         });
     };
     return Folder;
@@ -10267,11 +10288,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.5");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.6");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.5");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.6");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -12070,11 +12091,10 @@ var SharePointQueryableSecurable = /** @class */ (function (_super) {
      * Gets the effective permissions for the current user
      */
     SharePointQueryableSecurable.prototype.getCurrentUserEffectivePermissions = function () {
-        var _this = this;
-        // remove need to reference Web here, which created a circular build issue
-        var w = new _sharepointqueryable__WEBPACK_IMPORTED_MODULE_3__["SharePointQueryableInstance"]("_api/web", "currentuser");
-        return w.configureFrom(this).select("LoginName").get().then(function (user) {
-            return _this.getUserEffectivePermissions(user.LoginName);
+        var q = this.clone(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_3__["SharePointQueryable"], "EffectiveBasePermissions");
+        return q.get().then(function (r) {
+            // handle verbose mode
+            return Object(_pnp_common__WEBPACK_IMPORTED_MODULE_4__["hOP"])(r, "EffectiveBasePermissions") ? r.EffectiveBasePermissions : r;
         });
     };
     /**
@@ -12952,6 +12972,7 @@ var Site = /** @class */ (function (_super) {
      *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
+     * @param hubSiteId The Guid of the already existing Hub site
      * @param owner Required when creating the site using app-only context
      */
     Site.prototype.createCommunicationSite = function (title, lcid, shareByEmailEnabled, url, description, classification, siteDesignId, hubSiteId, owner) {
@@ -12991,7 +13012,15 @@ var Site = /** @class */ (function (_super) {
                             "Accept": "application/json;odata=verbose",
                             "Content-Type": "application/json;odata=verbose;charset=utf-8",
                         },
-                    }).then(function (r) { return r.json(); })];
+                    }).then(function (r) { return r.json(); }).then(function (n) {
+                        if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["hOP"])(n, "error")) {
+                            throw n;
+                        }
+                        if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["hOP"])(n, "d") && Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["hOP"])(n.d, "Create")) {
+                            return n.d.Create;
+                        }
+                        return n;
+                    })];
             });
         }); });
     };

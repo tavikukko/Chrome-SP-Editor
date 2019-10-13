@@ -37,7 +37,7 @@ export declare class Plan extends GraphQueryableInstance<IPlannerPlan> {
      *
      * @param properties Set of properties of this Plan to update
      */
-    update(properties: IPlanner): Promise<void>;
+    update(properties: IPlanner, eTag?: string): Promise<void>;
 }
 export declare class Tasks extends GraphQueryableCollection<IPlannerTask[]> {
     getById(id: string): Task;
@@ -61,7 +61,7 @@ export declare class Task extends GraphQueryableInstance<IPlannerTask> {
      *
      * @param properties Set of properties of this Task to update
      */
-    update(properties: IPlannerTask): Promise<void>;
+    update(properties: IPlannerTask, eTag?: string): Promise<void>;
     readonly details: Details;
 }
 export declare class Buckets extends GraphQueryableCollection<IPlannerBucket[]> {
@@ -85,7 +85,7 @@ export declare class Bucket extends GraphQueryableInstance<IPlannerBucket> {
      *
      * @param properties Set of properties of this Bucket to update
      */
-    update(properties: IPlannerBucket): Promise<void>;
+    update(properties: IPlannerBucket, eTag?: string): Promise<void>;
     readonly tasks: Tasks;
 }
 export declare class Details extends GraphQueryableCollection<IPlannerPlanDetails> {

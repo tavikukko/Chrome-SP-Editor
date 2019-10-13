@@ -20,6 +20,13 @@ export declare class Folders extends SharePointQueryableCollection {
      * @returns The new Folder and the raw response.
      */
     add(url: string): Promise<FolderAddResult>;
+    /**
+     * Adds a new folder by path and should be prefered over add
+     *
+     * @param serverRelativeUrl The server relative url of the new folder to create
+     * @param overwrite True to overwrite an existing folder, default false
+     */
+    addUsingPath(serverRelativeUrl: string, overwrite?: boolean): Promise<FolderAddResult>;
 }
 /**
  * Describes a single Folder instance

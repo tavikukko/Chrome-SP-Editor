@@ -124,5 +124,10 @@ export declare class Term extends ClientSvcQueryable implements ITerm {
     update(properties: {
         Name: string;
     }): Promise<ITermData & ITerm>;
+    /**
+     * Deletes a this term
+     *
+     */
+    delete(): Promise<void>;
 }
 //# sourceMappingURL=terms.d.ts.map
