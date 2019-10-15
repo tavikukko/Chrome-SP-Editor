@@ -1,5 +1,5 @@
 import { Dropdown, IDropdownOption, IOverlayProps, Panel, PanelType, PrimaryButton, Stack, TextField } from 'office-ui-fabric-react'
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setEditPanel } from '../../../store/scriptlinks/actions'

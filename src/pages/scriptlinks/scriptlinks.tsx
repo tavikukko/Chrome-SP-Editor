@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonToast } from '@ionic/react'
+import { IonContent, IonPage } from '@ionic/react'
 import {
   Selection,
 } from 'office-ui-fabric-react/lib/utilities/selection'
