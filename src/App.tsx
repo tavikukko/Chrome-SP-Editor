@@ -5,7 +5,7 @@ import PnPjsConsole from './pages/pnpjsconsole/pnpjsconsole'
 import { IonApp, IonPage, IonSplitPane } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
 import './App.css'
-import { FabricNav } from './components/navigation/navigation'
+import { FabricNav } from './components/navigation'
 import HomePage from './pages/home/homePage'
 import ScriptLinks from './pages/scriptlinks/scriptlinks'
 
@@ -36,6 +36,7 @@ import {
 
 import { createTheme } from 'office-ui-fabric-react/lib/Styling'
 import { useDispatch } from 'react-redux'
+import ErrorToast from './components/errorToast'
 import { setDarkMode } from './store/home/actions'
 
 const fabricDark: ICustomizations = {
@@ -136,6 +137,7 @@ const App = () => {
                   <Route path='/scriptlinks' component={ScriptLinks} />
                   <Route path='/pnpjsconsole' component={PnPjsConsole} />
                 </Switch>
+                <ErrorToast />
               </IonPage>
             </IonSplitPane>
           </IonReactRouter>

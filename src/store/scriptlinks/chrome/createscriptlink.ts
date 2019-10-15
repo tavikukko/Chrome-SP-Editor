@@ -1,14 +1,16 @@
-import pnp from '@pnp/pnpjs'
+import * as pnp from '@pnp/pnpjs'
 
-export function createCustomAction() {
+export async function createCustomAction(...args: any) {
 
-  const params = arguments
+  /* get parameters */
+  const params = args
+  const functionName = params[0].name
   const scope = params[1]
   let url = params[2]
   const sequence = params[3]
 
+  /* prepare payload */
   const payload: { [k: string]: any } = {}
-
   payload.Location = 'ScriptLink'
   payload.Sequence = sequence
 
@@ -46,44 +48,51 @@ export function createCustomAction() {
     payload.ScriptBlock = "if (window.location.href.toLowerCase().indexOf('_layouts/15/termstoremanager.aspx') === -1) { document.write('<link rel=\"stylesheet\" href=\"" + url + querystrings + "\" />');}"
   } else {
     window.postMessage(JSON.stringify({
-      function: params.callee.name,
+      function: functionName,
       success: false,
-      result: 'Only JS and CSS files!!',
+      result: null,
+      errorMessage: 'Only inject js or css files!',
       source: 'chrome-sp-editor',
     }), '*')
     return
   }
 
-  (async () => {
-    const $pnp: typeof pnp = await (window as any).SystemJS.import(((window as any).speditorpnp))
+  const $pnp: typeof pnp = await (window as any).SystemJS.import(((window as any).speditorpnp))
 
-    $pnp.setup({
-      sp: {
-        headers: {
-          Accept: 'application/json; odata=verbose',
-        },
-      },
-    })
-
-    if (scope === 2) {
-      await $pnp.sp.site.userCustomActions.add(payload)
-    } else {
-      await $pnp.sp.web.userCustomActions.add(payload)
-    }
-
+  /* setup pnp */
+  $pnp.log.clearSubscribers()
+  const listener = new $pnp.FunctionListener(async (entry: pnp.LogEntry) => {
+    const error = await entry.data.response.clone().json()
     window.postMessage(JSON.stringify({
-      function: params.callee.name,
-      success: true,
-      result: [],
+      function: functionName,
+      success: false,
+      result: null,
+      errorMessage: error.error.message.value,
       source: 'chrome-sp-editor',
     }), '*')
-  })()
-    .catch((e: any) => {
-      window.postMessage(JSON.stringify({
-        function: params.callee.name,
-        success: false,
-        result: e,
-        source: 'chrome-sp-editor',
-      }), '*')
-    })
+  })
+  $pnp.log.subscribe(listener)
+  $pnp.setup({
+    sp: {
+      headers: {
+        Accept: 'application/json; odata=verbose',
+      },
+    },
+  })
+  /* ******* */
+
+  if (scope === 2) {
+    await $pnp.sp.site.userCustomActions.add(payload)
+  } else {
+    await $pnp.sp.web.userCustomActions.add(payload)
+  }
+
+  window.postMessage(JSON.stringify({
+    function: functionName,
+    success: true,
+    result: [],
+    errorMessage: '',
+    source: 'chrome-sp-editor',
+  }), '*')
+
 }

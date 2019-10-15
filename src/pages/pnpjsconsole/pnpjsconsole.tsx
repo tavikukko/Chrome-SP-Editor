@@ -9,7 +9,7 @@ import {
   getDefaultCompilerOptions,
   transpileModule,
 } from 'typescript'
-import Header from '../../components/navigation/header'
+import Header from '../../components/header'
 import { IRootState } from '../../store'
 
 export type BuiltinTheme = 'light' | 'dark'

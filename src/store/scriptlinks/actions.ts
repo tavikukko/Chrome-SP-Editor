@@ -30,3 +30,16 @@ export function setNewPanel(newpanel: boolean) {
     newpanel,
   })
 }
+/*
+export function setError(error: boolean) {
+  return action(Constants.SET_ERROR, {
+    error,
+  })
+}
+
+export function setErrorMessage(errorMessage: string) {
+  return action(Constants.SET_ERROR_MESSAGE, {
+    errorMessage,
+  })
+}
+*/

@@ -1,12 +1,14 @@
 import { Dispatch } from 'redux'
+import * as rootActions from '../home/actions'
 import { exescript } from '../utilities/chromecommon'
 import { getPnpjsPath, getSystemjsPath } from '../utilities/utilities'
+import { HomeActions } from './../home/types'
 import * as actions from './actions'
 import { createCustomAction } from './chrome/createscriptlink'
 import { getCustomActions } from './chrome/getscriptlinks'
 import { INewScriptLink, IScriptLink, ScriptLinksActions } from './types'
 
-export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions>) {
+export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | HomeActions>) {
 
   dispatch(actions.setLoading(true));
   // add listener to receive the results from inspectedPage
@@ -39,8 +41,9 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions>) 
           dispatch(actions.getAllScriptLinks(scriptLinks))
           dispatch(actions.setLoading(false))
         } else {
-          // dispatch error message? message.result
           dispatch(actions.setLoading(false))
+          dispatch(rootActions.setErrorMessage(message.errorMessage))
+          dispatch(rootActions.setError(true))
         }
         (window as any).port.onMessage.removeListener(getAllScriptLinksCallback)
         break
@@ -53,7 +56,7 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions>) 
   chrome.devtools.inspectedWindow.eval(script)
 }
 
-export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions>, payload: INewScriptLink) {
+export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: INewScriptLink) {
 
   // dispatch(actions.setLoading(true));
   // add listener to receive the results from inspectedPage
@@ -75,9 +78,9 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions>, payl
           getAllScriptLinks(dispatch)
           dispatch(actions.setNewPanel(false))
         } else {
-          /* TODO error handling with message */
-          // dispatch error message? message.result
-          // dispatch(actions.setLoading(false))
+          dispatch(actions.setNewPanel(false))
+          dispatch(rootActions.setErrorMessage(message.errorMessage))
+          dispatch(rootActions.setError(true))
         }
         (window as any).port.onMessage.removeListener(addScriptLinkCallback)
         break

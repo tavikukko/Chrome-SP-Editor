@@ -1,11 +1,11 @@
-import { IonContent, IonPage } from '@ionic/react'
+import { IonContent, IonPage, IonToast } from '@ionic/react'
 import {
   Selection,
 } from 'office-ui-fabric-react/lib/utilities/selection'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import LoadingSpinner from '../../components/loadingSpinner/loadingSpinner'
-import Header from '../../components/navigation/header'
+import Header from '../../components/header'
+import LoadingSpinner from '../../components/loadingSpinner'
 import { IRootState } from '../../store'
 import { getAllScriptLinks } from '../../store/scriptlinks/async-actions'
 import { IScriptLink } from '../../store/scriptlinks/types'
@@ -46,7 +46,6 @@ const ScriptLinks = () => {
           <ScriptLinkList scriptLinks={scriptlinks} selectionRef={selection} setSelectedItem={setSelectedItem} />
         </IonContent>
       </IonPage>
-
       {/* Panel item details */}
       <EditPanel showEditPanel={editpanel} setSelectedItem={setSelectedItem} selectedItem={selectedItem} />
       {/* Panel to create new item */}

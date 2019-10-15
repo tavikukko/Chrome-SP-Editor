@@ -8,7 +8,7 @@ import { IRootState } from '../../store/index'
 /* UI imports */
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react'
 import { PrimaryButton, TextField } from 'office-ui-fabric-react'
-import Header from '../../components/navigation/header'
+import Header from '../../components/header'
 
 const HomePage = () => {
   /* component state */

@@ -26,6 +26,8 @@ export interface IScriptLinksState {
   loading: boolean,
   editpanel: boolean,
   newpanel: boolean,
+  /*error: boolean,
+  errorMessage: string,*/
 }
 
 export enum Constants {
@@ -36,4 +38,6 @@ export enum Constants {
   SET_LOADING = 'SET_LOADING',
   SET_EDITPANEL = 'SET_EDITPANEL',
   SET_NEWPANEL = 'SET_NEWPANEL',
+  /*SET_ERROR = 'SET_ERROR',
+  SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE',*/
 }
