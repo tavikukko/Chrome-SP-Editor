@@ -1,8 +1,12 @@
 import { DetailsList, DetailsListLayoutMode, IColumn, MarqueeSelection, SelectionMode } from 'office-ui-fabric-react'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { setEditPanel } from '../../../store/scriptlinks/actions'
 import { IScriptLink } from '../../../store/scriptlinks/types'
 
-const ScriptLinkList = ({ scriptLinks, selectionRef, setSelectedItem, setShowItemPanel }: ScriptLinkListProps) => {
+const ScriptLinkList = ({ scriptLinks, selectionRef, setSelectedItem }: ScriptLinkListProps) => {
+
+  const dispatch = useDispatch()
 
   const detailsListColumns: IColumn[] = [
     {
@@ -59,7 +63,7 @@ const ScriptLinkList = ({ scriptLinks, selectionRef, setSelectedItem, setShowIte
                 enterModalSelectionOnTouch={true}
                 onItemInvoked={(item: IScriptLink) => {
                   setSelectedItem(item)
-                  setShowItemPanel(true)
+                  dispatch(setEditPanel(true))
                 }}
             />
       </MarqueeSelection>
@@ -69,7 +73,6 @@ const ScriptLinkList = ({ scriptLinks, selectionRef, setSelectedItem, setShowIte
 interface ScriptLinkListProps {
   scriptLinks: IScriptLink[]
   setSelectedItem: Function
-  setShowItemPanel: Function
   selectionRef: any
 }
 

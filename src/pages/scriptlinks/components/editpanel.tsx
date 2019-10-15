@@ -1,14 +1,16 @@
 import { Dropdown, IDropdownOption, IOverlayProps, Panel, PanelType, PrimaryButton, Stack, TextField } from 'office-ui-fabric-react'
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
+import { setEditPanel } from '../../../store/scriptlinks/actions'
 import { IScriptLink } from '../../../store/scriptlinks/types'
 
 // TODO: add redux
 
-const EditPanel = ({ setShowEditPanel, showEditPanel, selectedItem, setSelectedItem }: EditPanelProps) => {
+const EditPanel = ({ showEditPanel, selectedItem, setSelectedItem }: EditPanelProps) => {
 
   const { isDark } = useSelector((state: IRootState) => state.home)
+  const dispatch = useDispatch()
 
   const panelOverlayProps: IOverlayProps = { isDarkThemed: isDark }
 
@@ -18,7 +20,6 @@ const EditPanel = ({ setShowEditPanel, showEditPanel, selectedItem, setSelectedI
         onClick={() => {
           // TODO: update item
           setSelectedItem(undefined)
-          setShowEditPanel(false)
         }
         }
         style={{ marginRight: '8px' }}
@@ -33,12 +34,12 @@ const EditPanel = ({ setShowEditPanel, showEditPanel, selectedItem, setSelectedI
       type={PanelType.smallFixedFar}
       onDismiss={() => {
         setSelectedItem(undefined)
-        setShowEditPanel(false)
+        dispatch(setEditPanel(false))
       }
       }
       isLightDismiss={true}
       isFooterAtBottom={true}
-      headerText='Panel with footer at bottom'
+      headerText='Edit ScriptLink'
       closeButtonAriaLabel='Close'
       onRenderFooterContent={_onRenderItemFooterContent}
       overlayProps={panelOverlayProps}
@@ -85,7 +86,6 @@ const EditPanel = ({ setShowEditPanel, showEditPanel, selectedItem, setSelectedI
 }
 
 interface EditPanelProps {
-  setShowEditPanel: Function
   showEditPanel: boolean
   selectedItem: IScriptLink | undefined
   setSelectedItem: Function

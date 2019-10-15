@@ -1,19 +1,35 @@
 import { Dropdown, IOverlayProps, Panel, PanelType, PrimaryButton, Stack, TextField } from 'office-ui-fabric-react'
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
+import { setNewPanel } from '../../../store/scriptlinks/actions'
+import { addScriptLink } from '../../../store/scriptlinks/async-actions'
+import { INewScriptLink } from '../../../store/scriptlinks/types'
 
 // TODO: add redux
 
-const NewPanel = ({ setShowNewPanel, showNewPanel }: NewPanelProps) => {
+const NewPanel = ({ showNewPanel }: NewPanelProps) => {
+
+  const [newItem, setNewItem] = useState<INewScriptLink | undefined>()
+
+  const dispatch = useDispatch()
 
   const { isDark } = useSelector((state: IRootState) => state.home)
   const panelOverlayProps: IOverlayProps = { isDarkThemed: isDark }
 
   const _onRenderNewFooterContent = () => {
+    const payload: INewScriptLink = {
+      Url: '~sitecollection/Style Library/Valo/camljs.min.js?v=1.20.6',
+      Sequence: 10012,
+      Scope: 2,
+    }
     return (
       <PrimaryButton
-        onClick={() => setShowNewPanel(false)}
+        onClick={() => {
+          addScriptLink(dispatch, payload)
+          // setShowNewPanel(false)
+        }
+        }
         style={{ marginRight: '8px' }}
         text={'Add'}
       />
@@ -24,10 +40,10 @@ const NewPanel = ({ setShowNewPanel, showNewPanel }: NewPanelProps) => {
     <Panel
       isOpen={showNewPanel}
       type={PanelType.smallFixedFar}
-      onDismiss={() => setShowNewPanel(false)}
+      onDismiss={() => { dispatch(setNewPanel(false))}}
       isLightDismiss={true}
       isFooterAtBottom={true}
-      headerText='Panel with footer at bottom'
+      headerText='Add ScriptLink'
       closeButtonAriaLabel='Close'
       onRenderFooterContent={_onRenderNewFooterContent}
       overlayProps={panelOverlayProps}
@@ -47,8 +63,8 @@ const NewPanel = ({ setShowNewPanel, showNewPanel }: NewPanelProps) => {
           styles={{ fieldGroup: { width: 100 } }}
         />
         <Dropdown
+          label='Select scope'
           placeholder='Select an option'
-          label='Dropdown with error message'
           options={[
             { key: '2', text: 'Current Web' },
             { key: '3', text: 'Site Collection' },
@@ -60,7 +76,6 @@ const NewPanel = ({ setShowNewPanel, showNewPanel }: NewPanelProps) => {
 }
 
 interface NewPanelProps {
-  setShowNewPanel: Function
   showNewPanel: boolean
 }
 

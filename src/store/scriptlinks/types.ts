@@ -15,9 +15,17 @@ export interface IScriptLink {
   Id: string
 }
 
+export interface INewScriptLink {
+  Scope: number
+  Sequence: number
+  Url: string
+}
+
 export interface IScriptLinksState {
   scriptlinks: IScriptLink[],
-  loading: boolean
+  loading: boolean,
+  editpanel: boolean,
+  newpanel: boolean,
 }
 
 export enum Constants {
@@ -26,4 +34,6 @@ export enum Constants {
   REMOVE_ITEM = 'REMOVE_ITEM',
   UPDATE_ITEM = 'UPDATE_ITEM',
   SET_LOADING = 'SET_LOADING',
+  SET_EDITPANEL = 'SET_EDITPANEL',
+  SET_NEWPANEL = 'SET_NEWPANEL',
 }

@@ -18,7 +18,6 @@ export function exescript(this: any, script: any) {
       (window as any)._spPageContextInfo = e.context._pageContext._legacyPageContext
       if (typeof (window as any).SystemJS === 'undefined') {
         const s = document.createElement('script')
-        // eslint-disable-next-line no-undef
         s.src = (window as any).sj
         s.onload = function() {
           script.apply(this, params)

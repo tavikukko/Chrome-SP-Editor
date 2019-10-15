@@ -1,8 +1,12 @@
 import { CommandBar } from 'office-ui-fabric-react'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { setNewPanel } from '../../../store/scriptlinks/actions'
 import { IScriptLink } from '../../../store/scriptlinks/types'
 
-const Commands = ({ selectedItems, setShowNewPanel }: CommandsProps) => {
+const Commands = ({ selectedItems }: CommandsProps) => {
+  const dispatch = useDispatch()
+
   return (
     <CommandBar
       items={[
@@ -14,7 +18,9 @@ const Commands = ({ selectedItems, setShowNewPanel }: CommandsProps) => {
             iconName: 'Add',
           },
           ariaLabel: 'New',
-          onClick: () => setShowNewPanel(true),
+          onClick: () => {
+            dispatch(setNewPanel(true))
+          },
         },
         {
           key: 'deleteRow',
@@ -34,7 +40,6 @@ const Commands = ({ selectedItems, setShowNewPanel }: CommandsProps) => {
 
 interface CommandsProps {
   selectedItems: IScriptLink[]
-  setShowNewPanel: Function
 }
 
 export default Commands

@@ -16,13 +16,11 @@ import ScriptLinkList from './components/scriptLinkList'
 
 const ScriptLinks = () => {
   /* component props */
-  const [showItemPanel, setShowItemPanel] = useState(false)
-  const [showNewPanel, setShowNewPanel] = useState(false)
   const [selectedItem, setSelectedItem] = useState<IScriptLink | undefined>()
   const [selectedItems, setSelectedItems] = useState<IScriptLink[] | []>([])
 
   const dispatch = useDispatch()
-  const { scriptlinks, loading } = useSelector((state: IRootState) => state.scriptLinks)
+  const { scriptlinks, loading, newpanel, editpanel } = useSelector((state: IRootState) => state.scriptLinks)
 
   const selection = useRef(new Selection({
     onSelectionChanged: () => {
@@ -30,7 +28,6 @@ const ScriptLinks = () => {
       setSelectedItems(newSelection)
     },
   }))
-
   // load initial data
   useEffect(() => {
     getAllScriptLinks(dispatch)
@@ -44,16 +41,16 @@ const ScriptLinks = () => {
           {/* Loading spinner overlay */}
           <LoadingSpinner loading={loading} />
           {/* Actions menu */}
-          <Commands selectedItems={selectedItems} setShowNewPanel={setShowNewPanel} />
+          <Commands selectedItems={selectedItems} />
           {/* List of scriptLinks */}
-          <ScriptLinkList scriptLinks={scriptlinks} selectionRef={selection} setSelectedItem={setSelectedItem} setShowItemPanel={setShowItemPanel} />
+          <ScriptLinkList scriptLinks={scriptlinks} selectionRef={selection} setSelectedItem={setSelectedItem} />
         </IonContent>
       </IonPage>
 
       {/* Panel item details */}
-      <EditPanel showEditPanel={showItemPanel} setSelectedItem={setSelectedItem} setShowEditPanel={setShowItemPanel} selectedItem={selectedItem} />
+      <EditPanel showEditPanel={editpanel} setSelectedItem={setSelectedItem} selectedItem={selectedItem} />
       {/* Panel to create new item */}
-      <NewPanel showNewPanel={showNewPanel} setShowNewPanel={setShowNewPanel} />
+      <NewPanel showNewPanel={newpanel} />
     </>
   )
 }
