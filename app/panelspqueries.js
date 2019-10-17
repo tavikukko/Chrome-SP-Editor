@@ -2297,7 +2297,6 @@ var getSiteCollections = function getSiteCollections() {
         var q = $pnp.SearchQueryBuilder("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
 
         $pnp.sp.search(q).then(re => {
-
           var payload2 = `
             <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
               <Actions>
@@ -2310,7 +2309,7 @@ var getSiteCollections = function getSiteCollections() {
                 </Query>
               </Actions>
               <ObjectPaths>
-                <Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${re.PrimarySearchResults[0].siteid}:web:${re.PrimarySearchResults[0].webid}" />
+                <Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${re.PrimarySearchResults[0].SiteId}:web:${re.PrimarySearchResults[0].webid}" />
                 <Property Id="6" ParentId="4" Name="AllProperties" />
               </ObjectPaths>
             </Request>
@@ -2362,7 +2361,7 @@ var getSiteCollections = function getSiteCollections() {
                     tenantObjectId: r[16]._ObjectIdentity_,
                     privateCDN: r[24],
                     privateCDNOrigins: r[26],
-                    appCatalogSiteId: re.PrimarySearchResults[0].siteid,
+                    appCatalogSiteId: re.PrimarySearchResults[0].SiteId,
                     appCatalogWebId: re.PrimarySearchResults[0].webid,
                     appCatalogUrl: re.PrimarySearchResults[0].url,
                     tenantProperties: tenantProps,
