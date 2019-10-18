@@ -8,6 +8,8 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 5.4.4 bug fix
+    * previous fix did not work on all tenants, added conditional check for siteid/SiteId
 - 5.4.3 bug fix
     * tenant properties was failing, siteid property was changed to SiteId
 - 5.4.2 updates
