@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../store'
 import { setError, setErrorMessage } from '../store/home/actions'
 
-const ErrorToast = () => {
+const MessageBar = () => {
 
   const dispatch = useDispatch()
 
@@ -27,4 +27,4 @@ const ErrorToast = () => {
   )
 }
 
-export default ErrorToast
+export default MessageBar
