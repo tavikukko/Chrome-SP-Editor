@@ -7,14 +7,30 @@ export interface IHomeState {
   list: string[],
   loading: boolean,
   isDark: boolean,
-  error: boolean,
-  errorMessage: string,
+  appMessage: IAppMessage
+}
+
+export interface IAppMessage {
+  showMessage: boolean
+  message: string
+  color: MessageBarColors
 }
 
 export enum Constants {
     ADD_ITEM = 'ADD_ITEM',
     SET_LOADING = 'SET_LOADING',
     SET_DARK_MODE = 'SET_DARK_MODE',
-    SET_ERROR = 'SET_ERROR',
-    SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE',
+    SET_APP_MESSAGE = 'SET_APP_MESSAGE',
+}
+
+export enum MessageBarColors {
+  primary = 'primary',
+  secondary = 'secondary',
+  tertiary = 'tertiary',
+  success = 'success',
+  warning = 'warning',
+  danger = 'danger',
+  light = 'light',
+  medium = 'medium',
+  dark = 'dark',
 }

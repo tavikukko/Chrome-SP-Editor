@@ -16,7 +16,7 @@ export function exescript(this: any, script: any) {
     } else if ((window as any).moduleLoaderPromise) {
       // polyfill for _spPageContextInfo on modern sites
       (window as any).moduleLoaderPromise.then(function(this: any, e: any) {
-        (window as any)._spPageContextInfo = e.context._pageContext._legacyPageContext
+        (window as any)._spPageContextInfo = e.context._pageContext._legacyPageContext;
         (window as any)._spPageContextInfo.speditorctx = true
 
         if (typeof (window as any).SystemJS === 'undefined') {

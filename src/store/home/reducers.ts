@@ -1,11 +1,10 @@
-import { Constants, HomeActions, IHomeState } from './types'
+import { Constants, HomeActions, IHomeState, MessageBarColors } from './types'
 
 const init: IHomeState = {
   list: [],
   loading: false,
   isDark: false,
-  error: false,
-  errorMessage: '',
+  appMessage: { showMessage: false, message: '', color: MessageBarColors.primary },
 }
 
 export function homeReducer(state: IHomeState = init, action: HomeActions): IHomeState {
@@ -16,9 +15,7 @@ export function homeReducer(state: IHomeState = init, action: HomeActions): IHom
       return { ...state, ...action.payload }
     case Constants.SET_DARK_MODE:
       return { ...state, ...action.payload }
-    case Constants.SET_ERROR:
-      return { ...state, ...action.payload }
-    case Constants.SET_ERROR_MESSAGE:
+    case Constants.SET_APP_MESSAGE:
       return { ...state, ...action.payload }
     default:
       return state

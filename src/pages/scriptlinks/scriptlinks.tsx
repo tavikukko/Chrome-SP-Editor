@@ -20,7 +20,8 @@ const ScriptLinks = () => {
   const [selectedItems, setSelectedItems] = useState<IScriptLink[] | []>([])
 
   const dispatch = useDispatch()
-  const { scriptlinks, loading, newpanel, editpanel } = useSelector((state: IRootState) => state.scriptLinks)
+  const { scriptlinks, newpanel, editpanel } = useSelector((state: IRootState) => state.scriptLinks)
+  const { loading } = useSelector((state: IRootState) => state.home)
 
   const selection = useRef(new Selection({
     onSelectionChanged: () => {

@@ -2,25 +2,24 @@ import { IonToast } from '@ionic/react'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../store'
-import { setError, setErrorMessage } from '../store/home/actions'
+import { setAppMessage } from '../store/home/actions'
+import { MessageBarColors } from '../store/home/types'
 
 const MessageBar = () => {
 
   const dispatch = useDispatch()
 
-  const { error, errorMessage } = useSelector((state: IRootState) => state.home)
+  const { appMessage } = useSelector((state: IRootState) => state.home)
 
   return (
     <IonToast
-      isOpen={error}
+      isOpen={appMessage.showMessage}
       onDidDismiss={() => {
-        dispatch(setError(false))
-        dispatch(setErrorMessage(''))
+        dispatch(setAppMessage({ ...appMessage, showMessage: false }))
       }}
-      message={errorMessage}
+      message={appMessage.message}
       duration={8000}
-      animated={true}
-      color={'danger'}
+      color={appMessage.color}
       position={'bottom'}
       showCloseButton={true}
     />

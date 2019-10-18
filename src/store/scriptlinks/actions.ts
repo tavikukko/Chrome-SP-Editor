@@ -13,12 +13,6 @@ export function addScriptLink(item: INewScriptLink) {
   })
 }
 
-export function setLoading(loading: boolean) {
-  return action(Constants.SET_LOADING, {
-    loading,
-  })
-}
-
 export function setEditPanel(editpanel: boolean) {
   return action(Constants.SET_EDITPANEL, {
     editpanel,
@@ -30,16 +24,3 @@ export function setNewPanel(newpanel: boolean) {
     newpanel,
   })
 }
-/*
-export function setError(error: boolean) {
-  return action(Constants.SET_ERROR, {
-    error,
-  })
-}
-
-export function setErrorMessage(errorMessage: string) {
-  return action(Constants.SET_ERROR_MESSAGE, {
-    errorMessage,
-  })
-}
-*/

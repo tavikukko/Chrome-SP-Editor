@@ -2,7 +2,7 @@ import { Dispatch } from 'redux'
 import * as rootActions from '../home/actions'
 import { exescript } from '../utilities/chromecommon'
 import { getPnpjsPath, getSystemjsPath } from '../utilities/utilities'
-import { HomeActions } from './../home/types'
+import { HomeActions, MessageBarColors } from './../home/types'
 import * as actions from './actions'
 import { createCustomAction } from './chrome/createscriptlink'
 import { getCustomActions } from './chrome/getscriptlinks'
@@ -10,7 +10,7 @@ import { INewScriptLink, IScriptLink, ScriptLinksActions } from './types'
 
 export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | HomeActions>) {
 
-  dispatch(actions.setLoading(true));
+  dispatch(rootActions.setLoading(true));
   // add listener to receive the results from inspectedPage
   (window as any).port.onMessage.addListener(function getAllScriptLinksCallback(message: any) {
 
@@ -26,6 +26,7 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
     switch (message.function) {
       case getCustomActions.name:
         if (message.success) {
+          /* on success */
           const scriptLinks: IScriptLink[] = message.result.map((uca: IScriptLink) => {
             if (uca && uca.ScriptBlock && uca.ScriptBlock.toLocaleLowerCase().indexOf('href="') > -1) {
               let url = uca.ScriptBlock.substring(uca.ScriptBlock.toLocaleLowerCase().indexOf('href="'))
@@ -38,13 +39,22 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
             // TODO: what to do with other custom actions?
             return uca
           })
+          // add scriptlinks to state
           dispatch(actions.getAllScriptLinks(scriptLinks))
-          dispatch(actions.setLoading(false))
+          // hide loading component
+          dispatch(rootActions.setLoading(false))
         } else {
-          dispatch(actions.setLoading(false))
-          dispatch(rootActions.setErrorMessage(message.errorMessage))
-          dispatch(rootActions.setError(true))
+          /* on error */
+          // hide loading component
+          dispatch(rootActions.setLoading(false))
+          // show error message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: message.errorMessage,
+            color: MessageBarColors.danger,
+          }))
         }
+        // remove listener
         (window as any).port.onMessage.removeListener(getAllScriptLinksCallback)
         break
     }
@@ -58,8 +68,7 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
 
 export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: INewScriptLink) {
 
-  // dispatch(actions.setLoading(true));
-  // add listener to receive the results from inspectedPage
+  // add listener to receive the results from inspected page
   (window as any).port.onMessage.addListener(function addScriptLinkCallback(message: any) {
 
     if (
@@ -74,14 +83,29 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | Home
     switch (message.function) {
       case createCustomAction.name:
         if (message.success) {
-          /* TODO somehting here more */
+          /* on success */
+          // load all scriptlinks
           getAllScriptLinks(dispatch)
+          // close panel
           dispatch(actions.setNewPanel(false))
+          // set success message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: 'SciprLink added succesfully!',
+            color: MessageBarColors.success,
+          }))
         } else {
+          /* on error */
+          // close panel
           dispatch(actions.setNewPanel(false))
-          dispatch(rootActions.setErrorMessage(message.errorMessage))
-          dispatch(rootActions.setError(true))
+          // show error message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: message.errorMessage,
+            color: MessageBarColors.danger,
+          }))
         }
+        // remove listener
         (window as any).port.onMessage.removeListener(addScriptLinkCallback)
         break
     }

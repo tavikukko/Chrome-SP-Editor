@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions'
-import { Constants } from './types'
+import { Constants, IAppMessage, MessageBarColors } from './types'
 
 export function addItemToList(item: string) {
   return action(Constants.ADD_ITEM, {
@@ -19,14 +19,8 @@ export function setDarkMode(isDark: boolean) {
   })
 }
 
-export function setError(error: boolean) {
-  return action(Constants.SET_ERROR, {
-    error,
-  })
-}
-
-export function setErrorMessage(errorMessage: string) {
-  return action(Constants.SET_ERROR_MESSAGE, {
-    errorMessage,
+export function setAppMessage(appMessage: IAppMessage) {
+  return action(Constants.SET_APP_MESSAGE, {
+    appMessage,
   })
 }
