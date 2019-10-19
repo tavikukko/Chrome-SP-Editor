@@ -39,18 +39,16 @@ const ScriptLinks = () => {
       <IonPage>
         <Header title={'ScriptLinks'} />
         <IonContent>
-          {/* Loading spinner overlay */}
-          <LoadingSpinner loading={loading} />
           {/* Actions menu */}
           <Commands selectedItems={selectedItems} />
           {/* List of scriptLinks */}
           <ScriptLinkList scriptLinks={scriptlinks} selectionRef={selection} setSelectedItem={setSelectedItem} />
+          {/* Panel item details */}
+          <EditPanel showEditPanel={editpanel} setSelectedItem={setSelectedItem} selectedItem={selectedItem} />
+          {/* Panel to create new item */}
+          <NewPanel showNewPanel={newpanel} />
         </IonContent>
       </IonPage>
-      {/* Panel item details */}
-      <EditPanel showEditPanel={editpanel} setSelectedItem={setSelectedItem} selectedItem={selectedItem} />
-      {/* Panel to create new item */}
-      <NewPanel showNewPanel={newpanel} />
     </>
   )
 }

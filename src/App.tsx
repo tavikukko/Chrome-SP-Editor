@@ -34,6 +34,7 @@ import {
 } from 'office-ui-fabric-react/lib/Utilities'
 
 import { useDispatch } from 'react-redux'
+import LoadingSpinner from './components/loadingSpinner'
 import MessageBar from './components/messageBar'
 import { fabricDark, fabricDefault } from './fabricThemes'
 import { setDarkMode } from './store/home/actions'
@@ -71,6 +72,7 @@ const App = () => {
                   <Route path='/scriptlinks' component={ScriptLinks} />
                   <Route path='/pnpjsconsole' component={PnPjsConsole} />
                 </Switch>
+                <LoadingSpinner />
                 <MessageBar />
               </IonPage>
             </IonSplitPane>

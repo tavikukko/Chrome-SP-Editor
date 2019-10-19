@@ -1,9 +1,13 @@
 import { IStackProps, IStyle, Overlay, Spinner, SpinnerSize, Stack } from 'office-ui-fabric-react'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { IRootState } from '../store'
 
-const LoadingSpinner = ({ loading, isDarkThemed }: SpinnerProps) => {
+const LoadingSpinner = () => {
 
   const stackProps: IStackProps = { verticalFill: true, verticalAlign: 'center' }
+
+  const { loading, isDark } = useSelector((state: IRootState) => state.home)
 
   interface IOverStyles {
     root: IStyle
@@ -25,7 +29,7 @@ const LoadingSpinner = ({ loading, isDarkThemed }: SpinnerProps) => {
   return (
     <>
       {loading && (
-        <Overlay styles={overlayStyles} isDarkThemed={isDarkThemed ? isDarkThemed : true}>
+        <Overlay styles={overlayStyles} isDarkThemed={isDark}>
           <Stack {...stackProps} >
             <Spinner size={SpinnerSize.large} />
           </Stack>
@@ -33,11 +37,6 @@ const LoadingSpinner = ({ loading, isDarkThemed }: SpinnerProps) => {
       }
     </>
   )
-}
-
-interface SpinnerProps {
-  loading: boolean
-  isDarkThemed?: boolean
 }
 
 export default LoadingSpinner
