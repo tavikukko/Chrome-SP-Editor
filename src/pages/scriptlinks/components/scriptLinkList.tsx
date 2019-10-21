@@ -79,6 +79,7 @@ const ScriptLinkList = () => {
   return (
         <MarqueeSelection selection={selection.current} isEnabled={true}>
             <DetailsList
+                onShouldVirtualize={() => false}
                 selection={selection.current}
                 items={scriptlinks}
                 columns={detailsListColumns}
