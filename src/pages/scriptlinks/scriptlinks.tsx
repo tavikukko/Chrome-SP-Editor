@@ -4,7 +4,7 @@ import Header from '../../components/header'
 import ScriptLinkCommands from './components/commands'
 import ScriptLinksEditPanel from './components/editpanel'
 import ScriptLinksNewPanel from './components/newpanel'
-import ScriptLinkList from './scriptlinklist'
+import ScriptLinkList from './components/scriptlinklist'
 
 const ScriptLinks = () => {
 
