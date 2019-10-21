@@ -9,14 +9,14 @@ import {
 } from 'office-ui-fabric-react/lib/utilities/selection'
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { IRootState } from '../../../store'
+import { IRootState } from '../../store'
 import {
   setEditPanel,
   setSelectedItem,
   setSelectedItems,
-} from '../../../store/scriptlinks/actions'
-import { getAllScriptLinks } from '../../../store/scriptlinks/async-actions'
-import { IScriptLink } from '../../../store/scriptlinks/types'
+} from '../../store/scriptlinks/actions'
+import { getAllScriptLinks } from '../../store/scriptlinks/async-actions'
+import { IScriptLink } from '../../store/scriptlinks/types'
 
 const ScriptLinkList = () => {
 
