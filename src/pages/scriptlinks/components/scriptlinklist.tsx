@@ -27,6 +27,7 @@ const ScriptLinkList = () => {
     getAllScriptLinks(dispatch)
   }, [])
 
+  // TODO: how to clear selection after the items are
   const selection = useRef(new Selection({
     onSelectionChanged: () => {
       const newSelection = selection.current.getSelection() as typeof selectedItems

@@ -7,12 +7,6 @@ export function getAllScriptLinks(items: IScriptLink[]) {
   })
 }
 
-export function addScriptLink(item: INewScriptLink) {
-  return action(Constants.ADD_ITEM, {
-    item,
-  })
-}
-
 export function setEditPanel(editpanel: boolean) {
   return action(Constants.SET_EDITPANEL, {
     editpanel,

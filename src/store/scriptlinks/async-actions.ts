@@ -5,7 +5,9 @@ import { getPnpjsPath, getSystemjsPath } from '../utilities/utilities'
 import { HomeActions, MessageBarColors } from './../home/types'
 import * as actions from './actions'
 import { createCustomAction } from './chrome/createscriptlink'
+import { deleteCustomActions } from './chrome/deletescriptlinks'
 import { getCustomActions } from './chrome/getscriptlinks'
+import { updateCustomAction } from './chrome/updatescriptlink'
 import { INewScriptLink, IScriptLink, ScriptLinksActions } from './types'
 
 export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | HomeActions>) {
@@ -115,5 +117,104 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | Home
   // execute script in inspectedWindow
   let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${createCustomAction}`
   script += ` exescript(${createCustomAction.name}, ${payload.Scope}, '${payload.Url}', ${payload.Sequence});`
+  chrome.devtools.inspectedWindow.eval(script)
+}
+
+export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: IScriptLink) {
+
+  // add listener to receive the results from inspected page
+  (window as any).port.onMessage.addListener(function updateScriptLinkCallback(message: any) {
+
+    if (
+      typeof message !== 'object' ||
+      message === null ||
+      message === undefined ||
+      message.source === undefined
+    ) {
+      return
+    }
+    switch (message.function) {
+      case updateCustomAction.name:
+        if (message.success) {
+          /* on success */
+          // load all scriptlinks
+          getAllScriptLinks(dispatch)
+          // close panel
+          dispatch(actions.setEditPanel(false))
+          // set success message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: 'ScriptLink updated succesfully!',
+            color: MessageBarColors.success,
+          }))
+        } else {
+          /* on error */
+          // close panel
+          dispatch(actions.setEditPanel(false))
+          // show error message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: message.errorMessage,
+            color: MessageBarColors.danger,
+          }))
+        }
+        // remove listener
+        (window as any).port.onMessage.removeListener(updateScriptLinkCallback)
+        break
+    }
+  })
+
+  // execute script in inspectedWindow
+  let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${updateCustomAction}`
+  script += ` exescript(${updateCustomAction.name}, ${payload.Scope}, '${payload.Url}', ${payload.Sequence}, '${payload.Id}');`
+  chrome.devtools.inspectedWindow.eval(script)
+}
+
+export async function deleteScriptLinks(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: IScriptLink[]) {
+
+  dispatch(rootActions.setLoading(true))
+  console.log(JSON.stringify(payload));
+  // add listener to receive the results from inspected page
+  (window as any).port.onMessage.addListener(function deleteScriptLinksCallback(message: any) {
+
+    if (
+      typeof message !== 'object' ||
+      message === null ||
+      message === undefined ||
+      message.source === undefined
+    ) {
+      return
+    }
+    switch (message.function) {
+      case deleteCustomActions.name:
+        if (message.success) {
+          /* on success */
+          // load all scriptlinks
+          getAllScriptLinks(dispatch)
+          // set success message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: 'ScriptLinks removed succesfully!',
+            color: MessageBarColors.success,
+          }))
+        } else {
+          /* on error */
+          dispatch(rootActions.setLoading(false))
+
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: message.errorMessage,
+            color: MessageBarColors.danger,
+          }))
+        }
+        // remove listener
+        (window as any).port.onMessage.removeListener(deleteScriptLinksCallback)
+        break
+    }
+  })
+
+  // execute script in inspectedWindow
+  let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${deleteCustomActions}`
+  script += ` exescript(${deleteCustomActions.name}, '${encodeURIComponent(JSON.stringify(payload)).replace(/'/g, '%27')}');`
   chrome.devtools.inspectedWindow.eval(script)
 }

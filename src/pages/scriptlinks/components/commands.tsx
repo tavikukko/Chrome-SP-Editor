@@ -3,6 +3,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setNewPanel } from '../../../store/scriptlinks/actions'
+import { deleteScriptLinks } from '../../../store/scriptlinks/async-actions'
 
 const ScriptLinkCommands = () => {
   const dispatch = useDispatch()
@@ -28,7 +29,9 @@ const ScriptLinkCommands = () => {
           text: 'Remove',
           iconProps: { iconName: 'Delete' },
           disabled: selectedItems.length < 1,
-          // onClick: () => deleteRows()
+          onClick: () => {
+            deleteScriptLinks(dispatch, selectedItems)
+          },
         },
       ]}
       overflowButtonProps={{ ariaLabel: 'More commands' }}

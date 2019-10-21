@@ -12,6 +12,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setEditPanel, setSelectedItem } from '../../../store/scriptlinks/actions'
+import { updateScriptLink } from '../../../store/scriptlinks/async-actions'
 
 const ScriptLinksEditPanel = () => {
 
@@ -24,8 +25,11 @@ const ScriptLinksEditPanel = () => {
     return (
       <PrimaryButton
         onClick={() => {
-          // TODO: update item
-          dispatch(setSelectedItem(undefined))
+          if (selectedItem) {
+            updateScriptLink(dispatch, selectedItem)
+          } else {
+            // TODO show error message
+          }
         }
         }
         style={{ marginRight: '8px' }}
@@ -82,11 +86,8 @@ const ScriptLinksEditPanel = () => {
               { key: 2, text: 'Site Collection' },
               { key: 3, text: 'Current Web' },
             ]}
+            disabled={true}
             selectedKey={selectedItem.Scope}
-            onChange={(event, option?: IDropdownOption) =>
-              dispatch(setSelectedItem({ ...selectedItem, Scope: option ? +option.key : selectedItem.Scope }))
-            }
-          // TODO: do proper casting & validation
           />
         </Stack>
       }
