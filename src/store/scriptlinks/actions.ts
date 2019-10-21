@@ -24,3 +24,15 @@ export function setNewPanel(newpanel: boolean) {
     newpanel,
   })
 }
+
+export function setSelectedItem(selectedItem: IScriptLink | undefined) {
+  return action(Constants.SELECTED_ITEM, {
+    selectedItem,
+  })
+}
+
+export function setSelectedItems(selectedItems: IScriptLink[]) {
+  return action(Constants.SELECTED_ITEMS, {
+    selectedItems,
+  })
+}

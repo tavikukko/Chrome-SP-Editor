@@ -1,16 +1,22 @@
-import { Dropdown, IOverlayProps, Panel, PanelType, PrimaryButton, Stack, TextField } from 'office-ui-fabric-react'
-import React, { useState } from 'react'
+import {
+  Dropdown,
+   IOverlayProps,
+   Panel,
+   PanelType,
+   PrimaryButton,
+   Stack,
+   TextField,
+} from 'office-ui-fabric-react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setNewPanel } from '../../../store/scriptlinks/actions'
 import { addScriptLink } from '../../../store/scriptlinks/async-actions'
 import { INewScriptLink } from '../../../store/scriptlinks/types'
 
-// TODO: add redux
+const ScriptLinksNewPanel = () => {
 
-const NewPanel = ({ showNewPanel }: NewPanelProps) => {
-
-  const [newItem, setNewItem] = useState<INewScriptLink | undefined>()
+  const { newpanel } = useSelector((state: IRootState) => state.scriptLinks)
 
   const dispatch = useDispatch()
 
@@ -38,7 +44,7 @@ const NewPanel = ({ showNewPanel }: NewPanelProps) => {
 
   return (
     <Panel
-      isOpen={showNewPanel}
+      isOpen={newpanel}
       type={PanelType.smallFixedFar}
       onDismiss={() => { dispatch(setNewPanel(false))}}
       isLightDismiss={true}
@@ -75,8 +81,4 @@ const NewPanel = ({ showNewPanel }: NewPanelProps) => {
   )
 }
 
-interface NewPanelProps {
-  showNewPanel: boolean
-}
-
-export default NewPanel
+export default ScriptLinksNewPanel

@@ -1,12 +1,38 @@
-import { DetailsList, DetailsListLayoutMode, IColumn, MarqueeSelection, SelectionMode } from 'office-ui-fabric-react'
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import { setEditPanel } from '../../../store/scriptlinks/actions'
+import {
+  DetailsList,
+  DetailsListLayoutMode,
+  IColumn,
+  MarqueeSelection,
+  SelectionMode } from 'office-ui-fabric-react'
+import {
+  Selection,
+} from 'office-ui-fabric-react/lib/utilities/selection'
+import React, { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { IRootState } from '../../../store'
+import {
+  setEditPanel,
+  setSelectedItem,
+  setSelectedItems,
+} from '../../../store/scriptlinks/actions'
+import { getAllScriptLinks } from '../../../store/scriptlinks/async-actions'
 import { IScriptLink } from '../../../store/scriptlinks/types'
 
-const ScriptLinkList = ({ scriptLinks, selectionRef, setSelectedItem }: ScriptLinkListProps) => {
+const ScriptLinkList = () => {
 
   const dispatch = useDispatch()
+  const { scriptlinks, selectedItems } = useSelector((state: IRootState) => state.scriptLinks)
+
+  useEffect(() => {
+    getAllScriptLinks(dispatch)
+  }, [])
+
+  const selection = useRef(new Selection({
+    onSelectionChanged: () => {
+      const newSelection = selection.current.getSelection() as typeof selectedItems
+      dispatch(setSelectedItems(newSelection))
+    },
+  }))
 
   const detailsListColumns: IColumn[] = [
     {
@@ -37,7 +63,7 @@ const ScriptLinkList = ({ scriptLinks, selectionRef, setSelectedItem }: ScriptLi
     },
     {
       data: 'string',
-      fieldName: 'Scope',
+      fieldName: 'ScopeName',
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
@@ -51,10 +77,10 @@ const ScriptLinkList = ({ scriptLinks, selectionRef, setSelectedItem }: ScriptLi
   ]
 
   return (
-        <MarqueeSelection selection={selectionRef.current} isEnabled={true}>
+        <MarqueeSelection selection={selection.current} isEnabled={true}>
             <DetailsList
-                selection={selectionRef.current}
-                items={scriptLinks}
+                selection={selection.current}
+                items={scriptlinks}
                 columns={detailsListColumns}
                 selectionMode={SelectionMode.multiple}
                 setKey='set'
@@ -62,18 +88,12 @@ const ScriptLinkList = ({ scriptLinks, selectionRef, setSelectedItem }: ScriptLi
                 isHeaderVisible={true}
                 enterModalSelectionOnTouch={true}
                 onItemInvoked={(item: IScriptLink) => {
-                  setSelectedItem(item)
+                  dispatch(setSelectedItem(item))
                   dispatch(setEditPanel(true))
                 }}
             />
       </MarqueeSelection>
   )
-}
-
-interface ScriptLinkListProps {
-  scriptLinks: IScriptLink[]
-  setSelectedItem: Function
-  selectionRef: any
 }
 
 export default ScriptLinkList

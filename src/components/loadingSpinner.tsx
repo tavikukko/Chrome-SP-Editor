@@ -1,13 +1,20 @@
-import { IStackProps, IStyle, Overlay, Spinner, SpinnerSize, Stack } from 'office-ui-fabric-react'
+import {
+  IStackProps,
+  IStyle,
+  Overlay,
+  Spinner,
+  SpinnerSize,
+  Stack,
+} from 'office-ui-fabric-react'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { IRootState } from '../store'
 
 const LoadingSpinner = () => {
 
-  const stackProps: IStackProps = { verticalFill: true, verticalAlign: 'center' }
-
   const { loading, isDark } = useSelector((state: IRootState) => state.home)
+
+  const stackProps: IStackProps = { verticalFill: true, verticalAlign: 'center' }
 
   interface IOverStyles {
     root: IStyle

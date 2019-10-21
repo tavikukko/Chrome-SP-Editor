@@ -3,7 +3,6 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../store'
 import { setAppMessage } from '../store/home/actions'
-import { MessageBarColors } from '../store/home/types'
 
 const MessageBar = () => {
 

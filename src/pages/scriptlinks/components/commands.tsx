@@ -1,11 +1,12 @@
 import { CommandBar } from 'office-ui-fabric-react'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { IRootState } from '../../../store'
 import { setNewPanel } from '../../../store/scriptlinks/actions'
-import { IScriptLink } from '../../../store/scriptlinks/types'
 
-const Commands = ({ selectedItems }: CommandsProps) => {
+const ScriptLinkCommands = () => {
   const dispatch = useDispatch()
+  const { selectedItems } = useSelector((state: IRootState) => state.scriptLinks)
 
   return (
     <CommandBar
@@ -38,8 +39,4 @@ const Commands = ({ selectedItems }: CommandsProps) => {
   )
 }
 
-interface CommandsProps {
-  selectedItems: IScriptLink[]
-}
-
-export default Commands
+export default ScriptLinkCommands

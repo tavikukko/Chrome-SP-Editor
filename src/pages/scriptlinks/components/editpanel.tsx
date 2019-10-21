@@ -1,25 +1,31 @@
-import { Dropdown, IDropdownOption, IOverlayProps, Panel, PanelType, PrimaryButton, Stack, TextField } from 'office-ui-fabric-react'
+import {
+  Dropdown,
+  IDropdownOption,
+  IOverlayProps,
+  Panel,
+  PanelType,
+  PrimaryButton,
+  Stack,
+  TextField,
+} from 'office-ui-fabric-react'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import { setEditPanel } from '../../../store/scriptlinks/actions'
-import { IScriptLink } from '../../../store/scriptlinks/types'
+import { setEditPanel, setSelectedItem } from '../../../store/scriptlinks/actions'
 
-// TODO: add redux
+const ScriptLinksEditPanel = () => {
 
-const EditPanel = ({ showEditPanel, selectedItem, setSelectedItem }: EditPanelProps) => {
-
-  const { isDark } = useSelector((state: IRootState) => state.home)
   const dispatch = useDispatch()
+  const { isDark } = useSelector((state: IRootState) => state.home)
+  const { editpanel, selectedItem } = useSelector((state: IRootState) => state.scriptLinks)
 
   const panelOverlayProps: IOverlayProps = { isDarkThemed: isDark }
-
   const _onRenderItemFooterContent = () => {
     return (
       <PrimaryButton
         onClick={() => {
           // TODO: update item
-          setSelectedItem(undefined)
+          dispatch(setSelectedItem(undefined))
         }
         }
         style={{ marginRight: '8px' }}
@@ -30,10 +36,10 @@ const EditPanel = ({ showEditPanel, selectedItem, setSelectedItem }: EditPanelPr
 
   return (
     <Panel
-      isOpen={showEditPanel}
+      isOpen={editpanel}
       type={PanelType.smallFixedFar}
       onDismiss={() => {
-        setSelectedItem(undefined)
+        dispatch(setSelectedItem(undefined))
         dispatch(setEditPanel(false))
       }
       }
@@ -54,7 +60,8 @@ const EditPanel = ({ showEditPanel, selectedItem, setSelectedItem }: EditPanelPr
             autoAdjustHeight
             value={selectedItem.Url}
             onChange={(event, newValue?: string) =>
-              setSelectedItem({ ...selectedItem, Url: newValue ? newValue : '' })}
+              dispatch(setSelectedItem({ ...selectedItem, Url: newValue ? newValue : '' }))
+            }
           // TODO: do proper validation
           />
           <TextField
@@ -64,19 +71,21 @@ const EditPanel = ({ showEditPanel, selectedItem, setSelectedItem }: EditPanelPr
             value={selectedItem.Sequence.toString()}
             type={'number'}
             onChange={(event, newValue?: string) =>
-              setSelectedItem({ ...selectedItem, Sequence: newValue ? +newValue : selectedItem.Sequence })}
+              dispatch(setSelectedItem({ ...selectedItem, Sequence: newValue ? +newValue : selectedItem.Sequence }))
+            }
           // TODO: do proper casting & validation
           />
           <Dropdown
-            placeholder='Select an option'
-            label='Dropdown with error message'
+            placeholder='Select scope'
+            label='Scope'
             options={[
               { key: 2, text: 'Site Collection' },
               { key: 3, text: 'Current Web' },
             ]}
             selectedKey={selectedItem.Scope}
             onChange={(event, option?: IDropdownOption) =>
-              setSelectedItem({ ...selectedItem, Scope: option ? +option.key : selectedItem.Scope })}
+              dispatch(setSelectedItem({ ...selectedItem, Scope: option ? +option.key : selectedItem.Scope }))
+            }
           // TODO: do proper casting & validation
           />
         </Stack>
@@ -85,10 +94,4 @@ const EditPanel = ({ showEditPanel, selectedItem, setSelectedItem }: EditPanelPr
   )
 }
 
-interface EditPanelProps {
-  showEditPanel: boolean
-  selectedItem: IScriptLink | undefined
-  setSelectedItem: Function
-}
-
-export default EditPanel
+export default ScriptLinksEditPanel
