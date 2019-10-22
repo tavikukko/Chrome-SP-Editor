@@ -41,6 +41,7 @@ const ScriptLinkList = () => {
   // clear selection after every update on scriptlinks
   useEffect(() => {
     selection.setAllSelected(false)
+    dispatch(setSelectedItems([]))
   }, [scriptlinks])
 
   const detailsListColumns: IColumn[] = [
@@ -94,6 +95,9 @@ const ScriptLinkList = () => {
                 selectionPreservedOnEmptyClick={true}
                 columns={detailsListColumns}
                 selectionMode={SelectionMode.multiple}
+                getKey={(item: IScriptLink) => {
+                  return item.Id
+                }}
                 setKey='set'
                 layoutMode={DetailsListLayoutMode.justified}
                 isHeaderVisible={true}
