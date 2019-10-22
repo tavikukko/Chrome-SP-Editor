@@ -7,7 +7,7 @@ import {
 import {
   Selection,
 } from 'office-ui-fabric-react/lib/utilities/selection'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import {
@@ -23,17 +23,25 @@ const ScriptLinkList = () => {
   const dispatch = useDispatch()
   const { scriptlinks, selectedItems } = useSelector((state: IRootState) => state.scriptLinks)
 
+  // set selected items to store
+  const [selection] = useState(
+    new Selection({
+      onSelectionChanged: () => {
+        const newSelection = selection.getSelection() as typeof selectedItems
+        dispatch(setSelectedItems(newSelection))
+      },
+    }),
+  )
+
+  // load initial data
   useEffect(() => {
     getAllScriptLinks(dispatch)
   }, [])
 
-  // TODO: how to clear selection after the items are
-  const selection = useRef(new Selection({
-    onSelectionChanged: () => {
-      const newSelection = selection.current.getSelection() as typeof selectedItems
-      dispatch(setSelectedItems(newSelection))
-    },
-  }))
+  // clear selection after every update on scriptlinks
+  useEffect(() => {
+    selection.setAllSelected(false)
+  }, [scriptlinks])
 
   const detailsListColumns: IColumn[] = [
     {
@@ -78,11 +86,12 @@ const ScriptLinkList = () => {
   ]
 
   return (
-        <MarqueeSelection selection={selection.current} isEnabled={true}>
+        <MarqueeSelection selection={selection} isEnabled={true}>
             <DetailsList
                 onShouldVirtualize={() => false}
-                selection={selection.current}
+                selection={selection}
                 items={scriptlinks}
+                selectionPreservedOnEmptyClick={true}
                 columns={detailsListColumns}
                 selectionMode={SelectionMode.multiple}
                 setKey='set'
