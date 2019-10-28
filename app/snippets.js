@@ -5,72 +5,61 @@ function createDependencyProposals() {
       label: 'snip-web-get',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Get current web.",
-      insertText: {
-        value: [
+      insertText: [
           "pnp.sp.web.get().then(${1:web} => {",
           "\tconsole.log(${1})",
           "});"
         ].join('\n')
-      }
     },
     {
       label: 'snip-web-get-select',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Get current web with selected properties.",
-      insertText: {
-        value: [
+      insertText: [
           "pnp.sp.web.select(\"${1:Title}\").get().then(${2:web} => {",
           "\tconsole.log(${2}.${1})",
           "});"
         ].join('\n')
-      }
     },
     {
       label: 'snip-web-get-allproperties',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Get AllProperties from current web.",
-      insertText: {
-        value: [
+      insertText: [
           "pnp.sp.web.select(\"AllProperties\").expand(\"AllProperties\").get().then(${1:web} => {",
           "\tconsole.log(${1})",
           "});"
         ].join('\n')
-      }
     },
     {
       label: 'snip-web-open',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Open web from url.",
-      insertText: {
-        value: [
+      insertText: [
           "import { Web } from \"pnp\";",
           "let web = new Web(\"https://${1:tenant}.sharepoint.com\");",
           "web.get().then(${2:w} => {",
           "\tconsole.log(${2})",
           "});",
         ].join('\n')
-      }
     },
     {
       label: 'snip-web-open-delete',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Open web from url and delete it.",
-      insertText: {
-        value: [
+      insertText: [
           "import { Web } from \"pnp\";",
           "let web = new Web(\"https://${1:tenant}.sharepoint.com/mysubsite\");",
           "web.delete().then(${2:w} => {",
           "\tconsole.log(${2})",
           "});",
         ].join('\n')
-      }
     },
     {
       label: 'snip-web-update',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Update current web properties.",
-      insertText: {
-        value: [
+      insertText: [
           "pnp.sp.web.update({",
           "\t${1:Title}: \"New Title\",",
           "\t${2:Description}: \"My new description\",",
@@ -78,14 +67,12 @@ function createDependencyProposals() {
           "\tconsole.log(${3})",
           "});",
         ].join('\n')
-      }
     },
     {
       label: 'snip-get-group-data',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Get office groups data from graph.microsoft.com",
-      insertText: {
-        value: [
+      insertText: [
           "getGroupData('${1:https://graph.microsoft.com/v1.0/groups}')",
           "\t.then(data => {",
           "\t\tconsole.log(data);",
@@ -123,14 +110,12 @@ function createDependencyProposals() {
           "\treturn reqData.json();",
           "}",
         ].join('\n')
-      }
     },
     {
       label: 'snip-headers',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Include request headers for SP2013",
-      insertText: {
-        value: [
+      insertText: [
           "sp.setup({",
           "\tsp:{",
           "\t\theaders: {",
@@ -139,14 +124,13 @@ function createDependencyProposals() {
           "\t}",
           "});"
         ].join('\n')
-      }
     },
     {
       label: 'snip-graphman',
       kind: monaco.languages.CompletionItemKind.Snippet,
       documentation: "Use fetch and grapgman token to query graph.microsoft.com api",
-      insertText: {
-        value: [
+      insertText: [
+          "// use GraphMan to sign in first and grant needed permisisons",
           "fetch('https://graph.microsoft.com/v1.0/me', {",
           "\tmethod: 'GET',",
           "\theaders: new Headers({",
@@ -156,7 +140,6 @@ function createDependencyProposals() {
           "}).then((resp) => resp.json())",
           "\t.then(console.log)",
         ].join('\n')
-      }
     },
   ];
 }

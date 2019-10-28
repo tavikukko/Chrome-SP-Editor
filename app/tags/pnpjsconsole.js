@@ -45,7 +45,9 @@ riot.tag("pnpjsconsole", `
 
         monaco.languages.registerCompletionItemProvider('typescript', {
           provideCompletionItems: function (model, position) {
-            return createDependencyProposals(); // from snippets.js
+            return {
+              suggestions: createDependencyProposals() // from snippets.js
+            }
           }
         });
 

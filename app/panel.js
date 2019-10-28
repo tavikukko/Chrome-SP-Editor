@@ -1,51 +1,55 @@
 var userAgentApplication = new Msal.UserAgentApplication('20d34c96-396e-4bf0-a008-472ef10a5099', null, function (errorDes, token, error, tokenType) {
   // this callback is called after loginRedirect OR acquireTokenRedirect. It's not used with loginPopup,  acquireTokenPopup.
   if (error)
-      console.log(error + ": " + errorDes);
+    console.log(error + ": " + errorDes);
   else
-      console.log("Token type = " + tokenType);
+    console.log("Token type = " + tokenType);
+}, {
+  redirectUri: chrome.extension.getURL('app/panel.html'),
 });
 
-var port = chrome.runtime.connect();
+if (window.location.href.indexOf("#access_token=") < 0) {
 
-port.postMessage( { type: "init", tabId: chrome.devtools.inspectedWindow.tabId } );
+  var port = chrome.runtime.connect();
 
-port.postMessage({ type: "autosavechange", content: false, tabId: chrome.devtools.inspectedWindow.tabId });
+  port.postMessage({ type: "init", tabId: chrome.devtools.inspectedWindow.tabId });
 
-port.postMessage( { type: "autopublishchange", content: false, tabId: chrome.devtools.inspectedWindow.tabId });
+  port.postMessage({ type: "autosavechange", content: false, tabId: chrome.devtools.inspectedWindow.tabId });
+
+  port.postMessage({ type: "autopublishchange", content: false, tabId: chrome.devtools.inspectedWindow.tabId });
 
 
-riot.mount("sidebar"); // mount the left menu
-swap('save'); // show first tab
-var savetab = riot.mount("save"); // mount the first tab
+  riot.mount("sidebar"); // mount the left menu
+  swap('save'); // show first tab
+  var savetab = riot.mount("save"); // mount the first tab
 
-require.config({ paths: { 'vs': 'monaco-editor/min/vs', 'js': 'js' } });
+  require.config({ paths: { 'vs': 'monaco-editor/min/vs', 'js': 'js' } });
 
-var graphman = null;
-var graphmantoken = "";
-var pnpjsconsole = null;
-var fileeditorsubs = [];
-var fileeditormain = null;
-var fileeditoreditor;
-var appcatalogeditor;
-var sitescriptseditor;
-var selectedFile = null;
-var selectedWebId = null;
-var pageeditorlisteners = [];
-var sitescriptslisteners = [];
-var fileeditorlisteners = {};
-var bgautosave = false;
-var bgautopublish = false;
-var modernpropertiesinitialized = false;
-var modernpropertiesmain;
-var filenames = [];
+  var graphman = null;
+  var graphmantoken = "";
+  var pnpjsconsole = null;
+  var fileeditorsubs = [];
+  var fileeditormain = null;
+  var fileeditoreditor;
+  var appcatalogeditor;
+  var sitescriptseditor;
+  var selectedFile = null;
+  var selectedWebId = null;
+  var pageeditorlisteners = [];
+  var sitescriptslisteners = [];
+  var fileeditorlisteners = {};
+  var bgautosave = false;
+  var bgautopublish = false;
+  var modernpropertiesinitialized = false;
+  var modernpropertiesmain;
+  var filenames = [];
 
-chrome.runtime.getPackageDirectoryEntry(function (directoryEntry) {
+  chrome.runtime.getPackageDirectoryEntry(function (directoryEntry) {
 
-  function getDir(directoryEntry, dir) {
-    directoryEntry.getDirectory(dir.replace('/crxfs', ''), {}, function (subDirectoryEntry) {
-      var directoryReader = subDirectoryEntry.createReader();
-      // List of DirectoryEntry and/or FileEntry objects.
+    function getDir(directoryEntry, dir) {
+      directoryEntry.getDirectory(dir.replace('/crxfs', ''), {}, function (subDirectoryEntry) {
+        var directoryReader = subDirectoryEntry.createReader();
+        // List of DirectoryEntry and/or FileEntry objects.
         directoryReader.readEntries(function (entries) {
           if (entries.length) {
             for (var i = 0; i < entries.length; ++i) {
@@ -58,44 +62,44 @@ chrome.runtime.getPackageDirectoryEntry(function (directoryEntry) {
             }
           }
         });
-    });
-  }
+      });
+    }
 
-  getDir(directoryEntry, 'app/@pnp');
-  getDir(directoryEntry, 'app/@microsoft');
+    getDir(directoryEntry, 'app/@pnp');
+    getDir(directoryEntry, 'app/@microsoft');
 
-});
-// this is called from multiple tabs, so it will be here
-function addscriptlink(scope, scriptsequence, scriptpath) {
+  });
+  // this is called from multiple tabs, so it will be here
+  function addscriptlink(scope, scriptsequence, scriptpath) {
 
     if (scriptpath == "") {
 
-        var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
-        script += " exescript(alertError, 'Script path cannot be empty!');";
-        chrome.devtools.inspectedWindow.eval(script);
+      var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
+      script += " exescript(alertError, 'Script path cannot be empty!');";
+      chrome.devtools.inspectedWindow.eval(script);
 
-        return;
+      return;
     }
     else if (scriptsequence == "") {
 
-        var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
-        script += " exescript(alertError, 'Sequence cannot be empty!');";
-        chrome.devtools.inspectedWindow.eval(script);
+      var script = sj + ' ' + alertify + ' ' + exescript + ' ' + alertError;
+      script += " exescript(alertError, 'Sequence cannot be empty!');";
+      chrome.devtools.inspectedWindow.eval(script);
 
-        return;
+      return;
     }
 
     var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addCustomAction;
     script += " exescript(addCustomAction, '" + scope + "', '" + scriptpath + "', '" + scriptsequence + "');";
     chrome.devtools.inspectedWindow.eval(script);
-}
-
-document.addEventListener('keydown', function (e) {
-  switch (e.keyCode) {
-    case 191:
-      e.stopImmediatePropagation();
-      break;
   }
-  return;
-}, true);
 
+  document.addEventListener('keydown', function (e) {
+    switch (e.keyCode) {
+      case 191:
+        e.stopImmediatePropagation();
+        break;
+    }
+    return;
+  }, true);
+}
