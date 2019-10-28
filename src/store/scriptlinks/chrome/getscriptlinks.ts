@@ -30,9 +30,9 @@ export async function getCustomActions(...args: any) {
   /* ******* */
 
   const siteactions = await $pnp.sp.site.userCustomActions
-    .select('Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title').get()
+    .select('Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title').orderBy('Sequence', true).get()
   const webactions = await $pnp.sp.web.userCustomActions
-    .select('Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title').get()
+    .select('Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title').orderBy('Sequence', true).get()
 
   const actions = siteactions.concat(webactions)
 

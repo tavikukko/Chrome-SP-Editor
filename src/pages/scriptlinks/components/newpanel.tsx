@@ -1,5 +1,6 @@
 import {
   Dropdown,
+   IDropdownOption,
    IOverlayProps,
    Panel,
    PanelType,
@@ -7,7 +8,7 @@ import {
    Stack,
    TextField,
 } from 'office-ui-fabric-react'
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setNewPanel } from '../../../store/scriptlinks/actions'
@@ -20,20 +21,23 @@ const ScriptLinksNewPanel = () => {
 
   const dispatch = useDispatch()
 
+  const [ newItem, setNewItem ] = useState<INewScriptLink>({
+    Url: '',
+    Sequence: 0,
+    Scope: 2,
+  })
+
   const { isDark } = useSelector((state: IRootState) => state.home)
   const panelOverlayProps: IOverlayProps = { isDarkThemed: isDark }
 
   const _onRenderNewFooterContent = () => {
-    const payload: INewScriptLink = {
-      Url: '~sitecollection/Style Library/Valo/camljs.min.js?v=1.20.6',
-      Sequence: 10012,
-      Scope: 2,
-    }
+
     return (
       <PrimaryButton
         onClick={() => {
-          addScriptLink(dispatch, payload)
-          // setShowNewPanel(false)
+          if (newItem && newItem.Url && newItem.Sequence && newItem.Scope) {
+            addScriptLink(dispatch, newItem)
+          }
         }
         }
         style={{ marginRight: '8px' }}
@@ -62,19 +66,32 @@ const ScriptLinksNewPanel = () => {
           placeholder='~sitecollection/Style Library/custom.js'
           multiline
           autoAdjustHeight
+          value={newItem.Url}
+          onChange={(event, newValue?: string) =>
+            setNewItem({ ...newItem, Url: newValue ? newValue : '' })
+          }
         />
         <TextField
           label='Sequence'
           description='The sequence of the scriplink'
           styles={{ fieldGroup: { width: 100 } }}
+          type={'number'}
+          value={newItem.Sequence.toString()}
+          onChange={(event, newValue?: string) =>
+            setNewItem({ ...newItem, Sequence: newValue ? +newValue : 0 })
+          }
         />
         <Dropdown
           label='Select scope'
           placeholder='Select an option'
           options={[
-            { key: '2', text: 'Current Web' },
-            { key: '3', text: 'Site Collection' },
+            { key: 2, text: 'Site Collection' },
+            { key: 3, text: 'Current Web' },
           ]}
+          selectedKey={newItem.Scope}
+          onChange={(event, option?: IDropdownOption) =>
+            setNewItem({ ...newItem, Scope: option ? +option.key : newItem.Scope })
+          }
         />
       </Stack >
     </Panel >
