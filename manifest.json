@@ -60,8 +60,7 @@
     "webRequestBlocking",
     "tabs",
     "storage",
-    "https://*/*",
-    "http://*/*",
+    "activeTab",
     "tabs",
     "downloads"
   ],
