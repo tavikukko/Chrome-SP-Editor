@@ -3,7 +3,8 @@ function createDependencyProposals() {
     // web snippets
     {
       label: 'snip-web-get',
-      kind: monaco.languages.CompletionItemKind.Snippet,
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,      
       documentation: "Get current web.",
       insertText: [
           "pnp.sp.web.get().then(${1:web} => {",
@@ -13,7 +14,8 @@ function createDependencyProposals() {
     },
     {
       label: 'snip-web-get-select',
-      kind: monaco.languages.CompletionItemKind.Snippet,
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Get current web with selected properties.",
       insertText: [
           "pnp.sp.web.select(\"${1:Title}\").get().then(${2:web} => {",
@@ -23,7 +25,8 @@ function createDependencyProposals() {
     },
     {
       label: 'snip-web-get-allproperties',
-      kind: monaco.languages.CompletionItemKind.Snippet,
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Get AllProperties from current web.",
       insertText: [
           "pnp.sp.web.select(\"AllProperties\").expand(\"AllProperties\").get().then(${1:web} => {",
@@ -33,10 +36,11 @@ function createDependencyProposals() {
     },
     {
       label: 'snip-web-open',
-      kind: monaco.languages.CompletionItemKind.Snippet,
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Open web from url.",
       insertText: [
-          "import { Web } from \"pnp\";",
+          "import { Web } from \"@pnp/sp\";",
           "let web = new Web(\"https://${1:tenant}.sharepoint.com\");",
           "web.get().then(${2:w} => {",
           "\tconsole.log(${2})",
@@ -45,10 +49,11 @@ function createDependencyProposals() {
     },
     {
       label: 'snip-web-open-delete',
-      kind: monaco.languages.CompletionItemKind.Snippet,
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Open web from url and delete it.",
       insertText: [
-          "import { Web } from \"pnp\";",
+          "import { Web } from \"@pnp/sp\";",
           "let web = new Web(\"https://${1:tenant}.sharepoint.com/mysubsite\");",
           "web.delete().then(${2:w} => {",
           "\tconsole.log(${2})",
@@ -57,7 +62,8 @@ function createDependencyProposals() {
     },
     {
       label: 'snip-web-update',
-      kind: monaco.languages.CompletionItemKind.Snippet,
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Update current web properties.",
       insertText: [
           "pnp.sp.web.update({",
@@ -70,7 +76,8 @@ function createDependencyProposals() {
     },
     {
       label: 'snip-get-group-data',
-      kind: monaco.languages.CompletionItemKind.Snippet,
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Get office groups data from graph.microsoft.com",
       insertText: [
           "getGroupData('${1:https://graph.microsoft.com/v1.0/groups}')",
@@ -113,7 +120,8 @@ function createDependencyProposals() {
     },
     {
       label: 'snip-headers',
-      kind: monaco.languages.CompletionItemKind.Snippet,
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Include request headers for SP2013",
       insertText: [
           "sp.setup({",
@@ -127,7 +135,8 @@ function createDependencyProposals() {
     },
     {
       label: 'snip-graphman',
-      kind: monaco.languages.CompletionItemKind.Snippet,
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Use fetch and grapgman token to query graph.microsoft.com api",
       insertText: [
           "// use GraphMan to sign in first and grant needed permisisons",
