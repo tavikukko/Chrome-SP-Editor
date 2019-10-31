@@ -23,6 +23,18 @@ riot.tag("graphman", `
       </span>
     </div>
   </div>
+  <pre style='color:#d1d1d1;background:#000000;'><span style='color:#9999a9; '>// To access Microsoft Graph endpoint, first signin and grant some permissions you need to execute your command</span>
+  <span style='color:#9999a9; '>// then copy/paste this code to PnPjs Console and hit ctrl+D or cmd+D to execue the query</span>
+  fetch<span style='color:#d2cd86; '>(</span><span style='color:#02d045; '>'</span><span style='color:#00c4c4; '>https://graph.microsoft.com/v1.0/me</span><span style='color:#02d045; '>'</span><span style='color:#d2cd86; '>,</span> <span style='color:#b060b0; '>{</span>
+      method<span style='color:#b060b0; '>:</span> <span style='color:#02d045; '>'</span><span style='color:#00c4c4; '>GET</span><span style='color:#02d045; '>'</span><span style='color:#d2cd86; '>,</span>
+      headers<span style='color:#b060b0; '>:</span> <span style='color:#e66170; font-weight:bold; '>new</span> Headers<span style='color:#d2cd86; '>(</span><span style='color:#b060b0; '>{</span>
+          <span style='color:#02d045; '>'</span><span style='color:#00c4c4; '>Accept</span><span style='color:#02d045; '>'</span><span style='color:#b060b0; '>:</span> <span style='color:#02d045; '>'</span><span style='color:#00c4c4; '>application/json</span><span style='color:#02d045; '>'</span><span style='color:#d2cd86; '>,</span>
+          <span style='color:#02d045; '>'</span><span style='color:#00c4c4; '>Authorization</span><span style='color:#02d045; '>'</span><span style='color:#b060b0; '>:</span> <span style='color:#02d045; '>'</span><span style='color:#00c4c4; '>Bearer GraphManToken</span><span style='color:#02d045; '>'</span>
+      <span style='color:#b060b0; '>}</span><span style='color:#d2cd86; '>)</span>
+  <span style='color:#b060b0; '>}</span><span style='color:#d2cd86; '>)</span><span style='color:#d2cd86; '>.</span>then<span style='color:#d2cd86; '>(</span><span style='color:#d2cd86; '>(</span>resp<span style='color:#d2cd86; '>)</span> <span style='color:#d2cd86; '>=</span><span style='color:#d2cd86; '>></span> resp<span style='color:#d2cd86; '>.</span>json<span style='color:#d2cd86; '>(</span><span style='color:#d2cd86; '>)</span><span style='color:#d2cd86; '>)</span>
+      <span style='color:#d2cd86; '>.</span>then<span style='color:#d2cd86; '>(</span>console<span style='color:#d2cd86; '>.</span><span style='color:#e66170; font-weight:bold; '>log</span><span style='color:#d2cd86; '>)</span>
+  </pre>
+  <!--Created using ToHtml.com on 2019-10-31 11:02:23 UTC -->
 
 <!-- modal -->
 <div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -40,7 +52,7 @@ riot.tag("graphman", `
           </div>
         </div>
       </form>
-		</div>
+    </div>
 		<div class="modal-footer">
 			<div class="btn-group btn-group-justified" role="group" aria-label="group button">
 				<div class="btn-group" role="group">
@@ -50,8 +62,8 @@ riot.tag("graphman", `
 					<button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal" onclick="{ logout }" role="button">Delete</button>
 				</div>
 				<div class="btn-group" role="group">
-					<button type="button" id="saveImage" class="btn btn-default btn-hover-green" onclick="{ acquireTokenPopup }" role="button">Save</button>
-				</div>
+					<button type="button" id="saveImage" class="btn btn-primary btn-md" onclick="{ acquireTokenPopup }" role="button">Save</button>
+        </div>
 			</div>
 		</div>
 	</div>
