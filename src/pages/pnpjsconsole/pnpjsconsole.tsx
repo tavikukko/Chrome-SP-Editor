@@ -2,7 +2,7 @@ import { IonContent, IonPage } from '@ionic/react'
 import { ControlledEditor } from '@monaco-editor/react'
 import { monaco } from '@monaco-editor/react'
 import { editor } from 'monaco-editor'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import {
   CompilerOptions,
@@ -16,12 +16,20 @@ import { getExtensionDirectory, loadDeclarations } from './utils'
 export type BuiltinTheme = 'light' | 'dark'
 
 const PnPjsConsole = () => {
+  let completionDisposer: any
   monaco.config({
     urls: {
       monacoLoader: '',
       monacoBase: '/vs',
     },
   })
+
+  // disposing snippets when umounting to avoid multiplying them
+  useEffect(() => {
+    return () => {
+      completionDisposer.dispose()
+    }
+  }, [])
 
   const { isDark } = useSelector((state: IRootState) => state.home)
 
@@ -270,7 +278,7 @@ taxonomy.termStores.get().then(ts => {
     )
     editorInst.focus()
 
-    monacoInst.languages.registerCompletionItemProvider('typescript', {
+    completionDisposer = monacoInst.languages.registerCompletionItemProvider('typescript', {
       provideCompletionItems(model: any, position: any) {
         return {
           /* tslint:disable:no-invalid-template-strings */
