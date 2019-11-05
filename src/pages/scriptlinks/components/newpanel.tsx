@@ -21,6 +21,8 @@ const ScriptLinksNewPanel = () => {
 
   const dispatch = useDispatch()
 
+  const [ valid, setValid ] = useState(false)
+
   const [ newItem, setNewItem ] = useState<INewScriptLink>({
     Url: '',
     Sequence: 0,
@@ -42,8 +44,13 @@ const ScriptLinksNewPanel = () => {
         }
         style={{ marginRight: '8px' }}
         text={'Add'}
+        disabled={!valid}
       />
     )
+  }
+
+  const sequenceValidator = (value: string): string => {
+    return +value > -1 && +value < 65537 ? '' : `The value specified must be between 0 and 65536 inclusively.`
   }
 
   return (
@@ -80,6 +87,7 @@ const ScriptLinksNewPanel = () => {
           onChange={(event, newValue?: string) =>
             setNewItem({ ...newItem, Sequence: newValue ? +newValue : 0 })
           }
+          onGetErrorMessage={sequenceValidator}
         />
         <Dropdown
           label='Select scope'
