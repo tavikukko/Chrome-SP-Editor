@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.6
+ * v1.3.7
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/

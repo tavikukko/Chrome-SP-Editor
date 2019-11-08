@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.6
+ * v1.3.7
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -3829,7 +3829,7 @@ var GraphHttpClient = /** @class */ (function () {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/1.3.6");
+            headers.append("SdkVersion", "PnPCoreJS/1.3.7");
         }
         var opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__["extend"])(options, { headers: headers });
         return this.fetchRaw(url, opts);
@@ -5587,10 +5587,11 @@ var Teams = /** @class */ (function (_super) {
     /**
      * Creates a new team and associated Group with the given information
      * @param name The name of the new Group
+     * @param mailNickname The email alias for the group
      * @param description Optional description of the group
      * @param ownerId Add an owner with a user id from the graph
      */
-    Teams.prototype.create = function (name, description, ownerId, teamProperties) {
+    Teams.prototype.create = function (name, mailNickname, description, ownerId, teamProperties) {
         if (description === void 0) { description = ""; }
         if (teamProperties === void 0) { teamProperties = {}; }
         var groupProps = {
@@ -5599,7 +5600,7 @@ var Teams = /** @class */ (function (_super) {
                 "https://graph.microsoft.com/v1.0/users/" + ownerId,
             ],
         };
-        return _rest__WEBPACK_IMPORTED_MODULE_1__["graph"].groups.add(name, name, _groups__WEBPACK_IMPORTED_MODULE_2__["GroupType"].Office365, groupProps).then(function (gar) {
+        return _rest__WEBPACK_IMPORTED_MODULE_1__["graph"].groups.add(name, mailNickname, _groups__WEBPACK_IMPORTED_MODULE_2__["GroupType"].Office365, groupProps).then(function (gar) {
             return gar.group.createTeam(teamProperties).then(function (data) {
                 return {
                     data: data,
@@ -5698,18 +5699,19 @@ var Team = /** @class */ (function (_super) {
     /**
      * Clones this Team
      * @param name The name of the new Group
+     * @param mailNickname The email alias for the group
      * @param description Optional description of the group
      * @param partsToClone Parts to clone ex: apps,tabs,settings,channels,members
      * @param visibility Set visibility to public or private
      */
     // TODO:: update properties to be typed once type is available in graph-types
-    Team.prototype.cloneTeam = function (name, description, partsToClone, visibility) {
+    Team.prototype.cloneTeam = function (name, mailNickname, description, partsToClone, visibility) {
         var _this = this;
         if (description === void 0) { description = ""; }
         var postBody = {
             description: description ? description : "",
             displayName: name,
-            mailNickname: name,
+            mailNickname: mailNickname,
             partsToClone: partsToClone,
             visibility: visibility,
         };
@@ -9597,7 +9599,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.6");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.7");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -10333,17 +10335,25 @@ var ClientSidePage = /** @class */ (function (_super) {
     };
     ClientSidePage.prototype.promoteNewsImpl = function (method) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
-            var d;
+            var lastPubData, d;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if (!Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["stringIsNullOrEmpty"])(this.json.VersionInfo.LastVersionCreatedBy)) return [3 /*break*/, 2];
+                        lastPubData = new Date(this.json.VersionInfo.LastVersionCreated);
+                        if (!(lastPubData.getFullYear() < 2000)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.save(true)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
                         if (this.json.Id === null) {
                             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
                         }
                         return [4 /*yield*/, ClientSidePage.initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/" + method).postCore({
                                 body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.Publishing.SitePage")),
                             })];
-                    case 1:
+                    case 3:
                         d = _a.sent();
                         return [2 /*return*/, d];
                 }
@@ -13642,14 +13652,20 @@ var List = /** @class */ (function (_super) {
      *
      * @param parameters The parameters to be used to render list data as JSON string.
      * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     * @param queryParams Allows setting of query parameters
      */
-    List.prototype.renderListDataAsStream = function (parameters, overrideParameters) {
+    List.prototype.renderListDataAsStream = function (parameters, overrideParameters, queryParams) {
         if (overrideParameters === void 0) { overrideParameters = null; }
+        if (queryParams === void 0) { queryParams = new Map(); }
         var postBody = {
             overrideParameters: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_9__["extend"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_13__["metadata"])("SP.RenderListDataOverrideParameters"), overrideParameters),
             parameters: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_9__["extend"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_13__["metadata"])("SP.RenderListDataParameters"), parameters),
         };
-        return this.clone(List, "RenderListDataAsStream", true).postCore({
+        var clone = this.clone(List, "RenderListDataAsStream", true);
+        if (queryParams && queryParams.size > 0) {
+            queryParams.forEach(function (v, k) { return clone.query.set(k, v); });
+        }
+        return clone.postCore({
             body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_9__["jsS"])(postBody),
         });
     };
@@ -14071,11 +14087,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.6");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.7");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.6");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.7");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -20706,7 +20722,6 @@ var Web = /** @class */ (function (_super) {
      *
      * @param pageName Name of the new page
      * @param title Display title of the new page
-     * @param libraryTitle Title of the library in which to create the new page. Default: "Site Pages"
      */
     Web.prototype.addClientSidePage = function (pageName, title) {
         if (title === void 0) { title = pageName.replace(/\.[^/.]+$/, ""); }

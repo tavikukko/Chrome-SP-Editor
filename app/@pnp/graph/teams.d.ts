@@ -7,10 +7,11 @@ export declare class Teams extends GraphQueryableCollection {
     /**
      * Creates a new team and associated Group with the given information
      * @param name The name of the new Group
+     * @param mailNickname The email alias for the group
      * @param description Optional description of the group
      * @param ownerId Add an owner with a user id from the graph
      */
-    create(name: string, description: string, ownerId: string, teamProperties?: TeamProperties): Promise<TeamCreateResult>;
+    create(name: string, mailNickname: string, description: string, ownerId: string, teamProperties?: TeamProperties): Promise<TeamCreateResult>;
     getById(id: string): Team;
 }
 /**
@@ -39,11 +40,12 @@ export declare class Team extends GraphQueryableInstance<TeamProperties> {
     /**
      * Clones this Team
      * @param name The name of the new Group
+     * @param mailNickname The email alias for the group
      * @param description Optional description of the group
      * @param partsToClone Parts to clone ex: apps,tabs,settings,channels,members
      * @param visibility Set visibility to public or private
      */
-    cloneTeam(name: string, description: string, partsToClone: string, visibility: string): Promise<TeamUpdateResult>;
+    cloneTeam(name: string, mailNickname: string, description: string, partsToClone: string, visibility: string): Promise<TeamUpdateResult>;
     /**
      * Executes the currently built request
      *

@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.6
+ * v1.3.7
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -3526,7 +3526,7 @@ var GraphHttpClient = /** @class */ (function () {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/1.3.6");
+            headers.append("SdkVersion", "PnPCoreJS/1.3.7");
         }
         var opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__["extend"])(options, { headers: headers });
         return this.fetchRaw(url, opts);
@@ -5284,10 +5284,11 @@ var Teams = /** @class */ (function (_super) {
     /**
      * Creates a new team and associated Group with the given information
      * @param name The name of the new Group
+     * @param mailNickname The email alias for the group
      * @param description Optional description of the group
      * @param ownerId Add an owner with a user id from the graph
      */
-    Teams.prototype.create = function (name, description, ownerId, teamProperties) {
+    Teams.prototype.create = function (name, mailNickname, description, ownerId, teamProperties) {
         if (description === void 0) { description = ""; }
         if (teamProperties === void 0) { teamProperties = {}; }
         var groupProps = {
@@ -5296,7 +5297,7 @@ var Teams = /** @class */ (function (_super) {
                 "https://graph.microsoft.com/v1.0/users/" + ownerId,
             ],
         };
-        return _rest__WEBPACK_IMPORTED_MODULE_1__["graph"].groups.add(name, name, _groups__WEBPACK_IMPORTED_MODULE_2__["GroupType"].Office365, groupProps).then(function (gar) {
+        return _rest__WEBPACK_IMPORTED_MODULE_1__["graph"].groups.add(name, mailNickname, _groups__WEBPACK_IMPORTED_MODULE_2__["GroupType"].Office365, groupProps).then(function (gar) {
             return gar.group.createTeam(teamProperties).then(function (data) {
                 return {
                     data: data,
@@ -5395,18 +5396,19 @@ var Team = /** @class */ (function (_super) {
     /**
      * Clones this Team
      * @param name The name of the new Group
+     * @param mailNickname The email alias for the group
      * @param description Optional description of the group
      * @param partsToClone Parts to clone ex: apps,tabs,settings,channels,members
      * @param visibility Set visibility to public or private
      */
     // TODO:: update properties to be typed once type is available in graph-types
-    Team.prototype.cloneTeam = function (name, description, partsToClone, visibility) {
+    Team.prototype.cloneTeam = function (name, mailNickname, description, partsToClone, visibility) {
         var _this = this;
         if (description === void 0) { description = ""; }
         var postBody = {
             description: description ? description : "",
             displayName: name,
-            mailNickname: name,
+            mailNickname: mailNickname,
             partsToClone: partsToClone,
             visibility: visibility,
         };
