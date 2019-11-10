@@ -115,8 +115,11 @@ export declare class User extends GraphQueryableInstance<IUser> {
     delete(): Promise<void>;
     /**
      * Send the message specified in the request body. The message is saved in the Sent Items folder by default.
+     *
+     * @param message The message details to send
+     * @param saveToSentItems If true the message will be saved to sent items. Default: false
      */
-    sendMail(message: IMessage): Promise<void>;
+    sendMail(message: IMessage, saveToSentItems?: boolean): Promise<void>;
     /**
     * People ordered by their relevance to the user
     */
@@ -126,8 +129,12 @@ export declare class User extends GraphQueryableInstance<IUser> {
     */
     readonly directReports: People;
     /**
-    * The Insights associated with me
+    * The Insights associated with this user
     */
     readonly insights: InsightsMethods;
+    /**
+    * The manager associated with this user
+    */
+    readonly manager: User;
 }
 //# sourceMappingURL=users.d.ts.map

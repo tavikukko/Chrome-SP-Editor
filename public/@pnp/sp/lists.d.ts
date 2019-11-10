@@ -184,8 +184,9 @@ export declare class List extends SharePointQueryableSecurable {
      *
      * @param parameters The parameters to be used to render list data as JSON string.
      * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     * @param queryParams Allows setting of query parameters
      */
-    renderListDataAsStream(parameters: RenderListDataParameters, overrideParameters?: any): Promise<any>;
+    renderListDataAsStream(parameters: RenderListDataParameters, overrideParameters?: any, queryParams?: Map<string, string>): Promise<any>;
     /**
      * Gets the field values and field schema attributes for a list item.
      */

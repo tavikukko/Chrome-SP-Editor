@@ -91,6 +91,7 @@ export declare class Site extends SharePointQueryableInstance {
      *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
+     * @param hubSiteId The Guid of the already existing Hub site
      * @param owner Required when creating the site using app-only context
      */
     createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: string, classification?: string, siteDesignId?: string, hubSiteId?: string, owner?: string): Promise<ISPSiteCreationResponse>;

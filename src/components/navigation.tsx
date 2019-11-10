@@ -9,7 +9,7 @@ import { Nav } from 'office-ui-fabric-react'
 import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 
-const fabricNav = ({ history }: RouteComponentProps) => {
+export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
 
   const [selectedKey, setSelectedKey] = useState('key1')
 
@@ -114,6 +114,6 @@ const fabricNav = ({ history }: RouteComponentProps) => {
       </IonContent>
     </IonMenu>
   )
-}
+})
 
-export const FabricNav = withRouter(fabricNav)
+// export const FabricNav = withRouter(fabricNav)

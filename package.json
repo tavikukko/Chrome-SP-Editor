@@ -21,11 +21,11 @@
     "typescript": "^3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
+    "start": "gulp && react-scripts start",
+    "build": "gulp && INLINE_RUNTIME_CHUNK=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "watch": "cra-build-watch"
+    "watch": "gulp && cra-build-watch"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -56,6 +56,19 @@
     "tslint": "^5.20.1",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^4.1.0",
-    "tslint-react-recommended": "^1.0.15"
+    "tslint-react-recommended": "^1.0.15",
+    "@pnp/common": "^1.3.7",
+    "@pnp/config-store": "^1.3.7",
+    "@pnp/graph": "^1.3.7",
+    "@pnp/logging": "^1.3.7",
+    "@pnp/nodejs": "^1.3.7",
+    "@pnp/odata": "^1.3.7",
+    "@pnp/pnpjs": "^1.3.7",
+    "@pnp/sp": "^1.3.7",
+    "@pnp/sp-addinhelpers": "^1.3.7",
+    "@pnp/sp-clientsvc": "^1.3.7",
+    "@pnp/sp-taxonomy": "^1.3.7",
+    "del": "^5.1.0",
+    "gulp": "^4.0.2"
   }
 }

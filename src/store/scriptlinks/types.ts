@@ -1,6 +1,5 @@
 import { ActionType } from 'typesafe-actions'
 import * as actions from './actions'
-import { IScriptLink } from './types'
 
 export type ScriptLinksActions = ActionType<typeof actions>
 
