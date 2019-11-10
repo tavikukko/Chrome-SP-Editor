@@ -65,7 +65,7 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
 
   // execute script in inspectedWindow
   let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${getCustomActions}`
-  script += ` exescript(${getCustomActions.name});`
+  script += ` ${exescript.name}(${getCustomActions.name});`
   chrome.devtools.inspectedWindow.eval(script)
 }
 
