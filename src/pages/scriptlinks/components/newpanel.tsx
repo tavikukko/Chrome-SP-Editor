@@ -44,7 +44,7 @@ const ScriptLinksNewPanel = () => {
         }
         style={{ marginRight: '8px' }}
         text={'Add'}
-        disabled={!valid}
+        // disabled={!valid}
       />
     )
   }

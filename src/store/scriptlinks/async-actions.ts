@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 import * as rootActions from '../home/actions'
 import { exescript } from '../utilities/chromecommon'
-import { getPnpjsPath, getSystemjsPath } from '../utilities/utilities'
+import { delay, getPnpjsPath, getSystemjsPath } from '../utilities/utilities'
 import { HomeActions, MessageBarColors } from './../home/types'
 import * as actions from './actions'
 import { createCustomAction } from './chrome/createscriptlink'
@@ -72,7 +72,7 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
 export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: INewScriptLink) {
 
   // add listener to receive the results from inspected page
-  (window as any).port.onMessage.addListener(function addScriptLinkCallback(message: any) {
+  (window as any).port.onMessage.addListener(async function addScriptLinkCallback(message: any) {
 
     if (
       typeof message !== 'object' ||
@@ -87,6 +87,8 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | Home
       case createCustomAction.name:
         if (message.success) {
           /* on success */
+          // add small delay just be sure SP can process previous requests
+          await delay(500)
           // load all scriptlinks
           getAllScriptLinks(dispatch)
           // close panel
@@ -123,7 +125,7 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | Home
 export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: IScriptLink) {
 
   // add listener to receive the results from inspected page
-  (window as any).port.onMessage.addListener(function updateScriptLinkCallback(message: any) {
+  (window as any).port.onMessage.addListener(async function updateScriptLinkCallback(message: any) {
 
     if (
       typeof message !== 'object' ||
@@ -137,6 +139,8 @@ export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | H
       case updateCustomAction.name:
         if (message.success) {
           /* on success */
+          // add small delay just be sure SP can process previous requests
+          await delay(500)
           // load all scriptlinks
           getAllScriptLinks(dispatch)
           // close panel
@@ -172,10 +176,9 @@ export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | H
 
 export async function deleteScriptLinks(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: IScriptLink[]) {
 
-  dispatch(rootActions.setLoading(true))
-  console.log(JSON.stringify(payload));
+  dispatch(rootActions.setLoading(true));
   // add listener to receive the results from inspected page
-  (window as any).port.onMessage.addListener(function deleteScriptLinksCallback(message: any) {
+  (window as any).port.onMessage.addListener(async function deleteScriptLinksCallback(message: any) {
 
     if (
       typeof message !== 'object' ||
@@ -189,6 +192,8 @@ export async function deleteScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
       case deleteCustomActions.name:
         if (message.success) {
           /* on success */
+          // add small delay just be sure SP can process previous requests
+          await delay(500)
           // load all scriptlinks
           getAllScriptLinks(dispatch)
           // set success message

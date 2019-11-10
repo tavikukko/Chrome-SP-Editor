@@ -4,3 +4,6 @@ export function getSystemjsPath(): string {
 export function getPnpjsPath(): string {
   return `var speditorpnp = '${chrome.extension.getURL('bundles/pnpjs.es5.umd.bundle.js')}';`
 }
+export function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
