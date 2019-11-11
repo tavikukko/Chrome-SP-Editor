@@ -71,6 +71,7 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
 
 export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: INewScriptLink) {
 
+  dispatch(rootActions.setLoading(true));
   // add listener to receive the results from inspected page
   (window as any).port.onMessage.addListener(async function addScriptLinkCallback(message: any) {
 
@@ -118,12 +119,13 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | Home
 
   // execute script in inspectedWindow
   let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${createCustomAction}`
-  script += ` exescript(${createCustomAction.name}, ${payload.Scope}, '${payload.Url}', ${payload.Sequence});`
+  script += ` ${exescript.name}(${createCustomAction.name}, ${payload.Scope}, '${payload.Url}', ${payload.Sequence});`
   chrome.devtools.inspectedWindow.eval(script)
 }
 
 export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: IScriptLink) {
 
+  dispatch(rootActions.setLoading(true));
   // add listener to receive the results from inspected page
   (window as any).port.onMessage.addListener(async function updateScriptLinkCallback(message: any) {
 
@@ -170,7 +172,7 @@ export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | H
 
   // execute script in inspectedWindow
   let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${updateCustomAction}`
-  script += ` exescript(${updateCustomAction.name}, ${payload.Scope}, '${payload.Url}', ${payload.Sequence}, '${payload.Id}');`
+  script += ` ${exescript.name}(${updateCustomAction.name}, ${payload.Scope}, '${payload.Url}', ${payload.Sequence}, '${payload.Id}');`
   chrome.devtools.inspectedWindow.eval(script)
 }
 
@@ -220,6 +222,6 @@ export async function deleteScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
 
   // execute script in inspectedWindow
   let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${deleteCustomActions}`
-  script += ` exescript(${deleteCustomActions.name}, '${encodeURIComponent(JSON.stringify(payload)).replace(/'/g, '%27')}');`
+  script += ` ${exescript.name}(${deleteCustomActions.name}, '${encodeURIComponent(JSON.stringify(payload)).replace(/'/g, '%27')}');`
   chrome.devtools.inspectedWindow.eval(script)
 }

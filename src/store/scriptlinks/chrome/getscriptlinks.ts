@@ -1,6 +1,7 @@
 import * as pnp from '@pnp/pnpjs'
 
-// we cannot use async methos cos its difficult to get them imported to inspactedTab
+// we cannot use async methods, they do not work correctly when running 'npm run build',
+// async methods works when running 'npm run watch'
 export function getCustomActions(...args: any) {
 
   /* get parameters */
@@ -34,6 +35,16 @@ export function getCustomActions(...args: any) {
     $pnp.log.subscribe(listener)
     /* *** */
 
+    const postMessage = (actions: any[]) => {
+      window.postMessage(JSON.stringify({
+        function: functionName,
+        success: true,
+        result: actions,
+        errorMessage: '',
+        source: 'chrome-sp-editor',
+      }), '*')
+    }
+
     // get site customactions
     $pnp.sp.site.userCustomActions
       .select('Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title').orderBy('Sequence', true).get()
@@ -46,14 +57,9 @@ export function getCustomActions(...args: any) {
             // TODO: add order ??
             const actions = siteactions.concat(webactions)
             // post results back to extension
-            window.postMessage(JSON.stringify({
-              function: functionName,
-              success: true,
-              result: actions,
-              errorMessage: '',
-              source: 'chrome-sp-editor',
-            }), '*')
+            postMessage(actions)
           })
       })
   })
+
 }

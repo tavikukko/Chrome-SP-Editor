@@ -1,6 +1,8 @@
 import * as pnp from '@pnp/pnpjs'
 
-export async function updateCustomAction(...args: any) {
+// we cannot use async methods, they do not work correctly when running 'npm run build',
+// async methods works when running 'npm run watch'
+export function updateCustomAction(...args: any) {
 
   /* get parameters */
   const params = args
@@ -24,9 +26,9 @@ export async function updateCustomAction(...args: any) {
 
   // if url starts with ~ and ends .js we can inject with ScriptSrc (o365 / onprem)
   // if we are in o365, we can inject anything that ends with .js with ScriptSrc
-  if ((url.indexOf('~') > -1 && url.match(/.js$/)) || (window.location.href.indexOf('.sharepoint.com') > 0 && url.match(/.js$/))) {
+  if ((url.indexOf('~') > -1 && url.match(/.js$/)) || (window.location.href.indexOf('.sharepoint.') > 0 && url.match(/.js$/))) {
     payload.ScriptSrc = url + querystrings
-  } else if (url.match(/.js$/) && window.location.href.indexOf('.sharepoint.com') === -1) {
+  } else if (url.match(/.js$/) && window.location.href.indexOf('.sharepoint.') === -1) {
 
     let headID = ''
     let newScript = ''
@@ -58,42 +60,49 @@ export async function updateCustomAction(...args: any) {
     return
   }
 
-  const $pnp: typeof pnp = await (window as any).SystemJS.import(((window as any).speditorpnp))
-
-  /* setup pnp */
-  $pnp.log.clearSubscribers()
-  const listener = new $pnp.FunctionListener(async (entry: pnp.LogEntry) => {
-    const error = await entry.data.response.clone().json()
-    window.postMessage(JSON.stringify({
-      function: functionName,
-      success: false,
-      result: null,
-      errorMessage: error.error.message.value,
-      source: 'chrome-sp-editor',
-    }), '*')
-  })
-  $pnp.log.subscribe(listener)
-  $pnp.setup({
-    sp: {
-      headers: {
-        Accept: 'application/json; odata=verbose',
+  /* import pnp */
+  (window as any).SystemJS.import(((window as any).speditorpnp)).then(($pnp: typeof pnp) => {
+    /*** setup pnp ***/
+    $pnp.setup({
+      sp: {
+        headers: {
+          Accept: 'application/json; odata=verbose',
+        },
       },
-    },
+    })
+    /*** clear previous log listeners ***/
+    $pnp.log.clearSubscribers()
+    /*** setup log listener ***/
+    const listener = new $pnp.FunctionListener((entry: pnp.LogEntry) => {
+      entry.data.response.clone().json().then((error: any) => {
+        window.postMessage(JSON.stringify({
+          function: functionName,
+          success: false,
+          result: null,
+          errorMessage: error.error.message.value,
+          source: 'chrome-sp-editor',
+        }), '*')
+      })
+    })
+    $pnp.log.subscribe(listener)
+    /* *** */
+
+    const postMessage = () => {
+      window.postMessage(JSON.stringify({
+        function: functionName,
+        success: true,
+        result: [],
+        errorMessage: '',
+        source: 'chrome-sp-editor',
+      }), '*')
+    }
+
+    if (scope === 2) {
+      $pnp.sp.site.userCustomActions.getById(id).update(payload).then(postMessage)
+    } else {
+      $pnp.sp.web.userCustomActions.getById(id).update(payload).then(postMessage)
+    }
+
   })
-  /* ******* */
-
-  if (scope === 2) {
-    await $pnp.sp.site.userCustomActions.getById(id).update(payload)
-  } else {
-    await $pnp.sp.web.userCustomActions.getById(id).update(payload)
-  }
-
-  window.postMessage(JSON.stringify({
-    function: functionName,
-    success: true,
-    result: [],
-    errorMessage: '',
-    source: 'chrome-sp-editor',
-  }), '*')
 
 }
