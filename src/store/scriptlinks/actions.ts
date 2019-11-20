@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions'
-import { Constants, INewScriptLink, IScriptLink } from './types'
+import { Constants, IScriptLink } from './types'
 
 export function getAllScriptLinks(items: IScriptLink[]) {
   return action(Constants.GET_ITEMS, {

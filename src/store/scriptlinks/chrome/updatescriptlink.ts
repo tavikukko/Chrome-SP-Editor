@@ -97,12 +97,38 @@ export function updateCustomAction(...args: any) {
       }), '*')
     }
 
+    // site collection scope
     if (scope === 2) {
-      $pnp.sp.site.userCustomActions.getById(id).update(payload).then(postMessage)
+      // check that uca exists in site
+      $pnp.sp.site.userCustomActions.getById(id).get().then(uca => {
+        // update uca if exists
+        if (uca.GetById) {
+          uca.update(payload).then(postMessage)
+        } else {
+          // uca did not exists in site, so scope must have been switched
+          // so lets remove it from web
+          $pnp.sp.web.userCustomActions.getById(id).delete().then(res => {
+            // and then add it to site
+            $pnp.sp.site.userCustomActions.add(payload).then(postMessage)
+          })
+        }
+      })
+    // web scope
     } else {
-      $pnp.sp.web.userCustomActions.getById(id).update(payload).then(postMessage)
+      // check that uca exists in web
+      $pnp.sp.web.userCustomActions.getById(id).get().then(uca => {
+        // update uca if exists
+        if (uca.GetById) {
+          uca.update(payload).then(postMessage)
+        } else {
+          // uca did not exists in web, so scope must have been switched
+          // so lets remove it from site
+          $pnp.sp.site.userCustomActions.getById(id).delete().then(res => {
+            // and then add it to web
+            $pnp.sp.web.userCustomActions.add(payload).then(postMessage)
+          })
+        }
+      })
     }
-
   })
-
 }

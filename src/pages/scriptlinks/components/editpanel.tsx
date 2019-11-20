@@ -59,7 +59,6 @@ const ScriptLinksEditPanel = () => {
           <TextField
             label='Url'
             description='Url of the file to be injected.'
-            placeholder='~sitecollection/Style Library/custom.js'
             multiline
             autoAdjustHeight
             value={selectedItem.Url}
@@ -86,8 +85,17 @@ const ScriptLinksEditPanel = () => {
               { key: 2, text: 'Site Collection' },
               { key: 3, text: 'Current Web' },
             ]}
-            disabled={true}
+            // disabled={true}
             selectedKey={selectedItem.Scope}
+            onChange={(event, option?: IDropdownOption) =>
+              dispatch(setSelectedItem({ ...selectedItem, Scope: option ? +option.key : selectedItem.Scope }))
+            }
+          />
+          <TextField
+            label='Id'
+            description='Id of the custom action'
+            value={selectedItem.Id}
+            disabled
           />
         </Stack>
       }
