@@ -102,8 +102,8 @@ export function updateCustomAction(...args: any) {
       // check that uca exists in site
       $pnp.sp.site.userCustomActions.getById(id).get().then(uca => {
         // update uca if exists
-        if (uca.GetById) {
-          uca.update(payload).then(postMessage)
+        if (uca && uca.Id) {
+          $pnp.sp.site.userCustomActions.getById(id).update(payload).then(postMessage)
         } else {
           // uca did not exists in site, so scope must have been switched
           // so lets remove it from web
@@ -118,8 +118,8 @@ export function updateCustomAction(...args: any) {
       // check that uca exists in web
       $pnp.sp.web.userCustomActions.getById(id).get().then(uca => {
         // update uca if exists
-        if (uca.GetById) {
-          uca.update(payload).then(postMessage)
+        if (uca && uca.Id) {
+          $pnp.sp.web.userCustomActions.getById(id).update(payload).then(postMessage)
         } else {
           // uca did not exists in web, so scope must have been switched
           // so lets remove it from site

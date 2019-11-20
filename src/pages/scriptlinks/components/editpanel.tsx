@@ -37,6 +37,9 @@ const ScriptLinksEditPanel = () => {
       />
     )
   }
+  const sequenceValidator = (value: string): string => {
+    return +value > -1 && +value < 65537 ? '' : `The value specified must be between 0 and 65536 inclusively.`
+  }
 
   return (
     <Panel
@@ -76,6 +79,7 @@ const ScriptLinksEditPanel = () => {
             onChange={(event, newValue?: string) =>
               dispatch(setSelectedItem({ ...selectedItem, Sequence: newValue ? +newValue : selectedItem.Sequence }))
             }
+            onGetErrorMessage={sequenceValidator}
           // TODO: do proper casting & validation
           />
           <Dropdown
