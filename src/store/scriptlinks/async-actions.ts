@@ -104,6 +104,8 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | Home
           /* on error */
           // close panel
           dispatch(actions.setNewPanel(false))
+          // hide loading
+          dispatch(rootActions.setLoading(false))
           // show error message
           dispatch(rootActions.setAppMessage({
             showMessage: true,
@@ -157,6 +159,8 @@ export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | H
           /* on error */
           // close panel
           dispatch(actions.setEditPanel(false))
+          // hide loading
+          dispatch(rootActions.setLoading(false))
           // show error message
           dispatch(rootActions.setAppMessage({
             showMessage: true,
@@ -206,8 +210,9 @@ export async function deleteScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
           }))
         } else {
           /* on error */
+          // hide loading
           dispatch(rootActions.setLoading(false))
-
+          // set error message
           dispatch(rootActions.setAppMessage({
             showMessage: true,
             message: message.errorMessage,

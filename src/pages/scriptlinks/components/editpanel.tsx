@@ -99,6 +99,7 @@ const ScriptLinksEditPanel = () => {
             label='Id'
             description='Id of the custom action'
             value={selectedItem.Id}
+            readOnly
             disabled
           />
         </Stack>
