@@ -1,16 +1,21 @@
 import {
+  IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonMenu,
   IonTitle,
   IonToolbar,
 } from '@ionic/react'
-import { Nav } from 'office-ui-fabric-react'
+import { FontIcon, Nav } from 'office-ui-fabric-react'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { setLoading } from '../store/home/actions'
 
 export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
 
+  const dispatch = useDispatch()
   const [selectedKey, setSelectedKey] = useState('key1')
 
   return (
@@ -18,6 +23,18 @@ export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Menu</IonTitle>
+          <IonButtons slot='end'>
+          <IonButton
+            onClick={() =>
+              (document.location.href =
+                document.location.protocol !== 'chrome-extension:'
+                  ? document.location.origin
+                  : document.location.origin + '/index.html')
+            }
+          >
+            <FontIcon iconName='Refresh' />
+          </IonButton>
+        </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent class='outer-content'>
@@ -29,6 +46,7 @@ export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
               menu && menu.close()
               event.preventDefault()
               if (element.key && selectedKey !== element.key) {
+                dispatch(setLoading(false))
                 history.push(element.url)
                 setSelectedKey(element.key)
               }
@@ -115,5 +133,3 @@ export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
     </IonMenu>
   )
 })
-
-// export const FabricNav = withRouter(fabricNav)

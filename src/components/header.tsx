@@ -17,18 +17,6 @@ const Header = ({ title }: HeaderProps) => {
           <IonMenuButton slot='start' autoHide={true} />
           <IonTitle>{title}</IonTitle>
         </IonButtons>
-        <IonButtons slot='end'>
-          <IonButton
-            onClick={() =>
-              (document.location.href =
-                document.location.protocol !== 'chrome-extension:'
-                  ? document.location.origin
-                  : document.location.origin + '/index.html')
-            }
-          >
-            <FontIcon iconName='Refresh' />
-          </IonButton>
-        </IonButtons>
       </IonToolbar>
     </IonHeader>
   )
