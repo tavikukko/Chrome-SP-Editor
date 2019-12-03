@@ -11,8 +11,6 @@
     "128": "icons/icon128.png"
   },
   "web_accessible_resources": [
-    "bundles/alertify.js",
-    "bundles/pnp.js",
     "bundles/system.js",
     "bundles/common.es5.umd.bundle.js",
     "bundles/config-store.es5.umd.bundle.js",
