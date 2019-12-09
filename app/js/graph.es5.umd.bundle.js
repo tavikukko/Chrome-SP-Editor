@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.7
+ * v1.3.8
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -3526,7 +3526,7 @@ var GraphHttpClient = /** @class */ (function () {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/1.3.7");
+            headers.append("SdkVersion", "PnPCoreJS/1.3.8");
         }
         var opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__["extend"])(options, { headers: headers });
         return this.fetchRaw(url, opts);
@@ -4331,10 +4331,15 @@ var Tasks = /** @class */ (function (_super) {
      */
     Tasks.prototype.add = function (planId, title, assignments, bucketId) {
         var _this = this;
-        var postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])({
+        var postBody = {
             planId: planId,
             title: title,
-        }, assignments);
+        };
+        if (assignments) {
+            postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])(postBody, {
+                assignments: assignments,
+            });
+        }
         if (bucketId) {
             postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])(postBody, {
                 bucketId: bucketId,

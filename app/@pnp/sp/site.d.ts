@@ -1,7 +1,7 @@
 import { SharePointQueryableInstance } from "./sharepointqueryable";
 import { Web } from "./webs";
 import { UserCustomActions } from "./usercustomactions";
-import { ContextInfo, DocumentLibraryInformation } from "./types";
+import { ContextInfo, DocumentLibraryInformation, ChangeQuery } from "./types";
 import { SPBatch } from "./batch";
 import { Features } from "./features";
 /**
@@ -45,6 +45,12 @@ export declare class Site extends SharePointQueryableInstance {
      * @param absolutePageUrl The absolute url of the page
      */
     getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string>;
+    /**
+     * Returns the collection of changes from the change log that have occurred within the site, based on the specified query
+     *
+     * @param query The change query
+     */
+    getChanges(query: ChangeQuery): Promise<any>;
     /**
      * Deletes the current site
      *

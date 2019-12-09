@@ -11,6 +11,20 @@ export interface ChunkedFileUploadProgressData {
     currentPointer: number;
     fileSize: number;
 }
+export interface AddUsingPathProps {
+    /**
+     * Overwrite the file if it exists
+     */
+    Overwrite: boolean;
+    /**
+     * specifies whether to auto checkout on invalid Data. It'll be useful if the list contains validation whose requirements upload will not be able to meet.
+     */
+    AutoCheckoutOnInvalidData?: boolean;
+    /**
+     * Specifies a XOR hash of the file data which should be used to ensure end-2-end data integrity, base64 representation
+     */
+    XorHash?: string;
+}
 /**
  * Describes a collection of File objects
  *
@@ -31,6 +45,14 @@ export declare class Files extends SharePointQueryableCollection {
      * @returns The new File and the raw response.
      */
     add(url: string, content: string | ArrayBuffer | Blob, shouldOverWrite?: boolean): Promise<FileAddResult>;
+    /**
+     * Adds a file using the pound percent safe methods
+     *
+     * @param url Excoded url of the file
+     * @param content The file content
+     * @param parameters Additional parameters to control method behavior
+     */
+    addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters?: AddUsingPathProps): Promise<FileAddResult>;
     /**
      * Uploads a file. Not supported for batching
      *

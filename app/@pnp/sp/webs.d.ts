@@ -283,7 +283,7 @@ export declare class Web extends SharePointQueryableShareableWeb {
      */
     getCatalog(type: number): Promise<List>;
     /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+     * Returns the collection of changes from the change log that have occurred within the web, based on the specified query
      *
      * @param query The change query
      */

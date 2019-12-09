@@ -53,8 +53,10 @@ riot.tag("fileeditor", `
 
         fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
 
-          var url = 'data:text/plain;base64,' + btoa(fileeditoreditor.getValue());
           var filename = selectedFile.split('/').pop();
+          var extension = filename.split('.').pop();
+
+          var url = `data:text/${extension};base64, ${btoa(fileeditoreditor.getValue())}`;
           chrome.downloads.download({
               url: url,
               filename: filename,
