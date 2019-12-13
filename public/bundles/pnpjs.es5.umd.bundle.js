@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.7
+ * v1.3.8
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2019 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -3829,7 +3829,7 @@ var GraphHttpClient = /** @class */ (function () {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/1.3.7");
+            headers.append("SdkVersion", "PnPCoreJS/1.3.8");
         }
         var opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__["extend"])(options, { headers: headers });
         return this.fetchRaw(url, opts);
@@ -4634,10 +4634,15 @@ var Tasks = /** @class */ (function (_super) {
      */
     Tasks.prototype.add = function (planId, title, assignments, bucketId) {
         var _this = this;
-        var postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])({
+        var postBody = {
             planId: planId,
             title: title,
-        }, assignments);
+        };
+        if (assignments) {
+            postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])(postBody, {
+                assignments: assignments,
+            });
+        }
         if (bucketId) {
             postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["extend"])(postBody, {
                 bucketId: bucketId,
@@ -9599,7 +9604,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.7");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.8");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -11821,6 +11826,39 @@ var Files = /** @class */ (function (_super) {
         });
     };
     /**
+     * Adds a file using the pound percent safe methods
+     *
+     * @param url Excoded url of the file
+     * @param content The file content
+     * @param parameters Additional parameters to control method behavior
+     */
+    Files.prototype.addUsingPath = function (url, content, parameters) {
+        var _this = this;
+        if (parameters === void 0) { parameters = { Overwrite: false }; }
+        var path = ["AddUsingPath(decodedurl='" + url + "'"];
+        if (parameters) {
+            if (parameters.Overwrite) {
+                path.push(",Overwrite=true");
+            }
+            if (parameters.AutoCheckoutOnInvalidData) {
+                path.push(",AutoCheckoutOnInvalidData=true");
+            }
+            if (!Object(_pnp_common__WEBPACK_IMPORTED_MODULE_3__["stringIsNullOrEmpty"])(parameters.XorHash)) {
+                path.push(",XorHash=" + parameters.XorHash);
+            }
+        }
+        path.push(")");
+        return new Files_1(this, path.join(""))
+            .postCore({
+            body: content,
+        }).then(function (response) {
+            return {
+                data: response,
+                file: _this.getByName(url),
+            };
+        });
+    };
+    /**
      * Uploads a file. Not supported for batching
      *
      * @param url The folder-relative url of the file.
@@ -11834,7 +11872,7 @@ var Files = /** @class */ (function (_super) {
         var _this = this;
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
         if (chunkSize === void 0) { chunkSize = 10485760; }
-        var adder = this.clone(Files_1, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')", false);
+        var adder = this.clone(Files_1, "add(overwrite = " + shouldOverWrite + ", url = '" + url + "')", false);
         return adder.postCore()
             .then(function () { return _this.getByName(url); })
             .then(function (file) { return file.setContentChunked(content, progress, chunkSize); });
@@ -11848,7 +11886,7 @@ var Files = /** @class */ (function (_super) {
      */
     Files.prototype.addTemplateFile = function (fileUrl, templateFileType) {
         var _this = this;
-        return this.clone(Files_1, "addTemplateFile(urloffile='" + fileUrl + "',templatefiletype=" + templateFileType + ")", false)
+        return this.clone(Files_1, "addTemplateFile(urloffile = '" + fileUrl + "', templatefiletype = " + templateFileType + ")", false)
             .postCore().then(function (response) {
             return {
                 data: response,
@@ -11902,7 +11940,7 @@ var File = /** @class */ (function (_super) {
      */
     File.prototype.approve = function (comment) {
         if (comment === void 0) { comment = ""; }
-        return this.clone(File, "approve(comment='" + comment + "')").postCore();
+        return this.clone(File, "approve(comment = '" + comment + "')").postCore();
     };
     /**
      * Stops the chunk upload session without saving the uploaded data. Does not support batching.
@@ -11914,7 +11952,7 @@ var File = /** @class */ (function (_super) {
      * @param uploadId The unique identifier of the upload session.
      */
     File.prototype.cancelUpload = function (uploadId) {
-        return this.clone(File, "cancelUpload(uploadId=guid'" + uploadId + "')", false).postCore();
+        return this.clone(File, "cancelUpload(uploadId = guid'" + uploadId + "')", false).postCore();
     };
     /**
      * Checks the file in to a document library based on the check-in type.
@@ -11928,7 +11966,7 @@ var File = /** @class */ (function (_super) {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
         }
-        return this.clone(File, "checkin(comment='" + comment + "',checkintype=" + checkinType + ")").postCore();
+        return this.clone(File, "checkin(comment = '" + comment + "', checkintype = " + checkinType + ")").postCore();
     };
     /**
      * Checks out the file from a document library.
@@ -11944,7 +11982,7 @@ var File = /** @class */ (function (_super) {
      */
     File.prototype.copyTo = function (url, shouldOverWrite) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        return this.clone(File, "copyTo(strnewurl='" + url + "',boverwrite=" + shouldOverWrite + ")").postCore();
+        return this.clone(File, "copyTo(strnewurl = '" + url + "', boverwrite = " + shouldOverWrite + ")").postCore();
     };
     /**
      * Delete this file.
@@ -11971,7 +12009,7 @@ var File = /** @class */ (function (_super) {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
         }
-        return this.clone(File, "deny(comment='" + comment + "')").postCore();
+        return this.clone(File, "deny(comment = '" + comment + "')").postCore();
     };
     /**
      * Specifies the control set used to access, modify, or add Web Parts associated with this Web Part Page and view.
@@ -11981,7 +12019,7 @@ var File = /** @class */ (function (_super) {
      */
     File.prototype.getLimitedWebPartManager = function (scope) {
         if (scope === void 0) { scope = WebPartsPersonalizationScope.Shared; }
-        return new _webparts__WEBPACK_IMPORTED_MODULE_4__["LimitedWebPartManager"](this, "getLimitedWebPartManager(scope=" + scope + ")");
+        return new _webparts__WEBPACK_IMPORTED_MODULE_4__["LimitedWebPartManager"](this, "getLimitedWebPartManager(scope = " + scope + ")");
     };
     /**
      * Moves the file to the specified destination url.
@@ -11991,7 +12029,7 @@ var File = /** @class */ (function (_super) {
      */
     File.prototype.moveTo = function (url, moveOperations) {
         if (moveOperations === void 0) { moveOperations = MoveOperations.Overwrite; }
-        return this.clone(File, "moveTo(newurl='" + url + "',flags=" + moveOperations + ")").postCore();
+        return this.clone(File, "moveTo(newurl = '" + url + "', flags = " + moveOperations + ")").postCore();
     };
     /**
      * Submits the file for content approval with the specified comment.
@@ -12003,7 +12041,7 @@ var File = /** @class */ (function (_super) {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
         }
-        return this.clone(File, "publish(comment='" + comment + "')").postCore();
+        return this.clone(File, "publish(comment = '" + comment + "')").postCore();
     };
     /**
      * Moves the file to the Recycle Bin and returns the identifier of the new Recycle Bin item.
@@ -12030,7 +12068,7 @@ var File = /** @class */ (function (_super) {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
         }
-        return this.clone(File, "unpublish(comment='" + comment + "')").postCore();
+        return this.clone(File, "unpublish(comment = '" + comment + "')").postCore();
     };
     /**
      * Gets the contents of the file as text. Not supported in batching.
@@ -12136,7 +12174,7 @@ var File = /** @class */ (function (_super) {
      * @returns The size of the total uploaded data in bytes.
      */
     File.prototype.startUpload = function (uploadId, fragment) {
-        return this.clone(File, "startUpload(uploadId=guid'" + uploadId + "')", false)
+        return this.clone(File, "startUpload(uploadId = guid'" + uploadId + "')", false)
             .postCore({ body: fragment })
             .then(function (n) {
             // When OData=verbose the payload has the following shape:
@@ -12159,7 +12197,7 @@ var File = /** @class */ (function (_super) {
      * @returns The size of the total uploaded data in bytes.
      */
     File.prototype.continueUpload = function (uploadId, fileOffset, fragment) {
-        return this.clone(File, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false)
+        return this.clone(File, "continueUpload(uploadId = guid'" + uploadId + "', fileOffset = " + fileOffset + ")", false)
             .postCore({ body: fragment })
             .then(function (n) {
             // When OData=verbose the payload has the following shape:
@@ -12181,7 +12219,7 @@ var File = /** @class */ (function (_super) {
      * @returns The newly uploaded file.
      */
     File.prototype.finishUpload = function (uploadId, fileOffset, fragment) {
-        return this.clone(File, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false)
+        return this.clone(File, "finishUpload(uploadId = guid'" + uploadId + "', fileOffset = " + fileOffset + ")", false)
             .postCore({ body: fragment })
             .then(function (response) {
             return {
@@ -12226,7 +12264,7 @@ var Versions = /** @class */ (function (_super) {
      * @param versionId The ID of the file version to delete.
      */
     Versions.prototype.deleteById = function (versionId) {
-        return this.clone(Versions_1, "deleteById(vid=" + versionId + ")").postCore();
+        return this.clone(Versions_1, "deleteById(vid = " + versionId + ")").postCore();
     };
     /**
      * Recycles the specified version of the file.
@@ -12234,7 +12272,7 @@ var Versions = /** @class */ (function (_super) {
      * @param versionId The ID of the file version to delete.
      */
     Versions.prototype.recycleByID = function (versionId) {
-        return this.clone(Versions_1, "recycleByID(vid=" + versionId + ")").postCore();
+        return this.clone(Versions_1, "recycleByID(vid = " + versionId + ")").postCore();
     };
     /**
      * Deletes the file version object with the specified version label.
@@ -12242,7 +12280,7 @@ var Versions = /** @class */ (function (_super) {
      * @param label The version label of the file version to delete, for example: 1.2
      */
     Versions.prototype.deleteByLabel = function (label) {
-        return this.clone(Versions_1, "deleteByLabel(versionlabel='" + label + "')").postCore();
+        return this.clone(Versions_1, "deleteByLabel(versionlabel = '" + label + "')").postCore();
     };
     /**
      * Recycles the file version object with the specified version label.
@@ -12250,7 +12288,7 @@ var Versions = /** @class */ (function (_super) {
      * @param label The version label of the file version to delete, for example: 1.2
      */
     Versions.prototype.recycleByLabel = function (label) {
-        return this.clone(Versions_1, "recycleByLabel(versionlabel='" + label + "')").postCore();
+        return this.clone(Versions_1, "recycleByLabel(versionlabel = '" + label + "')").postCore();
     };
     /**
      * Creates a new file version from the file specified by the version label.
@@ -12258,7 +12296,7 @@ var Versions = /** @class */ (function (_super) {
      * @param label The version label of the file version to restore, for example: 1.2
      */
     Versions.prototype.restoreByLabel = function (label) {
-        return this.clone(Versions_1, "restoreByLabel(versionlabel='" + label + "')").postCore();
+        return this.clone(Versions_1, "restoreByLabel(versionlabel = '" + label + "')").postCore();
     };
     var Versions_1;
     Versions = Versions_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -14087,11 +14125,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.7");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.8");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.7");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.8");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -16691,6 +16729,15 @@ var Site = /** @class */ (function (_super) {
                 return data;
             }
         });
+    };
+    /**
+     * Returns the collection of changes from the change log that have occurred within the site, based on the specified query
+     *
+     * @param query The change query
+     */
+    Site.prototype.getChanges = function (query) {
+        var postBody = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["jsS"])({ "query": Object(_pnp_common__WEBPACK_IMPORTED_MODULE_6__["extend"])({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+        return this.clone(Site_1, "getchanges").postCore({ body: postBody });
     };
     /**
      * Deletes the current site
@@ -19563,10 +19610,12 @@ var UtilityMethod = /** @class */ (function (_super) {
     UtilityMethod.prototype.containsInvalidFileFolderChars = function (input, onPremise) {
         if (onPremise === void 0) { onPremise = false; }
         if (onPremise) {
-            return UtilityMethod.InvalidFileFolderNameCharsOnPremiseRegex.test(input);
+            UtilityMethod.InvalidFileFolderNameCharsOnPremiseRegex.lastIndex = 0;
+            return (UtilityMethod.InvalidFileFolderNameCharsOnPremiseRegex.test(input));
         }
         else {
-            return UtilityMethod.InvalidFileFolderNameCharsOnlineRegex.test(input);
+            UtilityMethod.InvalidFileFolderNameCharsOnlineRegex.lastIndex = 0;
+            return (UtilityMethod.InvalidFileFolderNameCharsOnlineRegex.test(input));
         }
     };
     /**
@@ -20620,7 +20669,7 @@ var Web = /** @class */ (function (_super) {
         });
     };
     /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+     * Returns the collection of changes from the change log that have occurred within the web, based on the specified query
      *
      * @param query The change query
      */
