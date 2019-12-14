@@ -294,6 +294,7 @@ taxonomy.termStores.get().then(ts => {
                 '\tconsole.log(${1})',
                 '});',
               ].join('\n'),
+              range: undefined as any,
             },
             {
               label: 'snip-web-get-select',
@@ -306,6 +307,7 @@ taxonomy.termStores.get().then(ts => {
                 '\tconsole.log(${2}.${1})',
                 '});',
               ].join('\n'),
+              range: undefined as any,
             },
             {
               label: 'snip-web-get-allproperties',
@@ -318,6 +320,7 @@ taxonomy.termStores.get().then(ts => {
                 '\tconsole.log(${1})',
                 '});',
               ].join('\n'),
+              range: undefined as any,
             },
             {
               label: 'snip-web-open',
@@ -331,6 +334,7 @@ taxonomy.termStores.get().then(ts => {
                 '\tconsole.log(${2})',
                 '});',
               ].join('\n'),
+              range: undefined as any,
             },
             {
               label: 'snip-web-open-delete',
@@ -344,6 +348,7 @@ taxonomy.termStores.get().then(ts => {
                 '\tconsole.log(${2})',
                 '});',
               ].join('\n'),
+              range: undefined as any,
             },
             {
               label: 'snip-web-update',
@@ -359,6 +364,7 @@ taxonomy.termStores.get().then(ts => {
                 '\tconsole.log(${3})',
                 '});',
               ].join('\n'),
+              range: undefined as any,
             },
             {
               label: 'snip-get-group-data',
@@ -403,6 +409,7 @@ taxonomy.termStores.get().then(ts => {
                 '\treturn reqData.json();',
                 '}',
               ].join('\n'),
+              range: undefined as any,
             },
             {
               label: 'snip-headers',
@@ -418,6 +425,7 @@ taxonomy.termStores.get().then(ts => {
                 '\t}',
                 '});',
               ].join('\n'),
+              range: undefined as any,
             },
             {
               label: 'snip-graphman',
@@ -435,6 +443,7 @@ taxonomy.termStores.get().then(ts => {
                 '}).then((resp) => resp.json())',
                 '\t.then(console.log)',
               ].join('\n'),
+              range: undefined as any,
             },
           ],
           /* tslint:enable:no-invalid-template-strings */
