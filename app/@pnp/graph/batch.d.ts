@@ -1,5 +1,5 @@
-import { ODataBatch } from "@pnp/odata";
-export declare class GraphBatch extends ODataBatch {
+import { Batch } from "@pnp/odata";
+export declare class GraphBatch extends Batch {
     private batchUrl;
     private maxRequests;
     constructor(batchUrl?: string, maxRequests?: number);

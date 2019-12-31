@@ -1,4 +1,4 @@
-import { TypedHash } from "./collections";
+import { ITypedHash } from "./collections";
 /**
  * Gets a callback function which will maintain context across async calls.
  * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
@@ -37,7 +37,6 @@ export declare function getRandomString(chars: number): string;
  * Gets a random GUID value
  *
  * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
- * https://stackoverflow.com/a/8809472 updated to prevent collisions.
  */
 export declare function getGUID(): string;
 /**
@@ -45,7 +44,7 @@ export declare function getGUID(): string;
  *
  * @param cf The thing to test for functionness
  */
-export declare function isFunc(cf: any): boolean;
+export declare function isFunc(f: any): boolean;
 /**
  * Determines if an object is both defined and not null
  * @param obj Object to test
@@ -64,7 +63,7 @@ export declare function isArray(array: any): boolean;
  * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
  *
  */
-export declare function extend<T extends TypedHash<any> = any, S extends TypedHash<any> = any>(target: T, source: S, noOverwrite?: boolean, filter?: (propName: string) => boolean): T & S;
+export declare function assign<T extends ITypedHash<any> = any, S extends ITypedHash<any> = any>(target: T, source: S, noOverwrite?: boolean, filter?: (propName: string) => boolean): T & S;
 /**
  * Determines if a given url is absolute
  *
@@ -77,14 +76,6 @@ export declare function isUrlAbsolute(url: string): boolean;
  * @param s The string to test
  */
 export declare function stringIsNullOrEmpty(s: string): boolean;
-/**
- * Gets an attribute value from an html/xml string block. NOTE: if the input attribute value has
- * RegEx special characters they will be escaped in the returned string
- *
- * @param html HTML to search
- * @param attrName The name of the attribute to find
- */
-export declare function getAttrValueFromString(html: string, attrName: string): string | null;
 /**
  * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
  *

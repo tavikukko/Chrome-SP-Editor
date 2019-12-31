@@ -1,6 +1,7 @@
 // /gulpfile.js
 var gulp = require('gulp');
 var del = require('del');
+var rename = require('gulp-rename');
 
 gulp.task('clean', (done) => {
   console.log("Deleting old definitions");
@@ -13,6 +14,7 @@ gulp.task('clean', (done) => {
     'app/@pnp/odata/**/*',
     'app/@pnp/pnpjs/**/*',
     'app/@pnp/sp/**/*',
+    'app/@pnp/adaljsclient/**/*',
     'app/monaco-editor/**/*',
     'app/@pnp/sp-addinhelpers/**/*',
     'app/@pnp/sp-clientsvc/**/*',
@@ -34,88 +36,79 @@ gulp.task('clean', (done) => {
 
 gulp.task('copy:commmon', (done) => {
   console.log("Copy @pnp/common");
-  gulp.src('./node_modules/@pnp/common/src/**/*')
+  gulp.src('./node_modules/@pnp/common/**/*.d.ts')
     .pipe(gulp.dest('./app/@pnp/common/'))
-  gulp.src('./node_modules/@pnp/common/dist/common.es5.umd.bundle.js')
+  gulp.src('./dist/common.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
   done();
 });
 
 gulp.task('copy:config-store', (done) => {
   console.log("Copy @pnp/config-store");
-  gulp.src('./node_modules/@pnp/config-store/src/**/*')
+  gulp.src('./node_modules/@pnp/config-store/**/*.d.ts')
     .pipe(gulp.dest('./app/@pnp/config-store/'))
-  gulp.src('./node_modules/@pnp/config-store/dist/config-store.es5.umd.bundle.js')
+   gulp.src('./dist/config-store.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
   done();
 });
 
 gulp.task('copy:graph', (done) => {
   console.log("Copy @pnp/graph");
-  gulp.src('./node_modules/@pnp/graph/src/**/*')
+  gulp.src('./node_modules/@pnp/graph/**/*.d.ts')
     .pipe(gulp.dest('./app/@pnp/graph/'))
-  gulp.src('./node_modules/@pnp/graph/dist/graph.es5.umd.bundle.js')
+  gulp.src('./dist/graph.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
   done();
 });
 
 gulp.task('copy:logging', (done) => {
   console.log("Copy @pnp/logging");
-  gulp.src('./node_modules/@pnp/logging/src/**/*')
+  gulp.src('./node_modules/@pnp/logging/**/*.d.ts')
     .pipe(gulp.dest('./app/@pnp/logging/'))
-  gulp.src('./node_modules/@pnp/logging/dist/logging.es5.umd.bundle.js')
-    .pipe(gulp.dest('./app/js/'))
-  done();
-});
-
-gulp.task('copy:nodejs', (done) => {
-  console.log("Copy @pnp/nodejs");
-  gulp.src('./node_modules/@pnp/nodejs/src/**/*')
-    .pipe(gulp.dest('./app/@pnp/nodejs/'))
-  gulp.src('./node_modules/@pnp/nodejs/dist/nodejs.es5.umd.js')
+  gulp.src('./dist/logging.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
   done();
 });
 
 gulp.task('copy:odata', (done) => {
   console.log("Copy @pnp/odata");
-  gulp.src('./node_modules/@pnp/odata/src/**/*')
+  gulp.src('./node_modules/@pnp/odata/**/*.d.ts')
     .pipe(gulp.dest('./app/@pnp/odata/'))
-  gulp.src('./node_modules/@pnp/odata/dist/odata.es5.umd.bundle.js')
-    .pipe(gulp.dest('./app/js/'))
-  done();
-});
-
-gulp.task('copy:pnpjs', (done) => {
-  console.log("Copy @pnp/pnpjs");
-  gulp.src('./node_modules/@pnp/pnpjs/src/**/*')
-    .pipe(gulp.dest('./app/@pnp/pnpjs/'))
-  gulp.src('./node_modules/@pnp/pnpjs/dist/pnpjs.es5.umd.bundle.js')
+  gulp.src('./dist/odata.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
   done();
 });
 
 gulp.task('copy:sp', (done) => {
   console.log("Copy @pnp/sp");
-  gulp.src('./node_modules/@pnp/sp/src/**/*')
+  gulp.src('./node_modules/@pnp/sp/**/*.d.ts')
     .pipe(gulp.dest('./app/@pnp/sp/'))
-  gulp.src('./node_modules/@pnp/sp/dist/sp.es5.umd.bundle.js')
+  gulp.src('./dist/sp.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
   done();
 });
 
 gulp.task('copy:sp-addinhelpers', (done) => {
   console.log("Copy @pnp/sp-addinhelpers");
-  gulp.src('./node_modules/@pnp/sp-addinhelpers/src/**/*')
+  gulp.src('./node_modules/@pnp/sp-addinhelpers/**/*.d.ts')
     .pipe(gulp.dest('./app/@pnp/sp-addinhelpers/'))
-  gulp.src('./node_modules/@pnp/sp-addinhelpers/dist/sp-addinhelpers.es5.umd.bundle.js')
+  gulp.src('./dist/sp-addinhelpers.es5.umd.bundle.js')
+    .pipe(gulp.dest('./app/js/'))
+  done();
+});
+
+gulp.task('copy:adaljsclient', (done) => {
+  console.log("Copy @pnp/adaljsclient");
+  gulp.src('./node_modules/@pnp/adaljsclient/**/*.d.ts')
+    .pipe(gulp.dest('./app/@pnp/adaljsclient/'))
+  gulp.src('./dist/adaljsclient.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
   done();
 });
 
 gulp.task('copy:sp-clientsvc', (done) => {
   console.log("Copy @pnp/sp-clientsvc");
-  gulp.src('./node_modules/@pnp/sp-clientsvc/src/**/*')
+  gulp.src('./node_modules/@pnp/sp-clientsvc/src/**/*.d.ts')
     .pipe(gulp.dest('./app/@pnp/sp-clientsvc/'))
   gulp.src('./node_modules/@pnp/sp-clientsvc/dist/sp-clientsvc.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -124,7 +117,7 @@ gulp.task('copy:sp-clientsvc', (done) => {
 
 gulp.task('copy:sp-taxonomy', (done) => {
   console.log("Copy @pnp/sp-taxonomy");
-  gulp.src('./node_modules/@pnp/sp-taxonomy/src/**/*')
+  gulp.src('./node_modules/@pnp/sp-taxonomy/src/**/*.d.ts')
     .pipe(gulp.dest('./app/@pnp/sp-taxonomy/'))
   gulp.src('./node_modules/@pnp/sp-taxonomy/dist/sp-taxonomy.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -149,16 +142,28 @@ gulp.task('copy:monaco-editor', (done) => {
   done();
 });
 
+gulp.task('copy:pnpjs', (done) => {
+  console.log("Copy @pnp/pnpjs");
+  gulp.src('./node_modules/@pnp/pnpjs/**/*.d.ts')
+    .pipe(gulp.dest('./app/@pnp/pnpjs/'))
+    gulp.src('./dist/pnpjs.es5.umd.bundle.js')
+    .pipe(gulp.dest('./app/js/'))
+  //gulp.src('./node_modules/@pnp/pnpjs/dist/pnp.js')
+   // .pipe(rename('pnpjs.es5.umd.bundle.js'))
+   // .pipe(gulp.dest('./app/js/'))
+  done();
+});
+
 gulp.task('default',
   gulp.series(['clean',
     'copy:commmon',
     'copy:config-store',
     'copy:graph',
     'copy:logging',
-    'copy:nodejs',
     'copy:odata',
     'copy:pnpjs',
     'copy:sp',
+    'copy:adaljsclient',
     'copy:sp-addinhelpers',
     'copy:sp-clientsvc',
     'copy:sp-taxonomy',

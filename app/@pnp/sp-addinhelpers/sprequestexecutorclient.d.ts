@@ -1,8 +1,8 @@
-import { HttpClientImpl } from "@pnp/common";
+import { IHttpClientImpl } from "@pnp/common";
 /**
  * Makes requests using the SP.RequestExecutor library.
  */
-export declare class SPRequestExecutorClient implements HttpClientImpl {
+export declare class SPRequestExecutorClient implements IHttpClientImpl {
     /**
      * Fetches a URL using the SP.RequestExecutor library.
      */

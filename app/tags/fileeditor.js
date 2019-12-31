@@ -23,7 +23,8 @@ riot.tag("fileeditor", `
           readOnly: false,
           theme: "vs-dark",
           fontSize: 16,
-          renderIndentGuides: true
+          renderIndentGuides: true,
+          colorDecorators: true,
         });
 
         monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({

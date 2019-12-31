@@ -7,7 +7,6 @@ export interface ISPFXContext {
             getToken(resource: string): Promise<string>;
         }>;
     };
-    graphHttpClient: ISPFXGraphHttpClient;
     pageContext: {
         aadInfo: {
             tenantId: {

@@ -1,37 +1,27 @@
-import { FetchOptions, RequestClient } from "@pnp/common";
-import { ICachingOptions } from "./caching";
-import { ODataBatch } from "./odatabatch";
-import { ODataParser } from "./parsers";
-export declare type PipelineMethod<T> = (c: RequestContext<T>) => Promise<RequestContext<T>>;
+import { IRequestClient } from "@pnp/common";
+import { IQueryableData } from "./queryable";
 /**
  * Defines the context for a given request to be processed in the pipeline
  */
-export interface RequestContext<T> {
-    batch: ODataBatch;
-    batchDependency: () => void;
-    cachingOptions: ICachingOptions;
-    hasResult?: boolean;
+export interface RequestContext<ReturnType> extends IQueryableData<ReturnType> {
+    result?: ReturnType;
+    clientFactory: () => IRequestClient;
+    hasResult: boolean;
     isBatched: boolean;
-    isCached: boolean;
-    options: FetchOptions;
-    parser: ODataParser<T>;
-    pipeline: PipelineMethod<T>[];
-    requestAbsoluteUrl: string;
     requestId: string;
-    result?: T;
-    verb: string;
-    clientFactory: () => RequestClient;
+    method: string;
 }
+export declare type PipelineMethod<ReturnType> = (c: RequestContext<ReturnType>) => Promise<RequestContext<ReturnType>>;
 /**
  * Sets the result on the context
  */
-export declare function setResult<T>(context: RequestContext<T>, value: any): Promise<RequestContext<T>>;
+export declare function setResult<T = any>(context: RequestContext<T>, value: any): Promise<RequestContext<T>>;
 /**
  * Executes the current request context's pipeline
  *
  * @param context Current context
  */
-export declare function pipe<T>(context: RequestContext<T>): Promise<T>;
+export declare function pipe<T = any>(context: RequestContext<T>): Promise<T>;
 /**
  * decorator factory applied to methods in the pipeline to control behavior
  */
@@ -43,19 +33,19 @@ export declare class PipelineMethods {
     /**
      * Logs the start of the request
      */
-    static logStart<T>(context: RequestContext<T>): Promise<RequestContext<T>>;
+    static logStart<T = any>(context: RequestContext<T>): Promise<RequestContext<T>>;
     /**
      * Handles caching of the request
      */
-    static caching<T>(context: RequestContext<T>): Promise<RequestContext<T>>;
+    static caching<T = any>(context: RequestContext<T>): Promise<RequestContext<T>>;
     /**
      * Sends the request
      */
-    static send<T>(context: RequestContext<T>): Promise<RequestContext<T>>;
+    static send<T = any>(context: RequestContext<T>): Promise<RequestContext<T>>;
     /**
      * Logs the end of the request
      */
-    static logEnd<T>(context: RequestContext<T>): Promise<RequestContext<T>>;
+    static logEnd<T = any>(context: RequestContext<T>): Promise<RequestContext<T>>;
 }
 export declare function getDefaultPipeline(): (typeof PipelineMethods.logStart)[];
 //# sourceMappingURL=pipeline.d.ts.map

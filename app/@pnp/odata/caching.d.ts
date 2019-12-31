@@ -1,5 +1,5 @@
-import { ODataParser } from "./parsers";
-import { PnPClientStore, PnPClientStorage } from "@pnp/common";
+import { IODataParser } from "./parsers";
+import { IPnPClientStore, PnPClientStorage } from "@pnp/common";
 export interface ICachingOptions {
     expiration?: Date;
     storeName?: "session" | "local";
@@ -7,16 +7,16 @@ export interface ICachingOptions {
 }
 export declare class CachingOptions implements ICachingOptions {
     key: string;
-    protected static storage: PnPClientStorage;
-    expiration: Date;
     storeName: "session" | "local";
-    constructor(key: string);
-    readonly store: PnPClientStore;
+    expiration: Date;
+    protected static storage: PnPClientStorage;
+    constructor(key: string, storeName?: "session" | "local", expiration?: Date);
+    readonly store: IPnPClientStore;
 }
-export declare class CachingParserWrapper<T> implements ODataParser<T> {
-    parser: ODataParser<T>;
+export declare class CachingParserWrapper<T> implements IODataParser<T> {
+    parser: IODataParser<T>;
     cacheOptions: CachingOptions;
-    constructor(parser: ODataParser<T>, cacheOptions: CachingOptions);
+    constructor(parser: IODataParser<T>, cacheOptions: CachingOptions);
     parse(response: Response): Promise<T>;
     protected cacheData(data: any): any;
 }

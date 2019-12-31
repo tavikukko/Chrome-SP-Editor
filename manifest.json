@@ -1,7 +1,7 @@
 {
   "name": "SP Editor",
   "homepage_url": "https://github.com/tavikukko/Chrome-SP-Editor",
-  "version": "5.4.8",
+  "version": "5.5.0",
   "description": "Create and update SharePoint Online/SP2013/SP2016/SP2019 css/js files, inject files to web, manage web/list properties, list Webhook",
   "icons": {
     "16": "icons/icon16.png",
@@ -20,7 +20,6 @@
   },
   "web_accessible_resources": [
     "app/js/alertify.js",
-    "app/js/pnp.js",
     "app/js/system.js",
     "app/js/common.es5.umd.bundle.js",
     "app/js/config-store.es5.umd.bundle.js",
@@ -28,6 +27,7 @@
     "app/js/logging.es5.umd.bundle.js",
     "app/js/odata.es5.umd.bundle.js",
     "app/js/pnpjs.es5.umd.bundle.js",
+    "app/js/adaljsclient.es5.umd.bundle.js",
     "app/js/sp-addinhelpers.es5.umd.bundle.js",
     "app/js/sp-clientsvc.es5.umd.bundle.js",
     "app/js/sp.es5.umd.bundle.js",

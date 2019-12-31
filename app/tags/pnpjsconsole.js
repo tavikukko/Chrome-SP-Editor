@@ -1,14 +1,16 @@
 riot.tag("pnpjsconsole", `
         <div id="pnpjsconsole"></div>`,
   function (opts) {
-
+    this.files = [];
+    this.declarations = []
+    this.allLibs = []
     this.on("mount", function () {
       this.init();
     });
 
     this.init = function () {
 
-      require(['vs/editor/editor.main','vs/language/typescript/tsWorker'], function () {
+      require(['vs/editor/editor.main', 'vs/language/typescript/tsWorker'], function () {
 
         var loadDeclaration = function loadDeclaration() {
           var loadDeclaration = function (path) {
@@ -16,17 +18,24 @@ riot.tag("pnpjsconsole", `
               var request = new XMLHttpRequest();
               request.open('GET', path, true);
               request.onload = function () {
-                monaco.languages.typescript.typescriptDefaults.addExtraLib(request.responseText, path);
+                if (path.endsWith('/index.d.ts')) {
+                  var newPath = path.replace('/index.d.ts', '.d.ts')
+                  var newContent = `export * from "./${newPath.substring(newPath.lastIndexOf('/')+1).replace('.d.ts', '')}/index";`
+                  this.files.push(newPath)
+                  this.declarations.push({ path: newPath, content: newContent })
+                }
+                this.files.push(path)
+                this.declarations.push({ path: path, content: request.responseText })
                 resolve();
-              };
+              }.bind(this);
               request.send();
-            });
-          };
+            }.bind(this));
+          }.bind(this);
 
           return Promise.all(filenames.map(loadDeclaration)
 
           );
-        };
+        }.bind(this);
 
         // validation settings
         monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
@@ -39,7 +48,7 @@ riot.tag("pnpjsconsole", `
           allowNonTsExtensions: true,
           moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
           module: monaco.languages.typescript.ModuleKind.CommonJS,
-          noEmit: true,
+          // noEmit: true,
           typeRoots: ["node_modules/@pnp"]
         });
 
@@ -55,73 +64,54 @@ riot.tag("pnpjsconsole", `
 
           playground = monaco.editor.create(document.getElementById('pnpjsconsole'), {
             model: monaco.editor.createModel(
-`// Hit CTRL/CMD + D to run the code, view console for results
-// below there is some some sample snippets
-
-// using @pnp/sp
+`/*
+  Hit CTRL/CMD + D to run the code, view console for results
+*/
 import { sp } from "@pnp/sp";
-sp.web.select("Title").get().then(w => {
-    console.log("Web Title: " + w.Title);
-});
+import "@pnp/sp/webs";  // <-- Selective imports (PnPjs >= 2.0)
 
-// using SPHttpClient for testing SP REST APIs
-import { SPHttpClient } from '@pnp/sp';
 (async () => {
-    const siteObj = await sp.web.select('Url').get();
-    const endpoint = siteObj.Url + '/_api/web'; // add your endpoint here
-    // const payload = { key: 1 };
-    const client = new SPHttpClient();
-    const response = await client.post(endpoint, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        // body: JSON.stringify(payload),
-    })
-    const result = await response.json();
-    console.log(result);
-})()
-    .catch(console.warn);
 
-// using @pnp/pnpjs
-import pnp from "@pnp/pnpjs";
-pnp.sp.web.get().then(w => {
-    console.log(JSON.stringify(w, null, 4));
-});
+  const web = await sp.web.select("Title")() // <-- Invokable Objects (PnPjs >= 2.0)
+  console.log("Web Title: ", web.Title);
 
-// using @pnp/common
-import { getGUID } from "@pnp/common";
-console.log(getGUID());
+})().catch(console.log)
 
-// using @pnp/logging
-import { Logger, LogLevel, ConsoleListener } from "@pnp/logging";
-Logger.subscribe(new ConsoleListener());
-Logger.activeLogLevel = LogLevel.Verbose;
-Logger.write("This is logging a simple string", LogLevel.Info);
-
-// using @pnp/graph (modern page in browser)
-// before using @pnp/graph, you need to grant needed API permissions
-// to 'SharePoint Online Client Extensibility Web Application Principal' AAD Application
-// from https://aad.portal.azure.com
+/*
+  Before using @pnp/graph, you need to grant needed API permissions
+  to 'SharePoint Online Client Extensibility Web Application Principal' AAD Application
+  from https://aad.portal.azure.com
+*/
 import { graph } from "@pnp/graph"
+import "@pnp/graph/users"
 
-if ((window as any).moduleLoaderPromise)
-(window as any).moduleLoaderPromise.then(e => {
-    graph.setup({
-        spfxContext: e.context
-    })
+(async () => {
 
-    graph.groups.get().then(grps => {
-        console.log(grps);
-    })
-})
-else console.log("to work with graph, switch to modern page!")
+  // To be able to load context, the inspected page needs to be a modern page
+  const { context } = await (window as any).moduleLoaderPromise
+  graph.setup({
+      spfxContext: context
+  })
 
-// using @pnp/sp-taxonomy
+  const me = await graph.me();
+  console.log(me)
+
+})().catch(console.log)
+
+/*
+  SP Editor also supports sp-taxonomy & sp-clientsvc packages
+  which were dropped from PnPjs 2.0
+*/
 import { taxonomy } from "@pnp/sp-taxonomy"
-taxonomy.termStores.get().then(ts => {
-    console.log(ts);
-})`,
+
+(async () => {
+
+  const ts = await taxonomy.termStores.get()
+  console.log(ts);
+
+})().catch(console.log)
+
+`,
               "typescript",
               new monaco.Uri("main.ts")
             ),
@@ -135,12 +125,60 @@ taxonomy.termStores.get().then(ts => {
             //glyphMargin: true,
             renderIndentGuides: true,
             suggestOnTriggerCharacters: true,
-            showTypeScriptWarnings: false
+            showTypeScriptWarnings: false,
+            colorDecorators: true,
           });
+
+          // adds auto-complete for @pnp module imports
+          monaco.languages.registerCompletionItemProvider('typescript', {
+            triggerCharacters: ["@", '/'],
+            provideCompletionItems: (model, position) => {
+              const textUntilPosition = model.getValueInRange({
+                startLineNumber: position.lineNumber,
+                startColumn: 1,
+                endLineNumber: position.lineNumber,
+                endColumn: position.column,
+              })
+
+              var importText = textUntilPosition.substring(textUntilPosition.indexOf('@'))
+              var moduleDepth = importText.split("/")
+              var suggestions = []
+              this.files.forEach(file => {
+                if (file.indexOf(importText) > -1) {
+                  var depthIndex = file.split("/", moduleDepth.length).join("/").length;
+                  var importedModule = file.substring(0, depthIndex).replace('.d.ts', '')
+                  if (!suggestions.find(o => o.label === importedModule)) {
+                    suggestions.push({
+                      label: importedModule,
+                      insertText: importedModule.replace(importText, ''),
+                      kind: monaco.languages.CompletionItemKind.Module,
+                    })
+                  }
+                }
+              })
+              return {
+                suggestions: suggestions
+              };
+            },
+          });
+
 
           document.getElementById('pnpjsconsole').onclick = function () {
             window.focus()
           };
+
+          playground.onDidChangeModelContent(function (e) {
+
+           this.currentLibs = []
+
+           var codeWithOutComments = playground.getModel().getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'');
+
+           var modifyedLibs = this.getImportModules(codeWithOutComments)
+           var modifyedExtraLibs = this.createExtraLibs(modifyedLibs)
+
+            monaco.languages.typescript.typescriptDefaults.setExtraLibs(modifyedExtraLibs);
+
+          }.bind(this));
 
           var playgroundBinding = playground.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
             try {
@@ -152,29 +190,30 @@ taxonomy.termStores.get().then(ts => {
               var lines = js.outputText.split('\n');
               var code = [];
               var prepnp = [];
+
               lines.forEach(function (line) {
                 // remove imports
-                if (line.toLowerCase().indexOf(' = require') == -1 && line.toLowerCase().indexOf('use strict') == -1 && line.toLowerCase().indexOf('__esmodule') == -1) {
+                if (line.toLowerCase().indexOf('require(') == -1 && line.toLowerCase().indexOf('use strict') == -1 && line.toLowerCase().indexOf('__esmodule') == -1) {
                   code.push(line);
                 }
                 if (line.toLowerCase().indexOf(' = require') > -1) {
                   // fix imports
 
-                  console.log(line)
                   var lineRe = line.match("var (.*) = require");
                   var mod = -1;
-                  mod = line.indexOf("@pnp/common") > -1 ? 0 : mod;
-                  mod = line.indexOf("@pnp/config-store") > -1 ? 1 : mod;
-                  mod = line.indexOf("@pnp/graph") > -1 ? 2 : mod;
-                  mod = line.indexOf("@pnp/logging") > -1 ? 3 : mod;
-                  mod = line.indexOf("@pnp/odata") > -1 ? 4 : mod;
+                  mod = line.indexOf("@pnp/common") > -1 ? 5 : mod;
+                  mod = line.indexOf("@pnp/config-store") > -1 ? 5 : mod;
+                  mod = line.indexOf("@pnp/graph") > -1 ? 5 : mod;
+                  mod = line.indexOf("@pnp/logging") > -1 ? 5 : mod;
+                  mod = line.indexOf("@pnp/odata") > -1 ? 5 : mod;
                   mod = line.indexOf("@pnp/pnpjs") > -1 ? 5 : mod;
-                  mod = line.indexOf("@pnp/sp-addinhelpers") > -1 ? 6 : mod;
+                  mod = line.indexOf("@pnp/sp-addinhelpers") > -1 ? 5 : mod;
                   mod = line.indexOf("@pnp/sp-clientsvc") > -1 ? 7 : mod;
-                  mod = line.indexOf("@pnp/sp") > -1 ? 8 : mod;
+                  mod = line.indexOf("@pnp/sp") > -1 ? 5 : mod;
                   mod = line.indexOf("@pnp/sp-taxonomy") > -1 ? 9 : mod;
+                  mod = line.indexOf("@pnp/adaljsclient") > -1 ? 10 : mod;
 
-                  prepnp.push('var ' + lineRe[1] + ' = modules['+mod+'];');
+                  prepnp.push('var ' + lineRe[1] + ' = modules[' + mod + '];');
                 }
               });
 
@@ -214,7 +253,7 @@ taxonomy.termStores.get().then(ts => {
 
               var execme = [
                 'var execme = function execme() {',
-                '\tPromise.all([SystemJS.import(mod_common),SystemJS.import(mod_config),SystemJS.import(mod_graph),SystemJS.import(mod_logging),SystemJS.import(mod_odata),SystemJS.import(mod_pnpjs),SystemJS.import(mod_addin),SystemJS.import(mod_client),SystemJS.import(mod_sp),SystemJS.import(mod_taxonomy)]).then(function (modules) {',
+                '\tPromise.all([SystemJS.import(mod_common),SystemJS.import(mod_config),SystemJS.import(mod_graph),SystemJS.import(mod_logging),SystemJS.import(mod_odata),SystemJS.import(mod_pnpjs),SystemJS.import(mod_addin),SystemJS.import(mod_client),SystemJS.import(mod_sp),SystemJS.import(mod_taxonomy),SystemJS.import(mod_adaljs)]).then(function (modules) {',
                 '\t\t' + prepnp.join('\n'),
                 '\t\t// Your code starts here',
                 '\t\t// #####################',
@@ -225,19 +264,19 @@ taxonomy.termStores.get().then(ts => {
                 '};'].join('\n').replace(/GraphManToken/g, graphmantoken);
 
               var script = mod_common + '\n' +
-              mod_config + '\n' +
-              mod_graph + '\n' +
-              mod_logging + '\n' +
-              mod_odata + '\n' +
-              mod_pnpjs + '\n' +
-              mod_addin + '\n' +
-              mod_client + '\n' +
-              mod_sp + '\n' +
-              mod_taxonomy + '\n' +
-             // pnp + '\n' +
-              sj + '\n\n' +
-              exescript + '\n\n' +
-              execme + '\n\n';
+                mod_config + '\n' +
+                mod_graph + '\n' +
+                mod_logging + '\n' +
+                mod_odata + '\n' +
+                mod_pnpjs + '\n' +
+                mod_addin + '\n' +
+                mod_client + '\n' +
+                mod_sp + '\n' +
+                mod_taxonomy + '\n' +
+                mod_adaljs + '\n' +
+                sj + '\n\n' +
+                exescript + '\n\n' +
+                execme + '\n\n';
 
               script += "exescript(execme);";
               console.log(script);
@@ -251,6 +290,114 @@ taxonomy.termStores.get().then(ts => {
           window.addEventListener('resize', function () {
             playground.layout();
           }.bind(this));
+
+          this.locations = function (substring, string) {
+            var a = [], i = -1;
+            while ((i = string.indexOf(substring, i + 1)) >= 0) a.push(i);
+            return a;
+          }
+
+          // find all import lines from code
+          this.getImportModules = function (content) {
+            var importTexts = [...new Set(content.match(/import.*(@pnp|microsoft).*/g).map(iText => {
+              return iText.match(/(["'])(.*?[^\\])\1/g)[0].replace(/\"/g, '').replace(/\'/g, '')
+            }))]
+            var foundModules = []
+            importTexts.forEach(x => {
+              var checkOne = this.declarations.find(z => z.path === x)
+              var checkSecond = this.declarations.find(z => z.path === `${x}.d.ts`)
+              var chechThird = this.declarations.find(z => z.path === `${x}/index.d.ts`)
+              if (checkOne) {
+                foundModules.push(checkOne)
+              } else if (checkSecond) {
+                foundModules.push(checkSecond)
+              } else if (chechThird) {
+                foundModules.push(chechThird)
+              }
+            })
+            return foundModules
+          }.bind(this);
+
+          this.getExportRows = function (content, path) {
+            var libs = content.match(/(\"(\.|@)|'(\.|@)).*\/.*(\"|')/g)
+            if (libs) {
+              var exportTexts = []
+              libs.forEach(eText => {
+                var lib = eText.match(/(["'])(.*?[^\\])\1/g)[0].replace(/\"/g, '').replace(/\'/g, '')
+                var splitIndex = this.locations('/', path)
+                if (lib.startsWith('./')) {
+                  var lib1 = path.substring(0, splitIndex[splitIndex.length - 1] + 1) + lib.substring(2)
+                  exportTexts.push(lib1)
+                } else if (lib.startsWith('../../')) {
+                  var lib2 = path.substring(0, splitIndex[splitIndex.length - 3] + 1) + lib.substring(6)
+                  exportTexts.push(lib2)
+                }
+                else if (lib.startsWith('../')) {
+                  var lib3 = path.substring(0, splitIndex[splitIndex.length - 2] + 1) + lib.substring(3)
+                  exportTexts.push(lib3)
+                } else {
+                  exportTexts.push(lib)
+                }
+              })
+              var foundModules = []
+              exportTexts.forEach(x => {
+                var checkOne = this.declarations.find(z => z.path === x)
+                var checkSecond = this.declarations.find(z => z.path === `${x}.d.ts`)
+                var chechThird = this.declarations.find(z => z.path === `${x}/index.d.ts`)
+                if (checkOne) {
+                  foundModules.push(checkOne)
+                } else if (checkSecond) {
+                  foundModules.push(checkSecond)
+                } else if (kolkki) {
+                  foundModules.push(chechThird)
+                }
+              })
+              return foundModules
+              /*
+              if (exportTexts.length > 0) {
+                return exportTexts.map(x => {
+                  var eka = this.declarations.find(z => z.path === x)
+                  var toka = this.declarations.find(z => z.path === `${x}.d.ts`)
+                  var kolkki = this.declarations.find(z => z.path === `${x}/index.d.ts`)
+                  if(!eka && !toka && !kolkki) { alert(x) }
+                  return eka || toka || kolkki
+                })
+              } else { return [] }
+              */
+            }
+            else {
+              return []
+            }
+          }.bind(this);
+
+          this.currentLibs = []
+
+          this.parseLibs = function (filelist) {
+            filelist.forEach(function (file) {
+              var libs = this.getExportRows(file.content, file.path)
+              if (libs.length > 0) {
+                var newLibs = libs.filter(d => !this.currentLibs.find(g => d.path === g.path))
+                newLibs.forEach(lib => this.currentLibs.push(lib))
+                this.parseLibs(newLibs)
+              }
+            }.bind(this));
+            var initLibs = filelist.filter(d => !this.currentLibs.find(g => d.path === g.path))
+            initLibs.forEach(lib => this.currentLibs.push(lib))
+          }.bind(this);
+
+          this.createExtraLibs = function (filelist) {
+            this.parseLibs(filelist, [])
+            var extraLibs = this.currentLibs.map(o => {
+                return { content: o.content, filePath: o.path }
+            })
+            return extraLibs
+          }.bind(this)
+          var codeWithOutComments = playground.getModel().getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'');
+
+          var initModules = this.getImportModules(codeWithOutComments)
+          var initExraLibs = this.createExtraLibs(initModules)
+
+          monaco.languages.typescript.typescriptDefaults.setExtraLibs(initExraLibs);
 
           this.update();
 

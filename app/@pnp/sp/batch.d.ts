@@ -1,8 +1,8 @@
-import { ODataBatch } from "@pnp/odata";
+import { Batch } from "@pnp/odata";
 /**
  * Manages a batch of OData operations
  */
-export declare class SPBatch extends ODataBatch {
+export declare class SPBatch extends Batch {
     private baseUrl;
     constructor(baseUrl: string);
     /**

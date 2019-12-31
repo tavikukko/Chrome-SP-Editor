@@ -6,7 +6,7 @@ var mod_common = "var mod_common = '" + chrome.extension.getURL('app/js/common.e
 var mod_config = "var mod_config = '" + chrome.extension.getURL('app/js/config-store.es5.umd.bundle.js') + "';";
 var mod_graph = "var mod_graph = '" + chrome.extension.getURL('app/js/graph.es5.umd.bundle.js') + "';";
 var mod_logging = "var mod_logging = '" + chrome.extension.getURL('app/js/logging.es5.umd.bundle.js') + "';";
-var mod_nodejs = "var mod_nodejs = '" + chrome.extension.getURL('app/js/nodejs.es5.umd.js') + "';";
+var mod_adaljs = "var mod_adaljs = '" + chrome.extension.getURL('app/js/adaljsclient.es5.umd.bundle.js') + "';";
 var mod_odata = "var mod_odata = '" + chrome.extension.getURL('app/js/odata.es5.umd.bundle.js') + "';";
 var mod_pnpjs = "var mod_pnpjs = '" + chrome.extension.getURL('app/js/pnpjs.es5.umd.bundle.js') + "';";
 var mod_addin = "var mod_addin = '" + chrome.extension.getURL('app/js/sp-addinhelpers.es5.umd.bundle.js') + "';";
@@ -164,7 +164,7 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
                 </ObjectPaths>
               </Request>`;
 
-            var client = new $pnp.SPHttpClient();
+            var client = new $pnp.SPNS.SPHttpClient();
             client.post(endpoint, {
               headers: {
                 'Accept': '*/*',
@@ -503,7 +503,7 @@ var addWebProperties = function addWebProperties() {
             </ObjectPaths>
           </Request>`;
 
-        var client = new $pnp.SPHttpClient();
+        var client = new $pnp.SPNS.SPHttpClient();
         client.post(endpoint, {
           headers: {
             'Accept': '*/*',
@@ -593,7 +593,7 @@ var updateWebProperties = function updateWebProperties() {
               </ObjectPaths>
             </Request>`;
 
-          var client = new $pnp.SPHttpClient();
+          var client = new $pnp.SPNS.SPHttpClient();
           client.post(endpoint, {
             headers: {
               'Accept': '*/*',
@@ -684,7 +684,7 @@ var deleteWebProperties = function deleteWebProperties() {
               </ObjectPaths>
             </Request>`;
 
-          var client = new $pnp.SPHttpClient();
+          var client = new $pnp.SPNS.SPHttpClient();
           client.post(endpoint, {
             headers: {
               'Accept': '*/*',
@@ -819,7 +819,7 @@ var addToIndexedPropertyKeys = function addToIndexedPropertyKeys() {
               </ObjectPaths>
             </Request>`;
 
-          var client = new $pnp.SPHttpClient();
+          var client = new $pnp.SPNS.SPHttpClient();
           client.post(endpoint, {
             headers: {
               'Accept': '*/*',
@@ -1023,7 +1023,7 @@ var addListProperties = function addListProperties() {
         </ObjectPaths>
       </Request>`;
 
-    var client = new $pnp.SPHttpClient();
+    var client = new $pnp.SPNS.SPHttpClient();
     client.post(endpoint, {
       headers: {
         'Accept': '*/*',
@@ -1105,7 +1105,7 @@ var updateListProperties = function updateListProperties() {
         </ObjectPaths>
       </Request>`;
 
-      var client = new $pnp.SPHttpClient();
+      var client = new $pnp.SPNS.SPHttpClient();
       client.post(endpoint, {
         headers: {
           'Accept': '*/*',
@@ -1189,7 +1189,7 @@ var deleteListProperties = function deleteListProperties() {
         </ObjectPaths>
       </Request>`;
 
-      var client = new $pnp.SPHttpClient();
+      var client = new $pnp.SPNS.SPHttpClient();
       client.post(endpoint, {
         headers: {
           'Accept': '*/*',
@@ -1319,7 +1319,7 @@ var addToIndexedListPropertyKeys = function addToIndexedListPropertyKeys() {
         </ObjectPaths>
       </Request>`;
 
-        var client = new $pnp.SPHttpClient();
+        var client = new $pnp.SPNS.SPHttpClient();
         client.post(endpoint, {
           headers: {
             'Accept': '*/*',
@@ -2276,7 +2276,7 @@ var getSiteCollections = function getSiteCollections() {
         </Request>
         `;
 
-    var client = new $pnp.SPHttpClient();
+    var client = new $pnp.SPNS.SPHttpClient();
     client.post(endpoint, {
       headers: {
         'Accept': '*/*',
@@ -2317,7 +2317,7 @@ var getSiteCollections = function getSiteCollections() {
               </ObjectPaths>
             </Request>
           `
-          var client = new $pnp.SPHttpClient();
+          var client = new $pnp.SPNS.SPHttpClient();
           client.post(endpoint, {
             headers: {
               'Accept': '*/*',
@@ -2436,7 +2436,7 @@ var updateSiteCollection = function updateSiteCollection() {
       </Request>
     `;
 
-    var client = new $pnp.SPHttpClient();
+    var client = new $pnp.SPNS.SPHttpClient();
     client.post(endpoint, {
       headers: {
         'Accept': '*/*',
@@ -2517,7 +2517,7 @@ var enableDisableCDN = function enableDisableCDN() {
         `;
     }
 
-    var client = new $pnp.SPHttpClient();
+    var client = new $pnp.SPNS.SPHttpClient();
     client.post(endpoint, {
       headers: {
         'Accept': '*/*',
@@ -2570,7 +2570,7 @@ var addOrigin = function addOrigin() {
       </Request>
     `;
 
-    var client = new $pnp.SPHttpClient();
+    var client = new $pnp.SPNS.SPHttpClient();
     client.post(endpoint, {
       headers: {
         'Accept': '*/*',
@@ -2622,7 +2622,7 @@ var removeOrigin = function removeOrigin() {
       </Request>
     `;
 
-    var client = new $pnp.SPHttpClient();
+    var client = new $pnp.SPNS.SPHttpClient();
     client.post(endpoint, {
       headers: {
         'Accept': '*/*',
@@ -3254,6 +3254,7 @@ var runSearch = function runSearch() {
       }
       window.postMessage(JSON.stringify({ function: 'runSearch', success: true, result: result, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
+      console.log(error)
         alertify.delay(10000).error('Error exucuting the search query');
         window.postMessage(JSON.stringify({ function: "runSearch", success: false, result: error, source: 'chrome-sp-editor' }), '*');
     });

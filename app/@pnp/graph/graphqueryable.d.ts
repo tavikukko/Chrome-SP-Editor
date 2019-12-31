@@ -1,14 +1,14 @@
-import { FetchOptions } from "@pnp/common";
-import { ODataParser, ODataQueryable, RequestContext } from "@pnp/odata";
-import { GraphBatch } from "./batch";
-export interface GraphQueryableConstructor<T> {
-    new (baseUrl: string | GraphQueryable, path?: string): T;
+import { IFetchOptions } from "@pnp/common";
+import { Queryable, IInvokable, IQueryable } from "@pnp/odata";
+export interface IGraphQueryableConstructor<T> {
+    new (baseUrl: string | IGraphQueryable, path?: string): T;
 }
+export declare const graphInvokableFactory: <R>(f: any) => (baseUrl: string | IGraphQueryable<any>, path?: string) => R;
 /**
  * Queryable Base Class
  *
  */
-export declare class GraphQueryable<GetType = any> extends ODataQueryable<GraphBatch, GetType> {
+export declare class _GraphQueryable<GetType = any> extends Queryable<GetType> implements IGraphQueryable<GetType> {
     /**
      * Creates a new instance of the Queryable class
      *
@@ -16,7 +16,7 @@ export declare class GraphQueryable<GetType = any> extends ODataQueryable<GraphB
      * @param baseUrl A string or Queryable that should form the base part of the url
      *
      */
-    constructor(baseUrl: string | GraphQueryable, path?: string);
+    constructor(baseUrl: string | IGraphQueryable, path?: string);
     /**
      * Choose which fields to return
      *
@@ -29,51 +29,55 @@ export declare class GraphQueryable<GetType = any> extends ODataQueryable<GraphB
      * @param expands The Fields for which to expand the values
      */
     expand(...expands: string[]): this;
-    /**
-     * Creates a new instance of the supplied factory and extends this into that new instance
-     *
-     * @param factory constructor for the new queryable
-     */
-    as<T>(factory: GraphQueryableConstructor<T>): T;
+    defaultAction(options?: IFetchOptions): Promise<GetType>;
     /**
      * Gets the full url with query information
      *
      */
     toUrlAndQuery(): string;
     /**
-     * Allows setting the endpoint (v1.0, beta)
-     *
-     * @param endpoint
-     */
-    setEndpoint(endpoint: "beta" | "v1.0"): this;
-    /**
      * Gets a parent for this instance as specified
      *
      * @param factory The contructor for the class to create
      */
-    protected getParent<T extends GraphQueryable>(factory: GraphQueryableConstructor<T>, baseUrl?: string | GraphQueryable, path?: string): T;
+    protected getParent<T extends _GraphQueryable>(factory: IGraphQueryableConstructor<T>, baseUrl?: string | IGraphQueryable, path?: string): T;
     /**
      * Clones this queryable into a new queryable instance of T
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
      */
-    protected clone<T extends GraphQueryable>(factory: GraphQueryableConstructor<T>, additionalPath?: string, includeBatch?: boolean): T;
-    /**
-     * Converts the current instance to a request context
-     *
-     * @param verb The request verb
-     * @param options The set of supplied request options
-     * @param parser The supplied ODataParser instance
-     * @param pipeline Optional request processing pipeline
-     */
-    protected toRequestContext<T>(verb: string, options: FetchOptions, parser: ODataParser<T>, pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>): Promise<RequestContext<T>>;
+    protected clone<T extends IGraphQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch?: boolean): T;
+    protected setEndpoint(endpoint: string): this;
 }
+export interface IGraphQueryable<GetType = any> extends IInvokable, IQueryable<GetType> {
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    select(...selects: string[]): this;
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    expand(...expands: string[]): this;
+    defaultAction(options?: IFetchOptions): Promise<GetType>;
+    /**
+     * Gets the full url with query information
+     *
+     */
+    toUrlAndQuery(): string;
+}
+export interface _GraphQueryable extends IInvokable {
+}
+export declare const GraphQueryable: (baseUrl: string | IGraphQueryable<any>, path?: string) => IGraphQueryable<any>;
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export declare class GraphQueryableCollection<GetType = any[]> extends GraphQueryable<GetType> {
+export declare class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<GetType> implements IGraphQueryableCollection<GetType> {
     /**
      *
      * @param filter The string representing the filter query
@@ -107,24 +111,64 @@ export declare class GraphQueryableCollection<GetType = any[]> extends GraphQuer
      */
     readonly count: this;
 }
-export declare class GraphQueryableSearchableCollection extends GraphQueryableCollection {
+export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, IGraphQueryable<GetType> {
+    /**
+     * 	Retrieves the total count of matching resources
+     */
+    count: this;
+    /**
+     *
+     * @param filter The string representing the filter query
+     */
+    filter(filter: string): this;
+    /**
+     * Orders based on the supplied fields
+     *
+     * @param orderby The name of the field on which to sort
+     * @param ascending If false DESC is appended, otherwise ASC (default)
+     */
+    orderBy(orderBy: string, ascending?: boolean): this;
+    /**
+     * Limits the query to only return the specified number of items
+     *
+     * @param top The query row limit
+     */
+    top(top: number): this;
+    /**
+     * Skips a set number of items in the return set
+     *
+     * @param num Number of items to skip
+     */
+    skip(num: number): this;
+    /**
+     * 	To request second and subsequent pages of Graph data
+     */
+    skipToken(token: string): this;
+}
+export interface _GraphQueryableCollection extends IInvokable {
+}
+export declare const GraphQueryableCollection: (baseUrl: string | IGraphQueryable<any>, path?: string) => IGraphQueryableCollection<any[]>;
+export declare class _GraphQueryableSearchableCollection extends _GraphQueryableCollection implements IGraphQueryableSearchableCollection {
     /**
      * 	To request second and subsequent pages of Graph data
      */
     search(query: string): this;
 }
+export interface IGraphQueryableSearchableCollection<GetType = any> extends IInvokable, IGraphQueryable<GetType> {
+    search(query: string): this;
+}
+export interface _GraphQueryableSearchableCollection extends IInvokable {
+}
+export declare const GraphQueryableSearchableCollection: (baseUrl: string | IGraphQueryable<any>, path?: string) => IGraphQueryableSearchableCollection<any>;
 /**
  * Represents an instance that can be selected
  *
  */
-export declare class GraphQueryableInstance<GetType = any> extends GraphQueryable<GetType> {
+export declare class _GraphQueryableInstance<GetType = any> extends _GraphQueryable<GetType> {
 }
-/**
- * Decorator used to specify the default path for Queryable objects
- *
- * @param path
- */
-export declare function defaultPath(path: string): <T extends new (...args: any[]) => {}>(target: T) => {
-    new (...args: any[]): {};
-} & T;
+export interface IGraphQueryableInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> {
+}
+export interface _GraphQueryableInstance extends IInvokable {
+}
+export declare const GraphQueryableInstance: (baseUrl: string | IGraphQueryable<any>, path?: string) => IGraphQueryableInstance<any>;
 //# sourceMappingURL=graphqueryable.d.ts.map
