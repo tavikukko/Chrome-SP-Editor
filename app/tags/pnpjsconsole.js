@@ -348,22 +348,11 @@ import { taxonomy } from "@pnp/sp-taxonomy"
                   foundModules.push(checkOne)
                 } else if (checkSecond) {
                   foundModules.push(checkSecond)
-                } else if (kolkki) {
+                } else if (chechThird) {
                   foundModules.push(chechThird)
                 }
               })
               return foundModules
-              /*
-              if (exportTexts.length > 0) {
-                return exportTexts.map(x => {
-                  var eka = this.declarations.find(z => z.path === x)
-                  var toka = this.declarations.find(z => z.path === `${x}.d.ts`)
-                  var kolkki = this.declarations.find(z => z.path === `${x}/index.d.ts`)
-                  if(!eka && !toka && !kolkki) { alert(x) }
-                  return eka || toka || kolkki
-                })
-              } else { return [] }
-              */
             }
             else {
               return []
