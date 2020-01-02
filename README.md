@@ -13,8 +13,9 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
       - Selective Imports
       - Presets
       - Invokable Objects
-    * Updated monaco-editor to 0.19.0
+      - Aliased Parameters
     * File editor: color picker with css colors
+    * Updated monaco-editor to 0.19.0
 - 5.4.8 updates
     * Updated PnPjs to 1.3.8
 - 5.4.7 updates

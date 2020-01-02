@@ -69,12 +69,20 @@ riot.tag("pnpjsconsole", `
 */
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";  // <-- Selective imports (PnPjs >= 2.0)
+import "@pnp/sp/folders"
+import "@pnp/sp/files"
 
 (async () => {
 
   const web = await sp.web.select("Title")() // <-- Invokable Objects (PnPjs >= 2.0)
   console.log("Web Title: ", web.Title);
 
+  const query = sp.web
+        .getFolderByServerRelativeUrl("!@p1::/sites/mysitecollection/Site Pages/") // <-- Aliased Parameters (PnPjs >= 2.0)
+        .files.select("Title");
+
+  console.log(query.toUrlAndQuery());
+  
 })().catch(console.log)
 
 /*
@@ -110,7 +118,7 @@ import { taxonomy } from "@pnp/sp-taxonomy"
   console.log(ts);
 
 })().catch(console.log)
-
+                        
 `,
               "typescript",
               new monaco.Uri("main.ts")
