@@ -7,7 +7,8 @@ function createDependencyProposals() {
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,      
       documentation: "Get current web.",
       insertText: [
-          "pnp.sp.web.get().then(${1:web} => {",
+          "import { sp } from \"@pnp/sp/presets/all\"",
+          "sp.web.get().then(${1:web} => {",
           "\tconsole.log(${1})",
           "});"
         ].join('\n')
@@ -18,7 +19,8 @@ function createDependencyProposals() {
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Get current web with selected properties.",
       insertText: [
-          "pnp.sp.web.select(\"${1:Title}\").get().then(${2:web} => {",
+          "import { sp } from \"@pnp/sp/presets/all\"",
+          "sp.web.select(\"${1:Title}\").get().then(${2:web} => {",
           "\tconsole.log(${2}.${1})",
           "});"
         ].join('\n')
@@ -29,7 +31,8 @@ function createDependencyProposals() {
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Get AllProperties from current web.",
       insertText: [
-          "pnp.sp.web.select(\"AllProperties\").expand(\"AllProperties\").get().then(${1:web} => {",
+          "import { sp } from \"@pnp/sp/presets/all\"",
+          "sp.web.select(\"AllProperties\").expand(\"AllProperties\").get().then(${1:web} => {",
           "\tconsole.log(${1})",
           "});"
         ].join('\n')
@@ -40,8 +43,8 @@ function createDependencyProposals() {
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Open web from url.",
       insertText: [
-          "import { Web } from \"@pnp/sp\";",
-          "let web = new Web(\"https://${1:tenant}.sharepoint.com\");",
+          "import { Web } from \"@pnp/sp/presets/all\"",
+          "let web = Web(\"https://${1:tenant}.sharepoint.com\");",
           "web.get().then(${2:w} => {",
           "\tconsole.log(${2})",
           "});",
@@ -53,8 +56,8 @@ function createDependencyProposals() {
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Open web from url and delete it.",
       insertText: [
-          "import { Web } from \"@pnp/sp\";",
-          "let web = new Web(\"https://${1:tenant}.sharepoint.com/mysubsite\");",
+        "import { Web } from \"@pnp/sp/presets/all\"",
+        "let web = Web(\"https://${1:tenant}.sharepoint.com\");",
           "web.delete().then(${2:w} => {",
           "\tconsole.log(${2})",
           "});",
@@ -66,7 +69,8 @@ function createDependencyProposals() {
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,  
       documentation: "Update current web properties.",
       insertText: [
-          "pnp.sp.web.update({",
+          "import { sp } from \"@pnp/sp/presets/all\"",
+          "sp.web.update({",
           "\t${1:Title}: \"New Title\",",
           "\t${2:Description}: \"My new description\",",
           "}).then(${3:web} => {",
