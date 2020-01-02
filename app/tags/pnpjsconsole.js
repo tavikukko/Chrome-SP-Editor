@@ -20,7 +20,7 @@ riot.tag("pnpjsconsole", `
               request.onload = function () {
                 if (path.endsWith('/index.d.ts')) {
                   var newPath = path.replace('/index.d.ts', '.d.ts')
-                  var newContent = `export * from "./${newPath.substring(newPath.lastIndexOf('/')+1).replace('.d.ts', '')}/index";`
+                  var newContent = `export * from "./${newPath.substring(newPath.lastIndexOf('/') + 1).replace('.d.ts', '')}/index";`
                   this.files.push(newPath)
                   this.declarations.push({ path: newPath, content: newContent })
                 }
@@ -64,7 +64,7 @@ riot.tag("pnpjsconsole", `
 
           playground = monaco.editor.create(document.getElementById('pnpjsconsole'), {
             model: monaco.editor.createModel(
-`/*
+              `/*
   Hit CTRL/CMD + D to run the code, view console for results
 */
 import { sp } from "@pnp/sp";
@@ -169,12 +169,12 @@ import { taxonomy } from "@pnp/sp-taxonomy"
 
           playground.onDidChangeModelContent(function (e) {
 
-           this.currentLibs = []
+            this.currentLibs = []
 
-           var codeWithOutComments = playground.getModel().getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'');
+            var codeWithOutComments = playground.getModel().getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
 
-           var modifyedLibs = this.getImportModules(codeWithOutComments)
-           var modifyedExtraLibs = this.createExtraLibs(modifyedLibs)
+            var modifyedLibs = this.getImportModules(codeWithOutComments)
+            var modifyedExtraLibs = this.createExtraLibs(modifyedLibs)
 
             monaco.languages.typescript.typescriptDefaults.setExtraLibs(modifyedExtraLibs);
 
@@ -297,25 +297,27 @@ import { taxonomy } from "@pnp/sp-taxonomy"
             return a;
           }
 
+          this.resolveFiles = (files) => {
+            var resolvedMods = [];
+            if (files && files.length > 0) {
+              files.forEach(file => {
+                var modl = this.declarations.find(mod =>
+                  mod.path === file || mod.path === `${file}.d.ts` || mod.path === `${file}/index.d.ts`
+                );
+                if (modl) {
+                  resolvedMods.push(modl);
+                }
+              });
+            }
+            return resolvedMods;
+          }
+
           // find all import lines from code
           this.getImportModules = function (content) {
             var importTexts = [...new Set(content.match(/import.*(@pnp|microsoft).*/g).map(iText => {
               return iText.match(/(["'])(.*?[^\\])\1/g)[0].replace(/\"/g, '').replace(/\'/g, '')
             }))]
-            var foundModules = []
-            importTexts.forEach(x => {
-              var checkOne = this.declarations.find(z => z.path === x)
-              var checkSecond = this.declarations.find(z => z.path === `${x}.d.ts`)
-              var chechThird = this.declarations.find(z => z.path === `${x}/index.d.ts`)
-              if (checkOne) {
-                foundModules.push(checkOne)
-              } else if (checkSecond) {
-                foundModules.push(checkSecond)
-              } else if (chechThird) {
-                foundModules.push(chechThird)
-              }
-            })
-            return foundModules
+            return this.resolveFiles(importTexts);
           }.bind(this);
 
           this.getExportRows = function (content, path) {
@@ -331,28 +333,14 @@ import { taxonomy } from "@pnp/sp-taxonomy"
                 } else if (lib.startsWith('../../')) {
                   var lib2 = path.substring(0, splitIndex[splitIndex.length - 3] + 1) + lib.substring(6)
                   exportTexts.push(lib2)
-                }
-                else if (lib.startsWith('../')) {
+                } else if (lib.startsWith('../')) {
                   var lib3 = path.substring(0, splitIndex[splitIndex.length - 2] + 1) + lib.substring(3)
                   exportTexts.push(lib3)
                 } else {
                   exportTexts.push(lib)
                 }
               })
-              var foundModules = []
-              exportTexts.forEach(x => {
-                var checkOne = this.declarations.find(z => z.path === x)
-                var checkSecond = this.declarations.find(z => z.path === `${x}.d.ts`)
-                var chechThird = this.declarations.find(z => z.path === `${x}/index.d.ts`)
-                if (checkOne) {
-                  foundModules.push(checkOne)
-                } else if (checkSecond) {
-                  foundModules.push(checkSecond)
-                } else if (chechThird) {
-                  foundModules.push(chechThird)
-                }
-              })
-              return foundModules
+              return this.resolveFiles(exportTexts);
             }
             else {
               return []
@@ -370,18 +358,20 @@ import { taxonomy } from "@pnp/sp-taxonomy"
                 this.parseLibs(newLibs)
               }
             }.bind(this));
-            var initLibs = filelist.filter(d => !this.currentLibs.find(g => d.path === g.path))
-            initLibs.forEach(lib => this.currentLibs.push(lib))
+            var initLibs = filelist.filter(file => !this.currentLibs.find(lib => file.path === lib.path))
+            if (initLibs && initLibs.length > 0) {
+              initLibs.forEach(lib => this.currentLibs.push(lib))
+            }
           }.bind(this);
 
           this.createExtraLibs = function (filelist) {
             this.parseLibs(filelist, [])
             var extraLibs = this.currentLibs.map(o => {
-                return { content: o.content, filePath: o.path }
+              return { content: o.content, filePath: o.path }
             })
             return extraLibs
           }.bind(this)
-          var codeWithOutComments = playground.getModel().getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'');
+          var codeWithOutComments = playground.getModel().getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
 
           var initModules = this.getImportModules(codeWithOutComments)
           var initExraLibs = this.createExtraLibs(initModules)
@@ -397,4 +387,3 @@ import { taxonomy } from "@pnp/sp-taxonomy"
     }.bind(this);
 
   });
-
