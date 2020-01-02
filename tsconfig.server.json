@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "module": "esnext",
+      "target": "es5",
+      "moduleResolution": "node",
+      "declaration": false,
+      "strict": false,
+      "baseUrl": "./",
+    },
+    "exclude": [
+        "build",
+        "public",
+        "src",
+        "node_modules"
+    ]
+  }
+  
