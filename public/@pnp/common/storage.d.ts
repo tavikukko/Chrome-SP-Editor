@@ -2,7 +2,7 @@
  * A wrapper class to provide a consistent interface to browser based storage
  *
  */
-export declare class PnPClientStorageWrapper implements PnPClientStore {
+export declare class PnPClientStorageWrapper implements IPnPClientStore {
     private store;
     defaultTimeoutMinutes: number;
     /**
@@ -15,6 +15,7 @@ export declare class PnPClientStorageWrapper implements PnPClientStore {
      * @constructor
      */
     constructor(store: Storage, defaultTimeoutMinutes?: number);
+    static bind(store: Storage): IPnPClientStore;
     /**
      * Get a value from storage, or null if that value does not exist
      *
@@ -63,7 +64,7 @@ export declare class PnPClientStorageWrapper implements PnPClientStore {
 /**
  * Interface which defines the operations provided by a client storage object
  */
-export interface PnPClientStore {
+export interface IPnPClientStore {
     /**
      * True if the wrapped storage is available; otherwise, false
      */
@@ -112,15 +113,14 @@ export declare class PnPClientStorage {
      *
      * @constructor
      */
-    constructor(_local?: PnPClientStore | null, _session?: PnPClientStore | null);
+    constructor(_local?: IPnPClientStore | null, _session?: IPnPClientStore | null);
     /**
      * Provides access to the local storage of the browser
      */
-    readonly local: PnPClientStore;
+    readonly local: IPnPClientStore;
     /**
      * Provides access to the session storage of the browser
      */
-    readonly session: PnPClientStore;
-    private getStore;
+    readonly session: IPnPClientStore;
 }
 //# sourceMappingURL=storage.d.ts.map

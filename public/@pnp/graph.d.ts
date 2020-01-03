@@ -1,1 +1,1 @@
-export * from "./graph/graph";
+export * from "./graph/index";

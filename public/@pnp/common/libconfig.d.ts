@@ -1,6 +1,6 @@
-import { TypedHash } from "./collections";
+import { ITypedHash } from "./collections";
 import { ISPFXContext } from "./spfxcontextinterface";
-export interface LibraryConfiguration {
+export interface ILibraryConfiguration {
     /**
      * Allows caching to be global disabled, default: false
      */
@@ -24,9 +24,13 @@ export interface LibraryConfiguration {
     /**
      * Used to supply the current context from an SPFx webpart to the library
      */
-    spfxContext?: any;
+    spfxContext?: ISPFXContext;
+    /**
+     * Used to place the library in ie11 compat mode. Some features may not work as expected
+     */
+    ie11?: boolean;
 }
-export declare function setup(config: LibraryConfiguration): void;
+export declare function setup(config: ILibraryConfiguration): void;
 export declare class RuntimeConfigImpl {
     private _v;
     constructor(_v?: Map<string, any>);
@@ -34,7 +38,7 @@ export declare class RuntimeConfigImpl {
      *
      * @param config The set of properties to add to the globa configuration instance
      */
-    extend(config: TypedHash<any>): void;
+    assign(config: ITypedHash<any>): void;
     get(key: string): any;
     readonly defaultCachingStore: "session" | "local";
     readonly defaultCachingTimeoutSeconds: number;
@@ -42,6 +46,7 @@ export declare class RuntimeConfigImpl {
     readonly enableCacheExpiration: boolean;
     readonly cacheExpirationIntervalMilliseconds: number;
     readonly spfxContext: ISPFXContext;
+    readonly ie11: boolean;
 }
 export declare let RuntimeConfig: RuntimeConfigImpl;
 //# sourceMappingURL=libconfig.d.ts.map

@@ -1,14 +1,16 @@
-import { FetchOptions } from "@pnp/common";
-import { ODataParser, ODataQueryable, RequestContext } from "@pnp/odata";
+import { IFetchOptions } from "@pnp/common";
+import { Queryable, IInvokable } from "@pnp/odata";
 import { SPBatch } from "./batch";
-export interface SharePointQueryableConstructor<T> {
-    new (baseUrl: string | SharePointQueryable, path?: string): T;
+export interface ISharePointQueryableConstructor<T extends ISharePointQueryable = ISharePointQueryable> {
+    new (baseUrl: string | ISharePointQueryable, path?: string): T;
 }
+export declare type ISPInvokableFactory<R = any> = (baseUrl: string | ISharePointQueryable, path?: string) => R;
+export declare const spInvokableFactory: <R>(f: any) => ISPInvokableFactory<R>;
 /**
  * SharePointQueryable Base Class
  *
  */
-export declare class SharePointQueryable<GetType = any> extends ODataQueryable<SPBatch, GetType> {
+export declare class _SharePointQueryable<GetType = any> extends Queryable<GetType> {
     protected _forceCaching: boolean;
     /**
      * Creates a new instance of the SharePointQueryable class
@@ -17,16 +19,9 @@ export declare class SharePointQueryable<GetType = any> extends ODataQueryable<S
      * @param baseUrl A string or SharePointQueryable that should form the base part of the url
      *
      */
-    constructor(baseUrl: string | SharePointQueryable, path?: string);
-    /**
-     * Creates a new instance of the supplied factory and extends this into that new instance
-     *
-     * @param factory constructor for the new SharePointQueryable
-     */
-    as<T>(factory: SharePointQueryableConstructor<T>): T;
+    constructor(baseUrl: string | ISharePointQueryable, path?: string);
     /**
      * Gets the full url with query information
-     *
      */
     toUrlAndQuery(): string;
     /**
@@ -35,6 +30,7 @@ export declare class SharePointQueryable<GetType = any> extends ODataQueryable<S
      * @param selects One or more fields to return
      */
     select(...selects: string[]): this;
+    get<T = GetType>(options?: IFetchOptions): Promise<T>;
     /**
      * Expands fields such as lookups to get additional data
      *
@@ -42,33 +38,35 @@ export declare class SharePointQueryable<GetType = any> extends ODataQueryable<S
      */
     expand(...expands: string[]): this;
     /**
-     * Gets a parent for this instance as specified
-     *
-     * @param factory The contructor for the class to create
-     */
-    protected getParent<T extends SharePointQueryable>(factory: SharePointQueryableConstructor<T>, baseUrl?: string | SharePointQueryable, path?: string, batch?: SPBatch): T;
-    /**
      * Clones this SharePointQueryable into a new SharePointQueryable instance of T
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
      */
-    protected clone<T extends SharePointQueryable>(factory: SharePointQueryableConstructor<T>, additionalPath?: string, includeBatch?: boolean): T;
+    clone<T extends ISharePointQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch?: boolean): T;
     /**
-     * Converts the current instance to a request context
+     * The default action for this object (unless overridden spGet)
      *
-     * @param verb The request verb
-     * @param options The set of supplied request options
-     * @param parser The supplied ODataParser instance
-     * @param pipeline Optional request processing pipeline
+     * @param options optional request options
      */
-    protected toRequestContext<T>(verb: string, options: FetchOptions, parser: ODataParser<T>, pipeline: Array<(c: RequestContext<T>) => Promise<RequestContext<T>>>): Promise<RequestContext<T>>;
+    defaultAction(options?: IFetchOptions): Promise<GetType>;
+    /**
+     * Gets a parent for this instance as specified
+     *
+     * @param factory The contructor for the class to create
+     */
+    protected getParent<T extends ISharePointQueryable>(factory: ISPInvokableFactory<any>, baseUrl?: string | ISharePointQueryable, path?: string, batch?: SPBatch): T;
 }
+export interface ISharePointQueryable<GetType = any> extends _SharePointQueryable<GetType>, IInvokable<GetType> {
+}
+export interface _SharePointQueryable<GetType = any> extends IInvokable<GetType> {
+}
+export declare const SharePointQueryable: ISPInvokableFactory<ISharePointQueryable<any>>;
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export declare class SharePointQueryableCollection<GetType = any[]> extends SharePointQueryable<GetType> {
+export declare class _SharePointQueryableCollection<GetType = any[]> extends _SharePointQueryable<GetType> {
     /**
      * Filters the returned collection (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#bk_supported)
      *
@@ -95,36 +93,46 @@ export declare class SharePointQueryableCollection<GetType = any[]> extends Shar
      */
     top(top: number): this;
 }
+export interface _SharePointQueryableCollection<GetType = any[]> extends IInvokable<GetType> {
+}
+export interface ISharePointQueryableCollection<GetType = any[]> extends _SharePointQueryableCollection<GetType>, IInvokable<GetType> {
+}
+export declare const SharePointQueryableCollection: ISPInvokableFactory<ISharePointQueryableCollection<any[]>>;
 /**
  * Represents an instance that can be selected
  *
  */
-export declare class SharePointQueryableInstance<GetType = any> extends SharePointQueryable<GetType> {
+export declare class _SharePointQueryableInstance<GetType = any> extends _SharePointQueryable<GetType> {
     /**
      * Curries the update function into the common pieces
      *
      * @param type
      * @param mapper
      */
-    protected _update<Return, Props = any, Data = any>(type: string, mapper: (data: Data, props: Props) => Return): (props: Props) => Promise<Return>;
-    /**
-    * Deletes this instance
-    *
-    */
-    protected _delete(): Promise<void>;
-    /**
-     * Deletes this instance with an etag value in the headers
-     *
-     * @param eTag eTag to delete
-     */
-    protected _deleteWithETag(eTag?: string): Promise<void>;
+    protected _update<Return, Props = any>(type: string, mapper: (data: any, props: Props) => Return): (props: Props) => Promise<Return>;
 }
+export interface ISharePointQueryableInstance<GetType = any> extends _SharePointQueryableInstance<GetType>, IInvokable<GetType> {
+}
+export interface _SharePointQueryableInstance<GetType = any> extends IInvokable<GetType> {
+}
+export declare const SharePointQueryableInstance: ISPInvokableFactory<ISharePointQueryableInstance<any>>;
 /**
- * Decorator used to specify the default path for SharePointQueryable objects
- *
- * @param path
+ * Adds the a delete method to the tagged class taking no parameters and calling spPostDelete
  */
-export declare function defaultPath(path: string): <T extends new (...args: any[]) => {}>(target: T) => {
-    new (...args: any[]): {};
-} & T;
+export declare function deleteable(t: string): (this: ISharePointQueryable<any>) => Promise<void>;
+export interface IDeleteable {
+    /**
+     * Delete this instance
+     */
+    delete(): Promise<void>;
+}
+export declare function deleteableWithETag(t: string): (this: ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+export interface IDeleteableWithETag {
+    /**
+     * Delete this instance
+     *
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    delete(eTag?: string): Promise<void>;
+}
 //# sourceMappingURL=sharepointqueryable.d.ts.map

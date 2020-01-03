@@ -1,1 +1,1 @@
-export * from "./sp-addinhelpers/addinhelpers";
+export * from "./sp-addinhelpers/index";

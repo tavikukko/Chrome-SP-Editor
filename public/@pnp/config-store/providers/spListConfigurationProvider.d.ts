@@ -1,13 +1,15 @@
 import { IConfigurationProvider } from "../configuration";
-import { TypedHash } from "@pnp/common";
+import { ITypedHash } from "@pnp/common";
 import { default as CachingConfigurationProvider } from "./cachingConfigurationProvider";
-import { Web } from "@pnp/sp";
+import { IWeb } from "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
+import "@pnp/sp/items/list";
 /**
  * A configuration provider which loads configuration values from a SharePoint list
  *
  */
 export default class SPListConfigurationProvider implements IConfigurationProvider {
-    readonly web: Web;
+    readonly web: IWeb;
     readonly listTitle: string;
     private keyFieldName;
     private valueFieldName;
@@ -19,13 +21,13 @@ export default class SPListConfigurationProvider implements IConfigurationProvid
      * @param {string} keyFieldName The name of the field in the list to use as the setting key (optional, default: "Title")
      * @param {string} valueFieldName The name of the field in the list to use as the setting value (optional, default: "Value")
      */
-    constructor(web: Web, listTitle?: string, keyFieldName?: string, valueFieldName?: string);
+    constructor(web: IWeb, listTitle?: string, keyFieldName?: string, valueFieldName?: string);
     /**
      * Loads the configuration values from the SharePoint list
      *
-     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
+     * @return {Promise<ITypedHash<string>>} Promise of loaded configuration values
      */
-    getConfiguration(): Promise<TypedHash<string>>;
+    getConfiguration(): Promise<ITypedHash<string>>;
     /**
      * Wraps the current provider in a cache enabled provider
      *

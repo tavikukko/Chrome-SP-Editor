@@ -1,4 +1,4 @@
-import { TypedHash } from "@pnp/common";
+import { ITypedHash } from "@pnp/common";
 /**
  * Interface for configuration providers
  *
@@ -7,7 +7,7 @@ export interface IConfigurationProvider {
     /**
      * Gets the configuration from the provider
      */
-    getConfiguration(): Promise<TypedHash<string>>;
+    getConfiguration(): Promise<ITypedHash<string>>;
 }
 /**
  * Class used to manage the current application settings
@@ -38,9 +38,9 @@ export declare class Settings {
     /**
      * Applies the supplied hash to the setting collection overwriting any existing value, or created new values
      *
-     * @param {TypedHash<any>} hash The set of values to add
+     * @param {ITypedHash<any>} hash The set of values to add
      */
-    apply(hash: TypedHash<any>): Promise<void>;
+    apply(hash: ITypedHash<any>): Promise<void>;
     /**
      * Loads configuration settings into the collection from the supplied provider and returns a Promise
      *

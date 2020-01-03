@@ -1,27 +1,15 @@
-import { LogEntry } from "./logentry";
-/**
- * Interface that defines a log listner
- *
- */
-export interface LogListener {
-    /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
-    log(entry: LogEntry): void;
-}
+import { ILogEntry, ILogListener } from "./logger";
 /**
  * Implementation of LogListener which logs to the console
  *
  */
-export declare class ConsoleListener implements LogListener {
+export declare class ConsoleListener implements ILogListener {
     /**
      * Any associated data that a given logging listener may choose to log or ignore
      *
      * @param entry The information to be logged
      */
-    log(entry: LogEntry): void;
+    log(entry: ILogEntry): void;
     /**
      * Formats the message
      *
@@ -33,7 +21,7 @@ export declare class ConsoleListener implements LogListener {
  * Implementation of LogListener which logs to the supplied function
  *
  */
-export declare class FunctionListener implements LogListener {
+export declare class FunctionListener implements ILogListener {
     private method;
     /**
      * Creates a new instance of the FunctionListener class
@@ -41,12 +29,12 @@ export declare class FunctionListener implements LogListener {
      * @constructor
      * @param  method The method to which any logging data will be passed
      */
-    constructor(method: (entry: LogEntry) => void);
+    constructor(method: (entry: ILogEntry) => void);
     /**
      * Any associated data that a given logging listener may choose to log or ignore
      *
      * @param entry The information to be logged
      */
-    log(entry: LogEntry): void;
+    log(entry: ILogEntry): void;
 }
 //# sourceMappingURL=listeners.d.ts.map

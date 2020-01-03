@@ -1,1 +1,1 @@
-export * from "./odata/odata";
+export * from "./odata/index";

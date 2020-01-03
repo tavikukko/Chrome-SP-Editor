@@ -1,5 +1,5 @@
 import { IConfigurationProvider } from "../configuration";
-import { TypedHash, PnPClientStore } from "@pnp/common";
+import { ITypedHash, IPnPClientStore } from "@pnp/common";
 /**
  * A caching provider which can wrap other non-caching providers
  *
@@ -15,7 +15,7 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
      * @param {string} cacheKey Key that will be used to store cached items to the cache
      * @param {IPnPClientStore} cacheStore OPTIONAL storage, which will be used to store cached settings.
      */
-    constructor(wrappedProvider: IConfigurationProvider, cacheKey: string, cacheStore?: PnPClientStore);
+    constructor(wrappedProvider: IConfigurationProvider, cacheKey: string, cacheStore?: IPnPClientStore);
     /**
      * Gets the wrapped configuration providers
      *
@@ -25,9 +25,9 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
     /**
      * Loads the configuration values either from the cache or from the wrapped provider
      *
-     * @return {Promise<TypedHash<string>>} Promise of loaded configuration values
+     * @return {Promise<ITypedHash<string>>} Promise of loaded configuration values
      */
-    getConfiguration(): Promise<TypedHash<string>>;
+    getConfiguration(): Promise<ITypedHash<string>>;
     private selectPnPCache;
 }
 //# sourceMappingURL=cachingConfigurationProvider.d.ts.map
