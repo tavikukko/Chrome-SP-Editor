@@ -1348,10 +1348,6 @@ __webpack_require__.d(all_namespaceObject, "RegionalSettings", function() { retu
 __webpack_require__.d(all_namespaceObject, "TimeZone", function() { return TimeZone; });
 __webpack_require__.d(all_namespaceObject, "TimeZones", function() { return TimeZones; });
 __webpack_require__.d(all_namespaceObject, "RelatedItemManager", function() { return RelatedItemManager; });
-__webpack_require__.d(all_namespaceObject, "SortDirection", function() { return SortDirection; });
-__webpack_require__.d(all_namespaceObject, "ReorderingRuleMatchType", function() { return ReorderingRuleMatchType; });
-__webpack_require__.d(all_namespaceObject, "QueryPropertyValueType", function() { return QueryPropertyValueType; });
-__webpack_require__.d(all_namespaceObject, "SearchBuiltInSourceId", function() { return SearchBuiltInSourceId; });
 __webpack_require__.d(all_namespaceObject, "SearchQueryBuilder", function() { return SearchQueryBuilder; });
 __webpack_require__.d(all_namespaceObject, "SearchResults", function() { return query_SearchResults; });
 __webpack_require__.d(all_namespaceObject, "Search", function() { return Search; });
@@ -1397,11 +1393,23 @@ __webpack_require__.d(all_namespaceObject, "WebPartDefinition", function() { ret
 __webpack_require__.d(all_namespaceObject, "LimitedWebPartManager", function() { return LimitedWebPartManager; });
 __webpack_require__.d(all_namespaceObject, "Web", function() { return Web; });
 __webpack_require__.d(all_namespaceObject, "Webs", function() { return Webs; });
+__webpack_require__.d(all_namespaceObject, "sp", function() { return all_sp; });
+__webpack_require__.d(all_namespaceObject, "SortDirection", function() { return SortDirection; });
+__webpack_require__.d(all_namespaceObject, "ReorderingRuleMatchType", function() { return ReorderingRuleMatchType; });
+__webpack_require__.d(all_namespaceObject, "QueryPropertyValueType", function() { return QueryPropertyValueType; });
+__webpack_require__.d(all_namespaceObject, "SearchBuiltInSourceId", function() { return SearchBuiltInSourceId; });
 __webpack_require__.d(all_namespaceObject, "SharePointQueryableInstance", function() { return SharePointQueryableInstance; });
 __webpack_require__.d(all_namespaceObject, "SharePointQueryableCollection", function() { return SharePointQueryableCollection; });
 __webpack_require__.d(all_namespaceObject, "SharePointQueryable", function() { return SharePointQueryable; });
 __webpack_require__.d(all_namespaceObject, "spInvokableFactory", function() { return spInvokableFactory; });
 __webpack_require__.d(all_namespaceObject, "SPBatch", function() { return batch_SPBatch; });
+__webpack_require__.d(all_namespaceObject, "SPHttpClient", function() { return sphttpclient_SPHttpClient; });
+__webpack_require__.d(all_namespaceObject, "SPRest", function() { return rest_SPRest; });
+__webpack_require__.d(all_namespaceObject, "toAbsoluteUrl", function() { return toabsoluteurl["a" /* toAbsoluteUrl */]; });
+__webpack_require__.d(all_namespaceObject, "extractWebUrl", function() { return extractWebUrl; });
+__webpack_require__.d(all_namespaceObject, "objectToSPKeyValueCollection", function() { return objectToSPKeyValueCollection; });
+__webpack_require__.d(all_namespaceObject, "stripInvalidFileFolderChars", function() { return stripInvalidFileFolderChars; });
+__webpack_require__.d(all_namespaceObject, "containsInvalidFileFolderChars", function() { return containsInvalidFileFolderChars; });
 __webpack_require__.d(all_namespaceObject, "defaultPath", function() { return defaultPath; });
 __webpack_require__.d(all_namespaceObject, "spGet", function() { return spGet; });
 __webpack_require__.d(all_namespaceObject, "spPost", function() { return spPost; });
@@ -1409,19 +1417,13 @@ __webpack_require__.d(all_namespaceObject, "spDelete", function() { return spDel
 __webpack_require__.d(all_namespaceObject, "spPatch", function() { return spPatch; });
 __webpack_require__.d(all_namespaceObject, "spPostDelete", function() { return spPostDelete; });
 __webpack_require__.d(all_namespaceObject, "spPostDeleteETag", function() { return spPostDeleteETag; });
-__webpack_require__.d(all_namespaceObject, "SPHttpClient", function() { return sphttpclient_SPHttpClient; });
-__webpack_require__.d(all_namespaceObject, "SPRest", function() { return rest_SPRest; });
-__webpack_require__.d(all_namespaceObject, "sp", function() { return all_sp; });
 __webpack_require__.d(all_namespaceObject, "PrincipalType", function() { return PrincipalType; });
 __webpack_require__.d(all_namespaceObject, "PrincipalSource", function() { return PrincipalSource; });
 __webpack_require__.d(all_namespaceObject, "PageType", function() { return PageType; });
-__webpack_require__.d(all_namespaceObject, "toAbsoluteUrl", function() { return toabsoluteurl["a" /* toAbsoluteUrl */]; });
-__webpack_require__.d(all_namespaceObject, "extractWebUrl", function() { return extractWebUrl; });
-__webpack_require__.d(all_namespaceObject, "objectToSPKeyValueCollection", function() { return objectToSPKeyValueCollection; });
-__webpack_require__.d(all_namespaceObject, "stripInvalidFileFolderChars", function() { return stripInvalidFileFolderChars; });
-__webpack_require__.d(all_namespaceObject, "containsInvalidFileFolderChars", function() { return containsInvalidFileFolderChars; });
 var presets_all_namespaceObject = {};
 __webpack_require__.r(presets_all_namespaceObject);
+__webpack_require__.d(presets_all_namespaceObject, "graph", function() { return graph; });
+__webpack_require__.d(presets_all_namespaceObject, "GraphRest", function() { return rest_GraphRest; });
 __webpack_require__.d(presets_all_namespaceObject, "Attachment", function() { return graph_attachments_types_Attachment; });
 __webpack_require__.d(presets_all_namespaceObject, "Attachments", function() { return graph_attachments_types_Attachments; });
 __webpack_require__.d(presets_all_namespaceObject, "Calendar", function() { return Calendar; });
@@ -1480,8 +1482,6 @@ __webpack_require__.d(presets_all_namespaceObject, "Team", function() { return T
 __webpack_require__.d(presets_all_namespaceObject, "Teams", function() { return Teams; });
 __webpack_require__.d(presets_all_namespaceObject, "User", function() { return User; });
 __webpack_require__.d(presets_all_namespaceObject, "Users", function() { return Users; });
-__webpack_require__.d(presets_all_namespaceObject, "graph", function() { return graph; });
-__webpack_require__.d(presets_all_namespaceObject, "GraphRest", function() { return rest_GraphRest; });
 
 // CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
 /**
@@ -17190,9 +17190,15 @@ var Def = {
 /* harmony default export */ var pnpjs = (Def);
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./pnpjs-sources/index-pnpjs.ts
+/* concated harmony reexport util */__webpack_require__.d(__webpack_exports__, "util", function() { return util; });
+/* concated harmony reexport sp */__webpack_require__.d(__webpack_exports__, "sp", function() { return pnpjs_sp; });
+/* concated harmony reexport graph */__webpack_require__.d(__webpack_exports__, "graph", function() { return pnpjs_graph; });
+/* concated harmony reexport storage */__webpack_require__.d(__webpack_exports__, "storage", function() { return storage; });
+/* concated harmony reexport config */__webpack_require__.d(__webpack_exports__, "config", function() { return pnpjs_config; });
+/* concated harmony reexport log */__webpack_require__.d(__webpack_exports__, "log", function() { return log; });
+/* concated harmony reexport setup */__webpack_require__.d(__webpack_exports__, "setup", function() { return pnpjs_setup; });
 /* concated harmony reexport objectToMap */__webpack_require__.d(__webpack_exports__, "objectToMap", function() { return common["y" /* objectToMap */]; });
 /* concated harmony reexport mergeMaps */__webpack_require__.d(__webpack_exports__, "mergeMaps", function() { return common["v" /* mergeMaps */]; });
-/* concated harmony reexport setup */__webpack_require__.d(__webpack_exports__, "setup", function() { return pnpjs_setup; });
 /* concated harmony reexport RuntimeConfigImpl */__webpack_require__.d(__webpack_exports__, "RuntimeConfigImpl", function() { return common["f" /* RuntimeConfigImpl */]; });
 /* concated harmony reexport RuntimeConfig */__webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return common["e" /* RuntimeConfig */]; });
 /* concated harmony reexport mergeHeaders */__webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return common["u" /* mergeHeaders */]; });
@@ -17218,6 +17224,14 @@ var Def = {
 /* concated harmony reexport jsS */__webpack_require__.d(__webpack_exports__, "jsS", function() { return common["t" /* jsS */]; });
 /* concated harmony reexport hOP */__webpack_require__.d(__webpack_exports__, "hOP", function() { return common["p" /* hOP */]; });
 /* concated harmony reexport getHashCode */__webpack_require__.d(__webpack_exports__, "getHashCode", function() { return common["n" /* getHashCode */]; });
+/* concated harmony reexport extendGlobal */__webpack_require__.d(__webpack_exports__, "extendGlobal", function() { return extendGlobal; });
+/* concated harmony reexport extendObj */__webpack_require__.d(__webpack_exports__, "extendObj", function() { return extendObj; });
+/* concated harmony reexport extendFactory */__webpack_require__.d(__webpack_exports__, "extendFactory", function() { return extendFactory; });
+/* concated harmony reexport clearGlobalExtensions */__webpack_require__.d(__webpack_exports__, "clearGlobalExtensions", function() { return clearGlobalExtensions; });
+/* concated harmony reexport enableExtensions */__webpack_require__.d(__webpack_exports__, "enableExtensions", function() { return enableExtensions; });
+/* concated harmony reexport disableExtensions */__webpack_require__.d(__webpack_exports__, "disableExtensions", function() { return disableExtensions; });
+/* concated harmony reexport SPNS */__webpack_require__.d(__webpack_exports__, "SPNS", function() { return all_namespaceObject; });
+/* concated harmony reexport GraphNS */__webpack_require__.d(__webpack_exports__, "GraphNS", function() { return presets_all_namespaceObject; });
 /* concated harmony reexport Logger */__webpack_require__.d(__webpack_exports__, "Logger", function() { return Logger; });
 /* concated harmony reexport LogLevel */__webpack_require__.d(__webpack_exports__, "LogLevel", function() { return LogLevel; });
 /* concated harmony reexport ConsoleListener */__webpack_require__.d(__webpack_exports__, "ConsoleListener", function() { return ConsoleListener; });
@@ -17248,20 +17262,6 @@ var Def = {
 /* concated harmony reexport Queryable */__webpack_require__.d(__webpack_exports__, "Queryable", function() { return queryable_Queryable; });
 /* concated harmony reexport body */__webpack_require__.d(__webpack_exports__, "body", function() { return body; });
 /* concated harmony reexport headers */__webpack_require__.d(__webpack_exports__, "headers", function() { return request_builders_headers; });
-/* concated harmony reexport extendGlobal */__webpack_require__.d(__webpack_exports__, "extendGlobal", function() { return extendGlobal; });
-/* concated harmony reexport extendObj */__webpack_require__.d(__webpack_exports__, "extendObj", function() { return extendObj; });
-/* concated harmony reexport extendFactory */__webpack_require__.d(__webpack_exports__, "extendFactory", function() { return extendFactory; });
-/* concated harmony reexport clearGlobalExtensions */__webpack_require__.d(__webpack_exports__, "clearGlobalExtensions", function() { return clearGlobalExtensions; });
-/* concated harmony reexport enableExtensions */__webpack_require__.d(__webpack_exports__, "enableExtensions", function() { return enableExtensions; });
-/* concated harmony reexport disableExtensions */__webpack_require__.d(__webpack_exports__, "disableExtensions", function() { return disableExtensions; });
-/* concated harmony reexport SPNS */__webpack_require__.d(__webpack_exports__, "SPNS", function() { return all_namespaceObject; });
-/* concated harmony reexport GraphNS */__webpack_require__.d(__webpack_exports__, "GraphNS", function() { return presets_all_namespaceObject; });
-/* concated harmony reexport util */__webpack_require__.d(__webpack_exports__, "util", function() { return util; });
-/* concated harmony reexport sp */__webpack_require__.d(__webpack_exports__, "sp", function() { return pnpjs_sp; });
-/* concated harmony reexport graph */__webpack_require__.d(__webpack_exports__, "graph", function() { return pnpjs_graph; });
-/* concated harmony reexport storage */__webpack_require__.d(__webpack_exports__, "storage", function() { return storage; });
-/* concated harmony reexport config */__webpack_require__.d(__webpack_exports__, "config", function() { return pnpjs_config; });
-/* concated harmony reexport log */__webpack_require__.d(__webpack_exports__, "log", function() { return log; });
 /* concated harmony reexport AdalClient */__webpack_require__.d(__webpack_exports__, "AdalClient", function() { return adalclient_AdalClient; });
 /* concated harmony reexport Logger */__webpack_require__.d(__webpack_exports__, "Logger", function() { return Logger; });
 /* concated harmony reexport LogLevel */__webpack_require__.d(__webpack_exports__, "LogLevel", function() { return LogLevel; });
@@ -17358,14 +17358,14 @@ var Def = {
 /* concated harmony reexport TimeZone */__webpack_require__.d(__webpack_exports__, "TimeZone", function() { return TimeZone; });
 /* concated harmony reexport TimeZones */__webpack_require__.d(__webpack_exports__, "TimeZones", function() { return TimeZones; });
 /* concated harmony reexport RelatedItemManager */__webpack_require__.d(__webpack_exports__, "RelatedItemManager", function() { return RelatedItemManager; });
-/* concated harmony reexport SortDirection */__webpack_require__.d(__webpack_exports__, "SortDirection", function() { return SortDirection; });
-/* concated harmony reexport ReorderingRuleMatchType */__webpack_require__.d(__webpack_exports__, "ReorderingRuleMatchType", function() { return ReorderingRuleMatchType; });
-/* concated harmony reexport QueryPropertyValueType */__webpack_require__.d(__webpack_exports__, "QueryPropertyValueType", function() { return QueryPropertyValueType; });
-/* concated harmony reexport SearchBuiltInSourceId */__webpack_require__.d(__webpack_exports__, "SearchBuiltInSourceId", function() { return SearchBuiltInSourceId; });
 /* concated harmony reexport SearchQueryBuilder */__webpack_require__.d(__webpack_exports__, "SearchQueryBuilder", function() { return SearchQueryBuilder; });
 /* concated harmony reexport SearchResults */__webpack_require__.d(__webpack_exports__, "SearchResults", function() { return query_SearchResults; });
 /* concated harmony reexport Search */__webpack_require__.d(__webpack_exports__, "Search", function() { return Search; });
 /* concated harmony reexport Suggest */__webpack_require__.d(__webpack_exports__, "Suggest", function() { return Suggest; });
+/* concated harmony reexport SortDirection */__webpack_require__.d(__webpack_exports__, "SortDirection", function() { return SortDirection; });
+/* concated harmony reexport ReorderingRuleMatchType */__webpack_require__.d(__webpack_exports__, "ReorderingRuleMatchType", function() { return ReorderingRuleMatchType; });
+/* concated harmony reexport QueryPropertyValueType */__webpack_require__.d(__webpack_exports__, "QueryPropertyValueType", function() { return QueryPropertyValueType; });
+/* concated harmony reexport SearchBuiltInSourceId */__webpack_require__.d(__webpack_exports__, "SearchBuiltInSourceId", function() { return SearchBuiltInSourceId; });
 /* concated harmony reexport RoleAssignment */__webpack_require__.d(__webpack_exports__, "RoleAssignment", function() { return RoleAssignment; });
 /* concated harmony reexport RoleAssignments */__webpack_require__.d(__webpack_exports__, "RoleAssignments", function() { return RoleAssignments; });
 /* concated harmony reexport RoleDefinition */__webpack_require__.d(__webpack_exports__, "RoleDefinition", function() { return RoleDefinition; });

@@ -30,6 +30,7 @@ gulp.task('clean', (done) => {
     'public/bundles/sp-clientsvc.es5.umd.bundle.js',
     'public/bundles/sp-taxonomy.es5.umd.bundle.js',
     'public/bundles/sp.es5.umd.bundle.js',
+    'public/bundles/adaljsclient.es5.umd.bundle.js',
   ], done);
 });
 
