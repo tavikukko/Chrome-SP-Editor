@@ -1,4 +1,3 @@
-import '@pnp/logging'
 import { ILogEntry } from '@pnp/logging'
 import * as pnp from '@pnp/pnpjs'
 
