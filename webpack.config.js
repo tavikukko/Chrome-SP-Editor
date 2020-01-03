@@ -7,7 +7,7 @@ module.exports = [{
         {
           test: /\.ts$/,
           use: [{
-            loader: "ts-loader?configFile=tsconfig.server.json",
+            loader: "ts-loader?configFile=configFile=pnpjs-sources/tsconfig.pnpjs.json",
           }],
         },
       ],
@@ -37,7 +37,7 @@ module.exports = [{
         {
           test: /\.ts$/,
           use: [{
-            loader: "ts-loader?configFile=tsconfig.server.json",
+            loader: "ts-loader?configFile=pnpjs-sources/tsconfig.pnpjs.json",
           }],
         },
       ],
@@ -67,7 +67,7 @@ module.exports = [{
         {
           test: /\.ts$/,
           use: [{
-            loader: "ts-loader?configFile=tsconfig.server.json",
+            loader: "ts-loader?configFile=pnpjs-sources/tsconfig.pnpjs.json",
           }],
         },
       ],
@@ -97,7 +97,7 @@ module.exports = [{
         {
           test: /\.ts$/,
           use: [{
-            loader: "ts-loader?configFile=tsconfig.server.json",
+            loader: "ts-loader?configFile=pnpjs-sources/tsconfig.pnpjs.json",
           }],
         },
       ],
@@ -127,7 +127,7 @@ module.exports = [{
         {
           test: /\.ts$/,
           use: [{
-            loader: "ts-loader?configFile=tsconfig.server.json",
+            loader: "ts-loader?configFile=pnpjs-sources/tsconfig.pnpjs.json",
           }],
         },
       ],
@@ -157,7 +157,7 @@ module.exports = [{
         {
           test: /\.ts$/,
           use: [{
-            loader: "ts-loader?configFile=tsconfig.server.json",
+            loader: "ts-loader?configFile=pnpjs-sources/tsconfig.pnpjs.json",
           }],
         },
       ],
@@ -187,7 +187,7 @@ module.exports = [{
         {
           test: /\.ts$/,
           use: [{
-            loader: "ts-loader?configFile=tsconfig.server.json",
+            loader: "ts-loader?configFile=pnpjs-sources/tsconfig.pnpjs.json",
           }],
         },
       ],
@@ -217,7 +217,7 @@ module.exports = [{
         {
           test: /\.ts$/,
           use: [{
-            loader: "ts-loader?configFile=tsconfig.server.json",
+            loader: "ts-loader?configFile=pnpjs-sources/tsconfig.pnpjs.json",
           }],
         },
       ],
@@ -247,7 +247,7 @@ module.exports = [{
         {
           test: /\.ts$/,
           use: [{
-            loader: "ts-loader?configFile=tsconfig.server.json",
+            loader: "ts-loader?configFile=pnpjs-sources/tsconfig.pnpjs.json",
           }],
         },
       ],
