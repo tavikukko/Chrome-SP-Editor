@@ -1,3 +1,5 @@
+import '@pnp/logging'
+import { ILogEntry } from '@pnp/logging'
 import * as pnp from '@pnp/pnpjs'
 
 // we cannot use async methods, they do not work correctly when running 'npm run build',
@@ -73,7 +75,7 @@ export function updateCustomAction(...args: any) {
     /*** clear previous log listeners ***/
     $pnp.log.clearSubscribers()
     /*** setup log listener ***/
-    const listener = new $pnp.FunctionListener((entry: pnp.LogEntry) => {
+    const listener = new $pnp.FunctionListener((entry: ILogEntry) => {
       entry.data.response.clone().json().then((error: any) => {
         window.postMessage(JSON.stringify({
           function: functionName,

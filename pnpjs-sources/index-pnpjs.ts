@@ -1,6 +1,9 @@
 export * from '../node_modules/@pnp/pnpjs'
 export * from '../node_modules/@pnp/adaljsclient'
 
+export * from '../node_modules/@pnp/logging'
+export * from '../node_modules/@pnp/common'
+
 export * from '../node_modules/@pnp/sp/appcatalog'
 export * from '../node_modules/@pnp/sp/attachments'
 export * from '../node_modules/@pnp/sp/clientside-pages'

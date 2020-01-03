@@ -45,7 +45,7 @@ const PnPjsConsole = () => {
   const mod_sp = `var mod_sp = '${chrome.extension.getURL('bundles/sp.es5.umd.bundle.js')}';`
   const sj = `var sj = '${chrome.extension.getURL('bundles/system.js')}';`
 
-  const options: editor.IEditorConstructionOptions = {
+  const options: editor.IStandaloneEditorConstructionOptions = {
     language: 'typescript',
     lineNumbers: 'on',
     roundedSelection: true,

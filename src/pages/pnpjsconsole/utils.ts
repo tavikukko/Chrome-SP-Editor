@@ -37,6 +37,8 @@ export const loadDeclarations = async (
     )
   const entries = await readDirRecursive(subDirectoryEntry)
 
+  const declarations = []
+
   for (const entry of entries) {
     const fullpath = entry.fullPath.replace('/crxfs/', '')
     const file = await fetch(fullpath)
@@ -45,7 +47,9 @@ export const loadDeclarations = async (
         content,
         'file:///' + fullpath,
       )
+    declarations.push({path: 'file:///' + fullpath, content})
   }
+  return declarations
 }
 
 export const getExtensionDirectory = (): Promise<DirectoryEntry> =>
