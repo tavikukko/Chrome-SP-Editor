@@ -322,10 +322,14 @@ import { taxonomy } from "@pnp/sp-taxonomy"
 
           // find all import lines from code
           this.getImportModules = function (content) {
-            var importTexts = [...new Set(content.match(/import.*(@pnp|microsoft).*/g).map(iText => {
-              return iText.match(/(["'])(.*?[^\\])\1/g)[0].replace(/\"/g, '').replace(/\'/g, '')
-            }))]
-            return this.resolveFiles(importTexts);
+            var importTexts = []
+            var imports = content.match(/import.*(@pnp|microsoft).*/g)
+            if (imports) {
+              imports.forEach(iText => {
+                importTexts.push(iText.match(/(["'])(.*?[^\\])\1/g)[0].replace(/\"/g, '').replace(/\'/g, ''))
+              })
+            }
+            return this.resolveFiles([...new Set(importTexts)]);
           }.bind(this);
 
           this.getExportRows = function (content, path) {
@@ -360,7 +364,7 @@ import { taxonomy } from "@pnp/sp-taxonomy"
           this.parseLibs = function (filelist) {
             filelist.forEach(function (file) {
               var libs = this.getExportRows(file.content, file.path)
-              if (libs.length > 0) {
+              if (libs && libs.length > 0) {
                 var newLibs = libs.filter(d => !this.currentLibs.find(g => d.path === g.path))
                 newLibs.forEach(lib => this.currentLibs.push(lib))
                 this.parseLibs(newLibs)
@@ -374,8 +378,8 @@ import { taxonomy } from "@pnp/sp-taxonomy"
 
           this.createExtraLibs = function (filelist) {
             this.parseLibs(filelist, [])
-            var extraLibs = this.currentLibs.map(o => {
-              return { content: o.content, filePath: o.path }
+            var extraLibs = this.currentLibs.map(lib => {
+              return { content: lib.content, filePath: lib.path }
             })
             return extraLibs
           }.bind(this)

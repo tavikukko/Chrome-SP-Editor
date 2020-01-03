@@ -1,7 +1,6 @@
 // /gulpfile.js
 var gulp = require('gulp');
 var del = require('del');
-var rename = require('gulp-rename');
 
 gulp.task('clean', (done) => {
   console.log("Deleting old definitions");
