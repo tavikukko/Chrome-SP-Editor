@@ -32,10 +32,10 @@ export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot='end'>
-            <TooltipHost content='Dark Mode' delay={TooltipDelay.zero} >
+            <TooltipHost content={!isDark ? 'Switch to Dark Mode' : 'Switch to Light Mode'} delay={TooltipDelay.zero} >
               <IonToggle onClick={toggleDarkTheme} color='success' checked={isDark}/>
             </TooltipHost>
-            <TooltipHost content='Reload' delay={TooltipDelay.zero} >
+            <TooltipHost content='Reload SP Editor' delay={TooltipDelay.zero} >
               <IonButton
                 onClick={() =>
                   (document.location.href =
