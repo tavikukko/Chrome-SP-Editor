@@ -7,7 +7,7 @@ module.exports = [{
         {
           test: /\.ts$/,
           use: [{
-            loader: "ts-loader?configFile=configFile=pnpjs-sources/tsconfig.pnpjs.json",
+            loader: "ts-loader?configFile=pnpjs-sources/tsconfig.pnpjs.json",
           }],
         },
       ],
@@ -268,4 +268,3 @@ module.exports = [{
       minimize: false
     },
   }];
-  
