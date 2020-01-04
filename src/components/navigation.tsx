@@ -4,37 +4,50 @@ import {
   IonContent,
   IonHeader,
   IonMenu,
-  IonTitle,
+  IonToggle,
   IonToolbar,
 } from '@ionic/react'
-import { FontIcon, Nav } from 'office-ui-fabric-react'
+import { FontIcon, Nav, TooltipDelay, TooltipHost } from 'office-ui-fabric-react'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { setLoading } from '../store/home/actions'
+import { fabricDark, fabricDefault } from '../fabricThemes'
+import { IRootState } from '../store'
+import { setDarkMode, setLoading, setTheme } from '../store/home/actions'
 
 export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
 
   const dispatch = useDispatch()
   const [selectedKey, setSelectedKey] = useState('key1')
+  const { isDark } = useSelector((state: IRootState) => state.home)
+
+  const toggleDarkTheme = () => {
+    document.body.classList.toggle('dark', !isDark)
+    dispatch(setTheme(!isDark ? fabricDark : fabricDefault))
+    dispatch(setDarkMode(!isDark))
+  }
 
   return (
     <IonMenu contentId='main'>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Menu</IonTitle>
           <IonButtons slot='end'>
-          <IonButton
-            onClick={() =>
-              (document.location.href =
-                document.location.protocol !== 'chrome-extension:'
-                  ? document.location.origin
-                  : document.location.origin + '/index.html')
-            }
-          >
-            <FontIcon iconName='Refresh' />
-          </IonButton>
-        </IonButtons>
+            <TooltipHost content='Dark Mode' delay={TooltipDelay.zero} >
+              <IonToggle onClick={toggleDarkTheme} color='success' checked={isDark}/>
+            </TooltipHost>
+            <TooltipHost content='Reload' delay={TooltipDelay.zero} >
+              <IonButton
+                onClick={() =>
+                  (document.location.href =
+                    document.location.protocol !== 'chrome-extension:'
+                      ? document.location.origin
+                      : document.location.origin + '/index.html')
+                }
+              >
+                <FontIcon iconName='Refresh' />
+              </IonButton>
+            </TooltipHost>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent class='outer-content'>

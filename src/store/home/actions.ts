@@ -1,5 +1,6 @@
+import { ICustomizations } from 'office-ui-fabric-react'
 import { action } from 'typesafe-actions'
-import { Constants, IAppMessage, MessageBarColors } from './types'
+import { Constants, IAppMessage } from './types'
 
 export function addItemToList(item: string) {
   return action(Constants.ADD_ITEM, {
@@ -22,5 +23,11 @@ export function setDarkMode(isDark: boolean) {
 export function setAppMessage(appMessage: IAppMessage) {
   return action(Constants.SET_APP_MESSAGE, {
     appMessage,
+  })
+}
+
+export function setTheme(theme: ICustomizations) {
+  return action(Constants.SET_THEME, {
+    theme,
   })
 }

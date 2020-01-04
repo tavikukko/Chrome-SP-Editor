@@ -1,3 +1,4 @@
+import { ICustomizations } from 'office-ui-fabric-react/lib/Utilities'
 import { ActionType } from 'typesafe-actions'
 import * as actions from './actions'
 
@@ -7,7 +8,8 @@ export interface IHomeState {
   list: string[],
   loading: boolean,
   isDark: boolean,
-  appMessage: IAppMessage
+  appMessage: IAppMessage,
+  theme: ICustomizations
 }
 
 export interface IAppMessage {
@@ -21,6 +23,7 @@ export enum Constants {
     SET_LOADING = 'SET_LOADING',
     SET_DARK_MODE = 'SET_DARK_MODE',
     SET_APP_MESSAGE = 'SET_APP_MESSAGE',
+    SET_THEME = 'SET_THEME',
 }
 
 export enum MessageBarColors {

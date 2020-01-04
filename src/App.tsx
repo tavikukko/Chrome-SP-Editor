@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import PnPjsConsole from './pages/pnpjsconsole/pnpjsconsole'
 
@@ -33,23 +33,24 @@ import {
   Customizer,
 } from 'office-ui-fabric-react/lib/Utilities'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import LoadingSpinner from './components/loadingSpinner'
 import MessageBar from './components/messageBar'
 import { fabricDark, fabricDefault } from './fabricThemes'
-import { setDarkMode } from './store/home/actions'
+import { IRootState } from './store'
+import { setDarkMode, setTheme } from './store/home/actions'
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
 
 const App = () => {
 
-  const [fabricTheme, setFabricTheme] = useState()
+  const { theme } = useSelector((state: IRootState) => state.home)
 
   const dispatch = useDispatch()
 
   const toggleDarkTheme = (shouldAdd: boolean) => {
     document.body.classList.toggle('dark', shouldAdd)
-    setFabricTheme(shouldAdd ? fabricDark : fabricDefault)
+    dispatch(setTheme(shouldAdd ? fabricDark : fabricDefault))
     dispatch(setDarkMode(shouldAdd))
   }
 
@@ -61,7 +62,7 @@ const App = () => {
   return (
     <IonApp>
       <Fabric>
-        <Customizer {...fabricTheme}>
+        <Customizer {...theme}>
           <IonReactRouter>
             <IonSplitPane contentId='main'>
               <FabricNav />
