@@ -1,12 +1,10 @@
 import {
-  IonButton,
   IonButtons,
   IonHeader,
   IonMenuButton,
   IonTitle,
   IonToolbar,
 } from '@ionic/react'
-import { FontIcon } from 'office-ui-fabric-react/lib/Icon'
 import React from 'react'
 
 const Header = ({ title }: HeaderProps) => {

@@ -48,16 +48,17 @@ const App = () => {
 
   const dispatch = useDispatch()
 
-  const toggleDarkTheme = (shouldAdd: boolean) => {
-    document.body.classList.toggle('dark', shouldAdd)
-    dispatch(setTheme(shouldAdd ? fabricDark : fabricDefault))
-    dispatch(setDarkMode(shouldAdd))
-  }
-
   useEffect(() => {
+
+    const toggleDarkTheme = (shouldAdd: boolean) => {
+      document.body.classList.toggle('dark', shouldAdd)
+      dispatch(setTheme(shouldAdd ? fabricDark : fabricDefault))
+      dispatch(setDarkMode(shouldAdd))
+    }
+
     toggleDarkTheme(prefersDark.matches)
     prefersDark.addListener(mediaQuery => toggleDarkTheme(mediaQuery.matches))
-  }, [])
+  }, [dispatch])
 
   return (
     <IonApp>

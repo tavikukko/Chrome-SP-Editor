@@ -29,14 +29,32 @@ document.addEventListener('keydown', function(e) {
   return
 }, true)
 
-ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
-  document.getElementById('root'),
-)
+// @ts-ignore: this is the only way to make it work
+window.require.config({
+  paths: {
+    vs: '/vs',
+  },
+})
+
+// @ts-ignore: this is the only way to make it work
+window.MonacoEnvironment = {
+  getWorkerUrl: (workerId: any, label: any) => {
+    return 'worker-loader-proxy.js'
+  },
+} as any
+
+// @ts-ignore: this is the only way to make it work
+window.require(['vs/editor/editor.main', 'vs/language/typescript/tsWorker'], () => {
+
+  ReactDOM.render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>,
+    document.getElementById('root'),
+  )
+})
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
