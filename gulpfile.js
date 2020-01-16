@@ -1,6 +1,7 @@
 // /gulpfile.js
 var gulp = require('gulp');
 var del = require('del');
+var rename = require("gulp-rename");
 
 gulp.task('clean', (done) => {
   console.log("Deleting old definitions");
@@ -35,7 +36,7 @@ gulp.task('clean', (done) => {
 
 gulp.task('copy:commmon', (done) => {
   console.log("Copy @pnp/common");
-  gulp.src('./node_modules/@pnp/common/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/common/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/common/'))
   gulp.src('./dist/common.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -44,7 +45,7 @@ gulp.task('copy:commmon', (done) => {
 
 gulp.task('copy:config-store', (done) => {
   console.log("Copy @pnp/config-store");
-  gulp.src('./node_modules/@pnp/config-store/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/config-store/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/config-store/'))
    gulp.src('./dist/config-store.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -53,7 +54,7 @@ gulp.task('copy:config-store', (done) => {
 
 gulp.task('copy:graph', (done) => {
   console.log("Copy @pnp/graph");
-  gulp.src('./node_modules/@pnp/graph/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/graph/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/graph/'))
   gulp.src('./dist/graph.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -62,7 +63,7 @@ gulp.task('copy:graph', (done) => {
 
 gulp.task('copy:logging', (done) => {
   console.log("Copy @pnp/logging");
-  gulp.src('./node_modules/@pnp/logging/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/logging/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/logging/'))
   gulp.src('./dist/logging.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -71,7 +72,7 @@ gulp.task('copy:logging', (done) => {
 
 gulp.task('copy:odata', (done) => {
   console.log("Copy @pnp/odata");
-  gulp.src('./node_modules/@pnp/odata/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/odata/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/odata/'))
   gulp.src('./dist/odata.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -80,7 +81,7 @@ gulp.task('copy:odata', (done) => {
 
 gulp.task('copy:sp', (done) => {
   console.log("Copy @pnp/sp");
-  gulp.src('./node_modules/@pnp/sp/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/sp/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/sp/'))
   gulp.src('./dist/sp.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -89,7 +90,7 @@ gulp.task('copy:sp', (done) => {
 
 gulp.task('copy:sp-addinhelpers', (done) => {
   console.log("Copy @pnp/sp-addinhelpers");
-  gulp.src('./node_modules/@pnp/sp-addinhelpers/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/sp-addinhelpers/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/sp-addinhelpers/'))
   gulp.src('./dist/sp-addinhelpers.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -98,7 +99,7 @@ gulp.task('copy:sp-addinhelpers', (done) => {
 
 gulp.task('copy:adaljsclient', (done) => {
   console.log("Copy @pnp/adaljsclient");
-  gulp.src('./node_modules/@pnp/adaljsclient/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/adaljsclient/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/adaljsclient/'))
   gulp.src('./dist/adaljsclient.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -107,7 +108,7 @@ gulp.task('copy:adaljsclient', (done) => {
 
 gulp.task('copy:sp-clientsvc', (done) => {
   console.log("Copy @pnp/sp-clientsvc");
-  gulp.src('./node_modules/@pnp/sp-clientsvc/src/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/sp-clientsvc/src/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/sp-clientsvc/'))
   gulp.src('./node_modules/@pnp/sp-clientsvc/dist/sp-clientsvc.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -116,7 +117,7 @@ gulp.task('copy:sp-clientsvc', (done) => {
 
 gulp.task('copy:sp-taxonomy', (done) => {
   console.log("Copy @pnp/sp-taxonomy");
-  gulp.src('./node_modules/@pnp/sp-taxonomy/src/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/sp-taxonomy/src/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/sp-taxonomy/'))
   gulp.src('./node_modules/@pnp/sp-taxonomy/dist/sp-taxonomy.es5.umd.bundle.js')
     .pipe(gulp.dest('./app/js/'))
@@ -143,13 +144,13 @@ gulp.task('copy:monaco-editor', (done) => {
 
 gulp.task('copy:pnpjs', (done) => {
   console.log("Copy @pnp/pnpjs");
-  gulp.src('./node_modules/@pnp/pnpjs/**/*.d.ts')
+  gulp.src(['./node_modules/@pnp/pnpjs/**/*.d.ts', '!./node_modules/@pnp/**/module/**/*'])
     .pipe(gulp.dest('./app/@pnp/pnpjs/'))
-    gulp.src('./dist/pnpjs.es5.umd.bundle.js')
+  // gulp.src('./dist/pnpjs.es5.umd.bundle.js')
+  // .pipe(gulp.dest('./app/js/'))
+  gulp.src('./node_modules/@pnp/pnpjs/dist/pnp.js')
+    .pipe(rename('pnpjs.es5.umd.bundle.js'))
     .pipe(gulp.dest('./app/js/'))
-  //gulp.src('./node_modules/@pnp/pnpjs/dist/pnp.js')
-   // .pipe(rename('pnpjs.es5.umd.bundle.js'))
-   // .pipe(gulp.dest('./app/js/'))
   done();
 });
 

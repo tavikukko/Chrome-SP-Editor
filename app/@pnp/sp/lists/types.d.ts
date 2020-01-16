@@ -1,5 +1,11 @@
 import { ISharePointQueryableCollection, _SharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable";
 import { IChangeQuery } from "../types";
+import { IBasePermissions } from "../security/types";
+import { IFieldInfo } from "../fields/types";
+import { IFormInfo } from "../forms/types";
+import { IFolderInfo } from "../folders/types";
+import { IViewInfo } from "../views/types";
+import { IUserCustomActionInfo } from "../user-custom-actions/types";
 export declare class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
     /**
      * Gets a list from the collection by guid id
@@ -51,22 +57,22 @@ export declare class _List extends _SharePointQueryableInstance<IListInfo> {
      * Gets the effective base permissions of this list
      *
      */
-    readonly effectiveBasePermissions: ISharePointQueryable;
+    get effectiveBasePermissions(): ISharePointQueryable;
     /**
      * Gets the event receivers attached to this list
      *
      */
-    readonly eventReceivers: ISharePointQueryableCollection;
+    get eventReceivers(): ISharePointQueryableCollection;
     /**
      * Gets the related fields of this list
      *
      */
-    readonly relatedFields: ISharePointQueryable;
+    get relatedFields(): ISharePointQueryable;
     /**
      * Gets the IRM settings for this list
      *
      */
-    readonly informationRightsManagementSettings: ISharePointQueryable;
+    get informationRightsManagementSettings(): ISharePointQueryable;
     /**
      * Updates this list intance with the supplied properties
      *
@@ -277,7 +283,7 @@ export interface IListFormData {
 /**
  * Enum representing the options of the RenderOptions property on IRenderListDataParameters interface
  */
-export declare enum IRenderListDataOptions {
+export declare enum RenderListDataOptions {
     None = 0,
     ContextInfo = 1,
     ListData = 2,
@@ -300,16 +306,21 @@ export declare enum IRenderListDataOptions {
  * Represents the parameters to be used to render list data as JSON string in the RenderListDataAsStream method of IList.
  */
 export interface IRenderListDataParameters {
+    AddRequiredFields?: boolean;
     AllowMultipleValueFilterForTaxonomyFields?: boolean;
+    AudienceTarget?: boolean;
     DatesInUtc?: boolean;
+    DeferredRender?: boolean;
     ExpandGroups?: boolean;
     FirstGroupOnly?: boolean;
     FolderServerRelativeUrl?: string;
     ImageFieldsToTryRewriteToCdnUrls?: string;
+    MergeDefaultView?: boolean;
+    OriginalDate?: boolean;
     OverrideViewXml?: string;
     Paging?: string;
-    RenderOptions?: IRenderListDataOptions;
     ReplaceGroup?: boolean;
+    RenderOptions?: RenderListDataOptions[] | number;
     ViewXml?: string;
 }
 /**
@@ -354,12 +365,48 @@ export declare enum ControlMode {
     New = 3
 }
 export interface IListInfo {
+    AllowContentTypes: boolean;
+    AllowDeletion: boolean;
+    BaseTemplate: number;
+    BaseType: any;
+    BrowserFileHandling: any;
+    ContentTypes: any[];
+    ContentTypesEnabled: boolean;
+    CrawlNonDefaultViews: boolean;
+    CreatablesInfo: any;
+    Created: string;
+    CurrentChangeToken: any;
+    CustomActionElements: any[];
+    DataSource: any;
+    DefaultContentApprovalWorkflowId: string;
+    DefaultDisplayFormUrl: string;
+    DefaultEditFormUrl: string;
+    DefaultNewFormUrl: string;
+    DefaultView: any;
+    DefaultViewPath: any;
+    DefaultViewUrl: string;
+    Description: string;
+    DescriptionResource: any;
+    Direction: string;
+    DocumentTemplateUrl: string;
+    DraftVersionVisibility: any;
+    EffectiveBasePermissions: IBasePermissions;
+    EffectiveBasePermissionsForUI: IBasePermissions;
+    EnableAssignToEmail: boolean;
+    EnableAttachments: boolean;
+    EnableFolderCreation: boolean;
+    EnableMinorVersions: boolean;
+    EnableModeration: boolean;
     EnableRequestSignOff: boolean;
     EnableVersioning: boolean;
     EntityTypeName: string;
+    EventReceivers: any[];
+    ExcludeFromOfflineClient: boolean;
     ExemptFromBlockDownloadOfNonViewableFiles: boolean;
+    Fields: Partial<IFieldInfo>[];
     FileSavePostProcessingEnabled: boolean;
     ForceCheckout: boolean;
+    Forms: IFormInfo[];
     HasExternalDataSource: boolean;
     Hidden: boolean;
     Id: string;
@@ -367,12 +414,15 @@ export interface IListInfo {
         DecodedUrl: string;
     };
     ImageUrl: string;
+    InformationRightsManagementSettings: any[];
     IrmEnabled: boolean;
     IrmExpire: boolean;
     IrmReject: boolean;
     IsApplicationList: boolean;
     IsCatalog: boolean;
     IsPrivate: boolean;
+    IsSiteAssetsLibrary: boolean;
+    IsSystemList: boolean;
     ItemCount: number;
     LastItemDeletedDate: string;
     LastItemModifiedDate: string;
@@ -383,13 +433,23 @@ export interface IListInfo {
     MajorWithMinorVersionsLimit: number;
     MultipleDataList: boolean;
     NoCrawl: boolean;
+    OnQuickLaunch: boolean;
     ParentWebPath: {
         DecodedUrl: string;
     };
     ParentWebUrl: string;
     ParserDisabled: boolean;
+    ReadSecurity: number;
+    RootFolder: IFolderInfo;
+    SchemaXml: string;
     ServerTemplateCanCreateFolders: boolean;
     TemplateFeatureId: string;
     Title: string;
+    UserCustomActions: IUserCustomActionInfo[];
+    ValidationFormula: string;
+    ValidationMessage: string;
+    Views: IViewInfo[];
+    WorkflowAssociations: any[];
+    WriteSecurity: number;
 }
 //# sourceMappingURL=types.d.ts.map

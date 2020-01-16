@@ -42,7 +42,8 @@ export declare class FetchClient implements IHttpClientImpl {
 export declare class BearerTokenFetchClient extends FetchClient {
     private _token;
     constructor(_token: string | null);
-    token: string;
+    get token(): string;
+    set token(token: string);
     fetch(url: string, options?: IFetchOptions): Promise<Response>;
 }
 /**

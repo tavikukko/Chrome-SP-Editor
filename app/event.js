@@ -63,7 +63,7 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
         if (pblh) checkinType = 1;
 
         $pnp.sp.site.getWebUrlFromPageUrl(fileAbsUrl).then(function (targerWebUrl) {
-          var webcontext = new $pnp.Web(targerWebUrl);
+          var webcontext = new $pnp.SPNS.Web(targerWebUrl);
           webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).get().then(function (result) {
             if (result.CheckOutType == 2) {
               webcontext.getFolderByServerRelativeUrl(relativeFolderUrl).files.getByName(fileToUpdate).checkout().then(function (result) {

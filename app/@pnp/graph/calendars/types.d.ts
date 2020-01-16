@@ -13,7 +13,7 @@ export declare const Calendars: (baseUrl: string | import("../graphqueryable").I
  * Calendar
  */
 export declare class _Calendar extends _GraphQueryableInstance<ICalendarType> {
-    readonly events: IEvents;
+    get events(): IEvents;
 }
 export interface ICalendar extends _Calendar {
 }

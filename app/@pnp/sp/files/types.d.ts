@@ -61,12 +61,12 @@ export declare class _File extends _SharePointQueryableInstance<IFileInfo> {
      * Gets a value that specifies the list item field values for the list item corresponding to the file.
      *
      */
-    readonly listItemAllFields: ISharePointQueryableInstance;
+    get listItemAllFields(): ISharePointQueryableInstance;
     /**
      * Gets a collection of versions
      *
      */
-    readonly versions: IVersions;
+    get versions(): IVersions;
     /**
      * Approves the file submitted for content approval with the specified comment.
      * Only documents in lists that are enabled for content approval can be approved.
@@ -103,6 +103,15 @@ export declare class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     copyTo(url: string, shouldOverWrite?: boolean): Promise<void>;
     /**
+     * Copies the file by path to destination path.
+     * Also works with different site collections.
+     *
+     * @param destUrl The absolute url or server relative url of the destination file path to copy to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
+     * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
+     */
+    copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth?: boolean): Promise<void>;
+    /**
      * Denies approval for a file that was submitted for content approval.
      * Only documents in lists that are enabled for content approval can be denied.
      *
@@ -116,6 +125,15 @@ export declare class _File extends _SharePointQueryableInstance<IFileInfo> {
      * @param moveOperations The bitwise MoveOperations value for how to move the file.
      */
     moveTo(url: string, moveOperations?: MoveOperations): Promise<void>;
+    /**
+     * Moves the file by path to the specified destination url.
+     * Also works with different site collections.
+     *
+     * @param destUrl The absolute url or server relative url of the destination file path to move to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
+     * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
+     */
+    moveByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth?: boolean): Promise<void>;
     /**
      * Submits the file for content approval with the specified comment.
      *
@@ -338,6 +356,7 @@ export interface IAddUsingPathProps {
     XorHash?: string;
 }
 export interface IFileInfo {
+    readonly "odata.id": string;
     CheckInComment: string;
     CheckOutType: number;
     ContentTag: string;

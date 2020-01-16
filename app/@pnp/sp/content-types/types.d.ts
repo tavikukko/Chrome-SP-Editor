@@ -32,19 +32,19 @@ export declare class _ContentType extends _SharePointQueryableInstance<IContentT
     /**
      * Gets the column (also known as field) references in the content type.
      */
-    readonly fieldLinks: IFieldLinks;
+    get fieldLinks(): IFieldLinks;
     /**
      * Gets a value that specifies the collection of fields for the content type.
      */
-    readonly fields: ISharePointQueryableCollection;
+    get fields(): ISharePointQueryableCollection;
     /**
      * Gets the parent content type of the content type.
      */
-    readonly parent: IContentType;
+    get parent(): IContentType;
     /**
      * Gets a value that specifies the collection of workflow associations for the content type.
      */
-    readonly workflowAssociations: ISharePointQueryableCollection;
+    get workflowAssociations(): ISharePointQueryableCollection;
 }
 export interface IContentType extends _ContentType, IDeleteable {
 }

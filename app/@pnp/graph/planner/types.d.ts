@@ -1,14 +1,14 @@
 import { ITypedHash } from "@pnp/common";
 import { PlannerPlan as IPlannerPlanType, PlannerTask as IPlannerTaskType, PlannerBucket as IPlannerBucketType, Planner as IPlannerType } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableInstance, _GraphQueryableCollection } from "../graphqueryable";
-import { IUpdateable, IDeleteable, IGetById } from "../decorators";
+import { IUpdateable, IDeleteable, IGetById, IDeleteableWithETag, IUpdateableWithETag } from "../decorators";
 /**
  * Planner
  */
 export declare class _Planner extends _GraphQueryableInstance<IPlannerType> {
-    readonly plans: IPlans;
-    readonly tasks: ITasks;
-    readonly buckets: IBuckets;
+    get plans(): IPlans;
+    get tasks(): ITasks;
+    get buckets(): IBuckets;
 }
 export interface IPlanner extends _Planner {
 }
@@ -17,8 +17,8 @@ export declare const Planner: (baseUrl: string | import("../graphqueryable").IGr
  * Plan
  */
 export declare class _Plan extends _GraphQueryableInstance<IPlannerPlanType> {
-    readonly tasks: ITasks;
-    readonly buckets: IBuckets;
+    get tasks(): ITasks;
+    get buckets(): IBuckets;
 }
 export interface IPlan extends _Plan, IUpdateable<IPlannerPlanType>, IDeleteable {
 }
@@ -40,7 +40,7 @@ export declare const Plans: (baseUrl: string | import("../graphqueryable").IGrap
  */
 export declare class _Task extends _GraphQueryableInstance<IPlannerTaskType> {
 }
-export interface ITask extends _Task, IUpdateable<IPlannerTaskType>, IDeleteable {
+export interface ITask extends _Task, IUpdateableWithETag<IPlannerTaskType>, IDeleteableWithETag {
 }
 export declare const Task: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => ITask;
 /**
@@ -64,7 +64,7 @@ export declare const Tasks: (baseUrl: string | import("../graphqueryable").IGrap
  * Bucket
  */
 export declare class _Bucket extends _GraphQueryableInstance<IPlannerBucketType> {
-    readonly tasks: ITasks;
+    get tasks(): ITasks;
 }
 export interface IBucket extends _Bucket, IUpdateable<IPlannerBucketType>, IDeleteable {
 }

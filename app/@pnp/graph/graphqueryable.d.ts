@@ -109,7 +109,7 @@ export declare class _GraphQueryableCollection<GetType = any[]> extends _GraphQu
     /**
      * 	Retrieves the total count of matching resources
      */
-    readonly count: this;
+    get count(): this;
 }
 export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, IGraphQueryable<GetType> {
     /**

@@ -54,7 +54,7 @@ export declare class _SiteUser extends _SharePointQueryableInstance<ISiteUserInf
      * Gets the groups for this user
      *
      */
-    readonly groups: ISiteGroups;
+    get groups(): ISiteGroups;
     /**
     * Updates this user instance with the supplied properties
     *

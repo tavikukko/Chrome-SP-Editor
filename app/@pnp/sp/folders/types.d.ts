@@ -31,37 +31,37 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      * Specifies the sequence in which content types are displayed.
      *
      */
-    readonly contentTypeOrder: ISharePointQueryableCollection;
+    get contentTypeOrder(): ISharePointQueryableCollection;
     /**
      * Gets this folder's sub folders
      *
      */
-    readonly folders: IFolders;
+    get folders(): IFolders;
     /**
      * Gets this folder's list item field values
      *
      */
-    readonly listItemAllFields: ISharePointQueryableInstance;
+    get listItemAllFields(): ISharePointQueryableInstance;
     /**
      * Gets the parent folder, if available
      *
      */
-    readonly parentFolder: IFolder;
+    get parentFolder(): IFolder;
     /**
      * Gets this folder's properties
      *
      */
-    readonly properties: ISharePointQueryableInstance;
+    get properties(): ISharePointQueryableInstance;
     /**
      * Gets this folder's server relative url
      *
      */
-    readonly serverRelativeUrl: ISharePointQueryable;
+    get serverRelativeUrl(): ISharePointQueryable;
     /**
      * Gets a value that specifies the content type order.
      *
      */
-    readonly uniqueContentTypeOrder: ISharePointQueryableCollection;
+    get uniqueContentTypeOrder(): ISharePointQueryableCollection;
     /**
      * Updates folder's properties
      * @param props Folder's properties to update
@@ -82,11 +82,27 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      */
     moveTo(destUrl: string): Promise<void>;
     /**
+     * Moves a folder by path to destination path
+     * Also works with different site collections.
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     * @param keepBoth Keep both if folder with the same name in the same location already exists?
+     */
+    moveByPath(destUrl: string, KeepBoth?: boolean): Promise<void>;
+    /**
      * Copies a folder to destination path
      *
      * @param destUrl Absolute or relative URL of the destination path
      */
     copyTo(destUrl: string): Promise<void>;
+    /**
+     * Copies a folder by path to destination path
+     * Also works with different site collections.
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     * @param keepBoth Keep both if folder with the same name in the same location already exists?
+     */
+    copyByPath(destUrl: string, KeepBoth?: boolean): Promise<void>;
     protected getShareable(): Promise<IItem>;
 }
 export interface IFolder extends _Folder, IDeleteableWithETag {
@@ -119,6 +135,7 @@ export interface IFolderUpdateResult {
     data: any;
 }
 export interface IFolderInfo {
+    readonly "odata.id": string;
     Exists: boolean;
     IsWOPIEnabled: boolean;
     ItemCount: number;

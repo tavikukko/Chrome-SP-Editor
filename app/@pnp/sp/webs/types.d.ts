@@ -29,7 +29,7 @@ export declare class _Web extends _SharePointQueryableInstance<IWebInfo> {
      * Gets this web's subwebs
      *
      */
-    readonly webs: IWebs;
+    get webs(): IWebs;
     /**
      * Gets this web's parent web and data
      *
@@ -45,12 +45,12 @@ export declare class _Web extends _SharePointQueryableInstance<IWebInfo> {
     /**
      * Allows access to the web's all properties collection
      */
-    readonly allProperties: ISharePointQueryableInstance;
+    get allProperties(): ISharePointQueryableInstance;
     /**
      * Gets a collection of WebInfos for this web's subwebs
      *
      */
-    readonly webinfos: ISharePointQueryableCollection<IWebInfosData[]>;
+    get webinfos(): ISharePointQueryableCollection<IWebInfosData[]>;
     /**
      * Creates a new batch for requests within the context of this web
      *

@@ -1,8 +1,8 @@
 /**
  * @license
- * v1.3.8
+ * v1.3.9
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
- * Copyright (c) 2019 Microsoft
+ * Copyright (c) 2020 Microsoft
  * docs: https://pnp.github.io/pnpjs/
  * source: https://github.com/pnp/pnpjs
  * bugs: https://github.com/pnp/pnpjs/issues
@@ -5814,7 +5814,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.8");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.9");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -6152,11 +6152,41 @@ var ClientSidePage = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ClientSidePage.prototype, "hasVerticalSection", {
+        get: function () {
+            return this.sections.findIndex(function (s) { return s.layoutIndex === 2; }) > -1;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClientSidePage.prototype, "verticalSection", {
+        get: function () {
+            if (this.hasVerticalSection) {
+                return this.addVerticalSection();
+            }
+            return null;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Add a section to this page
      */
     ClientSidePage.prototype.addSection = function () {
-        var section = new CanvasSection(this, getNextOrder(this.sections));
+        var section = new CanvasSection(this, getNextOrder(this.sections), 1);
+        this.sections.push(section);
+        return section;
+    };
+    /**
+     * Add a section to this page
+     */
+    ClientSidePage.prototype.addVerticalSection = function () {
+        // we can only have one vertical section so we find it if it exists
+        var sectionIndex = this.sections.findIndex(function (s) { return s.layoutIndex === 2; });
+        if (sectionIndex > -1) {
+            return this.sections[sectionIndex];
+        }
+        var section = new CanvasSection(this, getNextOrder(this.sections), 2);
         this.sections.push(section);
         return section;
     };
@@ -6581,11 +6611,11 @@ var ClientSidePage = /** @class */ (function (_super) {
      * @param control The control to merge
      */
     ClientSidePage.prototype.mergePartToTree = function (control, positionData) {
-        var section = null;
         var column = null;
         var sectionFactor = 12;
         var sectionIndex = 0;
         var zoneIndex = 0;
+        var layoutIndex = 1;
         // handle case where we don't have position data (shouldn't happen?)
         if (positionData) {
             if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(positionData, "zoneIndex")) {
@@ -6597,19 +6627,14 @@ var ClientSidePage = /** @class */ (function (_super) {
             if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(positionData, "sectionFactor")) {
                 sectionFactor = positionData.sectionFactor;
             }
+            if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(positionData, "layoutIndex")) {
+                layoutIndex = positionData.layoutIndex;
+            }
         }
-        var sections = this.sections.filter(function (s) { return s.order === zoneIndex; });
-        if (sections.length < 1) {
-            section = new CanvasSection(this, zoneIndex);
-            this.sections.push(section);
-        }
-        else {
-            section = sections[0];
-        }
-        section.emphasis = control.data.emphasis && control.data.emphasis.zoneEmphasis ? control.data.emphasis.zoneEmphasis : 0;
+        var section = this.getOrCreateSection(zoneIndex, layoutIndex, control.data.emphasis.zoneEmphasis || 0);
         var columns = section.columns.filter(function (c) { return c.order === sectionIndex; });
         if (columns.length < 1) {
-            column = section.addColumn(sectionFactor);
+            column = section.addColumn(sectionFactor, layoutIndex);
         }
         else {
             column = columns[0];
@@ -6625,18 +6650,30 @@ var ClientSidePage = /** @class */ (function (_super) {
      */
     ClientSidePage.prototype.mergeColumnToTree = function (column) {
         var order = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(column.data, "position") && Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(column.data.position, "zoneIndex") ? column.data.position.zoneIndex : 0;
+        var layoutIndex = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(column.data, "position") && Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["hOP"])(column.data.position, "layoutIndex") ? column.data.position.layoutIndex : 1;
+        var section = this.getOrCreateSection(order, layoutIndex, column.data.emphasis.zoneEmphasis || 0);
+        column.section = section;
+        section.columns.push(column);
+    };
+    /**
+     * Handle the logic to get or create a section based on the supplied order and layoutIndex
+     *
+     * @param order Section order
+     * @param layoutIndex Layout Index (1 === normal, 2 === vertical section)
+     * @param emphasis The section emphasis
+     */
+    ClientSidePage.prototype.getOrCreateSection = function (order, layoutIndex, emphasis) {
         var section = null;
-        var sections = this.sections.filter(function (s) { return s.order === order; });
+        var sections = this.sections.filter(function (s) { return s.order === order && s.layoutIndex === layoutIndex; });
         if (sections.length < 1) {
-            section = new CanvasSection(this, order);
-            section.emphasis = column.data.emphasis.zoneEmphasis || 0;
-            this.sections.push(section);
+            section = layoutIndex === 2 ? this.addVerticalSection() : this.addSection();
+            section.order = order;
+            section.emphasis = emphasis;
         }
         else {
             section = sections[0];
         }
-        column.section = section;
-        section.columns.push(column);
+        return section;
     };
     ClientSidePage.prototype.getItem = function () {
         var _this = this;
@@ -6656,7 +6693,7 @@ var ClientSidePage = /** @class */ (function (_super) {
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_3__["SharePointQueryable"]));
 
 var CanvasSection = /** @class */ (function () {
-    function CanvasSection(page, order, columns, _emphasis) {
+    function CanvasSection(page, order, layoutIndex, columns, _emphasis) {
         if (columns === void 0) { columns = []; }
         if (_emphasis === void 0) { _emphasis = 0; }
         this.page = page;
@@ -6664,6 +6701,7 @@ var CanvasSection = /** @class */ (function () {
         this._emphasis = _emphasis;
         this._memId = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["getGUID"])();
         this._order = order;
+        this._layoutIndex = layoutIndex;
     }
     Object.defineProperty(CanvasSection.prototype, "order", {
         get: function () {
@@ -6673,6 +6711,19 @@ var CanvasSection = /** @class */ (function () {
             this._order = value;
             for (var i = 0; i < this.columns.length; i++) {
                 this.columns[i].data.position.zoneIndex = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CanvasSection.prototype, "layoutIndex", {
+        get: function () {
+            return this._layoutIndex;
+        },
+        set: function (value) {
+            this._layoutIndex = value;
+            for (var i = 0; i < this.columns.length; i++) {
+                this.columns[i].data.position.layoutIndex = value;
             }
         },
         enumerable: true,
@@ -6694,10 +6745,12 @@ var CanvasSection = /** @class */ (function () {
     /**
      * Adds a new column to this section
      */
-    CanvasSection.prototype.addColumn = function (factor) {
+    CanvasSection.prototype.addColumn = function (factor, layoutIndex) {
+        if (layoutIndex === void 0) { layoutIndex = 1; }
         var column = new CanvasColumn();
         column.section = this;
         column.data.position.zoneIndex = this.order;
+        column.data.position.layoutIndex = layoutIndex;
         column.data.position.sectionFactor = factor;
         column.order = getNextOrder(this.columns);
         this.columns.push(column);
@@ -6767,6 +6820,7 @@ var CanvasColumn = /** @class */ (function () {
             this.data.position.sectionIndex = value;
             for (var i = 0; i < this.controls.length; i++) {
                 this.controls[i].data.position.zoneIndex = this.data.position.zoneIndex;
+                this.controls[i].data.position.layoutIndex = this.data.position.layoutIndex;
                 this.controls[i].data.position.sectionIndex = value;
             }
         },
@@ -6891,6 +6945,7 @@ var ClientSideText = /** @class */ (function (_super) {
         this.data.position.controlIndex = getNextOrder(col.controls);
         this.data.position.zoneIndex = col.data.position.zoneIndex;
         this.data.position.sectionIndex = col.order;
+        this.data.position.layoutIndex = col.data.position.layoutIndex;
     };
     ClientSideText.Default = {
         addedFromPersistedData: false,
@@ -6993,6 +7048,7 @@ var ClientSideWebpart = /** @class */ (function (_super) {
     ClientSideWebpart.prototype.onColumnChange = function (col) {
         this.data.position = {
             controlIndex: getNextOrder(col.controls),
+            layoutIndex: col.data.position.layoutIndex,
             sectionFactor: col.factor,
             sectionIndex: col.data.position.sectionIndex,
             zoneIndex: col.data.position.zoneIndex,
@@ -7024,6 +7080,7 @@ var ClientSideWebpart = /** @class */ (function (_super) {
         id: null,
         position: {
             controlIndex: 1,
+            layoutIndex: 1,
             sectionFactor: 12,
             sectionIndex: 1,
             zoneIndex: 1,
@@ -8809,6 +8866,25 @@ var Folder = /** @class */ (function (_super) {
             });
         });
     };
+    /**
+     * Copies a folder to destination path
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     */
+    Folder.prototype.copyTo = function (destUrl) {
+        return this.select("ServerRelativeUrl").get().then(function (_a) {
+            var srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
+            var webBaseUrl = Object(_utils_extractweburl__WEBPACK_IMPORTED_MODULE_7__["extractWebUrl"])(absoluteUrl);
+            var hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+            var f = new Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()");
+            return f.postCore({
+                body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["jsS"])({
+                    destUrl: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["isUrlAbsolute"])(destUrl) ? destUrl : "" + hostUrl + destUrl,
+                    srcUrl: "" + hostUrl + srcUrl,
+                }),
+            });
+        });
+    };
     return Folder;
 }(_sharepointqueryableshareable__WEBPACK_IMPORTED_MODULE_3__["SharePointQueryableShareableFolder"]));
 
@@ -9905,6 +9981,9 @@ var List = /** @class */ (function (_super) {
     List.prototype.renderListDataAsStream = function (parameters, overrideParameters, queryParams) {
         if (overrideParameters === void 0) { overrideParameters = null; }
         if (queryParams === void 0) { queryParams = new Map(); }
+        if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_9__["hOP"])(parameters, "RenderOptions") && Object(_pnp_common__WEBPACK_IMPORTED_MODULE_9__["isArray"])(parameters.RenderOptions)) {
+            parameters.RenderOptions = parameters.RenderOptions.reduce(function (v, c) { return v + c; });
+        }
         var postBody = {
             overrideParameters: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_9__["extend"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_13__["metadata"])("SP.RenderListDataOverrideParameters"), overrideParameters),
             parameters: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_9__["extend"])(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_13__["metadata"])("SP.RenderListDataParameters"), parameters),
@@ -10335,11 +10414,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.8");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.9");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.8");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.9");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -13559,6 +13638,17 @@ var SiteGroup = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    /**
+     * Set the owner of a group using a user id
+     * @param userId the id of the user that will be set as the owner of the current group
+     */
+    SiteGroup.prototype.setUserAsOwner = function (userId) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                return [2 /*return*/, this.clone(SiteGroup, "SetUserAsOwner(" + userId + ")").postCore()];
+            });
+        });
+    };
     return SiteGroup;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 

@@ -1,7 +1,7 @@
 import { _SharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryableInstance, _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
 export declare class _LimitedWebPartManager extends _SharePointQueryable implements ILimitedWebPartManager {
-    readonly scope: ISharePointQueryable;
-    readonly webparts: IWebPartDefinitions;
+    get scope(): ISharePointQueryable;
+    get webparts(): IWebPartDefinitions;
     export(id: string): Promise<string>;
     import(xml: string): Promise<any>;
 }
@@ -49,7 +49,7 @@ export declare class _WebPartDefinition extends _SharePointQueryableInstance {
     /**
     * Gets the webpart information associated with this definition
     */
-    readonly webpart: ISharePointQueryableInstance;
+    get webpart(): ISharePointQueryableInstance;
     /**
      * Saves changes to the Web Part made using other properties and methods on the SPWebPartDefinition object
      */

@@ -38,7 +38,7 @@ export declare class _NavigationNode extends _SharePointQueryableInstance<INavNo
     /**
      * Represents the child nodes of this node
      */
-    readonly children: INavigationNodes;
+    get children(): INavigationNodes;
     /**
      * Updates this node
      *
@@ -62,12 +62,12 @@ export declare class _Navigation extends _SharePointQueryable {
      * Gets the quicklaunch navigation nodes for the current context
      *
      */
-    readonly quicklaunch: INavigationNodes;
+    get quicklaunch(): INavigationNodes;
     /**
      * Gets the top bar navigation nodes for the current context
      *
      */
-    readonly topNavigationBar: INavigationNodes;
+    get topNavigationBar(): INavigationNodes;
 }
 export interface INavigation {
     readonly quicklaunch: INavigationNodes;

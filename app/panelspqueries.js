@@ -1616,7 +1616,7 @@ var getZonesAndWebparts = function getZonesAndWebparts() {
 
     if (_spPageContextInfo.serverRequestPath.toLowerCase().indexOf("_layouts/") == -1)
       $pnp.sp.web.getFileByServerRelativeUrl(_spPageContextInfo.serverRequestPath)
-        .getLimitedWebPartManager($pnp.WebPartsPersonalizationScope.Shared)
+        .getLimitedWebPartManager($pnp.SPNS.WebPartsPersonalizationScope.Shared)
         .webparts.expand("webpart")
         .select("Id, ZoneId, Title, ZoneIndex").get().then(webparts => {
           var webpartsFromWPM = [];
@@ -2294,7 +2294,7 @@ var getSiteCollections = function getSiteCollections() {
         } else {
         }
 
-        var q = $pnp.SearchQueryBuilder("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
+        var q = $pnp.SPNS.SearchQueryBuilder("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
 
         $pnp.sp.search(q).then(re => {
           var siteid = re.PrimarySearchResults[0].SiteId ? re.PrimarySearchResults[0].SiteId : re.PrimarySearchResults[0].siteid
@@ -2349,7 +2349,7 @@ var getSiteCollections = function getSiteCollections() {
                   hubsiteQuery += "DepartmentId:{" + id + "}";
                 });
 
-                var q2 = $pnp.SearchQueryBuilder("contentclass:STS_Site AND ( " + hubsiteQuery + " )", { TrimDuplicates: false, SelectProperties: ["DepartmentId", "Url"] });
+                var q2 = $pnp.SPNS.SearchQueryBuilder("contentclass:STS_Site AND ( " + hubsiteQuery + " )", { TrimDuplicates: false, SelectProperties: ["DepartmentId", "Url"] });
 
                 $pnp.sp.search(q2).then(re2 => {
                   var deps = [];

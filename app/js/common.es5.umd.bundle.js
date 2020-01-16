@@ -727,10 +727,10 @@ module.exports = g;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: ./node_modules/@pnp/common/util.js
+// EXTERNAL MODULE: ./node_modules/@pnp/common/module/util.js
 var util = __webpack_require__(0);
 
-// CONCATENATED MODULE: ./node_modules/@pnp/common/collections.js
+// CONCATENATED MODULE: ./node_modules/@pnp/common/module/collections.js
 
 /**
  * Used to calculate the object properties, with polyfill if needed
@@ -766,7 +766,7 @@ function mergeMaps(target) {
     return target;
 }
 //# sourceMappingURL=collections.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
+// CONCATENATED MODULE: ./node_modules/@pnp/common/module/libconfig.js
 
 function setup(config) {
     RuntimeConfig.assign(config);
@@ -863,13 +863,13 @@ var libconfig_RuntimeConfigImpl = /** @class */ (function () {
 var _runtimeConfig = new libconfig_RuntimeConfigImpl();
 var RuntimeConfig = _runtimeConfig;
 //# sourceMappingURL=libconfig.js.map
-// EXTERNAL MODULE: ./node_modules/@pnp/common/net.js
+// EXTERNAL MODULE: ./node_modules/@pnp/common/module/net.js
 var net = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
 var tslib_es6 = __webpack_require__(1);
 
-// CONCATENATED MODULE: ./node_modules/@pnp/common/storage.js
+// CONCATENATED MODULE: ./node_modules/@pnp/common/module/storage.js
 
 
 
@@ -1123,7 +1123,7 @@ var PnPClientStorage = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=storage.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/common/index.js
+// CONCATENATED MODULE: ./node_modules/@pnp/common/module/index.js
 
 
 

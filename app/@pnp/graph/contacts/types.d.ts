@@ -35,11 +35,11 @@ export declare class _ContactFolder extends _GraphQueryableInstance<IContactFold
     /**
      * Gets the contacts in this contact folder
      */
-    readonly contacts: IContacts;
+    get contacts(): IContacts;
     /**
     * Gets the contacts in this contact folder
     */
-    readonly childFolders: IContactFolders;
+    get childFolders(): IContactFolders;
 }
 export interface IContactFolder extends _ContactFolder, IUpdateable, IDeleteable {
 }

@@ -27,7 +27,7 @@ export interface IViews extends _Views {
 export declare const Views: import("../sharepointqueryable").ISPInvokableFactory<IViews>;
 export declare class _View extends _SharePointQueryableInstance<IViewInfo> {
     delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>) => Promise<void>;
-    readonly fields: IViewFields;
+    get fields(): IViewFields;
     /**
      * Updates this view intance with the supplied properties
      *

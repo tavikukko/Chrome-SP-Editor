@@ -6,7 +6,7 @@ export declare class _User extends _DirectoryObject<IUserType> {
     /**
     * The groups and directory roles associated with the user
     */
-    readonly memberOf: IDirectoryObjects;
+    get memberOf(): IDirectoryObjects;
 }
 export interface IUser extends _User, IUpdateable<IUserType>, IDeleteable {
 }

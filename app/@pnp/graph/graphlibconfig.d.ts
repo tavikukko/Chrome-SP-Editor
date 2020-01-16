@@ -15,8 +15,8 @@ export interface GraphConfiguration extends ILibraryConfiguration, GraphConfigur
 }
 export declare function setup(config: GraphConfiguration): void;
 export declare class GraphRuntimeConfigImpl {
-    readonly headers: ITypedHash<string>;
-    readonly fetchClientFactory: () => IHttpClientImpl;
+    get headers(): ITypedHash<string>;
+    get fetchClientFactory(): () => IHttpClientImpl;
 }
 export declare let GraphRuntimeConfig: GraphRuntimeConfigImpl;
 //# sourceMappingURL=graphlibconfig.d.ts.map
