@@ -56,8 +56,8 @@ const PnPjsEditor = () => {
       if (editor && editor.current) {
 
         editor.current.onDidChangeModelContent((x) => {
-          const model = editor.current!.getModel()!.getValue()
-          dispatch(setCode(model))
+         // const model = editor.current!.getModel()!.getValue()
+         // TODO: here fix modules
         })
 
         // tslint:disable-next-line:no-bitwise
@@ -120,9 +120,11 @@ const PnPjsEditor = () => {
   useEffect(() => {
     return () => {
       // cleaning models
+      const models = editor.current!.getModel()!.getValue()
+      dispatch(setCode(models))
       monaco.editor.getModels().forEach(model => model.dispose())
     }
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (!initialized) {

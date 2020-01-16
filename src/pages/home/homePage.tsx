@@ -17,7 +17,6 @@ const HomePage = () => {
   /* redux */
   const dispatch = useDispatch()
   const { list, loading } = useSelector((state: IRootState) => state.home)
-  const { isDark } = useSelector((state: IRootState) => state.home)
 
   /* compoent methods */
   const onInputChange = (newValue?: string) => {

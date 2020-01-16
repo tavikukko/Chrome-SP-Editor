@@ -78,10 +78,10 @@ export const pnpjsMonacoConfigs = () => {
   monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
     target: monaco.languages.typescript.ScriptTarget.ES5,
     allowNonTsExtensions: true,
-    moduleResolution: monaco.languages.typescript.ModuleResolutionKind.Classic,
+    moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
     module: monaco.languages.typescript.ModuleKind.CommonJS,
     noEmit: true,
-    typeRoots: [],
+    // typeRoots: ['@pnp', '@microsoft'],
     allowSyntheticDefaultImports: true,
   })
   return COMMON_CONFIG
