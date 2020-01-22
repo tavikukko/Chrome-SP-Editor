@@ -37,6 +37,7 @@ const PnPjsEditor = () => {
   const stateCode = code
   const editor = useRef<null | monaco.editor.IStandaloneCodeEditor>(null)
   const outputDiv = useRef<null | HTMLDivElement>(null)
+  const completionItems = useRef<null | monaco.IDisposable>(null)
 
   const { isDark } = useSelector((state: IRootState) => state.home)
 
@@ -54,10 +55,46 @@ const PnPjsEditor = () => {
         ...COMMON_CONFIG,
       })
       if (editor && editor.current) {
+        // adds auto-complete for @pnp module imports
+        completionItems.current = monaco.languages.registerCompletionItemProvider('typescript', {
+          triggerCharacters: ['@', '/'],
+          provideCompletionItems: (model, position) => {
+            // alert('jou!')
+            const textUntilPosition = model.getValueInRange({
+              startLineNumber: position.lineNumber,
+              startColumn: 1,
+              endLineNumber: position.lineNumber,
+              endColumn: position.column,
+            })
+
+            const importText = textUntilPosition.substring(textUntilPosition.indexOf('@'))
+            // alert(importText)
+            const moduleDepth = importText.split('/')
+            // alert(moduleDepth)
+            const suggestions: any[] = []
+
+            definitions.forEach(file => {
+              if (file.filePath.indexOf(importText) > -1) {
+                const depthIndex = file.filePath.split('/', moduleDepth.length).join('/').length
+                const importedModule = file.filePath.substring(0, depthIndex).replace('.d.ts', '')
+                if (!suggestions.find(o => o.label === importedModule)) {
+                  suggestions.push({
+                    label: importedModule,
+                    insertText: importedModule.replace(importText, ''),
+                    kind: monaco.languages.CompletionItemKind.Module,
+                  })
+                }
+              }
+            })
+            return {
+              suggestions,
+            }
+          },
+        })
 
         editor.current.onDidChangeModelContent((x) => {
-         // const model = editor.current!.getModel()!.getValue()
-         // TODO: here fix modules
+          // const model = editor.current!.getModel()!.getValue()
+          // TODO: here fix modules
         })
 
         // tslint:disable-next-line:no-bitwise
@@ -109,7 +146,7 @@ const PnPjsEditor = () => {
         })
       }
     }
-  }, [COMMON_CONFIG, dispatch, stateCode])
+  }, [COMMON_CONFIG, definitions, dispatch, stateCode])
 
   // this will run always when the isDark changes
   useEffect(() => {
@@ -121,17 +158,20 @@ const PnPjsEditor = () => {
     return () => {
       // cleaning models
       const models = editor.current!.getModel()!.getValue()
+      completionItems.current?.dispose()
       dispatch(setCode(models))
       monaco.editor.getModels().forEach(model => model.dispose())
     }
   }, [dispatch])
 
   useEffect(() => {
-    if (!initialized) {
+    if (definitions.length === 0 && !initialized) {
+      fetchDefinitions(dispatch)
+    } else if (definitions.length > 0 && !initialized) {
       setInitialized(true)
-      definitions.length > 0 ? initEditor() : fetchDefinitions(dispatch).then(initEditor)
+      initEditor()
     }
-  }, [definitions, dispatch, initEditor, initialized, outputDiv])
+  }, [definitions, dispatch, initEditor, initialized])
 
   return (
     <div ref={outputDiv} style={{ width: '100%', height: '100%' }} />

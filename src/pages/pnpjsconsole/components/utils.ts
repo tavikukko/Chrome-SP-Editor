@@ -35,7 +35,7 @@ export const loadDefinitions = async (
   dir: string[],
 ) => {
   return new Promise<IDefinitions[]>(async resolve => {
-    const declarations: Array<{ content: string; filePath: string | undefined }> = []
+    const declarations: IDefinitions[]= []
     await Promise.all(dir.map(async di => {
       const subDirectoryEntry = await getDirectory(directoryEntry, di.replace('/crxfs', ''))
       const entries = await readDirRecursive(subDirectoryEntry)

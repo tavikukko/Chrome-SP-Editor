@@ -10,7 +10,7 @@ export interface IPnPjsConsoleState {
 
 export interface IDefinitions {
   content: string,
-  filePath: string | undefined
+  filePath: string
 }
 
 export enum Constants {
