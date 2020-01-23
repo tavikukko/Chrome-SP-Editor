@@ -67,22 +67,13 @@ riot.tag("pnpjsconsole", `
               `/*
   Hit CTRL/CMD + D to run the code, view console for results
 */
-import { sp } from "@pnp/sp";
-import "@pnp/sp/webs";  // <-- Selective imports (PnPjs >= 2.0)
-import "@pnp/sp/folders"
-import "@pnp/sp/files"
+import { sp } from "@pnp/sp/presets/all";
 
 (async () => {
 
-  const web = await sp.web.select("Title")() // <-- Invokable Objects (PnPjs >= 2.0)
+  const web = await sp.web.select("Title")()
   console.log("Web Title: ", web.Title);
 
-  const query = sp.web
-        .getFolderByServerRelativeUrl("!@p1::/sites/mysitecollection/Site Pages/") // <-- Aliased Parameters (PnPjs >= 2.0)
-        .files.select("Title");
-
-  console.log(query.toUrlAndQuery());
-  
 })().catch(console.log)
 
 /*
@@ -100,7 +91,6 @@ import "@pnp/graph/users"
   graph.setup({
       spfxContext: context
   })
-
   const me = await graph.me();
   console.log(me)
 
@@ -108,7 +98,6 @@ import "@pnp/graph/users"
 
 /*
   SP Editor also supports sp-taxonomy & sp-clientsvc packages
-  which were dropped from PnPjs 2.0
 */
 import { taxonomy } from "@pnp/sp-taxonomy"
 
@@ -118,7 +107,7 @@ import { taxonomy } from "@pnp/sp-taxonomy"
   console.log(ts);
 
 })().catch(console.log)
-                        
+
 `,
               "typescript",
               new monaco.Uri("main.ts")

@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 27);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -99,466 +99,26 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/@pnp/common/module/util.js
-var util = __webpack_require__(3);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/collections.js
-
-/**
- * Used to calculate the object properties, with polyfill if needed
- */
-var objectEntries = Object(util["j" /* isFunc */])(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
-/**
- * Converts the supplied object to a map
- *
- * @param o The object to map
- */
-function objectToMap(o) {
-    if (o !== undefined && o !== null) {
-        return new Map(objectEntries(o));
-    }
-    return new Map();
-}
-/**
- * Merges to Map instances together, overwriting values in target with matching keys, last in wins
- *
- * @param target map into which the other maps are merged
- * @param maps One or more maps to merge into the target
- */
-function mergeMaps(target) {
-    var maps = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        maps[_i - 1] = arguments[_i];
-    }
-    for (var i = 0; i < maps.length; i++) {
-        maps[i].forEach(function (v, k) {
-            target.set(k, v);
-        });
-    }
-    return target;
-}
-//# sourceMappingURL=collections.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/libconfig.js
-
-function setup(config) {
-    RuntimeConfig.assign(config);
-}
-// lable mapping for known config values
-var s = [
-    "defaultCachingStore",
-    "defaultCachingTimeoutSeconds",
-    "globalCacheDisable",
-    "enableCacheExpiration",
-    "cacheExpirationIntervalMilliseconds",
-    "spfxContext",
-    "ie11",
-];
-var libconfig_RuntimeConfigImpl = /** @class */ (function () {
-    function RuntimeConfigImpl(_v) {
-        if (_v === void 0) { _v = new Map(); }
-        this._v = _v;
-        // setup defaults
-        this._v.set(s[0], "session");
-        this._v.set(s[1], 60);
-        this._v.set(s[2], false);
-        this._v.set(s[3], false);
-        this._v.set(s[4], 750);
-        this._v.set(s[5], null);
-        this._v.set(s[6], false);
-    }
-    /**
-     *
-     * @param config The set of properties to add to the globa configuration instance
-     */
-    RuntimeConfigImpl.prototype.assign = function (config) {
-        this._v = mergeMaps(this._v, objectToMap(config));
-    };
-    RuntimeConfigImpl.prototype.get = function (key) {
-        return this._v.get(key);
-    };
-    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingStore", {
-        get: function () {
-            return this.get(s[0]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingTimeoutSeconds", {
-        get: function () {
-            return this.get(s[1]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "globalCacheDisable", {
-        get: function () {
-            return this.get(s[2]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "enableCacheExpiration", {
-        get: function () {
-            return this.get(s[3]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "cacheExpirationIntervalMilliseconds", {
-        get: function () {
-            return this.get(s[4]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "spfxContext", {
-        get: function () {
-            return this.get(s[5]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "ie11", {
-        get: function () {
-            var v = this.get(s[6]);
-            if (v) {
-                console.warn("PnPjs is running in ie11 compat mode. Not all features may work as expected.");
-            }
-            return v;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return RuntimeConfigImpl;
-}());
-
-var _runtimeConfig = new libconfig_RuntimeConfigImpl();
-var RuntimeConfig = _runtimeConfig;
-//# sourceMappingURL=libconfig.js.map
-// EXTERNAL MODULE: ./node_modules/@pnp/common/module/net.js
-var net = __webpack_require__(16);
-
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__(1);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/storage.js
-
-
-
-/**
- * A wrapper class to provide a consistent interface to browser based storage
- *
- */
-var storage_PnPClientStorageWrapper = /** @class */ (function () {
-    /**
-     * Creates a new instance of the PnPClientStorageWrapper class
-     *
-     * @constructor
-     */
-    function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
-        if (defaultTimeoutMinutes === void 0) { defaultTimeoutMinutes = -1; }
-        this.store = store;
-        this.defaultTimeoutMinutes = defaultTimeoutMinutes;
-        this.enabled = this.test();
-        // if the cache timeout is enabled call the handler
-        // this will clear any expired items and set the timeout function
-        if (RuntimeConfig.enableCacheExpiration) {
-            this.cacheExpirationHandler();
-        }
-    }
-    PnPClientStorageWrapper.bind = function (store) {
-        return new PnPClientStorageWrapper(typeof (store) === "undefined" ? new MemoryStorage() : store);
-    };
-    /**
-     * Get a value from storage, or null if that value does not exist
-     *
-     * @param key The key whose value we want to retrieve
-     */
-    PnPClientStorageWrapper.prototype.get = function (key) {
-        if (!this.enabled) {
-            return null;
-        }
-        var o = this.store.getItem(key);
-        if (!Object(util["m" /* objectDefinedNotNull */])(o)) {
-            return null;
-        }
-        var persistable = JSON.parse(o);
-        if (new Date(persistable.expiration) <= new Date()) {
-            this.delete(key);
-            return null;
-        }
-        else {
-            return persistable.value;
-        }
-    };
-    /**
-     * Adds a value to the underlying storage
-     *
-     * @param key The key to use when storing the provided value
-     * @param o The value to store
-     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-     */
-    PnPClientStorageWrapper.prototype.put = function (key, o, expire) {
-        if (this.enabled) {
-            this.store.setItem(key, this.createPersistable(o, expire));
-        }
-    };
-    /**
-     * Deletes a value from the underlying storage
-     *
-     * @param key The key of the pair we want to remove from storage
-     */
-    PnPClientStorageWrapper.prototype.delete = function (key) {
-        if (this.enabled) {
-            this.store.removeItem(key);
-        }
-    };
-    /**
-     * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
-     *
-     * @param key The key to use when storing the provided value
-     * @param getter A function which will upon execution provide the desired value
-     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-     */
-    PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
-        return Object(tslib_es6["__awaiter"])(this, void 0, void 0, function () {
-            var o;
-            return Object(tslib_es6["__generator"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!this.enabled) {
-                            return [2 /*return*/, getter()];
-                        }
-                        o = this.get(key);
-                        if (!(o === null)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, getter()];
-                    case 1:
-                        o = _a.sent();
-                        this.put(key, o, expire);
-                        _a.label = 2;
-                    case 2: return [2 /*return*/, o];
-                }
-            });
-        });
-    };
-    /**
-     * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
-     */
-    PnPClientStorageWrapper.prototype.deleteExpired = function () {
-        return Object(tslib_es6["__awaiter"])(this, void 0, void 0, function () {
-            var i, key;
-            return Object(tslib_es6["__generator"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!this.enabled) {
-                            return [2 /*return*/];
-                        }
-                        i = 0;
-                        _a.label = 1;
-                    case 1:
-                        if (!(i < this.store.length)) return [3 /*break*/, 4];
-                        key = this.store.key(i);
-                        if (!(key !== null)) return [3 /*break*/, 3];
-                        if (!/["|']?pnp["|']? ?: ?1/i.test(this.store.getItem(key))) return [3 /*break*/, 3];
-                        // get those items as get will delete from cache if they are expired
-                        return [4 /*yield*/, this.get(key)];
-                    case 2:
-                        // get those items as get will delete from cache if they are expired
-                        _a.sent();
-                        _a.label = 3;
-                    case 3:
-                        i++;
-                        return [3 /*break*/, 1];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * Used to determine if the wrapped storage is available currently
-     */
-    PnPClientStorageWrapper.prototype.test = function () {
-        var str = "t";
-        try {
-            this.store.setItem(str, str);
-            this.store.removeItem(str);
-            return true;
-        }
-        catch (e) {
-            return false;
-        }
-    };
-    /**
-     * Creates the persistable to store
-     */
-    PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
-        if (expire === undefined) {
-            // ensure we are by default inline with the global library setting
-            var defaultTimeout = RuntimeConfig.defaultCachingTimeoutSeconds;
-            if (this.defaultTimeoutMinutes > 0) {
-                defaultTimeout = this.defaultTimeoutMinutes * 60;
-            }
-            expire = Object(util["c" /* dateAdd */])(new Date(), "second", defaultTimeout);
-        }
-        return Object(util["l" /* jsS */])({ pnp: 1, expiration: expire, value: o });
-    };
-    /**
-     * Deletes expired items added by this library in this.store and sets a timeout to call itself
-     */
-    PnPClientStorageWrapper.prototype.cacheExpirationHandler = function () {
-        var _this = this;
-        if (!this.enabled) {
-            return;
-        }
-        this.deleteExpired().then(function (_) {
-            // call ourself in the future
-            setTimeout(Object(util["d" /* getCtxCallback */])(_this, _this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
-        }).catch(console.error);
-    };
-    return PnPClientStorageWrapper;
-}());
-
-/**
- * A thin implementation of in-memory storage for use in nodejs
- */
-var MemoryStorage = /** @class */ (function () {
-    function MemoryStorage(_store) {
-        if (_store === void 0) { _store = new Map(); }
-        this._store = _store;
-    }
-    Object.defineProperty(MemoryStorage.prototype, "length", {
-        get: function () {
-            return this._store.size;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MemoryStorage.prototype.clear = function () {
-        this._store.clear();
-    };
-    MemoryStorage.prototype.getItem = function (key) {
-        return this._store.get(key);
-    };
-    MemoryStorage.prototype.key = function (index) {
-        return Array.from(this._store)[index][0];
-    };
-    MemoryStorage.prototype.removeItem = function (key) {
-        this._store.delete(key);
-    };
-    MemoryStorage.prototype.setItem = function (key, data) {
-        this._store.set(key, data);
-    };
-    return MemoryStorage;
-}());
-/**
- * A class that will establish wrappers for both local and session storage
- */
-var PnPClientStorage = /** @class */ (function () {
-    /**
-     * Creates a new instance of the PnPClientStorage class
-     *
-     * @constructor
-     */
-    function PnPClientStorage(_local, _session) {
-        if (_local === void 0) { _local = null; }
-        if (_session === void 0) { _session = null; }
-        this._local = _local;
-        this._session = _session;
-    }
-    Object.defineProperty(PnPClientStorage.prototype, "local", {
-        /**
-         * Provides access to the local storage of the browser
-         */
-        get: function () {
-            if (this._local === null) {
-                this._local = storage_PnPClientStorageWrapper.bind(localStorage);
-            }
-            return this._local;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PnPClientStorage.prototype, "session", {
-        /**
-         * Provides access to the session storage of the browser
-         */
-        get: function () {
-            if (this._session === null) {
-                this._session = storage_PnPClientStorageWrapper.bind(sessionStorage);
-            }
-            return this._session;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return PnPClientStorage;
-}());
-
-//# sourceMappingURL=storage.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/index.js
-/* concated harmony reexport objectToMap */__webpack_require__.d(__webpack_exports__, "objectToMap", function() { return objectToMap; });
-/* concated harmony reexport mergeMaps */__webpack_require__.d(__webpack_exports__, "mergeMaps", function() { return mergeMaps; });
-/* concated harmony reexport setup */__webpack_require__.d(__webpack_exports__, "setup", function() { return setup; });
-/* concated harmony reexport RuntimeConfigImpl */__webpack_require__.d(__webpack_exports__, "RuntimeConfigImpl", function() { return libconfig_RuntimeConfigImpl; });
-/* concated harmony reexport RuntimeConfig */__webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return RuntimeConfig; });
-/* concated harmony reexport mergeHeaders */__webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return net["e" /* mergeHeaders */]; });
-/* concated harmony reexport mergeOptions */__webpack_require__.d(__webpack_exports__, "mergeOptions", function() { return net["f" /* mergeOptions */]; });
-/* concated harmony reexport getADALResource */__webpack_require__.d(__webpack_exports__, "getADALResource", function() { return net["d" /* getADALResource */]; });
-/* concated harmony reexport FetchClient */__webpack_require__.d(__webpack_exports__, "FetchClient", function() { return net["b" /* FetchClient */]; });
-/* concated harmony reexport BearerTokenFetchClient */__webpack_require__.d(__webpack_exports__, "BearerTokenFetchClient", function() { return net["a" /* BearerTokenFetchClient */]; });
-/* concated harmony reexport SPFxAdalClient */__webpack_require__.d(__webpack_exports__, "SPFxAdalClient", function() { return net["c" /* SPFxAdalClient */]; });
-/* concated harmony reexport PnPClientStorageWrapper */__webpack_require__.d(__webpack_exports__, "PnPClientStorageWrapper", function() { return storage_PnPClientStorageWrapper; });
-/* concated harmony reexport PnPClientStorage */__webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return PnPClientStorage; });
-/* concated harmony reexport getCtxCallback */__webpack_require__.d(__webpack_exports__, "getCtxCallback", function() { return util["d" /* getCtxCallback */]; });
-/* concated harmony reexport dateAdd */__webpack_require__.d(__webpack_exports__, "dateAdd", function() { return util["c" /* dateAdd */]; });
-/* concated harmony reexport combine */__webpack_require__.d(__webpack_exports__, "combine", function() { return util["b" /* combine */]; });
-/* concated harmony reexport getRandomString */__webpack_require__.d(__webpack_exports__, "getRandomString", function() { return util["g" /* getRandomString */]; });
-/* concated harmony reexport getGUID */__webpack_require__.d(__webpack_exports__, "getGUID", function() { return util["e" /* getGUID */]; });
-/* concated harmony reexport isFunc */__webpack_require__.d(__webpack_exports__, "isFunc", function() { return util["j" /* isFunc */]; });
-/* concated harmony reexport objectDefinedNotNull */__webpack_require__.d(__webpack_exports__, "objectDefinedNotNull", function() { return util["m" /* objectDefinedNotNull */]; });
-/* concated harmony reexport isArray */__webpack_require__.d(__webpack_exports__, "isArray", function() { return util["i" /* isArray */]; });
-/* concated harmony reexport assign */__webpack_require__.d(__webpack_exports__, "assign", function() { return util["a" /* assign */]; });
-/* concated harmony reexport isUrlAbsolute */__webpack_require__.d(__webpack_exports__, "isUrlAbsolute", function() { return util["k" /* isUrlAbsolute */]; });
-/* concated harmony reexport stringIsNullOrEmpty */__webpack_require__.d(__webpack_exports__, "stringIsNullOrEmpty", function() { return util["o" /* stringIsNullOrEmpty */]; });
-/* concated harmony reexport sanitizeGuid */__webpack_require__.d(__webpack_exports__, "sanitizeGuid", function() { return util["n" /* sanitizeGuid */]; });
-/* concated harmony reexport jsS */__webpack_require__.d(__webpack_exports__, "jsS", function() { return util["l" /* jsS */]; });
-/* concated harmony reexport hOP */__webpack_require__.d(__webpack_exports__, "hOP", function() { return util["h" /* hOP */]; });
-/* concated harmony reexport getHashCode */__webpack_require__.d(__webpack_exports__, "getHashCode", function() { return util["f" /* getHashCode */]; });
-
-
-
-
-
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__extends", function() { return __extends; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__assign", function() { return __assign; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__rest", function() { return __rest; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__decorate", function() { return __decorate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__param", function() { return __param; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__metadata", function() { return __metadata; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__awaiter", function() { return __awaiter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__generator", function() { return __generator; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__exportStar", function() { return __exportStar; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__values", function() { return __values; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__read", function() { return __read; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spread", function() { return __spread; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spreadArrays", function() { return __spreadArrays; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__await", function() { return __await; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncGenerator", function() { return __asyncGenerator; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncDelegator", function() { return __asyncDelegator; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncValues", function() { return __asyncValues; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__makeTemplateObject", function() { return __makeTemplateObject; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importStar", function() { return __importStar; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importDefault", function() { return __importDefault; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __extends; });
+/* unused harmony export __assign */
+/* unused harmony export __rest */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __decorate; });
+/* unused harmony export __param */
+/* unused harmony export __metadata */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __awaiter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __generator; });
+/* unused harmony export __exportStar */
+/* unused harmony export __values */
+/* unused harmony export __read */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __spread; });
+/* unused harmony export __spreadArrays */
+/* unused harmony export __await */
+/* unused harmony export __asyncGenerator */
+/* unused harmony export __asyncDelegator */
+/* unused harmony export __asyncValues */
+/* unused harmony export __makeTemplateObject */
+/* unused harmony export __importStar */
+/* unused harmony export __importDefault */
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -758,259 +318,463 @@ function __importDefault(mod) {
 
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/logger.js
-/**
- * Class used to subscribe ILogListener and log messages throughout an application
- *
- */
-var Logger = /** @class */ (function () {
-    function Logger() {
-    }
-    Object.defineProperty(Logger, "activeLogLevel", {
-        /**
-         * Gets or sets the active log level to apply for log filtering
-         */
-        get: function () {
-            return Logger.instance.activeLogLevel;
-        },
-        set: function (value) {
-            Logger.instance.activeLogLevel = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Logger, "instance", {
-        get: function () {
-            if (Logger._instance === undefined || Logger._instance === null) {
-                Logger._instance = new LoggerImpl();
-            }
-            return Logger._instance;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Adds ILogListener instances to the set of subscribed listeners
-     *
-     * @param listeners One or more listeners to subscribe to this log
-     */
-    Logger.subscribe = function () {
-        var listeners = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            listeners[_i] = arguments[_i];
-        }
-        listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
-    };
-    /**
-     * Clears the subscribers collection, returning the collection before modification
-     */
-    Logger.clearSubscribers = function () {
-        return Logger.instance.clearSubscribers();
-    };
-    Object.defineProperty(Logger, "count", {
-        /**
-         * Gets the current subscriber count
-         */
-        get: function () {
-            return Logger.instance.count;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Writes the supplied string to the subscribed listeners
-     *
-     * @param message The message to write
-     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
-     */
-    Logger.write = function (message, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        Logger.instance.log({ level: level, message: message });
-    };
-    /**
-     * Writes the supplied string to the subscribed listeners
-     *
-     * @param json The json object to stringify and write
-     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
-     */
-    Logger.writeJSON = function (json, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        this.write(JSON.stringify(json), level);
-    };
-    /**
-     * Logs the supplied entry to the subscribed listeners
-     *
-     * @param entry The message to log
-     */
-    Logger.log = function (entry) {
-        Logger.instance.log(entry);
-    };
-    /**
-     * Logs an error object to the subscribed listeners
-     *
-     * @param err The error object
-     */
-    Logger.error = function (err) {
-        Logger.instance.log({ data: err, level: 3 /* Error */, message: err.message });
-    };
-    return Logger;
-}());
+// EXTERNAL MODULE: ./node_modules/@pnp/common/util.js
+var util = __webpack_require__(2);
 
-var LoggerImpl = /** @class */ (function () {
-    function LoggerImpl(activeLogLevel, subscribers) {
-        if (activeLogLevel === void 0) { activeLogLevel = 2 /* Warning */; }
-        if (subscribers === void 0) { subscribers = []; }
-        this.activeLogLevel = activeLogLevel;
-        this.subscribers = subscribers;
-    }
-    LoggerImpl.prototype.subscribe = function (listener) {
-        this.subscribers.push(listener);
-    };
-    LoggerImpl.prototype.clearSubscribers = function () {
-        var s = this.subscribers.slice(0);
-        this.subscribers.length = 0;
-        return s;
-    };
-    Object.defineProperty(LoggerImpl.prototype, "count", {
-        get: function () {
-            return this.subscribers.length;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    LoggerImpl.prototype.write = function (message, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        this.log({ level: level, message: message });
-    };
-    LoggerImpl.prototype.log = function (entry) {
-        if (entry !== undefined && this.activeLogLevel <= entry.level) {
-            this.subscribers.map(function (subscriber) { return subscriber.log(entry); });
-        }
-    };
-    return LoggerImpl;
-}());
-/**
- * A set of logging levels
- */
-var LogLevel;
-(function (LogLevel) {
-    LogLevel[LogLevel["Verbose"] = 0] = "Verbose";
-    LogLevel[LogLevel["Info"] = 1] = "Info";
-    LogLevel[LogLevel["Warning"] = 2] = "Warning";
-    LogLevel[LogLevel["Error"] = 3] = "Error";
-    LogLevel[LogLevel["Off"] = 99] = "Off";
-})(LogLevel || (LogLevel = {}));
-//# sourceMappingURL=logger.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/listeners.js
-/**
- * Implementation of LogListener which logs to the console
- *
- */
-var ConsoleListener = /** @class */ (function () {
-    function ConsoleListener() {
-    }
-    /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
-    ConsoleListener.prototype.log = function (entry) {
-        var msg = this.format(entry);
-        switch (entry.level) {
-            case 0 /* Verbose */:
-            case 1 /* Info */:
-                console.log(msg);
-                break;
-            case 2 /* Warning */:
-                console.warn(msg);
-                break;
-            case 3 /* Error */:
-                console.error(msg);
-                break;
-        }
-    };
-    /**
-     * Formats the message
-     *
-     * @param entry The information to format into a string
-     */
-    ConsoleListener.prototype.format = function (entry) {
-        var msg = [];
-        msg.push("Message: " + entry.message);
-        if (entry.data !== undefined) {
-            try {
-                msg.push(" Data: " + JSON.stringify(entry.data));
-            }
-            catch (e) {
-                msg.push(" Data: Error in stringify of supplied data " + e);
-            }
-        }
-        return msg.join("");
-    };
-    return ConsoleListener;
-}());
+// CONCATENATED MODULE: ./node_modules/@pnp/common/collections.js
 
 /**
- * Implementation of LogListener which logs to the supplied function
+ * Used to calculate the object properties, with polyfill if needed
+ */
+var objectEntries = Object(util["h" /* isFunc */])(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
+/**
+ * Converts the supplied object to a map
+ *
+ * @param o The object to map
+ */
+function objectToMap(o) {
+    if (o !== undefined && o !== null) {
+        return new Map(objectEntries(o));
+    }
+    return new Map();
+}
+/**
+ * Merges to Map instances together, overwriting values in target with matching keys, last in wins
+ *
+ * @param target map into which the other maps are merged
+ * @param maps One or more maps to merge into the target
+ */
+function mergeMaps(target) {
+    var maps = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        maps[_i - 1] = arguments[_i];
+    }
+    for (var i = 0; i < maps.length; i++) {
+        maps[i].forEach(function (v, k) {
+            target.set(k, v);
+        });
+    }
+    return target;
+}
+//# sourceMappingURL=collections.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
+
+function setup(config) {
+    RuntimeConfig.assign(config);
+}
+// lable mapping for known config values
+var s = [
+    "defaultCachingStore",
+    "defaultCachingTimeoutSeconds",
+    "globalCacheDisable",
+    "enableCacheExpiration",
+    "cacheExpirationIntervalMilliseconds",
+    "spfxContext",
+    "ie11",
+];
+var libconfig_RuntimeConfigImpl = /** @class */ (function () {
+    function RuntimeConfigImpl(_v) {
+        if (_v === void 0) { _v = new Map(); }
+        this._v = _v;
+        // setup defaults
+        this._v.set(s[0], "session");
+        this._v.set(s[1], 60);
+        this._v.set(s[2], false);
+        this._v.set(s[3], false);
+        this._v.set(s[4], 750);
+        this._v.set(s[5], null);
+        this._v.set(s[6], false);
+    }
+    /**
+     *
+     * @param config The set of properties to add to the globa configuration instance
+     */
+    RuntimeConfigImpl.prototype.assign = function (config) {
+        this._v = mergeMaps(this._v, objectToMap(config));
+    };
+    RuntimeConfigImpl.prototype.get = function (key) {
+        return this._v.get(key);
+    };
+    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingStore", {
+        get: function () {
+            return this.get(s[0]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingTimeoutSeconds", {
+        get: function () {
+            return this.get(s[1]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "globalCacheDisable", {
+        get: function () {
+            return this.get(s[2]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "enableCacheExpiration", {
+        get: function () {
+            return this.get(s[3]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "cacheExpirationIntervalMilliseconds", {
+        get: function () {
+            return this.get(s[4]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "spfxContext", {
+        get: function () {
+            return this.get(s[5]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "ie11", {
+        get: function () {
+            var v = this.get(s[6]);
+            if (v) {
+                console.warn("PnPjs is running in ie11 compat mode. Not all features may work as expected.");
+            }
+            return v;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return RuntimeConfigImpl;
+}());
+
+var _runtimeConfig = new libconfig_RuntimeConfigImpl();
+var RuntimeConfig = _runtimeConfig;
+//# sourceMappingURL=libconfig.js.map
+// EXTERNAL MODULE: ./node_modules/@pnp/common/net.js
+var net = __webpack_require__(5);
+
+// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
+var tslib_es6 = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./node_modules/@pnp/common/storage.js
+
+
+
+/**
+ * A wrapper class to provide a consistent interface to browser based storage
  *
  */
-var FunctionListener = /** @class */ (function () {
+var storage_PnPClientStorageWrapper = /** @class */ (function () {
     /**
-     * Creates a new instance of the FunctionListener class
+     * Creates a new instance of the PnPClientStorageWrapper class
      *
      * @constructor
-     * @param  method The method to which any logging data will be passed
      */
-    function FunctionListener(method) {
-        this.method = method;
+    function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
+        if (defaultTimeoutMinutes === void 0) { defaultTimeoutMinutes = -1; }
+        this.store = store;
+        this.defaultTimeoutMinutes = defaultTimeoutMinutes;
+        this.enabled = this.test();
+        // if the cache timeout is enabled call the handler
+        // this will clear any expired items and set the timeout function
+        if (RuntimeConfig.enableCacheExpiration) {
+            this.cacheExpirationHandler();
+        }
     }
-    /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
-    FunctionListener.prototype.log = function (entry) {
-        this.method(entry);
+    PnPClientStorageWrapper.bind = function (store) {
+        return new PnPClientStorageWrapper(typeof (store) === "undefined" ? new MemoryStorage() : store);
     };
-    return FunctionListener;
+    /**
+     * Get a value from storage, or null if that value does not exist
+     *
+     * @param key The key whose value we want to retrieve
+     */
+    PnPClientStorageWrapper.prototype.get = function (key) {
+        if (!this.enabled) {
+            return null;
+        }
+        var o = this.store.getItem(key);
+        if (!Object(util["k" /* objectDefinedNotNull */])(o)) {
+            return null;
+        }
+        var persistable = JSON.parse(o);
+        if (new Date(persistable.expiration) <= new Date()) {
+            this.delete(key);
+            return null;
+        }
+        else {
+            return persistable.value;
+        }
+    };
+    /**
+     * Adds a value to the underlying storage
+     *
+     * @param key The key to use when storing the provided value
+     * @param o The value to store
+     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+     */
+    PnPClientStorageWrapper.prototype.put = function (key, o, expire) {
+        if (this.enabled) {
+            this.store.setItem(key, this.createPersistable(o, expire));
+        }
+    };
+    /**
+     * Deletes a value from the underlying storage
+     *
+     * @param key The key of the pair we want to remove from storage
+     */
+    PnPClientStorageWrapper.prototype.delete = function (key) {
+        if (this.enabled) {
+            this.store.removeItem(key);
+        }
+    };
+    /**
+     * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
+     *
+     * @param key The key to use when storing the provided value
+     * @param getter A function which will upon execution provide the desired value
+     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+     */
+    PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var o;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.enabled) {
+                            return [2 /*return*/, getter()];
+                        }
+                        o = this.get(key);
+                        if (!(o === null)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, getter()];
+                    case 1:
+                        o = _a.sent();
+                        this.put(key, o, expire);
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, o];
+                }
+            });
+        });
+    };
+    /**
+     * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
+     */
+    PnPClientStorageWrapper.prototype.deleteExpired = function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var i, key;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.enabled) {
+                            return [2 /*return*/];
+                        }
+                        i = 0;
+                        _a.label = 1;
+                    case 1:
+                        if (!(i < this.store.length)) return [3 /*break*/, 4];
+                        key = this.store.key(i);
+                        if (!(key !== null)) return [3 /*break*/, 3];
+                        if (!/["|']?pnp["|']? ?: ?1/i.test(this.store.getItem(key))) return [3 /*break*/, 3];
+                        // get those items as get will delete from cache if they are expired
+                        return [4 /*yield*/, this.get(key)];
+                    case 2:
+                        // get those items as get will delete from cache if they are expired
+                        _a.sent();
+                        _a.label = 3;
+                    case 3:
+                        i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Used to determine if the wrapped storage is available currently
+     */
+    PnPClientStorageWrapper.prototype.test = function () {
+        var str = "t";
+        try {
+            this.store.setItem(str, str);
+            this.store.removeItem(str);
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    };
+    /**
+     * Creates the persistable to store
+     */
+    PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
+        if (expire === undefined) {
+            // ensure we are by default inline with the global library setting
+            var defaultTimeout = RuntimeConfig.defaultCachingTimeoutSeconds;
+            if (this.defaultTimeoutMinutes > 0) {
+                defaultTimeout = this.defaultTimeoutMinutes * 60;
+            }
+            expire = Object(util["c" /* dateAdd */])(new Date(), "second", defaultTimeout);
+        }
+        return Object(util["j" /* jsS */])({ pnp: 1, expiration: expire, value: o });
+    };
+    /**
+     * Deletes expired items added by this library in this.store and sets a timeout to call itself
+     */
+    PnPClientStorageWrapper.prototype.cacheExpirationHandler = function () {
+        var _this = this;
+        if (!this.enabled) {
+            return;
+        }
+        this.deleteExpired().then(function (_) {
+            // call ourself in the future
+            setTimeout(Object(util["d" /* getCtxCallback */])(_this, _this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
+        }).catch(console.error);
+    };
+    return PnPClientStorageWrapper;
 }());
 
-//# sourceMappingURL=listeners.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/index.js
-/* concated harmony reexport Logger */__webpack_require__.d(__webpack_exports__, "Logger", function() { return Logger; });
-/* concated harmony reexport LogLevel */__webpack_require__.d(__webpack_exports__, "LogLevel", function() { return LogLevel; });
-/* concated harmony reexport ConsoleListener */__webpack_require__.d(__webpack_exports__, "ConsoleListener", function() { return ConsoleListener; });
-/* concated harmony reexport FunctionListener */__webpack_require__.d(__webpack_exports__, "FunctionListener", function() { return FunctionListener; });
+/**
+ * A thin implementation of in-memory storage for use in nodejs
+ */
+var MemoryStorage = /** @class */ (function () {
+    function MemoryStorage(_store) {
+        if (_store === void 0) { _store = new Map(); }
+        this._store = _store;
+    }
+    Object.defineProperty(MemoryStorage.prototype, "length", {
+        get: function () {
+            return this._store.size;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MemoryStorage.prototype.clear = function () {
+        this._store.clear();
+    };
+    MemoryStorage.prototype.getItem = function (key) {
+        return this._store.get(key);
+    };
+    MemoryStorage.prototype.key = function (index) {
+        return Array.from(this._store)[index][0];
+    };
+    MemoryStorage.prototype.removeItem = function (key) {
+        this._store.delete(key);
+    };
+    MemoryStorage.prototype.setItem = function (key, data) {
+        this._store.set(key, data);
+    };
+    return MemoryStorage;
+}());
+/**
+ * A class that will establish wrappers for both local and session storage
+ */
+var PnPClientStorage = /** @class */ (function () {
+    /**
+     * Creates a new instance of the PnPClientStorage class
+     *
+     * @constructor
+     */
+    function PnPClientStorage(_local, _session) {
+        if (_local === void 0) { _local = null; }
+        if (_session === void 0) { _session = null; }
+        this._local = _local;
+        this._session = _session;
+    }
+    Object.defineProperty(PnPClientStorage.prototype, "local", {
+        /**
+         * Provides access to the local storage of the browser
+         */
+        get: function () {
+            if (this._local === null) {
+                this._local = storage_PnPClientStorageWrapper.bind(localStorage);
+            }
+            return this._local;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PnPClientStorage.prototype, "session", {
+        /**
+         * Provides access to the session storage of the browser
+         */
+        get: function () {
+            if (this._session === null) {
+                this._session = storage_PnPClientStorageWrapper.bind(sessionStorage);
+            }
+            return this._session;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return PnPClientStorage;
+}());
+
+//# sourceMappingURL=storage.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/common/index.js
+/* concated harmony reexport objectToMap */__webpack_require__.d(__webpack_exports__, "r", function() { return objectToMap; });
+/* concated harmony reexport mergeMaps */__webpack_require__.d(__webpack_exports__, "o", function() { return mergeMaps; });
+/* unused concated harmony import setup */
+/* unused concated harmony import RuntimeConfigImpl */
+/* concated harmony reexport RuntimeConfig */__webpack_require__.d(__webpack_exports__, "c", function() { return RuntimeConfig; });
+/* concated harmony reexport mergeHeaders */__webpack_require__.d(__webpack_exports__, "n", function() { return net["b" /* mergeHeaders */]; });
+/* concated harmony reexport mergeOptions */__webpack_require__.d(__webpack_exports__, "p", function() { return net["c" /* mergeOptions */]; });
+/* unused concated harmony import getADALResource */
+/* concated harmony reexport FetchClient */__webpack_require__.d(__webpack_exports__, "a", function() { return net["a" /* FetchClient */]; });
+/* unused concated harmony import BearerTokenFetchClient */
+/* unused concated harmony import SPFxAdalClient */
+/* unused concated harmony import PnPClientStorageWrapper */
+/* concated harmony reexport PnPClientStorage */__webpack_require__.d(__webpack_exports__, "b", function() { return PnPClientStorage; });
+/* concated harmony reexport getCtxCallback */__webpack_require__.d(__webpack_exports__, "g", function() { return util["d" /* getCtxCallback */]; });
+/* concated harmony reexport dateAdd */__webpack_require__.d(__webpack_exports__, "f", function() { return util["c" /* dateAdd */]; });
+/* concated harmony reexport combine */__webpack_require__.d(__webpack_exports__, "e", function() { return util["b" /* combine */]; });
+/* unused concated harmony import getRandomString */
+/* concated harmony reexport getGUID */__webpack_require__.d(__webpack_exports__, "h", function() { return util["e" /* getGUID */]; });
+/* concated harmony reexport isFunc */__webpack_require__.d(__webpack_exports__, "k", function() { return util["h" /* isFunc */]; });
+/* concated harmony reexport objectDefinedNotNull */__webpack_require__.d(__webpack_exports__, "q", function() { return util["k" /* objectDefinedNotNull */]; });
+/* concated harmony reexport isArray */__webpack_require__.d(__webpack_exports__, "j", function() { return util["g" /* isArray */]; });
+/* concated harmony reexport assign */__webpack_require__.d(__webpack_exports__, "d", function() { return util["a" /* assign */]; });
+/* concated harmony reexport isUrlAbsolute */__webpack_require__.d(__webpack_exports__, "l", function() { return util["i" /* isUrlAbsolute */]; });
+/* concated harmony reexport stringIsNullOrEmpty */__webpack_require__.d(__webpack_exports__, "s", function() { return util["l" /* stringIsNullOrEmpty */]; });
+/* unused concated harmony import sanitizeGuid */
+/* concated harmony reexport jsS */__webpack_require__.d(__webpack_exports__, "m", function() { return util["j" /* jsS */]; });
+/* concated harmony reexport hOP */__webpack_require__.d(__webpack_exports__, "i", function() { return util["f" /* hOP */]; });
+/* unused concated harmony import getHashCode */
+
+
+
 
 
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getCtxCallback; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return dateAdd; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return combine; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return getRandomString; });
+/* unused harmony export getRandomString */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getGUID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return isFunc; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return objectDefinedNotNull; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return isArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return isFunc; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return objectDefinedNotNull; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return isArray; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return assign; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return isUrlAbsolute; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return stringIsNullOrEmpty; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return sanitizeGuid; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return jsS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return hOP; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getHashCode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return isUrlAbsolute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return stringIsNullOrEmpty; });
+/* unused harmony export sanitizeGuid */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return jsS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return hOP; });
+/* unused harmony export getHashCode */
 /**
  * Gets a callback function which will maintain context across async calls.
  * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
@@ -1229,20 +993,451 @@ function getHashCode(s) {
 //# sourceMappingURL=util.js.map
 
 /***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return setup; });
+/* unused harmony export SPRuntimeConfigImpl */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SPRuntimeConfig; });
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+
+function setup(config) {
+    _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].assign(config);
+}
+var SPRuntimeConfigImpl = /** @class */ (function () {
+    function SPRuntimeConfigImpl() {
+    }
+    Object.defineProperty(SPRuntimeConfigImpl.prototype, "headers", {
+        get: function () {
+            var spPart = _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].get("sp");
+            if (spPart !== undefined && spPart.headers !== undefined) {
+                return spPart.headers;
+            }
+            return {};
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SPRuntimeConfigImpl.prototype, "baseUrl", {
+        get: function () {
+            var spPart = _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].get("sp");
+            if (spPart !== undefined && spPart.baseUrl !== undefined) {
+                return spPart.baseUrl;
+            }
+            if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* objectDefinedNotNull */ "q"])(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].spfxContext)) {
+                return _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].spfxContext.pageContext.web.absoluteUrl;
+            }
+            return null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SPRuntimeConfigImpl.prototype, "fetchClientFactory", {
+        get: function () {
+            var spPart = _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].get("sp");
+            if (spPart !== undefined && spPart.fetchClientFactory !== undefined) {
+                return spPart.fetchClientFactory;
+            }
+            else {
+                return function () { return new _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* FetchClient */ "a"](); };
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return SPRuntimeConfigImpl;
+}());
+
+var SPRuntimeConfig = new SPRuntimeConfigImpl();
+//# sourceMappingURL=splibconfig.js.map
+
+/***/ }),
 /* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return toAbsoluteUrl; });
+/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _splibconfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+
+
+/**
+ * Ensures that a given url is absolute for the current web based on context
+ *
+ * @param candidateUrl The url to make absolute
+ *
+ */
+function toAbsoluteUrl(candidateUrl) {
+    return new Promise(function (resolve) {
+        if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* isUrlAbsolute */ "l"])(candidateUrl)) {
+            // if we are already absolute, then just return the url
+            return resolve(candidateUrl);
+        }
+        if (_splibconfig__WEBPACK_IMPORTED_MODULE_1__[/* SPRuntimeConfig */ "a"].baseUrl !== null) {
+            // base url specified either with baseUrl of spfxContext config property
+            return resolve(Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* combine */ "e"])(_splibconfig__WEBPACK_IMPORTED_MODULE_1__[/* SPRuntimeConfig */ "a"].baseUrl, candidateUrl));
+        }
+        if (global._spPageContextInfo !== undefined) {
+            // operating in classic pages
+            if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* hOP */ "i"])(global._spPageContextInfo, "webAbsoluteUrl")) {
+                return resolve(Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* combine */ "e"])(global._spPageContextInfo.webAbsoluteUrl, candidateUrl));
+            }
+            else if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* hOP */ "i"])(global._spPageContextInfo, "webServerRelativeUrl")) {
+                return resolve(Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* combine */ "e"])(global._spPageContextInfo.webServerRelativeUrl, candidateUrl));
+            }
+        }
+        // does window.location exist and have a certain path part in it?
+        if (global.location !== undefined) {
+            var baseUrl_1 = global.location.toString().toLowerCase();
+            ["/_layouts/", "/siteassets/"].forEach(function (s) {
+                var index = baseUrl_1.indexOf(s);
+                if (index > 0) {
+                    return resolve(Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* combine */ "e"])(baseUrl_1.substr(0, index), candidateUrl));
+                }
+            });
+        }
+        return resolve(candidateUrl);
+    });
+}
+//# sourceMappingURL=toabsoluteurl.js.map
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6)))
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return mergeHeaders; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mergeOptions; });
+/* unused harmony export getADALResource */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FetchClient; });
+/* unused harmony export BearerTokenFetchClient */
+/* unused harmony export SPFxAdalClient */
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+
+
+function mergeHeaders(target, source) {
+    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "k"])(source)) {
+        var temp = new Request("", { headers: source });
+        temp.headers.forEach(function (value, name) {
+            target.append(name, value);
+        });
+    }
+}
+function mergeOptions(target, source) {
+    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "k"])(source)) {
+        var headers = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* assign */ "a"])(target.headers || {}, source.headers);
+        target = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* assign */ "a"])(target, source);
+        target.headers = headers;
+    }
+}
+/**
+ * Parses out the root of the request url to use as the resource when getting the token
+ *
+  * @param url The url to parse
+ */
+function getADALResource(url) {
+    var u = new URL(url);
+    return u.protocol + "//" + u.hostname;
+}
+/**
+ * Makes requests using the global/window fetch API
+ */
+var FetchClient = /** @class */ (function () {
+    function FetchClient() {
+    }
+    FetchClient.prototype.fetch = function (url, options) {
+        return global.fetch(url, options);
+    };
+    return FetchClient;
+}());
+
+/**
+ * Makes requests using the fetch API adding the supplied token to the Authorization header
+ */
+var BearerTokenFetchClient = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(BearerTokenFetchClient, _super);
+    function BearerTokenFetchClient(_token) {
+        var _this = _super.call(this) || this;
+        _this._token = _token;
+        return _this;
+    }
+    Object.defineProperty(BearerTokenFetchClient.prototype, "token", {
+        get: function () {
+            return this._token || "";
+        },
+        set: function (token) {
+            this._token = token;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BearerTokenFetchClient.prototype.fetch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var headers = new Headers();
+        mergeHeaders(headers, options.headers);
+        headers.set("Authorization", "Bearer " + this._token);
+        options.headers = headers;
+        return _super.prototype.fetch.call(this, url, options);
+    };
+    return BearerTokenFetchClient;
+}(FetchClient));
+
+/**
+ * Client wrapping the aadTokenProvider available from SPFx >= 1.6
+ */
+var SPFxAdalClient = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(SPFxAdalClient, _super);
+    /**
+     *
+     * @param context provide the appropriate SPFx Context object
+     */
+    function SPFxAdalClient(context) {
+        var _this = _super.call(this, null) || this;
+        _this.context = context;
+        return _this;
+    }
+    /**
+     * Executes a fetch request using the supplied url and options
+     *
+     * @param url Absolute url of the request
+     * @param options Any options
+     */
+    SPFxAdalClient.prototype.fetch = function (url, options) {
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
+            var token;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getToken(getADALResource(url))];
+                    case 1:
+                        token = _a.sent();
+                        this.token = token;
+                        return [2 /*return*/, _super.prototype.fetch.call(this, url, options)];
+                }
+            });
+        });
+    };
+    /**
+     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
+     *
+     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
+     */
+    SPFxAdalClient.prototype.getToken = function (resource) {
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
+            var provider;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
+                    case 1:
+                        provider = _a.sent();
+                        return [2 /*return*/, provider.getToken(resource)];
+                }
+            });
+        });
+    };
+    return SPFxAdalClient;
+}(BearerTokenFetchClient));
+
+//# sourceMappingURL=net.js.map
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6)))
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: ./node_modules/@pnp/common/module/index.js + 3 modules
-var common_module = __webpack_require__(0);
+// EXTERNAL MODULE: ./node_modules/@pnp/common/index.js + 3 modules
+var common = __webpack_require__(1);
 
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/batch.js
+// CONCATENATED MODULE: ./node_modules/@pnp/config-store/configuration.js
+
+/**
+ * Class used to manage the current application settings
+ *
+ */
+var configuration_Settings = /** @class */ (function () {
+    /**
+     * Creates a new instance of the settings class
+     *
+     * @constructor
+     */
+    function Settings(_settings) {
+        if (_settings === void 0) { _settings = new Map(); }
+        this._settings = _settings;
+    }
+    /**
+     * Adds a new single setting, or overwrites a previous setting with the same key
+     *
+     * @param {string} key The key used to store this setting
+     * @param {string} value The setting value to store
+     */
+    Settings.prototype.add = function (key, value) {
+        this._settings.set(key, value);
+    };
+    /**
+     * Adds a JSON value to the collection as a string, you must use getJSON to rehydrate the object when read
+     *
+     * @param {string} key The key used to store this setting
+     * @param {any} value The setting value to store
+     */
+    Settings.prototype.addJSON = function (key, value) {
+        this._settings.set(key, Object(common["m" /* jsS */])(value));
+    };
+    /**
+     * Applies the supplied hash to the setting collection overwriting any existing value, or created new values
+     *
+     * @param {ITypedHash<any>} hash The set of values to add
+     */
+    Settings.prototype.apply = function (hash) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            try {
+                _this._settings = Object(common["o" /* mergeMaps */])(_this._settings, Object(common["r" /* objectToMap */])(hash));
+                resolve();
+            }
+            catch (e) {
+                reject(e);
+            }
+        });
+    };
+    /**
+     * Loads configuration settings into the collection from the supplied provider and returns a Promise
+     *
+     * @param {IConfigurationProvider} provider The provider from which we will load the settings
+     */
+    Settings.prototype.load = function (provider) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            provider.getConfiguration().then(function (value) {
+                _this._settings = Object(common["o" /* mergeMaps */])(_this._settings, Object(common["r" /* objectToMap */])(value));
+                resolve();
+            }).catch(reject);
+        });
+    };
+    /**
+     * Gets a value from the configuration
+     *
+     * @param {string} key The key whose value we want to return. Returns null if the key does not exist
+     * @return {string} string value from the configuration
+     */
+    Settings.prototype.get = function (key) {
+        return this._settings.get(key) || null;
+    };
+    /**
+     * Gets a JSON value, rehydrating the stored string to the original object
+     *
+     * @param {string} key The key whose value we want to return. Returns null if the key does not exist
+     * @return {any} object from the configuration
+     */
+    Settings.prototype.getJSON = function (key) {
+        var o = this.get(key);
+        if (o === undefined || o === null) {
+            return o;
+        }
+        return JSON.parse(o);
+    };
+    return Settings;
+}());
+
+//# sourceMappingURL=configuration.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/config-store/providers/cachingConfigurationProvider.js
+
+/**
+ * A caching provider which can wrap other non-caching providers
+ *
+ */
+var cachingConfigurationProvider_CachingConfigurationProvider = /** @class */ (function () {
+    /**
+     * Creates a new caching configuration provider
+     * @constructor
+     * @param {IConfigurationProvider} wrappedProvider Provider which will be used to fetch the configuration
+     * @param {string} cacheKey Key that will be used to store cached items to the cache
+     * @param {IPnPClientStore} cacheStore OPTIONAL storage, which will be used to store cached settings.
+     */
+    function CachingConfigurationProvider(wrappedProvider, cacheKey, cacheStore) {
+        this.wrappedProvider = wrappedProvider;
+        this.cacheKey = cacheKey;
+        this.wrappedProvider = wrappedProvider;
+        this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
+    }
+    /**
+     * Gets the wrapped configuration providers
+     *
+     * @return {IConfigurationProvider} Wrapped configuration provider
+     */
+    CachingConfigurationProvider.prototype.getWrappedProvider = function () {
+        return this.wrappedProvider;
+    };
+    /**
+     * Loads the configuration values either from the cache or from the wrapped provider
+     *
+     * @return {Promise<ITypedHash<string>>} Promise of loaded configuration values
+     */
+    CachingConfigurationProvider.prototype.getConfiguration = function () {
+        var _this = this;
+        // Cache not available, pass control to the wrapped provider
+        if ((!this.store) || (!this.store.enabled)) {
+            return this.wrappedProvider.getConfiguration();
+        }
+        return this.store.getOrPut(this.cacheKey, function () {
+            return _this.wrappedProvider.getConfiguration().then(function (providedConfig) {
+                _this.store.put(_this.cacheKey, providedConfig);
+                return providedConfig;
+            });
+        });
+    };
+    CachingConfigurationProvider.prototype.selectPnPCache = function () {
+        var pnpCache = new common["b" /* PnPClientStorage */]();
+        if ((pnpCache.local) && (pnpCache.local.enabled)) {
+            return pnpCache.local;
+        }
+        if ((pnpCache.session) && (pnpCache.session.enabled)) {
+            return pnpCache.session;
+        }
+        throw Error("Cannot create a caching configuration provider since cache is not available.");
+    };
+    return CachingConfigurationProvider;
+}());
+/* harmony default export */ var cachingConfigurationProvider = (cachingConfigurationProvider_CachingConfigurationProvider);
+//# sourceMappingURL=cachingConfigurationProvider.js.map
+// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
+var tslib_es6 = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
 
 var batch_Batch = /** @class */ (function () {
     function Batch(_batchId) {
-        if (_batchId === void 0) { _batchId = Object(common_module["getGUID"])(); }
+        if (_batchId === void 0) { _batchId = Object(common["h" /* getGUID */])(); }
         this._batchId = _batchId;
         this._reqs = [];
         this._deps = [];
@@ -1328,12 +1523,12 @@ var batch_Batch = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=batch.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/caching.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
 
 var caching_CachingOptions = /** @class */ (function () {
     function CachingOptions(key, storeName, expiration) {
-        if (storeName === void 0) { storeName = common_module["RuntimeConfig"].defaultCachingStore; }
-        if (expiration === void 0) { expiration = Object(common_module["dateAdd"])(new Date(), "second", common_module["RuntimeConfig"].defaultCachingTimeoutSeconds); }
+        if (storeName === void 0) { storeName = common["c" /* RuntimeConfig */].defaultCachingStore; }
+        if (expiration === void 0) { expiration = Object(common["f" /* dateAdd */])(new Date(), "second", common["c" /* RuntimeConfig */].defaultCachingTimeoutSeconds); }
         this.key = key;
         this.storeName = storeName;
         this.expiration = expiration;
@@ -1350,7 +1545,7 @@ var caching_CachingOptions = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    CachingOptions.storage = new common_module["PnPClientStorage"]();
+    CachingOptions.storage = new common["b" /* PnPClientStorage */]();
     return CachingOptions;
 }());
 
@@ -1373,7 +1568,7 @@ var CachingParserWrapper = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=caching.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/add-prop.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/add-prop.js
 /**
  * Adds a property to a target instance
  *
@@ -1392,10 +1587,7 @@ function addProp(target, name, factory, path) {
     });
 }
 //# sourceMappingURL=add-prop.js.map
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__(1);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/invokable-extensions.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
 
 
 var _enableExtensions = false;
@@ -1438,9 +1630,9 @@ var extendFactory = function (factory, extensions) {
     extendCol(factory.__proto__[ObjExtensionsSym], extensions);
 };
 function extendCol(a, e) {
-    if (Object(common_module["isArray"])(e)) {
+    if (Object(common["j" /* isArray */])(e)) {
         // @ts-ignore
-        a.push.apply(a, Object(tslib_es6["__spread"])(e));
+        a.push.apply(a, Object(tslib_es6["e" /* __spread */])(e));
     }
     else {
         // @ts-ignore
@@ -1487,16 +1679,16 @@ function extensionOrDefault(op, or, target) {
         var extensions = [];
         // we need to first invoke extensions tied to only this object
         if (Reflect.has(target, ObjExtensionsSym)) {
-            extensions.push.apply(extensions, Object(tslib_es6["__spread"])(Reflect.get(target, ObjExtensionsSym)));
+            extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(Reflect.get(target, ObjExtensionsSym)));
         }
         // second we need to process any global extensions
-        extensions.push.apply(extensions, Object(tslib_es6["__spread"])(globaExtensions));
+        extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(globaExtensions));
         for (var i = 0; i < extensions.length; i++) {
             var extension = extensions[i];
             var result = undefined;
-            if (Object(common_module["isFunc"])(extension)) {
+            if (Object(common["k" /* isFunc */])(extension)) {
                 // this extension is a function which we call
-                result = extension.apply(void 0, Object(tslib_es6["__spread"])([op, target], rest));
+                result = extension.apply(void 0, Object(tslib_es6["e" /* __spread */])([op, target], rest));
             }
             else if (op === "get" && Reflect.has(extension, rest[0])) {
                 // this extension is a named extension meaning we are overriding a specific method/property
@@ -1504,7 +1696,7 @@ function extensionOrDefault(op, or, target) {
             }
             else if (Reflect.has(extension, op)) {
                 // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
-                result = Reflect.get(extension, op).apply(void 0, Object(tslib_es6["__spread"])([target], rest));
+                result = Reflect.get(extension, op).apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
             }
             if (typeof result !== "undefined") {
                 // if a extension returned a result, we return that
@@ -1514,10 +1706,10 @@ function extensionOrDefault(op, or, target) {
             }
         }
     }
-    return or.apply(void 0, Object(tslib_es6["__spread"])([target], rest));
+    return or.apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
 }
 //# sourceMappingURL=invokable-extensions.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/invokable-binder.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
 
 
 
@@ -1534,11 +1726,11 @@ var invokableBinder = function (invoker) { return function (constructor) {
                     ags[_i] = arguments[_i];
                 }
                 return invoker.apply(r, ags);
-            }, new (constructor.bind.apply(constructor, Object(tslib_es6["__spread"])([void 0], as)))());
+            }, new (constructor.bind.apply(constructor, Object(tslib_es6["e" /* __spread */])([void 0], as)))());
             Reflect.setPrototypeOf(r, constructor.prototype);
             return r;
         };
-        if (common_module["RuntimeConfig"].ie11) {
+        if (common["c" /* RuntimeConfig */].ie11) {
             return factory(args);
         }
         else {
@@ -1587,7 +1779,7 @@ var invokableFactory = invokableBinder(function (options) {
     return this.defaultAction(options);
 });
 //# sourceMappingURL=invokable-binder.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/parsers.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
 
 
 var parsers_ODataParser = /** @class */ (function () {
@@ -1634,15 +1826,15 @@ var parsers_ODataParser = /** @class */ (function () {
      */
     ODataParser.prototype.parseODataJSON = function (json) {
         var result = json;
-        if (Object(common_module["hOP"])(json, "d")) {
-            if (Object(common_module["hOP"])(json.d, "results")) {
+        if (Object(common["i" /* hOP */])(json, "d")) {
+            if (Object(common["i" /* hOP */])(json.d, "results")) {
                 result = json.d.results;
             }
             else {
                 result = json.d;
             }
         }
-        else if (Object(common_module["hOP"])(json, "value")) {
+        else if (Object(common["i" /* hOP */])(json, "value")) {
             result = json.value;
         }
         return result;
@@ -1651,7 +1843,7 @@ var parsers_ODataParser = /** @class */ (function () {
 }());
 
 var parsers_TextParser = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(TextParser, _super);
+    Object(tslib_es6["c" /* __extends */])(TextParser, _super);
     function TextParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1662,7 +1854,7 @@ var parsers_TextParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_BlobParser = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(BlobParser, _super);
+    Object(tslib_es6["c" /* __extends */])(BlobParser, _super);
     function BlobParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1673,7 +1865,7 @@ var parsers_BlobParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_JSONParser = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(JSONParser, _super);
+    Object(tslib_es6["c" /* __extends */])(JSONParser, _super);
     function JSONParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1684,12 +1876,12 @@ var parsers_JSONParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_BufferParser = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(BufferParser, _super);
+    Object(tslib_es6["c" /* __extends */])(BufferParser, _super);
     function BufferParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     BufferParser.prototype.parseImpl = function (r, resolve) {
-        if (Object(common_module["isFunc"])(r.arrayBuffer)) {
+        if (Object(common["k" /* isFunc */])(r.arrayBuffer)) {
             r.arrayBuffer().then(resolve);
         }
         else {
@@ -1700,7 +1892,7 @@ var parsers_BufferParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_LambdaParser = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(LambdaParser, _super);
+    Object(tslib_es6["c" /* __extends */])(LambdaParser, _super);
     function LambdaParser(parser) {
         var _this = _super.call(this) || this;
         _this.parser = parser;
@@ -1713,7 +1905,7 @@ var parsers_LambdaParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_HttpRequestError = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(HttpRequestError, _super);
+    Object(tslib_es6["c" /* __extends */])(HttpRequestError, _super);
     function HttpRequestError(message, response, status, statusText) {
         if (status === void 0) { status = response.status; }
         if (statusText === void 0) { statusText = response.statusText; }
@@ -1725,9 +1917,9 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
         return _this;
     }
     HttpRequestError.init = function (r) {
-        return Object(tslib_es6["__awaiter"])(this, void 0, void 0, function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
             var t;
-            return Object(tslib_es6["__generator"])(this, function (_a) {
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, r.clone().text()];
                     case 1:
@@ -1741,7 +1933,7 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
 }(Error));
 
 //# sourceMappingURL=parsers.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/queryable.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/queryable.js
 
 
 
@@ -1749,7 +1941,7 @@ function cloneQueryableData(source) {
     var s = JSON.stringify(source, function (key, value) {
         switch (key) {
             case "query":
-                return JSON.stringify(Object(tslib_es6["__spread"])(value));
+                return JSON.stringify(Object(tslib_es6["e" /* __spread */])(value));
             case "batch":
                 return "-";
             case "batchDependency":
@@ -1844,7 +2036,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param options custom options
      */
     Queryable.prototype.configure = function (options) {
-        Object(common_module["mergeOptions"])(this.data.options, options);
+        Object(common["p" /* mergeOptions */])(this.data.options, options);
         return this;
     };
     /**
@@ -1853,7 +2045,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param o Instance from which options should be taken
      */
     Queryable.prototype.configureFrom = function (o) {
-        Object(common_module["mergeOptions"])(this.data.options, o.data.options);
+        Object(common["p" /* mergeOptions */])(this.data.options, o.data.options);
         return this;
     };
     /**
@@ -1862,7 +2054,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param options Defines the options used when caching this request
      */
     Queryable.prototype.usingCaching = function (options) {
-        if (!common_module["RuntimeConfig"].globalCacheDisable) {
+        if (!common["c" /* RuntimeConfig */].globalCacheDisable) {
             this.data.useCaching = true;
             if (options !== undefined) {
                 this.data.cachingOptions = options;
@@ -1889,7 +2081,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param pathPart The string to append
      */
     Queryable.prototype.append = function (pathPart) {
-        this.data.url = Object(common_module["combine"])(this.data.url, pathPart);
+        this.data.url = Object(common["e" /* combine */])(this.data.url, pathPart);
     };
     /**
      * Adds this query to the supplied batch
@@ -1906,7 +2098,7 @@ var queryable_Queryable = /** @class */ (function () {
         if (this.batch !== null) {
             throw Error("This query is already part of a batch.");
         }
-        if (Object(common_module["objectDefinedNotNull"])(batch)) {
+        if (Object(common["q" /* objectDefinedNotNull */])(batch)) {
             this.data.batch = batch;
         }
         return this;
@@ -1915,7 +2107,7 @@ var queryable_Queryable = /** @class */ (function () {
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
     */
     Queryable.prototype.addBatchDependency = function () {
-        if (Object(common_module["objectDefinedNotNull"])(this.data.batch)) {
+        if (Object(common["q" /* objectDefinedNotNull */])(this.data.batch)) {
             return this.data.batch.addDependency();
         }
         return function () { return null; };
@@ -1926,7 +2118,7 @@ var queryable_Queryable = /** @class */ (function () {
          *
          */
         get: function () {
-            return Object(common_module["objectDefinedNotNull"])(this.data.batch);
+            return Object(common["q" /* objectDefinedNotNull */])(this.data.batch);
         },
         enumerable: true,
         configurable: true
@@ -1980,10 +2172,229 @@ var queryable_Queryable = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=queryable.js.map
-// EXTERNAL MODULE: ./node_modules/@pnp/logging/module/index.js + 2 modules
-var logging_module = __webpack_require__(2);
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
+/**
+ * Class used to subscribe ILogListener and log messages throughout an application
+ *
+ */
+var Logger = /** @class */ (function () {
+    function Logger() {
+    }
+    Object.defineProperty(Logger, "activeLogLevel", {
+        /**
+         * Gets or sets the active log level to apply for log filtering
+         */
+        get: function () {
+            return Logger.instance.activeLogLevel;
+        },
+        set: function (value) {
+            Logger.instance.activeLogLevel = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Logger, "instance", {
+        get: function () {
+            if (Logger._instance === undefined || Logger._instance === null) {
+                Logger._instance = new LoggerImpl();
+            }
+            return Logger._instance;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Adds ILogListener instances to the set of subscribed listeners
+     *
+     * @param listeners One or more listeners to subscribe to this log
+     */
+    Logger.subscribe = function () {
+        var listeners = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            listeners[_i] = arguments[_i];
+        }
+        listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
+    };
+    /**
+     * Clears the subscribers collection, returning the collection before modification
+     */
+    Logger.clearSubscribers = function () {
+        return Logger.instance.clearSubscribers();
+    };
+    Object.defineProperty(Logger, "count", {
+        /**
+         * Gets the current subscriber count
+         */
+        get: function () {
+            return Logger.instance.count;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Writes the supplied string to the subscribed listeners
+     *
+     * @param message The message to write
+     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
+     */
+    Logger.write = function (message, level) {
+        if (level === void 0) { level = 1 /* Info */; }
+        Logger.instance.log({ level: level, message: message });
+    };
+    /**
+     * Writes the supplied string to the subscribed listeners
+     *
+     * @param json The json object to stringify and write
+     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
+     */
+    Logger.writeJSON = function (json, level) {
+        if (level === void 0) { level = 1 /* Info */; }
+        this.write(JSON.stringify(json), level);
+    };
+    /**
+     * Logs the supplied entry to the subscribed listeners
+     *
+     * @param entry The message to log
+     */
+    Logger.log = function (entry) {
+        Logger.instance.log(entry);
+    };
+    /**
+     * Logs an error object to the subscribed listeners
+     *
+     * @param err The error object
+     */
+    Logger.error = function (err) {
+        Logger.instance.log({ data: err, level: 3 /* Error */, message: err.message });
+    };
+    return Logger;
+}());
 
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/pipeline.js
+var LoggerImpl = /** @class */ (function () {
+    function LoggerImpl(activeLogLevel, subscribers) {
+        if (activeLogLevel === void 0) { activeLogLevel = 2 /* Warning */; }
+        if (subscribers === void 0) { subscribers = []; }
+        this.activeLogLevel = activeLogLevel;
+        this.subscribers = subscribers;
+    }
+    LoggerImpl.prototype.subscribe = function (listener) {
+        this.subscribers.push(listener);
+    };
+    LoggerImpl.prototype.clearSubscribers = function () {
+        var s = this.subscribers.slice(0);
+        this.subscribers.length = 0;
+        return s;
+    };
+    Object.defineProperty(LoggerImpl.prototype, "count", {
+        get: function () {
+            return this.subscribers.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    LoggerImpl.prototype.write = function (message, level) {
+        if (level === void 0) { level = 1 /* Info */; }
+        this.log({ level: level, message: message });
+    };
+    LoggerImpl.prototype.log = function (entry) {
+        if (entry !== undefined && this.activeLogLevel <= entry.level) {
+            this.subscribers.map(function (subscriber) { return subscriber.log(entry); });
+        }
+    };
+    return LoggerImpl;
+}());
+/**
+ * A set of logging levels
+ */
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["Verbose"] = 0] = "Verbose";
+    LogLevel[LogLevel["Info"] = 1] = "Info";
+    LogLevel[LogLevel["Warning"] = 2] = "Warning";
+    LogLevel[LogLevel["Error"] = 3] = "Error";
+    LogLevel[LogLevel["Off"] = 99] = "Off";
+})(LogLevel || (LogLevel = {}));
+//# sourceMappingURL=logger.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
+/**
+ * Implementation of LogListener which logs to the console
+ *
+ */
+var ConsoleListener = /** @class */ (function () {
+    function ConsoleListener() {
+    }
+    /**
+     * Any associated data that a given logging listener may choose to log or ignore
+     *
+     * @param entry The information to be logged
+     */
+    ConsoleListener.prototype.log = function (entry) {
+        var msg = this.format(entry);
+        switch (entry.level) {
+            case 0 /* Verbose */:
+            case 1 /* Info */:
+                console.log(msg);
+                break;
+            case 2 /* Warning */:
+                console.warn(msg);
+                break;
+            case 3 /* Error */:
+                console.error(msg);
+                break;
+        }
+    };
+    /**
+     * Formats the message
+     *
+     * @param entry The information to format into a string
+     */
+    ConsoleListener.prototype.format = function (entry) {
+        var msg = [];
+        msg.push("Message: " + entry.message);
+        if (entry.data !== undefined) {
+            try {
+                msg.push(" Data: " + JSON.stringify(entry.data));
+            }
+            catch (e) {
+                msg.push(" Data: Error in stringify of supplied data " + e);
+            }
+        }
+        return msg.join("");
+    };
+    return ConsoleListener;
+}());
+
+/**
+ * Implementation of LogListener which logs to the supplied function
+ *
+ */
+var FunctionListener = /** @class */ (function () {
+    /**
+     * Creates a new instance of the FunctionListener class
+     *
+     * @constructor
+     * @param  method The method to which any logging data will be passed
+     */
+    function FunctionListener(method) {
+        this.method = method;
+    }
+    /**
+     * Any associated data that a given logging listener may choose to log or ignore
+     *
+     * @param entry The information to be logged
+     */
+    FunctionListener.prototype.log = function (entry) {
+        this.method(entry);
+    };
+    return FunctionListener;
+}());
+
+//# sourceMappingURL=listeners.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline.js
 
 
 
@@ -1994,8 +2405,8 @@ var logging_module = __webpack_require__(2);
  * @param context The current context
  */
 function returnResult(context) {
-    logging_module["Logger"].log({
-        data: logging_module["Logger"].activeLogLevel === 0 /* Verbose */ ? context.result : {},
+    Logger.log({
+        data: Logger.activeLogLevel === 0 /* Verbose */ ? context.result : {},
         level: 1 /* Info */,
         message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Returning result from pipeline. Set logging to verbose to see data.",
     });
@@ -2026,11 +2437,11 @@ function next(c) {
  */
 function pipe(context) {
     if (context.pipes.length < 1) {
-        logging_module["Logger"].write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Request pipeline contains no methods!", 3 /* Error */);
+        Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Request pipeline contains no methods!", 3 /* Error */);
         throw Error("Request pipeline contains no methods!");
     }
     var promise = next(context).then(function (ctx) { return returnResult(ctx); }).catch(function (e) {
-        logging_module["Logger"].error(e);
+        Logger.error(e);
         throw e;
     });
     if (context.isBatched) {
@@ -2052,12 +2463,12 @@ function requestPipelineMethod(alwaysRun) {
                 args[_i] = arguments[_i];
             }
             // if we have a result already in the pipeline, pass it along and don't call the tagged method
-            if (!alwaysRun && args.length > 0 && Object(common_module["hOP"])(args[0], "hasResult") && args[0].hasResult) {
-                logging_module["Logger"].write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Skipping request pipeline method " + propertyKey + ", existing result in pipeline.", 0 /* Verbose */);
+            if (!alwaysRun && args.length > 0 && Object(common["i" /* hOP */])(args[0], "hasResult") && args[0].hasResult) {
+                Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Skipping request pipeline method " + propertyKey + ", existing result in pipeline.", 0 /* Verbose */);
                 return Promise.resolve(args[0]);
             }
             // apply the tagged method
-            logging_module["Logger"].write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Calling request pipeline method " + propertyKey + ".", 0 /* Verbose */);
+            Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Calling request pipeline method " + propertyKey + ".", 0 /* Verbose */);
             // then chain the next method in the context's pipeline - allows for dynamic pipeline
             return method.apply(target, args).then(function (ctx) { return next(ctx); });
         };
@@ -2074,8 +2485,8 @@ var pipeline_PipelineMethods = /** @class */ (function () {
      */
     PipelineMethods.logStart = function (context) {
         return new Promise(function (resolve) {
-            logging_module["Logger"].log({
-                data: logging_module["Logger"].activeLogLevel === 1 /* Info */ ? {} : context,
+            Logger.log({
+                data: Logger.activeLogLevel === 1 /* Info */ ? {} : context,
                 level: 1 /* Info */,
                 message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Beginning " + context.method + " request (" + context.url + ")",
             });
@@ -2089,10 +2500,10 @@ var pipeline_PipelineMethods = /** @class */ (function () {
         return new Promise(function (resolve) {
             // handle caching, if applicable
             if (context.useCaching) {
-                logging_module["Logger"].write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Caching is enabled for request, checking cache...", 1 /* Info */);
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Caching is enabled for request, checking cache...", 1 /* Info */);
                 var cacheOptions = new caching_CachingOptions(context.url.toLowerCase());
                 if (context.cachingOptions !== undefined) {
-                    cacheOptions = Object(common_module["assign"])(cacheOptions, context.cachingOptions);
+                    cacheOptions = Object(common["d" /* assign */])(cacheOptions, context.cachingOptions);
                 }
                 // we may not have a valid store
                 if (cacheOptions.store !== null) {
@@ -2100,22 +2511,22 @@ var pipeline_PipelineMethods = /** @class */ (function () {
                     var data = cacheOptions.store.get(cacheOptions.key);
                     if (data !== null) {
                         // ensure we clear any held batch dependency we are resolving from the cache
-                        logging_module["Logger"].log({
-                            data: logging_module["Logger"].activeLogLevel === 1 /* Info */ ? {} : data,
+                        Logger.log({
+                            data: Logger.activeLogLevel === 1 /* Info */ ? {} : data,
                             level: 1 /* Info */,
                             message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
                         });
-                        if (Object(common_module["isFunc"])(context.batchDependency)) {
+                        if (Object(common["k" /* isFunc */])(context.batchDependency)) {
                             context.batchDependency();
                         }
                         // handle the case where a parser needs to take special actions with a cached result
-                        if (Object(common_module["hOP"])(context.parser, "hydrate")) {
+                        if (Object(common["i" /* hOP */])(context.parser, "hydrate")) {
                             data = context.parser.hydrate(data);
                         }
                         return setResult(context, data).then(function (ctx) { return resolve(ctx); });
                     }
                 }
-                logging_module["Logger"].write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Value not found in cache.", 1 /* Info */);
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Value not found in cache.", 1 /* Info */);
                 // if we don't then wrap the supplied parser in the caching parser wrapper
                 // and send things on their way
                 context.parser = new CachingParserWrapper(context.parser, cacheOptions);
@@ -2133,18 +2544,18 @@ var pipeline_PipelineMethods = /** @class */ (function () {
                 // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
                 var p = context.batch.add(context.url, context.method, context.options, context.parser, context.requestId);
                 // we release the dependency here to ensure the batch does not execute until the request is added to the batch
-                if (Object(common_module["isFunc"])(context.batchDependency)) {
+                if (Object(common["k" /* isFunc */])(context.batchDependency)) {
                     context.batchDependency();
                 }
-                logging_module["Logger"].write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request in batch " + context.batch.batchId + ".", 1 /* Info */);
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request in batch " + context.batch.batchId + ".", 1 /* Info */);
                 // we set the result as the promise which will be resolved by the batch's execution
                 resolve(setResult(context, p));
             }
             else {
-                logging_module["Logger"].write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Sending request.", 1 /* Info */);
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Sending request.", 1 /* Info */);
                 // we are not part of a batch, so proceed as normal
                 var client = context.clientFactory();
-                var opts = Object(common_module["assign"])(context.options || {}, { method: context.method });
+                var opts = Object(common["d" /* assign */])(context.options || {}, { method: context.method });
                 client.fetch(context.url, opts)
                     .then(function (response) { return context.parser.parse(response); })
                     .then(function (result) { return setResult(context, result); })
@@ -2159,15 +2570,15 @@ var pipeline_PipelineMethods = /** @class */ (function () {
     PipelineMethods.logEnd = function (context) {
         return new Promise(function (resolve) {
             if (context.isBatched) {
-                logging_module["Logger"].log({
-                    data: logging_module["Logger"].activeLogLevel === 1 /* Info */ ? {} : context,
+                Logger.log({
+                    data: Logger.activeLogLevel === 1 /* Info */ ? {} : context,
                     level: 1 /* Info */,
                     message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") " + context.method + " request will complete in batch " + context.batch.batchId + ".",
                 });
             }
             else {
-                logging_module["Logger"].log({
-                    data: logging_module["Logger"].activeLogLevel === 1 /* Info */ ? {} : context,
+                Logger.log({
+                    data: Logger.activeLogLevel === 1 /* Info */ ? {} : context,
                     level: 1 /* Info */,
                     message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Completing " + context.method + " request.",
                 });
@@ -2175,16 +2586,16 @@ var pipeline_PipelineMethods = /** @class */ (function () {
             resolve(context);
         });
     };
-    Object(tslib_es6["__decorate"])([
+    Object(tslib_es6["b" /* __decorate */])([
         requestPipelineMethod(true)
     ], PipelineMethods, "logStart", null);
-    Object(tslib_es6["__decorate"])([
+    Object(tslib_es6["b" /* __decorate */])([
         requestPipelineMethod()
     ], PipelineMethods, "caching", null);
-    Object(tslib_es6["__decorate"])([
+    Object(tslib_es6["b" /* __decorate */])([
         requestPipelineMethod()
     ], PipelineMethods, "send", null);
-    Object(tslib_es6["__decorate"])([
+    Object(tslib_es6["b" /* __decorate */])([
         requestPipelineMethod(true)
     ], PipelineMethods, "logEnd", null);
     return PipelineMethods;
@@ -2199,7 +2610,7 @@ function getDefaultPipeline() {
     ].slice(0);
 }
 //# sourceMappingURL=pipeline.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/pipeline-binder.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline-binder.js
 
 
 
@@ -2221,14 +2632,14 @@ function pipelineBinder(pipes) {
                     cloneParentCacheOptions: null,
                     cloneParentWasCaching: false,
                     hasResult: false,
-                    isBatched: Object(common_module["objectDefinedNotNull"])(o.batch),
+                    isBatched: Object(common["q" /* objectDefinedNotNull */])(o.batch),
                     method: method,
                     options: null,
                     parentUrl: "",
                     parser: new parsers_ODataParser(),
                     pipes: pipes.slice(0),
                     query: new Map(),
-                    requestId: Object(common_module["getGUID"])(),
+                    requestId: Object(common["h" /* getGUID */])(),
                     url: "",
                     useCaching: /^get$/i.test(o.method) && o.useCaching,
                 }, cloneQueryableData(o)));
@@ -2238,45 +2649,16 @@ function pipelineBinder(pipes) {
 }
 var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/request-builders.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
 
 function body(o, previous) {
-    return Object.assign({ body: Object(common_module["jsS"])(o) }, previous);
+    return Object.assign({ body: Object(common["m" /* jsS */])(o) }, previous);
 }
-function headers(o, previous) {
+function request_builders_headers(o, previous) {
     return Object.assign({ headers: o }, previous);
 }
 //# sourceMappingURL=request-builders.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/index.js
-/* concated harmony reexport Batch */__webpack_require__.d(__webpack_exports__, "Batch", function() { return batch_Batch; });
-/* concated harmony reexport CachingOptions */__webpack_require__.d(__webpack_exports__, "CachingOptions", function() { return caching_CachingOptions; });
-/* concated harmony reexport CachingParserWrapper */__webpack_require__.d(__webpack_exports__, "CachingParserWrapper", function() { return CachingParserWrapper; });
-/* concated harmony reexport addProp */__webpack_require__.d(__webpack_exports__, "addProp", function() { return addProp; });
-/* concated harmony reexport invokableFactory */__webpack_require__.d(__webpack_exports__, "invokableFactory", function() { return invokableFactory; });
-/* concated harmony reexport pipelineBinder */__webpack_require__.d(__webpack_exports__, "pipelineBinder", function() { return pipelineBinder; });
-/* concated harmony reexport defaultPipelineBinder */__webpack_require__.d(__webpack_exports__, "defaultPipelineBinder", function() { return defaultPipelineBinder; });
-/* concated harmony reexport ODataParser */__webpack_require__.d(__webpack_exports__, "ODataParser", function() { return parsers_ODataParser; });
-/* concated harmony reexport TextParser */__webpack_require__.d(__webpack_exports__, "TextParser", function() { return parsers_TextParser; });
-/* concated harmony reexport BlobParser */__webpack_require__.d(__webpack_exports__, "BlobParser", function() { return parsers_BlobParser; });
-/* concated harmony reexport JSONParser */__webpack_require__.d(__webpack_exports__, "JSONParser", function() { return parsers_JSONParser; });
-/* concated harmony reexport BufferParser */__webpack_require__.d(__webpack_exports__, "BufferParser", function() { return parsers_BufferParser; });
-/* concated harmony reexport LambdaParser */__webpack_require__.d(__webpack_exports__, "LambdaParser", function() { return parsers_LambdaParser; });
-/* concated harmony reexport HttpRequestError */__webpack_require__.d(__webpack_exports__, "HttpRequestError", function() { return parsers_HttpRequestError; });
-/* concated harmony reexport setResult */__webpack_require__.d(__webpack_exports__, "setResult", function() { return setResult; });
-/* concated harmony reexport pipe */__webpack_require__.d(__webpack_exports__, "pipe", function() { return pipe; });
-/* concated harmony reexport requestPipelineMethod */__webpack_require__.d(__webpack_exports__, "requestPipelineMethod", function() { return requestPipelineMethod; });
-/* concated harmony reexport PipelineMethods */__webpack_require__.d(__webpack_exports__, "PipelineMethods", function() { return pipeline_PipelineMethods; });
-/* concated harmony reexport getDefaultPipeline */__webpack_require__.d(__webpack_exports__, "getDefaultPipeline", function() { return getDefaultPipeline; });
-/* concated harmony reexport cloneQueryableData */__webpack_require__.d(__webpack_exports__, "cloneQueryableData", function() { return cloneQueryableData; });
-/* concated harmony reexport Queryable */__webpack_require__.d(__webpack_exports__, "Queryable", function() { return queryable_Queryable; });
-/* concated harmony reexport body */__webpack_require__.d(__webpack_exports__, "body", function() { return body; });
-/* concated harmony reexport headers */__webpack_require__.d(__webpack_exports__, "headers", function() { return headers; });
-/* concated harmony reexport extendGlobal */__webpack_require__.d(__webpack_exports__, "extendGlobal", function() { return extendGlobal; });
-/* concated harmony reexport extendObj */__webpack_require__.d(__webpack_exports__, "extendObj", function() { return extendObj; });
-/* concated harmony reexport extendFactory */__webpack_require__.d(__webpack_exports__, "extendFactory", function() { return extendFactory; });
-/* concated harmony reexport clearGlobalExtensions */__webpack_require__.d(__webpack_exports__, "clearGlobalExtensions", function() { return clearGlobalExtensions; });
-/* concated harmony reexport enableExtensions */__webpack_require__.d(__webpack_exports__, "enableExtensions", function() { return enableExtensions; });
-/* concated harmony reexport disableExtensions */__webpack_require__.d(__webpack_exports__, "disableExtensions", function() { return disableExtensions; });
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/index.js
 
 
 
@@ -2288,17 +2670,37 @@ function headers(o, previous) {
 
 
 //# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/metadata.js
+function metadata(type) {
+    return {
+        "__metadata": { "type": type },
+    };
+}
+//# sourceMappingURL=metadata.js.map
+// EXTERNAL MODULE: ./node_modules/@pnp/sp/splibconfig.js
+var splibconfig = __webpack_require__(3);
 
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/extractweburl.js
 
-"use strict";
+function extractWebUrl(candidateUrl) {
+    if (Object(common["s" /* stringIsNullOrEmpty */])(candidateUrl)) {
+        return "";
+    }
+    var index = candidateUrl.indexOf("_api/");
+    if (index < 0) {
+        index = candidateUrl.indexOf("_vti_bin/");
+    }
+    if (index > -1) {
+        return candidateUrl.substr(0, index);
+    }
+    // if all else fails just give them what they gave us back
+    return candidateUrl;
+}
+//# sourceMappingURL=extractweburl.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/telemetry.js
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(4);
+
+
 /**
  * Includes this method name in the X-ClientService-ClientTag used to record pnpjs usage
  *
@@ -2315,9 +2717,9 @@ function tag(name) {
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
-            return tslib_1.__awaiter(this, void 0, void 0, function () {
-                return tslib_1.__generator(this, function (_a) {
-                    this.configure(odata_1.headers({ "X-PnPjs-Tracking": name }));
+            return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+                return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                    this.configure(request_builders_headers({ "X-PnPjs-Tracking": name }));
                     return [2 /*return*/, originalMethod.apply(this, args)];
                 });
             });
@@ -2325,7 +2727,6 @@ function tag(name) {
         return descriptor;
     };
 }
-exports.tag = tag;
 tag.getClientTag = function (h, deleteFromCollection) {
     if (deleteFromCollection === void 0) { deleteFromCollection = true; }
     if (h.has("X-PnPjs-Tracking")) {
@@ -2333,43 +2734,281 @@ tag.getClientTag = function (h, deleteFromCollection) {
         if (deleteFromCollection) {
             h.delete("X-PnPjs-Tracking");
         }
-        if (!common_1.stringIsNullOrEmpty(methodName)) {
+        if (!Object(common["s" /* stringIsNullOrEmpty */])(methodName)) {
             return methodName;
         }
     }
     return "";
 };
 tag.configure = function (o, name) {
-    return o.configure(odata_1.headers({ "X-PnPjs-Tracking": name }));
+    return o.configure(request_builders_headers({ "X-PnPjs-Tracking": name }));
 };
 tag.isTagged = function (o) {
     return o.data.options.headers && o.data.options.headers["X-PnPjs-Tracking"];
 };
 //# sourceMappingURL=telemetry.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/sphttpclient.js
 
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(4);
-var logging_1 = __webpack_require__(2);
-var metadata_1 = __webpack_require__(7);
-var operations_1 = __webpack_require__(8);
-var telemetry_1 = __webpack_require__(5);
-exports.spInvokableFactory = function (f) {
-    return odata_1.invokableFactory(f);
+
+
+
+var sphttpclient_SPHttpClient = /** @class */ (function () {
+    function SPHttpClient(_impl) {
+        if (_impl === void 0) { _impl = splibconfig["a" /* SPRuntimeConfig */].fetchClientFactory(); }
+        this._impl = _impl;
+        this._digestCache = getDigestFactory(this);
+    }
+    SPHttpClient.prototype.fetch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var opts, headers, methodName, clientTag, digest;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        opts = Object(common["d" /* assign */])(options, { cache: "no-cache", credentials: "same-origin" }, true);
+                        headers = new Headers();
+                        // first we add the global headers so they can be overwritten by any passed in locally to this call
+                        Object(common["n" /* mergeHeaders */])(headers, splibconfig["a" /* SPRuntimeConfig */].headers);
+                        // second we add the local options so we can overwrite the globals
+                        Object(common["n" /* mergeHeaders */])(headers, options.headers);
+                        // lastly we apply any default headers we need that may not exist
+                        if (!headers.has("Accept")) {
+                            headers.append("Accept", "application/json");
+                        }
+                        if (!headers.has("Content-Type")) {
+                            headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
+                        }
+                        if (!headers.has("X-ClientService-ClientTag")) {
+                            methodName = tag.getClientTag(headers);
+                            clientTag = "PnPCoreJS:2.0.2:" + methodName;
+                            if (clientTag.length > 32) {
+                                clientTag = clientTag.substr(0, 32);
+                            }
+                            headers.append("X-ClientService-ClientTag", clientTag);
+                        }
+                        if (!headers.has("User-Agent")) {
+                            // this marks the requests for understanding by the service
+                            // does not work in browsers
+                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.2");
+                        }
+                        opts = Object(common["d" /* assign */])(opts, { headers: headers });
+                        if (!(opts.method && opts.method.toUpperCase() !== "GET" && !headers.has("X-RequestDigest") && !headers.has("Authorization"))) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this._digestCache(extractWebUrl(url))];
+                    case 1:
+                        digest = _a.sent();
+                        headers.append("X-RequestDigest", digest);
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, this.fetchRaw(url, opts)];
+                }
+            });
+        });
+    };
+    SPHttpClient.prototype.fetchRaw = function (url, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        // here we need to normalize the headers
+        var rawHeaders = new Headers();
+        Object(common["n" /* mergeHeaders */])(rawHeaders, options.headers);
+        options = Object(common["d" /* assign */])(options, { headers: rawHeaders });
+        var retry = function (ctx) {
+            // handles setting the proper timeout for a retry
+            var setRetry = function (response) {
+                var delay;
+                if (response.headers.has("Retry-After")) {
+                    // if we have gotten a header, use that value as the delay value
+                    delay = parseInt(response.headers.get("Retry-After"), 10);
+                }
+                else {
+                    // grab our current delay
+                    delay = ctx.delay;
+                    // Increment our counters.
+                    ctx.delay *= 2;
+                }
+                ctx.attempts++;
+                // If we have exceeded the retry count, reject.
+                if (ctx.retryCount <= ctx.attempts) {
+                    ctx.reject(Error("Retry count exceeded (" + ctx.retryCount + ") for request. Response status: [" + response.status + "] " + response.statusText));
+                }
+                else {
+                    // Set our retry timeout for {delay} milliseconds.
+                    setTimeout(Object(common["g" /* getCtxCallback */])(_this, retry, ctx), delay);
+                }
+            };
+            // send the actual request
+            _this._impl.fetch(url, options).then(function (response) {
+                if (response.status === 429) {
+                    // we have been throttled
+                    setRetry(response);
+                }
+                else {
+                    ctx.resolve(response);
+                }
+            }).catch(function (response) {
+                if (response.status === 503) {
+                    // http status code 503, we can retry this
+                    setRetry(response);
+                }
+                else {
+                    ctx.reject(response);
+                }
+            });
+        };
+        return new Promise(function (resolve, reject) {
+            retry.call(_this, {
+                attempts: 0,
+                delay: 100,
+                reject: reject,
+                resolve: resolve,
+                retryCount: 7,
+            });
+        });
+    };
+    SPHttpClient.prototype.get = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = Object(common["d" /* assign */])(options, { method: "GET" });
+        return this.fetch(url, opts);
+    };
+    SPHttpClient.prototype.post = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = Object(common["d" /* assign */])(options, { method: "POST" });
+        return this.fetch(url, opts);
+    };
+    SPHttpClient.prototype.patch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = Object(common["d" /* assign */])(options, { method: "PATCH" });
+        return this.fetch(url, opts);
+    };
+    SPHttpClient.prototype.delete = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = Object(common["d" /* assign */])(options, { method: "DELETE" });
+        return this.fetch(url, opts);
+    };
+    return SPHttpClient;
+}());
+
+// allows for the caching of digests across all HttpClient's which each have their own DigestCache wrapper.
+var digests = new Map();
+function getDigestFactory(client) {
+    var _this = this;
+    return function (webUrl) { return Object(tslib_es6["a" /* __awaiter */])(_this, void 0, void 0, function () {
+        var cachedDigest, now, url, headers, resp, parsed, newCachedDigest;
+        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    cachedDigest = digests.get(webUrl);
+                    if (cachedDigest !== undefined) {
+                        now = new Date();
+                        if (now < cachedDigest.expiration) {
+                            return [2 /*return*/, cachedDigest.value];
+                        }
+                    }
+                    url = Object(common["e" /* combine */])(webUrl, "/_api/contextinfo");
+                    headers = {
+                        "Accept": "application/json;odata=verbose",
+                        "Content-Type": "application/json;odata=verbose;charset=utf-8",
+                    };
+                    return [4 /*yield*/, client.fetchRaw(url, {
+                            cache: "no-cache",
+                            credentials: "same-origin",
+                            headers: Object(common["d" /* assign */])(headers, splibconfig["a" /* SPRuntimeConfig */].headers, true),
+                            method: "POST",
+                        })];
+                case 1:
+                    resp = _a.sent();
+                    return [4 /*yield*/, (new parsers_ODataParser()).parse(resp).then(function (r) { return r.GetContextWebInformation; })];
+                case 2:
+                    parsed = _a.sent();
+                    newCachedDigest = {
+                        expiration: Object(common["f" /* dateAdd */])(new Date(), "second", parsed.FormDigestTimeoutSeconds),
+                        value: parsed.FormDigestValue,
+                    };
+                    digests.set(webUrl, newCachedDigest);
+                    return [2 /*return*/, newCachedDigest.value];
+            }
+        });
+    }); };
+}
+//# sourceMappingURL=sphttpclient.js.map
+// EXTERNAL MODULE: ./node_modules/@pnp/sp/utils/toabsoluteurl.js
+var toabsoluteurl = __webpack_require__(4);
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/operations.js
+
+
+
+
+
+var spClientBinder = defaultPipelineBinder(function () { return new sphttpclient_SPHttpClient(); });
+var send = function (method) {
+    var operation = spClientBinder(method);
+    return function (o, options) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var data, batchDependency, url;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        data = cloneQueryableData(o.data);
+                        batchDependency = Object(common["q" /* objectDefinedNotNull */])(data.batch) ? data.batch.addDependency() : function () { return; };
+                        return [4 /*yield*/, Object(toabsoluteurl["a" /* toAbsoluteUrl */])(o.toUrlAndQuery())];
+                    case 1:
+                        url = _a.sent();
+                        Object(common["p" /* mergeOptions */])(data.options, options);
+                        return [2 /*return*/, operation(Object.assign({}, data, {
+                                batchDependency: batchDependency,
+                                url: url,
+                            }))];
+                }
+            });
+        });
+    };
+};
+var spGet = function (o, options) {
+    // Fix for #304 - when we clone objects we in some cases then execute a get request
+    // in these cases the caching settings were getting dropped from the request
+    // this tracks if the object from which this was cloned was caching and applies that to an immediate get request
+    // does not affect objects cloned from this as we are using different fields to track the settings so it won't
+    // be triggered
+    if (o.data.cloneParentWasCaching) {
+        o.usingCaching(o.data.cloneParentCacheOptions);
+    }
+    // if we are forcing caching set that in the data here
+    if (o._forceCaching) {
+        o.data.useCaching = true;
+    }
+    return send("GET")(o, options);
+};
+var spPost = send("POST");
+var spDelete = send("DELETE");
+var spPatch = send("PATCH");
+var spPostDelete = function (o, options) {
+    var opts = Object.assign(request_builders_headers({ "X-HTTP-Method": "DELETE" }), options);
+    return spPost(o, opts);
+};
+var spPostDeleteETag = function (o, options, eTag) {
+    if (eTag === void 0) { eTag = "*"; }
+    var opts = Object.assign(request_builders_headers({ "X-HTTP-Method": "DELETE", "IF-Match": eTag }), options);
+    return spPost(o, opts);
+};
+//# sourceMappingURL=operations.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/sharepointqueryable.js
+
+
+
+
+
+
+
+var spInvokableFactory = function (f) {
+    return invokableFactory(f);
 };
 /**
  * SharePointQueryable Base Class
  *
  */
-var _SharePointQueryable = /** @class */ (function (_super) {
-    tslib_1.__extends(_SharePointQueryable, _super);
+var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_SharePointQueryable, _super);
     /**
      * Creates a new instance of the SharePointQueryable class
      *
@@ -2385,27 +3024,27 @@ var _SharePointQueryable = /** @class */ (function (_super) {
         if (typeof baseUrl === "string") {
             // we need to do some extra parsing to get the parent url correct if we are
             // being created from just a string.
-            if (common_1.isUrlAbsolute(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
+            if (Object(common["l" /* isUrlAbsolute */])(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
                 parentUrl = baseUrl;
-                url = common_1.combine(baseUrl, path);
+                url = Object(common["e" /* combine */])(baseUrl, path);
             }
             else if (baseUrl.lastIndexOf("/") > baseUrl.lastIndexOf("(")) {
                 // .../items(19)/fields
                 var index = baseUrl.lastIndexOf("/");
                 parentUrl = baseUrl.slice(0, index);
-                path = common_1.combine(baseUrl.slice(index), path);
-                url = common_1.combine(parentUrl, path);
+                path = Object(common["e" /* combine */])(baseUrl.slice(index), path);
+                url = Object(common["e" /* combine */])(parentUrl, path);
             }
             else {
                 // .../items(19)
                 var index = baseUrl.lastIndexOf("(");
                 parentUrl = baseUrl.slice(0, index);
-                url = common_1.combine(baseUrl, path);
+                url = Object(common["e" /* combine */])(baseUrl, path);
             }
         }
         else {
             parentUrl = baseUrl.toUrl();
-            url = common_1.combine(parentUrl, path || "");
+            url = Object(common["e" /* combine */])(parentUrl, path || "");
             var target = baseUrl.query.get("@target");
             if (target !== undefined) {
                 query.set("@target", target);
@@ -2430,7 +3069,7 @@ var _SharePointQueryable = /** @class */ (function (_super) {
     _SharePointQueryable.prototype.toUrlAndQuery = function () {
         var aliasedParams = new Map(this.query);
         var url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, function (match, labelName, value) {
-            logging_1.Logger.write("Rewriting aliased parameter from match " + match + " to label: " + labelName + " value: " + value, 0 /* Verbose */);
+            Logger.write("Rewriting aliased parameter from match " + match + " to label: " + labelName + " value: " + value, 0 /* Verbose */);
             aliasedParams.set(labelName, "'" + value + "'");
             return labelName;
         });
@@ -2456,7 +3095,7 @@ var _SharePointQueryable = /** @class */ (function (_super) {
         return this;
     };
     _SharePointQueryable.prototype.get = function (options) {
-        return operations_1.spGet(this, options);
+        return spGet(this, options);
     };
     /**
      * Expands fields such as lookups to get additional data
@@ -2495,7 +3134,7 @@ var _SharePointQueryable = /** @class */ (function (_super) {
      * @param options optional request options
      */
     _SharePointQueryable.prototype.defaultAction = function (options) {
-        return operations_1.spGet(this, options);
+        return spGet(this, options);
     };
     /**
      * Gets a parent for this instance as specified
@@ -2515,15 +3154,15 @@ var _SharePointQueryable = /** @class */ (function (_super) {
         return parent;
     };
     return _SharePointQueryable;
-}(odata_1.Queryable));
-exports._SharePointQueryable = _SharePointQueryable;
-exports.SharePointQueryable = exports.spInvokableFactory(_SharePointQueryable);
+}(queryable_Queryable));
+
+var SharePointQueryable = spInvokableFactory(sharepointqueryable_SharePointQueryable);
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-var _SharePointQueryableCollection = /** @class */ (function (_super) {
-    tslib_1.__extends(_SharePointQueryableCollection, _super);
+var sharepointqueryable_SharePointQueryableCollection = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_SharePointQueryableCollection, _super);
     function _SharePointQueryableCollection() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -2569,15 +3208,15 @@ var _SharePointQueryableCollection = /** @class */ (function (_super) {
         return this;
     };
     return _SharePointQueryableCollection;
-}(_SharePointQueryable));
-exports._SharePointQueryableCollection = _SharePointQueryableCollection;
-exports.SharePointQueryableCollection = exports.spInvokableFactory(_SharePointQueryableCollection);
+}(sharepointqueryable_SharePointQueryable));
+
+var SharePointQueryableCollection = spInvokableFactory(sharepointqueryable_SharePointQueryableCollection);
 /**
  * Represents an instance that can be selected
  *
  */
-var _SharePointQueryableInstance = /** @class */ (function (_super) {
-    tslib_1.__extends(_SharePointQueryableInstance, _super);
+var sharepointqueryable_SharePointQueryableInstance = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_SharePointQueryableInstance, _super);
     function _SharePointQueryableInstance() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -2589,185 +3228,37 @@ var _SharePointQueryableInstance = /** @class */ (function (_super) {
      */
     _SharePointQueryableInstance.prototype._update = function (type, mapper) {
         var _this = this;
-        return function (props) { return operations_1.spPost(telemetry_1.tag.configure(_this, type + ".Update"), {
-            body: common_1.jsS(common_1.assign(metadata_1.metadata(type), props)),
+        return function (props) { return spPost(tag.configure(_this, type + ".Update"), {
+            body: Object(common["m" /* jsS */])(Object(common["d" /* assign */])(metadata(type), props)),
             headers: {
                 "X-HTTP-Method": "MERGE",
             },
         }).then(function (d) { return mapper(d, props); }); };
     };
     return _SharePointQueryableInstance;
-}(_SharePointQueryable));
-exports._SharePointQueryableInstance = _SharePointQueryableInstance;
-exports.SharePointQueryableInstance = exports.spInvokableFactory(_SharePointQueryableInstance);
+}(sharepointqueryable_SharePointQueryable));
+
+var SharePointQueryableInstance = spInvokableFactory(sharepointqueryable_SharePointQueryableInstance);
 /**
  * Adds the a delete method to the tagged class taking no parameters and calling spPostDelete
  */
 function deleteable(t) {
     return function () {
-        return operations_1.spPostDelete(telemetry_1.tag.configure(this, t + ".delete"));
+        return spPostDelete(tag.configure(this, t + ".delete"));
     };
 }
-exports.deleteable = deleteable;
 function deleteableWithETag(t) {
     return function (eTag) {
         if (eTag === void 0) { eTag = "*"; }
-        return operations_1.spPostDeleteETag(telemetry_1.tag.configure(this, t + ".delete"), {}, eTag);
+        return spPostDeleteETag(tag.configure(this, t + ".delete"), {}, eTag);
     };
 }
-exports.deleteableWithETag = deleteableWithETag;
 //# sourceMappingURL=sharepointqueryable.js.map
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-function metadata(type) {
-    return {
-        "__metadata": { "type": type },
-    };
-}
-exports.metadata = metadata;
-//# sourceMappingURL=metadata.js.map
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(4);
-var sphttpclient_1 = __webpack_require__(13);
-var common_1 = __webpack_require__(0);
-var toabsoluteurl_1 = __webpack_require__(19);
-var spClientBinder = odata_1.defaultPipelineBinder(function () { return new sphttpclient_1.SPHttpClient(); });
-var send = function (method) {
-    var operation = spClientBinder(method);
-    return function (o, options) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var data, batchDependency, url;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        data = odata_1.cloneQueryableData(o.data);
-                        batchDependency = common_1.objectDefinedNotNull(data.batch) ? data.batch.addDependency() : function () { return; };
-                        return [4 /*yield*/, toabsoluteurl_1.toAbsoluteUrl(o.toUrlAndQuery())];
-                    case 1:
-                        url = _a.sent();
-                        common_1.mergeOptions(data.options, options);
-                        return [2 /*return*/, operation(Object.assign({}, data, {
-                                batchDependency: batchDependency,
-                                url: url,
-                            }))];
-                }
-            });
-        });
-    };
-};
-exports.spGet = function (o, options) {
-    // Fix for #304 - when we clone objects we in some cases then execute a get request
-    // in these cases the caching settings were getting dropped from the request
-    // this tracks if the object from which this was cloned was caching and applies that to an immediate get request
-    // does not affect objects cloned from this as we are using different fields to track the settings so it won't
-    // be triggered
-    if (o.data.cloneParentWasCaching) {
-        o.usingCaching(o.data.cloneParentCacheOptions);
-    }
-    // if we are forcing caching set that in the data here
-    if (o._forceCaching) {
-        o.data.useCaching = true;
-    }
-    return send("GET")(o, options);
-};
-exports.spPost = send("POST");
-exports.spDelete = send("DELETE");
-exports.spPatch = send("PATCH");
-exports.spPostDelete = function (o, options) {
-    var opts = Object.assign(odata_1.headers({ "X-HTTP-Method": "DELETE" }), options);
-    return exports.spPost(o, opts);
-};
-exports.spPostDeleteETag = function (o, options, eTag) {
-    if (eTag === void 0) { eTag = "*"; }
-    var opts = Object.assign(odata_1.headers({ "X-HTTP-Method": "DELETE", "IF-Match": eTag }), options);
-    return exports.spPost(o, opts);
-};
-//# sourceMappingURL=operations.js.map
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = __webpack_require__(0);
-function setup(config) {
-    common_1.RuntimeConfig.assign(config);
-}
-exports.setup = setup;
-var SPRuntimeConfigImpl = /** @class */ (function () {
-    function SPRuntimeConfigImpl() {
-    }
-    Object.defineProperty(SPRuntimeConfigImpl.prototype, "headers", {
-        get: function () {
-            var spPart = common_1.RuntimeConfig.get("sp");
-            if (spPart !== undefined && spPart.headers !== undefined) {
-                return spPart.headers;
-            }
-            return {};
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SPRuntimeConfigImpl.prototype, "baseUrl", {
-        get: function () {
-            var spPart = common_1.RuntimeConfig.get("sp");
-            if (spPart !== undefined && spPart.baseUrl !== undefined) {
-                return spPart.baseUrl;
-            }
-            if (common_1.objectDefinedNotNull(common_1.RuntimeConfig.spfxContext)) {
-                return common_1.RuntimeConfig.spfxContext.pageContext.web.absoluteUrl;
-            }
-            return null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SPRuntimeConfigImpl.prototype, "fetchClientFactory", {
-        get: function () {
-            var spPart = common_1.RuntimeConfig.get("sp");
-            if (spPart !== undefined && spPart.fetchClientFactory !== undefined) {
-                return spPart.fetchClientFactory;
-            }
-            else {
-                return function () { return new common_1.FetchClient(); };
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return SPRuntimeConfigImpl;
-}());
-exports.SPRuntimeConfigImpl = SPRuntimeConfigImpl;
-exports.SPRuntimeConfig = new SPRuntimeConfigImpl();
-//# sourceMappingURL=splibconfig.js.map
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/decorators.js
 /**
  * Class Decorators
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
+
 /**
  * Decorator used to specify the default path for SharePointQueryable objects
  *
@@ -2776,7 +3267,7 @@ var tslib_1 = __webpack_require__(1);
 function defaultPath(path) {
     return function (target) {
         return /** @class */ (function (_super) {
-            tslib_1.__extends(class_1, _super);
+            Object(tslib_es6["c" /* __extends */])(class_1, _super);
             function class_1() {
                 var args = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
@@ -2788,68 +3279,59 @@ function defaultPath(path) {
         }(target));
     };
 }
-exports.defaultPath = defaultPath;
 // TODO::?
 // performance tracking method decorator
 // redirect to graph api
 //# sourceMappingURL=decorators.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/odata.js
 
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(0);
-var logging_1 = __webpack_require__(2);
-var odata_1 = __webpack_require__(4);
-var extractweburl_1 = __webpack_require__(14);
+
+
 function odataUrlFrom(candidate) {
     var parts = [];
     var s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata", "odata.id"];
-    if (common_1.hOP(candidate, s[0]) && candidate[s[0]] === "SP.Web") {
+    if (Object(common["i" /* hOP */])(candidate, s[0]) && candidate[s[0]] === "SP.Web") {
         // webs return an absolute url in the id
-        if (common_1.hOP(candidate, s[4])) {
+        if (Object(common["i" /* hOP */])(candidate, s[4])) {
             parts.push(candidate[s[4]]);
         }
-        else if (common_1.hOP(candidate, s[2])) {
+        else if (Object(common["i" /* hOP */])(candidate, s[2])) {
             // we are dealing with verbose, which has an absolute uri
             parts.push(candidate.__metadata.uri);
         }
     }
     else {
-        if (common_1.hOP(candidate, s[3]) && common_1.hOP(candidate, s[1])) {
+        if (Object(common["i" /* hOP */])(candidate, s[3]) && Object(common["i" /* hOP */])(candidate, s[1])) {
             // we are dealign with minimal metadata (default)
             // some entities return an abosolute url in the editlink while for others it is relative
             // without the _api. This code is meant to handle both situations
-            var editLink = common_1.isUrlAbsolute(candidate[s[1]]) ? candidate[s[1]].split("_api")[1] : candidate[s[1]];
-            parts.push(extractweburl_1.extractWebUrl(candidate[s[3]]), "_api", editLink);
+            var editLink = Object(common["l" /* isUrlAbsolute */])(candidate[s[1]]) ? candidate[s[1]].split("_api")[1] : candidate[s[1]];
+            parts.push(extractWebUrl(candidate[s[3]]), "_api", editLink);
         }
-        else if (common_1.hOP(candidate, s[1])) {
+        else if (Object(common["i" /* hOP */])(candidate, s[1])) {
             parts.push("_api", candidate[s[1]]);
         }
-        else if (common_1.hOP(candidate, s[2])) {
+        else if (Object(common["i" /* hOP */])(candidate, s[2])) {
             // we are dealing with verbose, which has an absolute uri
             parts.push(candidate.__metadata.uri);
         }
     }
     if (parts.length < 1) {
-        logging_1.Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
+        Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
         return "";
     }
-    return common_1.combine.apply(void 0, tslib_1.__spread(parts));
+    return common["e" /* combine */].apply(void 0, Object(tslib_es6["e" /* __spread */])(parts));
 }
-exports.odataUrlFrom = odataUrlFrom;
-var SPODataEntityParserImpl = /** @class */ (function (_super) {
-    tslib_1.__extends(SPODataEntityParserImpl, _super);
+var odata_SPODataEntityParserImpl = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(SPODataEntityParserImpl, _super);
     function SPODataEntityParserImpl(factory) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
         _this.hydrate = function (d) {
             var o = _this.factory(odataUrlFrom(d), null);
-            return common_1.assign(o, d);
+            return Object(common["d" /* assign */])(o, d);
         };
         return _this;
     }
@@ -2857,20 +3339,20 @@ var SPODataEntityParserImpl = /** @class */ (function (_super) {
         var _this = this;
         return _super.prototype.parse.call(this, r).then(function (d) {
             var o = _this.factory(odataUrlFrom(d), null);
-            return common_1.assign(o, d);
+            return Object(common["d" /* assign */])(o, d);
         });
     };
     return SPODataEntityParserImpl;
-}(odata_1.ODataParser));
-var SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
-    tslib_1.__extends(SPODataEntityArrayParserImpl, _super);
+}(parsers_ODataParser));
+var odata_SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(SPODataEntityArrayParserImpl, _super);
     function SPODataEntityArrayParserImpl(factory) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
         _this.hydrate = function (d) {
             return d.map(function (v) {
                 var o = _this.factory(odataUrlFrom(v), null);
-                return common_1.assign(o, v);
+                return Object(common["d" /* assign */])(o, v);
             });
         };
         return _this;
@@ -2880,1294 +3362,32 @@ var SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
         return _super.prototype.parse.call(this, r).then(function (d) {
             return d.map(function (v) {
                 var o = _this.factory(odataUrlFrom(v), null);
-                return common_1.assign(o, v);
+                return Object(common["d" /* assign */])(o, v);
             });
         });
     };
     return SPODataEntityArrayParserImpl;
-}(odata_1.ODataParser));
+}(parsers_ODataParser));
 function spODataEntity(factory) {
-    return new SPODataEntityParserImpl(factory);
+    return new odata_SPODataEntityParserImpl(factory);
 }
-exports.spODataEntity = spODataEntity;
 function spODataEntityArray(factory) {
-    return new SPODataEntityArrayParserImpl(factory);
+    return new odata_SPODataEntityArrayParserImpl(factory);
 }
-exports.spODataEntityArray = spODataEntityArray;
 //# sourceMappingURL=odata.js.map
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = __webpack_require__(0);
-var logging_1 = __webpack_require__(2);
-function escapeQueryStrValue(value) {
-    if (common_1.stringIsNullOrEmpty(value)) {
-        return "";
-    }
-    // replace all instance of ' with ''
-    if (/!(@.*?)::(.*?)/ig.test(value)) {
-        // to ensure our param aliasing still works we need to treat these special or we'll hear about it
-        // so we encode JUST the part that will end up in the url
-        return value.replace(/!(@.*?)::(.*)$/ig, function (match, labelName, v) {
-            logging_1.Logger.write("Rewriting aliased parameter from match " + match + " to label: " + labelName + " value: " + v, 0 /* Verbose */);
-            return "!" + labelName + "::" + encodeURIComponent(v.replace(/\'/ig, "''"));
-        });
-    }
-    else {
-        return encodeURIComponent(value.replace(/\'/ig, "''"));
-    }
-}
-exports.escapeQueryStrValue = escapeQueryStrValue;
-//# sourceMappingURL=escapeQueryStrValue.js.map
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(0);
-var splibconfig_1 = __webpack_require__(9);
-var extractweburl_1 = __webpack_require__(14);
-var telemetry_1 = __webpack_require__(5);
-var odata_1 = __webpack_require__(4);
-var SPHttpClient = /** @class */ (function () {
-    function SPHttpClient(_impl) {
-        if (_impl === void 0) { _impl = splibconfig_1.SPRuntimeConfig.fetchClientFactory(); }
-        this._impl = _impl;
-        this._digestCache = getDigestFactory(this);
-    }
-    SPHttpClient.prototype.fetch = function (url, options) {
-        if (options === void 0) { options = {}; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var opts, headers, methodName, clientTag, digest;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        opts = common_1.assign(options, { cache: "no-cache", credentials: "same-origin" }, true);
-                        headers = new Headers();
-                        // first we add the global headers so they can be overwritten by any passed in locally to this call
-                        common_1.mergeHeaders(headers, splibconfig_1.SPRuntimeConfig.headers);
-                        // second we add the local options so we can overwrite the globals
-                        common_1.mergeHeaders(headers, options.headers);
-                        // lastly we apply any default headers we need that may not exist
-                        if (!headers.has("Accept")) {
-                            headers.append("Accept", "application/json");
-                        }
-                        if (!headers.has("Content-Type")) {
-                            headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
-                        }
-                        if (!headers.has("X-ClientService-ClientTag")) {
-                            methodName = telemetry_1.tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.1:" + methodName;
-                            if (clientTag.length > 32) {
-                                clientTag = clientTag.substr(0, 32);
-                            }
-                            headers.append("X-ClientService-ClientTag", clientTag);
-                        }
-                        if (!headers.has("User-Agent")) {
-                            // this marks the requests for understanding by the service
-                            // does not work in browsers
-                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.1");
-                        }
-                        opts = common_1.assign(opts, { headers: headers });
-                        if (!(opts.method && opts.method.toUpperCase() !== "GET" && !headers.has("X-RequestDigest") && !headers.has("Authorization"))) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this._digestCache(extractweburl_1.extractWebUrl(url))];
-                    case 1:
-                        digest = _a.sent();
-                        headers.append("X-RequestDigest", digest);
-                        _a.label = 2;
-                    case 2: return [2 /*return*/, this.fetchRaw(url, opts)];
-                }
-            });
-        });
-    };
-    SPHttpClient.prototype.fetchRaw = function (url, options) {
-        var _this = this;
-        if (options === void 0) { options = {}; }
-        // here we need to normalize the headers
-        var rawHeaders = new Headers();
-        common_1.mergeHeaders(rawHeaders, options.headers);
-        options = common_1.assign(options, { headers: rawHeaders });
-        var retry = function (ctx) {
-            // handles setting the proper timeout for a retry
-            var setRetry = function (response) {
-                var delay;
-                if (response.headers.has("Retry-After")) {
-                    // if we have gotten a header, use that value as the delay value
-                    delay = parseInt(response.headers.get("Retry-After"), 10);
-                }
-                else {
-                    // grab our current delay
-                    delay = ctx.delay;
-                    // Increment our counters.
-                    ctx.delay *= 2;
-                }
-                ctx.attempts++;
-                // If we have exceeded the retry count, reject.
-                if (ctx.retryCount <= ctx.attempts) {
-                    ctx.reject(Error("Retry count exceeded (" + ctx.retryCount + ") for request. Response status: [" + response.status + "] " + response.statusText));
-                }
-                else {
-                    // Set our retry timeout for {delay} milliseconds.
-                    setTimeout(common_1.getCtxCallback(_this, retry, ctx), delay);
-                }
-            };
-            // send the actual request
-            _this._impl.fetch(url, options).then(function (response) {
-                if (response.status === 429) {
-                    // we have been throttled
-                    setRetry(response);
-                }
-                else {
-                    ctx.resolve(response);
-                }
-            }).catch(function (response) {
-                if (response.status === 503) {
-                    // http status code 503, we can retry this
-                    setRetry(response);
-                }
-                else {
-                    ctx.reject(response);
-                }
-            });
-        };
-        return new Promise(function (resolve, reject) {
-            retry.call(_this, {
-                attempts: 0,
-                delay: 100,
-                reject: reject,
-                resolve: resolve,
-                retryCount: 7,
-            });
-        });
-    };
-    SPHttpClient.prototype.get = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = common_1.assign(options, { method: "GET" });
-        return this.fetch(url, opts);
-    };
-    SPHttpClient.prototype.post = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = common_1.assign(options, { method: "POST" });
-        return this.fetch(url, opts);
-    };
-    SPHttpClient.prototype.patch = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = common_1.assign(options, { method: "PATCH" });
-        return this.fetch(url, opts);
-    };
-    SPHttpClient.prototype.delete = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = common_1.assign(options, { method: "DELETE" });
-        return this.fetch(url, opts);
-    };
-    return SPHttpClient;
-}());
-exports.SPHttpClient = SPHttpClient;
-// allows for the caching of digests across all HttpClient's which each have their own DigestCache wrapper.
-var digests = new Map();
-function getDigestFactory(client) {
-    var _this = this;
-    return function (webUrl) { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-        var cachedDigest, now, url, headers, resp, parsed, newCachedDigest;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    cachedDigest = digests.get(webUrl);
-                    if (cachedDigest !== undefined) {
-                        now = new Date();
-                        if (now < cachedDigest.expiration) {
-                            return [2 /*return*/, cachedDigest.value];
-                        }
-                    }
-                    url = common_1.combine(webUrl, "/_api/contextinfo");
-                    headers = {
-                        "Accept": "application/json;odata=verbose",
-                        "Content-Type": "application/json;odata=verbose;charset=utf-8",
-                    };
-                    return [4 /*yield*/, client.fetchRaw(url, {
-                            cache: "no-cache",
-                            credentials: "same-origin",
-                            headers: common_1.assign(headers, splibconfig_1.SPRuntimeConfig.headers, true),
-                            method: "POST",
-                        })];
-                case 1:
-                    resp = _a.sent();
-                    return [4 /*yield*/, (new odata_1.ODataParser()).parse(resp).then(function (r) { return r.GetContextWebInformation; })];
-                case 2:
-                    parsed = _a.sent();
-                    newCachedDigest = {
-                        expiration: common_1.dateAdd(new Date(), "second", parsed.FormDigestTimeoutSeconds),
-                        value: parsed.FormDigestValue,
-                    };
-                    digests.set(webUrl, newCachedDigest);
-                    return [2 /*return*/, newCachedDigest.value];
-            }
-        });
-    }); };
-}
-//# sourceMappingURL=sphttpclient.js.map
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = __webpack_require__(0);
-function extractWebUrl(candidateUrl) {
-    if (common_1.stringIsNullOrEmpty(candidateUrl)) {
-        return "";
-    }
-    var index = candidateUrl.indexOf("_api/");
-    if (index < 0) {
-        index = candidateUrl.indexOf("_vti_bin/");
-    }
-    if (index > -1) {
-        return candidateUrl.substr(0, index);
-    }
-    // if all else fails just give them what they gave us back
-    return candidateUrl;
-}
-exports.extractWebUrl = extractWebUrl;
-//# sourceMappingURL=extractweburl.js.map
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(4);
-var sharepointqueryable_1 = __webpack_require__(6);
-var odata_2 = __webpack_require__(11);
-var metadata_1 = __webpack_require__(7);
-var decorators_1 = __webpack_require__(10);
-var operations_1 = __webpack_require__(8);
-var escapeQueryStrValue_1 = __webpack_require__(12);
-var telemetry_1 = __webpack_require__(5);
-var _Lists = /** @class */ (function (_super) {
-    tslib_1.__extends(_Lists, _super);
-    function _Lists() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Gets a list from the collection by guid id
-     *
-     * @param id The Id of the list (GUID)
-     */
-    _Lists.prototype.getById = function (id) {
-        return telemetry_1.tag.configure(exports.List(this).concat("('" + id + "')"), "ls.getById");
-    };
-    /**
-     * Gets a list from the collection by title
-     *
-     * @param title The title of the list
-     */
-    _Lists.prototype.getByTitle = function (title) {
-        return telemetry_1.tag.configure(exports.List(this, "getByTitle('" + escapeQueryStrValue_1.escapeQueryStrValue(title) + "')"), "ls.getByTitle");
-    };
-    /**
-     * Adds a new list to the collection
-     *
-     * @param title The new list's title
-     * @param description The new list's description
-     * @param template The list template value
-     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
-     * @param additionalSettings Will be passed as part of the list creation body
-     */
-    _Lists.prototype.add = function (title, desc, template, enableContentTypes, additionalSettings) {
-        if (desc === void 0) { desc = ""; }
-        if (template === void 0) { template = 100; }
-        if (enableContentTypes === void 0) { enableContentTypes = false; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var addSettings, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        addSettings = Object.assign({
-                            "AllowContentTypes": enableContentTypes,
-                            "BaseTemplate": template,
-                            "ContentTypesEnabled": enableContentTypes,
-                            "Description": desc,
-                            "Title": title,
-                        }, metadata_1.metadata("SP.List"), additionalSettings);
-                        return [4 /*yield*/, operations_1.spPost(this, odata_1.body(addSettings))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, { data: data, list: this.getByTitle(addSettings.Title) }];
-                }
-            });
-        });
-    };
-    /**
-     * Ensures that the specified list exists in the collection (note: this method not supported for batching)
-     *
-     * @param title The new list's title
-     * @param desc The new list's description
-     * @param template The list template value
-     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
-     * @param additionalSettings Will be passed as part of the list creation body or used to update an existing list
-     */
-    _Lists.prototype.ensure = function (title, desc, template, enableContentTypes, additionalSettings) {
-        if (desc === void 0) { desc = ""; }
-        if (template === void 0) { template = 100; }
-        if (enableContentTypes === void 0) { enableContentTypes = false; }
-        if (additionalSettings === void 0) { additionalSettings = {}; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var addOrUpdateSettings, list, data, e_1, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (this.hasBatch) {
-                            throw Error("The ensure list method is not supported for use in a batch.");
-                        }
-                        addOrUpdateSettings = common_1.assign(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
-                        list = this.getByTitle(addOrUpdateSettings.Title);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 6]);
-                        // this will throw if the list doesn't exist
-                        return [4 /*yield*/, list.select("Title")()];
-                    case 2:
-                        // this will throw if the list doesn't exist
-                        _a.sent();
-                        return [4 /*yield*/, list.update(addOrUpdateSettings).then(function (r) { return r.data; })];
-                    case 3:
-                        data = _a.sent();
-                        return [2 /*return*/, { created: false, data: data, list: this.getByTitle(addOrUpdateSettings.Title) }];
-                    case 4:
-                        e_1 = _a.sent();
-                        return [4 /*yield*/, this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(function (r) { return r.data; })];
-                    case 5:
-                        data = _a.sent();
-                        return [2 /*return*/, { created: true, data: data, list: this.getByTitle(addOrUpdateSettings.Title) }];
-                    case 6: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
-     */
-    _Lists.prototype.ensureSiteAssetsLibrary = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var json;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.spPost(this.clone(exports.Lists, "ensuresiteassetslibrary"))];
-                    case 1:
-                        json = _a.sent();
-                        return [2 /*return*/, exports.List(odata_2.odataUrlFrom(json))];
-                }
-            });
-        });
-    };
-    /**
-     * Gets a list that is the default location for wiki pages.
-     */
-    _Lists.prototype.ensureSitePagesLibrary = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var json;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.spPost(this.clone(exports.Lists, "ensuresitepageslibrary"))];
-                    case 1:
-                        json = _a.sent();
-                        return [2 /*return*/, exports.List(odata_2.odataUrlFrom(json))];
-                }
-            });
-        });
-    };
-    tslib_1.__decorate([
-        telemetry_1.tag("ls.add")
-    ], _Lists.prototype, "add", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("ls.ensure")
-    ], _Lists.prototype, "ensure", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("ls.ensureSiteAssetsLibrary")
-    ], _Lists.prototype, "ensureSiteAssetsLibrary", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("ls.ensureSitePagesLibrary")
-    ], _Lists.prototype, "ensureSitePagesLibrary", null);
-    _Lists = tslib_1.__decorate([
-        decorators_1.defaultPath("lists")
-    ], _Lists);
-    return _Lists;
-}(sharepointqueryable_1._SharePointQueryableCollection));
-exports._Lists = _Lists;
-exports.Lists = sharepointqueryable_1.spInvokableFactory(_Lists);
-var _List = /** @class */ (function (_super) {
-    tslib_1.__extends(_List, _super);
-    function _List() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.delete = sharepointqueryable_1.deleteableWithETag("l");
-        return _this;
-    }
-    Object.defineProperty(_List.prototype, "effectiveBasePermissions", {
-        /**
-         * Gets the effective base permissions of this list
-         *
-         */
-        get: function () {
-            return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryable(this, "EffectiveBasePermissions"), "l.effectiveBasePermissions");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_List.prototype, "eventReceivers", {
-        /**
-         * Gets the event receivers attached to this list
-         *
-         */
-        get: function () {
-            return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryableCollection(this, "EventReceivers"), "l.eventReceivers");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_List.prototype, "relatedFields", {
-        /**
-         * Gets the related fields of this list
-         *
-         */
-        get: function () {
-            return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryable(this, "getRelatedFields"), "l.relatedFields");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_List.prototype, "informationRightsManagementSettings", {
-        /**
-         * Gets the IRM settings for this list
-         *
-         */
-        get: function () {
-            return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryable(this, "InformationRightsManagementSettings"), "l.informationRightsManagementSettings");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Updates this list intance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the list
-     * @param eTag Value used in the IF-Match header, by default "*"
-     */
-    _List.prototype.update = function (properties, eTag) {
-        if (eTag === void 0) { eTag = "*"; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data, list;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = odata_1.body(common_1.assign(metadata_1.metadata("SP.List"), properties), odata_1.headers({
-                            "IF-Match": eTag,
-                            "X-HTTP-Method": "MERGE",
-                        }));
-                        return [4 /*yield*/, operations_1.spPost(this, postBody)];
-                    case 1:
-                        data = _a.sent();
-                        list = this;
-                        if (common_1.hOP(properties, "Title")) {
-                            list = this.getParent(exports.List, this.parentUrl, "getByTitle('" + properties.Title + "')");
-                        }
-                        return [2 /*return*/, {
-                                data: data,
-                                list: list,
-                            }];
-                }
-            });
-        });
-    };
-    /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
-     * @param query A query that is performed against the change log.
-     */
-    _List.prototype.getChanges = function (query) {
-        return operations_1.spPost(this.clone(exports.List, "getchanges"), odata_1.body({ query: common_1.assign(metadata_1.metadata("SP.ChangeQuery"), query) }));
-    };
-    /**
-     * Returns the collection of items in the list based on the provided CamlQuery
-     * @param query A query that is performed against the list
-     * @param expands An expanded array of n items that contains fields to expand in the CamlQuery
-     */
-    _List.prototype.getItemsByCAMLQuery = function (query) {
-        var expands = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            expands[_i - 1] = arguments[_i];
-        }
-        var q = this.clone(exports.List, "getitems");
-        return operations_1.spPost(q.expand.apply(q, expands), odata_1.body({ query: common_1.assign(metadata_1.metadata("SP.CamlQuery"), query) }));
-    };
-    /**
-     * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
-     * @param query An object that defines the change log item query
-     */
-    _List.prototype.getListItemChangesSinceToken = function (query) {
-        var o = this.clone(exports.List, "getlistitemchangessincetoken").usingParser({ parse: function (r) { return r.text(); } });
-        return operations_1.spPost(o, odata_1.body({ "query": common_1.assign(metadata_1.metadata("SP.ChangeLogItemQuery"), query) }));
-    };
-    /**
-     * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
-     */
-    _List.prototype.recycle = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.spPost(this.clone(exports.List, "recycle"))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, common_1.hOP(data, "Recycle") ? data.Recycle : data];
-                }
-            });
-        });
-    };
-    /**
-     * Renders list data based on the view xml provided
-     * @param viewXml A string object representing a view xml
-     */
-    _List.prototype.renderListData = function (viewXml) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var q, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        q = this.clone(exports.List, "renderlistdata(@viewXml)");
-                        q.query.set("@viewXml", "'" + viewXml + "'");
-                        return [4 /*yield*/, operations_1.spPost(q)];
-                    case 1:
-                        data = _a.sent();
-                        // data will be a string, so we parse it again
-                        return [2 /*return*/, JSON.parse(common_1.hOP(data, "RenderListData") ? data.RenderListData : data)];
-                }
-            });
-        });
-    };
-    /**
-     * Returns the data for the specified query view
-     *
-     * @param parameters The parameters to be used to render list data as JSON string.
-     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
-     * @param queryParams Allows setting of query parameters
-     */
-    _List.prototype.renderListDataAsStream = function (parameters, overrideParameters, queryParams) {
-        if (overrideParameters === void 0) { overrideParameters = null; }
-        if (queryParams === void 0) { queryParams = new Map(); }
-        if (common_1.hOP(parameters, "RenderOptions") && common_1.isArray(parameters.RenderOptions)) {
-            parameters.RenderOptions = parameters.RenderOptions.reduce(function (v, c) { return v + c; });
-        }
-        var postBody = odata_1.body({
-            overrideParameters: common_1.assign(metadata_1.metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
-            parameters: common_1.assign(metadata_1.metadata("SP.RenderListDataParameters"), parameters),
-        });
-        var clone = this.clone(exports.List, "RenderListDataAsStream", true);
-        if (queryParams && queryParams.size > 0) {
-            queryParams.forEach(function (v, k) { return clone.query.set(k, v); });
-        }
-        return operations_1.spPost(clone, postBody);
-    };
-    /**
-     * Gets the field values and field schema attributes for a list item.
-     * @param itemId Item id of the item to render form data for
-     * @param formId The id of the form
-     * @param mode Enum representing the control mode of the form (Display, Edit, New)
-     */
-    _List.prototype.renderListFormData = function (itemId, formId, mode) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.spPost(this.clone(exports.List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')"))];
-                    case 1:
-                        data = _a.sent();
-                        // data will be a string, so we parse it again
-                        return [2 /*return*/, JSON.parse(common_1.hOP(data, "RenderListFormData") ? data.RenderListFormData : data)];
-                }
-            });
-        });
-    };
-    /**
-     * Reserves a list item ID for idempotent list item creation.
-     */
-    _List.prototype.reserveListItemId = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.spPost(this.clone(exports.List, "reservelistitemid"))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, common_1.hOP(data, "ReserveListItemId") ? data.ReserveListItemId : data];
-                }
-            });
-        });
-    };
-    /**
-     * Returns the ListItemEntityTypeFullName for this list, used when adding/updating list items. Does not support batching.
-     */
-    _List.prototype.getListItemEntityTypeFullName = function () {
-        return this.clone(exports.List, null, false).select("ListItemEntityTypeFullName").get().then(function (o) { return o.ListItemEntityTypeFullName; });
-    };
-    /**
-     * Creates an item using path (in a folder), validates and sets its field values.
-     *
-     * @param formValues The fields to change and their new values.
-     * @param decodedUrl Path decoded url; folder's server relative path.
-     * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
-     * @param comment Optional check in comment.
-     */
-    _List.prototype.addValidateUpdateItemUsingPath = function (formValues, decodedUrl, bNewDocumentUpdate, checkInComment) {
-        if (bNewDocumentUpdate === void 0) { bNewDocumentUpdate = false; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var res;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.spPost(this.clone(exports.List, "AddValidateUpdateItemUsingPath()"), odata_1.body({
-                            bNewDocumentUpdate: bNewDocumentUpdate,
-                            checkInComment: checkInComment,
-                            formValues: formValues,
-                            listItemCreateInfo: {
-                                FolderPath: {
-                                    DecodedUrl: decodedUrl,
-                                    __metadata: { type: "SP.ResourcePath" },
-                                },
-                                __metadata: { type: "SP.ListItemCreationInformationUsingPath" },
-                            },
-                        }))];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, common_1.hOP(res, "AddValidateUpdateItemUsingPath") ? res.AddValidateUpdateItemUsingPath : res];
-                }
-            });
-        });
-    };
-    tslib_1.__decorate([
-        telemetry_1.tag("l.update")
-    ], _List.prototype, "update", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("l.getChanges")
-    ], _List.prototype, "getChanges", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("l.CAMLQuery")
-    ], _List.prototype, "getItemsByCAMLQuery", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("l.ChangesSinceToken")
-    ], _List.prototype, "getListItemChangesSinceToken", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("l.recycle")
-    ], _List.prototype, "recycle", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("l.renderListData")
-    ], _List.prototype, "renderListData", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("l.AsStream")
-    ], _List.prototype, "renderListDataAsStream", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("l.renderListFormData")
-    ], _List.prototype, "renderListFormData", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("l.reserveListItemId")
-    ], _List.prototype, "reserveListItemId", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("l.getListItemEntityTypeFullName")
-    ], _List.prototype, "getListItemEntityTypeFullName", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("l.addValidateUpdateItemUsingPath")
-    ], _List.prototype, "addValidateUpdateItemUsingPath", null);
-    return _List;
-}(sharepointqueryable_1._SharePointQueryableInstance));
-exports._List = _List;
-exports.List = sharepointqueryable_1.spInvokableFactory(_List);
-/**
- * Enum representing the options of the RenderOptions property on IRenderListDataParameters interface
- */
-var RenderListDataOptions;
-(function (RenderListDataOptions) {
-    RenderListDataOptions[RenderListDataOptions["None"] = 0] = "None";
-    RenderListDataOptions[RenderListDataOptions["ContextInfo"] = 1] = "ContextInfo";
-    RenderListDataOptions[RenderListDataOptions["ListData"] = 2] = "ListData";
-    RenderListDataOptions[RenderListDataOptions["ListSchema"] = 4] = "ListSchema";
-    RenderListDataOptions[RenderListDataOptions["MenuView"] = 8] = "MenuView";
-    RenderListDataOptions[RenderListDataOptions["ListContentType"] = 16] = "ListContentType";
-    RenderListDataOptions[RenderListDataOptions["FileSystemItemId"] = 32] = "FileSystemItemId";
-    RenderListDataOptions[RenderListDataOptions["ClientFormSchema"] = 64] = "ClientFormSchema";
-    RenderListDataOptions[RenderListDataOptions["QuickLaunch"] = 128] = "QuickLaunch";
-    RenderListDataOptions[RenderListDataOptions["Spotlight"] = 256] = "Spotlight";
-    RenderListDataOptions[RenderListDataOptions["Visualization"] = 512] = "Visualization";
-    RenderListDataOptions[RenderListDataOptions["ViewMetadata"] = 1024] = "ViewMetadata";
-    RenderListDataOptions[RenderListDataOptions["DisableAutoHyperlink"] = 2048] = "DisableAutoHyperlink";
-    RenderListDataOptions[RenderListDataOptions["EnableMediaTAUrls"] = 4096] = "EnableMediaTAUrls";
-    RenderListDataOptions[RenderListDataOptions["ParentInfo"] = 8192] = "ParentInfo";
-    RenderListDataOptions[RenderListDataOptions["PageContextInfo"] = 16384] = "PageContextInfo";
-    RenderListDataOptions[RenderListDataOptions["ClientSideComponentManifest"] = 32768] = "ClientSideComponentManifest";
-})(RenderListDataOptions = exports.RenderListDataOptions || (exports.RenderListDataOptions = {}));
-/**
- * Determines the display mode of the given control or view
- */
-var ControlMode;
-(function (ControlMode) {
-    ControlMode[ControlMode["Display"] = 1] = "Display";
-    ControlMode[ControlMode["Edit"] = 2] = "Edit";
-    ControlMode[ControlMode["New"] = 3] = "New";
-})(ControlMode = exports.ControlMode || (exports.ControlMode = {}));
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return mergeHeaders; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return mergeOptions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getADALResource; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return FetchClient; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BearerTokenFetchClient; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return SPFxAdalClient; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/batch.js
 
 
-function mergeHeaders(target, source) {
-    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "m"])(source)) {
-        var temp = new Request("", { headers: source });
-        temp.headers.forEach(function (value, name) {
-            target.append(name, value);
-        });
-    }
-}
-function mergeOptions(target, source) {
-    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "m"])(source)) {
-        var headers = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* assign */ "a"])(target.headers || {}, source.headers);
-        target = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* assign */ "a"])(target, source);
-        target.headers = headers;
-    }
-}
-/**
- * Parses out the root of the request url to use as the resource when getting the token
- *
-  * @param url The url to parse
- */
-function getADALResource(url) {
-    var u = new URL(url);
-    return u.protocol + "//" + u.hostname;
-}
-/**
- * Makes requests using the global/window fetch API
- */
-var FetchClient = /** @class */ (function () {
-    function FetchClient() {
-    }
-    FetchClient.prototype.fetch = function (url, options) {
-        return global.fetch(url, options);
-    };
-    return FetchClient;
-}());
-
-/**
- * Makes requests using the fetch API adding the supplied token to the Authorization header
- */
-var BearerTokenFetchClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(BearerTokenFetchClient, _super);
-    function BearerTokenFetchClient(_token) {
-        var _this = _super.call(this) || this;
-        _this._token = _token;
-        return _this;
-    }
-    Object.defineProperty(BearerTokenFetchClient.prototype, "token", {
-        get: function () {
-            return this._token || "";
-        },
-        set: function (token) {
-            this._token = token;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    BearerTokenFetchClient.prototype.fetch = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var headers = new Headers();
-        mergeHeaders(headers, options.headers);
-        headers.set("Authorization", "Bearer " + this._token);
-        options.headers = headers;
-        return _super.prototype.fetch.call(this, url, options);
-    };
-    return BearerTokenFetchClient;
-}(FetchClient));
-
-/**
- * Client wrapping the aadTokenProvider available from SPFx >= 1.6
- */
-var SPFxAdalClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(SPFxAdalClient, _super);
-    /**
-     *
-     * @param context provide the appropriate SPFx Context object
-     */
-    function SPFxAdalClient(context) {
-        var _this = _super.call(this, null) || this;
-        _this.context = context;
-        return _this;
-    }
-    /**
-     * Executes a fetch request using the supplied url and options
-     *
-     * @param url Absolute url of the request
-     * @param options Any options
-     */
-    SPFxAdalClient.prototype.fetch = function (url, options) {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
-            var token;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getToken(getADALResource(url))];
-                    case 1:
-                        token = _a.sent();
-                        this.token = token;
-                        return [2 /*return*/, _super.prototype.fetch.call(this, url, options)];
-                }
-            });
-        });
-    };
-    /**
-     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
-     *
-     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
-     */
-    SPFxAdalClient.prototype.getToken = function (resource) {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
-            var provider;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
-                    case 1:
-                        provider = _a.sent();
-                        return [2 /*return*/, provider.getToken(resource)];
-                }
-            });
-        });
-    };
-    return SPFxAdalClient;
-}(BearerTokenFetchClient));
-
-//# sourceMappingURL=net.js.map
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(17)))
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
 
 
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(4);
-var sharepointqueryable_1 = __webpack_require__(6);
-var decorators_1 = __webpack_require__(10);
-var odata_2 = __webpack_require__(11);
-var batch_1 = __webpack_require__(20);
-var metadata_1 = __webpack_require__(7);
-var sites_1 = __webpack_require__(23);
-var operations_1 = __webpack_require__(8);
-var escapeQueryStrValue_1 = __webpack_require__(12);
-var telemetry_1 = __webpack_require__(5);
-var _Webs = /** @class */ (function (_super) {
-    tslib_1.__extends(_Webs, _super);
-    function _Webs() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Adds a new web to the collection
-     *
-     * @param title The new web's title
-     * @param url The new web's relative url
-     * @param description The new web's description
-     * @param template The new web's template internal name (default = STS)
-     * @param language The locale id that specifies the new web's language (default = 1033 [English, US])
-     * @param inheritPermissions When true, permissions will be inherited from the new web's parent (default = true)
-     */
-    _Webs.prototype.add = function (title, url, description, template, language, inheritPermissions) {
-        if (description === void 0) { description = ""; }
-        if (template === void 0) { template = "STS"; }
-        if (language === void 0) { language = 1033; }
-        if (inheritPermissions === void 0) { inheritPermissions = true; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = odata_1.body({
-                            "parameters": common_1.assign(metadata_1.metadata("SP.WebCreationInformation"), {
-                                Description: description,
-                                Language: language,
-                                Title: title,
-                                Url: url,
-                                UseSamePermissionsAsParentSite: inheritPermissions,
-                                WebTemplate: template,
-                            }),
-                        });
-                        return [4 /*yield*/, operations_1.spPost(this.clone(exports.Webs, "add"), postBody)];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                web: exports.Web(odata_2.odataUrlFrom(data).replace(/_api\/web\/?/i, "")),
-                            }];
-                }
-            });
-        });
-    };
-    tslib_1.__decorate([
-        telemetry_1.tag("ws.add")
-    ], _Webs.prototype, "add", null);
-    _Webs = tslib_1.__decorate([
-        decorators_1.defaultPath("webs")
-    ], _Webs);
-    return _Webs;
-}(sharepointqueryable_1._SharePointQueryableCollection));
-exports._Webs = _Webs;
-exports.Webs = sharepointqueryable_1.spInvokableFactory(_Webs);
-/**
- * Describes a web
- *
- */
-var _Web = /** @class */ (function (_super) {
-    tslib_1.__extends(_Web, _super);
-    function _Web() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.delete = sharepointqueryable_1.deleteable("w");
-        return _this;
-    }
-    Object.defineProperty(_Web.prototype, "webs", {
-        /**
-         * Gets this web's subwebs
-         *
-         */
-        get: function () {
-            return exports.Webs(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets this web's parent web and data
-     *
-     */
-    _Web.prototype.getParentWeb = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var ParentWeb;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.spGet(this.select("ParentWeb/Id").expand("ParentWeb"))];
-                    case 1:
-                        ParentWeb = (_a.sent()).ParentWeb;
-                        return [2 /*return*/, ParentWeb ? sites_1.Site(this.parentUrl).openWebById(ParentWeb.Id) : null];
-                }
-            });
-        });
-    };
-    /**
-    * Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
-    *
-    * @param nWebTemplateFilter Specifies the site definition (default = -1)
-    * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
-    */
-    _Web.prototype.getSubwebsFilteredForCurrentUser = function (nWebTemplateFilter, nConfigurationFilter) {
-        if (nWebTemplateFilter === void 0) { nWebTemplateFilter = -1; }
-        if (nConfigurationFilter === void 0) { nConfigurationFilter = -1; }
-        var o = this.clone(exports.Webs, "getSubwebsFilteredForCurrentUser(nWebTemplateFilter=" + nWebTemplateFilter + ",nConfigurationFilter=" + nConfigurationFilter + ")");
-        return telemetry_1.tag.configure(o, "w.getSubwebsFilteredForCurrentUser");
-    };
-    Object.defineProperty(_Web.prototype, "allProperties", {
-        /**
-         * Allows access to the web's all properties collection
-         */
-        get: function () {
-            return telemetry_1.tag.configure(this.clone(sharepointqueryable_1.SharePointQueryableInstance, "allproperties"), "w.allprops");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Web.prototype, "webinfos", {
-        /**
-         * Gets a collection of WebInfos for this web's subwebs
-         *
-         */
-        get: function () {
-            return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryableCollection(this, "webinfos"), "w.webinfos");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Creates a new batch for requests within the context of this web
-     *
-     */
-    _Web.prototype.createBatch = function () {
-        return new batch_1.SPBatch(this.parentUrl);
-    };
-    /**
-     * Updates this web instance with the supplied properties
-     *
-     * @param properties A plain object hash of values to update for the web
-     */
-    _Web.prototype.update = function (properties) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = odata_1.body(common_1.assign(metadata_1.metadata("SP.Web"), properties), odata_1.headers({ "X-HTTP-Method": "MERGE" }));
-                        return [4 /*yield*/, operations_1.spPost(this, postBody)];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, { data: data, web: this }];
-                }
-            });
-        });
-    };
-    /**
-     * Applies the theme specified by the contents of each of the files specified in the arguments to the site
-     *
-     * @param colorPaletteUrl The server-relative URL of the color palette file
-     * @param fontSchemeUrl The server-relative URL of the font scheme
-     * @param backgroundImageUrl The server-relative URL of the background image
-     * @param shareGenerated When true, the generated theme files are stored in the root site. When false, they are stored in this web
-     */
-    _Web.prototype.applyTheme = function (colorPaletteUrl, fontSchemeUrl, backgroundImageUrl, shareGenerated) {
-        var postBody = odata_1.body({
-            backgroundImageUrl: backgroundImageUrl,
-            colorPaletteUrl: colorPaletteUrl,
-            fontSchemeUrl: fontSchemeUrl,
-            shareGenerated: shareGenerated,
-        });
-        return operations_1.spPost(this.clone(exports.Web, "applytheme"), postBody);
-    };
-    /**
-     * Applies the specified site definition or site template to the Web site that has no template applied to it
-     *
-     * @param template Name of the site definition or the name of the site template
-     */
-    _Web.prototype.applyWebTemplate = function (template) {
-        var q = this.clone(exports.Web, "applywebtemplate");
-        q.concat("(webTemplate='" + escapeQueryStrValue_1.escapeQueryStrValue(template) + "')");
-        return operations_1.spPost(q);
-    };
-    /**
-     * Returns a collection of site templates available for the site
-     *
-     * @param language The locale id of the site templates to retrieve (default = 1033 [English, US])
-     * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
-     */
-    _Web.prototype.availableWebTemplates = function (language, includeCrossLanugage) {
-        if (language === void 0) { language = 1033; }
-        if (includeCrossLanugage === void 0) { includeCrossLanugage = true; }
-        var path = "getavailablewebtemplates(lcid=" + language + ", doincludecrosslanguage=" + includeCrossLanugage + ")";
-        return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryableCollection(this, path), "w.availableWebTemplates");
-    };
-    /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
-     *
-     * @param query The change query
-     */
-    _Web.prototype.getChanges = function (query) {
-        var postBody = odata_1.body({ "query": common_1.assign(metadata_1.metadata("SP.ChangeQuery"), query) });
-        return operations_1.spPost(this.clone(exports.Web, "getchanges"), postBody);
-    };
-    /**
-     * Returns the name of the image file for the icon that is used to represent the specified file
-     *
-     * @param filename The file name. If this parameter is empty, the server returns an empty string
-     * @param size The size of the icon: 16x16 pixels = 0, 32x32 pixels = 1 (default = 0)
-     * @param progId The ProgID of the application that was used to create the file, in the form OLEServerName.ObjectName
-     */
-    _Web.prototype.mapToIcon = function (filename, size, progId) {
-        if (size === void 0) { size = 0; }
-        if (progId === void 0) { progId = ""; }
-        return operations_1.spGet(this.clone(exports.Web, "maptoicon(filename='" + escapeQueryStrValue_1.escapeQueryStrValue(filename) + "', progid='" + escapeQueryStrValue_1.escapeQueryStrValue(progId) + "', size=" + size + ")"));
-    };
-    /**
-     * Returns the tenant property corresponding to the specified key in the app catalog site
-     *
-     * @param key Id of storage entity to be set
-     */
-    _Web.prototype.getStorageEntity = function (key) {
-        return operations_1.spGet(this.clone(exports.Web, "getStorageEntity('" + escapeQueryStrValue_1.escapeQueryStrValue(key) + "')"));
-    };
-    /**
-     * This will set the storage entity identified by the given key (MUST be called in the context of the app catalog)
-     *
-     * @param key Id of storage entity to be set
-     * @param value Value of storage entity to be set
-     * @param description Description of storage entity to be set
-     * @param comments Comments of storage entity to be set
-     */
-    _Web.prototype.setStorageEntity = function (key, value, description, comments) {
-        if (description === void 0) { description = ""; }
-        if (comments === void 0) { comments = ""; }
-        return operations_1.spPost(this.clone(exports.Web, "setStorageEntity"), odata_1.body({
-            comments: comments,
-            description: description,
-            key: key,
-            value: value,
-        }));
-    };
-    /**
-     * This will remove the storage entity identified by the given key
-     *
-     * @param key Id of storage entity to be removed
-     */
-    _Web.prototype.removeStorageEntity = function (key) {
-        return operations_1.spPost(this.clone(exports.Web, "removeStorageEntity('" + escapeQueryStrValue_1.escapeQueryStrValue(key) + "')"));
-    };
-    tslib_1.__decorate([
-        telemetry_1.tag("w.getParentWeb")
-    ], _Web.prototype, "getParentWeb", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("w.update")
-    ], _Web.prototype, "update", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("w.applyTheme")
-    ], _Web.prototype, "applyTheme", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("w.applyWebTemplate")
-    ], _Web.prototype, "applyWebTemplate", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("w.getChanges")
-    ], _Web.prototype, "getChanges", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("w.mapToIcon")
-    ], _Web.prototype, "mapToIcon", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("w.getStorageEntity")
-    ], _Web.prototype, "getStorageEntity", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("w.setStorageEntity")
-    ], _Web.prototype, "setStorageEntity", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("w.removeStorageEntity")
-    ], _Web.prototype, "removeStorageEntity", null);
-    _Web = tslib_1.__decorate([
-        decorators_1.defaultPath("_api/web")
-    ], _Web);
-    return _Web;
-}(sharepointqueryable_1._SharePointQueryableInstance));
-exports._Web = _Web;
-exports.Web = sharepointqueryable_1.spInvokableFactory(_Web);
-//# sourceMappingURL=types.js.map
 
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = __webpack_require__(0);
-var splibconfig_1 = __webpack_require__(9);
-/**
- * Ensures that a given url is absolute for the current web based on context
- *
- * @param candidateUrl The url to make absolute
- *
- */
-function toAbsoluteUrl(candidateUrl) {
-    return new Promise(function (resolve) {
-        if (common_1.isUrlAbsolute(candidateUrl)) {
-            // if we are already absolute, then just return the url
-            return resolve(candidateUrl);
-        }
-        if (splibconfig_1.SPRuntimeConfig.baseUrl !== null) {
-            // base url specified either with baseUrl of spfxContext config property
-            return resolve(common_1.combine(splibconfig_1.SPRuntimeConfig.baseUrl, candidateUrl));
-        }
-        if (global._spPageContextInfo !== undefined) {
-            // operating in classic pages
-            if (common_1.hOP(global._spPageContextInfo, "webAbsoluteUrl")) {
-                return resolve(common_1.combine(global._spPageContextInfo.webAbsoluteUrl, candidateUrl));
-            }
-            else if (common_1.hOP(global._spPageContextInfo, "webServerRelativeUrl")) {
-                return resolve(common_1.combine(global._spPageContextInfo.webServerRelativeUrl, candidateUrl));
-            }
-        }
-        // does window.location exist and have a certain path part in it?
-        if (global.location !== undefined) {
-            var baseUrl_1 = global.location.toString().toLowerCase();
-            ["/_layouts/", "/siteassets/"].forEach(function (s) {
-                var index = baseUrl_1.indexOf(s);
-                if (index > 0) {
-                    return resolve(common_1.combine(baseUrl_1.substr(0, index), candidateUrl));
-                }
-            });
-        }
-        return resolve(candidateUrl);
-    });
-}
-exports.toAbsoluteUrl = toAbsoluteUrl;
-//# sourceMappingURL=toabsoluteurl.js.map
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(17)))
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(4);
-var common_1 = __webpack_require__(0);
-var logging_1 = __webpack_require__(2);
-var sphttpclient_1 = __webpack_require__(13);
-var splibconfig_1 = __webpack_require__(9);
-var toabsoluteurl_1 = __webpack_require__(19);
 /**
  * Manages a batch of OData operations
  */
-var SPBatch = /** @class */ (function (_super) {
-    tslib_1.__extends(SPBatch, _super);
+var batch_SPBatch = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(SPBatch, _super);
     function SPBatch(baseUrl) {
         var _this = _super.call(this) || this;
         _this.baseUrl = baseUrl;
@@ -4234,20 +3454,20 @@ var SPBatch = /** @class */ (function (_super) {
     };
     SPBatch.prototype.executeImpl = function () {
         var _this = this;
-        logging_1.Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
+        Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
         // if we don't have any requests, don't bother sending anything
         // this could be due to caching further upstream, or just an empty batch
         if (this.requests.length < 1) {
-            logging_1.Logger.write("Resolving empty batch.", 1 /* Info */);
+            Logger.write("Resolving empty batch.", 1 /* Info */);
             return Promise.resolve();
         }
         // creating the client here allows the url to be populated for nodejs client as well as potentially
         // any other hacks needed for other types of clients. Essentially allows the absoluteRequestUrl
         // below to be correct
-        var client = new sphttpclient_1.SPHttpClient();
+        var client = new sphttpclient_SPHttpClient();
         // due to timing we need to get the absolute url here so we can use it for all the individual requests
         // and for sending the entire batch
-        return toabsoluteurl_1.toAbsoluteUrl(this.baseUrl).then(function (absoluteRequestUrl) {
+        return Object(toabsoluteurl["a" /* toAbsoluteUrl */])(this.baseUrl).then(function (absoluteRequestUrl) {
             // build all the requests, send them, pipe results in order to parsers
             var batchBody = [];
             var currentChangeSetId = "";
@@ -4264,7 +3484,7 @@ var SPBatch = /** @class */ (function (_super) {
                 else {
                     if (currentChangeSetId.length < 1) {
                         // start new change set
-                        currentChangeSetId = common_1.getGUID();
+                        currentChangeSetId = Object(common["h" /* getGUID */])();
                         batchBody.push("--batch_" + _this.batchId + "\n");
                         batchBody.push("Content-Type: multipart/mixed; boundary=\"changeset_" + currentChangeSetId + "\"\n\n");
                     }
@@ -4276,12 +3496,12 @@ var SPBatch = /** @class */ (function (_super) {
                 // these are the per-request headers
                 var headers = new Headers();
                 // this is the url of the individual request within the batch
-                var url = common_1.isUrlAbsolute(reqInfo.url) ? reqInfo.url : common_1.combine(absoluteRequestUrl, reqInfo.url);
-                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", 0 /* Verbose */);
+                var url = Object(common["l" /* isUrlAbsolute */])(reqInfo.url) ? reqInfo.url : Object(common["e" /* combine */])(absoluteRequestUrl, reqInfo.url);
+                Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", 0 /* Verbose */);
                 if (reqInfo.method !== "GET") {
                     var method = reqInfo.method;
                     var castHeaders = reqInfo.options.headers;
-                    if (common_1.hOP(reqInfo, "options") && common_1.hOP(reqInfo.options, "headers") && castHeaders["X-HTTP-Method"] !== undefined) {
+                    if (Object(common["i" /* hOP */])(reqInfo, "options") && Object(common["i" /* hOP */])(reqInfo.options, "headers") && castHeaders["X-HTTP-Method"] !== undefined) {
                         method = castHeaders["X-HTTP-Method"];
                         delete castHeaders["X-HTTP-Method"];
                     }
@@ -4292,10 +3512,10 @@ var SPBatch = /** @class */ (function (_super) {
                     batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
                 }
                 // merge global config headers
-                common_1.mergeHeaders(headers, splibconfig_1.SPRuntimeConfig.headers);
+                Object(common["n" /* mergeHeaders */])(headers, splibconfig["a" /* SPRuntimeConfig */].headers);
                 // merge per-request headers
                 if (reqInfo.options) {
-                    common_1.mergeHeaders(headers, reqInfo.options.headers);
+                    Object(common["n" /* mergeHeaders */])(headers, reqInfo.options.headers);
                 }
                 // lastly we apply any default headers we need that may not exist
                 if (!headers.has("Accept")) {
@@ -4305,7 +3525,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.1");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.2");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -4329,407 +3549,33 @@ var SPBatch = /** @class */ (function (_super) {
                 },
                 "method": "POST",
             };
-            logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
-            return client.fetch(common_1.combine(absoluteRequestUrl, "/_api/$batch"), batchOptions)
+            Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
+            return client.fetch(Object(common["e" /* combine */])(absoluteRequestUrl, "/_api/$batch"), batchOptions)
                 .then(function (r) { return r.text(); })
                 .then(SPBatch.ParseResponse)
                 .then(function (responses) {
                 if (responses.length !== _this.requests.length) {
                     throw Error("Could not properly parse responses to match requests in batch.");
                 }
-                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
+                Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
                 return responses.reduce(function (chain, response, index) {
                     var request = _this.requests[index];
-                    logging_1.Logger.write("[" + request.id + "] (" + (new Date()).getTime() + ") Resolving request in batch " + _this.batchId + ".", 1 /* Info */);
+                    Logger.write("[" + request.id + "] (" + (new Date()).getTime() + ") Resolving request in batch " + _this.batchId + ".", 1 /* Info */);
                     return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
                 }, Promise.resolve());
             });
         });
     };
     return SPBatch;
-}(odata_1.Batch));
-exports.SPBatch = SPBatch;
+}(batch_Batch));
+
 //# sourceMappingURL=batch.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/rest.js
 
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var sharepointqueryable_1 = __webpack_require__(6);
-var decorators_1 = __webpack_require__(10);
-var types_1 = __webpack_require__(18);
-var common_1 = __webpack_require__(0);
-var sphttpclient_1 = __webpack_require__(13);
-var odata_1 = __webpack_require__(4);
-var odata_2 = __webpack_require__(11);
-var operations_1 = __webpack_require__(8);
-var batch_1 = __webpack_require__(20);
-var escapeQueryStrValue_1 = __webpack_require__(12);
-var telemetry_1 = __webpack_require__(5);
-var metadata_1 = __webpack_require__(7);
-var extractweburl_1 = __webpack_require__(14);
-var _Site = /** @class */ (function (_super) {
-    tslib_1.__extends(_Site, _super);
-    function _Site() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Site.prototype, "rootWeb", {
-        /**
-        * Gets the root web of the site collection
-        *
-        */
-        get: function () {
-            return telemetry_1.tag.configure(types_1.Web(this, "rootweb"), "si.rootWeb");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Gets a Web instance representing the root web of the site collection
-     * correctly setup for chaining within the library
-     */
-    _Site.prototype.getRootWeb = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var web;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.rootWeb.select("Url")()];
-                    case 1:
-                        web = _a.sent();
-                        return [2 /*return*/, telemetry_1.tag.configure(types_1.Web(web.Url), "si.getRootWeb")];
-                }
-            });
-        });
-    };
-    /**
-    * Gets the context information for this site collection
-    */
-    _Site.prototype.getContextInfo = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var q, data, info;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        q = telemetry_1.tag.configure(exports.Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
-                        return [4 /*yield*/, operations_1.spPost(q)];
-                    case 1:
-                        data = _a.sent();
-                        if (common_1.hOP(data, "GetContextWebInformation")) {
-                            info = data.GetContextWebInformation;
-                            info.SupportedSchemaVersions = info.SupportedSchemaVersions.results;
-                            return [2 /*return*/, info];
-                        }
-                        else {
-                            return [2 /*return*/, data];
-                        }
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    _Site.prototype.createBatch = function () {
-        return new batch_1.SPBatch(this.parentUrl);
-    };
-    /**
-    * Deletes the current site
-    *
-    */
-    _Site.prototype.delete = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var site, q;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.clone(exports.Site, "").select("Id")()];
-                    case 1:
-                        site = _a.sent();
-                        q = telemetry_1.tag.configure(exports.Site(this.parentUrl, "_api/SPSiteManager/Delete"), "si.delete");
-                        return [4 /*yield*/, operations_1.spPost(q, odata_1.body({ siteId: site.Id }))];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * Gets the document libraries on a site. Static method. (SharePoint Online only)
-     *
-     * @param absoluteWebUrl The absolute url of the web whose document libraries should be returned
-     */
-    _Site.prototype.getDocumentLibraries = function (absoluteWebUrl) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var q, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        q = telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)"), "si.getDocumentLibraries");
-                        q.query.set("@v", "'" + escapeQueryStrValue_1.escapeQueryStrValue(absoluteWebUrl) + "'");
-                        return [4 /*yield*/, q()];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, common_1.hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data];
-                }
-            });
-        });
-    };
-    /**
-     * Gets the site url from a page url
-     *
-     * @param absolutePageUrl The absolute url of the page
-     */
-    _Site.prototype.getWebUrlFromPageUrl = function (absolutePageUrl) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var q, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        q = telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)"), "si.getWebUrlFromPageUrl");
-                        q.query.set("@v", "'" + escapeQueryStrValue_1.escapeQueryStrValue(absolutePageUrl) + "'");
-                        return [4 /*yield*/, q()];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, common_1.hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data];
-                }
-            });
-        });
-    };
-    /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
-     *
-     * @param query The change query
-     */
-    _Site.prototype.getChanges = function (query) {
-        var postBody = odata_1.body({ "query": common_1.assign(metadata_1.metadata("SP.ChangeQuery"), query) });
-        return operations_1.spPost(this.clone(types_1.Web, "getchanges"), postBody);
-    };
-    /**
-    * Opens a web by id (using POST)
-    *
-    * @param webId The GUID id of the web to open
-    */
-    _Site.prototype.openWebById = function (webId) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.spPost(this.clone(exports.Site, "openWebById('" + webId + "')"))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                web: types_1.Web(extractweburl_1.extractWebUrl(odata_2.odataUrlFrom(data))),
-                            }];
-                }
-            });
-        });
-    };
-    /**
-     * Creates a Modern communication site.
-     *
-     * @param title The title of the site to create
-     * @param lcid The language to use for the site. If not specified will default to 1033 (English).
-     * @param shareByEmailEnabled If set to true, it will enable sharing files via Email. By default it is set to false
-     * @param url The fully qualified URL (e.g. https://yourtenant.sharepoint.com/sites/mysitecollection) of the site.
-     * @param description The description of the communication site.
-     * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
-     * @param siteDesignId The Guid of the site design to be used.
-     *                     You can use the below default OOTB GUIDs:
-     *                     Topic: 00000000-0000-0000-0000-000000000000
-     *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
-     *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
-     */
-    _Site.prototype.createCommunicationSite = function (title, lcid, shareByEmailEnabled, url, description, classification, siteDesignId, hubSiteId, owner) {
-        if (lcid === void 0) { lcid = 1033; }
-        if (shareByEmailEnabled === void 0) { shareByEmailEnabled = false; }
-        if (description === void 0) { description = ""; }
-        if (classification === void 0) { classification = ""; }
-        if (siteDesignId === void 0) { siteDesignId = "00000000-0000-0000-0000-000000000000"; }
-        if (hubSiteId === void 0) { hubSiteId = "00000000-0000-0000-0000-000000000000"; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var props, postBody, d, client, methodUrl, r;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        props = {
-                            Classification: classification,
-                            Description: description,
-                            HubSiteId: hubSiteId,
-                            Lcid: lcid,
-                            Owner: owner,
-                            ShareByEmailEnabled: shareByEmailEnabled,
-                            SiteDesignId: siteDesignId,
-                            Title: title,
-                            Url: url,
-                            WebTemplate: "SITEPAGEPUBLISHING#0",
-                            WebTemplateExtensionId: "00000000-0000-0000-0000-000000000000",
-                        };
-                        postBody = odata_1.body({
-                            "request": common_1.assign(metadata_1.metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), props),
-                        }, odata_1.headers({
-                            "Accept": "application/json;odata=verbose",
-                            "Content-Type": "application/json;odata=verbose;charset=utf-8",
-                        }));
-                        return [4 /*yield*/, this.getRootWeb()];
-                    case 1:
-                        d = _a.sent();
-                        client = new sphttpclient_1.SPHttpClient();
-                        methodUrl = d.parentUrl + "/_api/SPSiteManager/Create";
-                        return [4 /*yield*/, client.post(methodUrl, postBody)];
-                    case 2:
-                        r = _a.sent();
-                        return [4 /*yield*/, r.json()];
-                    case 3: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-    * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
-    *
-    * @param displayName The title or display name of the Modern team site to be created
-    * @param alias Alias of the underlying Office 365 Group
-    * @param isPublic Defines whether the Office 365 Group will be public (default), or private.
-    * @param lcid The language to use for the site. If not specified will default to English (1033).
-    * @param description The description of the site to be created.
-    * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
-    * @param owners The Owners of the site to be created
-    */
-    _Site.prototype.createModernTeamSite = function (displayName, alias, isPublic, lcid, description, classification, owners, hubSiteId, siteDesignId) {
-        if (isPublic === void 0) { isPublic = true; }
-        if (lcid === void 0) { lcid = 1033; }
-        if (description === void 0) { description = ""; }
-        if (classification === void 0) { classification = ""; }
-        if (hubSiteId === void 0) { hubSiteId = "00000000-0000-0000-0000-000000000000"; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, d, client, methodUrl, r;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = {
-                            alias: alias,
-                            displayName: displayName,
-                            isPublic: isPublic,
-                            optionalParams: {
-                                Classification: classification,
-                                CreationOptions: {
-                                    "results": ["SPSiteLanguage:" + lcid, "HubSiteId:" + hubSiteId],
-                                },
-                                Description: description,
-                                Owners: {
-                                    "results": owners ? owners : [],
-                                },
-                            },
-                        };
-                        if (siteDesignId) {
-                            postBody.optionalParams.CreationOptions.results.push("implicit_formula_292aa8a00786498a87a5ca52d9f4214a_" + siteDesignId);
-                        }
-                        return [4 /*yield*/, this.getRootWeb()];
-                    case 1:
-                        d = _a.sent();
-                        client = new sphttpclient_1.SPHttpClient();
-                        methodUrl = d.parentUrl + "/_api/GroupSiteManager/CreateGroupEx";
-                        return [4 /*yield*/, client.post(methodUrl, {
-                                body: common_1.jsS(postBody),
-                                headers: {
-                                    "Accept": "application/json;odata=verbose",
-                                    "Content-Type": "application/json;odata=verbose;charset=utf-8",
-                                },
-                            })];
-                    case 2:
-                        r = _a.sent();
-                        return [4 /*yield*/, r.json()];
-                    case 3: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    tslib_1.__decorate([
-        telemetry_1.tag("si.getChanges")
-    ], _Site.prototype, "getChanges", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("si.openWebById")
-    ], _Site.prototype, "openWebById", null);
-    _Site = tslib_1.__decorate([
-        decorators_1.defaultPath("_api/site")
-    ], _Site);
-    return _Site;
-}(sharepointqueryable_1._SharePointQueryableInstance));
-exports._Site = _Site;
-exports.Site = sharepointqueryable_1.spInvokableFactory(_Site);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(4);
-var types_1 = __webpack_require__(18);
-var types_2 = __webpack_require__(15);
-var odata_2 = __webpack_require__(11);
-var sharepointqueryable_1 = __webpack_require__(6);
-var escapeQueryStrValue_1 = __webpack_require__(12);
-odata_1.addProp(types_1._Web, "lists", types_2.Lists);
-odata_1.addProp(types_1._Web, "siteUserInfoList", types_2.List, "siteuserinfolist");
-odata_1.addProp(types_1._Web, "defaultDocumentLibrary", types_2.List, "DefaultDocumentLibrary");
-odata_1.addProp(types_1._Web, "customListTemplates", sharepointqueryable_1.SharePointQueryableCollection, "getcustomlisttemplates");
-types_1._Web.prototype.getList = function (listRelativeUrl) {
-    return types_2.List(this, "getList('" + escapeQueryStrValue_1.escapeQueryStrValue(listRelativeUrl) + "')");
-};
-types_1._Web.prototype.getCatalog = function (type) {
-    return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var data;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, this.clone(types_1.Web, "getcatalog(" + type + ")").select("Id").get()];
-                case 1:
-                    data = _a.sent();
-                    return [2 /*return*/, types_2.List(odata_2.odataUrlFrom(data))];
-            }
-        });
-    });
-};
-//# sourceMappingURL=web.js.map
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var rest_1 = __webpack_require__(24);
-var types_1 = __webpack_require__(21);
-var types_2 = __webpack_require__(21);
-exports.Site = types_2.Site;
-Reflect.defineProperty(rest_1.SPRest.prototype, "site", {
-    configurable: true,
-    enumerable: true,
-    get: function () {
-        return types_1.Site(this._baseUrl).configure(this._options);
-    },
-});
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var splibconfig_1 = __webpack_require__(9);
 /**
  * Root of the SharePoint REST module
  */
-var SPRest = /** @class */ (function () {
+var rest_SPRest = /** @class */ (function () {
     /**
      * Creates a new instance of the SPRest class
      *
@@ -4760,56 +3606,1179 @@ var SPRest = /** @class */ (function () {
      */
     SPRest.prototype.setup = function (config) {
         if (config.pageContext) {
-            splibconfig_1.setup({
+            Object(splibconfig["b" /* setup */])({
                 spfxContext: config,
             });
         }
         else {
-            splibconfig_1.setup(config);
+            Object(splibconfig["b" /* setup */])(config);
         }
     };
     return SPRest;
 }());
-exports.SPRest = SPRest;
-exports.sp = new SPRest();
+
+var sp = new rest_SPRest();
 //# sourceMappingURL=rest.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/escapeQueryStrValue.js
 
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+function escapeQueryStrValue(value) {
+    if (Object(common["s" /* stringIsNullOrEmpty */])(value)) {
+        return "";
+    }
+    // replace all instance of ' with ''
+    if (/!(@.*?)::(.*?)/ig.test(value)) {
+        // to ensure our param aliasing still works we need to treat these special or we'll hear about it
+        // so we encode JUST the part that will end up in the url
+        return value.replace(/!(@.*?)::(.*)$/ig, function (match, labelName, v) {
+            Logger.write("Rewriting aliased parameter from match " + match + " to label: " + labelName + " value: " + v, 0 /* Verbose */);
+            return "!" + labelName + "::" + encodeURIComponent(v.replace(/\'/ig, "''"));
+        });
+    }
+    else {
+        return encodeURIComponent(value.replace(/\'/ig, "''"));
+    }
+}
+//# sourceMappingURL=escapeQueryStrValue.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/types.js
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(4);
-var types_1 = __webpack_require__(15);
-var types_2 = __webpack_require__(26);
-odata_1.addProp(types_1._List, "items", types_2.Items);
-//# sourceMappingURL=list.js.map
 
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(1);
-var sharepointqueryable_1 = __webpack_require__(6);
-var common_1 = __webpack_require__(0);
-var types_1 = __webpack_require__(15);
-var odata_1 = __webpack_require__(4);
-var logging_1 = __webpack_require__(2);
-var metadata_1 = __webpack_require__(7);
-var decorators_1 = __webpack_require__(10);
-var operations_1 = __webpack_require__(8);
-var telemetry_1 = __webpack_require__(5);
+
+
+
+
+
+
+
+
+
+
+var types_Site = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Site, _super);
+    function _Site() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Site.prototype, "rootWeb", {
+        /**
+        * Gets the root web of the site collection
+        *
+        */
+        get: function () {
+            return tag.configure(Web(this, "rootweb"), "si.rootWeb");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets a Web instance representing the root web of the site collection
+     * correctly setup for chaining within the library
+     */
+    _Site.prototype.getRootWeb = function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var web;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.rootWeb.select("Url")()];
+                    case 1:
+                        web = _a.sent();
+                        return [2 /*return*/, tag.configure(Web(web.Url), "si.getRootWeb")];
+                }
+            });
+        });
+    };
+    /**
+    * Gets the context information for this site collection
+    */
+    _Site.prototype.getContextInfo = function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var q, data, info;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        q = tag.configure(Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
+                        return [4 /*yield*/, spPost(q)];
+                    case 1:
+                        data = _a.sent();
+                        if (Object(common["i" /* hOP */])(data, "GetContextWebInformation")) {
+                            info = data.GetContextWebInformation;
+                            info.SupportedSchemaVersions = info.SupportedSchemaVersions.results;
+                            return [2 /*return*/, info];
+                        }
+                        else {
+                            return [2 /*return*/, data];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    _Site.prototype.createBatch = function () {
+        return new batch_SPBatch(this.parentUrl);
+    };
+    /**
+    * Deletes the current site
+    *
+    */
+    _Site.prototype.delete = function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var site, q;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(Site, "").select("Id")()];
+                    case 1:
+                        site = _a.sent();
+                        q = tag.configure(Site(this.parentUrl, "_api/SPSiteManager/Delete"), "si.delete");
+                        return [4 /*yield*/, spPost(q, body({ siteId: site.Id }))];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Gets the document libraries on a site. Static method. (SharePoint Online only)
+     *
+     * @param absoluteWebUrl The absolute url of the web whose document libraries should be returned
+     */
+    _Site.prototype.getDocumentLibraries = function (absoluteWebUrl) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var q, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        q = tag.configure(SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)"), "si.getDocumentLibraries");
+                        q.query.set("@v", "'" + escapeQueryStrValue(absoluteWebUrl) + "'");
+                        return [4 /*yield*/, q()];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, Object(common["i" /* hOP */])(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data];
+                }
+            });
+        });
+    };
+    /**
+     * Gets the site url from a page url
+     *
+     * @param absolutePageUrl The absolute url of the page
+     */
+    _Site.prototype.getWebUrlFromPageUrl = function (absolutePageUrl) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var q, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        q = tag.configure(SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)"), "si.getWebUrlFromPageUrl");
+                        q.query.set("@v", "'" + escapeQueryStrValue(absolutePageUrl) + "'");
+                        return [4 /*yield*/, q()];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, Object(common["i" /* hOP */])(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data];
+                }
+            });
+        });
+    };
+    /**
+     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+     *
+     * @param query The change query
+     */
+    _Site.prototype.getChanges = function (query) {
+        var postBody = body({ "query": Object(common["d" /* assign */])(metadata("SP.ChangeQuery"), query) });
+        return spPost(this.clone(Web, "getchanges"), postBody);
+    };
+    /**
+    * Opens a web by id (using POST)
+    *
+    * @param webId The GUID id of the web to open
+    */
+    _Site.prototype.openWebById = function (webId) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this.clone(Site, "openWebById('" + webId + "')"))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                web: Web(extractWebUrl(odataUrlFrom(data))),
+                            }];
+                }
+            });
+        });
+    };
+    /**
+     * Creates a Modern communication site.
+     *
+     * @param title The title of the site to create
+     * @param lcid The language to use for the site. If not specified will default to 1033 (English).
+     * @param shareByEmailEnabled If set to true, it will enable sharing files via Email. By default it is set to false
+     * @param url The fully qualified URL (e.g. https://yourtenant.sharepoint.com/sites/mysitecollection) of the site.
+     * @param description The description of the communication site.
+     * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
+     * @param siteDesignId The Guid of the site design to be used.
+     *                     You can use the below default OOTB GUIDs:
+     *                     Topic: 00000000-0000-0000-0000-000000000000
+     *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
+     *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
+     */
+    _Site.prototype.createCommunicationSite = function (title, lcid, shareByEmailEnabled, url, description, classification, siteDesignId, hubSiteId, owner) {
+        if (lcid === void 0) { lcid = 1033; }
+        if (shareByEmailEnabled === void 0) { shareByEmailEnabled = false; }
+        if (description === void 0) { description = ""; }
+        if (classification === void 0) { classification = ""; }
+        if (siteDesignId === void 0) { siteDesignId = "00000000-0000-0000-0000-000000000000"; }
+        if (hubSiteId === void 0) { hubSiteId = "00000000-0000-0000-0000-000000000000"; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var props, postBody, d, client, methodUrl, r;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        props = {
+                            Classification: classification,
+                            Description: description,
+                            HubSiteId: hubSiteId,
+                            Lcid: lcid,
+                            Owner: owner,
+                            ShareByEmailEnabled: shareByEmailEnabled,
+                            SiteDesignId: siteDesignId,
+                            Title: title,
+                            Url: url,
+                            WebTemplate: "SITEPAGEPUBLISHING#0",
+                            WebTemplateExtensionId: "00000000-0000-0000-0000-000000000000",
+                        };
+                        postBody = body({
+                            "request": Object(common["d" /* assign */])(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), props),
+                        }, request_builders_headers({
+                            "Accept": "application/json;odata=verbose",
+                            "Content-Type": "application/json;odata=verbose;charset=utf-8",
+                        }));
+                        return [4 /*yield*/, this.getRootWeb()];
+                    case 1:
+                        d = _a.sent();
+                        client = new sphttpclient_SPHttpClient();
+                        methodUrl = d.parentUrl + "/_api/SPSiteManager/Create";
+                        return [4 /*yield*/, client.post(methodUrl, postBody)];
+                    case 2:
+                        r = _a.sent();
+                        return [4 /*yield*/, r.json()];
+                    case 3: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+    * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
+    *
+    * @param displayName The title or display name of the Modern team site to be created
+    * @param alias Alias of the underlying Office 365 Group
+    * @param isPublic Defines whether the Office 365 Group will be public (default), or private.
+    * @param lcid The language to use for the site. If not specified will default to English (1033).
+    * @param description The description of the site to be created.
+    * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
+    * @param owners The Owners of the site to be created
+    */
+    _Site.prototype.createModernTeamSite = function (displayName, alias, isPublic, lcid, description, classification, owners, hubSiteId, siteDesignId) {
+        if (isPublic === void 0) { isPublic = true; }
+        if (lcid === void 0) { lcid = 1033; }
+        if (description === void 0) { description = ""; }
+        if (classification === void 0) { classification = ""; }
+        if (hubSiteId === void 0) { hubSiteId = "00000000-0000-0000-0000-000000000000"; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, d, client, methodUrl, r;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = {
+                            alias: alias,
+                            displayName: displayName,
+                            isPublic: isPublic,
+                            optionalParams: {
+                                Classification: classification,
+                                CreationOptions: {
+                                    "results": ["SPSiteLanguage:" + lcid, "HubSiteId:" + hubSiteId],
+                                },
+                                Description: description,
+                                Owners: {
+                                    "results": owners ? owners : [],
+                                },
+                            },
+                        };
+                        if (siteDesignId) {
+                            postBody.optionalParams.CreationOptions.results.push("implicit_formula_292aa8a00786498a87a5ca52d9f4214a_" + siteDesignId);
+                        }
+                        return [4 /*yield*/, this.getRootWeb()];
+                    case 1:
+                        d = _a.sent();
+                        client = new sphttpclient_SPHttpClient();
+                        methodUrl = d.parentUrl + "/_api/GroupSiteManager/CreateGroupEx";
+                        return [4 /*yield*/, client.post(methodUrl, {
+                                body: Object(common["m" /* jsS */])(postBody),
+                                headers: {
+                                    "Accept": "application/json;odata=verbose",
+                                    "Content-Type": "application/json;odata=verbose;charset=utf-8",
+                                },
+                            })];
+                    case 2:
+                        r = _a.sent();
+                        return [4 /*yield*/, r.json()];
+                    case 3: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("si.getChanges")
+    ], _Site.prototype, "getChanges", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("si.openWebById")
+    ], _Site.prototype, "openWebById", null);
+    _Site = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("_api/site")
+    ], _Site);
+    return _Site;
+}(sharepointqueryable_SharePointQueryableInstance));
+
+var Site = spInvokableFactory(types_Site);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/index.js
+
+
+
+Reflect.defineProperty(rest_SPRest.prototype, "site", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return Site(this._baseUrl).configure(this._options);
+    },
+});
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/webs/types.js
+
+
+
+
+
+
+
+
+
+
+
+
+var types_Webs = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Webs, _super);
+    function _Webs() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Adds a new web to the collection
+     *
+     * @param title The new web's title
+     * @param url The new web's relative url
+     * @param description The new web's description
+     * @param template The new web's template internal name (default = STS)
+     * @param language The locale id that specifies the new web's language (default = 1033 [English, US])
+     * @param inheritPermissions When true, permissions will be inherited from the new web's parent (default = true)
+     */
+    _Webs.prototype.add = function (title, url, description, template, language, inheritPermissions) {
+        if (description === void 0) { description = ""; }
+        if (template === void 0) { template = "STS"; }
+        if (language === void 0) { language = 1033; }
+        if (inheritPermissions === void 0) { inheritPermissions = true; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = body({
+                            "parameters": Object(common["d" /* assign */])(metadata("SP.WebCreationInformation"), {
+                                Description: description,
+                                Language: language,
+                                Title: title,
+                                Url: url,
+                                UseSamePermissionsAsParentSite: inheritPermissions,
+                                WebTemplate: template,
+                            }),
+                        });
+                        return [4 /*yield*/, spPost(this.clone(Webs, "add"), postBody)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")),
+                            }];
+                }
+            });
+        });
+    };
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("ws.add")
+    ], _Webs.prototype, "add", null);
+    _Webs = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("webs")
+    ], _Webs);
+    return _Webs;
+}(sharepointqueryable_SharePointQueryableCollection));
+
+var Webs = spInvokableFactory(types_Webs);
+/**
+ * Describes a web
+ *
+ */
+var types_Web = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Web, _super);
+    function _Web() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.delete = deleteable("w");
+        return _this;
+    }
+    Object.defineProperty(_Web.prototype, "webs", {
+        /**
+         * Gets this web's subwebs
+         *
+         */
+        get: function () {
+            return Webs(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Gets this web's parent web and data
+     *
+     */
+    _Web.prototype.getParentWeb = function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var ParentWeb;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spGet(this.select("ParentWeb/Id").expand("ParentWeb"))];
+                    case 1:
+                        ParentWeb = (_a.sent()).ParentWeb;
+                        return [2 /*return*/, ParentWeb ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null];
+                }
+            });
+        });
+    };
+    /**
+    * Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
+    *
+    * @param nWebTemplateFilter Specifies the site definition (default = -1)
+    * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
+    */
+    _Web.prototype.getSubwebsFilteredForCurrentUser = function (nWebTemplateFilter, nConfigurationFilter) {
+        if (nWebTemplateFilter === void 0) { nWebTemplateFilter = -1; }
+        if (nConfigurationFilter === void 0) { nConfigurationFilter = -1; }
+        var o = this.clone(Webs, "getSubwebsFilteredForCurrentUser(nWebTemplateFilter=" + nWebTemplateFilter + ",nConfigurationFilter=" + nConfigurationFilter + ")");
+        return tag.configure(o, "w.getSubwebsFilteredForCurrentUser");
+    };
+    Object.defineProperty(_Web.prototype, "allProperties", {
+        /**
+         * Allows access to the web's all properties collection
+         */
+        get: function () {
+            return tag.configure(this.clone(SharePointQueryableInstance, "allproperties"), "w.allprops");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Web.prototype, "webinfos", {
+        /**
+         * Gets a collection of WebInfos for this web's subwebs
+         *
+         */
+        get: function () {
+            return tag.configure(SharePointQueryableCollection(this, "webinfos"), "w.webinfos");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Creates a new batch for requests within the context of this web
+     *
+     */
+    _Web.prototype.createBatch = function () {
+        return new batch_SPBatch(this.parentUrl);
+    };
+    /**
+     * Updates this web instance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the web
+     */
+    _Web.prototype.update = function (properties) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = body(Object(common["d" /* assign */])(metadata("SP.Web"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
+                        return [4 /*yield*/, spPost(this, postBody)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, { data: data, web: this }];
+                }
+            });
+        });
+    };
+    /**
+     * Applies the theme specified by the contents of each of the files specified in the arguments to the site
+     *
+     * @param colorPaletteUrl The server-relative URL of the color palette file
+     * @param fontSchemeUrl The server-relative URL of the font scheme
+     * @param backgroundImageUrl The server-relative URL of the background image
+     * @param shareGenerated When true, the generated theme files are stored in the root site. When false, they are stored in this web
+     */
+    _Web.prototype.applyTheme = function (colorPaletteUrl, fontSchemeUrl, backgroundImageUrl, shareGenerated) {
+        var postBody = body({
+            backgroundImageUrl: backgroundImageUrl,
+            colorPaletteUrl: colorPaletteUrl,
+            fontSchemeUrl: fontSchemeUrl,
+            shareGenerated: shareGenerated,
+        });
+        return spPost(this.clone(Web, "applytheme"), postBody);
+    };
+    /**
+     * Applies the specified site definition or site template to the Web site that has no template applied to it
+     *
+     * @param template Name of the site definition or the name of the site template
+     */
+    _Web.prototype.applyWebTemplate = function (template) {
+        var q = this.clone(Web, "applywebtemplate");
+        q.concat("(webTemplate='" + escapeQueryStrValue(template) + "')");
+        return spPost(q);
+    };
+    /**
+     * Returns a collection of site templates available for the site
+     *
+     * @param language The locale id of the site templates to retrieve (default = 1033 [English, US])
+     * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
+     */
+    _Web.prototype.availableWebTemplates = function (language, includeCrossLanugage) {
+        if (language === void 0) { language = 1033; }
+        if (includeCrossLanugage === void 0) { includeCrossLanugage = true; }
+        var path = "getavailablewebtemplates(lcid=" + language + ", doincludecrosslanguage=" + includeCrossLanugage + ")";
+        return tag.configure(SharePointQueryableCollection(this, path), "w.availableWebTemplates");
+    };
+    /**
+     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+     *
+     * @param query The change query
+     */
+    _Web.prototype.getChanges = function (query) {
+        var postBody = body({ "query": Object(common["d" /* assign */])(metadata("SP.ChangeQuery"), query) });
+        return spPost(this.clone(Web, "getchanges"), postBody);
+    };
+    /**
+     * Returns the name of the image file for the icon that is used to represent the specified file
+     *
+     * @param filename The file name. If this parameter is empty, the server returns an empty string
+     * @param size The size of the icon: 16x16 pixels = 0, 32x32 pixels = 1 (default = 0)
+     * @param progId The ProgID of the application that was used to create the file, in the form OLEServerName.ObjectName
+     */
+    _Web.prototype.mapToIcon = function (filename, size, progId) {
+        if (size === void 0) { size = 0; }
+        if (progId === void 0) { progId = ""; }
+        return spGet(this.clone(Web, "maptoicon(filename='" + escapeQueryStrValue(filename) + "', progid='" + escapeQueryStrValue(progId) + "', size=" + size + ")"));
+    };
+    /**
+     * Returns the tenant property corresponding to the specified key in the app catalog site
+     *
+     * @param key Id of storage entity to be set
+     */
+    _Web.prototype.getStorageEntity = function (key) {
+        return spGet(this.clone(Web, "getStorageEntity('" + escapeQueryStrValue(key) + "')"));
+    };
+    /**
+     * This will set the storage entity identified by the given key (MUST be called in the context of the app catalog)
+     *
+     * @param key Id of storage entity to be set
+     * @param value Value of storage entity to be set
+     * @param description Description of storage entity to be set
+     * @param comments Comments of storage entity to be set
+     */
+    _Web.prototype.setStorageEntity = function (key, value, description, comments) {
+        if (description === void 0) { description = ""; }
+        if (comments === void 0) { comments = ""; }
+        return spPost(this.clone(Web, "setStorageEntity"), body({
+            comments: comments,
+            description: description,
+            key: key,
+            value: value,
+        }));
+    };
+    /**
+     * This will remove the storage entity identified by the given key
+     *
+     * @param key Id of storage entity to be removed
+     */
+    _Web.prototype.removeStorageEntity = function (key) {
+        return spPost(this.clone(Web, "removeStorageEntity('" + escapeQueryStrValue(key) + "')"));
+    };
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("w.getParentWeb")
+    ], _Web.prototype, "getParentWeb", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("w.update")
+    ], _Web.prototype, "update", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("w.applyTheme")
+    ], _Web.prototype, "applyTheme", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("w.applyWebTemplate")
+    ], _Web.prototype, "applyWebTemplate", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("w.getChanges")
+    ], _Web.prototype, "getChanges", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("w.mapToIcon")
+    ], _Web.prototype, "mapToIcon", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("w.getStorageEntity")
+    ], _Web.prototype, "getStorageEntity", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("w.setStorageEntity")
+    ], _Web.prototype, "setStorageEntity", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("w.removeStorageEntity")
+    ], _Web.prototype, "removeStorageEntity", null);
+    _Web = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("_api/web")
+    ], _Web);
+    return _Web;
+}(sharepointqueryable_SharePointQueryableInstance));
+
+var Web = spInvokableFactory(types_Web);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/types.js
+
+
+
+
+
+
+
+
+
+
+var types_Lists = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Lists, _super);
+    function _Lists() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets a list from the collection by guid id
+     *
+     * @param id The Id of the list (GUID)
+     */
+    _Lists.prototype.getById = function (id) {
+        return tag.configure(List(this).concat("('" + id + "')"), "ls.getById");
+    };
+    /**
+     * Gets a list from the collection by title
+     *
+     * @param title The title of the list
+     */
+    _Lists.prototype.getByTitle = function (title) {
+        return tag.configure(List(this, "getByTitle('" + escapeQueryStrValue(title) + "')"), "ls.getByTitle");
+    };
+    /**
+     * Adds a new list to the collection
+     *
+     * @param title The new list's title
+     * @param description The new list's description
+     * @param template The list template value
+     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
+     * @param additionalSettings Will be passed as part of the list creation body
+     */
+    _Lists.prototype.add = function (title, desc, template, enableContentTypes, additionalSettings) {
+        if (desc === void 0) { desc = ""; }
+        if (template === void 0) { template = 100; }
+        if (enableContentTypes === void 0) { enableContentTypes = false; }
+        if (additionalSettings === void 0) { additionalSettings = {}; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var addSettings, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        addSettings = Object.assign({
+                            "AllowContentTypes": enableContentTypes,
+                            "BaseTemplate": template,
+                            "ContentTypesEnabled": enableContentTypes,
+                            "Description": desc,
+                            "Title": title,
+                        }, metadata("SP.List"), additionalSettings);
+                        return [4 /*yield*/, spPost(this, body(addSettings))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, { data: data, list: this.getByTitle(addSettings.Title) }];
+                }
+            });
+        });
+    };
+    /**
+     * Ensures that the specified list exists in the collection (note: this method not supported for batching)
+     *
+     * @param title The new list's title
+     * @param desc The new list's description
+     * @param template The list template value
+     * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
+     * @param additionalSettings Will be passed as part of the list creation body or used to update an existing list
+     */
+    _Lists.prototype.ensure = function (title, desc, template, enableContentTypes, additionalSettings) {
+        if (desc === void 0) { desc = ""; }
+        if (template === void 0) { template = 100; }
+        if (enableContentTypes === void 0) { enableContentTypes = false; }
+        if (additionalSettings === void 0) { additionalSettings = {}; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var addOrUpdateSettings, list, data, e_1, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (this.hasBatch) {
+                            throw Error("The ensure list method is not supported for use in a batch.");
+                        }
+                        addOrUpdateSettings = Object(common["d" /* assign */])(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
+                        list = this.getByTitle(addOrUpdateSettings.Title);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 4, , 6]);
+                        // this will throw if the list doesn't exist
+                        return [4 /*yield*/, list.select("Title")()];
+                    case 2:
+                        // this will throw if the list doesn't exist
+                        _a.sent();
+                        return [4 /*yield*/, list.update(addOrUpdateSettings).then(function (r) { return r.data; })];
+                    case 3:
+                        data = _a.sent();
+                        return [2 /*return*/, { created: false, data: data, list: this.getByTitle(addOrUpdateSettings.Title) }];
+                    case 4:
+                        e_1 = _a.sent();
+                        return [4 /*yield*/, this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(function (r) { return r.data; })];
+                    case 5:
+                        data = _a.sent();
+                        return [2 /*return*/, { created: true, data: data, list: this.getByTitle(addOrUpdateSettings.Title) }];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
+     */
+    _Lists.prototype.ensureSiteAssetsLibrary = function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var json;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this.clone(Lists, "ensuresiteassetslibrary"))];
+                    case 1:
+                        json = _a.sent();
+                        return [2 /*return*/, List(odataUrlFrom(json))];
+                }
+            });
+        });
+    };
+    /**
+     * Gets a list that is the default location for wiki pages.
+     */
+    _Lists.prototype.ensureSitePagesLibrary = function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var json;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this.clone(Lists, "ensuresitepageslibrary"))];
+                    case 1:
+                        json = _a.sent();
+                        return [2 /*return*/, List(odataUrlFrom(json))];
+                }
+            });
+        });
+    };
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("ls.add")
+    ], _Lists.prototype, "add", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("ls.ensure")
+    ], _Lists.prototype, "ensure", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("ls.ensureSiteAssetsLibrary")
+    ], _Lists.prototype, "ensureSiteAssetsLibrary", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("ls.ensureSitePagesLibrary")
+    ], _Lists.prototype, "ensureSitePagesLibrary", null);
+    _Lists = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("lists")
+    ], _Lists);
+    return _Lists;
+}(sharepointqueryable_SharePointQueryableCollection));
+
+var Lists = spInvokableFactory(types_Lists);
+var types_List = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_List, _super);
+    function _List() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.delete = deleteableWithETag("l");
+        return _this;
+    }
+    Object.defineProperty(_List.prototype, "effectiveBasePermissions", {
+        /**
+         * Gets the effective base permissions of this list
+         *
+         */
+        get: function () {
+            return tag.configure(SharePointQueryable(this, "EffectiveBasePermissions"), "l.effectiveBasePermissions");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_List.prototype, "eventReceivers", {
+        /**
+         * Gets the event receivers attached to this list
+         *
+         */
+        get: function () {
+            return tag.configure(SharePointQueryableCollection(this, "EventReceivers"), "l.eventReceivers");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_List.prototype, "relatedFields", {
+        /**
+         * Gets the related fields of this list
+         *
+         */
+        get: function () {
+            return tag.configure(SharePointQueryable(this, "getRelatedFields"), "l.relatedFields");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_List.prototype, "informationRightsManagementSettings", {
+        /**
+         * Gets the IRM settings for this list
+         *
+         */
+        get: function () {
+            return tag.configure(SharePointQueryable(this, "InformationRightsManagementSettings"), "l.informationRightsManagementSettings");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Updates this list intance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the list
+     * @param eTag Value used in the IF-Match header, by default "*"
+     */
+    _List.prototype.update = function (properties, eTag) {
+        if (eTag === void 0) { eTag = "*"; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data, list;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = body(Object(common["d" /* assign */])(metadata("SP.List"), properties), request_builders_headers({
+                            "IF-Match": eTag,
+                            "X-HTTP-Method": "MERGE",
+                        }));
+                        return [4 /*yield*/, spPost(this, postBody)];
+                    case 1:
+                        data = _a.sent();
+                        list = this;
+                        if (Object(common["i" /* hOP */])(properties, "Title")) {
+                            list = this.getParent(List, this.parentUrl, "getByTitle('" + properties.Title + "')");
+                        }
+                        return [2 /*return*/, {
+                                data: data,
+                                list: list,
+                            }];
+                }
+            });
+        });
+    };
+    /**
+     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
+     * @param query A query that is performed against the change log.
+     */
+    _List.prototype.getChanges = function (query) {
+        return spPost(this.clone(List, "getchanges"), body({ query: Object(common["d" /* assign */])(metadata("SP.ChangeQuery"), query) }));
+    };
+    /**
+     * Returns the collection of items in the list based on the provided CamlQuery
+     * @param query A query that is performed against the list
+     * @param expands An expanded array of n items that contains fields to expand in the CamlQuery
+     */
+    _List.prototype.getItemsByCAMLQuery = function (query) {
+        var expands = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            expands[_i - 1] = arguments[_i];
+        }
+        var q = this.clone(List, "getitems");
+        return spPost(q.expand.apply(q, expands), body({ query: Object(common["d" /* assign */])(metadata("SP.CamlQuery"), query) }));
+    };
+    /**
+     * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
+     * @param query An object that defines the change log item query
+     */
+    _List.prototype.getListItemChangesSinceToken = function (query) {
+        var o = this.clone(List, "getlistitemchangessincetoken").usingParser({ parse: function (r) { return r.text(); } });
+        return spPost(o, body({ "query": Object(common["d" /* assign */])(metadata("SP.ChangeLogItemQuery"), query) }));
+    };
+    /**
+     * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+     */
+    _List.prototype.recycle = function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this.clone(List, "recycle"))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, Object(common["i" /* hOP */])(data, "Recycle") ? data.Recycle : data];
+                }
+            });
+        });
+    };
+    /**
+     * Renders list data based on the view xml provided
+     * @param viewXml A string object representing a view xml
+     */
+    _List.prototype.renderListData = function (viewXml) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var q, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        q = this.clone(List, "renderlistdata(@viewXml)");
+                        q.query.set("@viewXml", "'" + viewXml + "'");
+                        return [4 /*yield*/, spPost(q)];
+                    case 1:
+                        data = _a.sent();
+                        // data will be a string, so we parse it again
+                        return [2 /*return*/, JSON.parse(Object(common["i" /* hOP */])(data, "RenderListData") ? data.RenderListData : data)];
+                }
+            });
+        });
+    };
+    /**
+     * Returns the data for the specified query view
+     *
+     * @param parameters The parameters to be used to render list data as JSON string.
+     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     * @param queryParams Allows setting of query parameters
+     */
+    _List.prototype.renderListDataAsStream = function (parameters, overrideParameters, queryParams) {
+        if (overrideParameters === void 0) { overrideParameters = null; }
+        if (queryParams === void 0) { queryParams = new Map(); }
+        if (Object(common["i" /* hOP */])(parameters, "RenderOptions") && Object(common["j" /* isArray */])(parameters.RenderOptions)) {
+            parameters.RenderOptions = parameters.RenderOptions.reduce(function (v, c) { return v + c; });
+        }
+        var postBody = body({
+            overrideParameters: Object(common["d" /* assign */])(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
+            parameters: Object(common["d" /* assign */])(metadata("SP.RenderListDataParameters"), parameters),
+        });
+        var clone = this.clone(List, "RenderListDataAsStream", true);
+        if (queryParams && queryParams.size > 0) {
+            queryParams.forEach(function (v, k) { return clone.query.set(k, v); });
+        }
+        return spPost(clone, postBody);
+    };
+    /**
+     * Gets the field values and field schema attributes for a list item.
+     * @param itemId Item id of the item to render form data for
+     * @param formId The id of the form
+     * @param mode Enum representing the control mode of the form (Display, Edit, New)
+     */
+    _List.prototype.renderListFormData = function (itemId, formId, mode) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')"))];
+                    case 1:
+                        data = _a.sent();
+                        // data will be a string, so we parse it again
+                        return [2 /*return*/, JSON.parse(Object(common["i" /* hOP */])(data, "RenderListFormData") ? data.RenderListFormData : data)];
+                }
+            });
+        });
+    };
+    /**
+     * Reserves a list item ID for idempotent list item creation.
+     */
+    _List.prototype.reserveListItemId = function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this.clone(List, "reservelistitemid"))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, Object(common["i" /* hOP */])(data, "ReserveListItemId") ? data.ReserveListItemId : data];
+                }
+            });
+        });
+    };
+    /**
+     * Returns the ListItemEntityTypeFullName for this list, used when adding/updating list items. Does not support batching.
+     */
+    _List.prototype.getListItemEntityTypeFullName = function () {
+        return this.clone(List, null, false).select("ListItemEntityTypeFullName").get().then(function (o) { return o.ListItemEntityTypeFullName; });
+    };
+    /**
+     * Creates an item using path (in a folder), validates and sets its field values.
+     *
+     * @param formValues The fields to change and their new values.
+     * @param decodedUrl Path decoded url; folder's server relative path.
+     * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
+     * @param comment Optional check in comment.
+     */
+    _List.prototype.addValidateUpdateItemUsingPath = function (formValues, decodedUrl, bNewDocumentUpdate, checkInComment) {
+        if (bNewDocumentUpdate === void 0) { bNewDocumentUpdate = false; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var res;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), body({
+                            bNewDocumentUpdate: bNewDocumentUpdate,
+                            checkInComment: checkInComment,
+                            formValues: formValues,
+                            listItemCreateInfo: {
+                                FolderPath: {
+                                    DecodedUrl: decodedUrl,
+                                    __metadata: { type: "SP.ResourcePath" },
+                                },
+                                __metadata: { type: "SP.ListItemCreationInformationUsingPath" },
+                            },
+                        }))];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, Object(common["i" /* hOP */])(res, "AddValidateUpdateItemUsingPath") ? res.AddValidateUpdateItemUsingPath : res];
+                }
+            });
+        });
+    };
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.update")
+    ], _List.prototype, "update", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.getChanges")
+    ], _List.prototype, "getChanges", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.CAMLQuery")
+    ], _List.prototype, "getItemsByCAMLQuery", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.ChangesSinceToken")
+    ], _List.prototype, "getListItemChangesSinceToken", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.recycle")
+    ], _List.prototype, "recycle", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.renderListData")
+    ], _List.prototype, "renderListData", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.AsStream")
+    ], _List.prototype, "renderListDataAsStream", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.renderListFormData")
+    ], _List.prototype, "renderListFormData", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.reserveListItemId")
+    ], _List.prototype, "reserveListItemId", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.getListItemEntityTypeFullName")
+    ], _List.prototype, "getListItemEntityTypeFullName", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("l.addValidateUpdateItemUsingPath")
+    ], _List.prototype, "addValidateUpdateItemUsingPath", null);
+    return _List;
+}(sharepointqueryable_SharePointQueryableInstance));
+
+var List = spInvokableFactory(types_List);
+/**
+ * Enum representing the options of the RenderOptions property on IRenderListDataParameters interface
+ */
+var RenderListDataOptions;
+(function (RenderListDataOptions) {
+    RenderListDataOptions[RenderListDataOptions["None"] = 0] = "None";
+    RenderListDataOptions[RenderListDataOptions["ContextInfo"] = 1] = "ContextInfo";
+    RenderListDataOptions[RenderListDataOptions["ListData"] = 2] = "ListData";
+    RenderListDataOptions[RenderListDataOptions["ListSchema"] = 4] = "ListSchema";
+    RenderListDataOptions[RenderListDataOptions["MenuView"] = 8] = "MenuView";
+    RenderListDataOptions[RenderListDataOptions["ListContentType"] = 16] = "ListContentType";
+    RenderListDataOptions[RenderListDataOptions["FileSystemItemId"] = 32] = "FileSystemItemId";
+    RenderListDataOptions[RenderListDataOptions["ClientFormSchema"] = 64] = "ClientFormSchema";
+    RenderListDataOptions[RenderListDataOptions["QuickLaunch"] = 128] = "QuickLaunch";
+    RenderListDataOptions[RenderListDataOptions["Spotlight"] = 256] = "Spotlight";
+    RenderListDataOptions[RenderListDataOptions["Visualization"] = 512] = "Visualization";
+    RenderListDataOptions[RenderListDataOptions["ViewMetadata"] = 1024] = "ViewMetadata";
+    RenderListDataOptions[RenderListDataOptions["DisableAutoHyperlink"] = 2048] = "DisableAutoHyperlink";
+    RenderListDataOptions[RenderListDataOptions["EnableMediaTAUrls"] = 4096] = "EnableMediaTAUrls";
+    RenderListDataOptions[RenderListDataOptions["ParentInfo"] = 8192] = "ParentInfo";
+    RenderListDataOptions[RenderListDataOptions["PageContextInfo"] = 16384] = "PageContextInfo";
+    RenderListDataOptions[RenderListDataOptions["ClientSideComponentManifest"] = 32768] = "ClientSideComponentManifest";
+})(RenderListDataOptions || (RenderListDataOptions = {}));
+/**
+ * Determines the display mode of the given control or view
+ */
+var ControlMode;
+(function (ControlMode) {
+    ControlMode[ControlMode["Display"] = 1] = "Display";
+    ControlMode[ControlMode["Edit"] = 2] = "Edit";
+    ControlMode[ControlMode["New"] = 3] = "New";
+})(ControlMode || (ControlMode = {}));
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/web.js
+
+
+
+
+
+
+
+addProp(types_Web, "lists", Lists);
+addProp(types_Web, "siteUserInfoList", List, "siteuserinfolist");
+addProp(types_Web, "defaultDocumentLibrary", List, "DefaultDocumentLibrary");
+addProp(types_Web, "customListTemplates", SharePointQueryableCollection, "getcustomlisttemplates");
+types_Web.prototype.getList = function (listRelativeUrl) {
+    return List(this, "getList('" + escapeQueryStrValue(listRelativeUrl) + "')");
+};
+types_Web.prototype.getCatalog = function (type) {
+    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        var data;
+        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.clone(Web, "getcatalog(" + type + ")").select("Id").get()];
+                case 1:
+                    data = _a.sent();
+                    return [2 /*return*/, List(odataUrlFrom(data))];
+            }
+        });
+    });
+};
+//# sourceMappingURL=web.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/items/types.js
+
+
+
+
+
+
+
+
+
+
 /**
  * Describes a collection of Item objects
  *
  */
-var _Items = /** @class */ (function (_super) {
-    tslib_1.__extends(_Items, _super);
+var types_Items = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Items, _super);
     function _Items() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4819,7 +4788,7 @@ var _Items = /** @class */ (function (_super) {
     * @param id The integer id of the item to retrieve
     */
     _Items.prototype.getById = function (id) {
-        return telemetry_1.tag.configure(exports.Item(this).concat("(" + id + ")"), "is.getById");
+        return tag.configure(Item(this).concat("(" + id + ")"), "is.getById");
     };
     /**
      * Gets BCS Item by string id
@@ -4828,7 +4797,7 @@ var _Items = /** @class */ (function (_super) {
      */
     _Items.prototype.getItemByStringId = function (stringId) {
         // creates an item with the parent list path and append out method call
-        return telemetry_1.tag.configure(exports.Item(this.parentUrl, "getItemByStringId('" + stringId + "')"), "is.getItemByStringId");
+        return tag.configure(Item(this.parentUrl, "getItemByStringId('" + stringId + "')"), "is.getItemByStringId");
     };
     /**
      * Skips the specified number of items (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#sectionSection6)
@@ -4851,7 +4820,7 @@ var _Items = /** @class */ (function (_super) {
      *
      */
     _Items.prototype.getPaged = function () {
-        return this.usingParser(new PagedItemCollectionParser(this))();
+        return this.usingParser(new types_PagedItemCollectionParser(this))();
     };
     /**
      * Gets all the items in a list, regardless of count. Does not support batching or caching
@@ -4862,10 +4831,10 @@ var _Items = /** @class */ (function (_super) {
     _Items.prototype.getAll = function (requestSize, acceptHeader) {
         if (requestSize === void 0) { requestSize = 2000; }
         if (acceptHeader === void 0) { acceptHeader = "application/json;odata=nometadata"; }
-        logging_1.Logger.write("Calling items.getAll should be done sparingly. Ensure this is the correct choice. If you are unsure, it is not.", 2 /* Warning */);
+        Logger.write("Calling items.getAll should be done sparingly. Ensure this is the correct choice. If you are unsure, it is not.", 2 /* Warning */);
         // this will be used for the actual query
         // and we set no metadata here to try and reduce traffic
-        var items = exports.Items(this, "").top(requestSize).configure({
+        var items = Items(this, "").top(requestSize).configure({
             headers: {
                 "Accept": acceptHeader,
             },
@@ -4908,18 +4877,18 @@ var _Items = /** @class */ (function (_super) {
     _Items.prototype.add = function (properties, listItemEntityTypeFullName) {
         if (properties === void 0) { properties = {}; }
         if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
             var removeDependency, listItemEntityType, postBody, promise;
             var _this = this;
-            return tslib_1.__generator(this, function (_a) {
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         removeDependency = this.addBatchDependency();
                         return [4 /*yield*/, this.ensureListItemEntityTypeName(listItemEntityTypeFullName)];
                     case 1:
                         listItemEntityType = _a.sent();
-                        postBody = odata_1.body(common_1.assign(metadata_1.metadata(listItemEntityType), properties));
-                        promise = operations_1.spPost(this.clone(exports.Items, ""), postBody).then(function (data) {
+                        postBody = body(Object(common["d" /* assign */])(metadata(listItemEntityType), properties));
+                        promise = spPost(this.clone(Items, ""), postBody).then(function (data) {
                             return {
                                 data: data,
                                 item: _this.getById(data.Id),
@@ -4939,33 +4908,33 @@ var _Items = /** @class */ (function (_super) {
     _Items.prototype.ensureListItemEntityTypeName = function (candidatelistItemEntityTypeFullName) {
         return candidatelistItemEntityTypeFullName ?
             Promise.resolve(candidatelistItemEntityTypeFullName) :
-            this.getParent(types_1.List).getListItemEntityTypeFullName();
+            this.getParent(List).getListItemEntityTypeFullName();
     };
-    tslib_1.__decorate([
-        telemetry_1.tag("is.getPaged")
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("is.getPaged")
     ], _Items.prototype, "getPaged", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("is.getAll")
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("is.getAll")
     ], _Items.prototype, "getAll", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("is.add")
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("is.add")
     ], _Items.prototype, "add", null);
-    _Items = tslib_1.__decorate([
-        decorators_1.defaultPath("items")
+    _Items = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("items")
     ], _Items);
     return _Items;
-}(sharepointqueryable_1._SharePointQueryableCollection));
-exports._Items = _Items;
-exports.Items = sharepointqueryable_1.spInvokableFactory(_Items);
+}(sharepointqueryable_SharePointQueryableCollection));
+
+var Items = spInvokableFactory(types_Items);
 /**
  * Descrines a single Item instance
  *
  */
-var _Item = /** @class */ (function (_super) {
-    tslib_1.__extends(_Item, _super);
+var types_Item = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Item, _super);
     function _Item() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.delete = sharepointqueryable_1.deleteableWithETag("i");
+        _this.delete = deleteableWithETag("i");
         return _this;
     }
     Object.defineProperty(_Item.prototype, "effectiveBasePermissions", {
@@ -4974,7 +4943,7 @@ var _Item = /** @class */ (function (_super) {
          *
          */
         get: function () {
-            return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryable(this, "EffectiveBasePermissions"), "i.effectiveBasePermissions");
+            return tag.configure(SharePointQueryable(this, "EffectiveBasePermissions"), "i.effectiveBasePermissions");
         },
         enumerable: true,
         configurable: true
@@ -4985,7 +4954,7 @@ var _Item = /** @class */ (function (_super) {
          *
          */
         get: function () {
-            return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryable(this, "EffectiveBasePermissionsForUI"), "i.effectiveBasePermissionsForUI");
+            return tag.configure(SharePointQueryable(this, "EffectiveBasePermissionsForUI"), "i.effectiveBasePermissionsForUI");
         },
         enumerable: true,
         configurable: true
@@ -4996,7 +4965,7 @@ var _Item = /** @class */ (function (_super) {
          *
          */
         get: function () {
-            return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryableInstance(this, "FieldValuesAsHTML"), "i.fvHTML");
+            return tag.configure(SharePointQueryableInstance(this, "FieldValuesAsHTML"), "i.fvHTML");
         },
         enumerable: true,
         configurable: true
@@ -5007,7 +4976,7 @@ var _Item = /** @class */ (function (_super) {
          *
          */
         get: function () {
-            return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryableInstance(this, "FieldValuesAsText"), "i.fvText");
+            return tag.configure(SharePointQueryableInstance(this, "FieldValuesAsText"), "i.fvText");
         },
         enumerable: true,
         configurable: true
@@ -5018,7 +4987,7 @@ var _Item = /** @class */ (function (_super) {
          *
          */
         get: function () {
-            return telemetry_1.tag.configure(sharepointqueryable_1.SharePointQueryableInstance(this, "FieldValuesForEdit"), "i.fvEdit");
+            return tag.configure(SharePointQueryableInstance(this, "FieldValuesForEdit"), "i.fvEdit");
         },
         enumerable: true,
         configurable: true
@@ -5028,14 +4997,14 @@ var _Item = /** @class */ (function (_super) {
          * Gets the collection of versions associated with this item
          */
         get: function () {
-            return telemetry_1.tag.configure(exports.ItemVersions(this), "i.versions");
+            return tag.configure(ItemVersions(this), "i.versions");
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(_Item.prototype, "list", {
         get: function () {
-            return this.getParent(types_1.List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
+            return this.getParent(List, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
         },
         enumerable: true,
         configurable: true
@@ -5050,22 +5019,22 @@ var _Item = /** @class */ (function (_super) {
     _Item.prototype.update = function (properties, eTag, listItemEntityTypeFullName) {
         if (eTag === void 0) { eTag = "*"; }
         if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
             var removeDependency, listItemEntityType, postBody, poster, data;
-            return tslib_1.__generator(this, function (_a) {
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         removeDependency = this.addBatchDependency();
                         return [4 /*yield*/, this.ensureListItemEntityTypeName(listItemEntityTypeFullName)];
                     case 1:
                         listItemEntityType = _a.sent();
-                        postBody = odata_1.body(common_1.assign(metadata_1.metadata(listItemEntityType), properties), odata_1.headers({
+                        postBody = body(Object(common["d" /* assign */])(metadata(listItemEntityType), properties), request_builders_headers({
                             "IF-Match": eTag,
                             "X-HTTP-Method": "MERGE",
                         }));
                         removeDependency();
-                        poster = telemetry_1.tag.configure(this.clone(exports.Item).usingParser(new ItemUpdatedParser()), "i.update");
-                        return [4 /*yield*/, operations_1.spPost(poster, postBody)];
+                        poster = tag.configure(this.clone(Item).usingParser(new types_ItemUpdatedParser()), "i.update");
+                        return [4 /*yield*/, spPost(poster, postBody)];
                     case 2:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5080,7 +5049,7 @@ var _Item = /** @class */ (function (_super) {
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     _Item.prototype.recycle = function () {
-        return operations_1.spPost(this.clone(exports.Item, "recycle"));
+        return spPost(this.clone(Item, "recycle"));
     };
     /**
      * Gets a string representation of the full URL to the WOPI frame.
@@ -5090,18 +5059,18 @@ var _Item = /** @class */ (function (_super) {
      */
     _Item.prototype.getWopiFrameUrl = function (action) {
         if (action === void 0) { action = 0; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
             var i, data;
-            return tslib_1.__generator(this, function (_a) {
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        i = this.clone(exports.Item, "getWOPIFrameUrl(@action)");
+                        i = this.clone(Item, "getWOPIFrameUrl(@action)");
                         i.query.set("@action", action);
-                        return [4 /*yield*/, operations_1.spPost(i)];
+                        return [4 /*yield*/, spPost(i)];
                     case 1:
                         data = _a.sent();
                         // handle verbose mode
-                        if (common_1.hOP(data, "GetWOPIFrameUrl")) {
+                        if (Object(common["i" /* hOP */])(data, "GetWOPIFrameUrl")) {
                             return [2 /*return*/, data.GetWOPIFrameUrl];
                         }
                         return [2 /*return*/, data];
@@ -5117,7 +5086,7 @@ var _Item = /** @class */ (function (_super) {
      */
     _Item.prototype.validateUpdateListItem = function (formValues, bNewDocumentUpdate) {
         if (bNewDocumentUpdate === void 0) { bNewDocumentUpdate = false; }
-        return operations_1.spPost(this.clone(exports.Item, "validateupdatelistitem"), odata_1.body({ formValues: formValues, bNewDocumentUpdate: bNewDocumentUpdate }));
+        return spPost(this.clone(Item, "validateupdatelistitem"), body({ formValues: formValues, bNewDocumentUpdate: bNewDocumentUpdate }));
     };
     /**
      * Ensures we have the proper list item entity type name, either from the value provided or from the list
@@ -5129,25 +5098,25 @@ var _Item = /** @class */ (function (_super) {
             Promise.resolve(candidatelistItemEntityTypeFullName) :
             this.list.getListItemEntityTypeFullName();
     };
-    tslib_1.__decorate([
-        telemetry_1.tag("i.recycle")
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("i.recycle")
     ], _Item.prototype, "recycle", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("i.getWopiFrameUrl")
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("i.getWopiFrameUrl")
     ], _Item.prototype, "getWopiFrameUrl", null);
-    tslib_1.__decorate([
-        telemetry_1.tag("i.validateUpdateListItem")
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("i.validateUpdateListItem")
     ], _Item.prototype, "validateUpdateListItem", null);
     return _Item;
-}(sharepointqueryable_1._SharePointQueryableInstance));
-exports._Item = _Item;
-exports.Item = sharepointqueryable_1.spInvokableFactory(_Item);
+}(sharepointqueryable_SharePointQueryableInstance));
+
+var Item = spInvokableFactory(types_Item);
 /**
  * Describes a collection of Version objects
  *
  */
-var _ItemVersions = /** @class */ (function (_super) {
-    tslib_1.__extends(_ItemVersions, _super);
+var types_ItemVersions = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_ItemVersions, _super);
     function _ItemVersions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5157,34 +5126,34 @@ var _ItemVersions = /** @class */ (function (_super) {
      * @param versionId The id of the version to retrieve
      */
     _ItemVersions.prototype.getById = function (versionId) {
-        return telemetry_1.tag.configure(exports.ItemVersion(this).concat("(" + versionId + ")"), "iv.getById");
+        return tag.configure(ItemVersion(this).concat("(" + versionId + ")"), "iv.getById");
     };
-    _ItemVersions = tslib_1.__decorate([
-        decorators_1.defaultPath("versions")
+    _ItemVersions = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("versions")
     ], _ItemVersions);
     return _ItemVersions;
-}(sharepointqueryable_1._SharePointQueryableCollection));
-exports._ItemVersions = _ItemVersions;
-exports.ItemVersions = sharepointqueryable_1.spInvokableFactory(_ItemVersions);
+}(sharepointqueryable_SharePointQueryableCollection));
+
+var ItemVersions = spInvokableFactory(types_ItemVersions);
 /**
  * Describes a single Version instance
  *
  */
-var _ItemVersion = /** @class */ (function (_super) {
-    tslib_1.__extends(_ItemVersion, _super);
+var types_ItemVersion = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_ItemVersion, _super);
     function _ItemVersion() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.delete = sharepointqueryable_1.deleteableWithETag("iv");
+        _this.delete = deleteableWithETag("iv");
         return _this;
     }
     return _ItemVersion;
-}(sharepointqueryable_1._SharePointQueryableInstance));
-exports._ItemVersion = _ItemVersion;
-exports.ItemVersion = sharepointqueryable_1.spInvokableFactory(_ItemVersion);
+}(sharepointqueryable_SharePointQueryableInstance));
+
+var ItemVersion = spInvokableFactory(types_ItemVersion);
 /**
  * Provides paging functionality for list items
  */
-var PagedItemCollection = /** @class */ (function () {
+var types_PagedItemCollection = /** @class */ (function () {
     function PagedItemCollection(parent, nextUrl, results) {
         this.parent = parent;
         this.nextUrl = nextUrl;
@@ -5205,16 +5174,16 @@ var PagedItemCollection = /** @class */ (function () {
      */
     PagedItemCollection.prototype.getNext = function () {
         if (this.hasNext) {
-            var items = telemetry_1.tag.configure(exports.Items(this.nextUrl, null).configureFrom(this.parent), "ip.getNext");
+            var items = tag.configure(Items(this.nextUrl, null).configureFrom(this.parent), "ip.getNext");
             return items.getPaged();
         }
         return new Promise(function (r) { return r(null); });
     };
     return PagedItemCollection;
 }());
-exports.PagedItemCollection = PagedItemCollection;
-var PagedItemCollectionParser = /** @class */ (function (_super) {
-    tslib_1.__extends(PagedItemCollectionParser, _super);
+
+var types_PagedItemCollectionParser = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(PagedItemCollectionParser, _super);
     function PagedItemCollectionParser(_parent) {
         var _this = _super.call(this) || this;
         _this._parent = _parent;
@@ -5225,16 +5194,16 @@ var PagedItemCollectionParser = /** @class */ (function (_super) {
         return new Promise(function (resolve, reject) {
             if (_this.handleError(r, reject)) {
                 r.json().then(function (json) {
-                    var nextUrl = common_1.hOP(json, "d") && common_1.hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
-                    resolve(new PagedItemCollection(_this._parent, nextUrl, _this.parseODataJSON(json)));
+                    var nextUrl = Object(common["i" /* hOP */])(json, "d") && Object(common["i" /* hOP */])(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
+                    resolve(new types_PagedItemCollection(_this._parent, nextUrl, _this.parseODataJSON(json)));
                 });
             }
         });
     };
     return PagedItemCollectionParser;
-}(odata_1.ODataParser));
-var ItemUpdatedParser = /** @class */ (function (_super) {
-    tslib_1.__extends(ItemUpdatedParser, _super);
+}(parsers_ODataParser));
+var types_ItemUpdatedParser = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(ItemUpdatedParser, _super);
     function ItemUpdatedParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5249,177 +5218,15 @@ var ItemUpdatedParser = /** @class */ (function (_super) {
         });
     };
     return ItemUpdatedParser;
-}(odata_1.ODataParser));
+}(parsers_ODataParser));
 //# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/items/list.js
 
-/***/ }),
-/* 27 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: ./node_modules/@pnp/common/module/index.js + 3 modules
-var common_module = __webpack_require__(0);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/config-store/module/configuration.js
-
-/**
- * Class used to manage the current application settings
- *
- */
-var configuration_Settings = /** @class */ (function () {
-    /**
-     * Creates a new instance of the settings class
-     *
-     * @constructor
-     */
-    function Settings(_settings) {
-        if (_settings === void 0) { _settings = new Map(); }
-        this._settings = _settings;
-    }
-    /**
-     * Adds a new single setting, or overwrites a previous setting with the same key
-     *
-     * @param {string} key The key used to store this setting
-     * @param {string} value The setting value to store
-     */
-    Settings.prototype.add = function (key, value) {
-        this._settings.set(key, value);
-    };
-    /**
-     * Adds a JSON value to the collection as a string, you must use getJSON to rehydrate the object when read
-     *
-     * @param {string} key The key used to store this setting
-     * @param {any} value The setting value to store
-     */
-    Settings.prototype.addJSON = function (key, value) {
-        this._settings.set(key, Object(common_module["jsS"])(value));
-    };
-    /**
-     * Applies the supplied hash to the setting collection overwriting any existing value, or created new values
-     *
-     * @param {ITypedHash<any>} hash The set of values to add
-     */
-    Settings.prototype.apply = function (hash) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            try {
-                _this._settings = Object(common_module["mergeMaps"])(_this._settings, Object(common_module["objectToMap"])(hash));
-                resolve();
-            }
-            catch (e) {
-                reject(e);
-            }
-        });
-    };
-    /**
-     * Loads configuration settings into the collection from the supplied provider and returns a Promise
-     *
-     * @param {IConfigurationProvider} provider The provider from which we will load the settings
-     */
-    Settings.prototype.load = function (provider) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            provider.getConfiguration().then(function (value) {
-                _this._settings = Object(common_module["mergeMaps"])(_this._settings, Object(common_module["objectToMap"])(value));
-                resolve();
-            }).catch(reject);
-        });
-    };
-    /**
-     * Gets a value from the configuration
-     *
-     * @param {string} key The key whose value we want to return. Returns null if the key does not exist
-     * @return {string} string value from the configuration
-     */
-    Settings.prototype.get = function (key) {
-        return this._settings.get(key) || null;
-    };
-    /**
-     * Gets a JSON value, rehydrating the stored string to the original object
-     *
-     * @param {string} key The key whose value we want to return. Returns null if the key does not exist
-     * @return {any} object from the configuration
-     */
-    Settings.prototype.getJSON = function (key) {
-        var o = this.get(key);
-        if (o === undefined || o === null) {
-            return o;
-        }
-        return JSON.parse(o);
-    };
-    return Settings;
-}());
-
-//# sourceMappingURL=configuration.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/config-store/module/providers/cachingConfigurationProvider.js
-
-/**
- * A caching provider which can wrap other non-caching providers
- *
- */
-var cachingConfigurationProvider_CachingConfigurationProvider = /** @class */ (function () {
-    /**
-     * Creates a new caching configuration provider
-     * @constructor
-     * @param {IConfigurationProvider} wrappedProvider Provider which will be used to fetch the configuration
-     * @param {string} cacheKey Key that will be used to store cached items to the cache
-     * @param {IPnPClientStore} cacheStore OPTIONAL storage, which will be used to store cached settings.
-     */
-    function CachingConfigurationProvider(wrappedProvider, cacheKey, cacheStore) {
-        this.wrappedProvider = wrappedProvider;
-        this.cacheKey = cacheKey;
-        this.wrappedProvider = wrappedProvider;
-        this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
-    }
-    /**
-     * Gets the wrapped configuration providers
-     *
-     * @return {IConfigurationProvider} Wrapped configuration provider
-     */
-    CachingConfigurationProvider.prototype.getWrappedProvider = function () {
-        return this.wrappedProvider;
-    };
-    /**
-     * Loads the configuration values either from the cache or from the wrapped provider
-     *
-     * @return {Promise<ITypedHash<string>>} Promise of loaded configuration values
-     */
-    CachingConfigurationProvider.prototype.getConfiguration = function () {
-        var _this = this;
-        // Cache not available, pass control to the wrapped provider
-        if ((!this.store) || (!this.store.enabled)) {
-            return this.wrappedProvider.getConfiguration();
-        }
-        return this.store.getOrPut(this.cacheKey, function () {
-            return _this.wrappedProvider.getConfiguration().then(function (providedConfig) {
-                _this.store.put(_this.cacheKey, providedConfig);
-                return providedConfig;
-            });
-        });
-    };
-    CachingConfigurationProvider.prototype.selectPnPCache = function () {
-        var pnpCache = new common_module["PnPClientStorage"]();
-        if ((pnpCache.local) && (pnpCache.local.enabled)) {
-            return pnpCache.local;
-        }
-        if ((pnpCache.session) && (pnpCache.session.enabled)) {
-            return pnpCache.session;
-        }
-        throw Error("Cannot create a caching configuration provider since cache is not available.");
-    };
-    return CachingConfigurationProvider;
-}());
-/* harmony default export */ var cachingConfigurationProvider = (cachingConfigurationProvider_CachingConfigurationProvider);
-//# sourceMappingURL=cachingConfigurationProvider.js.map
-// EXTERNAL MODULE: ./node_modules/@pnp/sp/lists/web.js
-var web = __webpack_require__(22);
-
-// EXTERNAL MODULE: ./node_modules/@pnp/sp/items/list.js
-var list = __webpack_require__(25);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/config-store/module/providers/spListConfigurationProvider.js
+addProp(types_List, "items", Items);
+//# sourceMappingURL=list.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/config-store/providers/spListConfigurationProvider.js
 
 
 
@@ -5471,11 +5278,11 @@ var spListConfigurationProvider_SPListConfigurationProvider = /** @class */ (fun
 }());
 /* harmony default export */ var spListConfigurationProvider = (spListConfigurationProvider_SPListConfigurationProvider);
 //# sourceMappingURL=spListConfigurationProvider.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/config-store/module/providers/index.js
+// CONCATENATED MODULE: ./node_modules/@pnp/config-store/providers/index.js
 
 
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/config-store/module/index.js
+// CONCATENATED MODULE: ./node_modules/@pnp/config-store/index.js
 
 
 //# sourceMappingURL=index.js.map

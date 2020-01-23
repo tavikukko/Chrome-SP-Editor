@@ -727,10 +727,10 @@ module.exports = g;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: ./node_modules/@pnp/common/module/util.js
+// EXTERNAL MODULE: ./node_modules/@pnp/common/util.js
 var util = __webpack_require__(1);
 
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/collections.js
+// CONCATENATED MODULE: ./node_modules/@pnp/common/collections.js
 
 /**
  * Used to calculate the object properties, with polyfill if needed
@@ -766,7 +766,7 @@ function mergeMaps(target) {
     return target;
 }
 //# sourceMappingURL=collections.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/libconfig.js
+// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
 
 function setup(config) {
     RuntimeConfig.assign(config);
@@ -863,13 +863,13 @@ var libconfig_RuntimeConfigImpl = /** @class */ (function () {
 var _runtimeConfig = new libconfig_RuntimeConfigImpl();
 var RuntimeConfig = _runtimeConfig;
 //# sourceMappingURL=libconfig.js.map
-// EXTERNAL MODULE: ./node_modules/@pnp/common/module/net.js
+// EXTERNAL MODULE: ./node_modules/@pnp/common/net.js
 var net = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
 var tslib_es6 = __webpack_require__(0);
 
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/storage.js
+// CONCATENATED MODULE: ./node_modules/@pnp/common/storage.js
 
 
 
@@ -1123,14 +1123,14 @@ var PnPClientStorage = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=storage.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/index.js
+// CONCATENATED MODULE: ./node_modules/@pnp/common/index.js
 
 
 
 
 
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/batch.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
 
 var batch_Batch = /** @class */ (function () {
     function Batch(_batchId) {
@@ -1220,7 +1220,7 @@ var batch_Batch = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=batch.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/caching.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
 
 var caching_CachingOptions = /** @class */ (function () {
     function CachingOptions(key, storeName, expiration) {
@@ -1265,7 +1265,7 @@ var CachingParserWrapper = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=caching.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/add-prop.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/add-prop.js
 /**
  * Adds a property to a target instance
  *
@@ -1284,7 +1284,7 @@ function addProp(target, name, factory, path) {
     });
 }
 //# sourceMappingURL=add-prop.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/invokable-extensions.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
 
 
 var _enableExtensions = false;
@@ -1406,7 +1406,7 @@ function extensionOrDefault(op, or, target) {
     return or.apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
 }
 //# sourceMappingURL=invokable-extensions.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/invokable-binder.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
 
 
 
@@ -1476,7 +1476,7 @@ var invokableFactory = invokableBinder(function (options) {
     return this.defaultAction(options);
 });
 //# sourceMappingURL=invokable-binder.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/parsers.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
 
 
 var parsers_ODataParser = /** @class */ (function () {
@@ -1630,7 +1630,7 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
 }(Error));
 
 //# sourceMappingURL=parsers.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/queryable.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/queryable.js
 
 
 
@@ -1869,7 +1869,7 @@ var queryable_Queryable = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=queryable.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/logger.js
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
 /**
  * Class used to subscribe ILogListener and log messages throughout an application
  *
@@ -2012,7 +2012,7 @@ var LogLevel;
     LogLevel[LogLevel["Off"] = 99] = "Off";
 })(LogLevel || (LogLevel = {}));
 //# sourceMappingURL=logger.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/listeners.js
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
 /**
  * Implementation of LogListener which logs to the console
  *
@@ -2087,11 +2087,11 @@ var FunctionListener = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=listeners.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/index.js
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
 
 
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/pipeline.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline.js
 
 
 
@@ -2307,7 +2307,7 @@ function getDefaultPipeline() {
     ].slice(0);
 }
 //# sourceMappingURL=pipeline.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/pipeline-binder.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline-binder.js
 
 
 
@@ -2346,7 +2346,7 @@ function pipelineBinder(pipes) {
 }
 var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/request-builders.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
 
 function body(o, previous) {
     return Object.assign({ body: Object(util["i" /* jsS */])(o) }, previous);
@@ -2355,7 +2355,7 @@ function headers(o, previous) {
     return Object.assign({ headers: o }, previous);
 }
 //# sourceMappingURL=request-builders.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/index.js
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/index.js
 
 
 

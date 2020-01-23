@@ -30,6 +30,7 @@ export declare class _GraphQueryable<GetType = any> extends Queryable<GetType> i
      */
     expand(...expands: string[]): this;
     defaultAction(options?: IFetchOptions): Promise<GetType>;
+    get<T = GetType>(options?: IFetchOptions): Promise<T>;
     /**
      * Gets the full url with query information
      *

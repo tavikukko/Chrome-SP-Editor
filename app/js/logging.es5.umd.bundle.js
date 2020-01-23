@@ -101,7 +101,7 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/logger.js
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
 /**
  * Class used to subscribe ILogListener and log messages throughout an application
  *
@@ -244,7 +244,7 @@ var LogLevel;
     LogLevel[LogLevel["Off"] = 99] = "Off";
 })(LogLevel || (LogLevel = {}));
 //# sourceMappingURL=logger.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/listeners.js
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
 /**
  * Implementation of LogListener which logs to the console
  *
@@ -319,7 +319,7 @@ var FunctionListener = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=listeners.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/index.js
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
 
 
 //# sourceMappingURL=index.js.map

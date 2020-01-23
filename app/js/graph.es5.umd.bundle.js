@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 44);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -99,27 +99,26 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__extends", function() { return __extends; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__assign", function() { return __assign; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__rest", function() { return __rest; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__decorate", function() { return __decorate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__param", function() { return __param; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__metadata", function() { return __metadata; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__awaiter", function() { return __awaiter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__generator", function() { return __generator; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__exportStar", function() { return __exportStar; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__values", function() { return __values; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__read", function() { return __read; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spread", function() { return __spread; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__spreadArrays", function() { return __spreadArrays; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__await", function() { return __await; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncGenerator", function() { return __asyncGenerator; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncDelegator", function() { return __asyncDelegator; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__asyncValues", function() { return __asyncValues; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__makeTemplateObject", function() { return __makeTemplateObject; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importStar", function() { return __importStar; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__importDefault", function() { return __importDefault; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __extends; });
+/* unused harmony export __assign */
+/* unused harmony export __rest */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __decorate; });
+/* unused harmony export __param */
+/* unused harmony export __metadata */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __awaiter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __generator; });
+/* unused harmony export __exportStar */
+/* unused harmony export __values */
+/* unused harmony export __read */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __spread; });
+/* unused harmony export __spreadArrays */
+/* unused harmony export __await */
+/* unused harmony export __asyncGenerator */
+/* unused harmony export __asyncDelegator */
+/* unused harmony export __asyncValues */
+/* unused harmony export __makeTemplateObject */
+/* unused harmony export __importStar */
+/* unused harmony export __importDefault */
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -323,2167 +322,21 @@ function __importDefault(mod) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/@pnp/common/module/util.js
-var util = __webpack_require__(7);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/collections.js
-
-/**
- * Used to calculate the object properties, with polyfill if needed
- */
-var objectEntries = Object(util["j" /* isFunc */])(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
-/**
- * Converts the supplied object to a map
- *
- * @param o The object to map
- */
-function objectToMap(o) {
-    if (o !== undefined && o !== null) {
-        return new Map(objectEntries(o));
-    }
-    return new Map();
-}
-/**
- * Merges to Map instances together, overwriting values in target with matching keys, last in wins
- *
- * @param target map into which the other maps are merged
- * @param maps One or more maps to merge into the target
- */
-function mergeMaps(target) {
-    var maps = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        maps[_i - 1] = arguments[_i];
-    }
-    for (var i = 0; i < maps.length; i++) {
-        maps[i].forEach(function (v, k) {
-            target.set(k, v);
-        });
-    }
-    return target;
-}
-//# sourceMappingURL=collections.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/libconfig.js
-
-function setup(config) {
-    RuntimeConfig.assign(config);
-}
-// lable mapping for known config values
-var s = [
-    "defaultCachingStore",
-    "defaultCachingTimeoutSeconds",
-    "globalCacheDisable",
-    "enableCacheExpiration",
-    "cacheExpirationIntervalMilliseconds",
-    "spfxContext",
-    "ie11",
-];
-var libconfig_RuntimeConfigImpl = /** @class */ (function () {
-    function RuntimeConfigImpl(_v) {
-        if (_v === void 0) { _v = new Map(); }
-        this._v = _v;
-        // setup defaults
-        this._v.set(s[0], "session");
-        this._v.set(s[1], 60);
-        this._v.set(s[2], false);
-        this._v.set(s[3], false);
-        this._v.set(s[4], 750);
-        this._v.set(s[5], null);
-        this._v.set(s[6], false);
-    }
-    /**
-     *
-     * @param config The set of properties to add to the globa configuration instance
-     */
-    RuntimeConfigImpl.prototype.assign = function (config) {
-        this._v = mergeMaps(this._v, objectToMap(config));
-    };
-    RuntimeConfigImpl.prototype.get = function (key) {
-        return this._v.get(key);
-    };
-    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingStore", {
-        get: function () {
-            return this.get(s[0]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingTimeoutSeconds", {
-        get: function () {
-            return this.get(s[1]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "globalCacheDisable", {
-        get: function () {
-            return this.get(s[2]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "enableCacheExpiration", {
-        get: function () {
-            return this.get(s[3]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "cacheExpirationIntervalMilliseconds", {
-        get: function () {
-            return this.get(s[4]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "spfxContext", {
-        get: function () {
-            return this.get(s[5]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "ie11", {
-        get: function () {
-            var v = this.get(s[6]);
-            if (v) {
-                console.warn("PnPjs is running in ie11 compat mode. Not all features may work as expected.");
-            }
-            return v;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return RuntimeConfigImpl;
-}());
-
-var _runtimeConfig = new libconfig_RuntimeConfigImpl();
-var RuntimeConfig = _runtimeConfig;
-//# sourceMappingURL=libconfig.js.map
-// EXTERNAL MODULE: ./node_modules/@pnp/common/module/net.js
-var net = __webpack_require__(18);
-
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__(0);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/storage.js
-
-
-
-/**
- * A wrapper class to provide a consistent interface to browser based storage
- *
- */
-var storage_PnPClientStorageWrapper = /** @class */ (function () {
-    /**
-     * Creates a new instance of the PnPClientStorageWrapper class
-     *
-     * @constructor
-     */
-    function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
-        if (defaultTimeoutMinutes === void 0) { defaultTimeoutMinutes = -1; }
-        this.store = store;
-        this.defaultTimeoutMinutes = defaultTimeoutMinutes;
-        this.enabled = this.test();
-        // if the cache timeout is enabled call the handler
-        // this will clear any expired items and set the timeout function
-        if (RuntimeConfig.enableCacheExpiration) {
-            this.cacheExpirationHandler();
-        }
-    }
-    PnPClientStorageWrapper.bind = function (store) {
-        return new PnPClientStorageWrapper(typeof (store) === "undefined" ? new MemoryStorage() : store);
-    };
-    /**
-     * Get a value from storage, or null if that value does not exist
-     *
-     * @param key The key whose value we want to retrieve
-     */
-    PnPClientStorageWrapper.prototype.get = function (key) {
-        if (!this.enabled) {
-            return null;
-        }
-        var o = this.store.getItem(key);
-        if (!Object(util["m" /* objectDefinedNotNull */])(o)) {
-            return null;
-        }
-        var persistable = JSON.parse(o);
-        if (new Date(persistable.expiration) <= new Date()) {
-            this.delete(key);
-            return null;
-        }
-        else {
-            return persistable.value;
-        }
-    };
-    /**
-     * Adds a value to the underlying storage
-     *
-     * @param key The key to use when storing the provided value
-     * @param o The value to store
-     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-     */
-    PnPClientStorageWrapper.prototype.put = function (key, o, expire) {
-        if (this.enabled) {
-            this.store.setItem(key, this.createPersistable(o, expire));
-        }
-    };
-    /**
-     * Deletes a value from the underlying storage
-     *
-     * @param key The key of the pair we want to remove from storage
-     */
-    PnPClientStorageWrapper.prototype.delete = function (key) {
-        if (this.enabled) {
-            this.store.removeItem(key);
-        }
-    };
-    /**
-     * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
-     *
-     * @param key The key to use when storing the provided value
-     * @param getter A function which will upon execution provide the desired value
-     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
-     */
-    PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
-        return Object(tslib_es6["__awaiter"])(this, void 0, void 0, function () {
-            var o;
-            return Object(tslib_es6["__generator"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!this.enabled) {
-                            return [2 /*return*/, getter()];
-                        }
-                        o = this.get(key);
-                        if (!(o === null)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, getter()];
-                    case 1:
-                        o = _a.sent();
-                        this.put(key, o, expire);
-                        _a.label = 2;
-                    case 2: return [2 /*return*/, o];
-                }
-            });
-        });
-    };
-    /**
-     * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
-     */
-    PnPClientStorageWrapper.prototype.deleteExpired = function () {
-        return Object(tslib_es6["__awaiter"])(this, void 0, void 0, function () {
-            var i, key;
-            return Object(tslib_es6["__generator"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!this.enabled) {
-                            return [2 /*return*/];
-                        }
-                        i = 0;
-                        _a.label = 1;
-                    case 1:
-                        if (!(i < this.store.length)) return [3 /*break*/, 4];
-                        key = this.store.key(i);
-                        if (!(key !== null)) return [3 /*break*/, 3];
-                        if (!/["|']?pnp["|']? ?: ?1/i.test(this.store.getItem(key))) return [3 /*break*/, 3];
-                        // get those items as get will delete from cache if they are expired
-                        return [4 /*yield*/, this.get(key)];
-                    case 2:
-                        // get those items as get will delete from cache if they are expired
-                        _a.sent();
-                        _a.label = 3;
-                    case 3:
-                        i++;
-                        return [3 /*break*/, 1];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * Used to determine if the wrapped storage is available currently
-     */
-    PnPClientStorageWrapper.prototype.test = function () {
-        var str = "t";
-        try {
-            this.store.setItem(str, str);
-            this.store.removeItem(str);
-            return true;
-        }
-        catch (e) {
-            return false;
-        }
-    };
-    /**
-     * Creates the persistable to store
-     */
-    PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
-        if (expire === undefined) {
-            // ensure we are by default inline with the global library setting
-            var defaultTimeout = RuntimeConfig.defaultCachingTimeoutSeconds;
-            if (this.defaultTimeoutMinutes > 0) {
-                defaultTimeout = this.defaultTimeoutMinutes * 60;
-            }
-            expire = Object(util["c" /* dateAdd */])(new Date(), "second", defaultTimeout);
-        }
-        return Object(util["l" /* jsS */])({ pnp: 1, expiration: expire, value: o });
-    };
-    /**
-     * Deletes expired items added by this library in this.store and sets a timeout to call itself
-     */
-    PnPClientStorageWrapper.prototype.cacheExpirationHandler = function () {
-        var _this = this;
-        if (!this.enabled) {
-            return;
-        }
-        this.deleteExpired().then(function (_) {
-            // call ourself in the future
-            setTimeout(Object(util["d" /* getCtxCallback */])(_this, _this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
-        }).catch(console.error);
-    };
-    return PnPClientStorageWrapper;
-}());
-
-/**
- * A thin implementation of in-memory storage for use in nodejs
- */
-var MemoryStorage = /** @class */ (function () {
-    function MemoryStorage(_store) {
-        if (_store === void 0) { _store = new Map(); }
-        this._store = _store;
-    }
-    Object.defineProperty(MemoryStorage.prototype, "length", {
-        get: function () {
-            return this._store.size;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MemoryStorage.prototype.clear = function () {
-        this._store.clear();
-    };
-    MemoryStorage.prototype.getItem = function (key) {
-        return this._store.get(key);
-    };
-    MemoryStorage.prototype.key = function (index) {
-        return Array.from(this._store)[index][0];
-    };
-    MemoryStorage.prototype.removeItem = function (key) {
-        this._store.delete(key);
-    };
-    MemoryStorage.prototype.setItem = function (key, data) {
-        this._store.set(key, data);
-    };
-    return MemoryStorage;
-}());
-/**
- * A class that will establish wrappers for both local and session storage
- */
-var PnPClientStorage = /** @class */ (function () {
-    /**
-     * Creates a new instance of the PnPClientStorage class
-     *
-     * @constructor
-     */
-    function PnPClientStorage(_local, _session) {
-        if (_local === void 0) { _local = null; }
-        if (_session === void 0) { _session = null; }
-        this._local = _local;
-        this._session = _session;
-    }
-    Object.defineProperty(PnPClientStorage.prototype, "local", {
-        /**
-         * Provides access to the local storage of the browser
-         */
-        get: function () {
-            if (this._local === null) {
-                this._local = storage_PnPClientStorageWrapper.bind(localStorage);
-            }
-            return this._local;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PnPClientStorage.prototype, "session", {
-        /**
-         * Provides access to the session storage of the browser
-         */
-        get: function () {
-            if (this._session === null) {
-                this._session = storage_PnPClientStorageWrapper.bind(sessionStorage);
-            }
-            return this._session;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return PnPClientStorage;
-}());
-
-//# sourceMappingURL=storage.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/common/module/index.js
-/* concated harmony reexport objectToMap */__webpack_require__.d(__webpack_exports__, "objectToMap", function() { return objectToMap; });
-/* concated harmony reexport mergeMaps */__webpack_require__.d(__webpack_exports__, "mergeMaps", function() { return mergeMaps; });
-/* concated harmony reexport setup */__webpack_require__.d(__webpack_exports__, "setup", function() { return setup; });
-/* concated harmony reexport RuntimeConfigImpl */__webpack_require__.d(__webpack_exports__, "RuntimeConfigImpl", function() { return libconfig_RuntimeConfigImpl; });
-/* concated harmony reexport RuntimeConfig */__webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return RuntimeConfig; });
-/* concated harmony reexport mergeHeaders */__webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return net["e" /* mergeHeaders */]; });
-/* concated harmony reexport mergeOptions */__webpack_require__.d(__webpack_exports__, "mergeOptions", function() { return net["f" /* mergeOptions */]; });
-/* concated harmony reexport getADALResource */__webpack_require__.d(__webpack_exports__, "getADALResource", function() { return net["d" /* getADALResource */]; });
-/* concated harmony reexport FetchClient */__webpack_require__.d(__webpack_exports__, "FetchClient", function() { return net["b" /* FetchClient */]; });
-/* concated harmony reexport BearerTokenFetchClient */__webpack_require__.d(__webpack_exports__, "BearerTokenFetchClient", function() { return net["a" /* BearerTokenFetchClient */]; });
-/* concated harmony reexport SPFxAdalClient */__webpack_require__.d(__webpack_exports__, "SPFxAdalClient", function() { return net["c" /* SPFxAdalClient */]; });
-/* concated harmony reexport PnPClientStorageWrapper */__webpack_require__.d(__webpack_exports__, "PnPClientStorageWrapper", function() { return storage_PnPClientStorageWrapper; });
-/* concated harmony reexport PnPClientStorage */__webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return PnPClientStorage; });
-/* concated harmony reexport getCtxCallback */__webpack_require__.d(__webpack_exports__, "getCtxCallback", function() { return util["d" /* getCtxCallback */]; });
-/* concated harmony reexport dateAdd */__webpack_require__.d(__webpack_exports__, "dateAdd", function() { return util["c" /* dateAdd */]; });
-/* concated harmony reexport combine */__webpack_require__.d(__webpack_exports__, "combine", function() { return util["b" /* combine */]; });
-/* concated harmony reexport getRandomString */__webpack_require__.d(__webpack_exports__, "getRandomString", function() { return util["g" /* getRandomString */]; });
-/* concated harmony reexport getGUID */__webpack_require__.d(__webpack_exports__, "getGUID", function() { return util["e" /* getGUID */]; });
-/* concated harmony reexport isFunc */__webpack_require__.d(__webpack_exports__, "isFunc", function() { return util["j" /* isFunc */]; });
-/* concated harmony reexport objectDefinedNotNull */__webpack_require__.d(__webpack_exports__, "objectDefinedNotNull", function() { return util["m" /* objectDefinedNotNull */]; });
-/* concated harmony reexport isArray */__webpack_require__.d(__webpack_exports__, "isArray", function() { return util["i" /* isArray */]; });
-/* concated harmony reexport assign */__webpack_require__.d(__webpack_exports__, "assign", function() { return util["a" /* assign */]; });
-/* concated harmony reexport isUrlAbsolute */__webpack_require__.d(__webpack_exports__, "isUrlAbsolute", function() { return util["k" /* isUrlAbsolute */]; });
-/* concated harmony reexport stringIsNullOrEmpty */__webpack_require__.d(__webpack_exports__, "stringIsNullOrEmpty", function() { return util["o" /* stringIsNullOrEmpty */]; });
-/* concated harmony reexport sanitizeGuid */__webpack_require__.d(__webpack_exports__, "sanitizeGuid", function() { return util["n" /* sanitizeGuid */]; });
-/* concated harmony reexport jsS */__webpack_require__.d(__webpack_exports__, "jsS", function() { return util["l" /* jsS */]; });
-/* concated harmony reexport hOP */__webpack_require__.d(__webpack_exports__, "hOP", function() { return util["h" /* hOP */]; });
-/* concated harmony reexport getHashCode */__webpack_require__.d(__webpack_exports__, "getHashCode", function() { return util["f" /* getHashCode */]; });
-
-
-
-
-
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/@pnp/common/module/index.js + 3 modules
-var common_module = __webpack_require__(1);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/batch.js
-
-var batch_Batch = /** @class */ (function () {
-    function Batch(_batchId) {
-        if (_batchId === void 0) { _batchId = Object(common_module["getGUID"])(); }
-        this._batchId = _batchId;
-        this._reqs = [];
-        this._deps = [];
-        this._rDeps = [];
-    }
-    Object.defineProperty(Batch.prototype, "batchId", {
-        get: function () {
-            return this._batchId;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Batch.prototype, "requests", {
-        /**
-         * The requests contained in this batch
-         */
-        get: function () {
-            return this._reqs;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     *
-     * @param url Request url
-     * @param method Request method (GET, POST, etc)
-     * @param options Any request options
-     * @param parser The parser used to handle the eventual return from the query
-     * @param id An identifier used to track a request within a batch
-     */
-    Batch.prototype.add = function (url, method, options, parser, id) {
-        var info = {
-            id: id,
-            method: method.toUpperCase(),
-            options: options,
-            parser: parser,
-            reject: null,
-            resolve: null,
-            url: url,
-        };
-        var p = new Promise(function (resolve, reject) {
-            info.resolve = resolve;
-            info.reject = reject;
-        });
-        this._reqs.push(info);
-        return p;
-    };
-    /**
-     * Adds a dependency insuring that some set of actions will occur before a batch is processed.
-     * MUST be cleared using the returned resolve delegate to allow batches to run
-     */
-    Batch.prototype.addDependency = function () {
-        var resolver = function () { return void (0); };
-        this._deps.push(new Promise(function (resolve) {
-            resolver = resolve;
-        }));
-        return resolver;
-    };
-    /**
-     * The batch's execute method will not resolve util any promises added here resolve
-     *
-     * @param p The dependent promise
-     */
-    Batch.prototype.addResolveBatchDependency = function (p) {
-        this._rDeps.push(p);
-    };
-    /**
-     * Execute the current batch and resolve the associated promises
-     *
-     * @returns A promise which will be resolved once all of the batch's child promises have resolved
-     */
-    Batch.prototype.execute = function () {
-        var _this = this;
-        // we need to check the dependencies twice due to how different engines handle things.
-        // We can get a second set of promises added during the first set resolving
-        return Promise.all(this._deps)
-            .then(function () { return Promise.all(_this._deps); })
-            .then(function () { return _this.executeImpl(); })
-            .then(function () { return Promise.all(_this._rDeps); })
-            .then(function () { return void (0); });
-    };
-    return Batch;
-}());
-
-//# sourceMappingURL=batch.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/caching.js
-
-var caching_CachingOptions = /** @class */ (function () {
-    function CachingOptions(key, storeName, expiration) {
-        if (storeName === void 0) { storeName = common_module["RuntimeConfig"].defaultCachingStore; }
-        if (expiration === void 0) { expiration = Object(common_module["dateAdd"])(new Date(), "second", common_module["RuntimeConfig"].defaultCachingTimeoutSeconds); }
-        this.key = key;
-        this.storeName = storeName;
-        this.expiration = expiration;
-    }
-    Object.defineProperty(CachingOptions.prototype, "store", {
-        get: function () {
-            if (this.storeName === "local") {
-                return CachingOptions.storage.local;
-            }
-            else {
-                return CachingOptions.storage.session;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    CachingOptions.storage = new common_module["PnPClientStorage"]();
-    return CachingOptions;
-}());
-
-var CachingParserWrapper = /** @class */ (function () {
-    function CachingParserWrapper(parser, cacheOptions) {
-        this.parser = parser;
-        this.cacheOptions = cacheOptions;
-    }
-    CachingParserWrapper.prototype.parse = function (response) {
-        var _this = this;
-        return this.parser.parse(response).then(function (r) { return _this.cacheData(r); });
-    };
-    CachingParserWrapper.prototype.cacheData = function (data) {
-        if (this.cacheOptions.store !== null) {
-            this.cacheOptions.store.put(this.cacheOptions.key, data, this.cacheOptions.expiration);
-        }
-        return data;
-    };
-    return CachingParserWrapper;
-}());
-
-//# sourceMappingURL=caching.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/add-prop.js
-/**
- * Adds a property to a target instance
- *
- * @param target The object to whose prototype we will add a property
- * @param name Property name
- * @param factory Factory method used to produce the property value
- * @param path Any additional path required to produce the value
- */
-function addProp(target, name, factory, path) {
-    Reflect.defineProperty(target.prototype, name, {
-        configurable: true,
-        enumerable: true,
-        get: function () {
-            return factory(this, path);
-        },
-    });
-}
-//# sourceMappingURL=add-prop.js.map
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__(0);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/invokable-extensions.js
-
-
-var _enableExtensions = false;
-var globaExtensions = [];
-var ObjExtensionsSym = Symbol("__extensions");
-/**
- * Creates global extensions across all invokable objects
- *
- * @param e The global extensions to apply
- */
-var extendGlobal = function (e) {
-    _enableExtensions = true;
-    extendCol(globaExtensions, e);
-};
-/**
- * Applies the supplied extensions to a single instance
- *
- * @param target Object to which extensions are applied
- * @param extensions Extensions to apply
- */
-var extendObj = function (target, extensions) {
-    _enableExtensions = true;
-    if (!Reflect.has(target, ObjExtensionsSym)) {
-        Reflect.set(target, ObjExtensionsSym, []);
-    }
-    extendCol(Reflect.get(target, ObjExtensionsSym), extensions);
-    return target;
-};
-/**
- * Allows applying extensions to all instances created from the supplied factory
- *
- * @param factory The Invokable Factory method to extend
- * @param extensions Extensions to apply
- */
-var extendFactory = function (factory, extensions) {
-    _enableExtensions = true;
-    if (factory.__proto__[ObjExtensionsSym] === undefined) {
-        factory.__proto__[ObjExtensionsSym] = [];
-    }
-    extendCol(factory.__proto__[ObjExtensionsSym], extensions);
-};
-function extendCol(a, e) {
-    if (Object(common_module["isArray"])(e)) {
-        // @ts-ignore
-        a.push.apply(a, Object(tslib_es6["__spread"])(e));
-    }
-    else {
-        // @ts-ignore
-        a.push(e);
-    }
-}
-/**
- * Clears all global extensions
- */
-var clearGlobalExtensions = function () {
-    globaExtensions.length = 0;
-};
-/**
- * Disables all extensions
- */
-var disableExtensions = function () {
-    _enableExtensions = false;
-};
-/**
- * Enables all extensions
- */
-var enableExtensions = function () {
-    _enableExtensions = true;
-};
-/**
- * Applies a set of extension previously applied to a factory using extendFactory to an object created from that factory
- *
- * @param factory
- * @param args
- */
-var applyFactoryExtensions = function (factory, args) {
-    var o = factory(args);
-    if (factory.__proto__[ObjExtensionsSym]) {
-        o = extendObj(o, factory.__proto__[ObjExtensionsSym]);
-    }
-    return o;
-};
-function extensionOrDefault(op, or, target) {
-    var rest = [];
-    for (var _i = 3; _i < arguments.length; _i++) {
-        rest[_i - 3] = arguments[_i];
-    }
-    if (_enableExtensions) {
-        var extensions = [];
-        // we need to first invoke extensions tied to only this object
-        if (Reflect.has(target, ObjExtensionsSym)) {
-            extensions.push.apply(extensions, Object(tslib_es6["__spread"])(Reflect.get(target, ObjExtensionsSym)));
-        }
-        // second we need to process any global extensions
-        extensions.push.apply(extensions, Object(tslib_es6["__spread"])(globaExtensions));
-        for (var i = 0; i < extensions.length; i++) {
-            var extension = extensions[i];
-            var result = undefined;
-            if (Object(common_module["isFunc"])(extension)) {
-                // this extension is a function which we call
-                result = extension.apply(void 0, Object(tslib_es6["__spread"])([op, target], rest));
-            }
-            else if (op === "get" && Reflect.has(extension, rest[0])) {
-                // this extension is a named extension meaning we are overriding a specific method/property
-                result = Reflect.get(extension, rest[0], target);
-            }
-            else if (Reflect.has(extension, op)) {
-                // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
-                result = Reflect.get(extension, op).apply(void 0, Object(tslib_es6["__spread"])([target], rest));
-            }
-            if (typeof result !== "undefined") {
-                // if a extension returned a result, we return that
-                // this means that this extension overrides any other extensions and no more are executed
-                // first extension in the list to return "wins"
-                return result;
-            }
-        }
-    }
-    return or.apply(void 0, Object(tslib_es6["__spread"])([target], rest));
-}
-//# sourceMappingURL=invokable-extensions.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/invokable-binder.js
-
-
-
-var invokableBinder = function (invoker) { return function (constructor) {
-    return function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        var factory = function (as) {
-            var r = Object.assign(function () {
-                var ags = [];
-                for (var _i = 0; _i < arguments.length; _i++) {
-                    ags[_i] = arguments[_i];
-                }
-                return invoker.apply(r, ags);
-            }, new (constructor.bind.apply(constructor, Object(tslib_es6["__spread"])([void 0], as)))());
-            Reflect.setPrototypeOf(r, constructor.prototype);
-            return r;
-        };
-        if (common_module["RuntimeConfig"].ie11) {
-            return factory(args);
-        }
-        else {
-            return new Proxy(applyFactoryExtensions(factory, args), {
-                apply: function (target, _thisArg, argArray) {
-                    return extensionOrDefault("apply", function () {
-                        var a = [];
-                        for (var _i = 0; _i < arguments.length; _i++) {
-                            a[_i] = arguments[_i];
-                        }
-                        return Reflect.apply(a[0], a[1], a[2]);
-                    }, target, _thisArg, argArray);
-                },
-                get: function (target, p, receiver) {
-                    return extensionOrDefault("get", function () {
-                        var a = [];
-                        for (var _i = 0; _i < arguments.length; _i++) {
-                            a[_i] = arguments[_i];
-                        }
-                        return Reflect.get(a[0], a[1], a[2]);
-                    }, target, p, receiver);
-                },
-                has: function (target, p) {
-                    return extensionOrDefault("has", function () {
-                        var a = [];
-                        for (var _i = 0; _i < arguments.length; _i++) {
-                            a[_i] = arguments[_i];
-                        }
-                        return Reflect.get(a[0], a[1]);
-                    }, target, p);
-                },
-                set: function (target, p, value, receiver) {
-                    return extensionOrDefault("set", function () {
-                        var a = [];
-                        for (var _i = 0; _i < arguments.length; _i++) {
-                            a[_i] = arguments[_i];
-                        }
-                        return Reflect.set(a[0], a[1], a[2], a[3]);
-                    }, target, p, value, receiver);
-                },
-            });
-        }
-    };
-}; };
-var invokableFactory = invokableBinder(function (options) {
-    return this.defaultAction(options);
-});
-//# sourceMappingURL=invokable-binder.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/parsers.js
-
-
-var parsers_ODataParser = /** @class */ (function () {
-    function ODataParser() {
-    }
-    ODataParser.prototype.parse = function (r) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this.handleError(r, reject)) {
-                _this.parseImpl(r, resolve, reject);
-            }
-        });
-    };
-    ODataParser.prototype.parseImpl = function (r, resolve, reject) {
-        var _this = this;
-        if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")) === 0) || r.status === 204) {
-            resolve({});
-        }
-        else {
-            // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
-            r.text()
-                .then(function (txt) { return txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {}; })
-                .then(function (json) { return resolve(_this.parseODataJSON(json)); })
-                .catch(function (e) { return reject(e); });
-        }
-    };
-    /**
-     * Handles a response with ok === false by parsing the body and creating a ProcessHttpClientResponseException
-     * which is passed to the reject delegate. This method returns true if there is no error, otherwise false
-     *
-     * @param r Current response object
-     * @param reject reject delegate for the surrounding promise
-     */
-    ODataParser.prototype.handleError = function (r, reject) {
-        if (!r.ok) {
-            parsers_HttpRequestError.init(r).then(reject);
-        }
-        return r.ok;
-    };
-    /**
-     * Normalizes the json response by removing the various nested levels
-     *
-     * @param json json object to parse
-     */
-    ODataParser.prototype.parseODataJSON = function (json) {
-        var result = json;
-        if (Object(common_module["hOP"])(json, "d")) {
-            if (Object(common_module["hOP"])(json.d, "results")) {
-                result = json.d.results;
-            }
-            else {
-                result = json.d;
-            }
-        }
-        else if (Object(common_module["hOP"])(json, "value")) {
-            result = json.value;
-        }
-        return result;
-    };
-    return ODataParser;
-}());
-
-var parsers_TextParser = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(TextParser, _super);
-    function TextParser() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    TextParser.prototype.parseImpl = function (r, resolve) {
-        r.text().then(resolve);
-    };
-    return TextParser;
-}(parsers_ODataParser));
-
-var parsers_BlobParser = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(BlobParser, _super);
-    function BlobParser() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    BlobParser.prototype.parseImpl = function (r, resolve) {
-        r.blob().then(resolve);
-    };
-    return BlobParser;
-}(parsers_ODataParser));
-
-var parsers_JSONParser = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(JSONParser, _super);
-    function JSONParser() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    JSONParser.prototype.parseImpl = function (r, resolve) {
-        r.json().then(resolve);
-    };
-    return JSONParser;
-}(parsers_ODataParser));
-
-var parsers_BufferParser = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(BufferParser, _super);
-    function BufferParser() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    BufferParser.prototype.parseImpl = function (r, resolve) {
-        if (Object(common_module["isFunc"])(r.arrayBuffer)) {
-            r.arrayBuffer().then(resolve);
-        }
-        else {
-            r.buffer().then(resolve);
-        }
-    };
-    return BufferParser;
-}(parsers_ODataParser));
-
-var parsers_LambdaParser = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(LambdaParser, _super);
-    function LambdaParser(parser) {
-        var _this = _super.call(this) || this;
-        _this.parser = parser;
-        return _this;
-    }
-    LambdaParser.prototype.parseImpl = function (r, resolve) {
-        this.parser(r).then(resolve);
-    };
-    return LambdaParser;
-}(parsers_ODataParser));
-
-var parsers_HttpRequestError = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(HttpRequestError, _super);
-    function HttpRequestError(message, response, status, statusText) {
-        if (status === void 0) { status = response.status; }
-        if (statusText === void 0) { statusText = response.statusText; }
-        var _this = _super.call(this, message) || this;
-        _this.response = response;
-        _this.status = status;
-        _this.statusText = statusText;
-        _this.isHttpRequestError = true;
-        return _this;
-    }
-    HttpRequestError.init = function (r) {
-        return Object(tslib_es6["__awaiter"])(this, void 0, void 0, function () {
-            var t;
-            return Object(tslib_es6["__generator"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, r.clone().text()];
-                    case 1:
-                        t = _a.sent();
-                        return [2 /*return*/, new HttpRequestError("Error making HttpClient request in queryable [" + r.status + "] " + r.statusText + " ::> " + t, r.clone())];
-                }
-            });
-        });
-    };
-    return HttpRequestError;
-}(Error));
-
-//# sourceMappingURL=parsers.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/queryable.js
-
-
-
-function cloneQueryableData(source) {
-    var s = JSON.stringify(source, function (key, value) {
-        switch (key) {
-            case "query":
-                return JSON.stringify(Object(tslib_es6["__spread"])(value));
-            case "batch":
-                return "-";
-            case "batchDependency":
-                return "-";
-            case "cachingOptions":
-                return "-";
-            case "clientFactory":
-                return "-";
-            case "parser":
-                return "-";
-            default:
-                return value;
-        }
-    }, 0);
-    var parsed = JSON.parse(s, function (key, value) {
-        switch (key) {
-            case "query":
-                return new Map(JSON.parse(value));
-            case "batch":
-                return source.batch;
-            case "batchDependency":
-                return source.batchDependency;
-            case "cachingOptions":
-                return source.cachingOptions;
-            case "clientFactory":
-                return source.clientFactory;
-            case "parser":
-                return source.parser;
-            default:
-                return value;
-        }
-    });
-    // this handles bodies that cannot be JSON encoded (Blob, etc)
-    if (source.options && source.options.body) {
-        parsed.options.body = source.options.body;
-    }
-    return parsed;
-}
-var queryable_Queryable = /** @class */ (function () {
-    function Queryable(dataSeed) {
-        if (dataSeed === void 0) { dataSeed = {}; }
-        this._data = Object.assign({}, {
-            cloneParentWasCaching: false,
-            options: {},
-            parentUrl: "",
-            parser: new parsers_ODataParser(),
-            query: new Map(),
-            url: "",
-            useCaching: false,
-        }, cloneQueryableData(dataSeed));
-    }
-    Object.defineProperty(Queryable.prototype, "data", {
-        get: function () {
-            return this._data;
-        },
-        set: function (value) {
-            this._data = Object.assign({}, cloneQueryableData(this.data), cloneQueryableData(value));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-    * Gets the currentl url
-    *
-    */
-    Queryable.prototype.toUrl = function () {
-        return this.data.url;
-    };
-    /**
-     * Directly concatonates the supplied string to the current url, not normalizing "/" chars
-     *
-     * @param pathPart The string to concatonate to the url
-     */
-    Queryable.prototype.concat = function (pathPart) {
-        this.data.url += pathPart;
-        return this;
-    };
-    Object.defineProperty(Queryable.prototype, "query", {
-        /**
-         * Provides access to the query builder for this url
-         *
-         */
-        get: function () {
-            return this.data.query;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Sets custom options for current object and all derived objects accessible via chaining
-     *
-     * @param options custom options
-     */
-    Queryable.prototype.configure = function (options) {
-        Object(common_module["mergeOptions"])(this.data.options, options);
-        return this;
-    };
-    /**
-     * Configures this instance from the configure options of the supplied instance
-     *
-     * @param o Instance from which options should be taken
-     */
-    Queryable.prototype.configureFrom = function (o) {
-        Object(common_module["mergeOptions"])(this.data.options, o.data.options);
-        return this;
-    };
-    /**
-     * Enables caching for this request
-     *
-     * @param options Defines the options used when caching this request
-     */
-    Queryable.prototype.usingCaching = function (options) {
-        if (!common_module["RuntimeConfig"].globalCacheDisable) {
-            this.data.useCaching = true;
-            if (options !== undefined) {
-                this.data.cachingOptions = options;
-            }
-        }
-        return this;
-    };
-    Queryable.prototype.usingParser = function (parser) {
-        this.data.parser = parser;
-        return this;
-    };
-    /**
-     * Allows you to set a request specific processing pipeline
-     *
-     * @param pipeline The set of methods, in order, to execute a given request
-     */
-    Queryable.prototype.withPipeline = function (pipeline) {
-        this.data.pipes = pipeline.slice(0);
-        return this;
-    };
-    /**
-     * Appends the given string and normalizes "/" chars
-     *
-     * @param pathPart The string to append
-     */
-    Queryable.prototype.append = function (pathPart) {
-        this.data.url = Object(common_module["combine"])(this.data.url, pathPart);
-    };
-    /**
-     * Adds this query to the supplied batch
-     *
-     * @example
-     * ```
-     *
-     * let b = pnp.sp.createBatch();
-     * pnp.sp.web.inBatch(b).get().then(...);
-     * b.execute().then(...)
-     * ```
-     */
-    Queryable.prototype.inBatch = function (batch) {
-        if (this.batch !== null) {
-            throw Error("This query is already part of a batch.");
-        }
-        if (Object(common_module["objectDefinedNotNull"])(batch)) {
-            this.data.batch = batch;
-        }
-        return this;
-    };
-    /**
-     * Blocks a batch call from occuring, MUST be cleared by calling the returned function
-    */
-    Queryable.prototype.addBatchDependency = function () {
-        if (Object(common_module["objectDefinedNotNull"])(this.data.batch)) {
-            return this.data.batch.addDependency();
-        }
-        return function () { return null; };
-    };
-    Object.defineProperty(Queryable.prototype, "hasBatch", {
-        /**
-         * Indicates if the current query has a batch associated
-         *
-         */
-        get: function () {
-            return Object(common_module["objectDefinedNotNull"])(this.data.batch);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Queryable.prototype, "batch", {
-        /**
-         * The batch currently associated with this query or null
-         *
-         */
-        get: function () {
-            return this.hasBatch ? this.data.batch : null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Queryable.prototype, "parentUrl", {
-        /**
-         * Gets the parent url used when creating this instance
-         *
-         */
-        get: function () {
-            return this.data.parentUrl;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Clones this instance's data to target
-     *
-     * @param target Instance to which data is written
-     * @param settings [Optional] Settings controlling how clone is applied
-     */
-    Queryable.prototype.cloneTo = function (target, settings) {
-        if (settings === void 0) { settings = { includeBatch: true }; }
-        target.data = Object.assign({}, cloneQueryableData(this.data), {
-            batch: null,
-            cloneParentCacheOptions: null,
-            cloneParentWasCaching: false,
-        }, cloneQueryableData(target.data));
-        target.configureFrom(this);
-        if (settings.includeBatch) {
-            target.inBatch(this.batch);
-        }
-        if (this.data.useCaching) {
-            target.data.cloneParentWasCaching = true;
-            target.data.cloneParentCacheOptions = this.data.cachingOptions;
-        }
-        return target;
-    };
-    return Queryable;
-}());
-
-//# sourceMappingURL=queryable.js.map
-// EXTERNAL MODULE: ./node_modules/@pnp/logging/module/index.js + 2 modules
-var logging_module = __webpack_require__(3);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/pipeline.js
-
-
-
-
-/**
- * Resolves the context's result value
- *
- * @param context The current context
- */
-function returnResult(context) {
-    logging_module["Logger"].log({
-        data: logging_module["Logger"].activeLogLevel === 0 /* Verbose */ ? context.result : {},
-        level: 1 /* Info */,
-        message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Returning result from pipeline. Set logging to verbose to see data.",
-    });
-    return Promise.resolve(context.result);
-}
-/**
- * Sets the result on the context
- */
-function setResult(context, value) {
-    return new Promise(function (resolve) {
-        context.result = value;
-        context.hasResult = true;
-        resolve(context);
-    });
-}
-/**
- * Invokes the next method in the provided context's pipeline
- *
- * @param c The current request context
- */
-function next(c) {
-    return c.pipes.length > 0 ? c.pipes.shift()(c) : Promise.resolve(c);
-}
-/**
- * Executes the current request context's pipeline
- *
- * @param context Current context
- */
-function pipe(context) {
-    if (context.pipes.length < 1) {
-        logging_module["Logger"].write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Request pipeline contains no methods!", 3 /* Error */);
-        throw Error("Request pipeline contains no methods!");
-    }
-    var promise = next(context).then(function (ctx) { return returnResult(ctx); }).catch(function (e) {
-        logging_module["Logger"].error(e);
-        throw e;
-    });
-    if (context.isBatched) {
-        // this will block the batch's execute method from returning until the child requets have been resolved
-        context.batch.addResolveBatchDependency(promise);
-    }
-    return promise;
-}
-/**
- * decorator factory applied to methods in the pipeline to control behavior
- */
-function requestPipelineMethod(alwaysRun) {
-    if (alwaysRun === void 0) { alwaysRun = false; }
-    return function (target, propertyKey, descriptor) {
-        var method = descriptor.value;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            // if we have a result already in the pipeline, pass it along and don't call the tagged method
-            if (!alwaysRun && args.length > 0 && Object(common_module["hOP"])(args[0], "hasResult") && args[0].hasResult) {
-                logging_module["Logger"].write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Skipping request pipeline method " + propertyKey + ", existing result in pipeline.", 0 /* Verbose */);
-                return Promise.resolve(args[0]);
-            }
-            // apply the tagged method
-            logging_module["Logger"].write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Calling request pipeline method " + propertyKey + ".", 0 /* Verbose */);
-            // then chain the next method in the context's pipeline - allows for dynamic pipeline
-            return method.apply(target, args).then(function (ctx) { return next(ctx); });
-        };
-    };
-}
-/**
- * Contains the methods used within the request pipeline
- */
-var pipeline_PipelineMethods = /** @class */ (function () {
-    function PipelineMethods() {
-    }
-    /**
-     * Logs the start of the request
-     */
-    PipelineMethods.logStart = function (context) {
-        return new Promise(function (resolve) {
-            logging_module["Logger"].log({
-                data: logging_module["Logger"].activeLogLevel === 1 /* Info */ ? {} : context,
-                level: 1 /* Info */,
-                message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Beginning " + context.method + " request (" + context.url + ")",
-            });
-            resolve(context);
-        });
-    };
-    /**
-     * Handles caching of the request
-     */
-    PipelineMethods.caching = function (context) {
-        return new Promise(function (resolve) {
-            // handle caching, if applicable
-            if (context.useCaching) {
-                logging_module["Logger"].write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Caching is enabled for request, checking cache...", 1 /* Info */);
-                var cacheOptions = new caching_CachingOptions(context.url.toLowerCase());
-                if (context.cachingOptions !== undefined) {
-                    cacheOptions = Object(common_module["assign"])(cacheOptions, context.cachingOptions);
-                }
-                // we may not have a valid store
-                if (cacheOptions.store !== null) {
-                    // check if we have the data in cache and if so resolve the promise and return
-                    var data = cacheOptions.store.get(cacheOptions.key);
-                    if (data !== null) {
-                        // ensure we clear any held batch dependency we are resolving from the cache
-                        logging_module["Logger"].log({
-                            data: logging_module["Logger"].activeLogLevel === 1 /* Info */ ? {} : data,
-                            level: 1 /* Info */,
-                            message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
-                        });
-                        if (Object(common_module["isFunc"])(context.batchDependency)) {
-                            context.batchDependency();
-                        }
-                        // handle the case where a parser needs to take special actions with a cached result
-                        if (Object(common_module["hOP"])(context.parser, "hydrate")) {
-                            data = context.parser.hydrate(data);
-                        }
-                        return setResult(context, data).then(function (ctx) { return resolve(ctx); });
-                    }
-                }
-                logging_module["Logger"].write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Value not found in cache.", 1 /* Info */);
-                // if we don't then wrap the supplied parser in the caching parser wrapper
-                // and send things on their way
-                context.parser = new CachingParserWrapper(context.parser, cacheOptions);
-            }
-            return resolve(context);
-        });
-    };
-    /**
-     * Sends the request
-     */
-    PipelineMethods.send = function (context) {
-        return new Promise(function (resolve, reject) {
-            // send or batch the request
-            if (context.isBatched) {
-                // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
-                var p = context.batch.add(context.url, context.method, context.options, context.parser, context.requestId);
-                // we release the dependency here to ensure the batch does not execute until the request is added to the batch
-                if (Object(common_module["isFunc"])(context.batchDependency)) {
-                    context.batchDependency();
-                }
-                logging_module["Logger"].write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request in batch " + context.batch.batchId + ".", 1 /* Info */);
-                // we set the result as the promise which will be resolved by the batch's execution
-                resolve(setResult(context, p));
-            }
-            else {
-                logging_module["Logger"].write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Sending request.", 1 /* Info */);
-                // we are not part of a batch, so proceed as normal
-                var client = context.clientFactory();
-                var opts = Object(common_module["assign"])(context.options || {}, { method: context.method });
-                client.fetch(context.url, opts)
-                    .then(function (response) { return context.parser.parse(response); })
-                    .then(function (result) { return setResult(context, result); })
-                    .then(function (ctx) { return resolve(ctx); })
-                    .catch(function (e) { return reject(e); });
-            }
-        });
-    };
-    /**
-     * Logs the end of the request
-     */
-    PipelineMethods.logEnd = function (context) {
-        return new Promise(function (resolve) {
-            if (context.isBatched) {
-                logging_module["Logger"].log({
-                    data: logging_module["Logger"].activeLogLevel === 1 /* Info */ ? {} : context,
-                    level: 1 /* Info */,
-                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") " + context.method + " request will complete in batch " + context.batch.batchId + ".",
-                });
-            }
-            else {
-                logging_module["Logger"].log({
-                    data: logging_module["Logger"].activeLogLevel === 1 /* Info */ ? {} : context,
-                    level: 1 /* Info */,
-                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Completing " + context.method + " request.",
-                });
-            }
-            resolve(context);
-        });
-    };
-    Object(tslib_es6["__decorate"])([
-        requestPipelineMethod(true)
-    ], PipelineMethods, "logStart", null);
-    Object(tslib_es6["__decorate"])([
-        requestPipelineMethod()
-    ], PipelineMethods, "caching", null);
-    Object(tslib_es6["__decorate"])([
-        requestPipelineMethod()
-    ], PipelineMethods, "send", null);
-    Object(tslib_es6["__decorate"])([
-        requestPipelineMethod(true)
-    ], PipelineMethods, "logEnd", null);
-    return PipelineMethods;
-}());
-
-function getDefaultPipeline() {
-    return [
-        pipeline_PipelineMethods.logStart,
-        pipeline_PipelineMethods.caching,
-        pipeline_PipelineMethods.send,
-        pipeline_PipelineMethods.logEnd,
-    ].slice(0);
-}
-//# sourceMappingURL=pipeline.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/pipeline-binder.js
-
-
-
-
-// first we bind the pipeline we will use for all requests within this closure
-function pipelineBinder(pipes) {
-    // then we bind the client factory we'll use (typically done in an implementing library such as sp)
-    return function (clientFactory) {
-        // then we create a binder we can apply for each type of method (GET, POST, etc.)
-        return function (method) {
-            // finally we get a function back to which we can pass an IQueryableData instance and execute the request it defines
-            return function (o) {
-                // send the IQueryableData down the pipeline
-                return pipe(Object.assign({}, {
-                    batch: o.batch || null,
-                    batchDependency: null,
-                    cachingOptions: null,
-                    clientFactory: clientFactory,
-                    cloneParentCacheOptions: null,
-                    cloneParentWasCaching: false,
-                    hasResult: false,
-                    isBatched: Object(common_module["objectDefinedNotNull"])(o.batch),
-                    method: method,
-                    options: null,
-                    parentUrl: "",
-                    parser: new parsers_ODataParser(),
-                    pipes: pipes.slice(0),
-                    query: new Map(),
-                    requestId: Object(common_module["getGUID"])(),
-                    url: "",
-                    useCaching: /^get$/i.test(o.method) && o.useCaching,
-                }, cloneQueryableData(o)));
-            };
-        };
-    };
-}
-var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
-//# sourceMappingURL=pipeline-binder.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/request-builders.js
-
-function body(o, previous) {
-    return Object.assign({ body: Object(common_module["jsS"])(o) }, previous);
-}
-function headers(o, previous) {
-    return Object.assign({ headers: o }, previous);
-}
-//# sourceMappingURL=request-builders.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/module/index.js
-/* concated harmony reexport Batch */__webpack_require__.d(__webpack_exports__, "Batch", function() { return batch_Batch; });
-/* concated harmony reexport CachingOptions */__webpack_require__.d(__webpack_exports__, "CachingOptions", function() { return caching_CachingOptions; });
-/* concated harmony reexport CachingParserWrapper */__webpack_require__.d(__webpack_exports__, "CachingParserWrapper", function() { return CachingParserWrapper; });
-/* concated harmony reexport addProp */__webpack_require__.d(__webpack_exports__, "addProp", function() { return addProp; });
-/* concated harmony reexport invokableFactory */__webpack_require__.d(__webpack_exports__, "invokableFactory", function() { return invokableFactory; });
-/* concated harmony reexport pipelineBinder */__webpack_require__.d(__webpack_exports__, "pipelineBinder", function() { return pipelineBinder; });
-/* concated harmony reexport defaultPipelineBinder */__webpack_require__.d(__webpack_exports__, "defaultPipelineBinder", function() { return defaultPipelineBinder; });
-/* concated harmony reexport ODataParser */__webpack_require__.d(__webpack_exports__, "ODataParser", function() { return parsers_ODataParser; });
-/* concated harmony reexport TextParser */__webpack_require__.d(__webpack_exports__, "TextParser", function() { return parsers_TextParser; });
-/* concated harmony reexport BlobParser */__webpack_require__.d(__webpack_exports__, "BlobParser", function() { return parsers_BlobParser; });
-/* concated harmony reexport JSONParser */__webpack_require__.d(__webpack_exports__, "JSONParser", function() { return parsers_JSONParser; });
-/* concated harmony reexport BufferParser */__webpack_require__.d(__webpack_exports__, "BufferParser", function() { return parsers_BufferParser; });
-/* concated harmony reexport LambdaParser */__webpack_require__.d(__webpack_exports__, "LambdaParser", function() { return parsers_LambdaParser; });
-/* concated harmony reexport HttpRequestError */__webpack_require__.d(__webpack_exports__, "HttpRequestError", function() { return parsers_HttpRequestError; });
-/* concated harmony reexport setResult */__webpack_require__.d(__webpack_exports__, "setResult", function() { return setResult; });
-/* concated harmony reexport pipe */__webpack_require__.d(__webpack_exports__, "pipe", function() { return pipe; });
-/* concated harmony reexport requestPipelineMethod */__webpack_require__.d(__webpack_exports__, "requestPipelineMethod", function() { return requestPipelineMethod; });
-/* concated harmony reexport PipelineMethods */__webpack_require__.d(__webpack_exports__, "PipelineMethods", function() { return pipeline_PipelineMethods; });
-/* concated harmony reexport getDefaultPipeline */__webpack_require__.d(__webpack_exports__, "getDefaultPipeline", function() { return getDefaultPipeline; });
-/* concated harmony reexport cloneQueryableData */__webpack_require__.d(__webpack_exports__, "cloneQueryableData", function() { return cloneQueryableData; });
-/* concated harmony reexport Queryable */__webpack_require__.d(__webpack_exports__, "Queryable", function() { return queryable_Queryable; });
-/* concated harmony reexport body */__webpack_require__.d(__webpack_exports__, "body", function() { return body; });
-/* concated harmony reexport headers */__webpack_require__.d(__webpack_exports__, "headers", function() { return headers; });
-/* concated harmony reexport extendGlobal */__webpack_require__.d(__webpack_exports__, "extendGlobal", function() { return extendGlobal; });
-/* concated harmony reexport extendObj */__webpack_require__.d(__webpack_exports__, "extendObj", function() { return extendObj; });
-/* concated harmony reexport extendFactory */__webpack_require__.d(__webpack_exports__, "extendFactory", function() { return extendFactory; });
-/* concated harmony reexport clearGlobalExtensions */__webpack_require__.d(__webpack_exports__, "clearGlobalExtensions", function() { return clearGlobalExtensions; });
-/* concated harmony reexport enableExtensions */__webpack_require__.d(__webpack_exports__, "enableExtensions", function() { return enableExtensions; });
-/* concated harmony reexport disableExtensions */__webpack_require__.d(__webpack_exports__, "disableExtensions", function() { return disableExtensions; });
-
-
-
-
-
-
-
-
-
-
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/logger.js
-/**
- * Class used to subscribe ILogListener and log messages throughout an application
- *
- */
-var Logger = /** @class */ (function () {
-    function Logger() {
-    }
-    Object.defineProperty(Logger, "activeLogLevel", {
-        /**
-         * Gets or sets the active log level to apply for log filtering
-         */
-        get: function () {
-            return Logger.instance.activeLogLevel;
-        },
-        set: function (value) {
-            Logger.instance.activeLogLevel = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Logger, "instance", {
-        get: function () {
-            if (Logger._instance === undefined || Logger._instance === null) {
-                Logger._instance = new LoggerImpl();
-            }
-            return Logger._instance;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Adds ILogListener instances to the set of subscribed listeners
-     *
-     * @param listeners One or more listeners to subscribe to this log
-     */
-    Logger.subscribe = function () {
-        var listeners = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            listeners[_i] = arguments[_i];
-        }
-        listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
-    };
-    /**
-     * Clears the subscribers collection, returning the collection before modification
-     */
-    Logger.clearSubscribers = function () {
-        return Logger.instance.clearSubscribers();
-    };
-    Object.defineProperty(Logger, "count", {
-        /**
-         * Gets the current subscriber count
-         */
-        get: function () {
-            return Logger.instance.count;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Writes the supplied string to the subscribed listeners
-     *
-     * @param message The message to write
-     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
-     */
-    Logger.write = function (message, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        Logger.instance.log({ level: level, message: message });
-    };
-    /**
-     * Writes the supplied string to the subscribed listeners
-     *
-     * @param json The json object to stringify and write
-     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
-     */
-    Logger.writeJSON = function (json, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        this.write(JSON.stringify(json), level);
-    };
-    /**
-     * Logs the supplied entry to the subscribed listeners
-     *
-     * @param entry The message to log
-     */
-    Logger.log = function (entry) {
-        Logger.instance.log(entry);
-    };
-    /**
-     * Logs an error object to the subscribed listeners
-     *
-     * @param err The error object
-     */
-    Logger.error = function (err) {
-        Logger.instance.log({ data: err, level: 3 /* Error */, message: err.message });
-    };
-    return Logger;
-}());
-
-var LoggerImpl = /** @class */ (function () {
-    function LoggerImpl(activeLogLevel, subscribers) {
-        if (activeLogLevel === void 0) { activeLogLevel = 2 /* Warning */; }
-        if (subscribers === void 0) { subscribers = []; }
-        this.activeLogLevel = activeLogLevel;
-        this.subscribers = subscribers;
-    }
-    LoggerImpl.prototype.subscribe = function (listener) {
-        this.subscribers.push(listener);
-    };
-    LoggerImpl.prototype.clearSubscribers = function () {
-        var s = this.subscribers.slice(0);
-        this.subscribers.length = 0;
-        return s;
-    };
-    Object.defineProperty(LoggerImpl.prototype, "count", {
-        get: function () {
-            return this.subscribers.length;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    LoggerImpl.prototype.write = function (message, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        this.log({ level: level, message: message });
-    };
-    LoggerImpl.prototype.log = function (entry) {
-        if (entry !== undefined && this.activeLogLevel <= entry.level) {
-            this.subscribers.map(function (subscriber) { return subscriber.log(entry); });
-        }
-    };
-    return LoggerImpl;
-}());
-/**
- * A set of logging levels
- */
-var LogLevel;
-(function (LogLevel) {
-    LogLevel[LogLevel["Verbose"] = 0] = "Verbose";
-    LogLevel[LogLevel["Info"] = 1] = "Info";
-    LogLevel[LogLevel["Warning"] = 2] = "Warning";
-    LogLevel[LogLevel["Error"] = 3] = "Error";
-    LogLevel[LogLevel["Off"] = 99] = "Off";
-})(LogLevel || (LogLevel = {}));
-//# sourceMappingURL=logger.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/listeners.js
-/**
- * Implementation of LogListener which logs to the console
- *
- */
-var ConsoleListener = /** @class */ (function () {
-    function ConsoleListener() {
-    }
-    /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
-    ConsoleListener.prototype.log = function (entry) {
-        var msg = this.format(entry);
-        switch (entry.level) {
-            case 0 /* Verbose */:
-            case 1 /* Info */:
-                console.log(msg);
-                break;
-            case 2 /* Warning */:
-                console.warn(msg);
-                break;
-            case 3 /* Error */:
-                console.error(msg);
-                break;
-        }
-    };
-    /**
-     * Formats the message
-     *
-     * @param entry The information to format into a string
-     */
-    ConsoleListener.prototype.format = function (entry) {
-        var msg = [];
-        msg.push("Message: " + entry.message);
-        if (entry.data !== undefined) {
-            try {
-                msg.push(" Data: " + JSON.stringify(entry.data));
-            }
-            catch (e) {
-                msg.push(" Data: Error in stringify of supplied data " + e);
-            }
-        }
-        return msg.join("");
-    };
-    return ConsoleListener;
-}());
-
-/**
- * Implementation of LogListener which logs to the supplied function
- *
- */
-var FunctionListener = /** @class */ (function () {
-    /**
-     * Creates a new instance of the FunctionListener class
-     *
-     * @constructor
-     * @param  method The method to which any logging data will be passed
-     */
-    function FunctionListener(method) {
-        this.method = method;
-    }
-    /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
-    FunctionListener.prototype.log = function (entry) {
-        this.method(entry);
-    };
-    return FunctionListener;
-}());
-
-//# sourceMappingURL=listeners.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/module/index.js
-/* concated harmony reexport Logger */__webpack_require__.d(__webpack_exports__, "Logger", function() { return Logger; });
-/* concated harmony reexport LogLevel */__webpack_require__.d(__webpack_exports__, "LogLevel", function() { return LogLevel; });
-/* concated harmony reexport ConsoleListener */__webpack_require__.d(__webpack_exports__, "ConsoleListener", function() { return ConsoleListener; });
-/* concated harmony reexport FunctionListener */__webpack_require__.d(__webpack_exports__, "FunctionListener", function() { return FunctionListener; });
-
-
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(2);
-var graphhttpclient_1 = __webpack_require__(19);
-var graphClientBinder = odata_1.defaultPipelineBinder(function () { return new graphhttpclient_1.GraphHttpClient(); });
-var send = function (operation) {
-    return function (o, options) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var data, batchDependency, url;
-            return tslib_1.__generator(this, function (_a) {
-                data = odata_1.cloneQueryableData(o.data);
-                batchDependency = common_1.objectDefinedNotNull(data.batch) ? data.batch.addDependency() : function () { return; };
-                url = o.toUrlAndQuery();
-                common_1.mergeOptions(data.options, options);
-                return [2 /*return*/, operation(Object.assign({}, data, {
-                        batchDependency: batchDependency,
-                        url: url,
-                    }))];
-            });
-        });
-    };
-};
-exports.graphGet = function (o, options) { return send(graphClientBinder("GET"))(o, options); };
-exports.graphPost = function (o, options) { return send(graphClientBinder("POST"))(o, options); };
-exports.graphDelete = function (o, options) { return send(graphClientBinder("DELETE"))(o, options); };
-exports.graphPatch = function (o, options) { return send(graphClientBinder("PATCH"))(o, options); };
-exports.graphPut = function (o, options) { return send(graphClientBinder("PUT"))(o, options); };
-//# sourceMappingURL=operations.js.map
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var operations_1 = __webpack_require__(4);
-var odata_1 = __webpack_require__(2);
-/**
- * Decorator used to specify the default path for Queryable objects
- *
- * @param path
- */
-function defaultPath(path) {
-    return function (target) {
-        return /** @class */ (function (_super) {
-            tslib_1.__extends(class_1, _super);
-            function class_1() {
-                var args = [];
-                for (var _i = 0; _i < arguments.length; _i++) {
-                    args[_i] = arguments[_i];
-                }
-                return _super.call(this, args[0], args.length > 1 && args[1] !== undefined ? args[1] : path) || this;
-            }
-            return class_1;
-        }(target));
-    };
-}
-exports.defaultPath = defaultPath;
-/**
- * Adds the delete method to the tagged class
- */
-function deleteable() {
-    return function (target) {
-        return /** @class */ (function (_super) {
-            tslib_1.__extends(class_2, _super);
-            function class_2() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            class_2.prototype.delete = function () {
-                return operations_1.graphDelete(this);
-            };
-            return class_2;
-        }(target));
-    };
-}
-exports.deleteable = deleteable;
-/**
- * Adds the delete method to the tagged class
- */
-function deleteableWithETag() {
-    return function (target) {
-        return /** @class */ (function (_super) {
-            tslib_1.__extends(class_3, _super);
-            function class_3() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            class_3.prototype.delete = function (eTag) {
-                if (eTag === void 0) { eTag = "*"; }
-                return operations_1.graphDelete(this, odata_1.headers({
-                    "If-Match": eTag,
-                }));
-            };
-            return class_3;
-        }(target));
-    };
-}
-exports.deleteableWithETag = deleteableWithETag;
-/**
- * Adds the update method to the tagged class
- */
-function updateable() {
-    return function (target) {
-        return /** @class */ (function (_super) {
-            tslib_1.__extends(class_4, _super);
-            function class_4() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            class_4.prototype.update = function (props) {
-                return operations_1.graphPatch(this, odata_1.body(props));
-            };
-            return class_4;
-        }(target));
-    };
-}
-exports.updateable = updateable;
-/**
- * Adds the update method to the tagged class
- */
-function updateableWithETag() {
-    return function (target) {
-        return /** @class */ (function (_super) {
-            tslib_1.__extends(class_5, _super);
-            function class_5() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            class_5.prototype.update = function (props, eTag) {
-                if (eTag === void 0) { eTag = "*"; }
-                return operations_1.graphPatch(this, odata_1.body(props, odata_1.headers({
-                    "If-Match": eTag,
-                })));
-            };
-            return class_5;
-        }(target));
-    };
-}
-exports.updateableWithETag = updateableWithETag;
-/**
- * Adds the add method to the tagged class
- */
-function addable() {
-    return function (target) {
-        return /** @class */ (function (_super) {
-            tslib_1.__extends(class_6, _super);
-            function class_6() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            class_6.prototype.add = function (props) {
-                return operations_1.graphPost(this, odata_1.body(props));
-            };
-            return class_6;
-        }(target));
-    };
-}
-exports.addable = addable;
-/**
- * Adds the getById method to a collection
- */
-function getById(factory) {
-    return function (target) {
-        return /** @class */ (function (_super) {
-            tslib_1.__extends(class_7, _super);
-            function class_7() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            class_7.prototype.getById = function (id) {
-                return factory(this, id);
-            };
-            return class_7;
-        }(target));
-    };
-}
-exports.getById = getById;
-//# sourceMappingURL=decorators.js.map
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(47);
-var operations_1 = __webpack_require__(4);
-exports.graphInvokableFactory = function (f) {
-    return odata_1.invokableFactory(f);
-};
-/**
- * Queryable Base Class
- *
- */
-var _GraphQueryable = /** @class */ (function (_super) {
-    tslib_1.__extends(_GraphQueryable, _super);
-    /**
-     * Creates a new instance of the Queryable class
-     *
-     * @constructor
-     * @param baseUrl A string or Queryable that should form the base part of the url
-     *
-     */
-    function _GraphQueryable(baseUrl, path) {
-        var _this = this;
-        var url = "";
-        var parentUrl = "";
-        var query = new Map();
-        if (typeof baseUrl === "string") {
-            parentUrl = baseUrl;
-            url = common_1.combine(parentUrl, path);
-        }
-        else {
-            parentUrl = baseUrl.toUrl();
-            url = common_1.combine(parentUrl, path);
-        }
-        _this = _super.call(this, {
-            parentUrl: parentUrl,
-            query: query,
-            url: url,
-        }) || this;
-        // post init actions
-        if (typeof baseUrl !== "string") {
-            _this.configureFrom(baseUrl);
-        }
-        return _this;
-    }
-    /**
-     * Choose which fields to return
-     *
-     * @param selects One or more fields to return
-     */
-    _GraphQueryable.prototype.select = function () {
-        var selects = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            selects[_i] = arguments[_i];
-        }
-        if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
-        }
-        return this;
-    };
-    /**
-     * Expands fields such as lookups to get additional data
-     *
-     * @param expands The Fields for which to expand the values
-     */
-    _GraphQueryable.prototype.expand = function () {
-        var expands = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            expands[_i] = arguments[_i];
-        }
-        if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
-        }
-        return this;
-    };
-    _GraphQueryable.prototype.defaultAction = function (options) {
-        return operations_1.graphGet(this, options);
-    };
-    /**
-     * Gets the full url with query information
-     *
-     */
-    _GraphQueryable.prototype.toUrlAndQuery = function () {
-        var url = this.toUrl();
-        if (!common_1.isUrlAbsolute(url)) {
-            url = common_1.combine("https://graph.microsoft.com", url);
-        }
-        if (this.query.size > 0) {
-            var char = url.indexOf("?") > -1 ? "&" : "?";
-            url += "" + char + Array.from(this.query).map(function (v) { return v[0] + "=" + v[1]; }).join("&");
-        }
-        return url;
-    };
-    /**
-     * Gets a parent for this instance as specified
-     *
-     * @param factory The contructor for the class to create
-     */
-    _GraphQueryable.prototype.getParent = function (factory, baseUrl, path) {
-        if (baseUrl === void 0) { baseUrl = this.parentUrl; }
-        return new factory(baseUrl, path);
-    };
-    /**
-     * Clones this queryable into a new queryable instance of T
-     * @param factory Constructor used to create the new instance
-     * @param additionalPath Any additional path to include in the clone
-     * @param includeBatch If true this instance's batch will be added to the cloned instance
-     */
-    _GraphQueryable.prototype.clone = function (factory, additionalPath, includeBatch) {
-        if (includeBatch === void 0) { includeBatch = true; }
-        return _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch });
-    };
-    _GraphQueryable.prototype.setEndpoint = function (endpoint) {
-        this.data.url = types_1.GraphEndpoints.ensure(this.data.url, endpoint);
-        return this;
-    };
-    return _GraphQueryable;
-}(odata_1.Queryable));
-exports._GraphQueryable = _GraphQueryable;
-exports.GraphQueryable = exports.graphInvokableFactory(_GraphQueryable);
-/**
- * Represents a REST collection which can be filtered, paged, and selected
- *
- */
-var _GraphQueryableCollection = /** @class */ (function (_super) {
-    tslib_1.__extends(_GraphQueryableCollection, _super);
-    function _GraphQueryableCollection() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     *
-     * @param filter The string representing the filter query
-     */
-    _GraphQueryableCollection.prototype.filter = function (filter) {
-        this.query.set("$filter", filter);
-        return this;
-    };
-    /**
-     * Orders based on the supplied fields
-     *
-     * @param orderby The name of the field on which to sort
-     * @param ascending If false DESC is appended, otherwise ASC (default)
-     */
-    _GraphQueryableCollection.prototype.orderBy = function (orderBy, ascending) {
-        if (ascending === void 0) { ascending = true; }
-        var o = "$orderby";
-        var query = this.query.has(o) ? this.query.get(o).split(",") : [];
-        query.push(orderBy + " " + (ascending ? "asc" : "desc"));
-        this.query.set(o, query.join(","));
-        return this;
-    };
-    /**
-     * Limits the query to only return the specified number of items
-     *
-     * @param top The query row limit
-     */
-    _GraphQueryableCollection.prototype.top = function (top) {
-        this.query.set("$top", top.toString());
-        return this;
-    };
-    /**
-     * Skips a set number of items in the return set
-     *
-     * @param num Number of items to skip
-     */
-    _GraphQueryableCollection.prototype.skip = function (num) {
-        this.query.set("$skip", num.toString());
-        return this;
-    };
-    /**
-     * 	To request second and subsequent pages of Graph data
-     */
-    _GraphQueryableCollection.prototype.skipToken = function (token) {
-        this.query.set("$skiptoken", token);
-        return this;
-    };
-    Object.defineProperty(_GraphQueryableCollection.prototype, "count", {
-        /**
-         * 	Retrieves the total count of matching resources
-         */
-        get: function () {
-            this.query.set("$count", "true");
-            return this;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return _GraphQueryableCollection;
-}(_GraphQueryable));
-exports._GraphQueryableCollection = _GraphQueryableCollection;
-exports.GraphQueryableCollection = exports.graphInvokableFactory(_GraphQueryableCollection);
-var _GraphQueryableSearchableCollection = /** @class */ (function (_super) {
-    tslib_1.__extends(_GraphQueryableSearchableCollection, _super);
-    function _GraphQueryableSearchableCollection() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * 	To request second and subsequent pages of Graph data
-     */
-    _GraphQueryableSearchableCollection.prototype.search = function (query) {
-        this.query.set("$search", query);
-        return this;
-    };
-    return _GraphQueryableSearchableCollection;
-}(_GraphQueryableCollection));
-exports._GraphQueryableSearchableCollection = _GraphQueryableSearchableCollection;
-exports.GraphQueryableSearchableCollection = exports.graphInvokableFactory(_GraphQueryableSearchableCollection);
-/**
- * Represents an instance that can be selected
- *
- */
-var _GraphQueryableInstance = /** @class */ (function (_super) {
-    tslib_1.__extends(_GraphQueryableInstance, _super);
-    function _GraphQueryableInstance() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return _GraphQueryableInstance;
-}(_GraphQueryable));
-exports._GraphQueryableInstance = _GraphQueryableInstance;
-exports.GraphQueryableInstance = exports.graphInvokableFactory(_GraphQueryableInstance);
-//# sourceMappingURL=graphqueryable.js.map
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getCtxCallback; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return dateAdd; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return combine; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return getRandomString; });
+/* unused harmony export getRandomString */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getGUID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return isFunc; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return objectDefinedNotNull; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return isArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return isFunc; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return objectDefinedNotNull; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return isArray; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return assign; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return isUrlAbsolute; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return stringIsNullOrEmpty; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return sanitizeGuid; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return jsS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return hOP; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getHashCode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return isUrlAbsolute; });
+/* unused harmony export stringIsNullOrEmpty */
+/* unused harmony export sanitizeGuid */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return jsS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return hOP; });
+/* unused harmony export getHashCode */
 /**
  * Gets a callback function which will maintain context across async calls.
  * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
@@ -2702,1112 +555,22 @@ function getHashCode(s) {
 //# sourceMappingURL=util.js.map
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(2);
-var graphqueryable_1 = __webpack_require__(6);
-var decorators_1 = __webpack_require__(5);
-var operations_1 = __webpack_require__(4);
-var types_1 = __webpack_require__(11);
-var GroupType;
-(function (GroupType) {
-    /**
-     * Office 365 (aka unified group)
-     */
-    GroupType[GroupType["Office365"] = 0] = "Office365";
-    /**
-     * Dynamic membership
-     */
-    GroupType[GroupType["Dynamic"] = 1] = "Dynamic";
-    /**
-     * Security
-     */
-    GroupType[GroupType["Security"] = 2] = "Security";
-})(GroupType = exports.GroupType || (exports.GroupType = {}));
-/**
- * Represents a group entity
- */
-var _Group = /** @class */ (function (_super) {
-    tslib_1.__extends(_Group, _super);
-    function _Group() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
-     */
-    _Group.prototype.addFavorite = function () {
-        return operations_1.graphPost(this.clone(exports.Group, "addFavorite"));
-    };
-    /**
-     * Remove the group from the list of the current user's favorite groups. Supported for only Office 365 groups
-     */
-    _Group.prototype.removeFavorite = function () {
-        return operations_1.graphPost(this.clone(exports.Group, "removeFavorite"));
-    };
-    /**
-     * Reset the unseenCount of all the posts that the current user has not seen since their last visit
-     */
-    _Group.prototype.resetUnseenCount = function () {
-        return operations_1.graphPost(this.clone(exports.Group, "resetUnseenCount"));
-    };
-    /**
-     * Calling this method will enable the current user to receive email notifications for this group,
-     * about new posts, events, and files in that group. Supported for only Office 365 groups
-     */
-    _Group.prototype.subscribeByMail = function () {
-        return operations_1.graphPost(this.clone(exports.Group, "subscribeByMail"));
-    };
-    /**
-     * Calling this method will prevent the current user from receiving email notifications for this group
-     * about new posts, events, and files in that group. Supported for only Office 365 groups
-     */
-    _Group.prototype.unsubscribeByMail = function () {
-        return operations_1.graphPost(this.clone(exports.Group, "unsubscribeByMail"));
-    };
-    /**
-     * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group
-     *
-     * @param start Start date and time of the time range
-     * @param end End date and time of the time range
-     */
-    _Group.prototype.getCalendarView = function (start, end) {
-        var view = this.clone(exports.Group, "calendarView");
-        view.query.set("startDateTime", start.toISOString());
-        view.query.set("endDateTime", end.toISOString());
-        return view();
-    };
-    _Group = tslib_1.__decorate([
-        decorators_1.deleteable(),
-        decorators_1.updateable()
-    ], _Group);
-    return _Group;
-}(types_1._DirectoryObject));
-exports._Group = _Group;
-exports.Group = graphqueryable_1.graphInvokableFactory(_Group);
-/**
- * Describes a collection of Field objects
- *
- */
-var _Groups = /** @class */ (function (_super) {
-    tslib_1.__extends(_Groups, _super);
-    function _Groups() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Create a new group as specified in the request body.
-     *
-     * @param name Name to display in the address book for the group
-     * @param mailNickname Mail alias for the group
-     * @param groupType Type of group being created
-     * @param additionalProperties A plain object collection of additional properties you want to set on the new group
-     */
-    _Groups.prototype.add = function (name, mailNickname, groupType, additionalProperties) {
-        if (additionalProperties === void 0) { additionalProperties = {}; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = common_1.assign({
-                            displayName: name,
-                            mailEnabled: groupType === GroupType.Office365,
-                            mailNickname: mailNickname,
-                            securityEnabled: groupType !== GroupType.Office365,
-                        }, additionalProperties);
-                        // include a group type if required
-                        if (groupType !== GroupType.Security) {
-                            postBody = common_1.assign(postBody, {
-                                groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
-                            });
-                        }
-                        return [4 /*yield*/, operations_1.graphPost(this, odata_1.body(postBody))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                group: this.getById(data.id),
-                            }];
-                }
-            });
-        });
-    };
-    _Groups = tslib_1.__decorate([
-        decorators_1.defaultPath("groups"),
-        decorators_1.getById(exports.Group)
-    ], _Groups);
-    return _Groups;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Groups = _Groups;
-exports.Groups = graphqueryable_1.graphInvokableFactory(_Groups);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var graphqueryable_1 = __webpack_require__(6);
-var types_1 = __webpack_require__(11);
-var decorators_1 = __webpack_require__(5);
-var _User = /** @class */ (function (_super) {
-    tslib_1.__extends(_User, _super);
-    function _User() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_User.prototype, "memberOf", {
-        /**
-        * The groups and directory roles associated with the user
-        */
-        get: function () {
-            return types_1.DirectoryObjects(this, "memberOf");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _User = tslib_1.__decorate([
-        decorators_1.updateable(),
-        decorators_1.deleteable()
-    ], _User);
-    return _User;
-}(types_1._DirectoryObject));
-exports._User = _User;
-exports.User = graphqueryable_1.graphInvokableFactory(_User);
-/**
- * Describes a collection of Users objects
- *
- */
-var _Users = /** @class */ (function (_super) {
-    tslib_1.__extends(_Users, _super);
-    function _Users() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Users = tslib_1.__decorate([
-        decorators_1.defaultPath("users"),
-        decorators_1.getById(exports.User)
-    ], _Users);
-    return _Users;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Users = _Users;
-exports.Users = graphqueryable_1.graphInvokableFactory(_Users);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var graphqueryable_1 = __webpack_require__(6);
-var graphlibconfig_1 = __webpack_require__(14);
-var batch_1 = __webpack_require__(52);
-var GraphRest = /** @class */ (function (_super) {
-    tslib_1.__extends(GraphRest, _super);
-    function GraphRest() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    GraphRest.prototype.createBatch = function () {
-        return new batch_1.GraphBatch();
-    };
-    GraphRest.prototype.setup = function (config) {
-        graphlibconfig_1.setup(config);
-    };
-    return GraphRest;
-}(graphqueryable_1._GraphQueryable));
-exports.GraphRest = GraphRest;
-exports.graph = new GraphRest("v1.0");
-//# sourceMappingURL=rest.js.map
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var graphqueryable_1 = __webpack_require__(6);
-var decorators_1 = __webpack_require__(5);
-var odata_1 = __webpack_require__(2);
-var operations_1 = __webpack_require__(4);
-/**
- * Represents a Directory Object entity
- */
-var _DirectoryObject = /** @class */ (function (_super) {
-    tslib_1.__extends(_DirectoryObject, _super);
-    function _DirectoryObject() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Returns all the groups and directory roles that the specified Directory Object is a member of. The check is transitive
-     *
-     * @param securityEnabledOnly
-     */
-    _DirectoryObject.prototype.getMemberObjects = function (securityEnabledOnly) {
-        if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
-        return operations_1.graphPost(this.clone(exports.DirectoryObject, "getMemberObjects"), odata_1.body({ securityEnabledOnly: securityEnabledOnly }));
-    };
-    /**
-     * Returns all the groups that the specified Directory Object is a member of. The check is transitive
-     *
-     * @param securityEnabledOnly
-     */
-    _DirectoryObject.prototype.getMemberGroups = function (securityEnabledOnly) {
-        if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
-        return operations_1.graphPost(this.clone(exports.DirectoryObject, "getMemberGroups"), odata_1.body({ securityEnabledOnly: securityEnabledOnly }));
-    };
-    /**
-     * Check for membership in a specified list of groups, and returns from that list those groups of which the specified user, group, or directory object is a member.
-     * This function is transitive.
-     * @param groupIds A collection that contains the object IDs of the groups in which to check membership. Up to 20 groups may be specified.
-     */
-    _DirectoryObject.prototype.checkMemberGroups = function (groupIds) {
-        return operations_1.graphPost(this.clone(exports.DirectoryObject, "checkMemberGroups"), odata_1.body({ groupIds: groupIds }));
-    };
-    _DirectoryObject = tslib_1.__decorate([
-        decorators_1.deleteable()
-    ], _DirectoryObject);
-    return _DirectoryObject;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._DirectoryObject = _DirectoryObject;
-exports.DirectoryObject = graphqueryable_1.graphInvokableFactory(_DirectoryObject);
-/**
- * Describes a collection of Directory Objects
- *
- */
-var _DirectoryObjects = /** @class */ (function (_super) {
-    tslib_1.__extends(_DirectoryObjects, _super);
-    function _DirectoryObjects() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-    * Returns the directory objects specified in a list of ids. NOTE: The directory objects returned are the full objects containing all their properties.
-    * The $select query option is not available for this operation.
-    *
-    * @param ids A collection of ids for which to return objects. You can specify up to 1000 ids.
-    * @param type A collection of resource types that specifies the set of resource collections to search. Default is directoryObject.
-    */
-    _DirectoryObjects.prototype.getByIds = function (ids, type) {
-        if (type === void 0) { type = DirectoryObjectTypes.directoryObject; }
-        return operations_1.graphPost(this.clone(exports.DirectoryObjects, "getByIds"), odata_1.body({ ids: ids, type: type }));
-    };
-    _DirectoryObjects = tslib_1.__decorate([
-        decorators_1.defaultPath("directoryObjects"),
-        decorators_1.getById(exports.DirectoryObject)
-    ], _DirectoryObjects);
-    return _DirectoryObjects;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._DirectoryObjects = _DirectoryObjects;
-exports.DirectoryObjects = graphqueryable_1.graphInvokableFactory(_DirectoryObjects);
-/**
- * DirectoryObjectTypes
- */
-var DirectoryObjectTypes;
-(function (DirectoryObjectTypes) {
-    /**
-     * Directory Objects
-     */
-    DirectoryObjectTypes[DirectoryObjectTypes["directoryObject"] = 0] = "directoryObject";
-    /**
-     * User
-     */
-    DirectoryObjectTypes[DirectoryObjectTypes["user"] = 1] = "user";
-    /**
-     * Group
-     */
-    DirectoryObjectTypes[DirectoryObjectTypes["group"] = 2] = "group";
-    /**
-     * Device
-     */
-    DirectoryObjectTypes[DirectoryObjectTypes["device"] = 3] = "device";
-})(DirectoryObjectTypes = exports.DirectoryObjectTypes || (exports.DirectoryObjectTypes = {}));
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(2);
-var graphqueryable_1 = __webpack_require__(6);
-var decorators_1 = __webpack_require__(5);
-var operations_1 = __webpack_require__(4);
-var decorators_2 = __webpack_require__(5);
-/**
- * Planner
- */
-var _Planner = /** @class */ (function (_super) {
-    tslib_1.__extends(_Planner, _super);
-    function _Planner() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Planner.prototype, "plans", {
-        // Should Only be able to get by id, or else error occur
-        get: function () {
-            return exports.Plans(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Planner.prototype, "tasks", {
-        // Should Only be able to get by id, or else error occur
-        get: function () {
-            return exports.Tasks(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Planner.prototype, "buckets", {
-        // Should Only be able to get by id, or else error occur
-        get: function () {
-            return exports.Buckets(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _Planner = tslib_1.__decorate([
-        decorators_2.defaultPath("planner")
-    ], _Planner);
-    return _Planner;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Planner = _Planner;
-exports.Planner = graphqueryable_1.graphInvokableFactory(_Planner);
-/**
- * Plan
- */
-var _Plan = /** @class */ (function (_super) {
-    tslib_1.__extends(_Plan, _super);
-    function _Plan() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Plan.prototype, "tasks", {
-        get: function () {
-            return exports.Tasks(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Plan.prototype, "buckets", {
-        get: function () {
-            return exports.Buckets(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _Plan = tslib_1.__decorate([
-        decorators_1.updateable(),
-        decorators_1.deleteable()
-    ], _Plan);
-    return _Plan;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Plan = _Plan;
-exports.Plan = graphqueryable_1.graphInvokableFactory(_Plan);
-var _Plans = /** @class */ (function (_super) {
-    tslib_1.__extends(_Plans, _super);
-    function _Plans() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Create a new Planner Plan.
-     *
-     * @param owner Id of Group object.
-     * @param title The Title of the Plan.
-     */
-    _Plans.prototype.add = function (owner, title) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.graphPost(this, odata_1.body({ owner: owner, title: title }))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                plan: this.getById(data.id),
-                            }];
-                }
-            });
-        });
-    };
-    _Plans = tslib_1.__decorate([
-        decorators_2.defaultPath("plans"),
-        decorators_1.getById(exports.Plan)
-    ], _Plans);
-    return _Plans;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Plans = _Plans;
-exports.Plans = graphqueryable_1.graphInvokableFactory(_Plans);
-/**
- * Task
- */
-var _Task = /** @class */ (function (_super) {
-    tslib_1.__extends(_Task, _super);
-    function _Task() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Task = tslib_1.__decorate([
-        decorators_1.updateableWithETag(),
-        decorators_1.deleteableWithETag()
-    ], _Task);
-    return _Task;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Task = _Task;
-exports.Task = graphqueryable_1.graphInvokableFactory(_Task);
-/**
- * Tasks
- */
-var _Tasks = /** @class */ (function (_super) {
-    tslib_1.__extends(_Tasks, _super);
-    function _Tasks() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Create a new Planner Task.
-     *
-     * @param planId Id of Plan.
-     * @param title The Title of the Task.
-     * @param assignments Assign the task
-     * @param bucketId Id of Bucket
-     */
-    _Tasks.prototype.add = function (planId, title, assignments, bucketId) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = common_1.assign({
-                            planId: planId,
-                            title: title,
-                        }, assignments);
-                        if (bucketId) {
-                            postBody = common_1.assign(postBody, {
-                                bucketId: bucketId,
-                            });
-                        }
-                        return [4 /*yield*/, operations_1.graphPost(this, odata_1.body(postBody))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                task: this.getById(data.id),
-                            }];
-                }
-            });
-        });
-    };
-    _Tasks = tslib_1.__decorate([
-        decorators_2.defaultPath("tasks"),
-        decorators_1.getById(exports.Task)
-    ], _Tasks);
-    return _Tasks;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Tasks = _Tasks;
-exports.Tasks = graphqueryable_1.graphInvokableFactory(_Tasks);
-/**
- * Bucket
- */
-var _Bucket = /** @class */ (function (_super) {
-    tslib_1.__extends(_Bucket, _super);
-    function _Bucket() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Bucket.prototype, "tasks", {
-        get: function () {
-            return exports.Tasks(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _Bucket = tslib_1.__decorate([
-        decorators_1.updateable(),
-        decorators_1.deleteable()
-    ], _Bucket);
-    return _Bucket;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Bucket = _Bucket;
-exports.Bucket = graphqueryable_1.graphInvokableFactory(_Bucket);
-/**
- * Buckets
- */
-var _Buckets = /** @class */ (function (_super) {
-    tslib_1.__extends(_Buckets, _super);
-    function _Buckets() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Create a new Bucket.
-     *
-     * @param name Name of Bucket object.
-     * @param planId The Id of the Plan.
-     * @param oderHint Hint used to order items of this type in a list view.
-     */
-    _Buckets.prototype.add = function (name, planId, orderHint) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = {
-                            name: name,
-                            orderHint: orderHint ? orderHint : "",
-                            planId: planId,
-                        };
-                        return [4 /*yield*/, operations_1.graphPost(this, odata_1.body(postBody))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                bucket: this.getById(data.id),
-                                data: data,
-                            }];
-                }
-            });
-        });
-    };
-    _Buckets = tslib_1.__decorate([
-        decorators_2.defaultPath("buckets"),
-        decorators_1.getById(exports.Bucket)
-    ], _Buckets);
-    return _Buckets;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Buckets = _Buckets;
-exports.Buckets = graphqueryable_1.graphInvokableFactory(_Buckets);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var graphqueryable_1 = __webpack_require__(6);
-var decorators_1 = __webpack_require__(5);
-var operations_1 = __webpack_require__(4);
-/**
- * Conversation
- */
-var _Conversation = /** @class */ (function (_super) {
-    tslib_1.__extends(_Conversation, _super);
-    function _Conversation() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Conversation.prototype, "threads", {
-        /**
-         * Get all the threads in a group conversation.
-         */
-        get: function () {
-            return exports.Threads(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _Conversation = tslib_1.__decorate([
-        decorators_1.updateable(),
-        decorators_1.deleteable()
-    ], _Conversation);
-    return _Conversation;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Conversation = _Conversation;
-exports.Conversation = graphqueryable_1.graphInvokableFactory(_Conversation);
-/**
- * Conversations
- */
-var _Conversations = /** @class */ (function (_super) {
-    tslib_1.__extends(_Conversations, _super);
-    function _Conversations() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Conversations = tslib_1.__decorate([
-        decorators_1.defaultPath("conversations"),
-        decorators_1.addable(),
-        decorators_1.getById(exports.Conversation)
-    ], _Conversations);
-    return _Conversations;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Conversations = _Conversations;
-exports.Conversations = graphqueryable_1.graphInvokableFactory(_Conversations);
-/**
- * Thread
- */
-var _Thread = /** @class */ (function (_super) {
-    tslib_1.__extends(_Thread, _super);
-    function _Thread() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Thread.prototype, "posts", {
-        /**
-         * Get all the threads in a group conversation.
-         */
-        get: function () {
-            return exports.Posts(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Reply to a thread in a group conversation and add a new post to it
-     *
-     * @param post Contents of the post
-     */
-    _Thread.prototype.reply = function (post) {
-        return operations_1.graphPost(this.clone(exports.Thread, "reply"), odata_1.body(post));
-    };
-    _Thread = tslib_1.__decorate([
-        decorators_1.deleteable()
-    ], _Thread);
-    return _Thread;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Thread = _Thread;
-exports.Thread = graphqueryable_1.graphInvokableFactory(_Thread);
-/**
- * Threads
- */
-var _Threads = /** @class */ (function (_super) {
-    tslib_1.__extends(_Threads, _super);
-    function _Threads() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Threads = tslib_1.__decorate([
-        decorators_1.defaultPath("threads"),
-        decorators_1.addable(),
-        decorators_1.getById(exports.Thread)
-    ], _Threads);
-    return _Threads;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Threads = _Threads;
-exports.Threads = graphqueryable_1.graphInvokableFactory(_Threads);
-/**
- * Post
- */
-var _Post = /** @class */ (function (_super) {
-    tslib_1.__extends(_Post, _super);
-    function _Post() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Forward a post to a recipient
-     */
-    _Post.prototype.forward = function (info) {
-        return operations_1.graphPost(this.clone(exports.Post, "forward"), odata_1.body(info));
-    };
-    /**
-     * Reply to a thread in a group conversation and add a new post to it
-     *
-     * @param post Contents of the post
-     */
-    _Post.prototype.reply = function (post) {
-        return operations_1.graphPost(this.clone(exports.Post, "reply"), odata_1.body(post));
-    };
-    _Post = tslib_1.__decorate([
-        decorators_1.deleteable()
-    ], _Post);
-    return _Post;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Post = _Post;
-exports.Post = graphqueryable_1.graphInvokableFactory(_Post);
-/**
- * Posts
- */
-var _Posts = /** @class */ (function (_super) {
-    tslib_1.__extends(_Posts, _super);
-    function _Posts() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Posts = tslib_1.__decorate([
-        decorators_1.defaultPath("posts"),
-        decorators_1.addable(),
-        decorators_1.getById(exports.Post)
-    ], _Posts);
-    return _Posts;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Posts = _Posts;
-exports.Posts = graphqueryable_1.graphInvokableFactory(_Posts);
-/**
- * Senders
- */
-var _Senders = /** @class */ (function (_super) {
-    tslib_1.__extends(_Senders, _super);
-    function _Senders() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Add a new user or group to this senders collection
-     * @param id The full @odata.id value to add (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
-     */
-    _Senders.prototype.add = function (id) {
-        return operations_1.graphPost(this.clone(exports.Senders, "$ref"), odata_1.body({ "@odata.id": id }));
-    };
-    /**
-     * Removes the entity from the collection
-     *
-     * @param id The full @odata.id value to remove (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
-     */
-    _Senders.prototype.remove = function (id) {
-        var remover = this.clone(exports.Senders, "$ref");
-        remover.query.set("$id", id);
-        return operations_1.graphDelete(remover);
-    };
-    return _Senders;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Senders = _Senders;
-exports.Senders = graphqueryable_1.graphInvokableFactory(_Senders);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = __webpack_require__(1);
-var adaljsclient_1 = __webpack_require__(61);
-function setup(config) {
-    common_1.RuntimeConfig.assign(config);
-}
-exports.setup = setup;
-var GraphRuntimeConfigImpl = /** @class */ (function () {
-    function GraphRuntimeConfigImpl() {
-    }
-    Object.defineProperty(GraphRuntimeConfigImpl.prototype, "headers", {
-        get: function () {
-            var graphPart = common_1.RuntimeConfig.get("graph");
-            if (graphPart !== undefined && graphPart !== null && graphPart.headers !== undefined) {
-                return graphPart.headers;
-            }
-            return {};
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(GraphRuntimeConfigImpl.prototype, "fetchClientFactory", {
-        get: function () {
-            var graphPart = common_1.RuntimeConfig.get("graph");
-            // use a configured factory firt
-            if (graphPart !== undefined && graphPart !== null && graphPart.fetchClientFactory !== undefined) {
-                return graphPart.fetchClientFactory;
-            }
-            // then try and use spfx context if available
-            if (common_1.RuntimeConfig.spfxContext !== undefined) {
-                return function () { return adaljsclient_1.AdalClient.fromSPFxContext(common_1.RuntimeConfig.spfxContext); };
-            }
-            throw Error("There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup.");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return GraphRuntimeConfigImpl;
-}());
-exports.GraphRuntimeConfigImpl = GraphRuntimeConfigImpl;
-exports.GraphRuntimeConfig = new GraphRuntimeConfigImpl();
-//# sourceMappingURL=graphlibconfig.js.map
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var graphqueryable_1 = __webpack_require__(6);
-var odata_1 = __webpack_require__(2);
-var common_1 = __webpack_require__(1);
-var decorators_1 = __webpack_require__(5);
-var operations_1 = __webpack_require__(4);
-var decorators_2 = __webpack_require__(5);
-/**
- * Represents a Microsoft Team
- */
-var _Team = /** @class */ (function (_super) {
-    tslib_1.__extends(_Team, _super);
-    function _Team() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Team.prototype, "channels", {
-        get: function () {
-            return exports.Channels(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Archives this Team
-     *
-     * @param shouldSetSpoSiteReadOnlyForMembers Should members have Read-only in associated Team Site
-     */
-    _Team.prototype.archive = function (shouldSetSpoSiteReadOnlyForMembers) {
-        if (shouldSetSpoSiteReadOnlyForMembers === void 0) { shouldSetSpoSiteReadOnlyForMembers = false; }
-        return operations_1.graphPost(this.clone(exports.Team, "archive"), odata_1.body({ shouldSetSpoSiteReadOnlyForMembers: shouldSetSpoSiteReadOnlyForMembers }));
-    };
-    /**
-    * Unarchives this Team
-    */
-    _Team.prototype.unarchive = function () {
-        return operations_1.graphPost(this.clone(exports.Team, "unarchive"));
-    };
-    /**
-     * Clones this Team
-     * @param name The name of the new Group
-     * @param description Optional description of the group
-     * @param partsToClone Parts to clone ex: apps,tabs,settings,channels,members
-     * @param visibility Set visibility to public or private
-     */
-    _Team.prototype.cloneTeam = function (name, description, partsToClone, visibility) {
-        if (description === void 0) { description = ""; }
-        if (partsToClone === void 0) { partsToClone = "apps,tabs,settings,channels,members"; }
-        if (visibility === void 0) { visibility = "private"; }
-        var postBody = {
-            description: description ? description : "",
-            displayName: name,
-            mailNickname: name,
-            partsToClone: partsToClone,
-            visibility: visibility,
-        };
-        // TODO:: we need to get the Location header from the response and return an operation
-        // instance that folks can query to see if/when this is complete
-        // it could just have a single method getResult (or whatever) that returns a promise that
-        // resolves when the operation is successful or rejects when it is not
-        return operations_1.graphPost(this.clone(exports.Team, "clone"), odata_1.body(postBody));
-    };
-    _Team = tslib_1.__decorate([
-        decorators_2.defaultPath("team"),
-        decorators_1.updateable()
-    ], _Team);
-    return _Team;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Team = _Team;
-exports.Team = graphqueryable_1.graphInvokableFactory(_Team);
-/**
- * Teams
- */
-var _Teams = /** @class */ (function (_super) {
-    tslib_1.__extends(_Teams, _super);
-    function _Teams() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Teams = tslib_1.__decorate([
-        decorators_2.defaultPath("teams"),
-        decorators_1.getById(exports.Team)
-    ], _Teams);
-    return _Teams;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Teams = _Teams;
-exports.Teams = graphqueryable_1.graphInvokableFactory(_Teams);
-/**
- * Channel
- */
-var _Channel = /** @class */ (function (_super) {
-    tslib_1.__extends(_Channel, _super);
-    function _Channel() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Channel.prototype, "tabs", {
-        get: function () {
-            return exports.Tabs(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return _Channel;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Channel = _Channel;
-exports.Channel = graphqueryable_1.graphInvokableFactory(_Channel);
-/**
- * Channels
- */
-var _Channels = /** @class */ (function (_super) {
-    tslib_1.__extends(_Channels, _super);
-    function _Channels() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Creates a new Channel in the Team
-     * @param displayName The display name of the new channel
-     * @param description Optional description of the channel
-     *
-     */
-    _Channels.prototype.add = function (displayName, description) {
-        if (description === void 0) { description = ""; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = {
-                            description: description,
-                            displayName: displayName,
-                        };
-                        return [4 /*yield*/, operations_1.graphPost(this, odata_1.body(postBody))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                channel: this.getById(data.id),
-                                data: data,
-                            }];
-                }
-            });
-        });
-    };
-    _Channels = tslib_1.__decorate([
-        decorators_2.defaultPath("channels"),
-        decorators_1.getById(exports.Channel)
-    ], _Channels);
-    return _Channels;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Channels = _Channels;
-exports.Channels = graphqueryable_1.graphInvokableFactory(_Channels);
-/**
- * Tab
- */
-var _Tab = /** @class */ (function (_super) {
-    tslib_1.__extends(_Tab, _super);
-    function _Tab() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Tab = tslib_1.__decorate([
-        decorators_2.defaultPath("tab"),
-        decorators_1.updateable(),
-        decorators_1.deleteable()
-    ], _Tab);
-    return _Tab;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Tab = _Tab;
-exports.Tab = graphqueryable_1.graphInvokableFactory(_Tab);
-/**
- * Tabs
- */
-var _Tabs = /** @class */ (function (_super) {
-    tslib_1.__extends(_Tabs, _super);
-    function _Tabs() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Adds a tab to the cahnnel
-     * @param name The name of the new Tab
-     * @param appUrl The url to an app ex: https://graph.microsoft.com/beta/appCatalogs/teamsApps/12345678-9abc-def0-123456789a
-     * @param tabsConfiguration visit https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/teamstab_add for reference
-     */
-    _Tabs.prototype.add = function (name, appUrl, properties) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = common_1.assign({
-                            name: name,
-                            "teamsApp@odata.bind": appUrl,
-                        }, properties);
-                        return [4 /*yield*/, operations_1.graphPost(this, odata_1.body(postBody))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                tab: this.getById(data.id),
-                            }];
-                }
-            });
-        });
-    };
-    _Tabs = tslib_1.__decorate([
-        decorators_2.defaultPath("tabs"),
-        decorators_1.getById(exports.Tab)
-    ], _Tabs);
-    return _Tabs;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Tabs = _Tabs;
-exports.Tabs = graphqueryable_1.graphInvokableFactory(_Tabs);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-__webpack_require__(17);
-__webpack_require__(21);
-__webpack_require__(23);
-__webpack_require__(25);
-__webpack_require__(26);
-__webpack_require__(27);
-__webpack_require__(28);
-__webpack_require__(30);
-__webpack_require__(32);
-__webpack_require__(34);
-__webpack_require__(36);
-__webpack_require__(38);
-__webpack_require__(39);
-__webpack_require__(41);
-__webpack_require__(42);
-tslib_1.__exportStar(__webpack_require__(17), exports);
-tslib_1.__exportStar(__webpack_require__(21), exports);
-tslib_1.__exportStar(__webpack_require__(23), exports);
-tslib_1.__exportStar(__webpack_require__(25), exports);
-tslib_1.__exportStar(__webpack_require__(26), exports);
-tslib_1.__exportStar(__webpack_require__(27), exports);
-tslib_1.__exportStar(__webpack_require__(28), exports);
-tslib_1.__exportStar(__webpack_require__(30), exports);
-tslib_1.__exportStar(__webpack_require__(32), exports);
-tslib_1.__exportStar(__webpack_require__(34), exports);
-tslib_1.__exportStar(__webpack_require__(36), exports);
-tslib_1.__exportStar(__webpack_require__(38), exports);
-tslib_1.__exportStar(__webpack_require__(39), exports);
-tslib_1.__exportStar(__webpack_require__(41), exports);
-tslib_1.__exportStar(__webpack_require__(42), exports);
-var rest_1 = __webpack_require__(10);
-exports.graph = rest_1.graph;
-exports.GraphRest = rest_1.GraphRest;
-//# sourceMappingURL=all.js.map
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(45);
-var types_1 = __webpack_require__(20);
-exports.Attachment = types_1.Attachment;
-exports.Attachments = types_1.Attachments;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 18 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return mergeHeaders; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return mergeOptions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getADALResource; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return FetchClient; });
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return mergeHeaders; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return mergeOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getADALResource; });
+/* unused harmony export FetchClient */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BearerTokenFetchClient; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return SPFxAdalClient; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return SPFxAdalClient; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 
 
 function mergeHeaders(target, source) {
-    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "m"])(source)) {
+    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "k"])(source)) {
         var temp = new Request("", { headers: source });
         temp.headers.forEach(function (value, name) {
             target.append(name, value);
@@ -3815,7 +578,7 @@ function mergeHeaders(target, source) {
     }
 }
 function mergeOptions(target, source) {
-    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "m"])(source)) {
+    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "k"])(source)) {
         var headers = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* assign */ "a"])(target.headers || {}, source.headers);
         target = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* assign */ "a"])(target, source);
         target.headers = headers;
@@ -3846,7 +609,7 @@ var FetchClient = /** @class */ (function () {
  * Makes requests using the fetch API adding the supplied token to the Authorization header
  */
 var BearerTokenFetchClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(BearerTokenFetchClient, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(BearerTokenFetchClient, _super);
     function BearerTokenFetchClient(_token) {
         var _this = _super.call(this) || this;
         _this._token = _token;
@@ -3877,7 +640,7 @@ var BearerTokenFetchClient = /** @class */ (function (_super) {
  * Client wrapping the aadTokenProvider available from SPFx >= 1.6
  */
 var SPFxAdalClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(SPFxAdalClient, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(SPFxAdalClient, _super);
     /**
      *
      * @param context provide the appropriate SPFx Context object
@@ -3894,9 +657,9 @@ var SPFxAdalClient = /** @class */ (function (_super) {
      * @param options Any options
      */
     SPFxAdalClient.prototype.fetch = function (url, options) {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var token;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getToken(getADALResource(url))];
                     case 1:
@@ -3913,9 +676,9 @@ var SPFxAdalClient = /** @class */ (function (_super) {
      * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
      */
     SPFxAdalClient.prototype.getToken = function (resource) {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var provider;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
                     case 1:
@@ -3929,1310 +692,10 @@ var SPFxAdalClient = /** @class */ (function (_super) {
 }(BearerTokenFetchClient));
 
 //# sourceMappingURL=net.js.map
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(46)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = __webpack_require__(1);
-var graphlibconfig_1 = __webpack_require__(14);
-var GraphHttpClient = /** @class */ (function () {
-    function GraphHttpClient() {
-        this._impl = graphlibconfig_1.GraphRuntimeConfig.fetchClientFactory();
-    }
-    GraphHttpClient.prototype.fetch = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var headers = new Headers();
-        // first we add the global headers so they can be overwritten by any passed in locally to this call
-        common_1.mergeHeaders(headers, graphlibconfig_1.GraphRuntimeConfig.headers);
-        // second we add the local options so we can overwrite the globals
-        common_1.mergeHeaders(headers, options.headers);
-        if (!headers.has("Content-Type")) {
-            headers.append("Content-Type", "application/json");
-        }
-        if (!headers.has("SdkVersion")) {
-            // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/2.0.1");
-        }
-        var opts = common_1.assign(options, { headers: headers });
-        return this.fetchRaw(url, opts);
-    };
-    GraphHttpClient.prototype.fetchRaw = function (url, options) {
-        var _this = this;
-        if (options === void 0) { options = {}; }
-        // here we need to normalize the headers
-        var rawHeaders = new Headers();
-        common_1.mergeHeaders(rawHeaders, options.headers);
-        options = common_1.assign(options, { headers: rawHeaders });
-        var retry = function (ctx) {
-            _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
-                // Check if request was throttled - http status code 429
-                // Check if request failed due to server unavailable - http status code 503
-                if (response.status !== 429 && response.status !== 503) {
-                    ctx.reject(response);
-                }
-                // grab our current delay
-                var delay = ctx.delay;
-                // Increment our counters.
-                ctx.delay *= 2;
-                ctx.attempts++;
-                // If we have exceeded the retry count, reject.
-                if (ctx.retryCount <= ctx.attempts) {
-                    ctx.reject(response);
-                }
-                // Set our retry timeout for {delay} milliseconds.
-                setTimeout(common_1.getCtxCallback(_this, retry, ctx), delay);
-            });
-        };
-        return new Promise(function (resolve, reject) {
-            var retryContext = {
-                attempts: 0,
-                delay: 100,
-                reject: reject,
-                resolve: resolve,
-                retryCount: 7,
-            };
-            retry.call(_this, retryContext);
-        });
-    };
-    GraphHttpClient.prototype.get = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = common_1.assign(options, { method: "GET" });
-        return this.fetch(url, opts);
-    };
-    GraphHttpClient.prototype.post = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = common_1.assign(options, { method: "POST" });
-        return this.fetch(url, opts);
-    };
-    GraphHttpClient.prototype.patch = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = common_1.assign(options, { method: "PATCH" });
-        return this.fetch(url, opts);
-    };
-    GraphHttpClient.prototype.delete = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var opts = common_1.assign(options, { method: "DELETE" });
-        return this.fetch(url, opts);
-    };
-    return GraphHttpClient;
-}());
-exports.GraphHttpClient = GraphHttpClient;
-//# sourceMappingURL=graphhttpclient.js.map
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var graphqueryable_1 = __webpack_require__(6);
-var operations_1 = __webpack_require__(4);
-var decorators_1 = __webpack_require__(5);
-var type_1 = __webpack_require__(48);
-/**
- * Attachment
- */
-var _Attachment = /** @class */ (function (_super) {
-    tslib_1.__extends(_Attachment, _super);
-    function _Attachment() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return _Attachment;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Attachment = _Attachment;
-exports.Attachment = graphqueryable_1.graphInvokableFactory(_Attachment);
-/**
- * Attachments
- */
-var _Attachments = /** @class */ (function (_super) {
-    tslib_1.__extends(_Attachments, _super);
-    function _Attachments() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Add attachment to this collection
-     *
-     * @param name Name given to the attachment file
-     * @param bytes File content
-     */
-    _Attachments.prototype.addFile = function (name, bytes) {
-        return operations_1.graphPost(this, odata_1.body(type_1.type("#microsoft.graph.fileAttachment", {
-            contentBytes: bytes,
-            name: name,
-        })));
-    };
-    _Attachments = tslib_1.__decorate([
-        decorators_1.defaultPath("attachments"),
-        decorators_1.getById(exports.Attachment)
-    ], _Attachments);
-    return _Attachments;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Attachments = _Attachments;
-exports.Attachments = graphqueryable_1.graphInvokableFactory(_Attachments);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(49);
-var types_1 = __webpack_require__(22);
-exports.Calendar = types_1.Calendar;
-exports.Calendars = types_1.Calendars;
-exports.Event = types_1.Event;
-exports.Events = types_1.Events;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var graphqueryable_1 = __webpack_require__(6);
-var decorators_1 = __webpack_require__(5);
-var operations_1 = __webpack_require__(4);
-/**
- * Calendars
- */
-var _Calendars = /** @class */ (function (_super) {
-    tslib_1.__extends(_Calendars, _super);
-    function _Calendars() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Calendars = tslib_1.__decorate([
-        decorators_1.defaultPath("calendars")
-    ], _Calendars);
-    return _Calendars;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Calendars = _Calendars;
-exports.Calendars = graphqueryable_1.graphInvokableFactory(_Calendars);
-/**
- * Calendar
- */
-var _Calendar = /** @class */ (function (_super) {
-    tslib_1.__extends(_Calendar, _super);
-    function _Calendar() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Calendar.prototype, "events", {
-        get: function () {
-            return exports.Events(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return _Calendar;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Calendar = _Calendar;
-exports.Calendar = graphqueryable_1.graphInvokableFactory(_Calendar);
-/**
- * Event
- */
-var _Event = /** @class */ (function (_super) {
-    tslib_1.__extends(_Event, _super);
-    function _Event() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Event = tslib_1.__decorate([
-        decorators_1.deleteable(),
-        decorators_1.updateable()
-    ], _Event);
-    return _Event;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Event = _Event;
-exports.Event = graphqueryable_1.graphInvokableFactory(_Event);
-/**
- * Events
- */
-var _Events = /** @class */ (function (_super) {
-    tslib_1.__extends(_Events, _super);
-    function _Events() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Adds a new event to the collection
-     *
-     * @param properties The set of properties used to create the event
-     */
-    _Events.prototype.add = function (properties) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.graphPost(this, odata_1.body(properties))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                event: this.getById(data.id),
-                            }];
-                }
-            });
-        });
-    };
-    _Events = tslib_1.__decorate([
-        decorators_1.defaultPath("events"),
-        decorators_1.getById(exports.Event)
-    ], _Events);
-    return _Events;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Events = _Events;
-exports.Events = graphqueryable_1.graphInvokableFactory(_Events);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(50);
-var types_1 = __webpack_require__(24);
-exports.Contact = types_1.Contact;
-exports.ContactFolder = types_1.ContactFolder;
-exports.ContactFolders = types_1.ContactFolders;
-exports.Contacts = types_1.Contacts;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var graphqueryable_1 = __webpack_require__(6);
-var common_1 = __webpack_require__(1);
-var decorators_1 = __webpack_require__(5);
-var operations_1 = __webpack_require__(4);
-var odata_1 = __webpack_require__(2);
-/**
- * Contact
- */
-var _Contact = /** @class */ (function (_super) {
-    tslib_1.__extends(_Contact, _super);
-    function _Contact() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Contact = tslib_1.__decorate([
-        decorators_1.updateable(),
-        decorators_1.deleteable()
-    ], _Contact);
-    return _Contact;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Contact = _Contact;
-exports.Contact = graphqueryable_1.graphInvokableFactory(_Contact);
-/**
- * Contacts
- */
-var _Contacts = /** @class */ (function (_super) {
-    tslib_1.__extends(_Contacts, _super);
-    function _Contacts() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-    * Create a new Contact for the user.
-    *
-    * @param givenName The contact's given name.
-    * @param surName The contact's surname.
-    * @param emailAddresses The contact's email addresses.
-    * @param businessPhones The contact's business phone numbers.
-    * @param additionalProperties A plain object collection of additional properties you want to set on the new contact
-    */
-    _Contacts.prototype.add = function (givenName, surName, emailAddresses, businessPhones, additionalProperties) {
-        if (additionalProperties === void 0) { additionalProperties = {}; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = common_1.assign({ businessPhones: businessPhones, emailAddresses: emailAddresses, givenName: givenName, surName: surName }, additionalProperties);
-                        return [4 /*yield*/, operations_1.graphPost(this, odata_1.body(postBody))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                contact: this.getById(data.id),
-                                data: data,
-                            }];
-                }
-            });
-        });
-    };
-    _Contacts = tslib_1.__decorate([
-        decorators_1.defaultPath("contacts"),
-        decorators_1.getById(exports.Contact)
-    ], _Contacts);
-    return _Contacts;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Contacts = _Contacts;
-exports.Contacts = graphqueryable_1.graphInvokableFactory(_Contacts);
-/**
- * Contact Folder
- */
-var _ContactFolder = /** @class */ (function (_super) {
-    tslib_1.__extends(_ContactFolder, _super);
-    function _ContactFolder() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_ContactFolder.prototype, "contacts", {
-        /**
-         * Gets the contacts in this contact folder
-         */
-        get: function () {
-            return exports.Contacts(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_ContactFolder.prototype, "childFolders", {
-        /**
-        * Gets the contacts in this contact folder
-        */
-        get: function () {
-            return exports.ContactFolders(this, "childFolders");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _ContactFolder = tslib_1.__decorate([
-        decorators_1.deleteable(),
-        decorators_1.updateable()
-    ], _ContactFolder);
-    return _ContactFolder;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._ContactFolder = _ContactFolder;
-exports.ContactFolder = graphqueryable_1.graphInvokableFactory(_ContactFolder);
-/**
- * Contact Folders
- */
-var _ContactFolders = /** @class */ (function (_super) {
-    tslib_1.__extends(_ContactFolders, _super);
-    function _ContactFolders() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Create a new Contact Folder for the user.
-     *
-     * @param displayName The folder's display name.
-     * @param parentFolderId The ID of the folder's parent folder.
-     */
-    _ContactFolders.prototype.add = function (displayName, parentFolderId) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = {
-                            displayName: displayName,
-                            parentFolderId: parentFolderId,
-                        };
-                        return [4 /*yield*/, operations_1.graphPost(this, odata_1.body(postBody))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                contactFolder: this.getById(data.id),
-                                data: data,
-                            }];
-                }
-            });
-        });
-    };
-    _ContactFolders = tslib_1.__decorate([
-        decorators_1.defaultPath("contactFolders"),
-        decorators_1.getById(exports.ContactFolder)
-    ], _ContactFolders);
-    return _ContactFolders;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._ContactFolders = _ContactFolders;
-exports.ContactFolders = graphqueryable_1.graphInvokableFactory(_ContactFolders);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(51);
-var types_1 = __webpack_require__(13);
-exports.Conversation = types_1.Conversation;
-exports.Conversations = types_1.Conversations;
-exports.Post = types_1.Post;
-exports.Posts = types_1.Posts;
-exports.Senders = types_1.Senders;
-exports.Thread = types_1.Thread;
-exports.Threads = types_1.Threads;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var rest_1 = __webpack_require__(10);
-var types_1 = __webpack_require__(11);
-var types_2 = __webpack_require__(11);
-exports.DirectoryObjectTypes = types_2.DirectoryObjectTypes;
-exports.DirectoryObject = types_2.DirectoryObject;
-exports.DirectoryObjects = types_2.DirectoryObjects;
-Reflect.defineProperty(rest_1.GraphRest.prototype, "directoryObjects", {
-    configurable: true,
-    enumerable: true,
-    get: function () {
-        return types_1.DirectoryObjects(this);
-    },
-});
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var rest_1 = __webpack_require__(10);
-var types_1 = __webpack_require__(8);
-var types_2 = __webpack_require__(8);
-exports.Group = types_2.Group;
-exports.GroupType = types_2.GroupType;
-exports.Groups = types_2.Groups;
-Reflect.defineProperty(rest_1.GraphRest.prototype, "groups", {
-    configurable: true,
-    enumerable: true,
-    get: function () {
-        return types_1.Groups(this);
-    },
-});
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(53);
-var types_1 = __webpack_require__(29);
-exports.Member = types_1.Member;
-exports.Members = types_1.Members;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var graphqueryable_1 = __webpack_require__(6);
-var decorators_1 = __webpack_require__(5);
-var operations_1 = __webpack_require__(4);
-/**
- * Member
- */
-var _Member = /** @class */ (function (_super) {
-    tslib_1.__extends(_Member, _super);
-    function _Member() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Removes this Member
-     */
-    _Member.prototype.remove = function () {
-        return operations_1.graphDelete(this.clone(exports.Member, "$ref"));
-    };
-    return _Member;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Member = _Member;
-exports.Member = graphqueryable_1.graphInvokableFactory(_Member);
-/**
- * Members
- */
-var _Members = /** @class */ (function (_super) {
-    tslib_1.__extends(_Members, _super);
-    function _Members() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through
-     * the members navigation property. You can add users or other groups.
-     * Important: You can add only users to Office 365 groups.
-     *
-     * @param id Full @odata.id of the directoryObject, user, or group object you want to add (ex: https://graph.microsoft.com/v1.0/directoryObjects/${id})
-     */
-    _Members.prototype.add = function (id) {
-        return operations_1.graphPost(this.clone(exports.Members, "$ref"), odata_1.body({ "@odata.id": id }));
-    };
-    _Members = tslib_1.__decorate([
-        decorators_1.defaultPath("members"),
-        decorators_1.getById(exports.Member)
-    ], _Members);
-    return _Members;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Members = _Members;
-exports.Members = graphqueryable_1.graphInvokableFactory(_Members);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(54);
-var types_1 = __webpack_require__(31);
-exports.MailFolder = types_1.MailFolder;
-exports.MailFolders = types_1.MailFolders;
-exports.MailboxSettings = types_1.MailboxSettings;
-exports.Message = types_1.Message;
-exports.Messages = types_1.Messages;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var graphqueryable_1 = __webpack_require__(6);
-var decorators_1 = __webpack_require__(5);
-/**
- * Message
- */
-var _Message = /** @class */ (function (_super) {
-    tslib_1.__extends(_Message, _super);
-    function _Message() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return _Message;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Message = _Message;
-exports.Message = graphqueryable_1.graphInvokableFactory(_Message);
-/**
- * Messages
- */
-var _Messages = /** @class */ (function (_super) {
-    tslib_1.__extends(_Messages, _super);
-    function _Messages() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Messages = tslib_1.__decorate([
-        decorators_1.defaultPath("messages"),
-        decorators_1.getById(exports.Message),
-        decorators_1.addable()
-    ], _Messages);
-    return _Messages;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Messages = _Messages;
-exports.Messages = graphqueryable_1.graphInvokableFactory(_Messages);
-/**
- * MailFolder
- */
-var _MailFolder = /** @class */ (function (_super) {
-    tslib_1.__extends(_MailFolder, _super);
-    function _MailFolder() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return _MailFolder;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._MailFolder = _MailFolder;
-exports.MailFolder = graphqueryable_1.graphInvokableFactory(_MailFolder);
-/**
- * MailFolders
- */
-var _MailFolders = /** @class */ (function (_super) {
-    tslib_1.__extends(_MailFolders, _super);
-    function _MailFolders() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _MailFolders = tslib_1.__decorate([
-        decorators_1.defaultPath("mailFolders"),
-        decorators_1.getById(exports.MailFolder),
-        decorators_1.addable()
-    ], _MailFolders);
-    return _MailFolders;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._MailFolders = _MailFolders;
-exports.MailFolders = graphqueryable_1.graphInvokableFactory(_MailFolders);
-/**
- * MailboxSettings
- */
-var _MailboxSettings = /** @class */ (function (_super) {
-    tslib_1.__extends(_MailboxSettings, _super);
-    function _MailboxSettings() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _MailboxSettings = tslib_1.__decorate([
-        decorators_1.defaultPath("mailboxSettings"),
-        decorators_1.updateable()
-    ], _MailboxSettings);
-    return _MailboxSettings;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._MailboxSettings = _MailboxSettings;
-exports.MailboxSettings = graphqueryable_1.graphInvokableFactory(_MailboxSettings);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(55);
-var types_1 = __webpack_require__(33);
-exports.Drive = types_1.Drive;
-exports.DriveItem = types_1.DriveItem;
-exports.DriveItems = types_1.DriveItems;
-exports.Drives = types_1.Drives;
-exports.Root = types_1.Root;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var graphqueryable_1 = __webpack_require__(6);
-var common_1 = __webpack_require__(1);
-var decorators_1 = __webpack_require__(5);
-var odata_1 = __webpack_require__(2);
-var operations_1 = __webpack_require__(4);
-/**
- * Describes a Drive instance
- *
- */
-var _Drive = /** @class */ (function (_super) {
-    tslib_1.__extends(_Drive, _super);
-    function _Drive() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Drive.prototype, "root", {
-        get: function () {
-            return exports.Root(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Drive.prototype, "list", {
-        get: function () {
-            return graphqueryable_1.GraphQueryableInstance(this, "list");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Drive.prototype, "recent", {
-        get: function () {
-            return exports.DriveItems(this, "recent");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Drive.prototype, "sharedWithMe", {
-        get: function () {
-            return exports.DriveItems(this, "sharedWithMe");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _Drive.prototype.getItemById = function (id) {
-        return exports.DriveItem(this, common_1.combine("items", id));
-    };
-    _Drive = tslib_1.__decorate([
-        decorators_1.defaultPath("drive")
-    ], _Drive);
-    return _Drive;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Drive = _Drive;
-exports.Drive = graphqueryable_1.graphInvokableFactory(_Drive);
-/**
- * Describes a collection of Drive objects
- *
- */
-var _Drives = /** @class */ (function (_super) {
-    tslib_1.__extends(_Drives, _super);
-    function _Drives() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Drives = tslib_1.__decorate([
-        decorators_1.defaultPath("drives"),
-        decorators_1.getById(exports.Drive)
-    ], _Drives);
-    return _Drives;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Drives = _Drives;
-exports.Drives = graphqueryable_1.graphInvokableFactory(_Drives);
-/**
- * Describes a Root instance
- *
- */
-var _Root = /** @class */ (function (_super) {
-    tslib_1.__extends(_Root, _super);
-    function _Root() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Root.prototype, "children", {
-        get: function () {
-            return exports.DriveItems(this, "children");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _Root.prototype.search = function (query) {
-        var searcher = this.clone(exports.Root);
-        searcher.query.set("search", "'" + query + "'");
-        return searcher();
-    };
-    Object.defineProperty(_Root.prototype, "thumbnails", {
-        get: function () {
-            return graphqueryable_1.GraphQueryableCollection(this, "thumbnails");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _Root = tslib_1.__decorate([
-        decorators_1.defaultPath("root")
-    ], _Root);
-    return _Root;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Root = _Root;
-exports.Root = graphqueryable_1.graphInvokableFactory(_Root);
-/**
- * Describes a Drive Item instance
- *
- */
-var _DriveItem = /** @class */ (function (_super) {
-    tslib_1.__extends(_DriveItem, _super);
-    function _DriveItem() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_DriveItem.prototype, "children", {
-        get: function () {
-            return exports.DriveItems(this, "children");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_DriveItem.prototype, "thumbnails", {
-        get: function () {
-            return graphqueryable_1.GraphQueryableCollection(this, "thumbnails");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_DriveItem.prototype, "versions", {
-        get: function () {
-            return graphqueryable_1.GraphQueryableCollection(this, "versions");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _DriveItem.prototype.move = function (parentReference, name) {
-        return operations_1.graphPatch(this, odata_1.body(common_1.assign(parentReference, { name: name })));
-    };
-    _DriveItem.prototype.getContent = function () {
-        return operations_1.graphGet(this.clone(exports.DriveItem, "content"));
-    };
-    _DriveItem.prototype.setContent = function (content) {
-        return operations_1.graphPut(this.clone(exports.DriveItem, "content"), {
-            body: content,
-        });
-    };
-    _DriveItem = tslib_1.__decorate([
-        decorators_1.deleteable(),
-        decorators_1.updateable()
-    ], _DriveItem);
-    return _DriveItem;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._DriveItem = _DriveItem;
-exports.DriveItem = graphqueryable_1.graphInvokableFactory(_DriveItem);
-/**
- * Describes a collection of Drive Item objects
- *
- */
-var _DriveItems = /** @class */ (function (_super) {
-    tslib_1.__extends(_DriveItems, _super);
-    function _DriveItems() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _DriveItems = tslib_1.__decorate([
-        decorators_1.getById(exports.DriveItem)
-    ], _DriveItems);
-    return _DriveItems;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._DriveItems = _DriveItems;
-exports.DriveItems = graphqueryable_1.graphInvokableFactory(_DriveItems);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(56);
-var types_1 = __webpack_require__(35);
-exports.Notebook = types_1.Notebook;
-exports.Notebooks = types_1.Notebooks;
-exports.OneNote = types_1.OneNote;
-exports.Section = types_1.Section;
-exports.Sections = types_1.Sections;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var graphqueryable_1 = __webpack_require__(6);
-var decorators_1 = __webpack_require__(5);
-var operations_1 = __webpack_require__(4);
-/**
- * Represents a onenote entity
- */
-var _OneNote = /** @class */ (function (_super) {
-    tslib_1.__extends(_OneNote, _super);
-    function _OneNote() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_OneNote.prototype, "notebooks", {
-        get: function () {
-            return exports.Notebooks(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_OneNote.prototype, "sections", {
-        get: function () {
-            return exports.Sections(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_OneNote.prototype, "pages", {
-        get: function () {
-            return graphqueryable_1.GraphQueryableCollection(this, "pages");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    _OneNote = tslib_1.__decorate([
-        decorators_1.defaultPath("onenote")
-    ], _OneNote);
-    return _OneNote;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._OneNote = _OneNote;
-exports.OneNote = graphqueryable_1.graphInvokableFactory(_OneNote);
-/**
- * Describes a notebook instance
- *
- */
-var _Notebook = /** @class */ (function (_super) {
-    tslib_1.__extends(_Notebook, _super);
-    function _Notebook() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(_Notebook.prototype, "sections", {
-        get: function () {
-            return exports.Sections(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return _Notebook;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Notebook = _Notebook;
-exports.Notebook = graphqueryable_1.graphInvokableFactory(_Notebook);
-/**
- * Describes a collection of Notebook objects
- *
- */
-var _Notebooks = /** @class */ (function (_super) {
-    tslib_1.__extends(_Notebooks, _super);
-    function _Notebooks() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Create a new notebook as specified in the request body.
-     *
-     * @param displayName Notebook display name
-     */
-    _Notebooks.prototype.add = function (displayName) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.graphPost(this, odata_1.body({ displayName: displayName }))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                notebook: this.getById(data.id),
-                            }];
-                }
-            });
-        });
-    };
-    _Notebooks = tslib_1.__decorate([
-        decorators_1.defaultPath("notebooks"),
-        decorators_1.getById(exports.Notebook)
-    ], _Notebooks);
-    return _Notebooks;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Notebooks = _Notebooks;
-exports.Notebooks = graphqueryable_1.graphInvokableFactory(_Notebooks);
-/**
- * Describes a sections instance
- */
-var _Section = /** @class */ (function (_super) {
-    tslib_1.__extends(_Section, _super);
-    function _Section() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return _Section;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Section = _Section;
-exports.Section = graphqueryable_1.graphInvokableFactory(_Section);
-/**
- * Describes a collection of Sections objects
- *
- */
-var _Sections = /** @class */ (function (_super) {
-    tslib_1.__extends(_Sections, _super);
-    function _Sections() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Adds a new section
-     *
-     * @param displayName New section display name
-     */
-    _Sections.prototype.add = function (displayName) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, operations_1.graphPost(this, odata_1.body({ displayName: displayName }))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                section: this.getById(data.id),
-                            }];
-                }
-            });
-        });
-    };
-    _Sections = tslib_1.__decorate([
-        decorators_1.defaultPath("sections"),
-        decorators_1.getById(exports.Section)
-    ], _Sections);
-    return _Sections;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Sections = _Sections;
-exports.Sections = graphqueryable_1.graphInvokableFactory(_Sections);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(57);
-var types_1 = __webpack_require__(37);
-exports.Photo = types_1.Photo;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var graphqueryable_1 = __webpack_require__(6);
-var odata_1 = __webpack_require__(2);
-var decorators_1 = __webpack_require__(5);
-var operations_1 = __webpack_require__(4);
-var _Photo = /** @class */ (function (_super) {
-    tslib_1.__extends(_Photo, _super);
-    function _Photo() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Gets the image bytes as a blob (browser)
-     */
-    _Photo.prototype.getBlob = function () {
-        return this.clone(exports.Photo, "$value", false).usingParser(new odata_1.BlobParser())();
-    };
-    /**
-     * Gets the image file byets as a Buffer (node.js)
-     */
-    _Photo.prototype.getBuffer = function () {
-        return this.clone(exports.Photo, "$value", false).usingParser(new odata_1.BufferParser())();
-    };
-    /**
-     * Sets the file bytes
-     *
-     * @param content Image file contents, max 4 MB
-     */
-    _Photo.prototype.setContent = function (content) {
-        return operations_1.graphPatch(this.clone(exports.Photo, "$value", false), { body: content });
-    };
-    _Photo = tslib_1.__decorate([
-        decorators_1.defaultPath("photo")
-    ], _Photo);
-    return _Photo;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Photo = _Photo;
-exports.Photo = graphqueryable_1.graphInvokableFactory(_Photo);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var rest_1 = __webpack_require__(10);
-var types_1 = __webpack_require__(12);
-__webpack_require__(58);
-__webpack_require__(59);
-var types_2 = __webpack_require__(12);
-exports.Bucket = types_2.Bucket;
-exports.Buckets = types_2.Buckets;
-exports.Plan = types_2.Plan;
-exports.Planner = types_2.Planner;
-exports.Plans = types_2.Plans;
-exports.Task = types_2.Task;
-exports.Tasks = types_2.Tasks;
-Reflect.defineProperty(rest_1.GraphRest.prototype, "planner", {
-    configurable: true,
-    enumerable: true,
-    get: function () {
-        return types_1.Planner(this);
-    },
-});
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var rest_1 = __webpack_require__(10);
-var types_1 = __webpack_require__(40);
-var types_2 = __webpack_require__(40);
-exports.Subscription = types_2.Subscription;
-exports.Subscriptions = types_2.Subscriptions;
-Reflect.defineProperty(rest_1.GraphRest.prototype, "subscriptions", {
-    configurable: true,
-    enumerable: true,
-    get: function () {
-        return types_1.Subscriptions(this);
-    },
-});
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var graphqueryable_1 = __webpack_require__(6);
-var common_1 = __webpack_require__(1);
-var odata_1 = __webpack_require__(2);
-var decorators_1 = __webpack_require__(5);
-var operations_1 = __webpack_require__(4);
-/**
- * Subscription
- */
-var _Subscription = /** @class */ (function (_super) {
-    tslib_1.__extends(_Subscription, _super);
-    function _Subscription() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Subscription = tslib_1.__decorate([
-        decorators_1.deleteable(),
-        decorators_1.updateable()
-    ], _Subscription);
-    return _Subscription;
-}(graphqueryable_1._GraphQueryableInstance));
-exports._Subscription = _Subscription;
-exports.Subscription = graphqueryable_1.graphInvokableFactory(_Subscription);
-/**
- * Subscriptions
- */
-var _Subscriptions = /** @class */ (function (_super) {
-    tslib_1.__extends(_Subscriptions, _super);
-    function _Subscriptions() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Create a new Subscription.
-     *
-     * @param changeType Indicates the type of change in the subscribed resource that will raise a notification. The supported values are: created, updated, deleted.
-     * @param notificationUrl The URL of the endpoint that will receive the notifications. This URL must make use of the HTTPS protocol.
-     * @param resource Specifies the resource that will be monitored for changes. Do not include the base URL (https://graph.microsoft.com/v1.0/).
-     * @param expirationDateTime Specifies the date and time when the webhook subscription expires. The time is in UTC.
-     * @param props A plain object collection of additional properties you want to set on the new subscription
-     *
-     */
-    _Subscriptions.prototype.add = function (changeType, notificationUrl, resource, expirationDateTime, props) {
-        if (props === void 0) { props = {}; }
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var postBody, data;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = common_1.assign({
-                            changeType: changeType,
-                            expirationDateTime: expirationDateTime,
-                            notificationUrl: notificationUrl,
-                            resource: resource,
-                        }, props);
-                        return [4 /*yield*/, operations_1.graphPost(this, odata_1.body(postBody))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                subscription: this.getById(data.id),
-                            }];
-                }
-            });
-        });
-    };
-    _Subscriptions = tslib_1.__decorate([
-        decorators_1.defaultPath("subscriptions"),
-        decorators_1.getById(exports.Subscription)
-    ], _Subscriptions);
-    return _Subscriptions;
-}(graphqueryable_1._GraphQueryableCollection));
-exports._Subscriptions = _Subscriptions;
-exports.Subscriptions = graphqueryable_1.graphInvokableFactory(_Subscriptions);
-//# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var rest_1 = __webpack_require__(10);
-var types_1 = __webpack_require__(8);
-var types_2 = __webpack_require__(15);
-var operations_1 = __webpack_require__(4);
-__webpack_require__(60);
-var types_3 = __webpack_require__(15);
-exports.Channel = types_3.Channel;
-exports.Channels = types_3.Channels;
-exports.Tab = types_3.Tab;
-exports.Tabs = types_3.Tabs;
-exports.Team = types_3.Team;
-exports.Teams = types_3.Teams;
-odata_1.addProp(types_1._Group, "team", types_2.Team);
-types_1._Group.prototype.createTeam = function (props) {
-    return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var data;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, operations_1.graphPut(this.clone(types_1.Group, "team"), odata_1.body(props))];
-                case 1:
-                    data = _a.sent();
-                    return [2 /*return*/, {
-                            data: data,
-                            team: this.team,
-                        }];
-            }
-        });
-    });
-};
-Reflect.defineProperty(rest_1.GraphRest.prototype, "teams", {
-    configurable: true,
-    enumerable: true,
-    get: function () {
-        return types_2.Teams(this);
-    },
-});
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var rest_1 = __webpack_require__(10);
-var types_1 = __webpack_require__(9);
-var types_2 = __webpack_require__(9);
-exports.User = types_2.User;
-exports.Users = types_2.Users;
-Reflect.defineProperty(rest_1.GraphRest.prototype, "me", {
-    configurable: true,
-    enumerable: true,
-    get: function () {
-        return types_1.User(this, "me");
-    },
-});
-Reflect.defineProperty(rest_1.GraphRest.prototype, "users", {
-    configurable: true,
-    enumerable: true,
-    get: function () {
-        return types_1.Users(this);
-    },
-});
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 43 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! adal-angular v1.0.17 2018-02-27 */
@@ -5240,32 +703,7 @@ var AuthenticationContext=function(){"use strict";return AuthenticationContext=f
 this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null)},AuthenticationContext.prototype.verbose=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null)},AuthenticationContext.prototype.errorPii=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b,!0)},AuthenticationContext.prototype.warnPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null,!0)},AuthenticationContext.prototype.infoPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null,!0)},AuthenticationContext.prototype.verbosePii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null,!0)},AuthenticationContext.prototype._libVersion=function(){return"1.0.17"}, true&&module.exports&&(module.exports=AuthenticationContext,module.exports.inject=function(a){return new AuthenticationContext(a)}),AuthenticationContext}();
 
 /***/ }),
-/* 44 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_pnp_graph_presets_all__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16);
-/* harmony import */ var _node_modules_pnp_graph_presets_all__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnp_graph_presets_all__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_pnp_graph_presets_all__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_pnp_graph_presets_all__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-
-
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var types_1 = __webpack_require__(13);
-var odata_1 = __webpack_require__(2);
-var types_2 = __webpack_require__(20);
-odata_1.addProp(types_1._Post, "attachments", types_2.Attachments);
-//# sourceMappingURL=conversations.js.map
-
-/***/ }),
-/* 46 */
+/* 4 */
 /***/ (function(module, exports) {
 
 var g;
@@ -5291,12 +729,1653 @@ module.exports = g;
 
 
 /***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
 
-Object.defineProperty(exports, "__esModule", { value: true });
+// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
+var tslib_es6 = __webpack_require__(0);
+
+// EXTERNAL MODULE: ./node_modules/@pnp/common/util.js
+var util = __webpack_require__(1);
+
+// CONCATENATED MODULE: ./node_modules/@pnp/common/collections.js
+
+/**
+ * Used to calculate the object properties, with polyfill if needed
+ */
+var objectEntries = Object(util["h" /* isFunc */])(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
+/**
+ * Converts the supplied object to a map
+ *
+ * @param o The object to map
+ */
+function objectToMap(o) {
+    if (o !== undefined && o !== null) {
+        return new Map(objectEntries(o));
+    }
+    return new Map();
+}
+/**
+ * Merges to Map instances together, overwriting values in target with matching keys, last in wins
+ *
+ * @param target map into which the other maps are merged
+ * @param maps One or more maps to merge into the target
+ */
+function mergeMaps(target) {
+    var maps = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        maps[_i - 1] = arguments[_i];
+    }
+    for (var i = 0; i < maps.length; i++) {
+        maps[i].forEach(function (v, k) {
+            target.set(k, v);
+        });
+    }
+    return target;
+}
+//# sourceMappingURL=collections.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
+
+function setup(config) {
+    RuntimeConfig.assign(config);
+}
+// lable mapping for known config values
+var libconfig_s = [
+    "defaultCachingStore",
+    "defaultCachingTimeoutSeconds",
+    "globalCacheDisable",
+    "enableCacheExpiration",
+    "cacheExpirationIntervalMilliseconds",
+    "spfxContext",
+    "ie11",
+];
+var libconfig_RuntimeConfigImpl = /** @class */ (function () {
+    function RuntimeConfigImpl(_v) {
+        if (_v === void 0) { _v = new Map(); }
+        this._v = _v;
+        // setup defaults
+        this._v.set(libconfig_s[0], "session");
+        this._v.set(libconfig_s[1], 60);
+        this._v.set(libconfig_s[2], false);
+        this._v.set(libconfig_s[3], false);
+        this._v.set(libconfig_s[4], 750);
+        this._v.set(libconfig_s[5], null);
+        this._v.set(libconfig_s[6], false);
+    }
+    /**
+     *
+     * @param config The set of properties to add to the globa configuration instance
+     */
+    RuntimeConfigImpl.prototype.assign = function (config) {
+        this._v = mergeMaps(this._v, objectToMap(config));
+    };
+    RuntimeConfigImpl.prototype.get = function (key) {
+        return this._v.get(key);
+    };
+    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingStore", {
+        get: function () {
+            return this.get(libconfig_s[0]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingTimeoutSeconds", {
+        get: function () {
+            return this.get(libconfig_s[1]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "globalCacheDisable", {
+        get: function () {
+            return this.get(libconfig_s[2]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "enableCacheExpiration", {
+        get: function () {
+            return this.get(libconfig_s[3]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "cacheExpirationIntervalMilliseconds", {
+        get: function () {
+            return this.get(libconfig_s[4]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "spfxContext", {
+        get: function () {
+            return this.get(libconfig_s[5]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "ie11", {
+        get: function () {
+            var v = this.get(libconfig_s[6]);
+            if (v) {
+                console.warn("PnPjs is running in ie11 compat mode. Not all features may work as expected.");
+            }
+            return v;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return RuntimeConfigImpl;
+}());
+
+var _runtimeConfig = new libconfig_RuntimeConfigImpl();
+var RuntimeConfig = _runtimeConfig;
+//# sourceMappingURL=libconfig.js.map
+// EXTERNAL MODULE: ./node_modules/@pnp/common/net.js
+var net = __webpack_require__(2);
+
+// CONCATENATED MODULE: ./node_modules/@pnp/common/storage.js
+
+
+
+/**
+ * A wrapper class to provide a consistent interface to browser based storage
+ *
+ */
+var storage_PnPClientStorageWrapper = /** @class */ (function () {
+    /**
+     * Creates a new instance of the PnPClientStorageWrapper class
+     *
+     * @constructor
+     */
+    function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
+        if (defaultTimeoutMinutes === void 0) { defaultTimeoutMinutes = -1; }
+        this.store = store;
+        this.defaultTimeoutMinutes = defaultTimeoutMinutes;
+        this.enabled = this.test();
+        // if the cache timeout is enabled call the handler
+        // this will clear any expired items and set the timeout function
+        if (RuntimeConfig.enableCacheExpiration) {
+            this.cacheExpirationHandler();
+        }
+    }
+    PnPClientStorageWrapper.bind = function (store) {
+        return new PnPClientStorageWrapper(typeof (store) === "undefined" ? new MemoryStorage() : store);
+    };
+    /**
+     * Get a value from storage, or null if that value does not exist
+     *
+     * @param key The key whose value we want to retrieve
+     */
+    PnPClientStorageWrapper.prototype.get = function (key) {
+        if (!this.enabled) {
+            return null;
+        }
+        var o = this.store.getItem(key);
+        if (!Object(util["k" /* objectDefinedNotNull */])(o)) {
+            return null;
+        }
+        var persistable = JSON.parse(o);
+        if (new Date(persistable.expiration) <= new Date()) {
+            this.delete(key);
+            return null;
+        }
+        else {
+            return persistable.value;
+        }
+    };
+    /**
+     * Adds a value to the underlying storage
+     *
+     * @param key The key to use when storing the provided value
+     * @param o The value to store
+     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+     */
+    PnPClientStorageWrapper.prototype.put = function (key, o, expire) {
+        if (this.enabled) {
+            this.store.setItem(key, this.createPersistable(o, expire));
+        }
+    };
+    /**
+     * Deletes a value from the underlying storage
+     *
+     * @param key The key of the pair we want to remove from storage
+     */
+    PnPClientStorageWrapper.prototype.delete = function (key) {
+        if (this.enabled) {
+            this.store.removeItem(key);
+        }
+    };
+    /**
+     * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
+     *
+     * @param key The key to use when storing the provided value
+     * @param getter A function which will upon execution provide the desired value
+     * @param expire Optional, if provided the expiration of the item, otherwise the default is used
+     */
+    PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var o;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.enabled) {
+                            return [2 /*return*/, getter()];
+                        }
+                        o = this.get(key);
+                        if (!(o === null)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, getter()];
+                    case 1:
+                        o = _a.sent();
+                        this.put(key, o, expire);
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, o];
+                }
+            });
+        });
+    };
+    /**
+     * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
+     */
+    PnPClientStorageWrapper.prototype.deleteExpired = function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var i, key;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.enabled) {
+                            return [2 /*return*/];
+                        }
+                        i = 0;
+                        _a.label = 1;
+                    case 1:
+                        if (!(i < this.store.length)) return [3 /*break*/, 4];
+                        key = this.store.key(i);
+                        if (!(key !== null)) return [3 /*break*/, 3];
+                        if (!/["|']?pnp["|']? ?: ?1/i.test(this.store.getItem(key))) return [3 /*break*/, 3];
+                        // get those items as get will delete from cache if they are expired
+                        return [4 /*yield*/, this.get(key)];
+                    case 2:
+                        // get those items as get will delete from cache if they are expired
+                        _a.sent();
+                        _a.label = 3;
+                    case 3:
+                        i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Used to determine if the wrapped storage is available currently
+     */
+    PnPClientStorageWrapper.prototype.test = function () {
+        var str = "t";
+        try {
+            this.store.setItem(str, str);
+            this.store.removeItem(str);
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    };
+    /**
+     * Creates the persistable to store
+     */
+    PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
+        if (expire === undefined) {
+            // ensure we are by default inline with the global library setting
+            var defaultTimeout = RuntimeConfig.defaultCachingTimeoutSeconds;
+            if (this.defaultTimeoutMinutes > 0) {
+                defaultTimeout = this.defaultTimeoutMinutes * 60;
+            }
+            expire = Object(util["c" /* dateAdd */])(new Date(), "second", defaultTimeout);
+        }
+        return Object(util["j" /* jsS */])({ pnp: 1, expiration: expire, value: o });
+    };
+    /**
+     * Deletes expired items added by this library in this.store and sets a timeout to call itself
+     */
+    PnPClientStorageWrapper.prototype.cacheExpirationHandler = function () {
+        var _this = this;
+        if (!this.enabled) {
+            return;
+        }
+        this.deleteExpired().then(function (_) {
+            // call ourself in the future
+            setTimeout(Object(util["d" /* getCtxCallback */])(_this, _this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
+        }).catch(console.error);
+    };
+    return PnPClientStorageWrapper;
+}());
+
+/**
+ * A thin implementation of in-memory storage for use in nodejs
+ */
+var MemoryStorage = /** @class */ (function () {
+    function MemoryStorage(_store) {
+        if (_store === void 0) { _store = new Map(); }
+        this._store = _store;
+    }
+    Object.defineProperty(MemoryStorage.prototype, "length", {
+        get: function () {
+            return this._store.size;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MemoryStorage.prototype.clear = function () {
+        this._store.clear();
+    };
+    MemoryStorage.prototype.getItem = function (key) {
+        return this._store.get(key);
+    };
+    MemoryStorage.prototype.key = function (index) {
+        return Array.from(this._store)[index][0];
+    };
+    MemoryStorage.prototype.removeItem = function (key) {
+        this._store.delete(key);
+    };
+    MemoryStorage.prototype.setItem = function (key, data) {
+        this._store.set(key, data);
+    };
+    return MemoryStorage;
+}());
+/**
+ * A class that will establish wrappers for both local and session storage
+ */
+var PnPClientStorage = /** @class */ (function () {
+    /**
+     * Creates a new instance of the PnPClientStorage class
+     *
+     * @constructor
+     */
+    function PnPClientStorage(_local, _session) {
+        if (_local === void 0) { _local = null; }
+        if (_session === void 0) { _session = null; }
+        this._local = _local;
+        this._session = _session;
+    }
+    Object.defineProperty(PnPClientStorage.prototype, "local", {
+        /**
+         * Provides access to the local storage of the browser
+         */
+        get: function () {
+            if (this._local === null) {
+                this._local = storage_PnPClientStorageWrapper.bind(localStorage);
+            }
+            return this._local;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PnPClientStorage.prototype, "session", {
+        /**
+         * Provides access to the session storage of the browser
+         */
+        get: function () {
+            if (this._session === null) {
+                this._session = storage_PnPClientStorageWrapper.bind(sessionStorage);
+            }
+            return this._session;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return PnPClientStorage;
+}());
+
+//# sourceMappingURL=storage.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/common/index.js
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
+
+var batch_Batch = /** @class */ (function () {
+    function Batch(_batchId) {
+        if (_batchId === void 0) { _batchId = Object(util["e" /* getGUID */])(); }
+        this._batchId = _batchId;
+        this._reqs = [];
+        this._deps = [];
+        this._rDeps = [];
+    }
+    Object.defineProperty(Batch.prototype, "batchId", {
+        get: function () {
+            return this._batchId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Batch.prototype, "requests", {
+        /**
+         * The requests contained in this batch
+         */
+        get: function () {
+            return this._reqs;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     *
+     * @param url Request url
+     * @param method Request method (GET, POST, etc)
+     * @param options Any request options
+     * @param parser The parser used to handle the eventual return from the query
+     * @param id An identifier used to track a request within a batch
+     */
+    Batch.prototype.add = function (url, method, options, parser, id) {
+        var info = {
+            id: id,
+            method: method.toUpperCase(),
+            options: options,
+            parser: parser,
+            reject: null,
+            resolve: null,
+            url: url,
+        };
+        var p = new Promise(function (resolve, reject) {
+            info.resolve = resolve;
+            info.reject = reject;
+        });
+        this._reqs.push(info);
+        return p;
+    };
+    /**
+     * Adds a dependency insuring that some set of actions will occur before a batch is processed.
+     * MUST be cleared using the returned resolve delegate to allow batches to run
+     */
+    Batch.prototype.addDependency = function () {
+        var resolver = function () { return void (0); };
+        this._deps.push(new Promise(function (resolve) {
+            resolver = resolve;
+        }));
+        return resolver;
+    };
+    /**
+     * The batch's execute method will not resolve util any promises added here resolve
+     *
+     * @param p The dependent promise
+     */
+    Batch.prototype.addResolveBatchDependency = function (p) {
+        this._rDeps.push(p);
+    };
+    /**
+     * Execute the current batch and resolve the associated promises
+     *
+     * @returns A promise which will be resolved once all of the batch's child promises have resolved
+     */
+    Batch.prototype.execute = function () {
+        var _this = this;
+        // we need to check the dependencies twice due to how different engines handle things.
+        // We can get a second set of promises added during the first set resolving
+        return Promise.all(this._deps)
+            .then(function () { return Promise.all(_this._deps); })
+            .then(function () { return _this.executeImpl(); })
+            .then(function () { return Promise.all(_this._rDeps); })
+            .then(function () { return void (0); });
+    };
+    return Batch;
+}());
+
+//# sourceMappingURL=batch.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
+
+var caching_CachingOptions = /** @class */ (function () {
+    function CachingOptions(key, storeName, expiration) {
+        if (storeName === void 0) { storeName = RuntimeConfig.defaultCachingStore; }
+        if (expiration === void 0) { expiration = Object(util["c" /* dateAdd */])(new Date(), "second", RuntimeConfig.defaultCachingTimeoutSeconds); }
+        this.key = key;
+        this.storeName = storeName;
+        this.expiration = expiration;
+    }
+    Object.defineProperty(CachingOptions.prototype, "store", {
+        get: function () {
+            if (this.storeName === "local") {
+                return CachingOptions.storage.local;
+            }
+            else {
+                return CachingOptions.storage.session;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    CachingOptions.storage = new PnPClientStorage();
+    return CachingOptions;
+}());
+
+var CachingParserWrapper = /** @class */ (function () {
+    function CachingParserWrapper(parser, cacheOptions) {
+        this.parser = parser;
+        this.cacheOptions = cacheOptions;
+    }
+    CachingParserWrapper.prototype.parse = function (response) {
+        var _this = this;
+        return this.parser.parse(response).then(function (r) { return _this.cacheData(r); });
+    };
+    CachingParserWrapper.prototype.cacheData = function (data) {
+        if (this.cacheOptions.store !== null) {
+            this.cacheOptions.store.put(this.cacheOptions.key, data, this.cacheOptions.expiration);
+        }
+        return data;
+    };
+    return CachingParserWrapper;
+}());
+
+//# sourceMappingURL=caching.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/add-prop.js
+/**
+ * Adds a property to a target instance
+ *
+ * @param target The object to whose prototype we will add a property
+ * @param name Property name
+ * @param factory Factory method used to produce the property value
+ * @param path Any additional path required to produce the value
+ */
+function addProp(target, name, factory, path) {
+    Reflect.defineProperty(target.prototype, name, {
+        configurable: true,
+        enumerable: true,
+        get: function () {
+            return factory(this, path);
+        },
+    });
+}
+//# sourceMappingURL=add-prop.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
+
+
+var _enableExtensions = false;
+var globaExtensions = [];
+var ObjExtensionsSym = Symbol("__extensions");
+/**
+ * Creates global extensions across all invokable objects
+ *
+ * @param e The global extensions to apply
+ */
+var extendGlobal = function (e) {
+    _enableExtensions = true;
+    extendCol(globaExtensions, e);
+};
+/**
+ * Applies the supplied extensions to a single instance
+ *
+ * @param target Object to which extensions are applied
+ * @param extensions Extensions to apply
+ */
+var extendObj = function (target, extensions) {
+    _enableExtensions = true;
+    if (!Reflect.has(target, ObjExtensionsSym)) {
+        Reflect.set(target, ObjExtensionsSym, []);
+    }
+    extendCol(Reflect.get(target, ObjExtensionsSym), extensions);
+    return target;
+};
+/**
+ * Allows applying extensions to all instances created from the supplied factory
+ *
+ * @param factory The Invokable Factory method to extend
+ * @param extensions Extensions to apply
+ */
+var extendFactory = function (factory, extensions) {
+    _enableExtensions = true;
+    if (factory.__proto__[ObjExtensionsSym] === undefined) {
+        factory.__proto__[ObjExtensionsSym] = [];
+    }
+    extendCol(factory.__proto__[ObjExtensionsSym], extensions);
+};
+function extendCol(a, e) {
+    if (Object(util["g" /* isArray */])(e)) {
+        // @ts-ignore
+        a.push.apply(a, Object(tslib_es6["e" /* __spread */])(e));
+    }
+    else {
+        // @ts-ignore
+        a.push(e);
+    }
+}
+/**
+ * Clears all global extensions
+ */
+var clearGlobalExtensions = function () {
+    globaExtensions.length = 0;
+};
+/**
+ * Disables all extensions
+ */
+var disableExtensions = function () {
+    _enableExtensions = false;
+};
+/**
+ * Enables all extensions
+ */
+var enableExtensions = function () {
+    _enableExtensions = true;
+};
+/**
+ * Applies a set of extension previously applied to a factory using extendFactory to an object created from that factory
+ *
+ * @param factory
+ * @param args
+ */
+var applyFactoryExtensions = function (factory, args) {
+    var o = factory(args);
+    if (factory.__proto__[ObjExtensionsSym]) {
+        o = extendObj(o, factory.__proto__[ObjExtensionsSym]);
+    }
+    return o;
+};
+function extensionOrDefault(op, or, target) {
+    var rest = [];
+    for (var _i = 3; _i < arguments.length; _i++) {
+        rest[_i - 3] = arguments[_i];
+    }
+    if (_enableExtensions) {
+        var extensions = [];
+        // we need to first invoke extensions tied to only this object
+        if (Reflect.has(target, ObjExtensionsSym)) {
+            extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(Reflect.get(target, ObjExtensionsSym)));
+        }
+        // second we need to process any global extensions
+        extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(globaExtensions));
+        for (var i = 0; i < extensions.length; i++) {
+            var extension = extensions[i];
+            var result = undefined;
+            if (Object(util["h" /* isFunc */])(extension)) {
+                // this extension is a function which we call
+                result = extension.apply(void 0, Object(tslib_es6["e" /* __spread */])([op, target], rest));
+            }
+            else if (op === "get" && Reflect.has(extension, rest[0])) {
+                // this extension is a named extension meaning we are overriding a specific method/property
+                result = Reflect.get(extension, rest[0], target);
+            }
+            else if (Reflect.has(extension, op)) {
+                // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
+                result = Reflect.get(extension, op).apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
+            }
+            if (typeof result !== "undefined") {
+                // if a extension returned a result, we return that
+                // this means that this extension overrides any other extensions and no more are executed
+                // first extension in the list to return "wins"
+                return result;
+            }
+        }
+    }
+    return or.apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
+}
+//# sourceMappingURL=invokable-extensions.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
+
+
+
+var invokableBinder = function (invoker) { return function (constructor) {
+    return function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        var factory = function (as) {
+            var r = Object.assign(function () {
+                var ags = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    ags[_i] = arguments[_i];
+                }
+                return invoker.apply(r, ags);
+            }, new (constructor.bind.apply(constructor, Object(tslib_es6["e" /* __spread */])([void 0], as)))());
+            Reflect.setPrototypeOf(r, constructor.prototype);
+            return r;
+        };
+        if (RuntimeConfig.ie11) {
+            return factory(args);
+        }
+        else {
+            return new Proxy(applyFactoryExtensions(factory, args), {
+                apply: function (target, _thisArg, argArray) {
+                    return extensionOrDefault("apply", function () {
+                        var a = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            a[_i] = arguments[_i];
+                        }
+                        return Reflect.apply(a[0], a[1], a[2]);
+                    }, target, _thisArg, argArray);
+                },
+                get: function (target, p, receiver) {
+                    return extensionOrDefault("get", function () {
+                        var a = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            a[_i] = arguments[_i];
+                        }
+                        return Reflect.get(a[0], a[1], a[2]);
+                    }, target, p, receiver);
+                },
+                has: function (target, p) {
+                    return extensionOrDefault("has", function () {
+                        var a = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            a[_i] = arguments[_i];
+                        }
+                        return Reflect.get(a[0], a[1]);
+                    }, target, p);
+                },
+                set: function (target, p, value, receiver) {
+                    return extensionOrDefault("set", function () {
+                        var a = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            a[_i] = arguments[_i];
+                        }
+                        return Reflect.set(a[0], a[1], a[2], a[3]);
+                    }, target, p, value, receiver);
+                },
+            });
+        }
+    };
+}; };
+var invokableFactory = invokableBinder(function (options) {
+    return this.defaultAction(options);
+});
+//# sourceMappingURL=invokable-binder.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
+
+
+var parsers_ODataParser = /** @class */ (function () {
+    function ODataParser() {
+    }
+    ODataParser.prototype.parse = function (r) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            if (_this.handleError(r, reject)) {
+                _this.parseImpl(r, resolve, reject);
+            }
+        });
+    };
+    ODataParser.prototype.parseImpl = function (r, resolve, reject) {
+        var _this = this;
+        if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")) === 0) || r.status === 204) {
+            resolve({});
+        }
+        else {
+            // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
+            r.text()
+                .then(function (txt) { return txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {}; })
+                .then(function (json) { return resolve(_this.parseODataJSON(json)); })
+                .catch(function (e) { return reject(e); });
+        }
+    };
+    /**
+     * Handles a response with ok === false by parsing the body and creating a ProcessHttpClientResponseException
+     * which is passed to the reject delegate. This method returns true if there is no error, otherwise false
+     *
+     * @param r Current response object
+     * @param reject reject delegate for the surrounding promise
+     */
+    ODataParser.prototype.handleError = function (r, reject) {
+        if (!r.ok) {
+            parsers_HttpRequestError.init(r).then(reject);
+        }
+        return r.ok;
+    };
+    /**
+     * Normalizes the json response by removing the various nested levels
+     *
+     * @param json json object to parse
+     */
+    ODataParser.prototype.parseODataJSON = function (json) {
+        var result = json;
+        if (Object(util["f" /* hOP */])(json, "d")) {
+            if (Object(util["f" /* hOP */])(json.d, "results")) {
+                result = json.d.results;
+            }
+            else {
+                result = json.d;
+            }
+        }
+        else if (Object(util["f" /* hOP */])(json, "value")) {
+            result = json.value;
+        }
+        return result;
+    };
+    return ODataParser;
+}());
+
+var parsers_TextParser = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(TextParser, _super);
+    function TextParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TextParser.prototype.parseImpl = function (r, resolve) {
+        r.text().then(resolve);
+    };
+    return TextParser;
+}(parsers_ODataParser));
+
+var parsers_BlobParser = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(BlobParser, _super);
+    function BlobParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    BlobParser.prototype.parseImpl = function (r, resolve) {
+        r.blob().then(resolve);
+    };
+    return BlobParser;
+}(parsers_ODataParser));
+
+var parsers_JSONParser = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(JSONParser, _super);
+    function JSONParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    JSONParser.prototype.parseImpl = function (r, resolve) {
+        r.json().then(resolve);
+    };
+    return JSONParser;
+}(parsers_ODataParser));
+
+var parsers_BufferParser = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(BufferParser, _super);
+    function BufferParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    BufferParser.prototype.parseImpl = function (r, resolve) {
+        if (Object(util["h" /* isFunc */])(r.arrayBuffer)) {
+            r.arrayBuffer().then(resolve);
+        }
+        else {
+            r.buffer().then(resolve);
+        }
+    };
+    return BufferParser;
+}(parsers_ODataParser));
+
+var parsers_LambdaParser = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(LambdaParser, _super);
+    function LambdaParser(parser) {
+        var _this = _super.call(this) || this;
+        _this.parser = parser;
+        return _this;
+    }
+    LambdaParser.prototype.parseImpl = function (r, resolve) {
+        this.parser(r).then(resolve);
+    };
+    return LambdaParser;
+}(parsers_ODataParser));
+
+var parsers_HttpRequestError = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(HttpRequestError, _super);
+    function HttpRequestError(message, response, status, statusText) {
+        if (status === void 0) { status = response.status; }
+        if (statusText === void 0) { statusText = response.statusText; }
+        var _this = _super.call(this, message) || this;
+        _this.response = response;
+        _this.status = status;
+        _this.statusText = statusText;
+        _this.isHttpRequestError = true;
+        return _this;
+    }
+    HttpRequestError.init = function (r) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var t;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, r.clone().text()];
+                    case 1:
+                        t = _a.sent();
+                        return [2 /*return*/, new HttpRequestError("Error making HttpClient request in queryable [" + r.status + "] " + r.statusText + " ::> " + t, r.clone())];
+                }
+            });
+        });
+    };
+    return HttpRequestError;
+}(Error));
+
+//# sourceMappingURL=parsers.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/queryable.js
+
+
+
+function cloneQueryableData(source) {
+    var s = JSON.stringify(source, function (key, value) {
+        switch (key) {
+            case "query":
+                return JSON.stringify(Object(tslib_es6["e" /* __spread */])(value));
+            case "batch":
+                return "-";
+            case "batchDependency":
+                return "-";
+            case "cachingOptions":
+                return "-";
+            case "clientFactory":
+                return "-";
+            case "parser":
+                return "-";
+            default:
+                return value;
+        }
+    }, 0);
+    var parsed = JSON.parse(s, function (key, value) {
+        switch (key) {
+            case "query":
+                return new Map(JSON.parse(value));
+            case "batch":
+                return source.batch;
+            case "batchDependency":
+                return source.batchDependency;
+            case "cachingOptions":
+                return source.cachingOptions;
+            case "clientFactory":
+                return source.clientFactory;
+            case "parser":
+                return source.parser;
+            default:
+                return value;
+        }
+    });
+    // this handles bodies that cannot be JSON encoded (Blob, etc)
+    if (source.options && source.options.body) {
+        parsed.options.body = source.options.body;
+    }
+    return parsed;
+}
+var queryable_Queryable = /** @class */ (function () {
+    function Queryable(dataSeed) {
+        if (dataSeed === void 0) { dataSeed = {}; }
+        this._data = Object.assign({}, {
+            cloneParentWasCaching: false,
+            options: {},
+            parentUrl: "",
+            parser: new parsers_ODataParser(),
+            query: new Map(),
+            url: "",
+            useCaching: false,
+        }, cloneQueryableData(dataSeed));
+    }
+    Object.defineProperty(Queryable.prototype, "data", {
+        get: function () {
+            return this._data;
+        },
+        set: function (value) {
+            this._data = Object.assign({}, cloneQueryableData(this.data), cloneQueryableData(value));
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+    * Gets the currentl url
+    *
+    */
+    Queryable.prototype.toUrl = function () {
+        return this.data.url;
+    };
+    /**
+     * Directly concatonates the supplied string to the current url, not normalizing "/" chars
+     *
+     * @param pathPart The string to concatonate to the url
+     */
+    Queryable.prototype.concat = function (pathPart) {
+        this.data.url += pathPart;
+        return this;
+    };
+    Object.defineProperty(Queryable.prototype, "query", {
+        /**
+         * Provides access to the query builder for this url
+         *
+         */
+        get: function () {
+            return this.data.query;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Sets custom options for current object and all derived objects accessible via chaining
+     *
+     * @param options custom options
+     */
+    Queryable.prototype.configure = function (options) {
+        Object(net["e" /* mergeOptions */])(this.data.options, options);
+        return this;
+    };
+    /**
+     * Configures this instance from the configure options of the supplied instance
+     *
+     * @param o Instance from which options should be taken
+     */
+    Queryable.prototype.configureFrom = function (o) {
+        Object(net["e" /* mergeOptions */])(this.data.options, o.data.options);
+        return this;
+    };
+    /**
+     * Enables caching for this request
+     *
+     * @param options Defines the options used when caching this request
+     */
+    Queryable.prototype.usingCaching = function (options) {
+        if (!RuntimeConfig.globalCacheDisable) {
+            this.data.useCaching = true;
+            if (options !== undefined) {
+                this.data.cachingOptions = options;
+            }
+        }
+        return this;
+    };
+    Queryable.prototype.usingParser = function (parser) {
+        this.data.parser = parser;
+        return this;
+    };
+    /**
+     * Allows you to set a request specific processing pipeline
+     *
+     * @param pipeline The set of methods, in order, to execute a given request
+     */
+    Queryable.prototype.withPipeline = function (pipeline) {
+        this.data.pipes = pipeline.slice(0);
+        return this;
+    };
+    /**
+     * Appends the given string and normalizes "/" chars
+     *
+     * @param pathPart The string to append
+     */
+    Queryable.prototype.append = function (pathPart) {
+        this.data.url = Object(util["b" /* combine */])(this.data.url, pathPart);
+    };
+    /**
+     * Adds this query to the supplied batch
+     *
+     * @example
+     * ```
+     *
+     * let b = pnp.sp.createBatch();
+     * pnp.sp.web.inBatch(b).get().then(...);
+     * b.execute().then(...)
+     * ```
+     */
+    Queryable.prototype.inBatch = function (batch) {
+        if (this.batch !== null) {
+            throw Error("This query is already part of a batch.");
+        }
+        if (Object(util["k" /* objectDefinedNotNull */])(batch)) {
+            this.data.batch = batch;
+        }
+        return this;
+    };
+    /**
+     * Blocks a batch call from occuring, MUST be cleared by calling the returned function
+    */
+    Queryable.prototype.addBatchDependency = function () {
+        if (Object(util["k" /* objectDefinedNotNull */])(this.data.batch)) {
+            return this.data.batch.addDependency();
+        }
+        return function () { return null; };
+    };
+    Object.defineProperty(Queryable.prototype, "hasBatch", {
+        /**
+         * Indicates if the current query has a batch associated
+         *
+         */
+        get: function () {
+            return Object(util["k" /* objectDefinedNotNull */])(this.data.batch);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Queryable.prototype, "batch", {
+        /**
+         * The batch currently associated with this query or null
+         *
+         */
+        get: function () {
+            return this.hasBatch ? this.data.batch : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Queryable.prototype, "parentUrl", {
+        /**
+         * Gets the parent url used when creating this instance
+         *
+         */
+        get: function () {
+            return this.data.parentUrl;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Clones this instance's data to target
+     *
+     * @param target Instance to which data is written
+     * @param settings [Optional] Settings controlling how clone is applied
+     */
+    Queryable.prototype.cloneTo = function (target, settings) {
+        if (settings === void 0) { settings = { includeBatch: true }; }
+        target.data = Object.assign({}, cloneQueryableData(this.data), {
+            batch: null,
+            cloneParentCacheOptions: null,
+            cloneParentWasCaching: false,
+        }, cloneQueryableData(target.data));
+        target.configureFrom(this);
+        if (settings.includeBatch) {
+            target.inBatch(this.batch);
+        }
+        if (this.data.useCaching) {
+            target.data.cloneParentWasCaching = true;
+            target.data.cloneParentCacheOptions = this.data.cachingOptions;
+        }
+        return target;
+    };
+    return Queryable;
+}());
+
+//# sourceMappingURL=queryable.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
+/**
+ * Class used to subscribe ILogListener and log messages throughout an application
+ *
+ */
+var Logger = /** @class */ (function () {
+    function Logger() {
+    }
+    Object.defineProperty(Logger, "activeLogLevel", {
+        /**
+         * Gets or sets the active log level to apply for log filtering
+         */
+        get: function () {
+            return Logger.instance.activeLogLevel;
+        },
+        set: function (value) {
+            Logger.instance.activeLogLevel = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Logger, "instance", {
+        get: function () {
+            if (Logger._instance === undefined || Logger._instance === null) {
+                Logger._instance = new LoggerImpl();
+            }
+            return Logger._instance;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Adds ILogListener instances to the set of subscribed listeners
+     *
+     * @param listeners One or more listeners to subscribe to this log
+     */
+    Logger.subscribe = function () {
+        var listeners = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            listeners[_i] = arguments[_i];
+        }
+        listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
+    };
+    /**
+     * Clears the subscribers collection, returning the collection before modification
+     */
+    Logger.clearSubscribers = function () {
+        return Logger.instance.clearSubscribers();
+    };
+    Object.defineProperty(Logger, "count", {
+        /**
+         * Gets the current subscriber count
+         */
+        get: function () {
+            return Logger.instance.count;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Writes the supplied string to the subscribed listeners
+     *
+     * @param message The message to write
+     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
+     */
+    Logger.write = function (message, level) {
+        if (level === void 0) { level = 1 /* Info */; }
+        Logger.instance.log({ level: level, message: message });
+    };
+    /**
+     * Writes the supplied string to the subscribed listeners
+     *
+     * @param json The json object to stringify and write
+     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
+     */
+    Logger.writeJSON = function (json, level) {
+        if (level === void 0) { level = 1 /* Info */; }
+        this.write(JSON.stringify(json), level);
+    };
+    /**
+     * Logs the supplied entry to the subscribed listeners
+     *
+     * @param entry The message to log
+     */
+    Logger.log = function (entry) {
+        Logger.instance.log(entry);
+    };
+    /**
+     * Logs an error object to the subscribed listeners
+     *
+     * @param err The error object
+     */
+    Logger.error = function (err) {
+        Logger.instance.log({ data: err, level: 3 /* Error */, message: err.message });
+    };
+    return Logger;
+}());
+
+var LoggerImpl = /** @class */ (function () {
+    function LoggerImpl(activeLogLevel, subscribers) {
+        if (activeLogLevel === void 0) { activeLogLevel = 2 /* Warning */; }
+        if (subscribers === void 0) { subscribers = []; }
+        this.activeLogLevel = activeLogLevel;
+        this.subscribers = subscribers;
+    }
+    LoggerImpl.prototype.subscribe = function (listener) {
+        this.subscribers.push(listener);
+    };
+    LoggerImpl.prototype.clearSubscribers = function () {
+        var s = this.subscribers.slice(0);
+        this.subscribers.length = 0;
+        return s;
+    };
+    Object.defineProperty(LoggerImpl.prototype, "count", {
+        get: function () {
+            return this.subscribers.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    LoggerImpl.prototype.write = function (message, level) {
+        if (level === void 0) { level = 1 /* Info */; }
+        this.log({ level: level, message: message });
+    };
+    LoggerImpl.prototype.log = function (entry) {
+        if (entry !== undefined && this.activeLogLevel <= entry.level) {
+            this.subscribers.map(function (subscriber) { return subscriber.log(entry); });
+        }
+    };
+    return LoggerImpl;
+}());
+/**
+ * A set of logging levels
+ */
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["Verbose"] = 0] = "Verbose";
+    LogLevel[LogLevel["Info"] = 1] = "Info";
+    LogLevel[LogLevel["Warning"] = 2] = "Warning";
+    LogLevel[LogLevel["Error"] = 3] = "Error";
+    LogLevel[LogLevel["Off"] = 99] = "Off";
+})(LogLevel || (LogLevel = {}));
+//# sourceMappingURL=logger.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
+/**
+ * Implementation of LogListener which logs to the console
+ *
+ */
+var ConsoleListener = /** @class */ (function () {
+    function ConsoleListener() {
+    }
+    /**
+     * Any associated data that a given logging listener may choose to log or ignore
+     *
+     * @param entry The information to be logged
+     */
+    ConsoleListener.prototype.log = function (entry) {
+        var msg = this.format(entry);
+        switch (entry.level) {
+            case 0 /* Verbose */:
+            case 1 /* Info */:
+                console.log(msg);
+                break;
+            case 2 /* Warning */:
+                console.warn(msg);
+                break;
+            case 3 /* Error */:
+                console.error(msg);
+                break;
+        }
+    };
+    /**
+     * Formats the message
+     *
+     * @param entry The information to format into a string
+     */
+    ConsoleListener.prototype.format = function (entry) {
+        var msg = [];
+        msg.push("Message: " + entry.message);
+        if (entry.data !== undefined) {
+            try {
+                msg.push(" Data: " + JSON.stringify(entry.data));
+            }
+            catch (e) {
+                msg.push(" Data: Error in stringify of supplied data " + e);
+            }
+        }
+        return msg.join("");
+    };
+    return ConsoleListener;
+}());
+
+/**
+ * Implementation of LogListener which logs to the supplied function
+ *
+ */
+var FunctionListener = /** @class */ (function () {
+    /**
+     * Creates a new instance of the FunctionListener class
+     *
+     * @constructor
+     * @param  method The method to which any logging data will be passed
+     */
+    function FunctionListener(method) {
+        this.method = method;
+    }
+    /**
+     * Any associated data that a given logging listener may choose to log or ignore
+     *
+     * @param entry The information to be logged
+     */
+    FunctionListener.prototype.log = function (entry) {
+        this.method(entry);
+    };
+    return FunctionListener;
+}());
+
+//# sourceMappingURL=listeners.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline.js
+
+
+
+
+/**
+ * Resolves the context's result value
+ *
+ * @param context The current context
+ */
+function returnResult(context) {
+    Logger.log({
+        data: Logger.activeLogLevel === 0 /* Verbose */ ? context.result : {},
+        level: 1 /* Info */,
+        message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Returning result from pipeline. Set logging to verbose to see data.",
+    });
+    return Promise.resolve(context.result);
+}
+/**
+ * Sets the result on the context
+ */
+function setResult(context, value) {
+    return new Promise(function (resolve) {
+        context.result = value;
+        context.hasResult = true;
+        resolve(context);
+    });
+}
+/**
+ * Invokes the next method in the provided context's pipeline
+ *
+ * @param c The current request context
+ */
+function next(c) {
+    return c.pipes.length > 0 ? c.pipes.shift()(c) : Promise.resolve(c);
+}
+/**
+ * Executes the current request context's pipeline
+ *
+ * @param context Current context
+ */
+function pipe(context) {
+    if (context.pipes.length < 1) {
+        Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Request pipeline contains no methods!", 3 /* Error */);
+        throw Error("Request pipeline contains no methods!");
+    }
+    var promise = next(context).then(function (ctx) { return returnResult(ctx); }).catch(function (e) {
+        Logger.error(e);
+        throw e;
+    });
+    if (context.isBatched) {
+        // this will block the batch's execute method from returning until the child requets have been resolved
+        context.batch.addResolveBatchDependency(promise);
+    }
+    return promise;
+}
+/**
+ * decorator factory applied to methods in the pipeline to control behavior
+ */
+function requestPipelineMethod(alwaysRun) {
+    if (alwaysRun === void 0) { alwaysRun = false; }
+    return function (target, propertyKey, descriptor) {
+        var method = descriptor.value;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            // if we have a result already in the pipeline, pass it along and don't call the tagged method
+            if (!alwaysRun && args.length > 0 && Object(util["f" /* hOP */])(args[0], "hasResult") && args[0].hasResult) {
+                Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Skipping request pipeline method " + propertyKey + ", existing result in pipeline.", 0 /* Verbose */);
+                return Promise.resolve(args[0]);
+            }
+            // apply the tagged method
+            Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Calling request pipeline method " + propertyKey + ".", 0 /* Verbose */);
+            // then chain the next method in the context's pipeline - allows for dynamic pipeline
+            return method.apply(target, args).then(function (ctx) { return next(ctx); });
+        };
+    };
+}
+/**
+ * Contains the methods used within the request pipeline
+ */
+var pipeline_PipelineMethods = /** @class */ (function () {
+    function PipelineMethods() {
+    }
+    /**
+     * Logs the start of the request
+     */
+    PipelineMethods.logStart = function (context) {
+        return new Promise(function (resolve) {
+            Logger.log({
+                data: Logger.activeLogLevel === 1 /* Info */ ? {} : context,
+                level: 1 /* Info */,
+                message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Beginning " + context.method + " request (" + context.url + ")",
+            });
+            resolve(context);
+        });
+    };
+    /**
+     * Handles caching of the request
+     */
+    PipelineMethods.caching = function (context) {
+        return new Promise(function (resolve) {
+            // handle caching, if applicable
+            if (context.useCaching) {
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Caching is enabled for request, checking cache...", 1 /* Info */);
+                var cacheOptions = new caching_CachingOptions(context.url.toLowerCase());
+                if (context.cachingOptions !== undefined) {
+                    cacheOptions = Object(util["a" /* assign */])(cacheOptions, context.cachingOptions);
+                }
+                // we may not have a valid store
+                if (cacheOptions.store !== null) {
+                    // check if we have the data in cache and if so resolve the promise and return
+                    var data = cacheOptions.store.get(cacheOptions.key);
+                    if (data !== null) {
+                        // ensure we clear any held batch dependency we are resolving from the cache
+                        Logger.log({
+                            data: Logger.activeLogLevel === 1 /* Info */ ? {} : data,
+                            level: 1 /* Info */,
+                            message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
+                        });
+                        if (Object(util["h" /* isFunc */])(context.batchDependency)) {
+                            context.batchDependency();
+                        }
+                        // handle the case where a parser needs to take special actions with a cached result
+                        if (Object(util["f" /* hOP */])(context.parser, "hydrate")) {
+                            data = context.parser.hydrate(data);
+                        }
+                        return setResult(context, data).then(function (ctx) { return resolve(ctx); });
+                    }
+                }
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Value not found in cache.", 1 /* Info */);
+                // if we don't then wrap the supplied parser in the caching parser wrapper
+                // and send things on their way
+                context.parser = new CachingParserWrapper(context.parser, cacheOptions);
+            }
+            return resolve(context);
+        });
+    };
+    /**
+     * Sends the request
+     */
+    PipelineMethods.send = function (context) {
+        return new Promise(function (resolve, reject) {
+            // send or batch the request
+            if (context.isBatched) {
+                // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
+                var p = context.batch.add(context.url, context.method, context.options, context.parser, context.requestId);
+                // we release the dependency here to ensure the batch does not execute until the request is added to the batch
+                if (Object(util["h" /* isFunc */])(context.batchDependency)) {
+                    context.batchDependency();
+                }
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request in batch " + context.batch.batchId + ".", 1 /* Info */);
+                // we set the result as the promise which will be resolved by the batch's execution
+                resolve(setResult(context, p));
+            }
+            else {
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Sending request.", 1 /* Info */);
+                // we are not part of a batch, so proceed as normal
+                var client = context.clientFactory();
+                var opts = Object(util["a" /* assign */])(context.options || {}, { method: context.method });
+                client.fetch(context.url, opts)
+                    .then(function (response) { return context.parser.parse(response); })
+                    .then(function (result) { return setResult(context, result); })
+                    .then(function (ctx) { return resolve(ctx); })
+                    .catch(function (e) { return reject(e); });
+            }
+        });
+    };
+    /**
+     * Logs the end of the request
+     */
+    PipelineMethods.logEnd = function (context) {
+        return new Promise(function (resolve) {
+            if (context.isBatched) {
+                Logger.log({
+                    data: Logger.activeLogLevel === 1 /* Info */ ? {} : context,
+                    level: 1 /* Info */,
+                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") " + context.method + " request will complete in batch " + context.batch.batchId + ".",
+                });
+            }
+            else {
+                Logger.log({
+                    data: Logger.activeLogLevel === 1 /* Info */ ? {} : context,
+                    level: 1 /* Info */,
+                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Completing " + context.method + " request.",
+                });
+            }
+            resolve(context);
+        });
+    };
+    Object(tslib_es6["b" /* __decorate */])([
+        requestPipelineMethod(true)
+    ], PipelineMethods, "logStart", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        requestPipelineMethod()
+    ], PipelineMethods, "caching", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        requestPipelineMethod()
+    ], PipelineMethods, "send", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        requestPipelineMethod(true)
+    ], PipelineMethods, "logEnd", null);
+    return PipelineMethods;
+}());
+
+function getDefaultPipeline() {
+    return [
+        pipeline_PipelineMethods.logStart,
+        pipeline_PipelineMethods.caching,
+        pipeline_PipelineMethods.send,
+        pipeline_PipelineMethods.logEnd,
+    ].slice(0);
+}
+//# sourceMappingURL=pipeline.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline-binder.js
+
+
+
+
+// first we bind the pipeline we will use for all requests within this closure
+function pipelineBinder(pipes) {
+    // then we bind the client factory we'll use (typically done in an implementing library such as sp)
+    return function (clientFactory) {
+        // then we create a binder we can apply for each type of method (GET, POST, etc.)
+        return function (method) {
+            // finally we get a function back to which we can pass an IQueryableData instance and execute the request it defines
+            return function (o) {
+                // send the IQueryableData down the pipeline
+                return pipe(Object.assign({}, {
+                    batch: o.batch || null,
+                    batchDependency: null,
+                    cachingOptions: null,
+                    clientFactory: clientFactory,
+                    cloneParentCacheOptions: null,
+                    cloneParentWasCaching: false,
+                    hasResult: false,
+                    isBatched: Object(util["k" /* objectDefinedNotNull */])(o.batch),
+                    method: method,
+                    options: null,
+                    parentUrl: "",
+                    parser: new parsers_ODataParser(),
+                    pipes: pipes.slice(0),
+                    query: new Map(),
+                    requestId: Object(util["e" /* getGUID */])(),
+                    url: "",
+                    useCaching: /^get$/i.test(o.method) && o.useCaching,
+                }, cloneQueryableData(o)));
+            };
+        };
+    };
+}
+var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
+//# sourceMappingURL=pipeline-binder.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
+
+function body(o, previous) {
+    return Object.assign({ body: Object(util["j" /* jsS */])(o) }, previous);
+}
+function request_builders_headers(o, previous) {
+    return Object.assign({ headers: o }, previous);
+}
+//# sourceMappingURL=request-builders.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/index.js
+
+
+
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/types.js
 var GraphEndpoints = /** @class */ (function () {
     function GraphEndpoints() {
     }
@@ -5315,342 +2394,12 @@ var GraphEndpoints = /** @class */ (function () {
     GraphEndpoints.V1 = "v1.0";
     return GraphEndpoints;
 }());
-exports.GraphEndpoints = GraphEndpoints;
+
 //# sourceMappingURL=types.js.map
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-function type(n, a) {
-    return Object.assign({ "@odata.type": n }, a);
-}
-exports.type = type;
-//# sourceMappingURL=type.js.map
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(8);
-var types_2 = __webpack_require__(22);
-odata_1.addProp(types_1._Group, "calendar", types_2.Calendar, "calendar");
-odata_1.addProp(types_1._Group, "events", types_2.Events);
-//# sourceMappingURL=groups.js.map
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(9);
-var types_2 = __webpack_require__(24);
-odata_1.addProp(types_1._User, "contacts", types_2.Contacts);
-odata_1.addProp(types_1._User, "contactFolders", types_2.ContactFolders);
-//# sourceMappingURL=users.js.map
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(8);
-var types_2 = __webpack_require__(13);
-odata_1.addProp(types_1._Group, "conversations", types_2.Conversations);
-odata_1.addProp(types_1._Group, "acceptedSenders", types_2.Senders, "acceptedsenders");
-odata_1.addProp(types_1._Group, "rejectedSenders", types_2.Senders, "rejectedsenders");
-//# sourceMappingURL=groups.js.map
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var odata_1 = __webpack_require__(2);
-var logging_1 = __webpack_require__(3);
-var common_1 = __webpack_require__(1);
-var graphlibconfig_1 = __webpack_require__(14);
-var graphhttpclient_1 = __webpack_require__(19);
-var GraphBatch = /** @class */ (function (_super) {
-    tslib_1.__extends(GraphBatch, _super);
-    function GraphBatch(batchUrl, maxRequests) {
-        if (batchUrl === void 0) { batchUrl = "https://graph.microsoft.com/v1.0/$batch"; }
-        if (maxRequests === void 0) { maxRequests = 20; }
-        var _this = _super.call(this) || this;
-        _this.batchUrl = batchUrl;
-        _this.maxRequests = maxRequests;
-        return _this;
-    }
-    /**
-     * Urls come to the batch absolute, but the processor expects relative
-     * @param url Url to ensure is relative
-     */
-    GraphBatch.makeUrlRelative = function (url) {
-        if (!common_1.isUrlAbsolute(url)) {
-            // already not absolute, just give it back
-            return url;
-        }
-        var index = url.indexOf(".com/v1.0/");
-        if (index < 0) {
-            index = url.indexOf(".com/beta/");
-            if (index > -1) {
-                // beta url
-                return url.substr(index + 10);
-            }
-        }
-        else {
-            // v1.0 url
-            return url.substr(index + 9);
-        }
-        // no idea
-        return url;
-    };
-    GraphBatch.formatRequests = function (requests) {
-        var _this = this;
-        return requests.map(function (reqInfo, index) {
-            var requestFragment = {
-                id: "" + ++index,
-                method: reqInfo.method,
-                url: _this.makeUrlRelative(reqInfo.url),
-            };
-            var headers = {};
-            // merge global config headers
-            if (graphlibconfig_1.GraphRuntimeConfig.headers !== undefined && graphlibconfig_1.GraphRuntimeConfig.headers !== null) {
-                headers = common_1.assign(headers, graphlibconfig_1.GraphRuntimeConfig.headers);
-            }
-            if (reqInfo.options !== undefined) {
-                // merge per request headers
-                if (reqInfo.options.headers !== undefined && reqInfo.options.headers !== null) {
-                    headers = common_1.assign(headers, reqInfo.options.headers);
-                }
-                // add a request body
-                if (reqInfo.options.body !== undefined && reqInfo.options.body !== null) {
-                    requestFragment = common_1.assign(requestFragment, {
-                        body: reqInfo.options.body,
-                    });
-                }
-            }
-            requestFragment = common_1.assign(requestFragment, {
-                headers: headers,
-            });
-            return requestFragment;
-        });
-    };
-    GraphBatch.parseResponse = function (requests, graphResponse) {
-        return new Promise(function (resolve) {
-            var parsedResponses = new Array(requests.length).fill(null);
-            for (var i = 0; i < graphResponse.responses.length; ++i) {
-                var response = graphResponse.responses[i];
-                // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
-                // the array of requests and make it easier to map them by index
-                var responseId = parseInt(response.id, 10) - 1;
-                if (response.status === 204) {
-                    parsedResponses[responseId] = new Response();
-                }
-                else {
-                    parsedResponses[responseId] = new Response(JSON.stringify(response.body), response);
-                }
-            }
-            resolve({
-                nextLink: graphResponse.nextLink,
-                responses: parsedResponses,
-            });
-        });
-    };
-    GraphBatch.prototype.executeImpl = function () {
-        var _this = this;
-        logging_1.Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
-        if (this.requests.length < 1) {
-            logging_1.Logger.write("Resolving empty batch.", 1 /* Info */);
-            return Promise.resolve();
-        }
-        var client = new graphhttpclient_1.GraphHttpClient();
-        // create a working copy of our requests
-        var requests = this.requests.slice();
-        // this is the root of our promise chain
-        var promise = Promise.resolve();
-        var _loop_1 = function () {
-            var requestsChunk = requests.splice(0, this_1.maxRequests);
-            var batchRequest = {
-                requests: GraphBatch.formatRequests(requestsChunk),
-            };
-            var batchOptions = {
-                body: common_1.jsS(batchRequest),
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-                method: "POST",
-            };
-            logging_1.Logger.write("[" + this_1.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
-            client.fetch(this_1.batchUrl, batchOptions)
-                .then(function (r) { return r.json(); })
-                .then(function (j) { return GraphBatch.parseResponse(requestsChunk, j); })
-                .then(function (parsedResponse) {
-                logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
-                parsedResponse.responses.reduce(function (chain, response, index) {
-                    var request = requestsChunk[index];
-                    logging_1.Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched request " + request.method + " " + request.url + ".", 0 /* Verbose */);
-                    return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
-                }, promise);
-            });
-        };
-        var this_1 = this;
-        while (requests.length > 0) {
-            _loop_1();
-        }
-        return promise;
-    };
-    return GraphBatch;
-}(odata_1.Batch));
-exports.GraphBatch = GraphBatch;
-//# sourceMappingURL=batch.js.map
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(8);
-var types_2 = __webpack_require__(29);
-odata_1.addProp(types_1._Group, "owners", types_2.Members, "owners");
-odata_1.addProp(types_1._Group, "members", types_2.Members);
-//# sourceMappingURL=groups.js.map
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(9);
-var types_2 = __webpack_require__(31);
-var operations_1 = __webpack_require__(4);
-odata_1.addProp(types_1._User, "messages", types_2.Messages);
-odata_1.addProp(types_1._User, "mailboxSettings", types_2.MailboxSettings);
-odata_1.addProp(types_1._User, "mailFolders", types_2.MailFolders);
-types_1._User.prototype.sendMail = function (message) {
-    return operations_1.graphPost(this.clone(types_1.User, "sendMail"), odata_1.body(message));
-};
-//# sourceMappingURL=users.js.map
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(9);
-var types_2 = __webpack_require__(33);
-odata_1.addProp(types_1._User, "drive", types_2.Drive);
-odata_1.addProp(types_1._User, "drives", types_2.Drives);
-//# sourceMappingURL=users.js.map
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(9);
-var types_2 = __webpack_require__(35);
-odata_1.addProp(types_1._User, "onenote", types_2.OneNote);
-//# sourceMappingURL=users.js.map
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(8);
-var types_2 = __webpack_require__(37);
-odata_1.addProp(types_1._Group, "photo", types_2.Photo);
-//# sourceMappingURL=groups.js.map
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(8);
-var types_2 = __webpack_require__(12);
-odata_1.addProp(types_1._Group, "plans", types_2.Plans, "planner/plans");
-//# sourceMappingURL=groups.js.map
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(9);
-var types_2 = __webpack_require__(12);
-odata_1.addProp(types_1._User, "tasks", types_2.Tasks, "planner/tasks");
-//# sourceMappingURL=users.js.map
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var odata_1 = __webpack_require__(2);
-var types_1 = __webpack_require__(9);
-var types_2 = __webpack_require__(15);
-odata_1.addProp(types_1._User, "joinedTeams", types_2.Teams, "joinedTeams");
-//# sourceMappingURL=users.js.map
-
-/***/ }),
-/* 61 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__(0);
-
-// EXTERNAL MODULE: ./node_modules/@pnp/common/module/index.js + 3 modules
-var common_module = __webpack_require__(1);
-
 // EXTERNAL MODULE: ./node_modules/adal-angular/dist/adal.min.js
-var adal_min = __webpack_require__(43);
+var adal_min = __webpack_require__(3);
 
-// CONCATENATED MODULE: ./node_modules/@pnp/adaljsclient/module/adalclient.js
+// CONCATENATED MODULE: ./node_modules/@pnp/adaljsclient/adalclient.js
 
 
 // @ts-ignore
@@ -5659,7 +2408,7 @@ var adal_min = __webpack_require__(43);
  * Azure AD Client for use in the browser
  */
 var adalclient_AdalClient = /** @class */ (function (_super) {
-    Object(tslib_es6["__extends"])(AdalClient, _super);
+    Object(tslib_es6["c" /* __extends */])(AdalClient, _super);
     /**
      * Creates a new instance of AdalClient
      * @param clientId Azure App Id
@@ -5683,7 +2432,7 @@ var adalclient_AdalClient = /** @class */ (function (_super) {
      * https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient are activated in the tenant.
      */
     AdalClient.fromSPFxContext = function (spfxContext) {
-        return new common_module["SPFxAdalClient"](spfxContext);
+        return new net["b" /* SPFxAdalClient */](spfxContext);
     };
     /**
      * Conducts the fetch opertation against the AAD secured resource
@@ -5692,15 +2441,15 @@ var adalclient_AdalClient = /** @class */ (function (_super) {
      * @param options Any fetch options passed to the underlying fetch implementation
      */
     AdalClient.prototype.fetch = function (url, options) {
-        return Object(tslib_es6["__awaiter"])(this, void 0, void 0, function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
             var token;
-            return Object(tslib_es6["__generator"])(this, function (_a) {
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!Object(common_module["isUrlAbsolute"])(url)) {
+                        if (!Object(util["i" /* isUrlAbsolute */])(url)) {
                             throw Error("You must supply absolute urls to AdalClient.fetch.");
                         }
-                        return [4 /*yield*/, this.getToken(Object(common_module["getADALResource"])(url))];
+                        return [4 /*yield*/, this.getToken(Object(net["c" /* getADALResource */])(url))];
                     case 1:
                         token = _a.sent();
                         this.token = token;
@@ -5715,9 +2464,9 @@ var adalclient_AdalClient = /** @class */ (function (_super) {
      * @param resource The resource for which we are requesting a token
      */
     AdalClient.prototype.getToken = function (resource) {
-        return Object(tslib_es6["__awaiter"])(this, void 0, void 0, function () {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
             var token;
-            return Object(tslib_es6["__generator"])(this, function (_a) {
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.ensureAuthContext()];
                     case 1:
@@ -5810,13 +2559,2782 @@ var adalclient_AdalClient = /** @class */ (function (_super) {
      */
     AdalClient._authContext = null;
     return AdalClient;
-}(common_module["BearerTokenFetchClient"]));
+}(net["a" /* BearerTokenFetchClient */]));
 
 //# sourceMappingURL=adalclient.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/adaljsclient/module/index.js
-/* concated harmony reexport AdalClient */__webpack_require__.d(__webpack_exports__, "AdalClient", function() { return adalclient_AdalClient; });
+// CONCATENATED MODULE: ./node_modules/@pnp/adaljsclient/index.js
 
 //# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/graphlibconfig.js
+
+
+function graphlibconfig_setup(config) {
+    RuntimeConfig.assign(config);
+}
+var graphlibconfig_GraphRuntimeConfigImpl = /** @class */ (function () {
+    function GraphRuntimeConfigImpl() {
+    }
+    Object.defineProperty(GraphRuntimeConfigImpl.prototype, "headers", {
+        get: function () {
+            var graphPart = RuntimeConfig.get("graph");
+            if (graphPart !== undefined && graphPart !== null && graphPart.headers !== undefined) {
+                return graphPart.headers;
+            }
+            return {};
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GraphRuntimeConfigImpl.prototype, "fetchClientFactory", {
+        get: function () {
+            var graphPart = RuntimeConfig.get("graph");
+            // use a configured factory firt
+            if (graphPart !== undefined && graphPart !== null && graphPart.fetchClientFactory !== undefined) {
+                return graphPart.fetchClientFactory;
+            }
+            // then try and use spfx context if available
+            if (RuntimeConfig.spfxContext !== undefined) {
+                return function () { return adalclient_AdalClient.fromSPFxContext(RuntimeConfig.spfxContext); };
+            }
+            throw Error("There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup.");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return GraphRuntimeConfigImpl;
+}());
+
+var GraphRuntimeConfig = new graphlibconfig_GraphRuntimeConfigImpl();
+//# sourceMappingURL=graphlibconfig.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/graphhttpclient.js
+
+
+var graphhttpclient_GraphHttpClient = /** @class */ (function () {
+    function GraphHttpClient() {
+        this._impl = GraphRuntimeConfig.fetchClientFactory();
+    }
+    GraphHttpClient.prototype.fetch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var headers = new Headers();
+        // first we add the global headers so they can be overwritten by any passed in locally to this call
+        Object(net["d" /* mergeHeaders */])(headers, GraphRuntimeConfig.headers);
+        // second we add the local options so we can overwrite the globals
+        Object(net["d" /* mergeHeaders */])(headers, options.headers);
+        if (!headers.has("Content-Type")) {
+            headers.append("Content-Type", "application/json");
+        }
+        if (!headers.has("SdkVersion")) {
+            // this marks the requests for understanding by the service
+            headers.append("SdkVersion", "PnPCoreJS/2.0.2");
+        }
+        var opts = Object(util["a" /* assign */])(options, { headers: headers });
+        return this.fetchRaw(url, opts);
+    };
+    GraphHttpClient.prototype.fetchRaw = function (url, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        // here we need to normalize the headers
+        var rawHeaders = new Headers();
+        Object(net["d" /* mergeHeaders */])(rawHeaders, options.headers);
+        options = Object(util["a" /* assign */])(options, { headers: rawHeaders });
+        var retry = function (ctx) {
+            _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
+                // Check if request was throttled - http status code 429
+                // Check if request failed due to server unavailable - http status code 503
+                if (response.status !== 429 && response.status !== 503) {
+                    ctx.reject(response);
+                }
+                // grab our current delay
+                var delay = ctx.delay;
+                // Increment our counters.
+                ctx.delay *= 2;
+                ctx.attempts++;
+                // If we have exceeded the retry count, reject.
+                if (ctx.retryCount <= ctx.attempts) {
+                    ctx.reject(response);
+                }
+                // Set our retry timeout for {delay} milliseconds.
+                setTimeout(Object(util["d" /* getCtxCallback */])(_this, retry, ctx), delay);
+            });
+        };
+        return new Promise(function (resolve, reject) {
+            var retryContext = {
+                attempts: 0,
+                delay: 100,
+                reject: reject,
+                resolve: resolve,
+                retryCount: 7,
+            };
+            retry.call(_this, retryContext);
+        });
+    };
+    GraphHttpClient.prototype.get = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = Object(util["a" /* assign */])(options, { method: "GET" });
+        return this.fetch(url, opts);
+    };
+    GraphHttpClient.prototype.post = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = Object(util["a" /* assign */])(options, { method: "POST" });
+        return this.fetch(url, opts);
+    };
+    GraphHttpClient.prototype.patch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = Object(util["a" /* assign */])(options, { method: "PATCH" });
+        return this.fetch(url, opts);
+    };
+    GraphHttpClient.prototype.delete = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = Object(util["a" /* assign */])(options, { method: "DELETE" });
+        return this.fetch(url, opts);
+    };
+    return GraphHttpClient;
+}());
+
+//# sourceMappingURL=graphhttpclient.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/operations.js
+
+
+
+
+var graphClientBinder = defaultPipelineBinder(function () { return new graphhttpclient_GraphHttpClient(); });
+var send = function (operation) {
+    return function (o, options) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var data, batchDependency, url;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                data = cloneQueryableData(o.data);
+                batchDependency = Object(util["k" /* objectDefinedNotNull */])(data.batch) ? data.batch.addDependency() : function () { return; };
+                url = o.toUrlAndQuery();
+                Object(net["e" /* mergeOptions */])(data.options, options);
+                return [2 /*return*/, operation(Object.assign({}, data, {
+                        batchDependency: batchDependency,
+                        url: url,
+                    }))];
+            });
+        });
+    };
+};
+var graphGet = function (o, options) { return send(graphClientBinder("GET"))(o, options); };
+var graphPost = function (o, options) { return send(graphClientBinder("POST"))(o, options); };
+var graphDelete = function (o, options) { return send(graphClientBinder("DELETE"))(o, options); };
+var graphPatch = function (o, options) { return send(graphClientBinder("PATCH"))(o, options); };
+var graphPut = function (o, options) { return send(graphClientBinder("PUT"))(o, options); };
+//# sourceMappingURL=operations.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/graphqueryable.js
+
+
+
+
+
+var graphInvokableFactory = function (f) {
+    return invokableFactory(f);
+};
+/**
+ * Queryable Base Class
+ *
+ */
+var graphqueryable_GraphQueryable = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_GraphQueryable, _super);
+    /**
+     * Creates a new instance of the Queryable class
+     *
+     * @constructor
+     * @param baseUrl A string or Queryable that should form the base part of the url
+     *
+     */
+    function _GraphQueryable(baseUrl, path) {
+        var _this = this;
+        var url = "";
+        var parentUrl = "";
+        var query = new Map();
+        if (typeof baseUrl === "string") {
+            parentUrl = baseUrl;
+            url = Object(util["b" /* combine */])(parentUrl, path);
+        }
+        else {
+            parentUrl = baseUrl.toUrl();
+            url = Object(util["b" /* combine */])(parentUrl, path);
+        }
+        _this = _super.call(this, {
+            parentUrl: parentUrl,
+            query: query,
+            url: url,
+        }) || this;
+        // post init actions
+        if (typeof baseUrl !== "string") {
+            _this.configureFrom(baseUrl);
+        }
+        return _this;
+    }
+    /**
+     * Choose which fields to return
+     *
+     * @param selects One or more fields to return
+     */
+    _GraphQueryable.prototype.select = function () {
+        var selects = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            selects[_i] = arguments[_i];
+        }
+        if (selects.length > 0) {
+            this.query.set("$select", selects.join(","));
+        }
+        return this;
+    };
+    /**
+     * Expands fields such as lookups to get additional data
+     *
+     * @param expands The Fields for which to expand the values
+     */
+    _GraphQueryable.prototype.expand = function () {
+        var expands = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            expands[_i] = arguments[_i];
+        }
+        if (expands.length > 0) {
+            this.query.set("$expand", expands.join(","));
+        }
+        return this;
+    };
+    _GraphQueryable.prototype.defaultAction = function (options) {
+        return graphGet(this, options);
+    };
+    _GraphQueryable.prototype.get = function (options) {
+        return graphGet(this, options);
+    };
+    /**
+     * Gets the full url with query information
+     *
+     */
+    _GraphQueryable.prototype.toUrlAndQuery = function () {
+        var url = this.toUrl();
+        if (!Object(util["i" /* isUrlAbsolute */])(url)) {
+            url = Object(util["b" /* combine */])("https://graph.microsoft.com", url);
+        }
+        if (this.query.size > 0) {
+            var char = url.indexOf("?") > -1 ? "&" : "?";
+            url += "" + char + Array.from(this.query).map(function (v) { return v[0] + "=" + v[1]; }).join("&");
+        }
+        return url;
+    };
+    /**
+     * Gets a parent for this instance as specified
+     *
+     * @param factory The contructor for the class to create
+     */
+    _GraphQueryable.prototype.getParent = function (factory, baseUrl, path) {
+        if (baseUrl === void 0) { baseUrl = this.parentUrl; }
+        return new factory(baseUrl, path);
+    };
+    /**
+     * Clones this queryable into a new queryable instance of T
+     * @param factory Constructor used to create the new instance
+     * @param additionalPath Any additional path to include in the clone
+     * @param includeBatch If true this instance's batch will be added to the cloned instance
+     */
+    _GraphQueryable.prototype.clone = function (factory, additionalPath, includeBatch) {
+        if (includeBatch === void 0) { includeBatch = true; }
+        return _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch });
+    };
+    _GraphQueryable.prototype.setEndpoint = function (endpoint) {
+        this.data.url = GraphEndpoints.ensure(this.data.url, endpoint);
+        return this;
+    };
+    return _GraphQueryable;
+}(queryable_Queryable));
+
+var GraphQueryable = graphInvokableFactory(graphqueryable_GraphQueryable);
+/**
+ * Represents a REST collection which can be filtered, paged, and selected
+ *
+ */
+var graphqueryable_GraphQueryableCollection = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_GraphQueryableCollection, _super);
+    function _GraphQueryableCollection() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     *
+     * @param filter The string representing the filter query
+     */
+    _GraphQueryableCollection.prototype.filter = function (filter) {
+        this.query.set("$filter", filter);
+        return this;
+    };
+    /**
+     * Orders based on the supplied fields
+     *
+     * @param orderby The name of the field on which to sort
+     * @param ascending If false DESC is appended, otherwise ASC (default)
+     */
+    _GraphQueryableCollection.prototype.orderBy = function (orderBy, ascending) {
+        if (ascending === void 0) { ascending = true; }
+        var o = "$orderby";
+        var query = this.query.has(o) ? this.query.get(o).split(",") : [];
+        query.push(orderBy + " " + (ascending ? "asc" : "desc"));
+        this.query.set(o, query.join(","));
+        return this;
+    };
+    /**
+     * Limits the query to only return the specified number of items
+     *
+     * @param top The query row limit
+     */
+    _GraphQueryableCollection.prototype.top = function (top) {
+        this.query.set("$top", top.toString());
+        return this;
+    };
+    /**
+     * Skips a set number of items in the return set
+     *
+     * @param num Number of items to skip
+     */
+    _GraphQueryableCollection.prototype.skip = function (num) {
+        this.query.set("$skip", num.toString());
+        return this;
+    };
+    /**
+     * 	To request second and subsequent pages of Graph data
+     */
+    _GraphQueryableCollection.prototype.skipToken = function (token) {
+        this.query.set("$skiptoken", token);
+        return this;
+    };
+    Object.defineProperty(_GraphQueryableCollection.prototype, "count", {
+        /**
+         * 	Retrieves the total count of matching resources
+         */
+        get: function () {
+            this.query.set("$count", "true");
+            return this;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return _GraphQueryableCollection;
+}(graphqueryable_GraphQueryable));
+
+var GraphQueryableCollection = graphInvokableFactory(graphqueryable_GraphQueryableCollection);
+var graphqueryable_GraphQueryableSearchableCollection = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_GraphQueryableSearchableCollection, _super);
+    function _GraphQueryableSearchableCollection() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * 	To request second and subsequent pages of Graph data
+     */
+    _GraphQueryableSearchableCollection.prototype.search = function (query) {
+        this.query.set("$search", query);
+        return this;
+    };
+    return _GraphQueryableSearchableCollection;
+}(graphqueryable_GraphQueryableCollection));
+
+var GraphQueryableSearchableCollection = graphInvokableFactory(graphqueryable_GraphQueryableSearchableCollection);
+/**
+ * Represents an instance that can be selected
+ *
+ */
+var graphqueryable_GraphQueryableInstance = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_GraphQueryableInstance, _super);
+    function _GraphQueryableInstance() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return _GraphQueryableInstance;
+}(graphqueryable_GraphQueryable));
+
+var GraphQueryableInstance = graphInvokableFactory(graphqueryable_GraphQueryableInstance);
+//# sourceMappingURL=graphqueryable.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/decorators.js
+
+
+
+/**
+ * Decorator used to specify the default path for Queryable objects
+ *
+ * @param path
+ */
+function defaultPath(path) {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            Object(tslib_es6["c" /* __extends */])(class_1, _super);
+            function class_1() {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                return _super.call(this, args[0], args.length > 1 && args[1] !== undefined ? args[1] : path) || this;
+            }
+            return class_1;
+        }(target));
+    };
+}
+/**
+ * Adds the delete method to the tagged class
+ */
+function deleteable() {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            Object(tslib_es6["c" /* __extends */])(class_2, _super);
+            function class_2() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            class_2.prototype.delete = function () {
+                return graphDelete(this);
+            };
+            return class_2;
+        }(target));
+    };
+}
+/**
+ * Adds the delete method to the tagged class
+ */
+function deleteableWithETag() {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            Object(tslib_es6["c" /* __extends */])(class_3, _super);
+            function class_3() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            class_3.prototype.delete = function (eTag) {
+                if (eTag === void 0) { eTag = "*"; }
+                return graphDelete(this, request_builders_headers({
+                    "If-Match": eTag,
+                }));
+            };
+            return class_3;
+        }(target));
+    };
+}
+/**
+ * Adds the update method to the tagged class
+ */
+function updateable() {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            Object(tslib_es6["c" /* __extends */])(class_4, _super);
+            function class_4() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            class_4.prototype.update = function (props) {
+                return graphPatch(this, body(props));
+            };
+            return class_4;
+        }(target));
+    };
+}
+/**
+ * Adds the update method to the tagged class
+ */
+function updateableWithETag() {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            Object(tslib_es6["c" /* __extends */])(class_5, _super);
+            function class_5() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            class_5.prototype.update = function (props, eTag) {
+                if (eTag === void 0) { eTag = "*"; }
+                return graphPatch(this, body(props, request_builders_headers({
+                    "If-Match": eTag,
+                })));
+            };
+            return class_5;
+        }(target));
+    };
+}
+/**
+ * Adds the add method to the tagged class
+ */
+function addable() {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            Object(tslib_es6["c" /* __extends */])(class_6, _super);
+            function class_6() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            class_6.prototype.add = function (props) {
+                return graphPost(this, body(props));
+            };
+            return class_6;
+        }(target));
+    };
+}
+/**
+ * Adds the getById method to a collection
+ */
+function getById(factory) {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            Object(tslib_es6["c" /* __extends */])(class_7, _super);
+            function class_7() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            class_7.prototype.getById = function (id) {
+                return factory(this, id);
+            };
+            return class_7;
+        }(target));
+    };
+}
+//# sourceMappingURL=decorators.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/conversations/types.js
+
+
+
+
+
+/**
+ * Conversation
+ */
+var types_Conversation = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Conversation, _super);
+    function _Conversation() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Conversation.prototype, "threads", {
+        /**
+         * Get all the threads in a group conversation.
+         */
+        get: function () {
+            return Threads(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _Conversation = Object(tslib_es6["b" /* __decorate */])([
+        updateable(),
+        deleteable()
+    ], _Conversation);
+    return _Conversation;
+}(graphqueryable_GraphQueryableInstance));
+
+var Conversation = graphInvokableFactory(types_Conversation);
+/**
+ * Conversations
+ */
+var types_Conversations = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Conversations, _super);
+    function _Conversations() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Conversations = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("conversations"),
+        addable(),
+        getById(Conversation)
+    ], _Conversations);
+    return _Conversations;
+}(graphqueryable_GraphQueryableCollection));
+
+var Conversations = graphInvokableFactory(types_Conversations);
+/**
+ * Thread
+ */
+var types_Thread = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Thread, _super);
+    function _Thread() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Thread.prototype, "posts", {
+        /**
+         * Get all the threads in a group conversation.
+         */
+        get: function () {
+            return Posts(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Reply to a thread in a group conversation and add a new post to it
+     *
+     * @param post Contents of the post
+     */
+    _Thread.prototype.reply = function (post) {
+        return graphPost(this.clone(Thread, "reply"), body(post));
+    };
+    _Thread = Object(tslib_es6["b" /* __decorate */])([
+        deleteable()
+    ], _Thread);
+    return _Thread;
+}(graphqueryable_GraphQueryableInstance));
+
+var Thread = graphInvokableFactory(types_Thread);
+/**
+ * Threads
+ */
+var types_Threads = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Threads, _super);
+    function _Threads() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Threads = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("threads"),
+        addable(),
+        getById(Thread)
+    ], _Threads);
+    return _Threads;
+}(graphqueryable_GraphQueryableCollection));
+
+var Threads = graphInvokableFactory(types_Threads);
+/**
+ * Post
+ */
+var types_Post = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Post, _super);
+    function _Post() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Forward a post to a recipient
+     */
+    _Post.prototype.forward = function (info) {
+        return graphPost(this.clone(Post, "forward"), body(info));
+    };
+    /**
+     * Reply to a thread in a group conversation and add a new post to it
+     *
+     * @param post Contents of the post
+     */
+    _Post.prototype.reply = function (post) {
+        return graphPost(this.clone(Post, "reply"), body(post));
+    };
+    _Post = Object(tslib_es6["b" /* __decorate */])([
+        deleteable()
+    ], _Post);
+    return _Post;
+}(graphqueryable_GraphQueryableInstance));
+
+var Post = graphInvokableFactory(types_Post);
+/**
+ * Posts
+ */
+var types_Posts = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Posts, _super);
+    function _Posts() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Posts = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("posts"),
+        addable(),
+        getById(Post)
+    ], _Posts);
+    return _Posts;
+}(graphqueryable_GraphQueryableCollection));
+
+var Posts = graphInvokableFactory(types_Posts);
+/**
+ * Senders
+ */
+var types_Senders = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Senders, _super);
+    function _Senders() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Add a new user or group to this senders collection
+     * @param id The full @odata.id value to add (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
+     */
+    _Senders.prototype.add = function (id) {
+        return graphPost(this.clone(Senders, "$ref"), body({ "@odata.id": id }));
+    };
+    /**
+     * Removes the entity from the collection
+     *
+     * @param id The full @odata.id value to remove (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
+     */
+    _Senders.prototype.remove = function (id) {
+        var remover = this.clone(Senders, "$ref");
+        remover.query.set("$id", id);
+        return graphDelete(remover);
+    };
+    return _Senders;
+}(graphqueryable_GraphQueryableCollection));
+
+var Senders = graphInvokableFactory(types_Senders);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/utils/type.js
+function type_type(n, a) {
+    return Object.assign({ "@odata.type": n }, a);
+}
+//# sourceMappingURL=type.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/attachments/types.js
+
+
+
+
+
+
+/**
+ * Attachment
+ */
+var types_Attachment = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Attachment, _super);
+    function _Attachment() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return _Attachment;
+}(graphqueryable_GraphQueryableInstance));
+
+var Attachment = graphInvokableFactory(types_Attachment);
+/**
+ * Attachments
+ */
+var types_Attachments = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Attachments, _super);
+    function _Attachments() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Add attachment to this collection
+     *
+     * @param name Name given to the attachment file
+     * @param bytes File content
+     */
+    _Attachments.prototype.addFile = function (name, bytes) {
+        return graphPost(this, body(type_type("#microsoft.graph.fileAttachment", {
+            contentBytes: bytes,
+            name: name,
+        })));
+    };
+    _Attachments = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("attachments"),
+        getById(Attachment)
+    ], _Attachments);
+    return _Attachments;
+}(graphqueryable_GraphQueryableCollection));
+
+var Attachments = graphInvokableFactory(types_Attachments);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/attachments/conversations.js
+
+
+
+addProp(types_Post, "attachments", Attachments);
+//# sourceMappingURL=conversations.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/attachments/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/directory-objects/types.js
+
+
+
+
+
+/**
+ * Represents a Directory Object entity
+ */
+var types_DirectoryObject = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_DirectoryObject, _super);
+    function _DirectoryObject() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Returns all the groups and directory roles that the specified Directory Object is a member of. The check is transitive
+     *
+     * @param securityEnabledOnly
+     */
+    _DirectoryObject.prototype.getMemberObjects = function (securityEnabledOnly) {
+        if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
+        return graphPost(this.clone(DirectoryObject, "getMemberObjects"), body({ securityEnabledOnly: securityEnabledOnly }));
+    };
+    /**
+     * Returns all the groups that the specified Directory Object is a member of. The check is transitive
+     *
+     * @param securityEnabledOnly
+     */
+    _DirectoryObject.prototype.getMemberGroups = function (securityEnabledOnly) {
+        if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
+        return graphPost(this.clone(DirectoryObject, "getMemberGroups"), body({ securityEnabledOnly: securityEnabledOnly }));
+    };
+    /**
+     * Check for membership in a specified list of groups, and returns from that list those groups of which the specified user, group, or directory object is a member.
+     * This function is transitive.
+     * @param groupIds A collection that contains the object IDs of the groups in which to check membership. Up to 20 groups may be specified.
+     */
+    _DirectoryObject.prototype.checkMemberGroups = function (groupIds) {
+        return graphPost(this.clone(DirectoryObject, "checkMemberGroups"), body({ groupIds: groupIds }));
+    };
+    _DirectoryObject = Object(tslib_es6["b" /* __decorate */])([
+        deleteable()
+    ], _DirectoryObject);
+    return _DirectoryObject;
+}(graphqueryable_GraphQueryableInstance));
+
+var DirectoryObject = graphInvokableFactory(types_DirectoryObject);
+/**
+ * Describes a collection of Directory Objects
+ *
+ */
+var types_DirectoryObjects = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_DirectoryObjects, _super);
+    function _DirectoryObjects() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+    * Returns the directory objects specified in a list of ids. NOTE: The directory objects returned are the full objects containing all their properties.
+    * The $select query option is not available for this operation.
+    *
+    * @param ids A collection of ids for which to return objects. You can specify up to 1000 ids.
+    * @param type A collection of resource types that specifies the set of resource collections to search. Default is directoryObject.
+    */
+    _DirectoryObjects.prototype.getByIds = function (ids, type) {
+        if (type === void 0) { type = DirectoryObjectTypes.directoryObject; }
+        return graphPost(this.clone(DirectoryObjects, "getByIds"), body({ ids: ids, type: type }));
+    };
+    _DirectoryObjects = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("directoryObjects"),
+        getById(DirectoryObject)
+    ], _DirectoryObjects);
+    return _DirectoryObjects;
+}(graphqueryable_GraphQueryableCollection));
+
+var DirectoryObjects = graphInvokableFactory(types_DirectoryObjects);
+/**
+ * DirectoryObjectTypes
+ */
+var DirectoryObjectTypes;
+(function (DirectoryObjectTypes) {
+    /**
+     * Directory Objects
+     */
+    DirectoryObjectTypes[DirectoryObjectTypes["directoryObject"] = 0] = "directoryObject";
+    /**
+     * User
+     */
+    DirectoryObjectTypes[DirectoryObjectTypes["user"] = 1] = "user";
+    /**
+     * Group
+     */
+    DirectoryObjectTypes[DirectoryObjectTypes["group"] = 2] = "group";
+    /**
+     * Device
+     */
+    DirectoryObjectTypes[DirectoryObjectTypes["device"] = 3] = "device";
+})(DirectoryObjectTypes || (DirectoryObjectTypes = {}));
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/groups/types.js
+
+
+
+
+
+
+
+var GroupType;
+(function (GroupType) {
+    /**
+     * Office 365 (aka unified group)
+     */
+    GroupType[GroupType["Office365"] = 0] = "Office365";
+    /**
+     * Dynamic membership
+     */
+    GroupType[GroupType["Dynamic"] = 1] = "Dynamic";
+    /**
+     * Security
+     */
+    GroupType[GroupType["Security"] = 2] = "Security";
+})(GroupType || (GroupType = {}));
+/**
+ * Represents a group entity
+ */
+var types_Group = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Group, _super);
+    function _Group() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
+     */
+    _Group.prototype.addFavorite = function () {
+        return graphPost(this.clone(Group, "addFavorite"));
+    };
+    /**
+     * Remove the group from the list of the current user's favorite groups. Supported for only Office 365 groups
+     */
+    _Group.prototype.removeFavorite = function () {
+        return graphPost(this.clone(Group, "removeFavorite"));
+    };
+    /**
+     * Reset the unseenCount of all the posts that the current user has not seen since their last visit
+     */
+    _Group.prototype.resetUnseenCount = function () {
+        return graphPost(this.clone(Group, "resetUnseenCount"));
+    };
+    /**
+     * Calling this method will enable the current user to receive email notifications for this group,
+     * about new posts, events, and files in that group. Supported for only Office 365 groups
+     */
+    _Group.prototype.subscribeByMail = function () {
+        return graphPost(this.clone(Group, "subscribeByMail"));
+    };
+    /**
+     * Calling this method will prevent the current user from receiving email notifications for this group
+     * about new posts, events, and files in that group. Supported for only Office 365 groups
+     */
+    _Group.prototype.unsubscribeByMail = function () {
+        return graphPost(this.clone(Group, "unsubscribeByMail"));
+    };
+    /**
+     * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group
+     *
+     * @param start Start date and time of the time range
+     * @param end End date and time of the time range
+     */
+    _Group.prototype.getCalendarView = function (start, end) {
+        var view = this.clone(Group, "calendarView");
+        view.query.set("startDateTime", start.toISOString());
+        view.query.set("endDateTime", end.toISOString());
+        return view();
+    };
+    _Group = Object(tslib_es6["b" /* __decorate */])([
+        deleteable(),
+        updateable()
+    ], _Group);
+    return _Group;
+}(types_DirectoryObject));
+
+var Group = graphInvokableFactory(types_Group);
+/**
+ * Describes a collection of Field objects
+ *
+ */
+var types_Groups = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Groups, _super);
+    function _Groups() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Create a new group as specified in the request body.
+     *
+     * @param name Name to display in the address book for the group
+     * @param mailNickname Mail alias for the group
+     * @param groupType Type of group being created
+     * @param additionalProperties A plain object collection of additional properties you want to set on the new group
+     */
+    _Groups.prototype.add = function (name, mailNickname, groupType, additionalProperties) {
+        if (additionalProperties === void 0) { additionalProperties = {}; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = Object(util["a" /* assign */])({
+                            displayName: name,
+                            mailEnabled: groupType === GroupType.Office365,
+                            mailNickname: mailNickname,
+                            securityEnabled: groupType !== GroupType.Office365,
+                        }, additionalProperties);
+                        // include a group type if required
+                        if (groupType !== GroupType.Security) {
+                            postBody = Object(util["a" /* assign */])(postBody, {
+                                groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
+                            });
+                        }
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                group: this.getById(data.id),
+                            }];
+                }
+            });
+        });
+    };
+    _Groups = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("groups"),
+        getById(Group)
+    ], _Groups);
+    return _Groups;
+}(graphqueryable_GraphQueryableCollection));
+
+var Groups = graphInvokableFactory(types_Groups);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/types.js
+
+
+
+
+
+/**
+ * Calendars
+ */
+var types_Calendars = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Calendars, _super);
+    function _Calendars() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Calendars = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("calendars")
+    ], _Calendars);
+    return _Calendars;
+}(graphqueryable_GraphQueryableCollection));
+
+var Calendars = graphInvokableFactory(types_Calendars);
+/**
+ * Calendar
+ */
+var types_Calendar = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Calendar, _super);
+    function _Calendar() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Calendar.prototype, "events", {
+        get: function () {
+            return Events(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return _Calendar;
+}(graphqueryable_GraphQueryableInstance));
+
+var Calendar = graphInvokableFactory(types_Calendar);
+/**
+ * Event
+ */
+var types_Event = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Event, _super);
+    function _Event() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Event = Object(tslib_es6["b" /* __decorate */])([
+        deleteable(),
+        updateable()
+    ], _Event);
+    return _Event;
+}(graphqueryable_GraphQueryableInstance));
+
+var Event = graphInvokableFactory(types_Event);
+/**
+ * Events
+ */
+var types_Events = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Events, _super);
+    function _Events() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Adds a new event to the collection
+     *
+     * @param properties The set of properties used to create the event
+     */
+    _Events.prototype.add = function (properties) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, graphPost(this, body(properties))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                event: this.getById(data.id),
+                            }];
+                }
+            });
+        });
+    };
+    _Events = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("events"),
+        getById(Event)
+    ], _Events);
+    return _Events;
+}(graphqueryable_GraphQueryableCollection));
+
+var Events = graphInvokableFactory(types_Events);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/groups.js
+
+
+
+addProp(types_Group, "calendar", Calendar, "calendar");
+addProp(types_Group, "events", Events);
+//# sourceMappingURL=groups.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/users/types.js
+
+
+
+
+var types_User = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_User, _super);
+    function _User() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_User.prototype, "memberOf", {
+        /**
+        * The groups and directory roles associated with the user
+        */
+        get: function () {
+            return DirectoryObjects(this, "memberOf");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _User = Object(tslib_es6["b" /* __decorate */])([
+        updateable(),
+        deleteable()
+    ], _User);
+    return _User;
+}(types_DirectoryObject));
+
+var User = graphInvokableFactory(types_User);
+/**
+ * Describes a collection of Users objects
+ *
+ */
+var types_Users = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Users, _super);
+    function _Users() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Users = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("users"),
+        getById(User)
+    ], _Users);
+    return _Users;
+}(graphqueryable_GraphQueryableCollection));
+
+var Users = graphInvokableFactory(types_Users);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/types.js
+
+
+
+
+
+
+/**
+ * Contact
+ */
+var types_Contact = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Contact, _super);
+    function _Contact() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Contact = Object(tslib_es6["b" /* __decorate */])([
+        updateable(),
+        deleteable()
+    ], _Contact);
+    return _Contact;
+}(graphqueryable_GraphQueryableInstance));
+
+var Contact = graphInvokableFactory(types_Contact);
+/**
+ * Contacts
+ */
+var types_Contacts = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Contacts, _super);
+    function _Contacts() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+    * Create a new Contact for the user.
+    *
+    * @param givenName The contact's given name.
+    * @param surName The contact's surname.
+    * @param emailAddresses The contact's email addresses.
+    * @param businessPhones The contact's business phone numbers.
+    * @param additionalProperties A plain object collection of additional properties you want to set on the new contact
+    */
+    _Contacts.prototype.add = function (givenName, surName, emailAddresses, businessPhones, additionalProperties) {
+        if (additionalProperties === void 0) { additionalProperties = {}; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = Object(util["a" /* assign */])({ businessPhones: businessPhones, emailAddresses: emailAddresses, givenName: givenName, surName: surName }, additionalProperties);
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                contact: this.getById(data.id),
+                                data: data,
+                            }];
+                }
+            });
+        });
+    };
+    _Contacts = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("contacts"),
+        getById(Contact)
+    ], _Contacts);
+    return _Contacts;
+}(graphqueryable_GraphQueryableCollection));
+
+var Contacts = graphInvokableFactory(types_Contacts);
+/**
+ * Contact Folder
+ */
+var types_ContactFolder = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_ContactFolder, _super);
+    function _ContactFolder() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_ContactFolder.prototype, "contacts", {
+        /**
+         * Gets the contacts in this contact folder
+         */
+        get: function () {
+            return Contacts(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_ContactFolder.prototype, "childFolders", {
+        /**
+        * Gets the contacts in this contact folder
+        */
+        get: function () {
+            return ContactFolders(this, "childFolders");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _ContactFolder = Object(tslib_es6["b" /* __decorate */])([
+        deleteable(),
+        updateable()
+    ], _ContactFolder);
+    return _ContactFolder;
+}(graphqueryable_GraphQueryableInstance));
+
+var ContactFolder = graphInvokableFactory(types_ContactFolder);
+/**
+ * Contact Folders
+ */
+var types_ContactFolders = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_ContactFolders, _super);
+    function _ContactFolders() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Create a new Contact Folder for the user.
+     *
+     * @param displayName The folder's display name.
+     * @param parentFolderId The ID of the folder's parent folder.
+     */
+    _ContactFolders.prototype.add = function (displayName, parentFolderId) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = {
+                            displayName: displayName,
+                            parentFolderId: parentFolderId,
+                        };
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                contactFolder: this.getById(data.id),
+                                data: data,
+                            }];
+                }
+            });
+        });
+    };
+    _ContactFolders = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("contactFolders"),
+        getById(ContactFolder)
+    ], _ContactFolders);
+    return _ContactFolders;
+}(graphqueryable_GraphQueryableCollection));
+
+var ContactFolders = graphInvokableFactory(types_ContactFolders);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/users.js
+
+
+
+addProp(types_User, "contacts", Contacts);
+addProp(types_User, "contactFolders", ContactFolders);
+//# sourceMappingURL=users.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/conversations/groups.js
+
+
+
+addProp(types_Group, "conversations", Conversations);
+addProp(types_Group, "acceptedSenders", Senders, "acceptedsenders");
+addProp(types_Group, "rejectedSenders", Senders, "rejectedsenders");
+//# sourceMappingURL=groups.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/conversations/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/batch.js
+
+
+
+
+
+
+var batch_GraphBatch = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(GraphBatch, _super);
+    function GraphBatch(batchUrl, maxRequests) {
+        if (batchUrl === void 0) { batchUrl = "https://graph.microsoft.com/v1.0/$batch"; }
+        if (maxRequests === void 0) { maxRequests = 20; }
+        var _this = _super.call(this) || this;
+        _this.batchUrl = batchUrl;
+        _this.maxRequests = maxRequests;
+        return _this;
+    }
+    /**
+     * Urls come to the batch absolute, but the processor expects relative
+     * @param url Url to ensure is relative
+     */
+    GraphBatch.makeUrlRelative = function (url) {
+        if (!Object(util["i" /* isUrlAbsolute */])(url)) {
+            // already not absolute, just give it back
+            return url;
+        }
+        var index = url.indexOf(".com/v1.0/");
+        if (index < 0) {
+            index = url.indexOf(".com/beta/");
+            if (index > -1) {
+                // beta url
+                return url.substr(index + 10);
+            }
+        }
+        else {
+            // v1.0 url
+            return url.substr(index + 9);
+        }
+        // no idea
+        return url;
+    };
+    GraphBatch.formatRequests = function (requests) {
+        var _this = this;
+        return requests.map(function (reqInfo, index) {
+            var requestFragment = {
+                id: "" + ++index,
+                method: reqInfo.method,
+                url: _this.makeUrlRelative(reqInfo.url),
+            };
+            var headers = {};
+            // merge global config headers
+            if (GraphRuntimeConfig.headers !== undefined && GraphRuntimeConfig.headers !== null) {
+                headers = Object(util["a" /* assign */])(headers, GraphRuntimeConfig.headers);
+            }
+            if (reqInfo.options !== undefined) {
+                // merge per request headers
+                if (reqInfo.options.headers !== undefined && reqInfo.options.headers !== null) {
+                    headers = Object(util["a" /* assign */])(headers, reqInfo.options.headers);
+                }
+                // add a request body
+                if (reqInfo.options.body !== undefined && reqInfo.options.body !== null) {
+                    requestFragment = Object(util["a" /* assign */])(requestFragment, {
+                        body: reqInfo.options.body,
+                    });
+                }
+            }
+            requestFragment = Object(util["a" /* assign */])(requestFragment, {
+                headers: headers,
+            });
+            return requestFragment;
+        });
+    };
+    GraphBatch.parseResponse = function (requests, graphResponse) {
+        return new Promise(function (resolve) {
+            var parsedResponses = new Array(requests.length).fill(null);
+            for (var i = 0; i < graphResponse.responses.length; ++i) {
+                var response = graphResponse.responses[i];
+                // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
+                // the array of requests and make it easier to map them by index
+                var responseId = parseInt(response.id, 10) - 1;
+                if (response.status === 204) {
+                    parsedResponses[responseId] = new Response();
+                }
+                else {
+                    parsedResponses[responseId] = new Response(JSON.stringify(response.body), response);
+                }
+            }
+            resolve({
+                nextLink: graphResponse.nextLink,
+                responses: parsedResponses,
+            });
+        });
+    };
+    GraphBatch.prototype.executeImpl = function () {
+        var _this = this;
+        Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
+        if (this.requests.length < 1) {
+            Logger.write("Resolving empty batch.", 1 /* Info */);
+            return Promise.resolve();
+        }
+        var client = new graphhttpclient_GraphHttpClient();
+        // create a working copy of our requests
+        var requests = this.requests.slice();
+        // this is the root of our promise chain
+        var promise = Promise.resolve();
+        var _loop_1 = function () {
+            var requestsChunk = requests.splice(0, this_1.maxRequests);
+            var batchRequest = {
+                requests: GraphBatch.formatRequests(requestsChunk),
+            };
+            var batchOptions = {
+                body: Object(util["j" /* jsS */])(batchRequest),
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            };
+            Logger.write("[" + this_1.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
+            client.fetch(this_1.batchUrl, batchOptions)
+                .then(function (r) { return r.json(); })
+                .then(function (j) { return GraphBatch.parseResponse(requestsChunk, j); })
+                .then(function (parsedResponse) {
+                Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
+                parsedResponse.responses.reduce(function (chain, response, index) {
+                    var request = requestsChunk[index];
+                    Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched request " + request.method + " " + request.url + ".", 0 /* Verbose */);
+                    return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
+                }, promise);
+            });
+        };
+        var this_1 = this;
+        while (requests.length > 0) {
+            _loop_1();
+        }
+        return promise;
+    };
+    return GraphBatch;
+}(batch_Batch));
+
+//# sourceMappingURL=batch.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/rest.js
+
+
+
+
+var rest_GraphRest = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(GraphRest, _super);
+    function GraphRest() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    GraphRest.prototype.createBatch = function () {
+        return new batch_GraphBatch();
+    };
+    GraphRest.prototype.setup = function (config) {
+        graphlibconfig_setup(config);
+    };
+    return GraphRest;
+}(graphqueryable_GraphQueryable));
+
+var graph = new rest_GraphRest("v1.0");
+//# sourceMappingURL=rest.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/directory-objects/index.js
+
+
+
+Reflect.defineProperty(rest_GraphRest.prototype, "directoryObjects", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return DirectoryObjects(this);
+    },
+});
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/groups/index.js
+
+
+
+Reflect.defineProperty(rest_GraphRest.prototype, "groups", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return Groups(this);
+    },
+});
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/members/types.js
+
+
+
+
+
+/**
+ * Member
+ */
+var types_Member = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Member, _super);
+    function _Member() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Removes this Member
+     */
+    _Member.prototype.remove = function () {
+        return graphDelete(this.clone(Member, "$ref"));
+    };
+    return _Member;
+}(graphqueryable_GraphQueryableInstance));
+
+var Member = graphInvokableFactory(types_Member);
+/**
+ * Members
+ */
+var types_Members = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Members, _super);
+    function _Members() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through
+     * the members navigation property. You can add users or other groups.
+     * Important: You can add only users to Office 365 groups.
+     *
+     * @param id Full @odata.id of the directoryObject, user, or group object you want to add (ex: https://graph.microsoft.com/v1.0/directoryObjects/${id})
+     */
+    _Members.prototype.add = function (id) {
+        return graphPost(this.clone(Members, "$ref"), body({ "@odata.id": id }));
+    };
+    _Members = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("members"),
+        getById(Member)
+    ], _Members);
+    return _Members;
+}(graphqueryable_GraphQueryableCollection));
+
+var Members = graphInvokableFactory(types_Members);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/members/groups.js
+
+
+
+addProp(types_Group, "owners", Members, "owners");
+addProp(types_Group, "members", Members);
+//# sourceMappingURL=groups.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/members/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/messages/types.js
+
+
+
+/**
+ * Message
+ */
+var types_Message = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Message, _super);
+    function _Message() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return _Message;
+}(graphqueryable_GraphQueryableInstance));
+
+var Message = graphInvokableFactory(types_Message);
+/**
+ * Messages
+ */
+var types_Messages = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Messages, _super);
+    function _Messages() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Messages = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("messages"),
+        getById(Message),
+        addable()
+    ], _Messages);
+    return _Messages;
+}(graphqueryable_GraphQueryableCollection));
+
+var Messages = graphInvokableFactory(types_Messages);
+/**
+ * MailFolder
+ */
+var types_MailFolder = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_MailFolder, _super);
+    function _MailFolder() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return _MailFolder;
+}(graphqueryable_GraphQueryableInstance));
+
+var MailFolder = graphInvokableFactory(types_MailFolder);
+/**
+ * MailFolders
+ */
+var types_MailFolders = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_MailFolders, _super);
+    function _MailFolders() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _MailFolders = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("mailFolders"),
+        getById(MailFolder),
+        addable()
+    ], _MailFolders);
+    return _MailFolders;
+}(graphqueryable_GraphQueryableCollection));
+
+var MailFolders = graphInvokableFactory(types_MailFolders);
+/**
+ * MailboxSettings
+ */
+var types_MailboxSettings = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_MailboxSettings, _super);
+    function _MailboxSettings() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _MailboxSettings = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("mailboxSettings"),
+        updateable()
+    ], _MailboxSettings);
+    return _MailboxSettings;
+}(graphqueryable_GraphQueryableInstance));
+
+var MailboxSettings = graphInvokableFactory(types_MailboxSettings);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/messages/users.js
+
+
+
+
+addProp(types_User, "messages", Messages);
+addProp(types_User, "mailboxSettings", MailboxSettings);
+addProp(types_User, "mailFolders", MailFolders);
+types_User.prototype.sendMail = function (message) {
+    return graphPost(this.clone(User, "sendMail"), body(message));
+};
+//# sourceMappingURL=users.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/messages/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/onedrive/types.js
+
+
+
+
+
+
+/**
+ * Describes a Drive instance
+ *
+ */
+var types_Drive = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Drive, _super);
+    function _Drive() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Drive.prototype, "root", {
+        get: function () {
+            return Root(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Drive.prototype, "list", {
+        get: function () {
+            return GraphQueryableInstance(this, "list");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Drive.prototype, "recent", {
+        get: function () {
+            return DriveItems(this, "recent");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Drive.prototype, "sharedWithMe", {
+        get: function () {
+            return DriveItems(this, "sharedWithMe");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _Drive.prototype.getItemById = function (id) {
+        return DriveItem(this, Object(util["b" /* combine */])("items", id));
+    };
+    _Drive = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("drive")
+    ], _Drive);
+    return _Drive;
+}(graphqueryable_GraphQueryableInstance));
+
+var Drive = graphInvokableFactory(types_Drive);
+/**
+ * Describes a collection of Drive objects
+ *
+ */
+var types_Drives = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Drives, _super);
+    function _Drives() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Drives = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("drives"),
+        getById(Drive)
+    ], _Drives);
+    return _Drives;
+}(graphqueryable_GraphQueryableCollection));
+
+var Drives = graphInvokableFactory(types_Drives);
+/**
+ * Describes a Root instance
+ *
+ */
+var types_Root = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Root, _super);
+    function _Root() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Root.prototype, "children", {
+        get: function () {
+            return DriveItems(this, "children");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _Root.prototype.search = function (query) {
+        var searcher = this.clone(Root);
+        searcher.query.set("search", "'" + query + "'");
+        return searcher();
+    };
+    Object.defineProperty(_Root.prototype, "thumbnails", {
+        get: function () {
+            return GraphQueryableCollection(this, "thumbnails");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _Root = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("root")
+    ], _Root);
+    return _Root;
+}(graphqueryable_GraphQueryableInstance));
+
+var Root = graphInvokableFactory(types_Root);
+/**
+ * Describes a Drive Item instance
+ *
+ */
+var types_DriveItem = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_DriveItem, _super);
+    function _DriveItem() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_DriveItem.prototype, "children", {
+        get: function () {
+            return DriveItems(this, "children");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_DriveItem.prototype, "thumbnails", {
+        get: function () {
+            return GraphQueryableCollection(this, "thumbnails");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_DriveItem.prototype, "versions", {
+        get: function () {
+            return GraphQueryableCollection(this, "versions");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _DriveItem.prototype.move = function (parentReference, name) {
+        return graphPatch(this, body(Object(util["a" /* assign */])(parentReference, { name: name })));
+    };
+    _DriveItem.prototype.getContent = function () {
+        return graphGet(this.clone(DriveItem, "content"));
+    };
+    _DriveItem.prototype.setContent = function (content) {
+        return graphPut(this.clone(DriveItem, "content"), {
+            body: content,
+        });
+    };
+    _DriveItem = Object(tslib_es6["b" /* __decorate */])([
+        deleteable(),
+        updateable()
+    ], _DriveItem);
+    return _DriveItem;
+}(graphqueryable_GraphQueryableInstance));
+
+var DriveItem = graphInvokableFactory(types_DriveItem);
+/**
+ * Describes a collection of Drive Item objects
+ *
+ */
+var types_DriveItems = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_DriveItems, _super);
+    function _DriveItems() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _DriveItems = Object(tslib_es6["b" /* __decorate */])([
+        getById(DriveItem)
+    ], _DriveItems);
+    return _DriveItems;
+}(graphqueryable_GraphQueryableCollection));
+
+var DriveItems = graphInvokableFactory(types_DriveItems);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/onedrive/users.js
+
+
+
+addProp(types_User, "drive", Drive);
+addProp(types_User, "drives", Drives);
+//# sourceMappingURL=users.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/onedrive/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/onenote/types.js
+
+
+
+
+
+/**
+ * Represents a onenote entity
+ */
+var types_OneNote = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_OneNote, _super);
+    function _OneNote() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_OneNote.prototype, "notebooks", {
+        get: function () {
+            return Notebooks(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_OneNote.prototype, "sections", {
+        get: function () {
+            return Sections(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_OneNote.prototype, "pages", {
+        get: function () {
+            return GraphQueryableCollection(this, "pages");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _OneNote = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("onenote")
+    ], _OneNote);
+    return _OneNote;
+}(graphqueryable_GraphQueryableInstance));
+
+var OneNote = graphInvokableFactory(types_OneNote);
+/**
+ * Describes a notebook instance
+ *
+ */
+var types_Notebook = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Notebook, _super);
+    function _Notebook() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Notebook.prototype, "sections", {
+        get: function () {
+            return Sections(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return _Notebook;
+}(graphqueryable_GraphQueryableInstance));
+
+var Notebook = graphInvokableFactory(types_Notebook);
+/**
+ * Describes a collection of Notebook objects
+ *
+ */
+var types_Notebooks = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Notebooks, _super);
+    function _Notebooks() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Create a new notebook as specified in the request body.
+     *
+     * @param displayName Notebook display name
+     */
+    _Notebooks.prototype.add = function (displayName) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, graphPost(this, body({ displayName: displayName }))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                notebook: this.getById(data.id),
+                            }];
+                }
+            });
+        });
+    };
+    _Notebooks = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("notebooks"),
+        getById(Notebook)
+    ], _Notebooks);
+    return _Notebooks;
+}(graphqueryable_GraphQueryableCollection));
+
+var Notebooks = graphInvokableFactory(types_Notebooks);
+/**
+ * Describes a sections instance
+ */
+var types_Section = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Section, _super);
+    function _Section() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return _Section;
+}(graphqueryable_GraphQueryableInstance));
+
+var Section = graphInvokableFactory(types_Section);
+/**
+ * Describes a collection of Sections objects
+ *
+ */
+var types_Sections = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Sections, _super);
+    function _Sections() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Adds a new section
+     *
+     * @param displayName New section display name
+     */
+    _Sections.prototype.add = function (displayName) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, graphPost(this, body({ displayName: displayName }))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                section: this.getById(data.id),
+                            }];
+                }
+            });
+        });
+    };
+    _Sections = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("sections"),
+        getById(Section)
+    ], _Sections);
+    return _Sections;
+}(graphqueryable_GraphQueryableCollection));
+
+var Sections = graphInvokableFactory(types_Sections);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/onenote/users.js
+
+
+
+addProp(types_User, "onenote", OneNote);
+//# sourceMappingURL=users.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/onenote/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/types.js
+
+
+
+
+
+var types_Photo = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Photo, _super);
+    function _Photo() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets the image bytes as a blob (browser)
+     */
+    _Photo.prototype.getBlob = function () {
+        return this.clone(Photo, "$value", false).usingParser(new parsers_BlobParser())();
+    };
+    /**
+     * Gets the image file byets as a Buffer (node.js)
+     */
+    _Photo.prototype.getBuffer = function () {
+        return this.clone(Photo, "$value", false).usingParser(new parsers_BufferParser())();
+    };
+    /**
+     * Sets the file bytes
+     *
+     * @param content Image file contents, max 4 MB
+     */
+    _Photo.prototype.setContent = function (content) {
+        return graphPatch(this.clone(Photo, "$value", false), { body: content });
+    };
+    _Photo = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("photo")
+    ], _Photo);
+    return _Photo;
+}(graphqueryable_GraphQueryableInstance));
+
+var Photo = graphInvokableFactory(types_Photo);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/groups.js
+
+
+
+addProp(types_Group, "photo", Photo);
+//# sourceMappingURL=groups.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/index.js
+
+
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/types.js
+
+
+
+
+
+
+
+/**
+ * Planner
+ */
+var types_Planner = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Planner, _super);
+    function _Planner() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Planner.prototype, "plans", {
+        // Should Only be able to get by id, or else error occur
+        get: function () {
+            return Plans(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Planner.prototype, "tasks", {
+        // Should Only be able to get by id, or else error occur
+        get: function () {
+            return Tasks(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Planner.prototype, "buckets", {
+        // Should Only be able to get by id, or else error occur
+        get: function () {
+            return Buckets(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _Planner = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("planner")
+    ], _Planner);
+    return _Planner;
+}(graphqueryable_GraphQueryableInstance));
+
+var Planner = graphInvokableFactory(types_Planner);
+/**
+ * Plan
+ */
+var types_Plan = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Plan, _super);
+    function _Plan() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Plan.prototype, "tasks", {
+        get: function () {
+            return Tasks(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Plan.prototype, "buckets", {
+        get: function () {
+            return Buckets(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _Plan = Object(tslib_es6["b" /* __decorate */])([
+        updateable(),
+        deleteable()
+    ], _Plan);
+    return _Plan;
+}(graphqueryable_GraphQueryableInstance));
+
+var Plan = graphInvokableFactory(types_Plan);
+var types_Plans = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Plans, _super);
+    function _Plans() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Create a new Planner Plan.
+     *
+     * @param owner Id of Group object.
+     * @param title The Title of the Plan.
+     */
+    _Plans.prototype.add = function (owner, title) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, graphPost(this, body({ owner: owner, title: title }))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                plan: this.getById(data.id),
+                            }];
+                }
+            });
+        });
+    };
+    _Plans = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("plans"),
+        getById(Plan)
+    ], _Plans);
+    return _Plans;
+}(graphqueryable_GraphQueryableCollection));
+
+var Plans = graphInvokableFactory(types_Plans);
+/**
+ * Task
+ */
+var types_Task = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Task, _super);
+    function _Task() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Task = Object(tslib_es6["b" /* __decorate */])([
+        updateableWithETag(),
+        deleteableWithETag()
+    ], _Task);
+    return _Task;
+}(graphqueryable_GraphQueryableInstance));
+
+var Task = graphInvokableFactory(types_Task);
+/**
+ * Tasks
+ */
+var types_Tasks = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Tasks, _super);
+    function _Tasks() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Create a new Planner Task.
+     *
+     * @param planId Id of Plan.
+     * @param title The Title of the Task.
+     * @param assignments Assign the task
+     * @param bucketId Id of Bucket
+     */
+    _Tasks.prototype.add = function (planId, title, assignments, bucketId) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = Object(util["a" /* assign */])({
+                            planId: planId,
+                            title: title,
+                        }, assignments);
+                        if (bucketId) {
+                            postBody = Object(util["a" /* assign */])(postBody, {
+                                bucketId: bucketId,
+                            });
+                        }
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                task: this.getById(data.id),
+                            }];
+                }
+            });
+        });
+    };
+    _Tasks = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("tasks"),
+        getById(Task)
+    ], _Tasks);
+    return _Tasks;
+}(graphqueryable_GraphQueryableCollection));
+
+var Tasks = graphInvokableFactory(types_Tasks);
+/**
+ * Bucket
+ */
+var types_Bucket = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Bucket, _super);
+    function _Bucket() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Bucket.prototype, "tasks", {
+        get: function () {
+            return Tasks(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    _Bucket = Object(tslib_es6["b" /* __decorate */])([
+        updateable(),
+        deleteable()
+    ], _Bucket);
+    return _Bucket;
+}(graphqueryable_GraphQueryableInstance));
+
+var Bucket = graphInvokableFactory(types_Bucket);
+/**
+ * Buckets
+ */
+var types_Buckets = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Buckets, _super);
+    function _Buckets() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Create a new Bucket.
+     *
+     * @param name Name of Bucket object.
+     * @param planId The Id of the Plan.
+     * @param oderHint Hint used to order items of this type in a list view.
+     */
+    _Buckets.prototype.add = function (name, planId, orderHint) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = {
+                            name: name,
+                            orderHint: orderHint ? orderHint : "",
+                            planId: planId,
+                        };
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                bucket: this.getById(data.id),
+                                data: data,
+                            }];
+                }
+            });
+        });
+    };
+    _Buckets = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("buckets"),
+        getById(Bucket)
+    ], _Buckets);
+    return _Buckets;
+}(graphqueryable_GraphQueryableCollection));
+
+var Buckets = graphInvokableFactory(types_Buckets);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/groups.js
+
+
+
+addProp(types_Group, "plans", Plans, "planner/plans");
+//# sourceMappingURL=groups.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/users.js
+
+
+
+addProp(types_User, "tasks", Tasks, "planner/tasks");
+//# sourceMappingURL=users.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/index.js
+
+
+
+
+
+Reflect.defineProperty(rest_GraphRest.prototype, "planner", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return Planner(this);
+    },
+});
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/subscriptions/types.js
+
+
+
+
+
+
+/**
+ * Subscription
+ */
+var types_Subscription = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Subscription, _super);
+    function _Subscription() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Subscription = Object(tslib_es6["b" /* __decorate */])([
+        deleteable(),
+        updateable()
+    ], _Subscription);
+    return _Subscription;
+}(graphqueryable_GraphQueryableInstance));
+
+var Subscription = graphInvokableFactory(types_Subscription);
+/**
+ * Subscriptions
+ */
+var types_Subscriptions = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Subscriptions, _super);
+    function _Subscriptions() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Create a new Subscription.
+     *
+     * @param changeType Indicates the type of change in the subscribed resource that will raise a notification. The supported values are: created, updated, deleted.
+     * @param notificationUrl The URL of the endpoint that will receive the notifications. This URL must make use of the HTTPS protocol.
+     * @param resource Specifies the resource that will be monitored for changes. Do not include the base URL (https://graph.microsoft.com/v1.0/).
+     * @param expirationDateTime Specifies the date and time when the webhook subscription expires. The time is in UTC.
+     * @param props A plain object collection of additional properties you want to set on the new subscription
+     *
+     */
+    _Subscriptions.prototype.add = function (changeType, notificationUrl, resource, expirationDateTime, props) {
+        if (props === void 0) { props = {}; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = Object(util["a" /* assign */])({
+                            changeType: changeType,
+                            expirationDateTime: expirationDateTime,
+                            notificationUrl: notificationUrl,
+                            resource: resource,
+                        }, props);
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                subscription: this.getById(data.id),
+                            }];
+                }
+            });
+        });
+    };
+    _Subscriptions = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("subscriptions"),
+        getById(Subscription)
+    ], _Subscriptions);
+    return _Subscriptions;
+}(graphqueryable_GraphQueryableCollection));
+
+var Subscriptions = graphInvokableFactory(types_Subscriptions);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/subscriptions/index.js
+
+
+
+Reflect.defineProperty(rest_GraphRest.prototype, "subscriptions", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return Subscriptions(this);
+    },
+});
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/teams/types.js
+
+
+
+
+
+
+
+/**
+ * Represents a Microsoft Team
+ */
+var types_Team = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Team, _super);
+    function _Team() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Team.prototype, "channels", {
+        get: function () {
+            return Channels(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Archives this Team
+     *
+     * @param shouldSetSpoSiteReadOnlyForMembers Should members have Read-only in associated Team Site
+     */
+    _Team.prototype.archive = function (shouldSetSpoSiteReadOnlyForMembers) {
+        if (shouldSetSpoSiteReadOnlyForMembers === void 0) { shouldSetSpoSiteReadOnlyForMembers = false; }
+        return graphPost(this.clone(Team, "archive"), body({ shouldSetSpoSiteReadOnlyForMembers: shouldSetSpoSiteReadOnlyForMembers }));
+    };
+    /**
+    * Unarchives this Team
+    */
+    _Team.prototype.unarchive = function () {
+        return graphPost(this.clone(Team, "unarchive"));
+    };
+    /**
+     * Clones this Team
+     * @param name The name of the new Group
+     * @param description Optional description of the group
+     * @param partsToClone Parts to clone ex: apps,tabs,settings,channels,members
+     * @param visibility Set visibility to public or private
+     */
+    _Team.prototype.cloneTeam = function (name, description, partsToClone, visibility) {
+        if (description === void 0) { description = ""; }
+        if (partsToClone === void 0) { partsToClone = "apps,tabs,settings,channels,members"; }
+        if (visibility === void 0) { visibility = "private"; }
+        var postBody = {
+            description: description ? description : "",
+            displayName: name,
+            mailNickname: name,
+            partsToClone: partsToClone,
+            visibility: visibility,
+        };
+        // TODO:: we need to get the Location header from the response and return an operation
+        // instance that folks can query to see if/when this is complete
+        // it could just have a single method getResult (or whatever) that returns a promise that
+        // resolves when the operation is successful or rejects when it is not
+        return graphPost(this.clone(Team, "clone"), body(postBody));
+    };
+    _Team = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("team"),
+        updateable()
+    ], _Team);
+    return _Team;
+}(graphqueryable_GraphQueryableInstance));
+
+var Team = graphInvokableFactory(types_Team);
+/**
+ * Teams
+ */
+var types_Teams = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Teams, _super);
+    function _Teams() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Teams = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("teams"),
+        getById(Team)
+    ], _Teams);
+    return _Teams;
+}(graphqueryable_GraphQueryableCollection));
+
+var Teams = graphInvokableFactory(types_Teams);
+/**
+ * Channel
+ */
+var types_Channel = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Channel, _super);
+    function _Channel() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(_Channel.prototype, "tabs", {
+        get: function () {
+            return Tabs(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return _Channel;
+}(graphqueryable_GraphQueryableInstance));
+
+var Channel = graphInvokableFactory(types_Channel);
+/**
+ * Channels
+ */
+var types_Channels = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Channels, _super);
+    function _Channels() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Creates a new Channel in the Team
+     * @param displayName The display name of the new channel
+     * @param description Optional description of the channel
+     *
+     */
+    _Channels.prototype.add = function (displayName, description) {
+        if (description === void 0) { description = ""; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = {
+                            description: description,
+                            displayName: displayName,
+                        };
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                channel: this.getById(data.id),
+                                data: data,
+                            }];
+                }
+            });
+        });
+    };
+    _Channels = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("channels"),
+        getById(Channel)
+    ], _Channels);
+    return _Channels;
+}(graphqueryable_GraphQueryableCollection));
+
+var Channels = graphInvokableFactory(types_Channels);
+/**
+ * Tab
+ */
+var types_Tab = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Tab, _super);
+    function _Tab() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Tab = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("tab"),
+        updateable(),
+        deleteable()
+    ], _Tab);
+    return _Tab;
+}(graphqueryable_GraphQueryableInstance));
+
+var Tab = graphInvokableFactory(types_Tab);
+/**
+ * Tabs
+ */
+var types_Tabs = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_Tabs, _super);
+    function _Tabs() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Adds a tab to the cahnnel
+     * @param name The name of the new Tab
+     * @param appUrl The url to an app ex: https://graph.microsoft.com/beta/appCatalogs/teamsApps/12345678-9abc-def0-123456789a
+     * @param tabsConfiguration visit https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/teamstab_add for reference
+     */
+    _Tabs.prototype.add = function (name, appUrl, properties) {
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var postBody, data;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = Object(util["a" /* assign */])({
+                            name: name,
+                            "teamsApp@odata.bind": appUrl,
+                        }, properties);
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                tab: this.getById(data.id),
+                            }];
+                }
+            });
+        });
+    };
+    _Tabs = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("tabs"),
+        getById(Tab)
+    ], _Tabs);
+    return _Tabs;
+}(graphqueryable_GraphQueryableCollection));
+
+var Tabs = graphInvokableFactory(types_Tabs);
+//# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/teams/users.js
+
+
+
+addProp(types_User, "joinedTeams", Teams, "joinedTeams");
+//# sourceMappingURL=users.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/teams/index.js
+
+
+
+
+
+
+
+
+addProp(types_Group, "team", Team);
+types_Group.prototype.createTeam = function (props) {
+    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        var data;
+        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, graphPut(this.clone(Group, "team"), body(props))];
+                case 1:
+                    data = _a.sent();
+                    return [2 /*return*/, {
+                            data: data,
+                            team: this.team,
+                        }];
+            }
+        });
+    });
+};
+Reflect.defineProperty(rest_GraphRest.prototype, "teams", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return Teams(this);
+    },
+});
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/users/index.js
+
+
+
+Reflect.defineProperty(rest_GraphRest.prototype, "me", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return User(this, "me");
+    },
+});
+Reflect.defineProperty(rest_GraphRest.prototype, "users", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return Users(this);
+    },
+});
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/presets/all.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//# sourceMappingURL=all.js.map
+// CONCATENATED MODULE: ./pnpjs-sources/index-graph.ts
+/* concated harmony reexport Attachment */__webpack_require__.d(__webpack_exports__, "Attachment", function() { return Attachment; });
+/* concated harmony reexport Attachments */__webpack_require__.d(__webpack_exports__, "Attachments", function() { return Attachments; });
+/* concated harmony reexport Calendar */__webpack_require__.d(__webpack_exports__, "Calendar", function() { return Calendar; });
+/* concated harmony reexport Calendars */__webpack_require__.d(__webpack_exports__, "Calendars", function() { return Calendars; });
+/* concated harmony reexport Event */__webpack_require__.d(__webpack_exports__, "Event", function() { return Event; });
+/* concated harmony reexport Events */__webpack_require__.d(__webpack_exports__, "Events", function() { return Events; });
+/* concated harmony reexport Contact */__webpack_require__.d(__webpack_exports__, "Contact", function() { return Contact; });
+/* concated harmony reexport ContactFolder */__webpack_require__.d(__webpack_exports__, "ContactFolder", function() { return ContactFolder; });
+/* concated harmony reexport ContactFolders */__webpack_require__.d(__webpack_exports__, "ContactFolders", function() { return ContactFolders; });
+/* concated harmony reexport Contacts */__webpack_require__.d(__webpack_exports__, "Contacts", function() { return Contacts; });
+/* concated harmony reexport Conversation */__webpack_require__.d(__webpack_exports__, "Conversation", function() { return Conversation; });
+/* concated harmony reexport Conversations */__webpack_require__.d(__webpack_exports__, "Conversations", function() { return Conversations; });
+/* concated harmony reexport Post */__webpack_require__.d(__webpack_exports__, "Post", function() { return Post; });
+/* concated harmony reexport Posts */__webpack_require__.d(__webpack_exports__, "Posts", function() { return Posts; });
+/* concated harmony reexport Senders */__webpack_require__.d(__webpack_exports__, "Senders", function() { return Senders; });
+/* concated harmony reexport Thread */__webpack_require__.d(__webpack_exports__, "Thread", function() { return Thread; });
+/* concated harmony reexport Threads */__webpack_require__.d(__webpack_exports__, "Threads", function() { return Threads; });
+/* concated harmony reexport DirectoryObjectTypes */__webpack_require__.d(__webpack_exports__, "DirectoryObjectTypes", function() { return DirectoryObjectTypes; });
+/* concated harmony reexport DirectoryObject */__webpack_require__.d(__webpack_exports__, "DirectoryObject", function() { return DirectoryObject; });
+/* concated harmony reexport DirectoryObjects */__webpack_require__.d(__webpack_exports__, "DirectoryObjects", function() { return DirectoryObjects; });
+/* concated harmony reexport Group */__webpack_require__.d(__webpack_exports__, "Group", function() { return Group; });
+/* concated harmony reexport GroupType */__webpack_require__.d(__webpack_exports__, "GroupType", function() { return GroupType; });
+/* concated harmony reexport Groups */__webpack_require__.d(__webpack_exports__, "Groups", function() { return Groups; });
+/* concated harmony reexport Member */__webpack_require__.d(__webpack_exports__, "Member", function() { return Member; });
+/* concated harmony reexport Members */__webpack_require__.d(__webpack_exports__, "Members", function() { return Members; });
+/* concated harmony reexport MailFolder */__webpack_require__.d(__webpack_exports__, "MailFolder", function() { return MailFolder; });
+/* concated harmony reexport MailFolders */__webpack_require__.d(__webpack_exports__, "MailFolders", function() { return MailFolders; });
+/* concated harmony reexport MailboxSettings */__webpack_require__.d(__webpack_exports__, "MailboxSettings", function() { return MailboxSettings; });
+/* concated harmony reexport Message */__webpack_require__.d(__webpack_exports__, "Message", function() { return Message; });
+/* concated harmony reexport Messages */__webpack_require__.d(__webpack_exports__, "Messages", function() { return Messages; });
+/* concated harmony reexport Drive */__webpack_require__.d(__webpack_exports__, "Drive", function() { return Drive; });
+/* concated harmony reexport DriveItem */__webpack_require__.d(__webpack_exports__, "DriveItem", function() { return DriveItem; });
+/* concated harmony reexport DriveItems */__webpack_require__.d(__webpack_exports__, "DriveItems", function() { return DriveItems; });
+/* concated harmony reexport Drives */__webpack_require__.d(__webpack_exports__, "Drives", function() { return Drives; });
+/* concated harmony reexport Root */__webpack_require__.d(__webpack_exports__, "Root", function() { return Root; });
+/* concated harmony reexport Notebook */__webpack_require__.d(__webpack_exports__, "Notebook", function() { return Notebook; });
+/* concated harmony reexport Notebooks */__webpack_require__.d(__webpack_exports__, "Notebooks", function() { return Notebooks; });
+/* concated harmony reexport OneNote */__webpack_require__.d(__webpack_exports__, "OneNote", function() { return OneNote; });
+/* concated harmony reexport Section */__webpack_require__.d(__webpack_exports__, "Section", function() { return Section; });
+/* concated harmony reexport Sections */__webpack_require__.d(__webpack_exports__, "Sections", function() { return Sections; });
+/* concated harmony reexport Photo */__webpack_require__.d(__webpack_exports__, "Photo", function() { return Photo; });
+/* concated harmony reexport Bucket */__webpack_require__.d(__webpack_exports__, "Bucket", function() { return Bucket; });
+/* concated harmony reexport Buckets */__webpack_require__.d(__webpack_exports__, "Buckets", function() { return Buckets; });
+/* concated harmony reexport Plan */__webpack_require__.d(__webpack_exports__, "Plan", function() { return Plan; });
+/* concated harmony reexport Planner */__webpack_require__.d(__webpack_exports__, "Planner", function() { return Planner; });
+/* concated harmony reexport Plans */__webpack_require__.d(__webpack_exports__, "Plans", function() { return Plans; });
+/* concated harmony reexport Task */__webpack_require__.d(__webpack_exports__, "Task", function() { return Task; });
+/* concated harmony reexport Tasks */__webpack_require__.d(__webpack_exports__, "Tasks", function() { return Tasks; });
+/* concated harmony reexport Subscription */__webpack_require__.d(__webpack_exports__, "Subscription", function() { return Subscription; });
+/* concated harmony reexport Subscriptions */__webpack_require__.d(__webpack_exports__, "Subscriptions", function() { return Subscriptions; });
+/* concated harmony reexport Channel */__webpack_require__.d(__webpack_exports__, "Channel", function() { return Channel; });
+/* concated harmony reexport Channels */__webpack_require__.d(__webpack_exports__, "Channels", function() { return Channels; });
+/* concated harmony reexport Tab */__webpack_require__.d(__webpack_exports__, "Tab", function() { return Tab; });
+/* concated harmony reexport Tabs */__webpack_require__.d(__webpack_exports__, "Tabs", function() { return Tabs; });
+/* concated harmony reexport Team */__webpack_require__.d(__webpack_exports__, "Team", function() { return Team; });
+/* concated harmony reexport Teams */__webpack_require__.d(__webpack_exports__, "Teams", function() { return Teams; });
+/* concated harmony reexport User */__webpack_require__.d(__webpack_exports__, "User", function() { return User; });
+/* concated harmony reexport Users */__webpack_require__.d(__webpack_exports__, "Users", function() { return Users; });
+/* concated harmony reexport graph */__webpack_require__.d(__webpack_exports__, "graph", function() { return graph; });
+/* concated harmony reexport GraphRest */__webpack_require__.d(__webpack_exports__, "GraphRest", function() { return rest_GraphRest; });
+
+
 
 /***/ })
 /******/ ]);
