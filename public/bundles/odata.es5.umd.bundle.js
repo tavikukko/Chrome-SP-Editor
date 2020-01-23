@@ -1913,7 +1913,7 @@ var Logger = /** @class */ (function () {
         listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
     };
     /**
-     * Clears the subscribers collection, returning the collection before modifiction
+     * Clears the subscribers collection, returning the collection before modification
      */
     Logger.clearSubscribers = function () {
         return Logger.instance.clearSubscribers();

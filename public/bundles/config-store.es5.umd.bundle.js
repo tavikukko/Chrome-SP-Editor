@@ -2216,7 +2216,7 @@ var Logger = /** @class */ (function () {
         listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
     };
     /**
-     * Clears the subscribers collection, returning the collection before modifiction
+     * Clears the subscribers collection, returning the collection before modification
      */
     Logger.clearSubscribers = function () {
         return Logger.instance.clearSubscribers();
@@ -2782,7 +2782,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.0:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.2:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -2791,7 +2791,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         if (!headers.has("User-Agent")) {
                             // this marks the requests for understanding by the service
                             // does not work in browsers
-                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.0");
+                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.2");
                         }
                         opts = Object(common["d" /* assign */])(opts, { headers: headers });
                         if (!(opts.method && opts.method.toUpperCase() !== "GET" && !headers.has("X-RequestDigest") && !headers.has("Authorization"))) return [3 /*break*/, 2];
@@ -3291,11 +3291,11 @@ function defaultPath(path) {
 
 function odataUrlFrom(candidate) {
     var parts = [];
-    var s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata"];
+    var s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata", "odata.id"];
     if (Object(common["i" /* hOP */])(candidate, s[0]) && candidate[s[0]] === "SP.Web") {
-        // webs return an absolute url in the editLink
-        if (Object(common["i" /* hOP */])(candidate, s[1])) {
-            parts.push(candidate[s[1]]);
+        // webs return an absolute url in the id
+        if (Object(common["i" /* hOP */])(candidate, s[4])) {
+            parts.push(candidate[s[4]]);
         }
         else if (Object(common["i" /* hOP */])(candidate, s[2])) {
             // we are dealing with verbose, which has an absolute uri
@@ -3525,7 +3525,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.0");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.2");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -3641,6 +3641,7 @@ function escapeQueryStrValue(value) {
 }
 //# sourceMappingURL=escapeQueryStrValue.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/types.js
+
 
 
 
@@ -3803,7 +3804,7 @@ var types_Site = /** @class */ (function (_super) {
                         data = _a.sent();
                         return [2 /*return*/, {
                                 data: data,
-                                web: Web(odataUrlFrom(data)),
+                                web: Web(extractWebUrl(odataUrlFrom(data))),
                             }];
                 }
             });
@@ -4574,6 +4575,9 @@ var types_List = /** @class */ (function (_super) {
     _List.prototype.renderListDataAsStream = function (parameters, overrideParameters, queryParams) {
         if (overrideParameters === void 0) { overrideParameters = null; }
         if (queryParams === void 0) { queryParams = new Map(); }
+        if (Object(common["i" /* hOP */])(parameters, "RenderOptions") && Object(common["j" /* isArray */])(parameters.RenderOptions)) {
+            parameters.RenderOptions = parameters.RenderOptions.reduce(function (v, c) { return v + c; });
+        }
         var postBody = body({
             overrideParameters: Object(common["d" /* assign */])(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
             parameters: Object(common["d" /* assign */])(metadata("SP.RenderListDataParameters"), parameters),
@@ -4699,26 +4703,26 @@ var List = spInvokableFactory(types_List);
 /**
  * Enum representing the options of the RenderOptions property on IRenderListDataParameters interface
  */
-var IRenderListDataOptions;
-(function (IRenderListDataOptions) {
-    IRenderListDataOptions[IRenderListDataOptions["None"] = 0] = "None";
-    IRenderListDataOptions[IRenderListDataOptions["ContextInfo"] = 1] = "ContextInfo";
-    IRenderListDataOptions[IRenderListDataOptions["ListData"] = 2] = "ListData";
-    IRenderListDataOptions[IRenderListDataOptions["ListSchema"] = 4] = "ListSchema";
-    IRenderListDataOptions[IRenderListDataOptions["MenuView"] = 8] = "MenuView";
-    IRenderListDataOptions[IRenderListDataOptions["ListContentType"] = 16] = "ListContentType";
-    IRenderListDataOptions[IRenderListDataOptions["FileSystemItemId"] = 32] = "FileSystemItemId";
-    IRenderListDataOptions[IRenderListDataOptions["ClientFormSchema"] = 64] = "ClientFormSchema";
-    IRenderListDataOptions[IRenderListDataOptions["QuickLaunch"] = 128] = "QuickLaunch";
-    IRenderListDataOptions[IRenderListDataOptions["Spotlight"] = 256] = "Spotlight";
-    IRenderListDataOptions[IRenderListDataOptions["Visualization"] = 512] = "Visualization";
-    IRenderListDataOptions[IRenderListDataOptions["ViewMetadata"] = 1024] = "ViewMetadata";
-    IRenderListDataOptions[IRenderListDataOptions["DisableAutoHyperlink"] = 2048] = "DisableAutoHyperlink";
-    IRenderListDataOptions[IRenderListDataOptions["EnableMediaTAUrls"] = 4096] = "EnableMediaTAUrls";
-    IRenderListDataOptions[IRenderListDataOptions["ParentInfo"] = 8192] = "ParentInfo";
-    IRenderListDataOptions[IRenderListDataOptions["PageContextInfo"] = 16384] = "PageContextInfo";
-    IRenderListDataOptions[IRenderListDataOptions["ClientSideComponentManifest"] = 32768] = "ClientSideComponentManifest";
-})(IRenderListDataOptions || (IRenderListDataOptions = {}));
+var RenderListDataOptions;
+(function (RenderListDataOptions) {
+    RenderListDataOptions[RenderListDataOptions["None"] = 0] = "None";
+    RenderListDataOptions[RenderListDataOptions["ContextInfo"] = 1] = "ContextInfo";
+    RenderListDataOptions[RenderListDataOptions["ListData"] = 2] = "ListData";
+    RenderListDataOptions[RenderListDataOptions["ListSchema"] = 4] = "ListSchema";
+    RenderListDataOptions[RenderListDataOptions["MenuView"] = 8] = "MenuView";
+    RenderListDataOptions[RenderListDataOptions["ListContentType"] = 16] = "ListContentType";
+    RenderListDataOptions[RenderListDataOptions["FileSystemItemId"] = 32] = "FileSystemItemId";
+    RenderListDataOptions[RenderListDataOptions["ClientFormSchema"] = 64] = "ClientFormSchema";
+    RenderListDataOptions[RenderListDataOptions["QuickLaunch"] = 128] = "QuickLaunch";
+    RenderListDataOptions[RenderListDataOptions["Spotlight"] = 256] = "Spotlight";
+    RenderListDataOptions[RenderListDataOptions["Visualization"] = 512] = "Visualization";
+    RenderListDataOptions[RenderListDataOptions["ViewMetadata"] = 1024] = "ViewMetadata";
+    RenderListDataOptions[RenderListDataOptions["DisableAutoHyperlink"] = 2048] = "DisableAutoHyperlink";
+    RenderListDataOptions[RenderListDataOptions["EnableMediaTAUrls"] = 4096] = "EnableMediaTAUrls";
+    RenderListDataOptions[RenderListDataOptions["ParentInfo"] = 8192] = "ParentInfo";
+    RenderListDataOptions[RenderListDataOptions["PageContextInfo"] = 16384] = "PageContextInfo";
+    RenderListDataOptions[RenderListDataOptions["ClientSideComponentManifest"] = 32768] = "ClientSideComponentManifest";
+})(RenderListDataOptions || (RenderListDataOptions = {}));
 /**
  * Determines the display mode of the given control or view
  */

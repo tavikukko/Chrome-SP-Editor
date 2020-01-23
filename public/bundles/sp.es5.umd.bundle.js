@@ -2117,7 +2117,7 @@ var Logger = /** @class */ (function () {
         listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
     };
     /**
-     * Clears the subscribers collection, returning the collection before modifiction
+     * Clears the subscribers collection, returning the collection before modification
      */
     Logger.clearSubscribers = function () {
         return Logger.instance.clearSubscribers();
@@ -2680,7 +2680,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.0:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.2:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -2689,7 +2689,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         if (!headers.has("User-Agent")) {
                             // this marks the requests for understanding by the service
                             // does not work in browsers
-                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.0");
+                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.2");
                         }
                         opts = Object(common["d" /* assign */])(opts, { headers: headers });
                         if (!(opts.method && opts.method.toUpperCase() !== "GET" && !headers.has("X-RequestDigest") && !headers.has("Authorization"))) return [3 /*break*/, 2];
@@ -3189,11 +3189,11 @@ function defaultPath(path) {
 
 function odataUrlFrom(candidate) {
     var parts = [];
-    var s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata"];
+    var s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata", "odata.id"];
     if (Object(common["j" /* hOP */])(candidate, s[0]) && candidate[s[0]] === "SP.Web") {
-        // webs return an absolute url in the editLink
-        if (Object(common["j" /* hOP */])(candidate, s[1])) {
-            parts.push(candidate[s[1]]);
+        // webs return an absolute url in the id
+        if (Object(common["j" /* hOP */])(candidate, s[4])) {
+            parts.push(candidate[s[4]]);
         }
         else if (Object(common["j" /* hOP */])(candidate, s[2])) {
             // we are dealing with verbose, which has an absolute uri
@@ -3423,7 +3423,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.0");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.2");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -3490,6 +3490,7 @@ function escapeQueryStrValue(value) {
 }
 //# sourceMappingURL=escapeQueryStrValue.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/types.js
+
 
 
 
@@ -3652,7 +3653,7 @@ var types_Site = /** @class */ (function (_super) {
                         data = _a.sent();
                         return [2 /*return*/, {
                                 data: data,
-                                web: Web(odataUrlFrom(data)),
+                                web: Web(extractWebUrl(odataUrlFrom(data))),
                             }];
                 }
             });
@@ -4423,6 +4424,9 @@ var types_List = /** @class */ (function (_super) {
     _List.prototype.renderListDataAsStream = function (parameters, overrideParameters, queryParams) {
         if (overrideParameters === void 0) { overrideParameters = null; }
         if (queryParams === void 0) { queryParams = new Map(); }
+        if (Object(common["j" /* hOP */])(parameters, "RenderOptions") && Object(common["k" /* isArray */])(parameters.RenderOptions)) {
+            parameters.RenderOptions = parameters.RenderOptions.reduce(function (v, c) { return v + c; });
+        }
         var postBody = body({
             overrideParameters: Object(common["d" /* assign */])(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
             parameters: Object(common["d" /* assign */])(metadata("SP.RenderListDataParameters"), parameters),
@@ -4548,26 +4552,26 @@ var List = spInvokableFactory(types_List);
 /**
  * Enum representing the options of the RenderOptions property on IRenderListDataParameters interface
  */
-var IRenderListDataOptions;
-(function (IRenderListDataOptions) {
-    IRenderListDataOptions[IRenderListDataOptions["None"] = 0] = "None";
-    IRenderListDataOptions[IRenderListDataOptions["ContextInfo"] = 1] = "ContextInfo";
-    IRenderListDataOptions[IRenderListDataOptions["ListData"] = 2] = "ListData";
-    IRenderListDataOptions[IRenderListDataOptions["ListSchema"] = 4] = "ListSchema";
-    IRenderListDataOptions[IRenderListDataOptions["MenuView"] = 8] = "MenuView";
-    IRenderListDataOptions[IRenderListDataOptions["ListContentType"] = 16] = "ListContentType";
-    IRenderListDataOptions[IRenderListDataOptions["FileSystemItemId"] = 32] = "FileSystemItemId";
-    IRenderListDataOptions[IRenderListDataOptions["ClientFormSchema"] = 64] = "ClientFormSchema";
-    IRenderListDataOptions[IRenderListDataOptions["QuickLaunch"] = 128] = "QuickLaunch";
-    IRenderListDataOptions[IRenderListDataOptions["Spotlight"] = 256] = "Spotlight";
-    IRenderListDataOptions[IRenderListDataOptions["Visualization"] = 512] = "Visualization";
-    IRenderListDataOptions[IRenderListDataOptions["ViewMetadata"] = 1024] = "ViewMetadata";
-    IRenderListDataOptions[IRenderListDataOptions["DisableAutoHyperlink"] = 2048] = "DisableAutoHyperlink";
-    IRenderListDataOptions[IRenderListDataOptions["EnableMediaTAUrls"] = 4096] = "EnableMediaTAUrls";
-    IRenderListDataOptions[IRenderListDataOptions["ParentInfo"] = 8192] = "ParentInfo";
-    IRenderListDataOptions[IRenderListDataOptions["PageContextInfo"] = 16384] = "PageContextInfo";
-    IRenderListDataOptions[IRenderListDataOptions["ClientSideComponentManifest"] = 32768] = "ClientSideComponentManifest";
-})(IRenderListDataOptions || (IRenderListDataOptions = {}));
+var RenderListDataOptions;
+(function (RenderListDataOptions) {
+    RenderListDataOptions[RenderListDataOptions["None"] = 0] = "None";
+    RenderListDataOptions[RenderListDataOptions["ContextInfo"] = 1] = "ContextInfo";
+    RenderListDataOptions[RenderListDataOptions["ListData"] = 2] = "ListData";
+    RenderListDataOptions[RenderListDataOptions["ListSchema"] = 4] = "ListSchema";
+    RenderListDataOptions[RenderListDataOptions["MenuView"] = 8] = "MenuView";
+    RenderListDataOptions[RenderListDataOptions["ListContentType"] = 16] = "ListContentType";
+    RenderListDataOptions[RenderListDataOptions["FileSystemItemId"] = 32] = "FileSystemItemId";
+    RenderListDataOptions[RenderListDataOptions["ClientFormSchema"] = 64] = "ClientFormSchema";
+    RenderListDataOptions[RenderListDataOptions["QuickLaunch"] = 128] = "QuickLaunch";
+    RenderListDataOptions[RenderListDataOptions["Spotlight"] = 256] = "Spotlight";
+    RenderListDataOptions[RenderListDataOptions["Visualization"] = 512] = "Visualization";
+    RenderListDataOptions[RenderListDataOptions["ViewMetadata"] = 1024] = "ViewMetadata";
+    RenderListDataOptions[RenderListDataOptions["DisableAutoHyperlink"] = 2048] = "DisableAutoHyperlink";
+    RenderListDataOptions[RenderListDataOptions["EnableMediaTAUrls"] = 4096] = "EnableMediaTAUrls";
+    RenderListDataOptions[RenderListDataOptions["ParentInfo"] = 8192] = "ParentInfo";
+    RenderListDataOptions[RenderListDataOptions["PageContextInfo"] = 16384] = "PageContextInfo";
+    RenderListDataOptions[RenderListDataOptions["ClientSideComponentManifest"] = 32768] = "ClientSideComponentManifest";
+})(RenderListDataOptions || (RenderListDataOptions = {}));
 /**
  * Determines the display mode of the given control or view
  */
@@ -5057,6 +5061,7 @@ addProp(types_List, "items", Items);
 
 
 
+
 /**
  * Describes a collection of File objects
  *
@@ -5297,6 +5302,54 @@ var types_File = /** @class */ (function (_super) {
         return spPost(this.clone(File, "copyTo(strnewurl='" + escapeQueryStrValue(url) + "',boverwrite=" + shouldOverWrite + ")"));
     };
     /**
+     * Copies the file by path to destination path.
+     * Also works with different site collections.
+     *
+     * @param destUrl The absolute url or server relative url of the destination file path to copy to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
+     * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
+     */
+    _File.prototype.copyByPath = function (destUrl, shouldOverWrite, KeepBoth) {
+        if (KeepBoth === void 0) { KeepBoth = false; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+                    case 1:
+                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
+                        webBaseUrl = extractWebUrl(absoluteUrl);
+                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+                        return [4 /*yield*/, spPost(File(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=" + shouldOverWrite), body({
+                                destPath: {
+                                    DecodedUrl: Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl,
+                                    __metadata: {
+                                        type: "SP.ResourcePath",
+                                    },
+                                },
+                                options: {
+                                    KeepBoth: KeepBoth,
+                                    ResetAuthorAndCreatedOnCopy: true,
+                                    ShouldBypassSharedLocks: true,
+                                    __metadata: {
+                                        type: "SP.MoveCopyOptions",
+                                    },
+                                },
+                                srcPath: {
+                                    DecodedUrl: "" + hostUrl + srcUrl,
+                                    __metadata: {
+                                        type: "SP.ResourcePath",
+                                    },
+                                },
+                            }))];
+                    case 2:
+                        _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
      * Denies approval for a file that was submitted for content approval.
      * Only documents in lists that are enabled for content approval can be denied.
      *
@@ -5318,6 +5371,54 @@ var types_File = /** @class */ (function (_super) {
     _File.prototype.moveTo = function (url, moveOperations) {
         if (moveOperations === void 0) { moveOperations = MoveOperations.Overwrite; }
         return spPost(this.clone(File, "moveTo(newurl='" + escapeQueryStrValue(url) + "',flags=" + moveOperations + ")"));
+    };
+    /**
+     * Moves the file by path to the specified destination url.
+     * Also works with different site collections.
+     *
+     * @param destUrl The absolute url or server relative url of the destination file path to move to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
+     * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
+     */
+    _File.prototype.moveByPath = function (destUrl, shouldOverWrite, KeepBoth) {
+        if (KeepBoth === void 0) { KeepBoth = false; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+                    case 1:
+                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
+                        webBaseUrl = extractWebUrl(absoluteUrl);
+                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+                        return [4 /*yield*/, spPost(File(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=" + shouldOverWrite), body({
+                                destPath: {
+                                    DecodedUrl: Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl,
+                                    __metadata: {
+                                        type: "SP.ResourcePath",
+                                    },
+                                },
+                                options: {
+                                    KeepBoth: KeepBoth,
+                                    ResetAuthorAndCreatedOnCopy: false,
+                                    ShouldBypassSharedLocks: true,
+                                    __metadata: {
+                                        type: "SP.MoveCopyOptions",
+                                    },
+                                },
+                                srcPath: {
+                                    DecodedUrl: "" + hostUrl + srcUrl,
+                                    __metadata: {
+                                        type: "SP.ResourcePath",
+                                    },
+                                },
+                            }))];
+                    case 2:
+                        _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     /**
      * Submits the file for content approval with the specified comment.
@@ -5576,11 +5677,17 @@ var types_File = /** @class */ (function (_super) {
         tag("fi.copyTo")
     ], _File.prototype, "copyTo", null);
     Object(tslib_es6["b" /* __decorate */])([
+        tag("fi.copyByPath")
+    ], _File.prototype, "copyByPath", null);
+    Object(tslib_es6["b" /* __decorate */])([
         tag("fi.deny")
     ], _File.prototype, "deny", null);
     Object(tslib_es6["b" /* __decorate */])([
         tag("fi.moveTo")
     ], _File.prototype, "moveTo", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("fi.moveByPath")
+    ], _File.prototype, "moveByPath", null);
     Object(tslib_es6["b" /* __decorate */])([
         tag("fi.publish")
     ], _File.prototype, "publish", null);
@@ -8765,6 +8872,53 @@ var types_Folder = /** @class */ (function (_super) {
         });
     };
     /**
+     * Moves a folder by path to destination path
+     * Also works with different site collections.
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     * @param keepBoth Keep both if folder with the same name in the same location already exists?
+     */
+    _Folder.prototype.moveByPath = function (destUrl, KeepBoth) {
+        if (KeepBoth === void 0) { KeepBoth = false; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+                    case 1:
+                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
+                        webBaseUrl = extractWebUrl(absoluteUrl);
+                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"), body({
+                                destPath: {
+                                    DecodedUrl: Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl,
+                                    __metadata: {
+                                        type: "SP.ResourcePath",
+                                    },
+                                },
+                                options: {
+                                    KeepBoth: KeepBoth,
+                                    ResetAuthorAndCreatedOnCopy: true,
+                                    ShouldBypassSharedLocks: true,
+                                    __metadata: {
+                                        type: "SP.MoveCopyOptions",
+                                    },
+                                },
+                                srcPath: {
+                                    DecodedUrl: "" + hostUrl + srcUrl,
+                                    __metadata: {
+                                        type: "SP.ResourcePath",
+                                    },
+                                },
+                            }))];
+                    case 2:
+                        _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
      * Copies a folder to destination path
      *
      * @param destUrl Absolute or relative URL of the destination path
@@ -8782,6 +8936,53 @@ var types_Folder = /** @class */ (function (_super) {
                         return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()"), body({
                                 destUrl: Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl,
                                 srcUrl: "" + hostUrl + srcUrl,
+                            }))];
+                    case 2:
+                        _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Copies a folder by path to destination path
+     * Also works with different site collections.
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     * @param keepBoth Keep both if folder with the same name in the same location already exists?
+     */
+    _Folder.prototype.copyByPath = function (destUrl, KeepBoth) {
+        if (KeepBoth === void 0) { KeepBoth = false; }
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+                    case 1:
+                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
+                        webBaseUrl = extractWebUrl(absoluteUrl);
+                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"), body({
+                                destPath: {
+                                    DecodedUrl: Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl,
+                                    __metadata: {
+                                        type: "SP.ResourcePath",
+                                    },
+                                },
+                                options: {
+                                    KeepBoth: KeepBoth,
+                                    ResetAuthorAndCreatedOnCopy: true,
+                                    ShouldBypassSharedLocks: true,
+                                    __metadata: {
+                                        type: "SP.MoveCopyOptions",
+                                    },
+                                },
+                                srcPath: {
+                                    DecodedUrl: "" + hostUrl + srcUrl,
+                                    __metadata: {
+                                        type: "SP.ResourcePath",
+                                    },
+                                },
                             }))];
                     case 2:
                         _b.sent();
@@ -8818,8 +9019,14 @@ var types_Folder = /** @class */ (function (_super) {
         tag("f.moveTo")
     ], _Folder.prototype, "moveTo", null);
     Object(tslib_es6["b" /* __decorate */])([
+        tag("f.moveByPath")
+    ], _Folder.prototype, "moveByPath", null);
+    Object(tslib_es6["b" /* __decorate */])([
         tag("f.copyTo")
     ], _Folder.prototype, "copyTo", null);
+    Object(tslib_es6["b" /* __decorate */])([
+        tag("f.copyByPath")
+    ], _Folder.prototype, "copyByPath", null);
     Object(tslib_es6["b" /* __decorate */])([
         tag("f.getShareable")
     ], _Folder.prototype, "getShareable", null);
@@ -10128,6 +10335,7 @@ function SearchQueryBuilder(queryText, _query) {
         },
     });
 }
+var queryRegex = /_api\/search\/postquery$/i;
 /**
  * Describes the search API
  *
@@ -10164,7 +10372,7 @@ var query_Search = /** @class */ (function (_super) {
                             cacheKey = "PnPjs.SearchWithCaching(" + Object(common["i" /* getHashCode */])(postBody.body) + ")";
                             if (Object(common["q" /* objectDefinedNotNull */])(this.data.cachingOptions)) {
                                 // if our key ends in the postquery url we overwrite it
-                                if (/\/_api\/search\/postquery$/i.test(this.data.cachingOptions.key)) {
+                                if (queryRegex.test(this.data.cachingOptions.key)) {
                                     this.data.cachingOptions.key = cacheKey;
                                 }
                             }
@@ -10221,7 +10429,7 @@ var query_Search = /** @class */ (function (_super) {
 var Search = function (baseUrl, options) {
     if (options === void 0) { options = {}; }
     return function (queryInit) {
-        return (new query_Search(baseUrl, "")).configure(options).execute(queryInit);
+        return (new query_Search(baseUrl)).configure(options).execute(queryInit);
     };
 };
 var query_SearchResults = /** @class */ (function () {
@@ -10232,6 +10440,7 @@ var query_SearchResults = /** @class */ (function () {
         this._query = _query;
         this._raw = _raw;
         this._primary = _primary;
+        this._url = this._url.replace(queryRegex, "");
         this._raw = rawResponse.postquery ? rawResponse.postquery : rawResponse;
     }
     Object.defineProperty(SearchResults.prototype, "ElapsedTime", {
@@ -10403,7 +10612,7 @@ var suggest_Suggest = /** @class */ (function (_super) {
 var Suggest = function (baseUrl, options) {
     if (options === void 0) { options = {}; }
     return function (query) {
-        return (new suggest_Suggest(baseUrl, "")).configure(options).execute(query);
+        return (new suggest_Suggest(baseUrl)).configure(options).execute(query);
     };
 };
 //# sourceMappingURL=suggest.js.map
@@ -13722,7 +13931,7 @@ var all_sp = new rest_SPRest();
 /* concated harmony reexport List */__webpack_require__.d(__webpack_exports__, "List", function() { return List; });
 /* concated harmony reexport Lists */__webpack_require__.d(__webpack_exports__, "Lists", function() { return Lists; });
 /* concated harmony reexport ControlMode */__webpack_require__.d(__webpack_exports__, "ControlMode", function() { return ControlMode; });
-/* concated harmony reexport IRenderListDataOptions */__webpack_require__.d(__webpack_exports__, "IRenderListDataOptions", function() { return IRenderListDataOptions; });
+/* concated harmony reexport RenderListDataOptions */__webpack_require__.d(__webpack_exports__, "RenderListDataOptions", function() { return RenderListDataOptions; });
 /* concated harmony reexport Navigation */__webpack_require__.d(__webpack_exports__, "Navigation", function() { return Navigation; });
 /* concated harmony reexport NavigationNode */__webpack_require__.d(__webpack_exports__, "NavigationNode", function() { return NavigationNode; });
 /* concated harmony reexport NavigationNodes */__webpack_require__.d(__webpack_exports__, "NavigationNodes", function() { return NavigationNodes; });

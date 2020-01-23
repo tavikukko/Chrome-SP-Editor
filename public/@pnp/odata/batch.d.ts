@@ -15,11 +15,11 @@ export declare abstract class Batch {
     protected _reqs: ODataBatchRequestInfo[];
     protected _rDeps: Promise<void>[];
     constructor(_batchId?: string);
-    readonly batchId: string;
+    get batchId(): string;
     /**
      * The requests contained in this batch
      */
-    protected readonly requests: ODataBatchRequestInfo[];
+    protected get requests(): ODataBatchRequestInfo[];
     /**
      *
      * @param url Request url

@@ -19,9 +19,9 @@ export interface SPConfiguration extends ILibraryConfiguration, SPConfigurationP
 }
 export declare function setup(config: SPConfiguration): void;
 export declare class SPRuntimeConfigImpl {
-    readonly headers: ITypedHash<string>;
-    readonly baseUrl: string | null;
-    readonly fetchClientFactory: () => IHttpClientImpl;
+    get headers(): ITypedHash<string>;
+    get baseUrl(): string | null;
+    get fetchClientFactory(): () => IHttpClientImpl;
 }
 export declare let SPRuntimeConfig: SPRuntimeConfigImpl;
 //# sourceMappingURL=splibconfig.d.ts.map

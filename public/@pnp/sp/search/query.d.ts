@@ -40,12 +40,12 @@ export declare class SearchResults {
     private _raw;
     private _primary;
     constructor(rawResponse: any, _url: string, _query: ISearchQuery, _raw?: ISearchResponse, _primary?: ISearchResult[]);
-    readonly ElapsedTime: number;
-    readonly RowCount: number;
-    readonly TotalRows: number;
-    readonly TotalRowsIncludingDuplicates: number;
-    readonly RawSearchResults: ISearchResponse;
-    readonly PrimarySearchResults: ISearchResult[];
+    get ElapsedTime(): number;
+    get RowCount(): number;
+    get TotalRows(): number;
+    get TotalRowsIncludingDuplicates(): number;
+    get RawSearchResults(): ISearchResponse;
+    get PrimarySearchResults(): ISearchResult[];
     /**
      * Gets a page of results
      *

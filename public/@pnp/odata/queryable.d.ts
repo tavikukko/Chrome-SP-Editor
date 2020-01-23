@@ -39,7 +39,8 @@ export interface IQueryable<DefaultActionType> {
 export declare abstract class Queryable<DefaultActionType = any> implements IQueryable<DefaultActionType> {
     private _data;
     constructor(dataSeed?: Partial<IQueryableData<DefaultActionType>>);
-    data: Partial<IQueryableData<DefaultActionType>>;
+    get data(): Partial<IQueryableData<DefaultActionType>>;
+    set data(value: Partial<IQueryableData<DefaultActionType>>);
     /**
      * Gets the full url with query information
      *
@@ -64,7 +65,7 @@ export declare abstract class Queryable<DefaultActionType = any> implements IQue
      * Provides access to the query builder for this url
      *
      */
-    readonly query: Map<string, string>;
+    get query(): Map<string, string>;
     /**
      * Sets custom options for current object and all derived objects accessible via chaining
      *
@@ -116,17 +117,17 @@ export declare abstract class Queryable<DefaultActionType = any> implements IQue
      * Indicates if the current query has a batch associated
      *
      */
-    protected readonly hasBatch: boolean;
+    protected get hasBatch(): boolean;
     /**
      * The batch currently associated with this query or null
      *
      */
-    protected readonly batch: Batch | null;
+    protected get batch(): Batch | null;
     /**
      * Gets the parent url used when creating this instance
      *
      */
-    protected readonly parentUrl: string;
+    protected get parentUrl(): string;
     /**
      * Clones this instance's data to target
      *

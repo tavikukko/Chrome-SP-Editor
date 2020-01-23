@@ -1921,7 +1921,7 @@ var Logger = /** @class */ (function () {
         listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
     };
     /**
-     * Clears the subscribers collection, returning the collection before modifiction
+     * Clears the subscribers collection, returning the collection before modification
      */
     Logger.clearSubscribers = function () {
         return Logger.instance.clearSubscribers();
@@ -2625,7 +2625,7 @@ var graphhttpclient_GraphHttpClient = /** @class */ (function () {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/2.0.0");
+            headers.append("SdkVersion", "PnPCoreJS/2.0.2");
         }
         var opts = Object(util["a" /* assign */])(options, { headers: headers });
         return this.fetchRaw(url, opts);
@@ -2798,6 +2798,9 @@ var graphqueryable_GraphQueryable = /** @class */ (function (_super) {
         return this;
     };
     _GraphQueryable.prototype.defaultAction = function (options) {
+        return graphGet(this, options);
+    };
+    _GraphQueryable.prototype.get = function (options) {
         return graphGet(this, options);
     };
     /**
@@ -2985,19 +2988,59 @@ function deleteable() {
     };
 }
 /**
- * Adds the update method to the tagged class
+ * Adds the delete method to the tagged class
  */
-function updateable() {
+function deleteableWithETag() {
     return function (target) {
         return /** @class */ (function (_super) {
             Object(tslib_es6["c" /* __extends */])(class_3, _super);
             function class_3() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            class_3.prototype.update = function (props) {
-                return graphPatch(this, body(props));
+            class_3.prototype.delete = function (eTag) {
+                if (eTag === void 0) { eTag = "*"; }
+                return graphDelete(this, request_builders_headers({
+                    "If-Match": eTag,
+                }));
             };
             return class_3;
+        }(target));
+    };
+}
+/**
+ * Adds the update method to the tagged class
+ */
+function updateable() {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            Object(tslib_es6["c" /* __extends */])(class_4, _super);
+            function class_4() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            class_4.prototype.update = function (props) {
+                return graphPatch(this, body(props));
+            };
+            return class_4;
+        }(target));
+    };
+}
+/**
+ * Adds the update method to the tagged class
+ */
+function updateableWithETag() {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            Object(tslib_es6["c" /* __extends */])(class_5, _super);
+            function class_5() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            class_5.prototype.update = function (props, eTag) {
+                if (eTag === void 0) { eTag = "*"; }
+                return graphPatch(this, body(props, request_builders_headers({
+                    "If-Match": eTag,
+                })));
+            };
+            return class_5;
         }(target));
     };
 }
@@ -3007,14 +3050,14 @@ function updateable() {
 function addable() {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_4, _super);
-            function class_4() {
+            Object(tslib_es6["c" /* __extends */])(class_6, _super);
+            function class_6() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            class_4.prototype.add = function (props) {
+            class_6.prototype.add = function (props) {
                 return graphPost(this, body(props));
             };
-            return class_4;
+            return class_6;
         }(target));
     };
 }
@@ -3024,14 +3067,14 @@ function addable() {
 function getById(factory) {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_5, _super);
-            function class_5() {
+            Object(tslib_es6["c" /* __extends */])(class_7, _super);
+            function class_7() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            class_5.prototype.getById = function (id) {
+            class_7.prototype.getById = function (id) {
                 return factory(this, id);
             };
-            return class_5;
+            return class_7;
         }(target));
     };
 }
@@ -4689,8 +4732,8 @@ var types_Task = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     _Task = Object(tslib_es6["b" /* __decorate */])([
-        updateable(),
-        deleteable()
+        updateableWithETag(),
+        deleteableWithETag()
     ], _Task);
     return _Task;
 }(graphqueryable_GraphQueryableInstance));

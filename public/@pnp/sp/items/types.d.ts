@@ -65,32 +65,32 @@ export declare class _Item extends _SharePointQueryableInstance {
      * Gets the effective base permissions for the item
      *
      */
-    readonly effectiveBasePermissions: ISharePointQueryable;
+    get effectiveBasePermissions(): ISharePointQueryable;
     /**
      * Gets the effective base permissions for the item in a UI context
      *
      */
-    readonly effectiveBasePermissionsForUI: ISharePointQueryable;
+    get effectiveBasePermissionsForUI(): ISharePointQueryable;
     /**
      * Gets the field values for this list item in their HTML representation
      *
      */
-    readonly fieldValuesAsHTML: ISharePointQueryableInstance;
+    get fieldValuesAsHTML(): ISharePointQueryableInstance;
     /**
      * Gets the field values for this list item in their text representation
      *
      */
-    readonly fieldValuesAsText: ISharePointQueryableInstance;
+    get fieldValuesAsText(): ISharePointQueryableInstance;
     /**
      * Gets the field values for this list item for use in editing controls
      *
      */
-    readonly fieldValuesForEdit: ISharePointQueryableInstance;
+    get fieldValuesForEdit(): ISharePointQueryableInstance;
     /**
      * Gets the collection of versions associated with this item
      */
-    readonly versions: IItemVersions;
-    readonly list: IList;
+    get versions(): IItemVersions;
+    get list(): IList;
     /**
      * Updates this list intance with the supplied properties
      *
@@ -163,7 +163,7 @@ export declare class PagedItemCollection<T> {
     /**
      * If true there are more results available in the set, otherwise there are not
      */
-    readonly hasNext: boolean;
+    get hasNext(): boolean;
     /**
      * Gets the next set of results, or resolves to null if no results are available
      */

@@ -3,15 +3,15 @@ export declare class _RegionalSettings extends _SharePointQueryableInstance<IReg
     /**
      * Gets the collection of languages used in a server farm.
      */
-    readonly installedLanguages: ISharePointQueryableCollection<IInstalledLanguageInfo[]>;
+    get installedLanguages(): ISharePointQueryableCollection<IInstalledLanguageInfo[]>;
     /**
      * Gets time zone
      */
-    readonly timeZone: ITimeZone;
+    get timeZone(): ITimeZone;
     /**
      * Gets time zones
      */
-    readonly timeZones: ITimeZones;
+    get timeZones(): ITimeZones;
 }
 export interface IRegionalSettings extends _RegionalSettings {
 }

@@ -24,7 +24,7 @@ export declare class _Comment extends _SharePointQueryableInstance<ICommentInfo>
     /**
      * A comment's replies
      */
-    readonly replies: IReplies;
+    get replies(): IReplies;
     /**
      * Likes the comment as the current user
      */

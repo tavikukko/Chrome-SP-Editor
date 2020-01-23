@@ -2139,7 +2139,7 @@ var Logger = /** @class */ (function () {
         listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
     };
     /**
-     * Clears the subscribers collection, returning the collection before modifiction
+     * Clears the subscribers collection, returning the collection before modification
      */
     Logger.clearSubscribers = function () {
         return Logger.instance.clearSubscribers();
@@ -2705,7 +2705,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.0:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.2:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -2714,7 +2714,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         if (!headers.has("User-Agent")) {
                             // this marks the requests for understanding by the service
                             // does not work in browsers
-                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.0");
+                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.2");
                         }
                         opts = Object(common["d" /* assign */])(opts, { headers: headers });
                         if (!(opts.method && opts.method.toUpperCase() !== "GET" && !headers.has("X-RequestDigest") && !headers.has("Authorization"))) return [3 /*break*/, 2];
@@ -3327,7 +3327,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.0");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.2");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -3609,11 +3609,11 @@ function stripInvalidFileFolderChars(input, replacer, onPremise) {
 
 function odataUrlFrom(candidate) {
     var parts = [];
-    var s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata"];
+    var s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata", "odata.id"];
     if (Object(common["i" /* hOP */])(candidate, s[0]) && candidate[s[0]] === "SP.Web") {
-        // webs return an absolute url in the editLink
-        if (Object(common["i" /* hOP */])(candidate, s[1])) {
-            parts.push(candidate[s[1]]);
+        // webs return an absolute url in the id
+        if (Object(common["i" /* hOP */])(candidate, s[4])) {
+            parts.push(candidate[s[4]]);
         }
         else if (Object(common["i" /* hOP */])(candidate, s[2])) {
             // we are dealing with verbose, which has an absolute uri
@@ -3715,6 +3715,7 @@ function escapeQueryStrValue(value) {
 }
 //# sourceMappingURL=escapeQueryStrValue.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/types.js
+
 
 
 
@@ -3877,7 +3878,7 @@ var types_Site = /** @class */ (function (_super) {
                         data = _a.sent();
                         return [2 /*return*/, {
                                 data: data,
-                                web: Web(odataUrlFrom(data)),
+                                web: Web(extractWebUrl(odataUrlFrom(data))),
                             }];
                 }
             });

@@ -8,7 +8,7 @@ export declare class _Conversation extends _GraphQueryableInstance<IConversation
     /**
      * Get all the threads in a group conversation.
      */
-    readonly threads: IThreads;
+    get threads(): IThreads;
 }
 export interface IConversation extends _Conversation, IUpdateable<IConversationType>, IDeleteable {
 }
@@ -28,7 +28,7 @@ export declare class _Thread extends _GraphQueryableInstance {
     /**
      * Get all the threads in a group conversation.
      */
-    readonly posts: IPosts;
+    get posts(): IPosts;
     /**
      * Reply to a thread in a group conversation and add a new post to it
      *

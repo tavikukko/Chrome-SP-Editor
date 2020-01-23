@@ -11,7 +11,7 @@ export declare class CachingOptions implements ICachingOptions {
     expiration: Date;
     protected static storage: PnPClientStorage;
     constructor(key: string, storeName?: "session" | "local", expiration?: Date);
-    readonly store: IPnPClientStore;
+    get store(): IPnPClientStore;
 }
 export declare class CachingParserWrapper<T> implements IODataParser<T> {
     parser: IODataParser<T>;

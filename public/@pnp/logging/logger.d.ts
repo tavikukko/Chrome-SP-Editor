@@ -7,8 +7,9 @@ export declare class Logger {
     /**
      * Gets or sets the active log level to apply for log filtering
      */
-    static activeLogLevel: LogLevel;
-    private static readonly instance;
+    static get activeLogLevel(): LogLevel;
+    static set activeLogLevel(value: LogLevel);
+    private static get instance();
     /**
      * Adds ILogListener instances to the set of subscribed listeners
      *
@@ -16,13 +17,13 @@ export declare class Logger {
      */
     static subscribe(...listeners: ILogListener[]): void;
     /**
-     * Clears the subscribers collection, returning the collection before modifiction
+     * Clears the subscribers collection, returning the collection before modification
      */
     static clearSubscribers(): ILogListener[];
     /**
      * Gets the current subscriber count
      */
-    static readonly count: number;
+    static get count(): number;
     /**
      * Writes the supplied string to the subscribed listeners
      *
@@ -79,7 +80,7 @@ export interface ILogEntry {
     data?: any;
 }
 /**
- * Interface that defines a log listner
+ * Interface that defines a log listener
  *
  */
 export interface ILogListener {

@@ -30,6 +30,7 @@ export declare class _GraphQueryable<GetType = any> extends Queryable<GetType> i
      */
     expand(...expands: string[]): this;
     defaultAction(options?: IFetchOptions): Promise<GetType>;
+    get<T = GetType>(options?: IFetchOptions): Promise<T>;
     /**
      * Gets the full url with query information
      *
@@ -109,7 +110,7 @@ export declare class _GraphQueryableCollection<GetType = any[]> extends _GraphQu
     /**
      * 	Retrieves the total count of matching resources
      */
-    readonly count: this;
+    get count(): this;
 }
 export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, IGraphQueryable<GetType> {
     /**

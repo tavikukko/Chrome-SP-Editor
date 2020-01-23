@@ -46,16 +46,24 @@ export declare class _ClientsidePage extends _SharePointQueryable implements ICl
      */
     constructor(baseUrl: string | ISharePointQueryable, path?: string, json?: Partial<IPageData>, noInit?: boolean, sections?: CanvasSection[], commentsDisabled?: boolean);
     private static getDefaultLayoutPart;
-    pageLayout: ClientsidePageLayoutType;
-    bannerImageUrl: string;
-    topicHeader: string;
-    title: string;
-    layoutType: LayoutType;
-    headerTextAlignment: TextAlignment;
-    showTopicHeader: boolean;
-    showPublishDate: boolean;
-    readonly hasVerticalSection: boolean;
-    readonly verticalSection: CanvasSection | null;
+    get pageLayout(): ClientsidePageLayoutType;
+    set pageLayout(value: ClientsidePageLayoutType);
+    get bannerImageUrl(): string;
+    set bannerImageUrl(value: string);
+    get topicHeader(): string;
+    set topicHeader(value: string);
+    get title(): string;
+    set title(value: string);
+    get layoutType(): LayoutType;
+    set layoutType(value: LayoutType);
+    get headerTextAlignment(): TextAlignment;
+    set headerTextAlignment(value: TextAlignment);
+    get showTopicHeader(): boolean;
+    set showTopicHeader(value: boolean);
+    get showPublishDate(): boolean;
+    set showPublishDate(value: boolean);
+    get hasVerticalSection(): boolean;
+    get verticalSection(): CanvasSection | null;
     /**
      * Add a section to this page
      */
@@ -191,12 +199,14 @@ export declare class CanvasSection {
     private _order;
     private _layoutIndex;
     constructor(page: IClientsidePage, order: number, layoutIndex: number, columns?: CanvasColumn[], _emphasis?: 0 | 1 | 2 | 3);
-    order: number;
-    layoutIndex: number;
+    get order(): number;
+    set order(value: number);
+    get layoutIndex(): number;
+    set layoutIndex(value: number);
     /**
      * Default column (this.columns[0]) for this section
      */
-    readonly defaultColumn: CanvasColumn;
+    get defaultColumn(): CanvasColumn;
     /**
      * Adds a new column to this section
      */
@@ -207,7 +217,8 @@ export declare class CanvasSection {
      * @param control Control to add to the default column
      */
     addControl(control: ColumnControl<any>): this;
-    emphasis: 0 | 1 | 2 | 3;
+    get emphasis(): 0 | 1 | 2 | 3;
+    set emphasis(value: 0 | 1 | 2 | 3);
     /**
      * Removes this section and all contained columns and controls from the collection
      */
@@ -220,10 +231,13 @@ export declare class CanvasColumn {
     private _section;
     private _memId;
     constructor(json?: IClientsidePageColumnData, controls?: ColumnControl<any>[]);
-    readonly data: IClientsidePageColumnData;
-    section: CanvasSection;
-    order: number;
-    factor: CanvasColumnFactor;
+    get data(): IClientsidePageColumnData;
+    get section(): CanvasSection;
+    set section(section: CanvasSection);
+    get order(): number;
+    set order(value: number);
+    get factor(): CanvasColumnFactor;
+    set factor(value: CanvasColumnFactor);
     addControl(control: ColumnControl<any>): this;
     getControl<T extends ColumnControl<any>>(index: number): T;
     remove(): void;
@@ -232,10 +246,12 @@ export declare abstract class ColumnControl<T extends ICanvasControlBaseData> {
     protected json: T;
     private _column;
     constructor(json: T);
-    abstract order: number;
-    readonly id: string;
-    readonly data: T;
-    column: CanvasColumn | null;
+    abstract get order(): number;
+    abstract set order(value: number);
+    get id(): string;
+    get data(): T;
+    get column(): CanvasColumn | null;
+    set column(value: CanvasColumn);
     remove(): void;
     protected setData(data: T): void;
     protected abstract onColumnChange(col: CanvasColumn): void;
@@ -243,20 +259,28 @@ export declare abstract class ColumnControl<T extends ICanvasControlBaseData> {
 export declare class ClientsideText extends ColumnControl<IClientsideTextData> {
     static Default: IClientsideTextData;
     constructor(text: string, json?: IClientsideTextData);
-    text: string;
-    order: number;
+    get text(): string;
+    set text(value: string);
+    get order(): number;
+    set order(value: number);
     protected onColumnChange(col: CanvasColumn): void;
 }
 export declare class ClientsideWebpart extends ColumnControl<IClientsideWebPartData> {
     static Default: IClientsideWebPartData;
     constructor(json?: IClientsideWebPartData);
     static fromComponentDef(definition: IClientsidePageComponent): ClientsideWebpart;
-    title: string;
-    description: string;
-    order: number;
-    height: number;
-    width: number;
-    dataVersion: string;
+    get title(): string;
+    set title(value: string);
+    get description(): string;
+    set description(value: string);
+    get order(): number;
+    set order(value: number);
+    get height(): number;
+    set height(value: number);
+    get width(): number;
+    set width(value: number);
+    get dataVersion(): string;
+    set dataVersion(value: string);
     setProperties<T = any>(properties: T): this;
     getProperties<T = any>(): T;
     protected onColumnChange(col: CanvasColumn): void;

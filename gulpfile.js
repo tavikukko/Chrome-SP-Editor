@@ -1,6 +1,7 @@
 // /gulpfile.js
 var gulp = require('gulp');
 var del = require('del');
+var rename = require("gulp-rename");
 
 gulp.task('clean', (done) => {
   console.log("Deleting old definitions");
@@ -83,8 +84,11 @@ gulp.task('copy:pnpjs', (done) => {
   console.log("Copy @pnp/pnpjs");
   gulp.src('./node_modules/@pnp/pnpjs/**/*.d.ts')
     .pipe(gulp.dest('./public/@pnp/pnpjs/'))
-  gulp.src('./dist/pnpjs.es5.umd.bundle.js')
-    .pipe(gulp.dest('./public/bundles/'))
+  // gulp.src('./dist/pnpjs.es5.umd.bundle.js')
+  //  .pipe(gulp.dest('./public/bundles/'))
+  gulp.src('./node_modules/@pnp/pnpjs/dist/pnp.js')
+  .pipe(rename('pnpjs.es5.umd.bundle.js'))
+  .pipe(gulp.dest('./public/bundles/'))
   done();
 });
 
