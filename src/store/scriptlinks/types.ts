@@ -29,6 +29,8 @@ export interface IScriptLinksState {
   newpanel: boolean,
   selectedItems: IScriptLink[],
   selectedItem: IScriptLink | undefined,
+  confirmremove: boolean,
+  confirmedit: boolean,
 }
 
 export enum Constants {
@@ -40,4 +42,6 @@ export enum Constants {
   SET_NEWPANEL = 'SET_NEWPANEL',
   SELECTED_ITEM = 'SELECTED_ITEM',
   SELECTED_ITEMS = 'SELECTED_ITEMS',
+  SET_CONFIRM_REMOVE_DIALOG = 'SET_CONFIRM_REMOVE_DIALOG',
+  SET_CONFIRM_EDIT_DIALOG = 'SET_CONFIRM_EDIT_DIALOG',
 }

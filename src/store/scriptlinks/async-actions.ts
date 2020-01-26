@@ -182,6 +182,7 @@ export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | H
 
 export async function deleteScriptLinks(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: IScriptLink[]) {
 
+  dispatch(actions.setConfirmRemoveDialog(true))
   dispatch(rootActions.setLoading(true));
   // add listener to receive the results from inspected page
   (window as any).port.onMessage.addListener(async function deleteScriptLinksCallback(message: any) {

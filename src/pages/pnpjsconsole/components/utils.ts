@@ -142,6 +142,36 @@ export const fixImports = (lines: string[], ecode: string[]) => {
   return prepnp
 }
 
+// find all import lines from code
+export const getImportModules = (content: string) => {
+  const importTexts: string[] = []
+  const imports = content.match(/import.*(@pnp|microsoft).*/g)
+  if (imports) {
+    imports.forEach(iText => {
+      const match = iText.match(/(["'])(.*?[^\\])\1/g)
+      if (match) {
+        importTexts.push(match[0].replace(/\"/g, '').replace(/\'/g, ''))
+      }
+    })
+  }
+  return Array.from(new Set(importTexts))
+}
+
+// match filenames to definitions
+export const resolveFiles = (files: string[], definitions: IDefinitions[]) => {
+  const resolvedMods: IDefinitions[] = []
+  if (files && files.length > 0) {
+    files.forEach(file => {
+      const modl = definitions.find(mod =>
+        mod.filePath === file || mod.filePath === `${file}.d.ts` || mod.filePath === `${file}/index.d.ts`)
+      if (modl) {
+        resolvedMods.push(modl)
+      }
+    })
+  }
+  return resolvedMods
+}
+
 export const mod_common = `var mod_common = '${chrome.extension.getURL('bundles/common.es5.umd.bundle.js')}';`
 export const mod_config = `var mod_config = '${chrome.extension.getURL('bundles/config-store.es5.umd.bundle.js')}';`
 export const mod_graph = `var mod_graph = '${chrome.extension.getURL('bundles/graph.es5.umd.bundle.js')}';`

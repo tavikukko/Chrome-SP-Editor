@@ -2,8 +2,7 @@ import { CommandBar } from 'office-ui-fabric-react'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import { setNewPanel } from '../../../store/scriptlinks/actions'
-import { deleteScriptLinks } from '../../../store/scriptlinks/async-actions'
+import { setConfirmRemoveDialog, setNewPanel } from '../../../store/scriptlinks/actions'
 
 const ScriptLinkCommands = () => {
   const dispatch = useDispatch()
@@ -30,7 +29,7 @@ const ScriptLinkCommands = () => {
           iconProps: { iconName: 'Delete' },
           disabled: selectedItems.length < 1,
           onClick: () => {
-            deleteScriptLinks(dispatch, selectedItems)
+            dispatch(setConfirmRemoveDialog(false))
           },
         },
       ]}

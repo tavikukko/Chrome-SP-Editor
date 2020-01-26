@@ -11,9 +11,9 @@ const ScriptLinks = () => {
   return (
     <IonPage>
       <Header title={'ScriptLinks'} />
+      {/* Actions menu */}
+      <ScriptLinkCommands />
       <IonContent>
-        {/* Actions menu */}
-        <ScriptLinkCommands />
         {/* List of scriptLinks */}
         <ScriptLinkList />
         {/* Panel to edit scriptlinks */}

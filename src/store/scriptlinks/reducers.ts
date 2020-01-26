@@ -7,6 +7,8 @@ const init: IScriptLinksState = {
   newpanel: false,
   selectedItems: [],
   selectedItem: undefined,
+  confirmremove: true,
+  confirmedit: true,
 }
 
 export function scriptLinksReducer(state: IScriptLinksState = init, action: ScriptLinksActions): IScriptLinksState {
@@ -20,6 +22,10 @@ export function scriptLinksReducer(state: IScriptLinksState = init, action: Scri
     case Constants.SELECTED_ITEMS:
       return { ...state, ...action.payload }
     case Constants.SELECTED_ITEM:
+      return { ...state, ...action.payload }
+    case Constants.SET_CONFIRM_EDIT_DIALOG:
+      return { ...state, ...action.payload }
+    case Constants.SET_CONFIRM_REMOVE_DIALOG:
       return { ...state, ...action.payload }
     default:
       return state

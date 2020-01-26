@@ -30,3 +30,15 @@ export function setSelectedItems(selectedItems: IScriptLink[]) {
     selectedItems,
   })
 }
+
+export function setConfirmEditDialog(confirmedit: boolean) {
+  return action(Constants.SET_CONFIRM_EDIT_DIALOG, {
+    confirmedit,
+  })
+}
+
+export function setConfirmRemoveDialog(confirmremove: boolean) {
+  return action(Constants.SET_CONFIRM_REMOVE_DIALOG, {
+    confirmremove,
+  })
+}
