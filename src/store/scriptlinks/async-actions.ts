@@ -43,7 +43,7 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
             return uca
           })
           // add scriptlinks to state
-          dispatch(actions.getAllScriptLinks(scriptLinks))
+          dispatch(actions.setAllScriptLinks(scriptLinks))
           // hide loading component
           dispatch(rootActions.setLoading(false))
         } else {

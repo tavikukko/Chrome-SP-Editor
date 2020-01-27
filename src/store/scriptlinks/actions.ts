@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions'
 import { Constants, IScriptLink } from './types'
 
-export function getAllScriptLinks(items: IScriptLink[]) {
+export function setAllScriptLinks(items: IScriptLink[]) {
   return action(Constants.GET_ITEMS, {
     items,
   })
