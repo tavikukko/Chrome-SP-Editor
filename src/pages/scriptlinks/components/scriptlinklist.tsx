@@ -140,9 +140,10 @@ const ScriptLinkList = () => {
         hidden={confirmremove}
         onDismiss={() => dispatch(setConfirmRemoveDialog(true))}
         dialogContentProps={{
-          type: DialogType.largeHeader,
+          showCloseButton: true,
+          type: DialogType.normal,
           title: 'Remove ScriptLinks',
-          closeButtonAriaLabel: 'Close',
+          closeButtonAriaLabel: 'Cancel',
           subText: selectedItems.length > 1
             ? `Sure you want to remove these ${selectedItems.length} selected scriptlinks?`
             : `Sure you want to remove the selected scriptlink?`,
@@ -152,7 +153,7 @@ const ScriptLinkList = () => {
         }}
       >
         <DialogFooter>
-          <PrimaryButton onClick={() => deleteScriptLinks(dispatch, selectedItems)} text='Delete' />
+          <PrimaryButton onClick={() => deleteScriptLinks(dispatch, selectedItems)} text='Remove' />
           <DefaultButton onClick={() => dispatch(setConfirmRemoveDialog(true))} text='Cancel' />
         </DialogFooter>
       </Dialog>

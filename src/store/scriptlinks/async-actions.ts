@@ -71,7 +71,10 @@ export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
 
 export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: INewScriptLink) {
 
-  dispatch(rootActions.setLoading(true));
+  // show loading spinner
+  dispatch(rootActions.setLoading(true))
+  // close panel
+  dispatch(actions.setNewPanel(false));
   // add listener to receive the results from inspected page
   (window as any).port.onMessage.addListener(async function addScriptLinkCallback(message: any) {
 
@@ -92,8 +95,6 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | Home
           await delay(500)
           // load all scriptlinks
           getAllScriptLinks(dispatch)
-          // close panel
-          dispatch(actions.setNewPanel(false))
           // set success message
           dispatch(rootActions.setAppMessage({
             showMessage: true,
@@ -102,8 +103,6 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | Home
           }))
         } else {
           /* on error */
-          // close panel
-          dispatch(actions.setNewPanel(false))
           // hide loading
           dispatch(rootActions.setLoading(false))
           // show error message
@@ -127,7 +126,12 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | Home
 
 export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: IScriptLink) {
 
-  dispatch(rootActions.setLoading(true));
+  // close confirm dialog
+  dispatch(actions.setConfirmEditDialog(true))
+  // show loading spinner
+  dispatch(rootActions.setLoading(true))
+  // close panel
+  dispatch(actions.setEditPanel(false));
   // add listener to receive the results from inspected page
   (window as any).port.onMessage.addListener(async function updateScriptLinkCallback(message: any) {
 
@@ -147,8 +151,6 @@ export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | H
           await delay(500)
           // load all scriptlinks
           getAllScriptLinks(dispatch)
-          // close panel
-          dispatch(actions.setEditPanel(false))
           // set success message
           dispatch(rootActions.setAppMessage({
             showMessage: true,
@@ -157,8 +159,6 @@ export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | H
           }))
         } else {
           /* on error */
-          // close panel
-          dispatch(actions.setEditPanel(false))
           // hide loading
           dispatch(rootActions.setLoading(false))
           // show error message
@@ -182,7 +182,9 @@ export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | H
 
 export async function deleteScriptLinks(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: IScriptLink[]) {
 
+  // hide confirm dialog
   dispatch(actions.setConfirmRemoveDialog(true))
+  // show loading spinner
   dispatch(rootActions.setLoading(true));
   // add listener to receive the results from inspected page
   (window as any).port.onMessage.addListener(async function deleteScriptLinksCallback(message: any) {
