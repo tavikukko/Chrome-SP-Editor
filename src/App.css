@@ -9,10 +9,11 @@
 .App {
   text-align: center;
 }
-
+/*
 .editor-container {
   height:100vh;
 }
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
@@ -42,6 +43,7 @@
     transform: rotate(360deg);
   }
 }
+*/
 /*
  * Dark Colors
  * -------------------------------------------
@@ -186,4 +188,56 @@
   --ion-color-step-950: #f3f3f3;
 
   --ion-item-background: #1A1B1E;
+}
+
+.warning-title {
+  font-family: "Saira Extra Condensed", sans-serif;
+  font-size: 250%;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 7rem;
+  transform: scale(1, 1.5);
+  text-align: center;
+  color: rgb(75, 213, 238);
+  font-weight: bold;
+}
+
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.warning-text {
+  font-size: 300%;
+  bottom: 0;
+  height: 80rem;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%) perspective(300px) rotateX(28deg);
+  transform-origin: 50% 100%;
+  width: 90%;
+}
+
+.content {
+  position: absolute;
+  top: 100%;
+}
+
+.content p {
+  font-weight: 700;
+  line-height: 1.33;
+  margin-bottom: 4rem;
+  text-align: justify;
+  font-family: "Saira Extra Condensed", sans-serif;
+  color: rgb(229, 177, 58);
+}
+
+.content .darkside {
+  font-weight: 700;
+  line-height: 1.33;
+  margin-bottom: 4rem;
+  text-align: center;
+  font-family: "Saira Extra Condensed", sans-serif;
+  color: rgb(75, 213, 238);
 }

@@ -6,6 +6,7 @@
     "@ionic/react": "^4.11.10",
     "@ionic/react-router": "^4.11.10",
     "@uifabric/azure-themes": "^7.0.14",
+    "gsap": "^3.1.1",
     "ionicons": "^4.6.3",
     "monaco-editor": "^0.19.3",
     "office-ui-fabric-react": "^7.85.0",

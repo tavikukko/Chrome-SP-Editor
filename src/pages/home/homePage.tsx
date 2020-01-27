@@ -1,59 +1,48 @@
-import React, { useState } from 'react'
-
-/* redux imports */
-import { useDispatch, useSelector } from 'react-redux'
-import { addItemAsync } from '../../store/home/async-actions'
-import { IRootState } from '../../store/index'
-
-/* UI imports */
-import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react'
-import { PrimaryButton, TextField } from 'office-ui-fabric-react'
+import { IonContent, IonPage } from '@ionic/react'
+import gsap from 'gsap'
+import React, { useEffect, useRef } from 'react'
 import Header from '../../components/header'
-
+import logo from './logo.png'
 const HomePage = () => {
-  /* component state */
-  const [inputText, setInputText] = useState()
 
-  /* redux */
-  const dispatch = useDispatch()
-  const { list, loading } = useSelector((state: IRootState) => state.home)
+  const content = useRef<null | HTMLDivElement>(null)
 
-  /* compoent methods */
-  const onInputChange = (newValue?: string) => {
-    setInputText(newValue)
-  }
-  const onAddClick = () => {
-    addItemAsync(dispatch, inputText)
-    setInputText('')
-  }
+  useEffect(() => {
+    const tl = gsap.timeline()
+    tl.to(content.current, { top: '-270%', duration: 100 })
+  }, [])
 
-  /* render */
   return (
-    <>
-      <IonPage>
-        <Header title={'Home'} />
-        <IonContent>
-          <IonGrid color='primary'>
-            <IonRow class='ion-no-padding'>
-              <IonCol class='ion-no-padding'>
-                <TextField
-                  label='Standard'
-                  value={inputText}
-                  onChange={(e, v) => onInputChange(v)}
-                />
-                <PrimaryButton text='Add item' onClick={onAddClick} />
-                <ul>
-                  {list.map(l => (
-                    <li key={l}>{l}</li>
-                  ))}
-                </ul>
-                {loading && <div>Loading...</div>}
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonContent>
-      </IonPage>
-    </>
+    <IonPage>
+      <Header title={'Home'} />
+      <IonContent>
+        <section className='warning-text'>
+          <div className='content' ref={content}>
+            <img src={logo} alt={'Warning!'} className='logo'/>
+            <p>
+              Use of this tool exposes you to potential security threats
+              which can result in others gaining access to your personal
+              Office 365 data (documents, emails, conversations and more).
+            </p>
+            <p>
+              Make sure you trust the person or organization that asked you
+              to access this tool before proceeding.
+            </p>
+            <p>
+              Learn more here:
+              https://technet.microsoft.com/en-us/library/bb794823.aspx
+            </p>
+            <p className='darkside'>
+            The dark side of this tool is a pathway to many
+            abilities some consider to be...
+            </p>
+            <h1 className='warning-title'>
+            UNNATURAL
+            </h1>
+          </div>
+        </section>
+      </IonContent>
+    </IonPage>
   )
 }
 
