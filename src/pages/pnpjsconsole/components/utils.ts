@@ -51,7 +51,7 @@ export const loadDefinitions = async (
         declarations.push({ content, filePath: fullpath })
       }
     }))
-    monaco.languages.typescript.typescriptDefaults.setExtraLibs(declarations)
+    // monaco.languages.typescript.typescriptDefaults.setExtraLibs(declarations)
     resolve(declarations)
   })
 }
@@ -150,7 +150,7 @@ export const getImportModules = (content: string) => {
     imports.forEach(iText => {
       const match = iText.match(/(["'])(.*?[^\\])\1/g)
       if (match) {
-        importTexts.push(match[0].replace(/\"/g, '').replace(/\'/g, ''))
+        importTexts.push(match[0].replace(/"/g, '').replace(/'/g, ''))
       }
     })
   }
@@ -170,6 +170,72 @@ export const resolveFiles = (files: string[], definitions: IDefinitions[]) => {
     })
   }
   return resolvedMods
+}
+
+export const locations = (substringx: any, stringx: string) => {
+  const indexes = Array.from(stringx.matchAll(new RegExp(substringx, 'gi'))).map(a => a.index)
+  return indexes
+}
+
+export const getExportRows = (content: string, path: string) => {
+  const libs = content.match(/("(\.|@)|'(\.|@)).*\/.*("|')/g)
+  if (libs) {
+    const exportTexts: string[] = []
+    libs.forEach(eText => {
+      const libo = eText.match(/(["'])(.*?[^\\])\1/g)
+      if (libo) {
+        const lib = libo[0].replace(/"/g, '').replace(/'/g, '')
+        const splitIndex = locations('/', path)
+        if (lib.startsWith('./')) {
+          const jee = splitIndex[splitIndex.length - 1]
+          if (jee) {
+            const lib1 = path.substring(0, jee + 1) + lib.substring(2)
+            exportTexts.push(lib1)
+          }
+        } else if (lib.startsWith('../../')) {
+          const jee = splitIndex[splitIndex.length - 3]
+          if (jee) {
+            const lib2 = path.substring(0, jee + 1) + lib.substring(6)
+            exportTexts.push(lib2)
+          }
+        } else if (lib.startsWith('../')) {
+          const jee = splitIndex[splitIndex.length - 2]
+          if (jee) {
+            const lib3 = path.substring(0, jee + 1) + lib.substring(3)
+            exportTexts.push(lib3)
+          }
+        } else {
+          exportTexts.push(lib)
+        }
+      }
+    })
+    return exportTexts
+  }
+  else {
+    return []
+  }
+}
+
+export const getDefinitionsInUse = (codeWithOutComments: string, definitions: IDefinitions[]) => {
+  const initModules = getImportModules(codeWithOutComments)
+  const defs = resolveFiles(initModules, definitions)
+  const currentLibs: IDefinitions[] = []
+  const parseLibs = (filelist: IDefinitions[]) => {
+    filelist.forEach((file) => {
+      const libs = resolveFiles(getExportRows(file.content, file.filePath), definitions)
+      if (libs && libs.length > 0) {
+        const newLibs = libs.filter(d => !currentLibs.find(g => d.filePath === g.filePath))
+        newLibs.forEach(lib => currentLibs.push(lib))
+        parseLibs(newLibs)
+      }
+    })
+    const initLibs = filelist.filter(file => !currentLibs.find(lib => file.filePath === lib.filePath))
+    if (initLibs && initLibs.length > 0) {
+      initLibs.forEach(lib => currentLibs.push(lib))
+    }
+  }
+  parseLibs(defs)
+  return currentLibs
 }
 
 export const mod_common = `var mod_common = '${chrome.extension.getURL('bundles/common.es5.umd.bundle.js')}';`

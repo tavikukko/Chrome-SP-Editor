@@ -53,6 +53,7 @@ const ScriptLinkList = () => {
   // load initial data
   useEffect(() => {
     getAllScriptLinks(dispatch)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // clear selection after every update on scriptlinks
@@ -60,6 +61,7 @@ const ScriptLinkList = () => {
     selection.setAllSelected(false)
     dispatch(setSelectedItems([]))
     setSequenceAsc(true)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scriptlinks])
 
   const onColumnClick = (_e: any, { key }: any) => {

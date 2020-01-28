@@ -11,10 +11,12 @@ import { IRootState } from '../../../store'
 import { setLoading } from '../../../store/home/actions'
 import { setCode } from '../../../store/pnpjsconsole/actions'
 import { fetchDefinitions } from '../../../store/pnpjsconsole/async-actions'
+import { IDefinitions } from '../../../store/pnpjsconsole/types'
 import { exescript } from '../../../store/utilities/chromecommon'
 import {
   execme,
   fixImports,
+  getDefinitionsInUse,
   mod_adaljs,
   mod_addin,
   mod_client,
@@ -54,12 +56,16 @@ const PnPjsEditor = () => {
         ),
         ...COMMON_CONFIG,
       })
+
+      const codeWOComments = editor.current!.getModel()!.getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
+      const curLibs: IDefinitions[] = getDefinitionsInUse(codeWOComments, definitions)
+      monaco.languages.typescript.typescriptDefaults.setExtraLibs(curLibs)
+
       if (editor && editor.current) {
         // adds auto-complete for @pnp module imports
         completionItems.current = monaco.languages.registerCompletionItemProvider('typescript', {
           triggerCharacters: ['@', '/'],
           provideCompletionItems: (model, position) => {
-            // alert('jou!')
             const textUntilPosition = model.getValueInRange({
               startLineNumber: position.lineNumber,
               startColumn: 1,
@@ -68,9 +74,7 @@ const PnPjsEditor = () => {
             })
 
             const importText = textUntilPosition.substring(textUntilPosition.indexOf('@'))
-            // alert(importText)
             const moduleDepth = importText.split('/')
-            // alert(moduleDepth)
             const suggestions: any[] = []
 
             definitions.forEach(file => {
@@ -93,15 +97,19 @@ const PnPjsEditor = () => {
         })
 
         editor.current.onDidChangeModelContent((x) => {
-          // const model = editor.current!.getModel()!.getValue()
-          // TODO: here fix modules
+          const codeWithOutComments = editor.current!.getModel()!.getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
+          const currentLibs: IDefinitions[] = getDefinitionsInUse(codeWithOutComments, definitions)
+          // @ts-ignore: getExtraLibs() not defined in monaco.d.ts
+          const extralibs = monaco.languages.typescript.typescriptDefaults.getExtraLibs()
+          if (currentLibs.length !== Object.keys(extralibs).length) {
+            monaco.languages.typescript.typescriptDefaults.setExtraLibs(currentLibs)
+          }
         })
 
         // tslint:disable-next-line:no-bitwise
         editor.current.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, () => {
           try {
             const model = editor.current!.getModel()!.getValue()
-
             const compilerOptions: CompilerOptions = getDefaultCompilerOptions()
             const js = transpileModule(model, {
               compilerOptions,
@@ -160,6 +168,7 @@ const PnPjsEditor = () => {
       const models = editor.current!.getModel()!.getValue()
       completionItems.current?.dispose()
       dispatch(setCode(models))
+      monaco.languages.typescript.typescriptDefaults.setExtraLibs([])
       monaco.editor.getModels().forEach(model => model.dispose())
     }
   }, [dispatch])
