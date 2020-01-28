@@ -51,7 +51,6 @@ export const loadDefinitions = async (
         declarations.push({ content, filePath: fullpath })
       }
     }))
-    // monaco.languages.typescript.typescriptDefaults.setExtraLibs(declarations)
     resolve(declarations)
   })
 }
@@ -93,8 +92,8 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 
 (async () => {
-  const web = await sp.web.select("Title")()
-  console.log("Web Title: ", web.Title);
+  const { Title } = await sp.web.select("Title")()
+  console.log(\`Web title: \${Title}\`);
 })().catch(console.log)
 `
   return code.substring(code.indexOf('\n') + 1)

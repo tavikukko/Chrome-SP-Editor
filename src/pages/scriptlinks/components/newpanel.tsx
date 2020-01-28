@@ -21,8 +21,6 @@ const ScriptLinksNewPanel = () => {
 
   const dispatch = useDispatch()
 
-  const [ valid, setValid ] = useState(false)
-
   const [ newItem, setNewItem ] = useState<INewScriptLink>({
     Url: '',
     Sequence: 0,

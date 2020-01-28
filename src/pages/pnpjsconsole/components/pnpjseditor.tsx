@@ -137,7 +137,7 @@ const PnPjsEditor = () => {
             ${sj}
             ${exescript}
             ${execme(prepnp, ecode)}
-            exescript(execme);`
+            ${exescript.name}(execme);`
 
             console.log(script)
 

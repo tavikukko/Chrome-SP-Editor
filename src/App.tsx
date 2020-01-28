@@ -56,7 +56,10 @@ const App = () => {
       dispatch(setDarkMode(shouldAdd))
     }
 
-    toggleDarkTheme(prefersDark.matches)
+    // toggleDarkTheme(prefersDark.matches)
+    // this will set the theme according the system preferences
+    // now we default to dark (true)
+    toggleDarkTheme(true)
     prefersDark.addListener(mediaQuery => toggleDarkTheme(mediaQuery.matches))
   }, [dispatch])
 
