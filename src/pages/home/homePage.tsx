@@ -14,7 +14,7 @@ const HomePage = () => {
 
   return (
     <IonPage>
-      <Header title={'Home'} />
+      <Header title={''} />
       <IonContent>
         <section className='warning-text'>
           <div className='content' ref={content}>
