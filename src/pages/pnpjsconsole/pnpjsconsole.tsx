@@ -9,8 +9,8 @@ const PnPjsConsole = () => {
   return (
     <>
       <IonPage>
+        <Header title={'PnPjs Console'} />
         <IonContent>
-          <Header title={'PnPjs Console'} />
           <PnPjsEditor />
         </IonContent>
       </IonPage>

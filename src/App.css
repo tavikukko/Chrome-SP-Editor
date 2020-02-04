@@ -44,6 +44,18 @@
   }
 }
 */
+
+/* hide scrollbars on windows */
+::-webkit-scrollbar, *::-webkit-scrollbar {
+  display: none;
+  overflow: hidden;
+}
+
+ion-content {
+  overflow: hidden;
+  --overflow: hidden;
+}
+
 /*
  * Dark Colors
  * -------------------------------------------

@@ -7,7 +7,7 @@ import {
   IonToggle,
   IonToolbar,
 } from '@ionic/react'
-import { FontIcon, Nav, TooltipDelay, TooltipHost } from 'office-ui-fabric-react'
+import { FontIcon, Nav, ScrollablePane, TooltipDelay, TooltipHost } from 'office-ui-fabric-react'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
@@ -50,7 +50,8 @@ export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent class='outer-content'>
+      <IonContent class='no-scroll' no-bounce>
+      <ScrollablePane>
         <Nav
           selectedKey={selectedKey}
           onLinkClick={(event, element) => {
@@ -153,6 +154,7 @@ export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
             },
           ]}
         />
+        </ScrollablePane>
       </IonContent>
     </IonMenu>
   )
