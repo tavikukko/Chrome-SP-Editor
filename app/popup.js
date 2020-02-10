@@ -139,7 +139,7 @@ riot.tag("spquicklinks", `
           this.my = this.tenant.indexOf("-my") > -1 ? this.tenant : this.tenant + "-my";
           this.my = this.my.replace("-admin", "");
 
-          this.links.unshift({ title: "Edit user profile", url: `${this.my}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/editprofile.aspx`, target: "_blank", css: "pointer-cursor" });
+          this.links.unshift({ title: "Edit user profile", url: `${this.my}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/editprofile.aspx?UserSettingsProvider=dfb95e82-8132-404b-b693-25418fdac9b6`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Current user", url: "", target: "", css: "disabled normal-cursor" });
           this.links.unshift({ title: "Search administration", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/searchadmin/TA_SearchAdministration.aspx`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Term store", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/termstoremanager.aspx`, target: "_blank", css: "pointer-cursor" });
@@ -157,7 +157,7 @@ riot.tag("spquicklinks", `
             if (appCatalogUrl && appCatalogUrl.indexOf("undefined") === -1) {
               var index = that.links.findIndex(l => l.title === "Search administration");
               var i = index > -1 ? index + 1 : 6
-              that.links.splice(i, 0, { title: "App Catalog", url: appCatalogUrl, target: "_blank", css: "pointer-cursor" });
+              that.links.splice(i, 0, { title: "App Catalog", url: `${appCatalogUrl}/AppCatalog/Forms/AllItems.aspx`, target: "_blank", css: "pointer-cursor" });
               that.update();
             }
           });

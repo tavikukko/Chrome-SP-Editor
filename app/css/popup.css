@@ -21,7 +21,7 @@
 }
 
 .list-group-item {
-    padding: 7px 15px;
+    padding: 6px 15px;
 }
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
