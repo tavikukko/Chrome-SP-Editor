@@ -5273,8 +5273,6 @@ Reflect.defineProperty(rest_GraphRest.prototype, "users", {
 
 //# sourceMappingURL=all.js.map
 // CONCATENATED MODULE: ./pnpjs-sources/index-graph.ts
-/* concated harmony reexport graph */__webpack_require__.d(__webpack_exports__, "graph", function() { return graph; });
-/* concated harmony reexport GraphRest */__webpack_require__.d(__webpack_exports__, "GraphRest", function() { return rest_GraphRest; });
 /* concated harmony reexport Attachment */__webpack_require__.d(__webpack_exports__, "Attachment", function() { return Attachment; });
 /* concated harmony reexport Attachments */__webpack_require__.d(__webpack_exports__, "Attachments", function() { return Attachments; });
 /* concated harmony reexport Calendar */__webpack_require__.d(__webpack_exports__, "Calendar", function() { return Calendar; });
@@ -5333,6 +5331,8 @@ Reflect.defineProperty(rest_GraphRest.prototype, "users", {
 /* concated harmony reexport Teams */__webpack_require__.d(__webpack_exports__, "Teams", function() { return Teams; });
 /* concated harmony reexport User */__webpack_require__.d(__webpack_exports__, "User", function() { return User; });
 /* concated harmony reexport Users */__webpack_require__.d(__webpack_exports__, "Users", function() { return Users; });
+/* concated harmony reexport graph */__webpack_require__.d(__webpack_exports__, "graph", function() { return graph; });
+/* concated harmony reexport GraphRest */__webpack_require__.d(__webpack_exports__, "GraphRest", function() { return rest_GraphRest; });
 
 
 

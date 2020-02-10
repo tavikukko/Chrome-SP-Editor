@@ -13878,7 +13878,6 @@ function stripInvalidFileFolderChars(input, replacer, onPremise) {
 var all_sp = new rest_SPRest();
 //# sourceMappingURL=all.js.map
 // CONCATENATED MODULE: ./pnpjs-sources/index-sp.ts
-/* concated harmony reexport sp */__webpack_require__.d(__webpack_exports__, "sp", function() { return all_sp; });
 /* concated harmony reexport App */__webpack_require__.d(__webpack_exports__, "App", function() { return App; });
 /* concated harmony reexport AppCatalog */__webpack_require__.d(__webpack_exports__, "AppCatalog", function() { return AppCatalog; });
 /* concated harmony reexport Attachment */__webpack_require__.d(__webpack_exports__, "Attachment", function() { return Attachment; });
@@ -13942,6 +13941,10 @@ var all_sp = new rest_SPRest();
 /* concated harmony reexport TimeZone */__webpack_require__.d(__webpack_exports__, "TimeZone", function() { return TimeZone; });
 /* concated harmony reexport TimeZones */__webpack_require__.d(__webpack_exports__, "TimeZones", function() { return TimeZones; });
 /* concated harmony reexport RelatedItemManager */__webpack_require__.d(__webpack_exports__, "RelatedItemManager", function() { return RelatedItemManager; });
+/* concated harmony reexport SortDirection */__webpack_require__.d(__webpack_exports__, "SortDirection", function() { return SortDirection; });
+/* concated harmony reexport ReorderingRuleMatchType */__webpack_require__.d(__webpack_exports__, "ReorderingRuleMatchType", function() { return ReorderingRuleMatchType; });
+/* concated harmony reexport QueryPropertyValueType */__webpack_require__.d(__webpack_exports__, "QueryPropertyValueType", function() { return QueryPropertyValueType; });
+/* concated harmony reexport SearchBuiltInSourceId */__webpack_require__.d(__webpack_exports__, "SearchBuiltInSourceId", function() { return SearchBuiltInSourceId; });
 /* concated harmony reexport SearchQueryBuilder */__webpack_require__.d(__webpack_exports__, "SearchQueryBuilder", function() { return SearchQueryBuilder; });
 /* concated harmony reexport SearchResults */__webpack_require__.d(__webpack_exports__, "SearchResults", function() { return query_SearchResults; });
 /* concated harmony reexport Search */__webpack_require__.d(__webpack_exports__, "Search", function() { return Search; });
@@ -13992,17 +13995,6 @@ var all_sp = new rest_SPRest();
 /* concated harmony reexport SharePointQueryable */__webpack_require__.d(__webpack_exports__, "SharePointQueryable", function() { return SharePointQueryable; });
 /* concated harmony reexport spInvokableFactory */__webpack_require__.d(__webpack_exports__, "spInvokableFactory", function() { return spInvokableFactory; });
 /* concated harmony reexport SPBatch */__webpack_require__.d(__webpack_exports__, "SPBatch", function() { return batch_SPBatch; });
-/* concated harmony reexport SPHttpClient */__webpack_require__.d(__webpack_exports__, "SPHttpClient", function() { return sphttpclient_SPHttpClient; });
-/* concated harmony reexport SPRest */__webpack_require__.d(__webpack_exports__, "SPRest", function() { return rest_SPRest; });
-/* concated harmony reexport toAbsoluteUrl */__webpack_require__.d(__webpack_exports__, "toAbsoluteUrl", function() { return toabsoluteurl["a" /* toAbsoluteUrl */]; });
-/* concated harmony reexport extractWebUrl */__webpack_require__.d(__webpack_exports__, "extractWebUrl", function() { return extractWebUrl; });
-/* concated harmony reexport objectToSPKeyValueCollection */__webpack_require__.d(__webpack_exports__, "objectToSPKeyValueCollection", function() { return objectToSPKeyValueCollection; });
-/* concated harmony reexport stripInvalidFileFolderChars */__webpack_require__.d(__webpack_exports__, "stripInvalidFileFolderChars", function() { return stripInvalidFileFolderChars; });
-/* concated harmony reexport containsInvalidFileFolderChars */__webpack_require__.d(__webpack_exports__, "containsInvalidFileFolderChars", function() { return containsInvalidFileFolderChars; });
-/* concated harmony reexport SortDirection */__webpack_require__.d(__webpack_exports__, "SortDirection", function() { return SortDirection; });
-/* concated harmony reexport ReorderingRuleMatchType */__webpack_require__.d(__webpack_exports__, "ReorderingRuleMatchType", function() { return ReorderingRuleMatchType; });
-/* concated harmony reexport QueryPropertyValueType */__webpack_require__.d(__webpack_exports__, "QueryPropertyValueType", function() { return QueryPropertyValueType; });
-/* concated harmony reexport SearchBuiltInSourceId */__webpack_require__.d(__webpack_exports__, "SearchBuiltInSourceId", function() { return SearchBuiltInSourceId; });
 /* concated harmony reexport defaultPath */__webpack_require__.d(__webpack_exports__, "defaultPath", function() { return defaultPath; });
 /* concated harmony reexport spGet */__webpack_require__.d(__webpack_exports__, "spGet", function() { return spGet; });
 /* concated harmony reexport spPost */__webpack_require__.d(__webpack_exports__, "spPost", function() { return spPost; });
@@ -14010,9 +14002,17 @@ var all_sp = new rest_SPRest();
 /* concated harmony reexport spPatch */__webpack_require__.d(__webpack_exports__, "spPatch", function() { return spPatch; });
 /* concated harmony reexport spPostDelete */__webpack_require__.d(__webpack_exports__, "spPostDelete", function() { return spPostDelete; });
 /* concated harmony reexport spPostDeleteETag */__webpack_require__.d(__webpack_exports__, "spPostDeleteETag", function() { return spPostDeleteETag; });
+/* concated harmony reexport SPHttpClient */__webpack_require__.d(__webpack_exports__, "SPHttpClient", function() { return sphttpclient_SPHttpClient; });
+/* concated harmony reexport SPRest */__webpack_require__.d(__webpack_exports__, "SPRest", function() { return rest_SPRest; });
+/* concated harmony reexport sp */__webpack_require__.d(__webpack_exports__, "sp", function() { return all_sp; });
 /* concated harmony reexport PrincipalType */__webpack_require__.d(__webpack_exports__, "PrincipalType", function() { return PrincipalType; });
 /* concated harmony reexport PrincipalSource */__webpack_require__.d(__webpack_exports__, "PrincipalSource", function() { return PrincipalSource; });
 /* concated harmony reexport PageType */__webpack_require__.d(__webpack_exports__, "PageType", function() { return PageType; });
+/* concated harmony reexport toAbsoluteUrl */__webpack_require__.d(__webpack_exports__, "toAbsoluteUrl", function() { return toabsoluteurl["a" /* toAbsoluteUrl */]; });
+/* concated harmony reexport extractWebUrl */__webpack_require__.d(__webpack_exports__, "extractWebUrl", function() { return extractWebUrl; });
+/* concated harmony reexport objectToSPKeyValueCollection */__webpack_require__.d(__webpack_exports__, "objectToSPKeyValueCollection", function() { return objectToSPKeyValueCollection; });
+/* concated harmony reexport stripInvalidFileFolderChars */__webpack_require__.d(__webpack_exports__, "stripInvalidFileFolderChars", function() { return stripInvalidFileFolderChars; });
+/* concated harmony reexport containsInvalidFileFolderChars */__webpack_require__.d(__webpack_exports__, "containsInvalidFileFolderChars", function() { return containsInvalidFileFolderChars; });
 
 
 

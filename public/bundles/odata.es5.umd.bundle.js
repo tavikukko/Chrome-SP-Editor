@@ -2368,12 +2368,6 @@ function headers(o, previous) {
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./pnpjs-sources/index-odata.ts
-/* concated harmony reexport extendGlobal */__webpack_require__.d(__webpack_exports__, "extendGlobal", function() { return extendGlobal; });
-/* concated harmony reexport extendObj */__webpack_require__.d(__webpack_exports__, "extendObj", function() { return extendObj; });
-/* concated harmony reexport extendFactory */__webpack_require__.d(__webpack_exports__, "extendFactory", function() { return extendFactory; });
-/* concated harmony reexport clearGlobalExtensions */__webpack_require__.d(__webpack_exports__, "clearGlobalExtensions", function() { return clearGlobalExtensions; });
-/* concated harmony reexport enableExtensions */__webpack_require__.d(__webpack_exports__, "enableExtensions", function() { return enableExtensions; });
-/* concated harmony reexport disableExtensions */__webpack_require__.d(__webpack_exports__, "disableExtensions", function() { return disableExtensions; });
 /* concated harmony reexport Batch */__webpack_require__.d(__webpack_exports__, "Batch", function() { return batch_Batch; });
 /* concated harmony reexport CachingOptions */__webpack_require__.d(__webpack_exports__, "CachingOptions", function() { return caching_CachingOptions; });
 /* concated harmony reexport CachingParserWrapper */__webpack_require__.d(__webpack_exports__, "CachingParserWrapper", function() { return CachingParserWrapper; });
@@ -2397,6 +2391,12 @@ function headers(o, previous) {
 /* concated harmony reexport Queryable */__webpack_require__.d(__webpack_exports__, "Queryable", function() { return queryable_Queryable; });
 /* concated harmony reexport body */__webpack_require__.d(__webpack_exports__, "body", function() { return body; });
 /* concated harmony reexport headers */__webpack_require__.d(__webpack_exports__, "headers", function() { return headers; });
+/* concated harmony reexport extendGlobal */__webpack_require__.d(__webpack_exports__, "extendGlobal", function() { return extendGlobal; });
+/* concated harmony reexport extendObj */__webpack_require__.d(__webpack_exports__, "extendObj", function() { return extendObj; });
+/* concated harmony reexport extendFactory */__webpack_require__.d(__webpack_exports__, "extendFactory", function() { return extendFactory; });
+/* concated harmony reexport clearGlobalExtensions */__webpack_require__.d(__webpack_exports__, "clearGlobalExtensions", function() { return clearGlobalExtensions; });
+/* concated harmony reexport enableExtensions */__webpack_require__.d(__webpack_exports__, "enableExtensions", function() { return enableExtensions; });
+/* concated harmony reexport disableExtensions */__webpack_require__.d(__webpack_exports__, "disableExtensions", function() { return disableExtensions; });
 
 
 
