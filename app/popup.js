@@ -110,7 +110,7 @@ riot.tag("spquicklinks", `
         }
 
         // init links
-        this.links = [
+        this.links = [          
           { title: "Current site", url: "", target: "", css: "disabled normal-cursor" },
           { title: "Site settings", url: this.currSiteUrl + "/_layouts/15/settings.aspx", target: "_blank", css: "pointer-cursor" },
           { title: "Site contents", url: this.currSiteUrl + "/_layouts/15/viewlsts.aspx", target: "_blank", css: "pointer-cursor" },
@@ -147,6 +147,7 @@ riot.tag("spquicklinks", `
           this.links.unshift({ title: "Classic admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/SiteCollections.aspx`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/AdminHome.aspx#/home`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Tenant", url: "", target: "", css: "disabled normal-cursor" });
+          this.links.unshift({title: "Speedmode", url: this.fullUrl + this.queryStr + "env=WebView", target: "_blank", css: "pointer-cursor turbo" });
         }
         this.update();
 
@@ -269,9 +270,9 @@ riot.tag("spquicklinks", `
     this.updatePromotedState = function (e) {
       this.updatingPromoted = true;
       this.update();
-        chrome.tabs.executeScript(this.tabId, {
-          code: "updatePromoted('" + this.ctx._spPageContextInfo.webAbsoluteUrl + "', '" + this.ctx._spPageContextInfo.serverRequestPath + "', 0);"
-        });
+      chrome.tabs.executeScript(this.tabId, {
+        code: "updatePromoted('" + this.ctx._spPageContextInfo.webAbsoluteUrl + "', '" + this.ctx._spPageContextInfo.serverRequestPath + "', 0);"
+      });
     }.bind(this);
 
     this.filterprops = function (e) {

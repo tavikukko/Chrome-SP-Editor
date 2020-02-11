@@ -21,7 +21,7 @@
 }
 
 .list-group-item {
-    padding: 6px 15px;
+    padding: 4.5px 15px;
 }
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
@@ -36,4 +36,8 @@
 @keyframes spin {
   from { transform: scale(1) rotate(0deg);}
   to { transform: scale(1) rotate(360deg);}
+}
+
+a.list-group-item.turbo, a.list-group-item.turbo:focus a.list-group-item.turbo:hover {
+  background-color: #FFC421;
 }
