@@ -5,6 +5,7 @@ declare module "../webs/types" {
         readonly rootFolder: IFolder;
         getFolderByServerRelativeUrl(folderRelativeUrl: string): IFolder;
         getFolderByServerRelativePath(folderRelativeUrl: string): IFolder;
+        getFolderById(uniqueId: string): IFolder;
     }
     interface IWeb {
         /**
@@ -28,6 +29,12 @@ declare module "../webs/types" {
          * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
          */
         getFolderByServerRelativePath(folderRelativeUrl: string): IFolder;
+        /**
+         * Gets a folder by id
+         *
+         * @param uniqueId The UniqueId of the folder
+         */
+        getFolderById(uniqueId: string): IFolder;
     }
 }
 //# sourceMappingURL=web.d.ts.map

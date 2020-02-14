@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ionic/react": "^4.11.10",
-    "@ionic/react-router": "^4.11.10",
-    "@uifabric/azure-themes": "^7.0.19",
+    "@ionic/react": "^5.0.0",
+    "@ionic/react-router": "^5.0.0",
+    "@uifabric/azure-themes": "^7.0.26",
     "gsap": "^3.1.1",
-    "ionicons": "^4.6.3",
+    "ionicons": "^5.0.0",
     "monaco-editor": "^0.19.3",
-    "office-ui-fabric-react": "^7.88.1",
+    "office-ui-fabric-react": "^7.93.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-redux": "^7.1.3",
@@ -21,11 +21,9 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "start": "gulp && react-scripts start",
-    "build": "gulp && INLINE_RUNTIME_CHUNK=false react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "watch": "gulp && cra-build-watch"
+    "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
+    "watch": "cra-build-watch",
+    "updatedeps": "webpack && gulp"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -43,20 +41,20 @@
     ]
   },
   "devDependencies": {
-    "@pnp/common": "^2.0.2",
-    "@pnp/config-store": "^2.0.2",
-    "@pnp/graph": "^2.0.2",
-    "@pnp/logging": "^2.0.2",
-    "@pnp/nodejs": "^2.0.2",
-    "@pnp/odata": "^2.0.2",
-    "@pnp/pnpjs": "^2.0.2",
-    "@pnp/sp": "^2.0.2",
-    "@pnp/sp-addinhelpers": "^2.0.2",
-    "@pnp/sp-clientsvc": "^1.3.9",
-    "@pnp/sp-taxonomy": "^1.3.9",
-    "@types/chrome": "0.0.93",
-    "@types/jest": "25.1.1",
-    "@types/node": "13.7.0",
+    "@pnp/common": "^2.0.3",
+    "@pnp/config-store": "^2.0.3",
+    "@pnp/graph": "^2.0.3",
+    "@pnp/logging": "^2.0.3",
+    "@pnp/nodejs": "^2.0.3",
+    "@pnp/odata": "^2.0.3",
+    "@pnp/pnpjs": "^2.0.3",
+    "@pnp/sp": "^2.0.3",
+    "@pnp/sp-addinhelpers": "^2.0.3",
+    "@pnp/sp-clientsvc": "^1.3.10",
+    "@pnp/sp-taxonomy": "^1.3.10",
+    "@types/chrome": "0.0.95",
+    "@types/jest": "25.1.2",
+    "@types/node": "13.7.1",
     "@types/react": "^16.9.19",
     "@types/react-dom": "16.9.5",
     "@types/react-redux": "^7.1.7",
@@ -72,6 +70,7 @@
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^4.2.0",
     "tslint-react-recommended": "^1.0.15",
-    "webpack-cli": "^3.3.10"
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   }
 }

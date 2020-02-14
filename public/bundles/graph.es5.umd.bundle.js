@@ -1147,6 +1147,7 @@ var batch_Batch = /** @class */ (function () {
         this._reqs = [];
         this._deps = [];
         this._rDeps = [];
+        this._index = -1;
     }
     Object.defineProperty(Batch.prototype, "batchId", {
         get: function () {
@@ -1160,29 +1161,42 @@ var batch_Batch = /** @class */ (function () {
          * The requests contained in this batch
          */
         get: function () {
-            return this._reqs;
+            // we sort these each time this is accessed
+            return this._reqs.sort(function (info1, info2) { return info1.index - info2.index; });
         },
         enumerable: true,
         configurable: true
     });
     /**
+     * Not meant for use directly
      *
-     * @param url Request url
-     * @param method Request method (GET, POST, etc)
-     * @param options Any request options
-     * @param parser The parser used to handle the eventual return from the query
-     * @param id An identifier used to track a request within a batch
+     * @param batchee The IQueryable for this batch to track in order
      */
-    Batch.prototype.add = function (url, method, options, parser, id) {
+    Batch.prototype.track = function (batchee) {
+        batchee.data.batch = this;
+        // we need to track the order requests are added to the batch to ensure we always
+        // operate on them in order
+        if (typeof batchee.data.batchIndex === "undefined" || batchee.data.batchIndex < 0) {
+            batchee.data.batchIndex = ++this._index;
+        }
+    };
+    /**
+     * Adds the given request context to the batch for execution
+     *
+     * @param context Details of the request to batch
+     */
+    Batch.prototype.add = function (context) {
         var info = {
-            id: id,
-            method: method.toUpperCase(),
-            options: options,
-            parser: parser,
+            id: context.requestId,
+            index: context.batchIndex,
+            method: context.method.toUpperCase(),
+            options: context.options,
+            parser: context.parser,
             reject: null,
             resolve: null,
-            url: url,
+            url: context.url,
         };
+        // we create a new promise that will be resolved within the batch
         var p = new Promise(function (resolve, reject) {
             info.resolve = resolve;
             info.reject = reject;
@@ -1464,7 +1478,7 @@ var invokableBinder = function (invoker) { return function (constructor) {
                         for (var _i = 0; _i < arguments.length; _i++) {
                             a[_i] = arguments[_i];
                         }
-                        return Reflect.get(a[0], a[1]);
+                        return Reflect.has(a[0], a[1]);
                     }, target, p);
                 },
                 set: function (target, p, value, receiver) {
@@ -1800,11 +1814,11 @@ var queryable_Queryable = /** @class */ (function () {
      * ```
      */
     Queryable.prototype.inBatch = function (batch) {
-        if (this.batch !== null) {
+        if (this.hasBatch) {
             throw Error("This query is already part of a batch.");
         }
         if (Object(util["k" /* objectDefinedNotNull */])(batch)) {
-            this.data.batch = batch;
+            batch.track(this);
         }
         return this;
     };
@@ -2215,12 +2229,12 @@ var pipeline_PipelineMethods = /** @class */ (function () {
                     // check if we have the data in cache and if so resolve the promise and return
                     var data = cacheOptions.store.get(cacheOptions.key);
                     if (data !== null) {
-                        // ensure we clear any held batch dependency we are resolving from the cache
                         Logger.log({
                             data: Logger.activeLogLevel === 1 /* Info */ ? {} : data,
                             level: 1 /* Info */,
                             message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
                         });
+                        // ensure we clear any held batch dependency we are resolving from the cache
                         if (Object(util["h" /* isFunc */])(context.batchDependency)) {
                             context.batchDependency();
                         }
@@ -2246,8 +2260,7 @@ var pipeline_PipelineMethods = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             // send or batch the request
             if (context.isBatched) {
-                // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
-                var p = context.batch.add(context.url, context.method, context.options, context.parser, context.requestId);
+                var p = context.batch.add(context);
                 // we release the dependency here to ensure the batch does not execute until the request is added to the batch
                 if (Object(util["h" /* isFunc */])(context.batchDependency)) {
                     context.batchDependency();
@@ -2330,8 +2343,9 @@ function pipelineBinder(pipes) {
             return function (o) {
                 // send the IQueryableData down the pipeline
                 return pipe(Object.assign({}, {
-                    batch: o.batch || null,
+                    batch: null,
                     batchDependency: null,
+                    batchIndex: -1,
                     cachingOptions: null,
                     clientFactory: clientFactory,
                     cloneParentCacheOptions: null,
@@ -2625,7 +2639,7 @@ var graphhttpclient_GraphHttpClient = /** @class */ (function () {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/2.0.2");
+            headers.append("SdkVersion", "PnPCoreJS/2.0.3");
         }
         var opts = Object(util["a" /* assign */])(options, { headers: headers });
         return this.fetchRaw(url, opts);
@@ -2641,7 +2655,8 @@ var graphhttpclient_GraphHttpClient = /** @class */ (function () {
             _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
                 // Check if request was throttled - http status code 429
                 // Check if request failed due to server unavailable - http status code 503
-                if (response.status !== 429 && response.status !== 503) {
+                // Check if request failed due to gateway timeout - http status code 504
+                if (response.status !== 429 && response.status !== 503 && response.status !== 504) {
                     ctx.reject(response);
                 }
                 // grab our current delay
@@ -3679,6 +3694,16 @@ var types_User = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(_User.prototype, "people", {
+        /**
+         * Retrieve a collection of person objects ordered by their relevance to the user
+         */
+        get: function () {
+            return People(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
     _User = Object(tslib_es6["b" /* __decorate */])([
         updateable(),
         deleteable()
@@ -3687,10 +3712,6 @@ var types_User = /** @class */ (function (_super) {
 }(types_DirectoryObject));
 
 var User = graphInvokableFactory(types_User);
-/**
- * Describes a collection of Users objects
- *
- */
 var types_Users = /** @class */ (function (_super) {
     Object(tslib_es6["c" /* __extends */])(_Users, _super);
     function _Users() {
@@ -3704,6 +3725,18 @@ var types_Users = /** @class */ (function (_super) {
 }(graphqueryable_GraphQueryableCollection));
 
 var Users = graphInvokableFactory(types_Users);
+var types_People = /** @class */ (function (_super) {
+    Object(tslib_es6["c" /* __extends */])(_People, _super);
+    function _People() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _People = Object(tslib_es6["b" /* __decorate */])([
+        defaultPath("people")
+    ], _People);
+    return _People;
+}(graphqueryable_GraphQueryableCollection));
+
+var People = graphInvokableFactory(types_People);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/types.js
 
@@ -4681,8 +4714,8 @@ var types_Plan = /** @class */ (function (_super) {
         configurable: true
     });
     _Plan = Object(tslib_es6["b" /* __decorate */])([
-        updateable(),
-        deleteable()
+        updateableWithETag(),
+        deleteableWithETag()
     ], _Plan);
     return _Plan;
 }(graphqueryable_GraphQueryableInstance));
@@ -5157,7 +5190,7 @@ var types_Tabs = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         postBody = Object(util["a" /* assign */])({
-                            name: name,
+                            displayName: name,
                             "teamsApp@odata.bind": appUrl,
                         }, properties);
                         return [4 /*yield*/, graphPost(this, body(postBody))];
@@ -5331,6 +5364,7 @@ Reflect.defineProperty(rest_GraphRest.prototype, "users", {
 /* concated harmony reexport Teams */__webpack_require__.d(__webpack_exports__, "Teams", function() { return Teams; });
 /* concated harmony reexport User */__webpack_require__.d(__webpack_exports__, "User", function() { return User; });
 /* concated harmony reexport Users */__webpack_require__.d(__webpack_exports__, "Users", function() { return Users; });
+/* concated harmony reexport People */__webpack_require__.d(__webpack_exports__, "People", function() { return People; });
 /* concated harmony reexport graph */__webpack_require__.d(__webpack_exports__, "graph", function() { return graph; });
 /* concated harmony reexport GraphRest */__webpack_require__.d(__webpack_exports__, "GraphRest", function() { return rest_GraphRest; });
 

@@ -3,6 +3,7 @@ declare module "../webs/types" {
     interface _Web {
         getFileByServerRelativeUrl(fileRelativeUrl: string): IFile;
         getFileByServerRelativePath(fileRelativeUrl: string): IFile;
+        getFileById(uniqueId: string): IFile;
     }
     interface IWeb {
         /**
@@ -17,6 +18,12 @@ declare module "../webs/types" {
          * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
          */
         getFileByServerRelativePath(fileRelativeUrl: string): IFile;
+        /**
+         * Gets a file by id
+         *
+         * @param uniqueId The UniqueId of the file
+         */
+        getFileById(uniqueId: string): IFile;
     }
 }
 //# sourceMappingURL=web.d.ts.map
