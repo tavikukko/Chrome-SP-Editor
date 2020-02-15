@@ -110,7 +110,7 @@ riot.tag("spquicklinks", `
         }
 
         // init links
-        this.links = [          
+        this.links = [
           { title: "Current site", url: "", target: "", css: "disabled normal-cursor" },
           { title: "Site settings", url: this.currSiteUrl + "/_layouts/15/settings.aspx", target: "_blank", css: "pointer-cursor" },
           { title: "Site contents", url: this.currSiteUrl + "/_layouts/15/viewlsts.aspx", target: "_blank", css: "pointer-cursor" },
@@ -119,6 +119,7 @@ riot.tag("spquicklinks", `
           { title: "Load debug manifest to current url", url: this.fullUrl + this.queryStr + "loadSPFX=true&debugManifestsFile=https://localhost:4321/temp/manifests.js", target: "_self", css: "pointer-cursor" },
           { title: "Remote workbench", url: this.currSiteUrl + "/_layouts/workbench.aspx", target: "_blank", css: "pointer-cursor" },
           { title: "Local workbench", url: "https://localhost:4321/temp/workbench.html", target: "_blank", css: "pointer-cursor" },
+          { title: "Speedmode", url: this.fullUrl + this.queryStr + "env=WebView", target: "_blank", css: "pointer-cursor" },
         ]
 
         // Add pages library
@@ -147,7 +148,6 @@ riot.tag("spquicklinks", `
           this.links.unshift({ title: "Classic admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/SiteCollections.aspx`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/AdminHome.aspx#/home`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Tenant", url: "", target: "", css: "disabled normal-cursor" });
-          this.links.unshift({title: "Speedmode", url: this.fullUrl + this.queryStr + "env=WebView", target: "_blank", css: "pointer-cursor turbo" });
         }
         this.update();
 
