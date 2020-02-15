@@ -20,7 +20,7 @@ const MessageBar = () => {
       duration={8000}
       color={appMessage.color}
       position={'bottom'}
-      showCloseButton={true}
+      buttons={[{ text: 'Close', role: 'close' }]}
     />
   )
 }
