@@ -354,7 +354,7 @@ riot.tag("modernproperties", `
         return;
 
       var script = sj + ' ' + alertify + ' ' + exescript + ' ' + updateTenantProperty;
-      script += " exescript(updateTenantProperty, '" + e.item.index + "', '" + e.item.tenantProperty.Value + "', '" + e.item.tenantProperty.Description + "', '" + e.item.tenantProperty.Comment + "', '" + this.appCatalogUrl + "', '" + this.siteid + "', '" + this.webid + "');";
+      script += " exescript(updateTenantProperty, '" + e.item.index + "', '" + encodeURIComponent(e.item.tenantProperty.Value) + "', '" + e.item.tenantProperty.Description + "', '" + e.item.tenantProperty.Comment + "', '" + this.appCatalogUrl + "', '" + this.siteid + "', '" + this.webid + "');";
       chrome.devtools.inspectedWindow.eval(script);
       scheduleDimmer();
     }.bind(this);

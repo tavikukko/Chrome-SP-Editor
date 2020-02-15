@@ -2648,7 +2648,7 @@ var removeOrigin = function removeOrigin() {
 // updateTenantProperty
 var updateTenantProperty = function updateTenantProperty() {
   var key = arguments[1];
-  var value = arguments[2];
+  var value = decodeURIComponent(arguments[2]);
   var desc = arguments[3];
   var comm = arguments[4];
   var appCatalogUrl = arguments[5];
