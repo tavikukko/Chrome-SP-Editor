@@ -1,32 +1,26 @@
 {
-  "_args": [
-    [
-      "monaco-editor@0.19.3",
-      "/Users/tomi/development/Chrome-SP-Editor"
-    ]
-  ],
-  "_development": true,
-  "_from": "monaco-editor@0.19.3",
-  "_id": "monaco-editor@0.19.3",
+  "_from": "monaco-editor@^0.20.0",
+  "_id": "monaco-editor@0.20.0",
   "_inBundle": false,
-  "_integrity": "sha512-2n1vJBVQF2Hhi7+r1mMeYsmlf18hjVb6E0v5SoMZyb4aeOmYPKun+CE3gYpiNA1KEvtSdaDHFBqH9d7Wd9vREg==",
+  "_integrity": "sha512-hkvf4EtPJRMQlPC3UbMoRs0vTAFAYdzFQ+gpMb8A+9znae1c43q8Mab9iVsgTcg/4PNiLGGn3SlDIa8uvK1FIQ==",
   "_location": "/monaco-editor",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "monaco-editor@0.19.3",
+    "raw": "monaco-editor@^0.20.0",
     "name": "monaco-editor",
     "escapedName": "monaco-editor",
-    "rawSpec": "0.19.3",
+    "rawSpec": "^0.20.0",
     "saveSpec": null,
-    "fetchSpec": "0.19.3"
+    "fetchSpec": "^0.20.0"
   },
   "_requiredBy": [
     "#DEV:/"
   ],
-  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.19.3.tgz",
-  "_spec": "0.19.3",
+  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.20.0.tgz",
+  "_shasum": "5d5009343a550124426cb4d965a4d27a348b4dea",
+  "_spec": "monaco-editor@^0.20.0",
   "_where": "/Users/tomi/development/Chrome-SP-Editor",
   "author": {
     "name": "Microsoft Corporation"
@@ -34,31 +28,33 @@
   "bugs": {
     "url": "https://github.com/Microsoft/monaco-editor/issues"
   },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "A browser based code editor",
   "devDependencies": {
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.33",
     "@types/puppeteer": "^1.12.4",
     "chai": "^4.2.0",
-    "clean-css": "^4.2.1",
+    "clean-css": "^4.2.3",
     "css-loader": "^3.2.0",
-    "event-stream": "3.3.4",
+    "event-stream": "4.0.1",
     "file-loader": "^4.2.0",
     "gulp": "^4.0.0",
     "gulp-typedoc": "^2.2.2",
     "mocha": "^6.2.2",
-    "monaco-css": "2.6.0",
-    "monaco-editor-core": "0.19.3",
-    "monaco-html": "2.6.0",
-    "monaco-json": "2.8.0",
-    "monaco-languages": "1.9.2",
-    "monaco-typescript": "3.6.1",
+    "monaco-css": "2.7.0",
+    "monaco-editor-core": "0.20.0",
+    "monaco-html": "2.7.0",
+    "monaco-json": "2.9.0",
+    "monaco-languages": "1.10.0",
+    "monaco-typescript": "3.7.0",
     "puppeteer": "^1.15.0",
-    "rimraf": "^2.6.3",
+    "rimraf": "^3.0.2",
     "style-loader": "^1.0.1",
-    "typedoc": "^0.15.4",
-    "typescript": "^3.3.3",
-    "uncss": "^0.16.2",
+    "typedoc": "^0.16.9",
+    "typescript": "^3.7.5",
+    "uncss": "^0.17.2",
     "vinyl": "^2.2.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
@@ -84,5 +80,5 @@
     "website": "gulp website"
   },
   "typings": "./esm/vs/editor/editor.api.d.ts",
-  "version": "0.19.3"
+  "version": "0.20.0"
 }

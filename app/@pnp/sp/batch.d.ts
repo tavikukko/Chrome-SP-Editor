@@ -10,7 +10,7 @@ export declare class SPBatch extends Batch {
      *
      * @param body Text body of the response from the batch request
      */
-    static ParseResponse(body: string): Promise<Response[]>;
+    static ParseResponse(body: string): Response[];
     protected executeImpl(): Promise<void>;
 }
 //# sourceMappingURL=batch.d.ts.map

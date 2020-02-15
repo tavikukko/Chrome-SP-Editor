@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.9
+ * v1.3.10
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2020 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -5814,7 +5814,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.9");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.10");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -10414,11 +10414,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.9");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.10");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.9");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.10");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -10474,8 +10474,8 @@ var SPHttpClient = /** @class */ (function () {
                     ctx.resolve(response);
                 }
             }).catch(function (response) {
-                if (response.status === 503) {
-                    // http status code 503, we can retry this
+                if (response.status === 503 || response.status === 504) {
+                    // http status code 503 or 504, we can retry this
                     setRetry(response);
                 }
                 else {

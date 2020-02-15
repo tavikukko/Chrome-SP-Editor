@@ -8,6 +8,12 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 5.5.3 updates & speedmode
+    * Updated PnPjs to 2.0.3
+    * Updated sp-clientsvc to 1.3.10
+    * Updated sp-taxonomyto to 1.3.10
+    * Updated monaco-editor to 0.20.0
+    * speedmode in quiclinks
 - 5.5.2 updates
     * Updated PnPjs to 2.0.2
     * Updated sp-clientsvc to 1.3.9

@@ -1,6 +1,8 @@
 import { IFetchOptions } from "@pnp/common";
 import { IODataParser } from "./parsers";
-export interface ODataBatchRequestInfo {
+import { IQueryable } from "./queryable";
+import { IRequestContext } from "./pipeline";
+export interface IODataBatchRequestInfo {
     url: string;
     method: string;
     options: IFetchOptions;
@@ -8,27 +10,32 @@ export interface ODataBatchRequestInfo {
     resolve: ((d: any) => void) | null;
     reject: ((error: any) => void) | null;
     id: string;
+    index: number;
 }
 export declare abstract class Batch {
     private _batchId;
     protected _deps: Promise<void>[];
-    protected _reqs: ODataBatchRequestInfo[];
+    protected _reqs: IODataBatchRequestInfo[];
     protected _rDeps: Promise<void>[];
+    private _index;
     constructor(_batchId?: string);
     get batchId(): string;
     /**
      * The requests contained in this batch
      */
-    protected get requests(): ODataBatchRequestInfo[];
+    protected get requests(): IODataBatchRequestInfo[];
     /**
+     * Not meant for use directly
      *
-     * @param url Request url
-     * @param method Request method (GET, POST, etc)
-     * @param options Any request options
-     * @param parser The parser used to handle the eventual return from the query
-     * @param id An identifier used to track a request within a batch
+     * @param batchee The IQueryable for this batch to track in order
      */
-    add<T>(url: string, method: string, options: IFetchOptions, parser: IODataParser<T>, id: string): Promise<T>;
+    track(batchee: IQueryable<any>): void;
+    /**
+     * Adds the given request context to the batch for execution
+     *
+     * @param context Details of the request to batch
+     */
+    add<T = any>(context: IRequestContext<T>): Promise<T>;
     /**
      * Adds a dependency insuring that some set of actions will occur before a batch is processed.
      * MUST be cleared using the returned resolve delegate to allow batches to run

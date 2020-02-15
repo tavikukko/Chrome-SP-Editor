@@ -6,6 +6,7 @@ import { IODataParser } from "./parsers";
 export declare function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQueryableData>;
 export interface IQueryableData<DefaultActionType = any> {
     batch: Batch | null;
+    batchIndex: number;
     batchDependency: () => void | null;
     cachingOptions: ICachingOptions | null;
     cloneParentCacheOptions: ICachingOptions | null;

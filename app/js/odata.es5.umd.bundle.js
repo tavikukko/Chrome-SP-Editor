@@ -1139,6 +1139,7 @@ var batch_Batch = /** @class */ (function () {
         this._reqs = [];
         this._deps = [];
         this._rDeps = [];
+        this._index = -1;
     }
     Object.defineProperty(Batch.prototype, "batchId", {
         get: function () {
@@ -1152,29 +1153,42 @@ var batch_Batch = /** @class */ (function () {
          * The requests contained in this batch
          */
         get: function () {
-            return this._reqs;
+            // we sort these each time this is accessed
+            return this._reqs.sort(function (info1, info2) { return info1.index - info2.index; });
         },
         enumerable: true,
         configurable: true
     });
     /**
+     * Not meant for use directly
      *
-     * @param url Request url
-     * @param method Request method (GET, POST, etc)
-     * @param options Any request options
-     * @param parser The parser used to handle the eventual return from the query
-     * @param id An identifier used to track a request within a batch
+     * @param batchee The IQueryable for this batch to track in order
      */
-    Batch.prototype.add = function (url, method, options, parser, id) {
+    Batch.prototype.track = function (batchee) {
+        batchee.data.batch = this;
+        // we need to track the order requests are added to the batch to ensure we always
+        // operate on them in order
+        if (typeof batchee.data.batchIndex === "undefined" || batchee.data.batchIndex < 0) {
+            batchee.data.batchIndex = ++this._index;
+        }
+    };
+    /**
+     * Adds the given request context to the batch for execution
+     *
+     * @param context Details of the request to batch
+     */
+    Batch.prototype.add = function (context) {
         var info = {
-            id: id,
-            method: method.toUpperCase(),
-            options: options,
-            parser: parser,
+            id: context.requestId,
+            index: context.batchIndex,
+            method: context.method.toUpperCase(),
+            options: context.options,
+            parser: context.parser,
             reject: null,
             resolve: null,
-            url: url,
+            url: context.url,
         };
+        // we create a new promise that will be resolved within the batch
         var p = new Promise(function (resolve, reject) {
             info.resolve = resolve;
             info.reject = reject;
@@ -1456,7 +1470,7 @@ var invokableBinder = function (invoker) { return function (constructor) {
                         for (var _i = 0; _i < arguments.length; _i++) {
                             a[_i] = arguments[_i];
                         }
-                        return Reflect.get(a[0], a[1]);
+                        return Reflect.has(a[0], a[1]);
                     }, target, p);
                 },
                 set: function (target, p, value, receiver) {
@@ -1792,11 +1806,11 @@ var queryable_Queryable = /** @class */ (function () {
      * ```
      */
     Queryable.prototype.inBatch = function (batch) {
-        if (this.batch !== null) {
+        if (this.hasBatch) {
             throw Error("This query is already part of a batch.");
         }
         if (Object(util["j" /* objectDefinedNotNull */])(batch)) {
-            this.data.batch = batch;
+            batch.track(this);
         }
         return this;
     };
@@ -2207,12 +2221,12 @@ var pipeline_PipelineMethods = /** @class */ (function () {
                     // check if we have the data in cache and if so resolve the promise and return
                     var data = cacheOptions.store.get(cacheOptions.key);
                     if (data !== null) {
-                        // ensure we clear any held batch dependency we are resolving from the cache
                         Logger.log({
                             data: Logger.activeLogLevel === 1 /* Info */ ? {} : data,
                             level: 1 /* Info */,
                             message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
                         });
+                        // ensure we clear any held batch dependency we are resolving from the cache
                         if (Object(util["h" /* isFunc */])(context.batchDependency)) {
                             context.batchDependency();
                         }
@@ -2238,8 +2252,7 @@ var pipeline_PipelineMethods = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             // send or batch the request
             if (context.isBatched) {
-                // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
-                var p = context.batch.add(context.url, context.method, context.options, context.parser, context.requestId);
+                var p = context.batch.add(context);
                 // we release the dependency here to ensure the batch does not execute until the request is added to the batch
                 if (Object(util["h" /* isFunc */])(context.batchDependency)) {
                     context.batchDependency();
@@ -2322,8 +2335,9 @@ function pipelineBinder(pipes) {
             return function (o) {
                 // send the IQueryableData down the pipeline
                 return pipe(Object.assign({}, {
-                    batch: o.batch || null,
+                    batch: null,
                     batchDependency: null,
+                    batchIndex: -1,
                     cachingOptions: null,
                     clientFactory: clientFactory,
                     cloneParentCacheOptions: null,

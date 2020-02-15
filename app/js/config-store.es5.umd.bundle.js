@@ -1442,6 +1442,7 @@ var batch_Batch = /** @class */ (function () {
         this._reqs = [];
         this._deps = [];
         this._rDeps = [];
+        this._index = -1;
     }
     Object.defineProperty(Batch.prototype, "batchId", {
         get: function () {
@@ -1455,29 +1456,42 @@ var batch_Batch = /** @class */ (function () {
          * The requests contained in this batch
          */
         get: function () {
-            return this._reqs;
+            // we sort these each time this is accessed
+            return this._reqs.sort(function (info1, info2) { return info1.index - info2.index; });
         },
         enumerable: true,
         configurable: true
     });
     /**
+     * Not meant for use directly
      *
-     * @param url Request url
-     * @param method Request method (GET, POST, etc)
-     * @param options Any request options
-     * @param parser The parser used to handle the eventual return from the query
-     * @param id An identifier used to track a request within a batch
+     * @param batchee The IQueryable for this batch to track in order
      */
-    Batch.prototype.add = function (url, method, options, parser, id) {
+    Batch.prototype.track = function (batchee) {
+        batchee.data.batch = this;
+        // we need to track the order requests are added to the batch to ensure we always
+        // operate on them in order
+        if (typeof batchee.data.batchIndex === "undefined" || batchee.data.batchIndex < 0) {
+            batchee.data.batchIndex = ++this._index;
+        }
+    };
+    /**
+     * Adds the given request context to the batch for execution
+     *
+     * @param context Details of the request to batch
+     */
+    Batch.prototype.add = function (context) {
         var info = {
-            id: id,
-            method: method.toUpperCase(),
-            options: options,
-            parser: parser,
+            id: context.requestId,
+            index: context.batchIndex,
+            method: context.method.toUpperCase(),
+            options: context.options,
+            parser: context.parser,
             reject: null,
             resolve: null,
-            url: url,
+            url: context.url,
         };
+        // we create a new promise that will be resolved within the batch
         var p = new Promise(function (resolve, reject) {
             info.resolve = resolve;
             info.reject = reject;
@@ -1759,7 +1773,7 @@ var invokableBinder = function (invoker) { return function (constructor) {
                         for (var _i = 0; _i < arguments.length; _i++) {
                             a[_i] = arguments[_i];
                         }
-                        return Reflect.get(a[0], a[1]);
+                        return Reflect.has(a[0], a[1]);
                     }, target, p);
                 },
                 set: function (target, p, value, receiver) {
@@ -2095,11 +2109,11 @@ var queryable_Queryable = /** @class */ (function () {
      * ```
      */
     Queryable.prototype.inBatch = function (batch) {
-        if (this.batch !== null) {
+        if (this.hasBatch) {
             throw Error("This query is already part of a batch.");
         }
         if (Object(common["q" /* objectDefinedNotNull */])(batch)) {
-            this.data.batch = batch;
+            batch.track(this);
         }
         return this;
     };
@@ -2510,12 +2524,12 @@ var pipeline_PipelineMethods = /** @class */ (function () {
                     // check if we have the data in cache and if so resolve the promise and return
                     var data = cacheOptions.store.get(cacheOptions.key);
                     if (data !== null) {
-                        // ensure we clear any held batch dependency we are resolving from the cache
                         Logger.log({
                             data: Logger.activeLogLevel === 1 /* Info */ ? {} : data,
                             level: 1 /* Info */,
                             message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
                         });
+                        // ensure we clear any held batch dependency we are resolving from the cache
                         if (Object(common["k" /* isFunc */])(context.batchDependency)) {
                             context.batchDependency();
                         }
@@ -2541,8 +2555,7 @@ var pipeline_PipelineMethods = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             // send or batch the request
             if (context.isBatched) {
-                // we are in a batch, so add to batch, remove dependency, and resolve with the batch's promise
-                var p = context.batch.add(context.url, context.method, context.options, context.parser, context.requestId);
+                var p = context.batch.add(context);
                 // we release the dependency here to ensure the batch does not execute until the request is added to the batch
                 if (Object(common["k" /* isFunc */])(context.batchDependency)) {
                     context.batchDependency();
@@ -2625,8 +2638,9 @@ function pipelineBinder(pipes) {
             return function (o) {
                 // send the IQueryableData down the pipeline
                 return pipe(Object.assign({}, {
-                    batch: o.batch || null,
+                    batch: null,
                     batchDependency: null,
+                    batchIndex: -1,
                     cachingOptions: null,
                     clientFactory: clientFactory,
                     cloneParentCacheOptions: null,
@@ -2782,7 +2796,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.2:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.3:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -2791,7 +2805,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         if (!headers.has("User-Agent")) {
                             // this marks the requests for understanding by the service
                             // does not work in browsers
-                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.2");
+                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.3");
                         }
                         opts = Object(common["d" /* assign */])(opts, { headers: headers });
                         if (!(opts.method && opts.method.toUpperCase() !== "GET" && !headers.has("X-RequestDigest") && !headers.has("Authorization"))) return [3 /*break*/, 2];
@@ -2846,8 +2860,8 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                     ctx.resolve(response);
                 }
             }).catch(function (response) {
-                if (response.status === 503) {
-                    // http status code 503, we can retry this
+                if (response.status === 503 || response.status === 504) {
+                    // http status code 503 or 504, we can retry this
                     setRetry(response);
                 }
                 else {
@@ -3399,170 +3413,191 @@ var batch_SPBatch = /** @class */ (function (_super) {
      * @param body Text body of the response from the batch request
      */
     SPBatch.ParseResponse = function (body) {
-        return new Promise(function (resolve, reject) {
-            var responses = [];
-            var header = "--batchresponse_";
-            // Ex. "HTTP/1.1 500 Internal Server Error"
-            var statusRegExp = new RegExp("^HTTP/[0-9.]+ +([0-9]+) +(.*)", "i");
-            var lines = body.split("\n");
-            var state = "batch";
-            var status;
-            var statusText;
-            for (var i = 0; i < lines.length; ++i) {
-                var line = lines[i];
-                switch (state) {
-                    case "batch":
-                        if (line.substr(0, header.length) === header) {
-                            state = "batchHeaders";
+        var responses = [];
+        var header = "--batchresponse_";
+        // Ex. "HTTP/1.1 500 Internal Server Error"
+        var statusRegExp = new RegExp("^HTTP/[0-9.]+ +([0-9]+) +(.*)", "i");
+        var lines = body.split("\n");
+        var state = "batch";
+        var status;
+        var statusText;
+        for (var i = 0; i < lines.length; ++i) {
+            var line = lines[i];
+            switch (state) {
+                case "batch":
+                    if (line.substr(0, header.length) === header) {
+                        state = "batchHeaders";
+                    }
+                    else {
+                        if (line.trim() !== "") {
+                            throw Error("Invalid response, line " + i);
                         }
-                        else {
-                            if (line.trim() !== "") {
-                                throw Error("Invalid response, line " + i);
-                            }
-                        }
-                        break;
-                    case "batchHeaders":
-                        if (line.trim() === "") {
-                            state = "status";
-                        }
-                        break;
-                    case "status":
-                        var parts = statusRegExp.exec(line);
-                        if (parts.length !== 3) {
-                            throw Error("Invalid status, line " + i);
-                        }
-                        status = parseInt(parts[1], 10);
-                        statusText = parts[2];
-                        state = "statusHeaders";
-                        break;
-                    case "statusHeaders":
-                        if (line.trim() === "") {
-                            state = "body";
-                        }
-                        break;
-                    case "body":
-                        responses.push((status === 204) ? new Response() : new Response(line, { status: status, statusText: statusText }));
-                        state = "batch";
-                        break;
-                }
+                    }
+                    break;
+                case "batchHeaders":
+                    if (line.trim() === "") {
+                        state = "status";
+                    }
+                    break;
+                case "status":
+                    var parts = statusRegExp.exec(line);
+                    if (parts.length !== 3) {
+                        throw Error("Invalid status, line " + i);
+                    }
+                    status = parseInt(parts[1], 10);
+                    statusText = parts[2];
+                    state = "statusHeaders";
+                    break;
+                case "statusHeaders":
+                    if (line.trim() === "") {
+                        state = "body";
+                    }
+                    break;
+                case "body":
+                    responses.push((status === 204) ? new Response() : new Response(line, { status: status, statusText: statusText }));
+                    state = "batch";
+                    break;
             }
-            if (state !== "status") {
-                reject(Error("Unexpected end of input"));
-            }
-            resolve(responses);
-        });
+        }
+        if (state !== "status") {
+            throw Error("Unexpected end of input");
+        }
+        return responses;
     };
     SPBatch.prototype.executeImpl = function () {
-        var _this = this;
-        Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
-        // if we don't have any requests, don't bother sending anything
-        // this could be due to caching further upstream, or just an empty batch
-        if (this.requests.length < 1) {
-            Logger.write("Resolving empty batch.", 1 /* Info */);
-            return Promise.resolve();
-        }
-        // creating the client here allows the url to be populated for nodejs client as well as potentially
-        // any other hacks needed for other types of clients. Essentially allows the absoluteRequestUrl
-        // below to be correct
-        var client = new sphttpclient_SPHttpClient();
-        // due to timing we need to get the absolute url here so we can use it for all the individual requests
-        // and for sending the entire batch
-        return Object(toabsoluteurl["a" /* toAbsoluteUrl */])(this.baseUrl).then(function (absoluteRequestUrl) {
-            // build all the requests, send them, pipe results in order to parsers
-            var batchBody = [];
-            var currentChangeSetId = "";
-            for (var i = 0; i < _this.requests.length; i++) {
-                var reqInfo = _this.requests[i];
-                if (reqInfo.method === "GET") {
-                    if (currentChangeSetId.length > 0) {
-                        // end an existing change set
-                        batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
+        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+            var client, absoluteRequestUrl, batchBody, currentChangeSetId, i, reqInfo, headers, url, method, castHeaders, batchOptions, fetchResponse, text, responses;
+            var _this = this;
+            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
+                        // if we don't have any requests, don't bother sending anything
+                        // this could be due to caching further upstream, or just an empty batch
+                        if (this.requests.length < 1) {
+                            Logger.write("Resolving empty batch.", 1 /* Info */);
+                            return [2 /*return*/];
+                        }
+                        client = new sphttpclient_SPHttpClient();
+                        return [4 /*yield*/, Object(toabsoluteurl["a" /* toAbsoluteUrl */])(this.baseUrl)];
+                    case 1:
+                        absoluteRequestUrl = _a.sent();
+                        batchBody = [];
                         currentChangeSetId = "";
-                    }
-                    batchBody.push("--batch_" + _this.batchId + "\n");
+                        for (i = 0; i < this.requests.length; i++) {
+                            reqInfo = this.requests[i];
+                            if (reqInfo.method === "GET") {
+                                if (currentChangeSetId.length > 0) {
+                                    // end an existing change set
+                                    batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
+                                    currentChangeSetId = "";
+                                }
+                                batchBody.push("--batch_" + this.batchId + "\n");
+                            }
+                            else {
+                                if (currentChangeSetId.length < 1) {
+                                    // start new change set
+                                    currentChangeSetId = Object(common["h" /* getGUID */])();
+                                    batchBody.push("--batch_" + this.batchId + "\n");
+                                    batchBody.push("Content-Type: multipart/mixed; boundary=\"changeset_" + currentChangeSetId + "\"\n\n");
+                                }
+                                batchBody.push("--changeset_" + currentChangeSetId + "\n");
+                            }
+                            // common batch part prefix
+                            batchBody.push("Content-Type: application/http\n");
+                            batchBody.push("Content-Transfer-Encoding: binary\n\n");
+                            headers = new Headers();
+                            url = Object(common["l" /* isUrlAbsolute */])(reqInfo.url) ? reqInfo.url : Object(common["e" /* combine */])(absoluteRequestUrl, reqInfo.url);
+                            Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", 0 /* Verbose */);
+                            if (reqInfo.method !== "GET") {
+                                method = reqInfo.method;
+                                castHeaders = reqInfo.options.headers;
+                                if (Object(common["i" /* hOP */])(reqInfo, "options") && Object(common["i" /* hOP */])(reqInfo.options, "headers") && castHeaders["X-HTTP-Method"] !== undefined) {
+                                    method = castHeaders["X-HTTP-Method"];
+                                    delete castHeaders["X-HTTP-Method"];
+                                }
+                                batchBody.push(method + " " + url + " HTTP/1.1\n");
+                                headers.set("Content-Type", "application/json;odata=verbose;charset=utf-8");
+                            }
+                            else {
+                                batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
+                            }
+                            // merge global config headers
+                            Object(common["n" /* mergeHeaders */])(headers, splibconfig["a" /* SPRuntimeConfig */].headers);
+                            // merge per-request headers
+                            if (reqInfo.options) {
+                                Object(common["n" /* mergeHeaders */])(headers, reqInfo.options.headers);
+                            }
+                            // lastly we apply any default headers we need that may not exist
+                            if (!headers.has("Accept")) {
+                                headers.append("Accept", "application/json");
+                            }
+                            if (!headers.has("Content-Type")) {
+                                headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
+                            }
+                            if (!headers.has("X-ClientService-ClientTag")) {
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.3:batch");
+                            }
+                            // write headers into batch body
+                            headers.forEach(function (value, name) {
+                                batchBody.push(name + ": " + value + "\n");
+                            });
+                            batchBody.push("\n");
+                            if (reqInfo.options.body) {
+                                batchBody.push(reqInfo.options.body + "\n\n");
+                            }
+                        }
+                        if (currentChangeSetId.length > 0) {
+                            // Close the changeset
+                            batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
+                            currentChangeSetId = "";
+                        }
+                        batchBody.push("--batch_" + this.batchId + "--\n");
+                        batchOptions = {
+                            "body": batchBody.join(""),
+                            "headers": {
+                                "Content-Type": "multipart/mixed; boundary=batch_" + this.batchId,
+                            },
+                            "method": "POST",
+                        };
+                        Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
+                        return [4 /*yield*/, client.fetch(Object(common["e" /* combine */])(absoluteRequestUrl, "/_api/$batch"), batchOptions)];
+                    case 2:
+                        fetchResponse = _a.sent();
+                        return [4 /*yield*/, fetchResponse.text()];
+                    case 3:
+                        text = _a.sent();
+                        responses = SPBatch.ParseResponse(text);
+                        if (responses.length !== this.requests.length) {
+                            throw Error("Could not properly parse responses to match requests in batch.");
+                        }
+                        Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
+                        // this structure ensures that we resolve the batched requests in the order we expect
+                        // using async this is not guaranteed depending on the requests
+                        return [2 /*return*/, responses.reduce(function (p, response, index) { return p.then(function (_) { return Object(tslib_es6["a" /* __awaiter */])(_this, void 0, void 0, function () {
+                                var request, _a, _b, e_1;
+                                return Object(tslib_es6["d" /* __generator */])(this, function (_c) {
+                                    switch (_c.label) {
+                                        case 0:
+                                            request = this.requests[index];
+                                            Logger.write("[" + request.id + "] (" + (new Date()).getTime() + ") Resolving request in batch " + this.batchId + ".", 1 /* Info */);
+                                            _c.label = 1;
+                                        case 1:
+                                            _c.trys.push([1, 3, , 4]);
+                                            _b = (_a = request).resolve;
+                                            return [4 /*yield*/, request.parser.parse(response)];
+                                        case 2:
+                                            _b.apply(_a, [_c.sent()]);
+                                            return [3 /*break*/, 4];
+                                        case 3:
+                                            e_1 = _c.sent();
+                                            request.reject(e_1);
+                                            return [3 /*break*/, 4];
+                                        case 4: return [2 /*return*/];
+                                    }
+                                });
+                            }); }); }, Promise.resolve(void (0)))];
                 }
-                else {
-                    if (currentChangeSetId.length < 1) {
-                        // start new change set
-                        currentChangeSetId = Object(common["h" /* getGUID */])();
-                        batchBody.push("--batch_" + _this.batchId + "\n");
-                        batchBody.push("Content-Type: multipart/mixed; boundary=\"changeset_" + currentChangeSetId + "\"\n\n");
-                    }
-                    batchBody.push("--changeset_" + currentChangeSetId + "\n");
-                }
-                // common batch part prefix
-                batchBody.push("Content-Type: application/http\n");
-                batchBody.push("Content-Transfer-Encoding: binary\n\n");
-                // these are the per-request headers
-                var headers = new Headers();
-                // this is the url of the individual request within the batch
-                var url = Object(common["l" /* isUrlAbsolute */])(reqInfo.url) ? reqInfo.url : Object(common["e" /* combine */])(absoluteRequestUrl, reqInfo.url);
-                Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", 0 /* Verbose */);
-                if (reqInfo.method !== "GET") {
-                    var method = reqInfo.method;
-                    var castHeaders = reqInfo.options.headers;
-                    if (Object(common["i" /* hOP */])(reqInfo, "options") && Object(common["i" /* hOP */])(reqInfo.options, "headers") && castHeaders["X-HTTP-Method"] !== undefined) {
-                        method = castHeaders["X-HTTP-Method"];
-                        delete castHeaders["X-HTTP-Method"];
-                    }
-                    batchBody.push(method + " " + url + " HTTP/1.1\n");
-                    headers.set("Content-Type", "application/json;odata=verbose;charset=utf-8");
-                }
-                else {
-                    batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
-                }
-                // merge global config headers
-                Object(common["n" /* mergeHeaders */])(headers, splibconfig["a" /* SPRuntimeConfig */].headers);
-                // merge per-request headers
-                if (reqInfo.options) {
-                    Object(common["n" /* mergeHeaders */])(headers, reqInfo.options.headers);
-                }
-                // lastly we apply any default headers we need that may not exist
-                if (!headers.has("Accept")) {
-                    headers.append("Accept", "application/json");
-                }
-                if (!headers.has("Content-Type")) {
-                    headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
-                }
-                if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.2");
-                }
-                // write headers into batch body
-                headers.forEach(function (value, name) {
-                    batchBody.push(name + ": " + value + "\n");
-                });
-                batchBody.push("\n");
-                if (reqInfo.options.body) {
-                    batchBody.push(reqInfo.options.body + "\n\n");
-                }
-            }
-            if (currentChangeSetId.length > 0) {
-                // Close the changeset
-                batchBody.push("--changeset_" + currentChangeSetId + "--\n\n");
-                currentChangeSetId = "";
-            }
-            batchBody.push("--batch_" + _this.batchId + "--\n");
-            var batchOptions = {
-                "body": batchBody.join(""),
-                "headers": {
-                    "Content-Type": "multipart/mixed; boundary=batch_" + _this.batchId,
-                },
-                "method": "POST",
-            };
-            Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
-            return client.fetch(Object(common["e" /* combine */])(absoluteRequestUrl, "/_api/$batch"), batchOptions)
-                .then(function (r) { return r.text(); })
-                .then(SPBatch.ParseResponse)
-                .then(function (responses) {
-                if (responses.length !== _this.requests.length) {
-                    throw Error("Could not properly parse responses to match requests in batch.");
-                }
-                Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
-                return responses.reduce(function (chain, response, index) {
-                    var request = _this.requests[index];
-                    Logger.write("[" + request.id + "] (" + (new Date()).getTime() + ") Resolving request in batch " + _this.batchId + ".", 1 /* Info */);
-                    return chain.then(function (_) { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
-                }, Promise.resolve());
             });
         });
     };
@@ -4253,7 +4288,16 @@ var types_Web = /** @class */ (function (_super) {
 
 var Web = spInvokableFactory(types_Web);
 //# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/toResourcePath.js
+function toResourcePath(url) {
+    return {
+        DecodedUrl: url,
+        __metadata: { type: "SP.ResourcePath" },
+    };
+}
+//# sourceMappingURL=toResourcePath.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/types.js
+
 
 
 
@@ -4636,26 +4680,33 @@ var types_List = /** @class */ (function (_super) {
      * @param formValues The fields to change and their new values.
      * @param decodedUrl Path decoded url; folder's server relative path.
      * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
-     * @param comment Optional check in comment.
+     * @param checkInComment Optional check in comment.
+     * @param additionalProps Optional set of additional properties LeafName new document file name,
      */
-    _List.prototype.addValidateUpdateItemUsingPath = function (formValues, decodedUrl, bNewDocumentUpdate, checkInComment) {
+    _List.prototype.addValidateUpdateItemUsingPath = function (formValues, decodedUrl, bNewDocumentUpdate, checkInComment, additionalProps) {
         if (bNewDocumentUpdate === void 0) { bNewDocumentUpdate = false; }
         return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var res;
+            var addProps, res;
             return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), body({
-                            bNewDocumentUpdate: bNewDocumentUpdate,
-                            checkInComment: checkInComment,
-                            formValues: formValues,
-                            listItemCreateInfo: {
-                                FolderPath: {
-                                    DecodedUrl: decodedUrl,
-                                    __metadata: { type: "SP.ResourcePath" },
-                                },
-                                __metadata: { type: "SP.ListItemCreationInformationUsingPath" },
-                            },
-                        }))];
+                    case 0:
+                        addProps = {
+                            FolderPath: toResourcePath(decodedUrl),
+                        };
+                        if (Object(common["q" /* objectDefinedNotNull */])(additionalProps)) {
+                            if (additionalProps.leafName) {
+                                addProps.LeafName = toResourcePath(additionalProps.leafName);
+                            }
+                            if (additionalProps.objectType) {
+                                addProps.UnderlyingObjectType = additionalProps.objectType;
+                            }
+                        }
+                        return [4 /*yield*/, spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), body({
+                                bNewDocumentUpdate: bNewDocumentUpdate,
+                                checkInComment: checkInComment,
+                                formValues: formValues,
+                                listItemCreateInfo: Object(common["d" /* assign */])(metadata("SP.ListItemCreationInformationUsingPath"), addProps),
+                            }))];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, Object(common["i" /* hOP */])(res, "AddValidateUpdateItemUsingPath") ? res.AddValidateUpdateItemUsingPath : res];

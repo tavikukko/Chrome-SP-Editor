@@ -134,9 +134,19 @@ export declare class _List extends _SharePointQueryableInstance<IListInfo> {
      * @param formValues The fields to change and their new values.
      * @param decodedUrl Path decoded url; folder's server relative path.
      * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
-     * @param comment Optional check in comment.
+     * @param checkInComment Optional check in comment.
+     * @param additionalProps Optional set of additional properties LeafName new document file name,
      */
-    addValidateUpdateItemUsingPath(formValues: IListItemFormUpdateValue[], decodedUrl: string, bNewDocumentUpdate?: boolean, checkInComment?: string): Promise<IListItemFormUpdateValue[]>;
+    addValidateUpdateItemUsingPath(formValues: IListItemFormUpdateValue[], decodedUrl: string, bNewDocumentUpdate?: boolean, checkInComment?: string, additionalProps?: {
+        /**
+         * If creating a document or folder, the name
+         */
+        leafName?: string;
+        /**
+         * 0: File, 1: Folder, 2: Web
+         */
+        objectType?: 0 | 1 | 2;
+    }): Promise<IListItemFormUpdateValue[]>;
 }
 export interface IList extends _List, IDeleteableWithETag {
 }

@@ -1,7 +1,7 @@
 import { ITypedHash } from "@pnp/common";
 import { PlannerPlan as IPlannerPlanType, PlannerTask as IPlannerTaskType, PlannerBucket as IPlannerBucketType, Planner as IPlannerType } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableInstance, _GraphQueryableCollection } from "../graphqueryable";
-import { IUpdateable, IDeleteable, IGetById, IDeleteableWithETag, IUpdateableWithETag } from "../decorators";
+import { IGetById, IDeleteableWithETag, IUpdateableWithETag } from "../decorators";
 /**
  * Planner
  */
@@ -20,7 +20,7 @@ export declare class _Plan extends _GraphQueryableInstance<IPlannerPlanType> {
     get tasks(): ITasks;
     get buckets(): IBuckets;
 }
-export interface IPlan extends _Plan, IUpdateable<IPlannerPlanType>, IDeleteable {
+export interface IPlan extends _Plan, IUpdateableWithETag<IPlannerPlanType>, IDeleteableWithETag {
 }
 export declare const Plan: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IPlan;
 export declare class _Plans extends _GraphQueryableCollection<IPlannerPlanType[]> {
@@ -66,7 +66,7 @@ export declare const Tasks: (baseUrl: string | import("../graphqueryable").IGrap
 export declare class _Bucket extends _GraphQueryableInstance<IPlannerBucketType> {
     get tasks(): ITasks;
 }
-export interface IBucket extends _Bucket, IUpdateable<IPlannerBucketType>, IDeleteable {
+export interface IBucket extends _Bucket, IUpdateableWithETag<IPlannerBucketType>, IDeleteableWithETag {
 }
 export declare const Bucket: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IBucket;
 /**
