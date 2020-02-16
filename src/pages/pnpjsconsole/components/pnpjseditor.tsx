@@ -45,6 +45,18 @@ const PnPjsEditor = () => {
 
   const COMMON_CONFIG: monaco.editor.IStandaloneEditorConstructionOptions = pnpjsMonacoConfigs()
 
+  useEffect(() => {
+    const resizeListener = () => {
+      if (editor && editor.current) {
+        editor.current.layout()
+      }
+    }
+    window.addEventListener('resize', resizeListener)
+    return () => {
+      window.removeEventListener('resize', resizeListener)
+    }
+  }, [])
+
   const initEditor = useCallback(() => {
     if (outputDiv.current) {
       editor.current = monaco.editor.create(outputDiv.current, {
@@ -60,7 +72,6 @@ const PnPjsEditor = () => {
       const codeWOComments = editor.current!.getModel()!.getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
       const curLibs: IDefinitions[] = getDefinitionsInUse(codeWOComments, definitions)
       monaco.languages.typescript.typescriptDefaults.setExtraLibs(curLibs)
-
       if (editor && editor.current) {
         // adds auto-complete for @pnp module imports
         completionItems.current = monaco.languages.registerCompletionItemProvider('typescript', {
@@ -152,6 +163,8 @@ const PnPjsEditor = () => {
           }
 
         })
+        // trigget resize to make editor visible (bug in monaco 0.20.0?)
+        setTimeout(() => { window.dispatchEvent(new Event('resize')) }, 1)
       }
     }
   }, [COMMON_CONFIG, definitions, dispatch, stateCode])

@@ -8,7 +8,7 @@
     "@uifabric/azure-themes": "^7.0.26",
     "gsap": "^3.1.1",
     "ionicons": "^5.0.0",
-    "monaco-editor": "^0.19.3",
+    "monaco-editor": "^0.20.0",
     "office-ui-fabric-react": "^7.93.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

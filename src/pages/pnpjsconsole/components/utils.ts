@@ -68,7 +68,7 @@ export const pnpjsMonacoConfigs = () => {
     renderIndentGuides: true,
     suggestOnTriggerCharacters: true,
     colorDecorators: true,
-    automaticLayout: true,
+    // automaticLayout: true,
   }
   monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
     noSemanticValidation: false,
