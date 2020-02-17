@@ -33,3 +33,7 @@ If all good, the local build extension will show up
 Now you can open a SharePoint site, open devtools and select SharePoint tab. Press the reload button to reload extension after making code changes.
 
 ![](repo-images/edgewatchrefresh.png)
+
+To inspect the Extension, you can open the extension devtool by right clicking and selecting Inspect and you can see the the dom/logs/etc of the extension.
+
+![](repo-images/edgeinspect.png)
