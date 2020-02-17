@@ -34,6 +34,6 @@ Now you can open a SharePoint site, open devtools and select SharePoint tab. Pre
 
 ![](repo-images/edgewatchrefresh.png)
 
-To inspect the Extension, you can open the extension devtool by right clicking and selecting Inspect and you can see the the dom/logs/etc of the extension.
+To inspect the Extension, you can open the extension devtool by right clicking and selecting **Inspect** and you can see the dom/console/sources/etc of the extension.
 
 ![](repo-images/edgeinspect.png)
