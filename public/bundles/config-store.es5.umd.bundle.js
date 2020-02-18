@@ -361,7 +361,7 @@ function mergeMaps(target) {
     }
     return target;
 }
-//# sourceMappingURL=collections.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
 
 function setup(config) {
@@ -458,7 +458,7 @@ var libconfig_RuntimeConfigImpl = /** @class */ (function () {
 
 var _runtimeConfig = new libconfig_RuntimeConfigImpl();
 var RuntimeConfig = _runtimeConfig;
-//# sourceMappingURL=libconfig.js.map
+
 // EXTERNAL MODULE: ./node_modules/@pnp/common/net.js
 var net = __webpack_require__(5);
 
@@ -718,7 +718,7 @@ var PnPClientStorage = /** @class */ (function () {
     return PnPClientStorage;
 }());
 
-//# sourceMappingURL=storage.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/common/index.js
 /* concated harmony reexport objectToMap */__webpack_require__.d(__webpack_exports__, "r", function() { return objectToMap; });
 /* concated harmony reexport mergeMaps */__webpack_require__.d(__webpack_exports__, "o", function() { return mergeMaps; });
@@ -753,7 +753,7 @@ var PnPClientStorage = /** @class */ (function () {
 
 
 
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 /* 2 */
@@ -990,7 +990,7 @@ function getHashCode(s) {
     return hash;
 }
 // tslint:enable:no-bitwise
-//# sourceMappingURL=util.js.map
+
 
 /***/ }),
 /* 3 */
@@ -1050,7 +1050,7 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
 }());
 
 var SPRuntimeConfig = new SPRuntimeConfigImpl();
-//# sourceMappingURL=splibconfig.js.map
+
 
 /***/ }),
 /* 4 */
@@ -1100,7 +1100,7 @@ function toAbsoluteUrl(candidateUrl) {
         return resolve(candidateUrl);
     });
 }
-//# sourceMappingURL=toabsoluteurl.js.map
+
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6)))
 
 /***/ }),
@@ -1240,7 +1240,7 @@ var SPFxAdalClient = /** @class */ (function (_super) {
     return SPFxAdalClient;
 }(BearerTokenFetchClient));
 
-//# sourceMappingURL=net.js.map
+
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6)))
 
 /***/ }),
@@ -1369,7 +1369,7 @@ var configuration_Settings = /** @class */ (function () {
     return Settings;
 }());
 
-//# sourceMappingURL=configuration.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/config-store/providers/cachingConfigurationProvider.js
 
 /**
@@ -1429,7 +1429,7 @@ var cachingConfigurationProvider_CachingConfigurationProvider = /** @class */ (f
     return CachingConfigurationProvider;
 }());
 /* harmony default export */ var cachingConfigurationProvider = (cachingConfigurationProvider_CachingConfigurationProvider);
-//# sourceMappingURL=cachingConfigurationProvider.js.map
+
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
 var tslib_es6 = __webpack_require__(0);
 
@@ -1536,7 +1536,7 @@ var batch_Batch = /** @class */ (function () {
     return Batch;
 }());
 
-//# sourceMappingURL=batch.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
 
 var caching_CachingOptions = /** @class */ (function () {
@@ -1581,7 +1581,7 @@ var CachingParserWrapper = /** @class */ (function () {
     return CachingParserWrapper;
 }());
 
-//# sourceMappingURL=caching.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/add-prop.js
 /**
  * Adds a property to a target instance
@@ -1600,7 +1600,7 @@ function addProp(target, name, factory, path) {
         },
     });
 }
-//# sourceMappingURL=add-prop.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
 
 
@@ -1722,7 +1722,7 @@ function extensionOrDefault(op, or, target) {
     }
     return or.apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
 }
-//# sourceMappingURL=invokable-extensions.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
 
 
@@ -1792,7 +1792,7 @@ var invokableBinder = function (invoker) { return function (constructor) {
 var invokableFactory = invokableBinder(function (options) {
     return this.defaultAction(options);
 });
-//# sourceMappingURL=invokable-binder.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
 
 
@@ -1946,7 +1946,7 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
     return HttpRequestError;
 }(Error));
 
-//# sourceMappingURL=parsers.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/queryable.js
 
 
@@ -2185,7 +2185,7 @@ var queryable_Queryable = /** @class */ (function () {
     return Queryable;
 }());
 
-//# sourceMappingURL=queryable.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
 /**
  * Class used to subscribe ILogListener and log messages throughout an application
@@ -2328,7 +2328,7 @@ var LogLevel;
     LogLevel[LogLevel["Error"] = 3] = "Error";
     LogLevel[LogLevel["Off"] = 99] = "Off";
 })(LogLevel || (LogLevel = {}));
-//# sourceMappingURL=logger.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
 /**
  * Implementation of LogListener which logs to the console
@@ -2403,11 +2403,11 @@ var FunctionListener = /** @class */ (function () {
     return FunctionListener;
 }());
 
-//# sourceMappingURL=listeners.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
 
 
-//# sourceMappingURL=index.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline.js
 
 
@@ -2622,7 +2622,7 @@ function getDefaultPipeline() {
         pipeline_PipelineMethods.logEnd,
     ].slice(0);
 }
-//# sourceMappingURL=pipeline.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline-binder.js
 
 
@@ -2662,7 +2662,7 @@ function pipelineBinder(pipes) {
     };
 }
 var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
-//# sourceMappingURL=pipeline-binder.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
 
 function body(o, previous) {
@@ -2671,7 +2671,7 @@ function body(o, previous) {
 function request_builders_headers(o, previous) {
     return Object.assign({ headers: o }, previous);
 }
-//# sourceMappingURL=request-builders.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/index.js
 
 
@@ -2683,14 +2683,14 @@ function request_builders_headers(o, previous) {
 
 
 
-//# sourceMappingURL=index.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/metadata.js
 function metadata(type) {
     return {
         "__metadata": { "type": type },
     };
 }
-//# sourceMappingURL=metadata.js.map
+
 // EXTERNAL MODULE: ./node_modules/@pnp/sp/splibconfig.js
 var splibconfig = __webpack_require__(3);
 
@@ -2710,7 +2710,7 @@ function extractWebUrl(candidateUrl) {
     // if all else fails just give them what they gave us back
     return candidateUrl;
 }
-//# sourceMappingURL=extractweburl.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/telemetry.js
 
 
@@ -2760,7 +2760,7 @@ tag.configure = function (o, name) {
 tag.isTagged = function (o) {
     return o.data.options.headers && o.data.options.headers["X-PnPjs-Tracking"];
 };
-//# sourceMappingURL=telemetry.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sphttpclient.js
 
 
@@ -2944,7 +2944,7 @@ function getDigestFactory(client) {
         });
     }); };
 }
-//# sourceMappingURL=sphttpclient.js.map
+
 // EXTERNAL MODULE: ./node_modules/@pnp/sp/utils/toabsoluteurl.js
 var toabsoluteurl = __webpack_require__(4);
 
@@ -3005,7 +3005,7 @@ var spPostDeleteETag = function (o, options, eTag) {
     var opts = Object.assign(request_builders_headers({ "X-HTTP-Method": "DELETE", "IF-Match": eTag }), options);
     return spPost(o, opts);
 };
-//# sourceMappingURL=operations.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sharepointqueryable.js
 
 
@@ -3267,7 +3267,7 @@ function deleteableWithETag(t) {
         return spPostDeleteETag(tag.configure(this, t + ".delete"), {}, eTag);
     };
 }
-//# sourceMappingURL=sharepointqueryable.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/decorators.js
 /**
  * Class Decorators
@@ -3296,7 +3296,7 @@ function defaultPath(path) {
 // TODO::?
 // performance tracking method decorator
 // redirect to graph api
-//# sourceMappingURL=decorators.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/odata.js
 
 
@@ -3388,7 +3388,7 @@ function spODataEntity(factory) {
 function spODataEntityArray(factory) {
     return new odata_SPODataEntityArrayParserImpl(factory);
 }
-//# sourceMappingURL=odata.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/batch.js
 
 
@@ -3604,7 +3604,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
     return SPBatch;
 }(batch_Batch));
 
-//# sourceMappingURL=batch.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/rest.js
 
 /**
@@ -3653,7 +3653,7 @@ var rest_SPRest = /** @class */ (function () {
 }());
 
 var sp = new rest_SPRest();
-//# sourceMappingURL=rest.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/escapeQueryStrValue.js
 
 
@@ -3674,7 +3674,7 @@ function escapeQueryStrValue(value) {
         return encodeURIComponent(value.replace(/\'/ig, "''"));
     }
 }
-//# sourceMappingURL=escapeQueryStrValue.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/types.js
 
 
@@ -3978,7 +3978,7 @@ var types_Site = /** @class */ (function (_super) {
 }(sharepointqueryable_SharePointQueryableInstance));
 
 var Site = spInvokableFactory(types_Site);
-//# sourceMappingURL=types.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/index.js
 
 
@@ -3990,7 +3990,7 @@ Reflect.defineProperty(rest_SPRest.prototype, "site", {
         return Site(this._baseUrl).configure(this._options);
     },
 });
-//# sourceMappingURL=index.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/webs/types.js
 
 
@@ -4287,7 +4287,7 @@ var types_Web = /** @class */ (function (_super) {
 }(sharepointqueryable_SharePointQueryableInstance));
 
 var Web = spInvokableFactory(types_Web);
-//# sourceMappingURL=types.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/toResourcePath.js
 function toResourcePath(url) {
     return {
@@ -4295,7 +4295,7 @@ function toResourcePath(url) {
         __metadata: { type: "SP.ResourcePath" },
     };
 }
-//# sourceMappingURL=toResourcePath.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/types.js
 
 
@@ -4783,7 +4783,7 @@ var ControlMode;
     ControlMode[ControlMode["Edit"] = 2] = "Edit";
     ControlMode[ControlMode["New"] = 3] = "New";
 })(ControlMode || (ControlMode = {}));
-//# sourceMappingURL=types.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/web.js
 
 
@@ -4812,7 +4812,7 @@ types_Web.prototype.getCatalog = function (type) {
         });
     });
 };
-//# sourceMappingURL=web.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/items/types.js
 
 
@@ -5270,13 +5270,13 @@ var types_ItemUpdatedParser = /** @class */ (function (_super) {
     };
     return ItemUpdatedParser;
 }(parsers_ODataParser));
-//# sourceMappingURL=types.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/items/list.js
 
 
 
 addProp(types_List, "items", Items);
-//# sourceMappingURL=list.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/config-store/providers/spListConfigurationProvider.js
 
 
@@ -5328,15 +5328,15 @@ var spListConfigurationProvider_SPListConfigurationProvider = /** @class */ (fun
     return SPListConfigurationProvider;
 }());
 /* harmony default export */ var spListConfigurationProvider = (spListConfigurationProvider_SPListConfigurationProvider);
-//# sourceMappingURL=spListConfigurationProvider.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/config-store/providers/index.js
 
 
-//# sourceMappingURL=index.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/config-store/index.js
 
 
-//# sourceMappingURL=index.js.map
+
 // CONCATENATED MODULE: ./pnpjs-sources/index-config-store.ts
 /* concated harmony reexport Settings */__webpack_require__.d(__webpack_exports__, "Settings", function() { return configuration_Settings; });
 /* concated harmony reexport CachingConfigurationProvider */__webpack_require__.d(__webpack_exports__, "CachingConfigurationProvider", function() { return cachingConfigurationProvider; });

@@ -174,7 +174,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getHashCode", function() { return _src_common__WEBPACK_IMPORTED_MODULE_0__["getHashCode"]; });
 
 
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -390,7 +390,7 @@ var SPFxAdalClient = /** @class */ (function (_super) {
     return SPFxAdalClient;
 }(_netutil__WEBPACK_IMPORTED_MODULE_1__["BearerTokenFetchClient"]));
 
-//# sourceMappingURL=adalclient.js.map
+
 
 /***/ }),
 
@@ -440,7 +440,7 @@ function mergeMaps(target) {
     }
     return target;
 }
-//# sourceMappingURL=collections.js.map
+
 
 /***/ }),
 
@@ -523,7 +523,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-//# sourceMappingURL=common.js.map
+
 
 /***/ }),
 
@@ -622,7 +622,7 @@ var RuntimeConfigImpl = /** @class */ (function () {
 
 var _runtimeConfig = new RuntimeConfigImpl();
 var RuntimeConfig = _runtimeConfig;
-//# sourceMappingURL=libconfig.js.map
+
 
 /***/ }),
 
@@ -701,7 +701,7 @@ var BearerTokenFetchClient = /** @class */ (function (_super) {
     return BearerTokenFetchClient;
 }(FetchClient));
 
-//# sourceMappingURL=netutil.js.map
+
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
@@ -959,7 +959,7 @@ var PnPClientStorage = /** @class */ (function () {
     return PnPClientStorage;
 }());
 
-//# sourceMappingURL=storage.js.map
+
 
 /***/ }),
 
@@ -1226,7 +1226,7 @@ function getHashCode(s) {
     return hash;
 }
 // tslint:enable:no-bitwise
-//# sourceMappingURL=util.js.map
+
 
 /***/ }),
 
@@ -1249,7 +1249,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FunctionListener", function() { return _src_logging__WEBPACK_IMPORTED_MODULE_0__["FunctionListener"]; });
 
 
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -1337,7 +1337,7 @@ var FunctionListener = /** @class */ (function () {
     return FunctionListener;
 }());
 
-//# sourceMappingURL=listeners.js.map
+
 
 /***/ }),
 
@@ -1481,7 +1481,7 @@ var LoggerImpl = /** @class */ (function () {
     };
     return LoggerImpl;
 }());
-//# sourceMappingURL=logger.js.map
+
 
 /***/ }),
 
@@ -1508,7 +1508,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-//# sourceMappingURL=logging.js.map
+
 
 /***/ }),
 
@@ -1533,7 +1533,7 @@ var LogLevel;
     LogLevel[LogLevel["Error"] = 3] = "Error";
     LogLevel[LogLevel["Off"] = 99] = "Off";
 })(LogLevel || (LogLevel = {}));
-//# sourceMappingURL=loglevel.js.map
+
 
 /***/ }),
 
@@ -1584,7 +1584,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ODataBatch", function() { return _src_odata__WEBPACK_IMPORTED_MODULE_0__["ODataBatch"]; });
 
 
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -1641,7 +1641,7 @@ var CachingParserWrapper = /** @class */ (function () {
     return CachingParserWrapper;
 }());
 
-//# sourceMappingURL=caching.js.map
+
 
 /***/ }),
 
@@ -1700,7 +1700,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-//# sourceMappingURL=odata.js.map
+
 
 /***/ }),
 
@@ -1803,7 +1803,7 @@ var ODataBatch = /** @class */ (function () {
     return ODataBatch;
 }());
 
-//# sourceMappingURL=odatabatch.js.map
+
 
 /***/ }),
 
@@ -1980,7 +1980,7 @@ var LambdaParser = /** @class */ (function (_super) {
     return LambdaParser;
 }(ODataParserBase));
 
-//# sourceMappingURL=parsers.js.map
+
 
 /***/ }),
 
@@ -2220,7 +2220,7 @@ function getDefaultPipeline() {
         PipelineMethods.logEnd,
     ].slice(0);
 }
-//# sourceMappingURL=pipeline.js.map
+
 
 /***/ }),
 
@@ -2551,7 +2551,7 @@ var ODataQueryable = /** @class */ (function (_super) {
     return ODataQueryable;
 }(Queryable));
 
-//# sourceMappingURL=queryable.js.map
+
 
 /***/ }),
 
@@ -2610,7 +2610,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "writeObjectPathBody", function() { return _src_clientsvc__WEBPACK_IMPORTED_MODULE_0__["writeObjectPathBody"]; });
 
 
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -2789,7 +2789,7 @@ var ProcessQueryCachingParserWrapper = /** @class */ (function (_super) {
     };
     return ProcessQueryCachingParserWrapper;
 }(_pnp_odata__WEBPACK_IMPORTED_MODULE_2__["CachingParserWrapper"]));
-//# sourceMappingURL=batch.js.map
+
 
 /***/ }),
 
@@ -2860,7 +2860,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-//# sourceMappingURL=clientsvc.js.map
+
 
 /***/ }),
 
@@ -3223,7 +3223,7 @@ var ClientSvcQueryable = /** @class */ (function (_super) {
     return ClientSvcQueryable;
 }(_pnp_odata__WEBPACK_IMPORTED_MODULE_2__["Queryable"]));
 
-//# sourceMappingURL=clintsvcqueryable.js.map
+
 
 /***/ }),
 
@@ -3528,7 +3528,7 @@ var ObjectPathQueue = /** @class */ (function () {
     return ObjectPathQueue;
 }());
 
-//# sourceMappingURL=objectpath.js.map
+
 
 /***/ }),
 
@@ -3632,7 +3632,7 @@ function objectProperties(o) {
         return "";
     }, []);
 }
-//# sourceMappingURL=opactionbuilders.js.map
+
 
 /***/ }),
 
@@ -3747,7 +3747,7 @@ function method(name, params) {
     builder.push("</Method>");
     return new _objectpath__WEBPACK_IMPORTED_MODULE_0__["ObjectPath"](builder.join(""), actions);
 }
-//# sourceMappingURL=opbuilders.js.map
+
 
 /***/ }),
 
@@ -3848,7 +3848,7 @@ var ProcessQueryParser = /** @class */ (function () {
     return ProcessQueryParser;
 }());
 
-//# sourceMappingURL=parsers.js.map
+
 
 /***/ }),
 
@@ -3886,7 +3886,7 @@ function writeObjectPathBody(objectPaths) {
         "</Request>",
     ].join("");
 }
-//# sourceMappingURL=utils.js.map
+
 
 /***/ }),
 
@@ -4119,7 +4119,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UrlZone", function() { return _src_sp__WEBPACK_IMPORTED_MODULE_0__["UrlZone"]; });
 
 
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -4238,7 +4238,7 @@ var App = /** @class */ (function (_super) {
     return App;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=appcatalog.js.map
+
 
 /***/ }),
 
@@ -4425,7 +4425,7 @@ var AttachmentFile = /** @class */ (function (_super) {
     return AttachmentFile;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=attachmentfiles.js.map
+
 
 /***/ }),
 
@@ -4638,7 +4638,7 @@ var SPBatch = /** @class */ (function (_super) {
     return SPBatch;
 }(_pnp_odata__WEBPACK_IMPORTED_MODULE_1__["ODataBatch"]));
 
-//# sourceMappingURL=batch.js.map
+
 
 /***/ }),
 
@@ -5873,7 +5873,7 @@ var ClientSideWebpart = /** @class */ (function (_super) {
     return ClientSideWebpart;
 }(ColumnControl));
 
-//# sourceMappingURL=clientsidepages.js.map
+
 
 /***/ }),
 
@@ -6012,7 +6012,7 @@ var Replies = /** @class */ (function (_super) {
     return Replies;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableCollection"]));
 
-//# sourceMappingURL=comments.js.map
+
 
 /***/ }),
 
@@ -6078,7 +6078,7 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
 }());
 
 var SPRuntimeConfig = new SPRuntimeConfigImpl();
-//# sourceMappingURL=splibconfig.js.map
+
 
 /***/ }),
 
@@ -6262,7 +6262,7 @@ var FieldLink = /** @class */ (function (_super) {
     return FieldLink;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_2__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=contenttypes.js.map
+
 
 /***/ }),
 
@@ -6371,7 +6371,7 @@ var Feature = /** @class */ (function (_super) {
     return Feature;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=features.js.map
+
 
 /***/ }),
 
@@ -6794,7 +6794,7 @@ var Field = /** @class */ (function (_super) {
     return Field;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=fields.js.map
+
 
 /***/ }),
 
@@ -7407,7 +7407,7 @@ var TemplateFileType;
     TemplateFileType[TemplateFileType["FormPage"] = 2] = "FormPage";
     TemplateFileType[TemplateFileType["ClientSidePage"] = 3] = "ClientSidePage";
 })(TemplateFileType || (TemplateFileType = {}));
-//# sourceMappingURL=files.js.map
+
 
 /***/ }),
 
@@ -7668,7 +7668,7 @@ var Folder = /** @class */ (function (_super) {
     return Folder;
 }(_sharepointqueryableshareable__WEBPACK_IMPORTED_MODULE_3__["SharePointQueryableShareableFolder"]));
 
-//# sourceMappingURL=folders.js.map
+
 
 /***/ }),
 
@@ -7724,7 +7724,7 @@ var Form = /** @class */ (function (_super) {
     return Form;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=forms.js.map
+
 
 /***/ }),
 
@@ -7774,7 +7774,7 @@ var HubSite = /** @class */ (function (_super) {
     return HubSite;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=hubsites.js.map
+
 
 /***/ }),
 
@@ -8322,7 +8322,7 @@ var ItemUpdatedParser = /** @class */ (function (_super) {
     };
     return ItemUpdatedParser;
 }(_pnp_odata__WEBPACK_IMPORTED_MODULE_7__["ODataParserBase"]));
-//# sourceMappingURL=items.js.map
+
 
 /***/ }),
 
@@ -8857,7 +8857,7 @@ var List = /** @class */ (function (_super) {
     return List;
 }(_sharepointqueryablesecurable__WEBPACK_IMPORTED_MODULE_8__["SharePointQueryableSecurable"]));
 
-//# sourceMappingURL=lists.js.map
+
 
 /***/ }),
 
@@ -9075,7 +9075,7 @@ var NavigationService = /** @class */ (function (_super) {
     return NavigationService;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryable"]));
 
-//# sourceMappingURL=navigation.js.map
+
 
 /***/ }),
 
@@ -9149,7 +9149,7 @@ var DigestCache = /** @class */ (function () {
     return DigestCache;
 }());
 
-//# sourceMappingURL=digestcache.js.map
+
 
 /***/ }),
 
@@ -9297,7 +9297,7 @@ var SPHttpClient = /** @class */ (function () {
     return SPHttpClient;
 }());
 
-//# sourceMappingURL=sphttpclient.js.map
+
 
 /***/ }),
 
@@ -9405,7 +9405,7 @@ function spODataEntity(factory) {
 function spODataEntityArray(factory) {
     return new SPODataEntityArrayParserImpl(factory);
 }
-//# sourceMappingURL=odata.js.map
+
 
 /***/ }),
 
@@ -9574,7 +9574,7 @@ var TimeZones = /** @class */ (function (_super) {
     return TimeZones;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableCollection"]));
 
-//# sourceMappingURL=regionalsettings.js.map
+
 
 /***/ }),
 
@@ -9711,7 +9711,7 @@ var RelatedItemManagerImpl = /** @class */ (function (_super) {
     return RelatedItemManagerImpl;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryable"]));
 
-//# sourceMappingURL=relateditems.js.map
+
 
 /***/ }),
 
@@ -9939,7 +9939,7 @@ var SPRest = /** @class */ (function () {
 }());
 
 var sp = new SPRest();
-//# sourceMappingURL=rest.js.map
+
 
 /***/ }),
 
@@ -10190,7 +10190,7 @@ var RoleDefinitionBindings = /** @class */ (function (_super) {
     return RoleDefinitionBindings;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableCollection"]));
 
-//# sourceMappingURL=roles.js.map
+
 
 /***/ }),
 
@@ -10541,7 +10541,7 @@ var SearchBuiltInSourceId = /** @class */ (function () {
     return SearchBuiltInSourceId;
 }());
 
-//# sourceMappingURL=search.js.map
+
 
 /***/ }),
 
@@ -10603,7 +10603,7 @@ var SearchSuggest = /** @class */ (function (_super) {
     return SearchSuggest;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=searchsuggest.js.map
+
 
 /***/ }),
 
@@ -10929,7 +10929,7 @@ function defaultPath(path) {
         }(target));
     };
 }
-//# sourceMappingURL=sharepointqueryable.js.map
+
 
 /***/ }),
 
@@ -11073,7 +11073,7 @@ var SharePointQueryableSecurable = /** @class */ (function (_super) {
     return SharePointQueryableSecurable;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_3__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=sharepointqueryablesecurable.js.map
+
 
 /***/ }),
 
@@ -11669,7 +11669,7 @@ var SharePointQueryableShareableFolder = /** @class */ (function (_super) {
     return SharePointQueryableShareableFolder;
 }(FileFolderShared));
 
-//# sourceMappingURL=sharepointqueryableshareable.js.map
+
 
 /***/ }),
 
@@ -11998,7 +11998,7 @@ var Site = /** @class */ (function (_super) {
     return Site;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=site.js.map
+
 
 /***/ }),
 
@@ -12281,7 +12281,7 @@ var SiteDesigns = /** @class */ (function (_super) {
     return SiteDesigns;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryable"]));
 
-//# sourceMappingURL=sitedesigns.js.map
+
 
 /***/ }),
 
@@ -12432,7 +12432,7 @@ var SiteGroup = /** @class */ (function (_super) {
     return SiteGroup;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=sitegroups.js.map
+
 
 /***/ }),
 
@@ -12592,7 +12592,7 @@ var SiteScripts = /** @class */ (function (_super) {
     return SiteScripts;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryable"]));
 
-//# sourceMappingURL=sitescripts.js.map
+
 
 /***/ }),
 
@@ -12753,7 +12753,7 @@ var CurrentUser = /** @class */ (function (_super) {
     return CurrentUser;
 }(UserBase));
 
-//# sourceMappingURL=siteusers.js.map
+
 
 /***/ }),
 
@@ -13034,7 +13034,7 @@ var SocialStatusCode;
      */
     SocialStatusCode[SocialStatusCode["DatabaseError"] = 18] = "DatabaseError";
 })(SocialStatusCode || (SocialStatusCode = {}));
-//# sourceMappingURL=social.js.map
+
 
 /***/ }),
 
@@ -13333,7 +13333,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-//# sourceMappingURL=sp.js.map
+
 
 /***/ }),
 
@@ -13442,7 +13442,7 @@ var Subscription = /** @class */ (function (_super) {
     return Subscription;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=subscriptions.js.map
+
 
 /***/ }),
 
@@ -14004,7 +14004,7 @@ var UrlZone;
      */
     UrlZone[UrlZone["Extranet"] = 4] = "Extranet";
 })(UrlZone || (UrlZone = {}));
-//# sourceMappingURL=types.js.map
+
 
 /***/ }),
 
@@ -14101,7 +14101,7 @@ var UserCustomAction = /** @class */ (function (_super) {
     return UserCustomAction;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=usercustomactions.js.map
+
 
 /***/ }),
 
@@ -14529,7 +14529,7 @@ var ClientPeoplePickerQuery = /** @class */ (function (_super) {
     ], ClientPeoplePickerQuery);
     return ClientPeoplePickerQuery;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryable"]));
-//# sourceMappingURL=userprofiles.js.map
+
 
 /***/ }),
 
@@ -14721,7 +14721,7 @@ var UtilityMethod = /** @class */ (function (_super) {
     return UtilityMethod;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryable"]));
 
-//# sourceMappingURL=utilities.js.map
+
 
 /***/ }),
 
@@ -14751,7 +14751,7 @@ function extractWebUrl(candidateUrl) {
     // if all else fails just give them what they gave us back
     return candidateUrl;
 }
-//# sourceMappingURL=extractweburl.js.map
+
 
 /***/ }),
 
@@ -14770,7 +14770,7 @@ function metadata(type) {
         "__metadata": { "type": type },
     };
 }
-//# sourceMappingURL=metadata.js.map
+
 
 /***/ }),
 
@@ -14826,7 +14826,7 @@ function toAbsoluteUrl(candidateUrl) {
         return resolve(candidateUrl);
     });
 }
-//# sourceMappingURL=toabsoluteurl.js.map
+
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
@@ -15010,7 +15010,7 @@ var ViewFields = /** @class */ (function (_super) {
     return ViewFields;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableCollection"]));
 
-//# sourceMappingURL=views.js.map
+
 
 /***/ }),
 
@@ -15158,7 +15158,7 @@ var WebPart = /** @class */ (function (_super) {
     return WebPart;
 }(_sharepointqueryable__WEBPACK_IMPORTED_MODULE_1__["SharePointQueryableInstance"]));
 
-//# sourceMappingURL=webparts.js.map
+
 
 /***/ }),
 
@@ -15938,7 +15938,7 @@ var Web = /** @class */ (function (_super) {
     return Web;
 }(_sharepointqueryableshareable__WEBPACK_IMPORTED_MODULE_3__["SharePointQueryableShareableWeb"]));
 
-//# sourceMappingURL=webs.js.map
+
 
 /***/ }),
 
@@ -16217,4 +16217,3 @@ module.exports = g;
 
 /******/ });
 });
-//# sourceMappingURL=sp-clientsvc.es5.umd.bundle.js.map

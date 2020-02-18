@@ -243,7 +243,7 @@ var LogLevel;
     LogLevel[LogLevel["Error"] = 3] = "Error";
     LogLevel[LogLevel["Off"] = 99] = "Off";
 })(LogLevel || (LogLevel = {}));
-//# sourceMappingURL=logger.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
 /**
  * Implementation of LogListener which logs to the console
@@ -318,11 +318,11 @@ var FunctionListener = /** @class */ (function () {
     return FunctionListener;
 }());
 
-//# sourceMappingURL=listeners.js.map
+
 // CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
 
 
-//# sourceMappingURL=index.js.map
+
 // CONCATENATED MODULE: ./pnpjs-sources/index-logging.ts
 /* concated harmony reexport Logger */__webpack_require__.d(__webpack_exports__, "Logger", function() { return Logger; });
 /* concated harmony reexport LogLevel */__webpack_require__.d(__webpack_exports__, "LogLevel", function() { return LogLevel; });
