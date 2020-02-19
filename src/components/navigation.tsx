@@ -90,15 +90,14 @@ export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
                   key: 'key5',
                 },
                 {
-                  name: 'Files',
-                  url: '/files',
-                  key: 'key4',
-                  disabled: true,
-                },
-                {
                   name: 'List properties',
                   url: '/listproperties',
                   key: 'key6',
+                },
+                {
+                  name: 'Files',
+                  url: '/files',
+                  key: 'key4',
                   disabled: true,
                 },
                 {
