@@ -7,14 +7,12 @@ import PnPjsEditor from './components/pnpjseditor'
 const PnPjsConsole = () => {
 
   return (
-    <>
       <IonPage>
         <Header title={'PnPjs Console'} />
         <IonContent>
           <PnPjsEditor />
         </IonContent>
       </IonPage>
-    </>
   )
 }
 

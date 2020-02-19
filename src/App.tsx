@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import PnPjsConsole from './pages/pnpjsconsole/pnpjsconsole'
+import PnPjsConsole from './pages/pnpjsconsole'
 
 import { IonApp, IonPage, IonSplitPane } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
 import './App.css'
 import { FabricNav } from './components/navigation'
 import HomePage from './pages/home/homePage'
-import ScriptLinks from './pages/scriptlinks/scriptlinks'
+import ScriptLinks from './pages/scriptlinks'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
@@ -37,6 +37,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import LoadingSpinner from './components/loadingSpinner'
 import MessageBar from './components/messageBar'
 import { fabricDark, fabricDefault } from './fabricThemes'
+import WebProperties from './pages/webproperties'
 import { IRootState } from './store'
 import { setDarkMode, setTheme } from './store/home/actions'
 
@@ -76,6 +77,7 @@ const App = () => {
                   <Route exact path='/index.html' component={HomePage} />
                   <Route path='/scriptlinks' component={ScriptLinks} />
                   <Route path='/pnpjsconsole' component={PnPjsConsole} />
+                  <Route path='/webproperties' component={WebProperties} />
                 </Switch>
                 <LoadingSpinner />
                 <MessageBar />
