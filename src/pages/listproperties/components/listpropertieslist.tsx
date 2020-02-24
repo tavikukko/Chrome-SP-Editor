@@ -19,20 +19,21 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import {
+import { getAllLists } from '../../../store/listproperties/async-actions'
+/* import {
   setAllScriptLinks,
   setConfirmRemoveDialog,
   setEditPanel,
   setSelectedItem,
   setSelectedItems,
-} from '../../../store/scriptlinks/actions'
-import { deleteScriptLinks, getAllScriptLinks } from '../../../store/scriptlinks/async-actions'
-import { IScriptLink } from '../../../store/scriptlinks/types'
+} from '../../../store/scriptlinks/actions' */
+// import { deleteScriptLinks, getAllScriptLinks } from '../../../store/scriptlinks/async-actions'
+// import { IScriptLink } from '../../../store/scriptlinks/types'
 
-const ScriptLinkList = () => {
+const ListPropertiesList = () => {
 
   const dispatch = useDispatch()
-  const { scriptlinks, selectedItems, confirmremove } = useSelector((state: IRootState) => state.scriptLinks)
+  const { listproperties } = useSelector((state: IRootState) => state.listProperties)
   const { isDark } = useSelector((state: IRootState) => state.home)
 
   const [sortkey, setSortkey] = useState('Sequence')
@@ -44,86 +45,76 @@ const ScriptLinkList = () => {
   const [selection] = useState(
     new Selection({
       onSelectionChanged: () => {
-        const newSelection = selection.getSelection() as typeof selectedItems
-        dispatch(setSelectedItems(newSelection))
+        /* const newSelection = selection.getSelection() as typeof selectedItems
+        dispatch(setSelectedItems(newSelection)) */
       },
     }),
   )
 
   // load initial data
   useEffect(() => {
-    getAllScriptLinks(dispatch)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    getAllLists(dispatch)
+    // getAllScriptLinks(dispatch)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // clear selection after every update on scriptlinks
   useEffect(() => {
     selection.setAllSelected(false)
-    dispatch(setSelectedItems([]))
-    setSequenceAsc(true)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scriptlinks])
+    // dispatch(setSelectedItems([]))
+    // setSequenceAsc(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }/*, [scriptlinks] */)
 
   const onColumnClick = (_e: any, { key }: any) => {
     if (key === 'Sequence') {
-      scriptlinks.sort((a, b) => (a.Sequence < b.Sequence) ? sequenceAsc ? 1 : -1 : ((b.Sequence < a.Sequence) ? sequenceAsc ? -1 : 1 : 0))
+      // scriptlinks.sort((a, b) => (a.Sequence < b.Sequence) ? sequenceAsc ? 1 : -1 : ((b.Sequence < a.Sequence) ? sequenceAsc ? -1 : 1 : 0))
       setSequenceAsc(!sequenceAsc)
     } else if (key === 'ScriptSrc') {
-      scriptlinks.sort((a, b) => (a.Url < b.Url) ? scriptSrcAsc ? 1 : -1 : ((b.Url < a.Url) ? scriptSrcAsc ? -1 : 1 : 0))
+      // scriptlinks.sort((a, b) => (a.Url < b.Url) ? scriptSrcAsc ? 1 : -1 : ((b.Url < a.Url) ? scriptSrcAsc ? -1 : 1 : 0))
       setScriptSrcAsc(!scriptSrcAsc)
     } else if (key === 'Scope') {
-      scriptlinks.sort((a, b) => (a.ScopeName < b.ScopeName) ? scopeAsc ? 1 : -1 : ((b.ScopeName < a.ScopeName) ? scopeAsc ? -1 : 1 : 0))
+      // scriptlinks.sort((a, b) => (a.ScopeName < b.ScopeName) ? scopeAsc ? 1 : -1 : ((b.ScopeName < a.ScopeName) ? scopeAsc ? -1 : 1 : 0))
       setScopeAsc(!scopeAsc)
     }
     setSortkey(key)
-    dispatch(setAllScriptLinks(scriptlinks))
+    // dispatch(setAllScriptLinks(scriptlinks))
 
     selection.setAllSelected(false)
-    dispatch(setSelectedItems([]))
+    // dispatch(setSelectedItems([]))
   }
 
   const detailsListColumns: IColumn[] = [
     {
-      data: 'number',
-      fieldName: 'Sequence',
+      data: 'string',
+      fieldName: 'key',
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
-      isSorted: sortkey === 'Sequence',
+      isSorted: sortkey === 'key',
       isSortedDescending: sequenceAsc,
-      key: 'Sequence',
-      maxWidth: 100,
+      key: 'key',
+      maxWidth: 200,
       minWidth: 100,
-      name: 'Sequence',
+      name: 'Key',
       onColumnClick,
+
     },
     {
       data: 'string',
-      fieldName: 'Url',
+      fieldName: 'value',
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
-      isSorted: sortkey === 'ScriptSrc',
+      isSorted: sortkey === 'value',
       isSortedDescending: scriptSrcAsc,
-      key: 'ScriptSrc',
-      maxWidth: 350,
+      key: 'value',
+      // maxWidth: 350,
       minWidth: 210,
-      name: 'ScriptSrc',
+      name: 'Value',
       onColumnClick,
-    },
-    {
-      data: 'string',
-      fieldName: 'ScopeName',
-      isPadded: true,
-      isResizable: true,
-      isRowHeader: true,
-      isSorted: sortkey === 'Scope',
-      isSortedDescending: scopeAsc,
-      key: 'Scope',
-      maxWidth: 350,
-      minWidth: 210,
-      name: 'Scope',
-      onColumnClick,
+      isMultiline: true,
+      isCollapsable: false,
     },
   ]
 
@@ -144,51 +135,51 @@ const ScriptLinkList = () => {
       <ScrollablePane>
         <MarqueeSelection selection={selection} isEnabled={true}>
           <DetailsList
-            layoutMode={DetailsListLayoutMode.fixedColumns}
+            layoutMode={DetailsListLayoutMode.justified}
             onShouldVirtualize={() => false}
             selection={selection}
-            items={scriptlinks}
+            items={listproperties}
             selectionPreservedOnEmptyClick={true}
             columns={detailsListColumns}
             selectionMode={SelectionMode.multiple}
-            getKey={(item: IScriptLink) => {
+            /* getKey={(item: IScriptLink) => {
               return item.Id
-            }}
-            setKey='scriptlinkslist'
+            }} */
+            setKey='listpropertieslist'
             isHeaderVisible={true}
             enterModalSelectionOnTouch={true}
-            onItemInvoked={(item: IScriptLink) => {
+            /* onItemInvoked={(item: IScriptLink) => {
               dispatch(setSelectedItem(item))
               dispatch(setEditPanel(true))
-            }}
+            }} */
             onRenderDetailsHeader={renderHeader}
           />
         </MarqueeSelection>
       </ScrollablePane>
 
       <Dialog
-        hidden={confirmremove}
-        onDismiss={() => dispatch(setConfirmRemoveDialog(true))}
+        hidden={true} // {confirmremove}
+        // onDismiss={() => dispatch(setConfirmRemoveDialog(true))}
         dialogContentProps={{
           showCloseButton: true,
           type: DialogType.normal,
-          title: 'Remove ScriptLinks',
+          title: 'Remove web property',
           closeButtonAriaLabel: 'Cancel',
-          subText: selectedItems.length > 1
+          /* subText: selectedItems.length > 1
             ? `Sure you want to remove these ${selectedItems.length} selected scriptlinks?`
-            : `Sure you want to remove the selected scriptlink?`,
+            : `Sure you want to remove the selected scriptlink?`, */
         }}
         modalProps={{
           isDarkOverlay: isDark,
         }}
       >
         <DialogFooter>
-          <PrimaryButton onClick={() => deleteScriptLinks(dispatch, selectedItems)} text='Remove' />
-          <DefaultButton onClick={() => dispatch(setConfirmRemoveDialog(true))} text='Cancel' />
+          <PrimaryButton text='Remove' />
+          <DefaultButton text='Cancel' />
         </DialogFooter>
       </Dialog>
     </>
   )
 }
 
-export default ScriptLinkList
+export default ListPropertiesList

@@ -2,7 +2,6 @@ import { fabricDark } from '../../fabricThemes'
 import { Constants, HomeActions, IHomeState, MessageBarColors } from './types'
 
 const init: IHomeState = {
-  list: [],
   loading: false,
   isDark: false,
   theme: fabricDark,
@@ -11,8 +10,6 @@ const init: IHomeState = {
 
 export function homeReducer(state: IHomeState = init, action: HomeActions): IHomeState {
   switch (action.type) {
-    case Constants.ADD_ITEM:
-      return { ...state, list: [...state.list, action.payload.item] }
     case Constants.SET_LOADING:
       return { ...state, ...action.payload }
     case Constants.SET_DARK_MODE:

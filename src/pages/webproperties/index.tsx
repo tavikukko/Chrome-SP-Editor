@@ -2,6 +2,7 @@ import { IonContent, IonPage } from '@ionic/react'
 import React from 'react'
 import Header from '../../components/header'
 import WebPropertiesCommands from './components/commands'
+import WebPropertiesList from './components/webpropertieslist'
 
 const WebProperties = () => {
 
@@ -12,7 +13,7 @@ const WebProperties = () => {
       <WebPropertiesCommands />
       <IonContent>
         {/* List of web properties */}
-
+        <WebPropertiesList />
         {/* Panel to edit web property */}
 
         {/* Panel to create new web property */}

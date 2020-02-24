@@ -1,9 +1,10 @@
-import { CommandBar } from 'office-ui-fabric-react'
+import { CommandBar, SearchBox } from 'office-ui-fabric-react'
 import React from 'react'
 
 const WebPropertiesCommands = () => {
 
   return (
+    <>
     <CommandBar
       items={[
         {
@@ -33,6 +34,13 @@ const WebPropertiesCommands = () => {
         'Use left and right arrow keys to navigate between commands'
       }
     />
+      <SearchBox
+        placeholder='Filter'
+        onFocus={() => console.log('onFocus called')}
+        onBlur={() => console.log('onBlur called')}
+        iconProps={{ iconName: 'Filter' }}
+      />
+  </>
   )
 }
 

@@ -2,12 +2,6 @@ import { ICustomizations } from 'office-ui-fabric-react'
 import { action } from 'typesafe-actions'
 import { Constants, IAppMessage } from './types'
 
-export function addItemToList(item: string) {
-  return action(Constants.ADD_ITEM, {
-    item,
-  })
-}
-
 export function setLoading(loading: boolean) {
   return action(Constants.SET_LOADING, {
     loading,

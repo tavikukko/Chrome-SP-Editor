@@ -13,19 +13,19 @@ const init: IScriptLinksState = {
 
 export function scriptLinksReducer(state: IScriptLinksState = init, action: ScriptLinksActions): IScriptLinksState {
   switch (action.type) {
-    case Constants.GET_ITEMS:
+    case Constants.SL_GET_ITEMS:
       return { ...state, scriptlinks: action.payload.items }
-    case Constants.SET_EDITPANEL:
+    case Constants.SL_SET_EDITPANEL:
       return { ...state, ...action.payload }
-    case Constants.SET_NEWPANEL:
+    case Constants.SL_SET_NEWPANEL:
       return { ...state, ...action.payload }
-    case Constants.SELECTED_ITEMS:
+    case Constants.SL_SELECTED_ITEMS:
       return { ...state, ...action.payload }
-    case Constants.SELECTED_ITEM:
+    case Constants.SL_SELECTED_ITEM:
       return { ...state, ...action.payload }
-    case Constants.SET_CONFIRM_EDIT_DIALOG:
+    case Constants.SL_SET_CONFIRM_EDIT_DIALOG:
       return { ...state, ...action.payload }
-    case Constants.SET_CONFIRM_REMOVE_DIALOG:
+    case Constants.SL_SET_CONFIRM_REMOVE_DIALOG:
       return { ...state, ...action.payload }
     default:
       return state

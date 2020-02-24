@@ -5,7 +5,6 @@ import * as actions from './actions'
 export type HomeActions = ActionType<typeof actions>
 
 export interface IHomeState {
-  list: string[],
   loading: boolean,
   isDark: boolean,
   appMessage: IAppMessage,
@@ -19,7 +18,7 @@ export interface IAppMessage {
 }
 
 export enum Constants {
-    ADD_ITEM = 'ADD_ITEM',
+    // ADD_ITEM = 'ADD_ITEM',
     SET_LOADING = 'SET_LOADING',
     SET_DARK_MODE = 'SET_DARK_MODE',
     SET_APP_MESSAGE = 'SET_APP_MESSAGE',

@@ -3,11 +3,13 @@ import * as pnp from '@pnp/pnpjs'
 
 // we cannot use async methods, they do not work correctly when running 'npm run build',
 // async methods works when running 'npm run watch'
-export function getCustomActions(...args: any) {
+export function getListProperties(...args: any) {
 
   /* get parameters */
   const params = args
-  const functionName = params[0].name;
+  const functionName = params[0].name
+
+  console.log(params);
 
   /* import pnp */
   (window as any).SystemJS.import(((window as any).speditorpnp)).then(($pnp: typeof pnp) => {
@@ -46,23 +48,37 @@ export function getCustomActions(...args: any) {
       }), '*')
     }
 
-    // get site custom actions
-    $pnp.sp.site.userCustomActions
-      .filter("Location ne 'ClientSideExtension.ApplicationCustomizer'")
-      .select('Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title').orderBy('Sequence', true)()
-      .then(siteactions => {
-        // get web custom actions
-        $pnp.sp.web.userCustomActions
-          .filter("Location ne 'ClientSideExtension.ApplicationCustomizer'")
-          .select('Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title').orderBy('Sequence', true)()
-          .then(webactions => {
-            // join customactions
-            // TODO: add order ??
-            const actions = siteactions.concat(webactions).sort((a, b) => a.Sequence - b.Sequence)
-            // post results back to extension
-            postMessage(actions)
-          })
+    $pnp.sp.web.lists.getById(params[1]).expand('RootFolder/Properties')
+      .select('RootFolder/Properties')().then(function (result: any) {
+        console.log(result.RootFolder.Properties)
+
+        const compare = (a: any, b: any) => {
+          return (a.key.toLowerCase() < b.key.toLowerCase()) ? -1
+            : (a.key.toLowerCase() > b.key.toLowerCase()) ? 1
+              : 0
+        }
+
+        const allProps = []
+        for (let key in result.RootFolder.Properties) {
+          if (key && key !== '__metadata' && key !== 'odata.editLink' && key !== 'odata.id' && key !== 'odata.type') {
+
+            const re = /_x.*?_/g
+            const found = key.match(re)
+            const origKey = key
+
+            if (found !== null)
+              for (const g in found) {
+                if (g) {
+                  const unesc = found[g].replace('_x', '%u').replace('_', '')
+                  key = key.replace(found[g], unescape(unesc))
+                }
+              }
+            allProps.push({ key: key.replace(/OData_/g, ''), value: result.RootFolder.Properties[origKey] })
+          }
+        }
+
+        allProps.sort(compare)
+        postMessage(allProps)
       })
   })
-
 }

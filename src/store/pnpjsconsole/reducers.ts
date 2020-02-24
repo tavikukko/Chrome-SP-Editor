@@ -8,9 +8,9 @@ const init: IPnPjsConsoleState = {
 
 export function pnpJSConsoleReducer(state: IPnPjsConsoleState = init, action: PnPjsConsoleActions): IPnPjsConsoleState {
   switch (action.type) {
-    case Constants.SET_CODE:
+    case Constants.PC_SET_CODE:
       return { ...state, ...action.payload }
-    case Constants.SET_DEFINITIONS:
+    case Constants.PC_SET_DEFINITIONS:
       return { ...state, definitions: action.payload.definitions }
     default:
       return state

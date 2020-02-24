@@ -3,7 +3,7 @@ import * as pnp from '@pnp/pnpjs'
 
 // we cannot use async methods, they do not work correctly when running 'npm run build',
 // async methods works when running 'npm run watch'
-export function getCustomActions(...args: any) {
+export function getLists(...args: any) {
 
   /* get parameters */
   const params = args
@@ -46,23 +46,18 @@ export function getCustomActions(...args: any) {
       }), '*')
     }
 
-    // get site custom actions
-    $pnp.sp.site.userCustomActions
-      .filter("Location ne 'ClientSideExtension.ApplicationCustomizer'")
-      .select('Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title').orderBy('Sequence', true)()
-      .then(siteactions => {
-        // get web custom actions
-        $pnp.sp.web.userCustomActions
-          .filter("Location ne 'ClientSideExtension.ApplicationCustomizer'")
-          .select('Sequence, Name, ScriptSrc, ScriptBlock, Scope, Id, Title').orderBy('Sequence', true)()
-          .then(webactions => {
-            // join customactions
-            // TODO: add order ??
-            const actions = siteactions.concat(webactions).sort((a, b) => a.Sequence - b.Sequence)
-            // post results back to extension
-            postMessage(actions)
-          })
-      })
-  })
+    $pnp.sp.web.lists.select('Id, Title').orderBy('Title', true)().then((result: any[]) => {
 
+      const lists: any[] = []
+
+      result.forEach(list => {
+        lists.push({
+          text: list.Title,
+          key: list.Id,
+        })
+      })
+      console.log(lists)
+      postMessage(lists)
+    })
+  })
 }

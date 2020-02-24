@@ -14,6 +14,6 @@ export interface IDefinitions {
 }
 
 export enum Constants {
-  SET_CODE = 'SET_CODE',
-  SET_DEFINITIONS = 'SET_DEFINITIONS',
+  PC_SET_CODE = 'PC_SET_CODE',
+  PC_SET_DEFINITIONS = 'PC_SET_DEFINITIONS',
 }
