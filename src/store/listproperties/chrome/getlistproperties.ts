@@ -7,9 +7,7 @@ export function getListProperties(...args: any) {
 
   /* get parameters */
   const params = args
-  const functionName = params[0].name
-
-  console.log(params);
+  const functionName = params[0].name;
 
   /* import pnp */
   (window as any).SystemJS.import(((window as any).speditorpnp)).then(($pnp: typeof pnp) => {
@@ -50,7 +48,6 @@ export function getListProperties(...args: any) {
 
     $pnp.sp.web.lists.getById(params[1]).expand('RootFolder/Properties')
       .select('RootFolder/Properties')().then(function (result: any) {
-        console.log(result.RootFolder.Properties)
 
         const compare = (a: any, b: any) => {
           return (a.key.toLowerCase() < b.key.toLowerCase()) ? -1

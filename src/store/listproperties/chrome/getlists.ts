@@ -56,7 +56,6 @@ export function getLists(...args: any) {
           key: list.Id,
         })
       })
-      console.log(lists)
       postMessage(lists)
     })
   })

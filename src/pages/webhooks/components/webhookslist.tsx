@@ -1,15 +1,12 @@
 import {
   DefaultButton,
   DetailsList,
-  DetailsListLayoutMode,
   Dialog,
   DialogFooter,
   DialogType,
   IColumn,
-  MarqueeSelection,
   PrimaryButton,
   ScrollablePane,
-  SelectionMode,
   Sticky,
   StickyPositionType,
 } from 'office-ui-fabric-react'
@@ -35,7 +32,7 @@ const WebHooksList = () => {
   const { webhooks } = useSelector((state: IRootState) => state.webHooks)
   const { isDark } = useSelector((state: IRootState) => state.home)
 
-  const [sortkey, setSortkey] = useState('Sequence')
+  // const [sortkey, setSortkey] = useState('Sequence')
   const [sequenceAsc, setSequenceAsc] = useState(true)
   const [scopeAsc, setScopeAsc] = useState(false)
   const [scriptSrcAsc, setScriptSrcAsc] = useState(true)
@@ -75,7 +72,7 @@ const WebHooksList = () => {
       // scriptlinks.sort((a, b) => (a.ScopeName < b.ScopeName) ? scopeAsc ? 1 : -1 : ((b.ScopeName < a.ScopeName) ? scopeAsc ? -1 : 1 : 0))
       setScopeAsc(!scopeAsc)
     }
-    setSortkey(key)
+    // setSortkey(key)
     // dispatch(setAllScriptLinks(scriptlinks))
 
     selection.setAllSelected(false)
@@ -114,7 +111,6 @@ const WebHooksList = () => {
       groupData.push({ key: group + groupIndex, name: group, startIndex: groupIndex, count: grouped[group].length, level: 0 })
       groupIndex += grouped[group].length
     })
-    console.log(groupData)
     return groupData
   }
 
@@ -137,11 +133,6 @@ const WebHooksList = () => {
           // componentRef={this._root}
           items={webhooks}
           groups={createGroupData(webhooks, 'listTitle')}
-          /*groups={[
-            { key: 'groupred0', name: 'Color: "red"', startIndex: 0, count: 2, level: 0 },
-            { key: 'groupgreen2', name: 'Color: "green"', startIndex: 2, count: 0, level: 0 },
-            { key: 'groupblue2', name: 'Color: "blue"', startIndex: 2, count: 3, level: 0 },
-          ]} */// make grouped dynamic
           columns={detailsListColumns}
           ariaLabelForSelectAllCheckbox='Toggle selection for all items'
           ariaLabelForSelectionColumn='Toggle selection'
