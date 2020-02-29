@@ -19,6 +19,8 @@ export function listPropertiesReducer(state: IListPropertiesState = init, action
       return { ...state, listproperties: action.payload.items }
     case Constants.LP_GET_ITEMS_LISTS:
       return { ...state, lists: action.payload.lists }
+    case Constants.LP_SET_SELECTED_ITEM:
+      return { ...state, ...action.payload }
     case Constants.LP_SET_EDITPANEL:
       return { ...state, ...action.payload }
     case Constants.LP_SET_NEWPANEL:

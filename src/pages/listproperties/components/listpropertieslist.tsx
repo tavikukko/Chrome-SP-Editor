@@ -33,7 +33,7 @@ import { getAllLists } from '../../../store/listproperties/async-actions'
 const ListPropertiesList = () => {
 
   const dispatch = useDispatch()
-  const { listproperties } = useSelector((state: IRootState) => state.listProperties)
+  const { listproperties, selectedList } = useSelector((state: IRootState) => state.listProperties)
   const { isDark } = useSelector((state: IRootState) => state.home)
 
   const [sortkey, setSortkey] = useState('Sequence')
@@ -53,7 +53,7 @@ const ListPropertiesList = () => {
 
   // load initial data
   useEffect(() => {
-    getAllLists(dispatch)
+    getAllLists(dispatch, selectedList)
     // getAllScriptLinks(dispatch)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

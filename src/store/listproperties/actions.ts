@@ -13,6 +13,12 @@ export function setAllLists(lists: IListPropertyList[]) {
   })
 }
 
+export function setSelectedList(selectedList: string | undefined) {
+  return action(Constants.LP_SET_SELECTED_ITEM, {
+    selectedList,
+  })
+}
+
 export function setEditPanel(editpanel: boolean) {
   return action(Constants.LP_SET_EDITPANEL, {
     editpanel,

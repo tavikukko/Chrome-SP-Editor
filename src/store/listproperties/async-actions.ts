@@ -55,7 +55,7 @@ export async function getAllListProperties(dispatch: Dispatch<ListPropertiesActi
   chrome.devtools.inspectedWindow.eval(script)
 }
 
-export async function getAllLists(dispatch: Dispatch<ListPropertiesActions | HomeActions>) {
+export async function getAllLists(dispatch: Dispatch<ListPropertiesActions | HomeActions>, selectedList: string | undefined) {
 
   dispatch(rootActions.setLoading(true));
   // add listener to receive the results from inspectedPage
@@ -75,8 +75,21 @@ export async function getAllLists(dispatch: Dispatch<ListPropertiesActions | Hom
         if (message.success) {
           /* on success */
           const lists: IListPropertyList[] = message.result
-          // add webproperties to state
-          dispatch(actions.setAllLists(lists))
+          if (lists) {
+            const check = lists.find(list => list.key === selectedList)
+            // if the selected list does not exist,
+            // propably inspected page have changed to another site
+            if (!check) {
+              dispatch(actions.setSelectedList(''))
+              dispatch(actions.setAllListProperties([]))
+            }
+            // add webproperties to state
+            dispatch(actions.setAllLists(lists))
+          } else {
+            dispatch(actions.setSelectedList(''))
+            dispatch(actions.setAllListProperties([]))
+            dispatch(actions.setAllLists([]))
+          }
           // hide loading component
           dispatch(rootActions.setLoading(false))
         } else {
