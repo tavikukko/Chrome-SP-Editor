@@ -99,7 +99,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "Logger", function() { return /* reexport */ Logger; });
+__webpack_require__.d(__webpack_exports__, "LogLevel", function() { return /* reexport */ LogLevel; });
+__webpack_require__.d(__webpack_exports__, "ConsoleListener", function() { return /* reexport */ ConsoleListener; });
+__webpack_require__.d(__webpack_exports__, "FunctionListener", function() { return /* reexport */ FunctionListener; });
 
 // CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
 /**
@@ -324,10 +331,6 @@ var FunctionListener = /** @class */ (function () {
 
 
 // CONCATENATED MODULE: ./pnpjs-sources/index-logging.ts
-/* concated harmony reexport Logger */__webpack_require__.d(__webpack_exports__, "Logger", function() { return Logger; });
-/* concated harmony reexport LogLevel */__webpack_require__.d(__webpack_exports__, "LogLevel", function() { return LogLevel; });
-/* concated harmony reexport ConsoleListener */__webpack_require__.d(__webpack_exports__, "ConsoleListener", function() { return ConsoleListener; });
-/* concated harmony reexport FunctionListener */__webpack_require__.d(__webpack_exports__, "FunctionListener", function() { return FunctionListener; });
 
 
 

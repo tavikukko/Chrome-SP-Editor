@@ -124,17 +124,17 @@ export const fixImports = (lines: string[], ecode: string[]) => {
       // fix imports
       const lineRe = line.match('var (.*) = require')
       let mod = -1
-      mod = line.indexOf('@pnp/common') > -1 ? 5 : mod
-      mod = line.indexOf('@pnp/config-store') > -1 ? 5 : mod
-      mod = line.indexOf('@pnp/graph') > -1 ? 5 : mod
-      mod = line.indexOf('@pnp/logging') > -1 ? 5 : mod
-      mod = line.indexOf('@pnp/odata') > -1 ? 5 : mod
+      mod = line.indexOf('@pnp/common') > -1 ? 0 : mod
+      mod = line.indexOf('@pnp/config-store') > -1 ? 1 : mod
+      mod = line.indexOf('@pnp/graph') > -1 ? 2 : mod
+      mod = line.indexOf('@pnp/logging') > -1 ? 3 : mod
+      mod = line.indexOf('@pnp/odata') > -1 ? 4 : mod
       mod = line.indexOf('@pnp/pnpjs') > -1 ? 5 : mod
-      mod = line.indexOf('@pnp/sp-addinhelpers') > -1 ? 5 : mod
+      mod = line.indexOf('@pnp/sp-addinhelpers') > -1 ? 6 : mod
       mod = line.indexOf('@pnp/sp-clientsvc') > -1 ? 7 : mod
-      mod = line.indexOf('@pnp/sp') > -1 ? 5 : mod
       mod = line.indexOf('@pnp/sp-taxonomy') > -1 ? 9 : mod
       mod = line.indexOf('@pnp/adaljsclient') > -1 ? 10 : mod
+      mod = line.indexOf('@pnp/sp') > -1 ? 8 : mod
       prepnp.push(`var ${lineRe![1]} = modules[${mod}];`)
     }
   })
@@ -144,7 +144,7 @@ export const fixImports = (lines: string[], ecode: string[]) => {
 // find all import lines from code
 export const getImportModules = (content: string) => {
   const importTexts: string[] = []
-  const imports = content.match(/import.*(@pnp|microsoft).*/g)
+  const imports = content.match(/(import|from).*(@pnp|microsoft).*/g)
   if (imports) {
     imports.forEach(iText => {
       const match = iText.match(/(["'])(.*?[^\\])\1/g)

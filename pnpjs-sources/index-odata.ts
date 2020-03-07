@@ -1,1 +1,1 @@
-export * from "../node_modules/@pnp/odata"
+export * from '../node_modules/@pnp/odata'

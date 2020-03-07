@@ -4,8 +4,8 @@ import * as actions from './actions'
 export type WebPropertiesActions = ActionType<typeof actions>
 
 export interface IWebProperty {
-  Key: string
-  Value: string
+  key: string
+  value: string
 }
 
 export interface IWebPropertiesState {

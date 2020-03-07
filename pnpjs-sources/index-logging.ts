@@ -1,1 +1,1 @@
-export * from "../node_modules/@pnp/logging"
+export * from '../node_modules/@pnp/logging'

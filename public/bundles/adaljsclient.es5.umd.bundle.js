@@ -733,7 +733,11 @@ module.exports = g;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "AdalClient", function() { return /* reexport */ adalclient_AdalClient; });
 
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
 var tslib_es6 = __webpack_require__(0);
@@ -1308,7 +1312,6 @@ var adalclient_AdalClient = /** @class */ (function (_super) {
 
 
 // CONCATENATED MODULE: ./pnpjs-sources/index-adaljsclient.ts
-/* concated harmony reexport AdalClient */__webpack_require__.d(__webpack_exports__, "AdalClient", function() { return adalclient_AdalClient; });
 
 
 

@@ -19,21 +19,16 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
+import { setConfirmRemoveDialog, setEditPanel, setSelectedItem, setSelectedItems} from '../../../store/webproperties/actions'
 import { getAllWebProperties } from '../../../store/webproperties/async-actions'
-/* import {
-  setAllScriptLinks,
-  setConfirmRemoveDialog,
-  setEditPanel,
-  setSelectedItem,
-  setSelectedItems,
-} from '../../../store/scriptlinks/actions' */
+import { IWebProperty } from '../../../store/webproperties/types'
 // import { deleteScriptLinks, getAllScriptLinks } from '../../../store/scriptlinks/async-actions'
 // import { IScriptLink } from '../../../store/scriptlinks/types'
 
 const WebPropertiesList = () => {
 
   const dispatch = useDispatch()
-  const { webproperties } = useSelector((state: IRootState) => state.webProperties)
+  const { webproperties, selectedItems, confirmremove } = useSelector((state: IRootState) => state.webProperties)
   const { isDark } = useSelector((state: IRootState) => state.home)
 
   const [sortkey, setSortkey] = useState('Sequence')
@@ -45,8 +40,8 @@ const WebPropertiesList = () => {
   const [selection] = useState(
     new Selection({
       onSelectionChanged: () => {
-        /* const newSelection = selection.getSelection() as typeof selectedItems
-        dispatch(setSelectedItems(newSelection)) */
+        const newSelection = selection.getSelection() as typeof selectedItems
+        dispatch(setSelectedItems(newSelection))
       },
     }),
   )
@@ -60,10 +55,10 @@ const WebPropertiesList = () => {
   // clear selection after every update on scriptlinks
   useEffect(() => {
     selection.setAllSelected(false)
-    // dispatch(setSelectedItems([]))
+    dispatch(setSelectedItems([]))
     // setSequenceAsc(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }/*, [scriptlinks] */)
+  }, [webproperties])
 
   const onColumnClick = (_e: any, { key }: any) => {
     if (key === 'Sequence') {
@@ -141,40 +136,40 @@ const WebPropertiesList = () => {
             selectionPreservedOnEmptyClick={true}
             columns={detailsListColumns}
             selectionMode={SelectionMode.multiple}
-            /* getKey={(item: IScriptLink) => {
-              return item.Id
-            }} */
+            getKey={(item: IWebProperty) => {
+              return item.key
+            }}
             setKey='Webset'
             isHeaderVisible={true}
             enterModalSelectionOnTouch={true}
-            /* onItemInvoked={(item: IScriptLink) => {
+            onItemInvoked={(item: IWebProperty) => {
               dispatch(setSelectedItem(item))
               dispatch(setEditPanel(true))
-            }} */
+            }}
             onRenderDetailsHeader={renderHeader}
           />
         </MarqueeSelection>
       </ScrollablePane>
 
       <Dialog
-        hidden={true} // {confirmremove}
-        // onDismiss={() => dispatch(setConfirmRemoveDialog(true))}
+        hidden={confirmremove} // Dialog for Remove
+        onDismiss={() => dispatch(setConfirmRemoveDialog(true))}
         dialogContentProps={{
           showCloseButton: true,
           type: DialogType.normal,
           title: 'Remove web property',
           closeButtonAriaLabel: 'Cancel',
-          /* subText: selectedItems.length > 1
-            ? `Sure you want to remove these ${selectedItems.length} selected scriptlinks?`
-            : `Sure you want to remove the selected scriptlink?`, */
+          subText: selectedItems.length > 1
+            ? `Sure you want to remove these ${selectedItems.length} selected web properties?`
+            : `Sure you want to remove the "${selectedItems && selectedItems.length > 0 ? selectedItems[0].key : ''}" web property?`,
         }}
         modalProps={{
           isDarkOverlay: isDark,
         }}
       >
         <DialogFooter>
-          <PrimaryButton text='Remove' />
-          <DefaultButton text='Cancel' />
+        <PrimaryButton /* onClick={() => deleteWebProperties(dispatch, selectedItems)} */ text='Remove' />
+          <DefaultButton onClick={() => dispatch(setConfirmRemoveDialog(true))} text='Cancel' />
         </DialogFooter>
       </Dialog>
     </>
