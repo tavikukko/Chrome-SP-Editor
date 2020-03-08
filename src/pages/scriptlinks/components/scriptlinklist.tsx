@@ -26,8 +26,8 @@ import {
   setSelectedItem,
   setSelectedItems,
 } from '../../../store/scriptlinks/actions'
-import { deleteScriptLinks, getAllScriptLinks } from '../../../store/scriptlinks/async-actions'
 import { IScriptLink } from '../../../store/scriptlinks/types'
+import { deleteScriptLinks, getAllScriptLinks } from '../chrome/chrome-actions'
 
 const ScriptLinkList = () => {
 

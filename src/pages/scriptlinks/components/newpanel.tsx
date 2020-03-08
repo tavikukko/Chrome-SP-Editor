@@ -12,8 +12,8 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setNewPanel } from '../../../store/scriptlinks/actions'
-import { addScriptLink } from '../../../store/scriptlinks/async-actions'
 import { INewScriptLink } from '../../../store/scriptlinks/types'
+import { addScriptLink } from '../chrome/chrome-actions'
 
 const ScriptLinksNewPanel = () => {
 

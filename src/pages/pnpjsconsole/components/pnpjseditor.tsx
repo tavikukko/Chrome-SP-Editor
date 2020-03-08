@@ -10,9 +10,9 @@ import {
 import { IRootState } from '../../../store'
 import { setLoading } from '../../../store/home/actions'
 import { setCode } from '../../../store/pnpjsconsole/actions'
-import { fetchDefinitions } from '../../../store/pnpjsconsole/async-actions'
 import { IDefinitions } from '../../../store/pnpjsconsole/types'
-import { exescript } from '../../../store/utilities/chromecommon'
+import { exescript } from '../../../utilities/chromecommon'
+import { fetchDefinitions } from '../utils/util'
 import {
   execme,
   fixImports,

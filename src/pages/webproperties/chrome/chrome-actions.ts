@@ -1,11 +1,11 @@
 import { Dispatch } from 'redux'
-import * as rootActions from '../home/actions'
-import { exescript } from '../utilities/chromecommon'
-import { getPnpjsPath, getSystemjsPath } from '../utilities/utilities'
-import { HomeActions, MessageBarColors } from './../home/types'
-import * as actions from './actions'
-import { getWebProperties } from './chrome/getwebproperties'
-import { IWebProperty, WebPropertiesActions } from './types'
+import * as rootActions from '../../../store/home/actions'
+import { HomeActions, MessageBarColors } from '../../../store/home/types'
+import * as actions from '../../../store/webproperties/actions'
+import { IWebProperty, WebPropertiesActions } from '../../../store/webproperties/types'
+import { exescript } from '../../../utilities/chromecommon'
+import { getPnpjsPath, getSystemjsPath } from '../../../utilities/utilities'
+import { getWebProperties } from './getwebproperties'
 
 export async function getAllWebProperties(dispatch: Dispatch<WebPropertiesActions | HomeActions>) {
 

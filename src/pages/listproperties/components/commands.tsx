@@ -3,7 +3,7 @@ import React, { FormEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setSelectedList } from '../../../store/listproperties/actions'
-import { getAllListProperties } from '../../../store/listproperties/async-actions'
+import { getAllListProperties } from '../chrome/chrome-actions'
 
 const ListPropertiesCommands = () => {
   const { lists, selectedList } = useSelector((state: IRootState) => state.listProperties)

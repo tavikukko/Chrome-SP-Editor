@@ -1,11 +1,11 @@
 import { Dispatch } from 'redux'
-import * as rootActions from '../home/actions'
-import { exescript } from '../utilities/chromecommon'
-import { getPnpjsPath, getSystemjsPath } from '../utilities/utilities'
-import { HomeActions, MessageBarColors } from './../home/types'
-import * as actions from './actions'
-import { getWebHooks } from './chrome/getwebhooks'
-import { IWebHook, IWebHookLists, WebHooksActions } from './types'
+import * as rootActions from '../../../store/home/actions'
+import { HomeActions, MessageBarColors } from '../../../store/home/types'
+import * as actions from '../../../store/webhooks/actions'
+import { IWebHook, IWebHookLists, WebHooksActions } from '../../../store/webhooks/types'
+import { exescript } from '../../../utilities/chromecommon'
+import { getPnpjsPath, getSystemjsPath } from '../../../utilities/utilities'
+import { getWebHooks } from './getwebhooks'
 
 export async function getAllWebHooks(dispatch: Dispatch<WebHooksActions | HomeActions>) {
 

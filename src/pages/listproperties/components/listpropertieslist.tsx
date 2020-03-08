@@ -19,7 +19,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import { getAllLists } from '../../../store/listproperties/async-actions'
+import { getAllLists } from '../chrome/chrome-actions'
 /* import {
   setAllScriptLinks,
   setConfirmRemoveDialog,

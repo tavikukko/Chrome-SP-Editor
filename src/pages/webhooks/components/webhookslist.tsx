@@ -23,7 +23,7 @@ import { IRootState } from '../../../store'
   setSelectedItem,
   setSelectedItems,
 } from '../../../store/scriptlinks/actions' */
-import { getAllWebHooks } from '../../../store/webhooks/async-actions'
+import { getAllWebHooks } from '../chrome/chrome-actions'
 // import { IScriptLink } from '../../../store/scriptlinks/types'
 
 const WebHooksList = () => {

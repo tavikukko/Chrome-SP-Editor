@@ -9,10 +9,10 @@ import {
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import { addScriptLink } from '../../../store/scriptlinks/async-actions'
 import { INewScriptLink } from '../../../store/scriptlinks/types'
 import { setNewPanel } from '../../../store/webproperties/actions'
 import { IWebProperty } from '../../../store/webproperties/types'
+import { addScriptLink } from '../../scriptlinks/chrome/chrome-actions'
 
 const WebPropertiesNewPanel = () => {
 

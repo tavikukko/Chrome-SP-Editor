@@ -16,7 +16,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setConfirmEditDialog, setEditPanel, setSelectedItem } from '../../../store/scriptlinks/actions'
-import { updateScriptLink } from '../../../store/scriptlinks/async-actions'
+import { updateScriptLink } from '../chrome/chrome-actions'
 
 const ScriptLinksEditPanel = () => {
 
