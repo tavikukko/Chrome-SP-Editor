@@ -31,6 +31,7 @@ export interface IScriptLinksState {
   selectedItem: IScriptLink | undefined,
   confirmremove: boolean,
   confirmedit: boolean,
+  confirmcache: boolean,
 }
 
 export enum Constants {
@@ -44,4 +45,5 @@ export enum Constants {
   SL_SELECTED_ITEMS = 'SL_SELECTED_ITEMS',
   SL_SET_CONFIRM_REMOVE_DIALOG = 'SL_SET_CONFIRM_REMOVE_DIALOG',
   SL_SET_CONFIRM_EDIT_DIALOG = 'SL_SET_CONFIRM_EDIT_DIALOG',
+  SL_SET_CONFIRM_CACHE_DIALOG = 'SL_SET_CONFIRM_CACHE_DIALOG',
 }

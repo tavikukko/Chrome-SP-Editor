@@ -9,6 +9,7 @@ const init: IScriptLinksState = {
   selectedItem: undefined,
   confirmremove: true,
   confirmedit: true,
+  confirmcache: true,
 }
 
 export function scriptLinksReducer(state: IScriptLinksState = init, action: ScriptLinksActions): IScriptLinksState {
@@ -26,6 +27,8 @@ export function scriptLinksReducer(state: IScriptLinksState = init, action: Scri
     case Constants.SL_SET_CONFIRM_EDIT_DIALOG:
       return { ...state, ...action.payload }
     case Constants.SL_SET_CONFIRM_REMOVE_DIALOG:
+      return { ...state, ...action.payload }
+    case Constants.SL_SET_CONFIRM_CACHE_DIALOG:
       return { ...state, ...action.payload }
     default:
       return state

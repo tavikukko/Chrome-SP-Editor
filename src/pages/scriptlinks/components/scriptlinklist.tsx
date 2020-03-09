@@ -21,18 +21,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import {
   setAllScriptLinks,
+  setConfirmCacheDialog,
   setConfirmRemoveDialog,
   setEditPanel,
   setSelectedItem,
   setSelectedItems,
 } from '../../../store/scriptlinks/actions'
 import { IScriptLink } from '../../../store/scriptlinks/types'
-import { deleteScriptLinks, getAllScriptLinks } from '../chrome/chrome-actions'
+import { cacheScriptLinks, deleteScriptLinks, getAllScriptLinks } from '../chrome/chrome-actions'
 
 const ScriptLinkList = () => {
 
   const dispatch = useDispatch()
-  const { scriptlinks, selectedItems, confirmremove } = useSelector((state: IRootState) => state.scriptLinks)
+  const { scriptlinks, selectedItems, confirmremove, confirmcache } = useSelector((state: IRootState) => state.scriptLinks)
   const { isDark } = useSelector((state: IRootState) => state.home)
 
   const [sortkey, setSortkey] = useState('Sequence')
@@ -185,6 +186,28 @@ const ScriptLinkList = () => {
         <DialogFooter>
           <PrimaryButton onClick={() => deleteScriptLinks(dispatch, selectedItems)} text='Remove' />
           <DefaultButton onClick={() => dispatch(setConfirmRemoveDialog(true))} text='Cancel' />
+        </DialogFooter>
+      </Dialog>
+
+      <Dialog
+        hidden={confirmcache}
+        onDismiss={() => dispatch(setConfirmCacheDialog(true))}
+        dialogContentProps={{
+          showCloseButton: true,
+          type: DialogType.normal,
+          title: 'Refresh cache',
+          closeButtonAriaLabel: 'Cancel',
+          subText: selectedItems.length > 1
+            ? `Sure you want to refresh the cache for these ${selectedItems.length} selected scriptlinks?`
+            : `Sure you want to refresh the cache for the selected scriptlink?`,
+        }}
+        modalProps={{
+          isDarkOverlay: isDark,
+        }}
+      >
+        <DialogFooter>
+          <PrimaryButton onClick={() => cacheScriptLinks(dispatch, selectedItems)} text='Refresh cache' />
+          <DefaultButton onClick={() => dispatch(setConfirmCacheDialog(true))} text='Cancel' />
         </DialogFooter>
       </Dialog>
     </>

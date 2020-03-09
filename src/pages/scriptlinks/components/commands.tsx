@@ -2,7 +2,7 @@ import { CommandBar } from 'office-ui-fabric-react'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import { setConfirmRemoveDialog, setNewPanel } from '../../../store/scriptlinks/actions'
+import { setConfirmCacheDialog, setConfirmRemoveDialog, setNewPanel } from '../../../store/scriptlinks/actions'
 
 const ScriptLinkCommands = () => {
   const dispatch = useDispatch()
@@ -13,12 +13,8 @@ const ScriptLinkCommands = () => {
       items={[
         {
           key: 'newItem',
-          name: 'New',
-          cacheKey: 'myCacheKey', // changing this key will invalidate this items cache
-          iconProps: {
-            iconName: 'Add',
-          },
-          ariaLabel: 'New',
+          text: 'New',
+          iconProps: { iconName: 'Add' },
           onClick: () => {
             dispatch(setNewPanel(true))
           },
@@ -27,16 +23,21 @@ const ScriptLinkCommands = () => {
           key: 'deleteRow',
           text: 'Remove',
           iconProps: { iconName: 'Delete' },
-          disabled: selectedItems.length < 1,
           onClick: () => {
             dispatch(setConfirmRemoveDialog(false))
           },
+          disabled: selectedItems.length < 1,
+        },
+        {
+          key: 'deleteRow',
+          text: 'Refresh caches',
+          iconProps: { iconName: 'Refresh' },
+          onClick: () => {
+            dispatch(setConfirmCacheDialog(false))
+          },
+          disabled: selectedItems.length < 1,
         },
       ]}
-      overflowButtonProps={{ ariaLabel: 'More commands' }}
-      ariaLabel={
-        'Use left and right arrow keys to navigate between commands'
-      }
     />
   )
 }

@@ -9,6 +9,7 @@ import { createCustomAction } from './createscriptlink'
 import { deleteCustomActions } from './deletescriptlinks'
 import { getCustomActions } from './getscriptlinks'
 import { updateCustomAction } from './updatescriptlink'
+import { updateCacheCustomAction } from './updatescriptlinkcache'
 
 export async function getAllScriptLinks(dispatch: Dispatch<ScriptLinksActions | HomeActions>) {
 
@@ -231,5 +232,59 @@ export async function deleteScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
   // execute script in inspectedWindow
   let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${deleteCustomActions}`
   script += ` ${exescript.name}(${deleteCustomActions.name}, '${encodeURIComponent(JSON.stringify(payload)).replace(/'/g, '%27')}');`
+  chrome.devtools.inspectedWindow.eval(script)
+}
+
+export async function cacheScriptLinks(dispatch: Dispatch<ScriptLinksActions | HomeActions>, payload: IScriptLink[]) {
+
+  // hide confirm dialog
+  dispatch(actions.setConfirmCacheDialog(true))
+  // show loading spinner
+  dispatch(rootActions.setLoading(true));
+  // add listener to receive the results from inspected page
+  (window as any).port.onMessage.addListener(async function cacheScriptLinksCallback(message: any) {
+
+    if (
+      typeof message !== 'object' ||
+      message === null ||
+      message === undefined ||
+      message.source === undefined
+    ) {
+      return
+    }
+    switch (message.function) {
+      case updateCacheCustomAction.name:
+        if (message.success) {
+          /* on success */
+          // add small delay just be sure SP can process previous requests
+          await delay(500)
+          // load all scriptlinks
+          getAllScriptLinks(dispatch)
+          // set success message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: 'Cache refreshed succesfully!',
+            color: MessageBarColors.success,
+          }))
+        } else {
+          /* on error */
+          // hide loading
+          dispatch(rootActions.setLoading(false))
+          // set error message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: message.errorMessage,
+            color: MessageBarColors.danger,
+          }))
+        }
+        // remove listener
+        (window as any).port.onMessage.removeListener(cacheScriptLinksCallback)
+        break
+    }
+  })
+
+  // execute script in inspectedWindow
+  let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${updateCacheCustomAction}`
+  script += ` ${exescript.name}(${updateCacheCustomAction.name}, '${encodeURIComponent(JSON.stringify(payload)).replace(/'/g, '%27')}');`
   chrome.devtools.inspectedWindow.eval(script)
 }

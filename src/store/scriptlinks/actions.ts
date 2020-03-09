@@ -42,3 +42,9 @@ export function setConfirmRemoveDialog(confirmremove: boolean) {
     confirmremove,
   })
 }
+
+export function setConfirmCacheDialog(confirmcache: boolean) {
+  return action(Constants.SL_SET_CONFIRM_CACHE_DIALOG, {
+    confirmcache,
+  })
+}
