@@ -70,10 +70,10 @@ const ScriptLinkList = () => {
       scriptlinks.sort((a, b) => (a.Sequence < b.Sequence) ? sequenceAsc ? 1 : -1 : ((b.Sequence < a.Sequence) ? sequenceAsc ? -1 : 1 : 0))
       setSequenceAsc(!sequenceAsc)
     } else if (key === 'ScriptSrc') {
-      scriptlinks.sort((a, b) => (a.Url < b.Url) ? scriptSrcAsc ? 1 : -1 : ((b.Url < a.Url) ? scriptSrcAsc ? -1 : 1 : 0))
+      scriptlinks.sort((a, b) => (a.Url.toLocaleLowerCase() < b.Url.toLocaleLowerCase()) ? scriptSrcAsc ? 1 : -1 : ((b.Url.toLocaleLowerCase() < a.Url.toLocaleLowerCase()) ? scriptSrcAsc ? -1 : 1 : 0))
       setScriptSrcAsc(!scriptSrcAsc)
     } else if (key === 'Scope') {
-      scriptlinks.sort((a, b) => (a.ScopeName < b.ScopeName) ? scopeAsc ? 1 : -1 : ((b.ScopeName < a.ScopeName) ? scopeAsc ? -1 : 1 : 0))
+      scriptlinks.sort((a, b) => (a.ScopeName.toLocaleLowerCase() < b.ScopeName.toLocaleLowerCase()) ? scopeAsc ? 1 : -1 : ((b.ScopeName.toLocaleLowerCase() < a.ScopeName.toLocaleLowerCase()) ? scopeAsc ? -1 : 1 : 0))
       setScopeAsc(!scopeAsc)
     }
     setSortkey(key)

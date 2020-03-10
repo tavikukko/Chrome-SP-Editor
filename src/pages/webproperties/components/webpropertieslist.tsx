@@ -19,7 +19,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import { setConfirmRemoveDialog, setEditPanel, setSelectedItem, setSelectedItems} from '../../../store/webproperties/actions'
+import { setAllWebProperties, setConfirmRemoveDialog, setEditPanel, setSelectedItem, setSelectedItems} from '../../../store/webproperties/actions'
 import { IWebProperty } from '../../../store/webproperties/types'
 import { getAllWebProperties } from '../chrome/chrome-actions'
 // import { deleteScriptLinks, getAllScriptLinks } from '../../../store/scriptlinks/async-actions'
@@ -31,10 +31,8 @@ const WebPropertiesList = () => {
   const { webproperties, selectedItems, confirmremove } = useSelector((state: IRootState) => state.webProperties)
   const { isDark } = useSelector((state: IRootState) => state.home)
 
-  const [sortkey, setSortkey] = useState('Sequence')
-  const [sequenceAsc, setSequenceAsc] = useState(true)
-  const [scopeAsc, setScopeAsc] = useState(false)
-  const [scriptSrcAsc, setScriptSrcAsc] = useState(true)
+  const [sortkey, setSortkey] = useState('webkey')
+  const [keyAsc, setKeyAsc] = useState(true)
 
   // set selected items to store
   const [selection] = useState(
@@ -56,26 +54,20 @@ const WebPropertiesList = () => {
   useEffect(() => {
     selection.setAllSelected(false)
     dispatch(setSelectedItems([]))
-    // setSequenceAsc(true)
+    setKeyAsc(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [webproperties])
 
   const onColumnClick = (_e: any, { key }: any) => {
-    if (key === 'Sequence') {
-      // scriptlinks.sort((a, b) => (a.Sequence < b.Sequence) ? sequenceAsc ? 1 : -1 : ((b.Sequence < a.Sequence) ? sequenceAsc ? -1 : 1 : 0))
-      setSequenceAsc(!sequenceAsc)
-    } else if (key === 'ScriptSrc') {
-      // scriptlinks.sort((a, b) => (a.Url < b.Url) ? scriptSrcAsc ? 1 : -1 : ((b.Url < a.Url) ? scriptSrcAsc ? -1 : 1 : 0))
-      setScriptSrcAsc(!scriptSrcAsc)
-    } else if (key === 'Scope') {
-      // scriptlinks.sort((a, b) => (a.ScopeName < b.ScopeName) ? scopeAsc ? 1 : -1 : ((b.ScopeName < a.ScopeName) ? scopeAsc ? -1 : 1 : 0))
-      setScopeAsc(!scopeAsc)
+    if (key === 'webkey') {
+      webproperties.sort((a, b) => (a.key.toLocaleLowerCase() < b.key.toLocaleLowerCase()) ? keyAsc ? 1 : -1 : ((b.key.toLocaleLowerCase() < a.key.toLocaleLowerCase()) ? keyAsc ? -1 : 1 : 0))
+      setKeyAsc(!keyAsc)
     }
     setSortkey(key)
-    // dispatch(setAllScriptLinks(scriptlinks))
+    dispatch(setAllWebProperties(webproperties))
 
     selection.setAllSelected(false)
-    // dispatch(setSelectedItems([]))
+    dispatch(setSelectedItems([]))
   }
 
   const detailsListColumns: IColumn[] = [
@@ -85,12 +77,12 @@ const WebPropertiesList = () => {
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
-      isSorted: sortkey === 'key',
-      isSortedDescending: sequenceAsc,
+      isSorted: sortkey === 'webkey',
+      isSortedDescending: keyAsc,
       key: 'webkey',
       maxWidth: 200,
       minWidth: 100,
-      name: 'WebKey',
+      name: 'Property',
       onColumnClick,
 
     },
@@ -100,13 +92,9 @@ const WebPropertiesList = () => {
       isPadded: true,
       isResizable: true,
       isRowHeader: true,
-      isSorted: sortkey === 'value',
-      isSortedDescending: scriptSrcAsc,
       key: 'webvalue',
-      // maxWidth: 350,
       minWidth: 210,
-      name: 'WebValue',
-      onColumnClick,
+      name: 'Value',
       isMultiline: true,
       isCollapsable: false,
     },
