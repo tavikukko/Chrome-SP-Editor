@@ -88,12 +88,17 @@ export const pnpjsMonacoConfigs = () => {
 
 export const initCode = () => {
   const code = `
+// CTRL/CMD + D to execute the code
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 
+// wrapping the code inside self-excecuting async function
+// enables you to use await expression
 (async () => {
+
   const { Title } = await sp.web.select("Title")()
   console.log(\`Web title: \${Title}\`);
+
 })().catch(console.log)
 `
   return code.substring(code.indexOf('\n') + 1)
