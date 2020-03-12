@@ -26,7 +26,30 @@ export async function getAllWebProperties(dispatch: Dispatch<WebPropertiesAction
       case getWebProperties.name:
         if (message.success) {
           /* on success */
-          const webProperties: IWebProperty[] = message.result
+          let webProperties: IWebProperty[] = message.result
+
+          const vti_indexedpropertykeys = webProperties.find((obj) => {
+            return obj.key === 'vti_indexedpropertykeys'
+          })
+
+          // find indexed properties
+          if (vti_indexedpropertykeys) {
+            webProperties = webProperties.map((property) => {
+
+              const bytes = []
+              for (let i = 0; i < property.key.length; ++i) {
+                bytes.push(property.key.charCodeAt(i))
+                bytes.push(0)
+              }
+              const b64encoded = window.btoa(String.fromCharCode.apply(null, bytes))
+              if (vti_indexedpropertykeys.value.indexOf(b64encoded + '|') > -1) {
+                property.indexed = true
+              }
+
+              return property
+            })
+          }
+
           // add webproperties to state
           dispatch(actions.setAllWebProperties(webProperties))
           // hide loading component

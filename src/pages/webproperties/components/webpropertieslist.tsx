@@ -2,10 +2,13 @@ import {
   DefaultButton,
   DetailsList,
   DetailsListLayoutMode,
+  DetailsRow,
   Dialog,
   DialogFooter,
   DialogType,
   IColumn,
+  IDetailsListProps,
+  IDetailsRowStyles,
   MarqueeSelection,
   PrimaryButton,
   ScrollablePane,
@@ -19,7 +22,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import { setAllWebProperties, setConfirmRemoveDialog, setEditPanel, setSelectedItem, setSelectedItems} from '../../../store/webproperties/actions'
+import { setConfirmRemoveDialog, setEditPanel, setSelectedItem, setSelectedItems} from '../../../store/webproperties/actions'
 import { IWebProperty } from '../../../store/webproperties/types'
 import { getAllWebProperties } from '../chrome/chrome-actions'
 // import { deleteScriptLinks, getAllScriptLinks } from '../../../store/scriptlinks/async-actions'
@@ -64,7 +67,7 @@ const WebPropertiesList = () => {
       setKeyAsc(!keyAsc)
     }
     setSortkey(key)
-    dispatch(setAllWebProperties(webproperties))
+    // dispatch(setAllWebProperties(webproperties))
 
     selection.setAllSelected(false)
     dispatch(setSelectedItems([]))
@@ -112,6 +115,20 @@ const WebPropertiesList = () => {
     )
   }
 
+  const renderRow: IDetailsListProps['onRenderRow'] = props => {
+
+    const customStyles: Partial<IDetailsRowStyles> = {}
+    if (props) {
+      if (props.item.indexed) {
+        // Every other row renders with a different background color
+        customStyles.root = { backgroundColor: 'tomato' }
+      }
+
+      return <DetailsRow {...props} styles={customStyles} />
+    }
+    return null
+  }
+
   return (
     <>
       <ScrollablePane>
@@ -135,6 +152,7 @@ const WebPropertiesList = () => {
               dispatch(setEditPanel(true))
             }}
             onRenderDetailsHeader={renderHeader}
+            onRenderRow={renderRow}
           />
         </MarqueeSelection>
       </ScrollablePane>

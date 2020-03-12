@@ -6,6 +6,7 @@ export type WebPropertiesActions = ActionType<typeof actions>
 export interface IWebProperty {
   key: string
   value: string
+  indexed: boolean
 }
 
 export interface IWebPropertiesState {
