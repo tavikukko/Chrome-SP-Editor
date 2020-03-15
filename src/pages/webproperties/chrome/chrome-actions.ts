@@ -42,10 +42,7 @@ export async function getAllWebProperties(dispatch: Dispatch<WebPropertiesAction
                 bytes.push(0)
               }
               const b64encoded = window.btoa(String.fromCharCode.apply(null, bytes))
-              if (vti_indexedpropertykeys.value.indexOf(b64encoded + '|') > -1) {
-                property.indexed = true
-              }
-
+              property.indexed = vti_indexedpropertykeys.value.indexOf(b64encoded + '|') > -1
               return property
             })
           }

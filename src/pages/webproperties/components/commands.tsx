@@ -40,16 +40,6 @@ const WebPropertiesCommands = () => {
           },
         },
         {
-          key: 'indexRow',
-          text: 'Index',
-          iconProps: { iconName: 'DocumentSearch' },
-          disabled: selectedItems.length !== 1,
-          onClick: () => {
-            // dispatch(setConfirmIndexDialog(false))
-            // dispatch(setConfirmUnIndexDialog(false))
-          },
-        },
-        {
           key: 'search',
           onClick: () => {
             // filter web properties

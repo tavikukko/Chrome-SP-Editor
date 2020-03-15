@@ -2,14 +2,13 @@ import {
   DefaultButton,
   DetailsList,
   DetailsListLayoutMode,
-  DetailsRow,
   Dialog,
   DialogFooter,
   DialogType,
   IColumn,
-  IDetailsListProps,
-  IDetailsRowStyles,
+  Icon,
   MarqueeSelection,
+  mergeStyles,
   PrimaryButton,
   ScrollablePane,
   SelectionMode,
@@ -36,6 +35,7 @@ const WebPropertiesList = () => {
 
   const [sortkey, setSortkey] = useState('webkey')
   const [keyAsc, setKeyAsc] = useState(true)
+  const [indexedAsc, setIndexedAsc] = useState(true)
 
   // set selected items to store
   const [selection] = useState(
@@ -65,6 +65,9 @@ const WebPropertiesList = () => {
     if (key === 'webkey') {
       webproperties.sort((a, b) => (a.key.toLocaleLowerCase() < b.key.toLocaleLowerCase()) ? keyAsc ? 1 : -1 : ((b.key.toLocaleLowerCase() < a.key.toLocaleLowerCase()) ? keyAsc ? -1 : 1 : 0))
       setKeyAsc(!keyAsc)
+    } else if (key === 'indexed') {
+      webproperties.sort((a, b) => (a.indexed < b.indexed) ? indexedAsc ? 1 : -1 : ((b.indexed < a.indexed) ? indexedAsc ? -1 : 1 : 0))
+      setIndexedAsc(!indexedAsc)
     }
     setSortkey(key)
     // dispatch(setAllWebProperties(webproperties))
@@ -76,6 +79,20 @@ const WebPropertiesList = () => {
   const detailsListColumns: IColumn[] = [
     {
       data: 'string',
+      fieldName: 'indexed',
+      isPadded: true,
+      isResizable: true,
+      isRowHeader: true,
+      isSorted: sortkey === 'indexed',
+      isSortedDescending: indexedAsc,
+      key: 'indexed',
+      maxWidth: 70,
+      minWidth: 50,
+      name: `Indexed (${webproperties.filter(prop => prop.indexed === true).length})`,
+      onColumnClick,
+    },
+    {
+      data: 'string',
       fieldName: 'key',
       isPadded: true,
       isResizable: true,
@@ -85,9 +102,8 @@ const WebPropertiesList = () => {
       key: 'webkey',
       maxWidth: 200,
       minWidth: 100,
-      name: 'Property',
+      name: `Property (${webproperties.length})`,
       onColumnClick,
-
     },
     {
       data: 'string',
@@ -115,18 +131,24 @@ const WebPropertiesList = () => {
     )
   }
 
-  const renderRow: IDetailsListProps['onRenderRow'] = props => {
+  const iconClass = mergeStyles({
+    fontSize: 20,
+    height: 20,
+    width: 20,
+    marginLeft: '14px',
+  })
 
-    const customStyles: Partial<IDetailsRowStyles> = {}
-    if (props) {
-      if (props.item.indexed) {
-        // Every other row renders with a different background color
-        customStyles.root = { backgroundColor: 'tomato' }
-      }
+  const _renderItemColumn = (item?: any, index?: number | undefined, column?: IColumn | undefined) => {
+    const fieldContent = item[column?.fieldName as keyof IWebProperty] as string
 
-      return <DetailsRow {...props} styles={customStyles} />
+    switch (column?.key) {
+      case 'indexed':
+        const webProp = item as IWebProperty
+        return webProp.indexed ? <span><Icon iconName='CheckMark' className={iconClass} /></span> : null
+
+      default:
+        return <span>{fieldContent}</span>
     }
-    return null
   }
 
   return (
@@ -152,7 +174,7 @@ const WebPropertiesList = () => {
               dispatch(setEditPanel(true))
             }}
             onRenderDetailsHeader={renderHeader}
-            onRenderRow={renderRow}
+            onRenderItemColumn={_renderItemColumn}
           />
         </MarqueeSelection>
       </ScrollablePane>
