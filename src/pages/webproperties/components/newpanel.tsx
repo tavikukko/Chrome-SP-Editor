@@ -5,14 +5,14 @@ import {
    PrimaryButton,
    Stack,
    TextField,
+   Toggle,
 } from 'office-ui-fabric-react'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import { INewScriptLink } from '../../../store/scriptlinks/types'
 import { setNewPanel } from '../../../store/webproperties/actions'
 import { IWebProperty } from '../../../store/webproperties/types'
-import { addScriptLink } from '../../scriptlinks/chrome/chrome-actions'
+import { addWebProperty } from '../chrome/chrome-actions'
 
 const WebPropertiesNewPanel = () => {
 
@@ -35,7 +35,7 @@ const WebPropertiesNewPanel = () => {
       <PrimaryButton
         onClick={() => {
           if (newItem && newItem.key && newItem.key.length > 0) {
-            // addScriptLink(dispatch, newItem)
+            addWebProperty(dispatch, newItem)
           }
         }
         }
@@ -77,6 +77,15 @@ const WebPropertiesNewPanel = () => {
           autoAdjustHeight={true}
           onChange={(event, newValue?: string) =>
             setNewItem({ ...newItem, value: newValue ? newValue : '' })
+          }
+        />
+        <Toggle
+          label='Indexed'
+          defaultChecked={false}
+          onText='Yes'
+          offText='No'
+          onChange={(event, checked?: boolean) =>
+            setNewItem({ ...newItem, indexed: checked ? checked : false })
           }
         />
       </Stack >

@@ -3,14 +3,13 @@ import {
   Dialog,
   DialogFooter,
   DialogType,
-  Dropdown,
-  IDropdownOption,
   IOverlayProps,
   Panel,
   PanelType,
   PrimaryButton,
   Stack,
   TextField,
+  Toggle,
 } from 'office-ui-fabric-react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -64,9 +63,8 @@ const WebPropertiesEditPanel = () => {
             label='Property Key'
             description='The key of the property'
             value={editItem ? editItem.key : ''}
-            onChange={(event, newValue?: string) => {
-              setEditItem({ ...selectedItem, key: newValue ? newValue : '' })
-            }}
+            readOnly
+            disabled
           />
           <TextField
             label='Property Value'
@@ -74,11 +72,18 @@ const WebPropertiesEditPanel = () => {
             value={editItem ? editItem.value : ''}
             multiline
             rows={5}
-            autoAdjustHeight={true}
+            autoAdjustHeight
             onChange={(event, newValue?: string) => {
               setEditItem({ ...selectedItem, value: newValue ? newValue : '' })
             }}
           />
+        <Toggle
+          label='Indexed'
+          defaultChecked={selectedItem.indexed}
+          onText='Yes'
+          offText='No'
+        />
+
         </Stack>
       }
       <Dialog

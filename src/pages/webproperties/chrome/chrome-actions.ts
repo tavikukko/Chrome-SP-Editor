@@ -4,7 +4,8 @@ import { HomeActions, MessageBarColors } from '../../../store/home/types'
 import * as actions from '../../../store/webproperties/actions'
 import { IWebProperty, WebPropertiesActions } from '../../../store/webproperties/types'
 import { exescript } from '../../../utilities/chromecommon'
-import { getPnpjsPath, getSystemjsPath } from '../../../utilities/utilities'
+import { delay, getPnpjsPath, getSystemjsPath } from '../../../utilities/utilities'
+import { createWebProperty } from './createwebproperty'
 import { getWebProperties } from './getwebproperties'
 
 export async function getAllWebProperties(dispatch: Dispatch<WebPropertiesActions | HomeActions>) {
@@ -71,5 +72,60 @@ export async function getAllWebProperties(dispatch: Dispatch<WebPropertiesAction
   // execute script in inspectedWindow
   let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${getWebProperties}`
   script += ` ${exescript.name}(${getWebProperties.name});`
+  chrome.devtools.inspectedWindow.eval(script)
+}
+
+export async function addWebProperty(dispatch: Dispatch<WebPropertiesActions | HomeActions>, payload: IWebProperty) {
+
+  // show loading spinner
+  dispatch(rootActions.setLoading(true))
+  // close panel
+  dispatch(actions.setNewPanel(false));
+  // add listener to receive the results from inspected page
+  (window as any).port.onMessage.addListener(async function addWebPropertyCallback(message: any) {
+
+    if (
+      typeof message !== 'object' ||
+      message === null ||
+      message === undefined ||
+      message.source === undefined
+    ) {
+      return
+    }
+
+    switch (message.function) {
+      case createWebProperty.name:
+        if (message.success) {
+          /* on success */
+          // add small delay just be sure SP can process previous requests
+          await delay(500)
+          // load all scriptlinks
+          getAllWebProperties(dispatch)
+          // set success message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: 'Web Property added succesfully!',
+            color: MessageBarColors.success,
+          }))
+        } else {
+          /* on error */
+          // hide loading
+          dispatch(rootActions.setLoading(false))
+          // show error message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: message.errorMessage,
+            color: MessageBarColors.danger,
+          }))
+        }
+        // remove listener
+        (window as any).port.onMessage.removeListener(addWebPropertyCallback)
+        break
+    }
+  })
+
+  // execute script in inspectedWindow
+  let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${createWebProperty}`
+  script += ` ${exescript.name}(${createWebProperty.name}, '${payload.key}', '${payload.value}', ${payload.indexed});`
   chrome.devtools.inspectedWindow.eval(script)
 }
