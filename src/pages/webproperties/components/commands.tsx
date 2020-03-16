@@ -1,13 +1,20 @@
 import { CommandBar, SearchBox } from 'office-ui-fabric-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import { setConfirmRemoveDialog, setNewPanel } from '../../../store/webproperties/actions'
+import { setConfirmRemoveDialog, setNewPanel, setSearchString } from '../../../store/webproperties/actions'
 
 const WebPropertiesCommands = () => {
 
   const { selectedItems, selectedItem, webproperties } = useSelector((state: IRootState) => state.webProperties)
   const dispatch = useDispatch()
+
+  // clear search string when unmounting
+  useEffect(() => {
+    return () => {
+      dispatch(setSearchString(''))
+    }
+  }, [dispatch])
 
   return (
     <>
@@ -41,16 +48,12 @@ const WebPropertiesCommands = () => {
         },
         {
           key: 'search',
-          onClick: () => {
-            // filter web properties
-          },
           onRender: () => <SearchBox
             placeholder='Filter properties'
-            onFocus={() => console.log('onFocus called')}
-            onBlur={() => console.log('onBlur called')}
             iconProps={{ iconName: 'Filter' }}
             styles={{ root: { width: 300 } }}
             disabled={webproperties.length === 0}
+            onChange={(ev, value) => dispatch(setSearchString(value ? value : ''))}
           />,
         },
       ]}

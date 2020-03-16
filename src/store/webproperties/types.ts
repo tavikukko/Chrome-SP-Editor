@@ -18,6 +18,7 @@ export interface IWebPropertiesState {
   selectedItem: IWebProperty | undefined,
   confirmremove: boolean,
   confirmedit: boolean,
+  searchstring: string,
 }
 
 export enum Constants {
@@ -31,4 +32,5 @@ export enum Constants {
   WP_SELECTED_ITEMS = 'WP_SELECTED_ITEMS',
   WP_SET_CONFIRM_REMOVE_DIALOG = 'WP_SET_CONFIRM_REMOVE_DIALOG',
   WP_SET_CONFIRM_EDIT_DIALOG = 'WP_SET_CONFIRM_EDIT_DIALOG',
+  WP_SET_SEARCH_STRING = 'WP_SET_SEARCH_STRING',
 }

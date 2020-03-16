@@ -42,3 +42,9 @@ export function setConfirmRemoveDialog(confirmremove: boolean) {
     confirmremove,
   })
 }
+
+export function setSearchString(searchstring: string) {
+  return action(Constants.WP_SET_SEARCH_STRING, {
+    searchstring,
+  })
+}

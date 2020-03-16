@@ -30,7 +30,7 @@ import { getAllWebProperties } from '../chrome/chrome-actions'
 const WebPropertiesList = () => {
 
   const dispatch = useDispatch()
-  const { webproperties, selectedItems, confirmremove } = useSelector((state: IRootState) => state.webProperties)
+  const { webproperties, selectedItems, confirmremove, searchstring } = useSelector((state: IRootState) => state.webProperties)
   const { isDark } = useSelector((state: IRootState) => state.home)
 
   const [sortkey, setSortkey] = useState('webkey')
@@ -53,7 +53,7 @@ const WebPropertiesList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // clear selection after every update on scriptlinks
+  // clear selection after every update on webproperties
   useEffect(() => {
     selection.setAllSelected(false)
     dispatch(setSelectedItems([]))
@@ -76,6 +76,8 @@ const WebPropertiesList = () => {
     dispatch(setSelectedItems([]))
   }
 
+  const filteredProps = webproperties.filter(prop => prop.key.toLocaleLowerCase().indexOf(searchstring.toLocaleLowerCase()) > -1)
+
   const detailsListColumns: IColumn[] = [
     {
       data: 'string',
@@ -88,7 +90,7 @@ const WebPropertiesList = () => {
       key: 'indexed',
       maxWidth: 70,
       minWidth: 50,
-      name: `Indexed (${webproperties.filter(prop => prop.indexed === true).length})`,
+      name: `Indexed (${filteredProps.filter(prop => prop.indexed === true).length})`,
       onColumnClick,
     },
     {
@@ -102,7 +104,7 @@ const WebPropertiesList = () => {
       key: 'webkey',
       maxWidth: 200,
       minWidth: 100,
-      name: `Property (${webproperties.length})`,
+      name: `Property (${filteredProps.length})`,
       onColumnClick,
     },
     {
@@ -138,13 +140,14 @@ const WebPropertiesList = () => {
     marginLeft: '14px',
   })
 
+  // render custom column (indexed) with icon
   const _renderItemColumn = (item?: any, index?: number | undefined, column?: IColumn | undefined) => {
     const fieldContent = item[column?.fieldName as keyof IWebProperty] as string
 
     switch (column?.key) {
       case 'indexed':
         const webProp = item as IWebProperty
-        return webProp.indexed ? <span><Icon iconName='CheckMark' className={iconClass} /></span> : null
+        return webProp.indexed ? <span><Icon iconName='CheckMark' className={iconClass} /></span> : <span></span>
 
       default:
         return <span>{fieldContent}</span>
@@ -159,7 +162,7 @@ const WebPropertiesList = () => {
             layoutMode={DetailsListLayoutMode.justified}
             onShouldVirtualize={() => false}
             selection={selection}
-            items={webproperties}
+            items={filteredProps}
             selectionPreservedOnEmptyClick={true}
             columns={detailsListColumns}
             selectionMode={SelectionMode.multiple}

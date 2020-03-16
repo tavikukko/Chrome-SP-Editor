@@ -9,6 +9,7 @@ const init: IWebPropertiesState = {
   selectedItem: undefined,
   confirmremove: true,
   confirmedit: true,
+  searchstring: '',
 }
 
 export function webPropertiesReducer(state: IWebPropertiesState = init, action: WebPropertiesActions): IWebPropertiesState {
@@ -26,6 +27,8 @@ export function webPropertiesReducer(state: IWebPropertiesState = init, action: 
     case Constants.WP_SET_CONFIRM_EDIT_DIALOG:
       return { ...state, ...action.payload }
     case Constants.WP_SET_CONFIRM_REMOVE_DIALOG:
+      return { ...state, ...action.payload }
+    case Constants.WP_SET_SEARCH_STRING:
       return { ...state, ...action.payload }
     default:
       return state
