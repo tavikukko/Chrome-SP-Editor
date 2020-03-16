@@ -23,9 +23,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setConfirmRemoveDialog, setEditPanel, setSelectedItem, setSelectedItems} from '../../../store/webproperties/actions'
 import { IWebProperty } from '../../../store/webproperties/types'
-import { getAllWebProperties } from '../chrome/chrome-actions'
-// import { deleteScriptLinks, getAllScriptLinks } from '../../../store/scriptlinks/async-actions'
-// import { IScriptLink } from '../../../store/scriptlinks/types'
+import { getAllWebProperties, removeWebProperties } from '../chrome/chrome-actions'
 
 const WebPropertiesList = () => {
 
@@ -199,7 +197,7 @@ const WebPropertiesList = () => {
         }}
       >
         <DialogFooter>
-        <PrimaryButton /* onClick={() => deleteWebProperties(dispatch, selectedItems)} */ text='Remove' />
+        <PrimaryButton onClick={() => removeWebProperties(dispatch, selectedItems)} text='Remove' />
           <DefaultButton onClick={() => dispatch(setConfirmRemoveDialog(true))} text='Cancel' />
         </DialogFooter>
       </Dialog>

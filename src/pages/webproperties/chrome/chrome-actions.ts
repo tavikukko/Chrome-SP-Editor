@@ -6,6 +6,7 @@ import { IWebProperty, WebPropertiesActions } from '../../../store/webproperties
 import { exescript } from '../../../utilities/chromecommon'
 import { delay, getPnpjsPath, getSystemjsPath } from '../../../utilities/utilities'
 import { createWebProperty } from './createwebproperty'
+import { deleteWebProperties } from './deletewebproperties'
 import { getWebProperties } from './getwebproperties'
 
 export async function getAllWebProperties(dispatch: Dispatch<WebPropertiesActions | HomeActions>) {
@@ -127,5 +128,59 @@ export async function addWebProperty(dispatch: Dispatch<WebPropertiesActions | H
   // execute script in inspectedWindow
   let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${createWebProperty}`
   script += ` ${exescript.name}(${createWebProperty.name}, '${payload.key}', '${payload.value}', ${payload.indexed});`
+  chrome.devtools.inspectedWindow.eval(script)
+}
+
+export async function removeWebProperties(dispatch: Dispatch<WebPropertiesActions | HomeActions>, payload: IWebProperty[]) {
+
+  // hide confirm dialog
+  dispatch(actions.setConfirmRemoveDialog(true))
+  // show loading spinner
+  dispatch(rootActions.setLoading(true));
+  // add listener to receive the results from inspected page
+  (window as any).port.onMessage.addListener(async function deleteWebPropertiesCallback(message: any) {
+
+    if (
+      typeof message !== 'object' ||
+      message === null ||
+      message === undefined ||
+      message.source === undefined
+    ) {
+      return
+    }
+    switch (message.function) {
+      case deleteWebProperties.name:
+        if (message.success) {
+          /* on success */
+          // add small delay just be sure SP can process previous requests
+          await delay(500)
+          // load all scriptlinks
+          getAllWebProperties(dispatch)
+          // set success message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: 'Web properties removed succesfully!',
+            color: MessageBarColors.success,
+          }))
+        } else {
+          /* on error */
+          // hide loading
+          dispatch(rootActions.setLoading(false))
+          // set error message
+          dispatch(rootActions.setAppMessage({
+            showMessage: true,
+            message: message.errorMessage,
+            color: MessageBarColors.danger,
+          }))
+        }
+        // remove listener
+        (window as any).port.onMessage.removeListener(deleteWebPropertiesCallback)
+        break
+    }
+  })
+
+  // execute script in inspectedWindow
+  let script = `${getPnpjsPath()} ${getSystemjsPath()} ${exescript} ${deleteWebProperties}`
+  script += ` ${exescript.name}(${deleteWebProperties.name}, '${encodeURIComponent(JSON.stringify(payload)).replace(/'/g, '%27')}');`
   chrome.devtools.inspectedWindow.eval(script)
 }

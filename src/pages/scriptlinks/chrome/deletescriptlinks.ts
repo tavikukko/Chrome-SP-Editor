@@ -46,14 +46,15 @@ export function deleteCustomActions(...args: any) {
         source: 'chrome-sp-editor',
       }), '*')
     }
+    const promises: any[] = []
 
     ucas.forEach(uca => {
       if (uca.Scope === 2) {
-        $pnp.sp.site.userCustomActions.getById(uca.Id).delete().then(postMessage)
+        promises.push($pnp.sp.site.userCustomActions.getById(uca.Id).delete())
       } else {
-        $pnp.sp.web.userCustomActions.getById(uca.Id).delete().then(postMessage)
+        promises.push($pnp.sp.web.userCustomActions.getById(uca.Id).delete())
       }
     })
-
+    Promise.all(promises).then(postMessage)
   })
 }

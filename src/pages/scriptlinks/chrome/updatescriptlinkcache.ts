@@ -111,7 +111,7 @@ export function updateCacheCustomAction(...args: any) {
       // site collection scope
       if (scope === 2) {
         // check that uca exists in site
-        promises.push($pnp.sp.site.userCustomActions.getById(id).get().then(uca => {
+        promises.push($pnp.sp.site.userCustomActions.getById(id)().then(uca => {
           // update uca if exists
           if (uca && uca.Id) {
             return $pnp.sp.site.userCustomActions.getById(id).update(payload)
@@ -120,17 +120,15 @@ export function updateCacheCustomAction(...args: any) {
         // web scope
       } else {
         // check that uca exists in web
-        $pnp.sp.web.userCustomActions.getById(id).get().then(uca => {
+        promises.push($pnp.sp.web.userCustomActions.getById(id)().then(uca => {
           // update uca if exists
           if (uca && uca.Id) {
-            promises.push($pnp.sp.web.userCustomActions.getById(id).update(payload))
+            return $pnp.sp.web.userCustomActions.getById(id).update(payload)
           }
-        })
+        }))
       }
     })
-    Promise.all(promises).then(x => {
-      postMessage()
-    })
+    Promise.all(promises).then(postMessage)
   })
 
 }
