@@ -29,7 +29,7 @@ const ScriptLinkCommands = () => {
           disabled: selectedItems.length < 1,
         },
         {
-          key: 'deleteRow',
+          key: 'refreshCaches',
           text: 'Refresh caches',
           iconProps: { iconName: 'Refresh' },
           onClick: () => {

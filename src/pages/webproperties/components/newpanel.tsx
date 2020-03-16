@@ -20,7 +20,8 @@ const WebPropertiesNewPanel = () => {
 
   const dispatch = useDispatch()
 
-  const [ newItem, setNewItem ] = useState<IWebProperty>({
+  const [newItem, setNewItem] = useState<IWebProperty>({
+    indexed: false,
     key: '',
     value: '',
   })
