@@ -2295,51 +2295,53 @@ var getSiteCollections = function getSiteCollections() {
         }
 
         var q = $pnp.SPNS.SearchQueryBuilder("contentclass:STS_Site AND SiteTemplate:APPCATALOG", { RowLimit: 1, SelectProperties: ["siteid", "webid", "url"] });
-
+        var tenantProps = "", appcatsiteid = "", appcatwebid = "", appcaturl = "";
         $pnp.sp.search(q).then(re => {
-          var siteid = re.PrimarySearchResults[0].SiteId ? re.PrimarySearchResults[0].SiteId : re.PrimarySearchResults[0].siteid
-          var webid = re.PrimarySearchResults[0].webid ? re.PrimarySearchResults[0].webid : re.PrimarySearchResults[0].WebId
-          var url = re.PrimarySearchResults[0].url ? re.PrimarySearchResults[0].url : re.PrimarySearchResults[0].Url
-          var payload2 = `
-            <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
-              <Actions>
-                <Query Id="21" ObjectPathId="6">
-                  <Query SelectAllProperties="true">
-                    <Properties>
-                      <Property Name="storageentitiesindex" ScalarProperty="true" />
-                    </Properties>
+          if (re.PrimarySearchResults.length > 0) {
+            appcatsiteid = re.PrimarySearchResults[0].SiteId ? re.PrimarySearchResults[0].SiteId : re.PrimarySearchResults[0].siteid
+            appcatwebid = re.PrimarySearchResults[0].webid ? re.PrimarySearchResults[0].webid : re.PrimarySearchResults[0].WebId
+            appcaturl = re.PrimarySearchResults[0].url ? re.PrimarySearchResults[0].url : re.PrimarySearchResults[0].Url
+            var payload2 = `
+              <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+                <Actions>
+                  <Query Id="21" ObjectPathId="6">
+                    <Query SelectAllProperties="true">
+                      <Properties>
+                        <Property Name="storageentitiesindex" ScalarProperty="true" />
+                      </Properties>
+                    </Query>
                   </Query>
-                </Query>
-              </Actions>
-              <ObjectPaths>
-                <Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
-                <Property Id="6" ParentId="4" Name="AllProperties" />
-              </ObjectPaths>
-            </Request>
-          `
-          var client = new $pnp.SPNS.SPHttpClient();
-          client.post(endpoint, {
-            headers: {
-              'Accept': '*/*',
-              'Content-Type': 'text/xml;charset="UTF-8"',
-              'X-Requested-With': 'XMLHttpRequest',
+                </Actions>
+                <ObjectPaths>
+                  <Identity Id="4" Name="4a9d3c9e-80ed-4000-cbc2-346a233995bb|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${appcatsiteid}:web:${appcatwebid}" />
+                  <Property Id="6" ParentId="4" Name="AllProperties" />
+                </ObjectPaths>
+              </Request>
+            `
+            var client = new $pnp.SPNS.SPHttpClient();
+            return client.post(endpoint, {
+              headers: {
+                'Accept': '*/*',
+                'Content-Type': 'text/xml;charset="UTF-8"',
+                'X-Requested-With': 'XMLHttpRequest',
 
-            },
-            body: payload2
-          })
-            .then((res) => { return res.json(); })
-            .then((res) => {
-              if (res[0].ErrorInfo) {
-                alertify.delay(10000).error(res[0].ErrorInfo.ErrorMessage);
-                window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
-              } else {
-              }
+              },
+              body: payload2
+            })
+              .then((res) => { return res.json(); })
+              .then((res) => {
+                if (res[0].ErrorInfo) {
+                  alertify.delay(10000).error(res[0].ErrorInfo.ErrorMessage);
+                  window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: false, result: null, source: 'chrome-sp-editor' }), '*');
+                } else {
+                }
 
-              var tenantProps = "";
-
-              if (res.length > 1) tenantProps = res[2].storageentitiesindex;
+                if (res.length > 1) tenantProps = res[2].storageentitiesindex;
+            })
+          }
+        })
+          .then(() => {
               var hubsites = r[32]._Child_Items_;
-
               if (hubsites.length > 0) {
                 var hubsiteQuery = "";
 
@@ -2364,9 +2366,9 @@ var getSiteCollections = function getSiteCollections() {
                     tenantObjectId: r[16]._ObjectIdentity_,
                     privateCDN: r[24],
                     privateCDNOrigins: r[26],
-                    appCatalogSiteId: siteid,
-                    appCatalogWebId: webid,
-                    appCatalogUrl: url,
+                    appCatalogSiteId: appcatsiteid,
+                    appCatalogWebId: appcatwebid,
+                    appCatalogUrl: appcaturl,
                     tenantProperties: tenantProps,
                     hubsites: hubsites,
                     departmentIds: deps
@@ -2383,20 +2385,18 @@ var getSiteCollections = function getSiteCollections() {
                   tenantObjectId: r[16]._ObjectIdentity_,
                   privateCDN: r[24],
                   privateCDNOrigins: r[26],
-                  appCatalogSiteId: siteid,
-                  appCatalogWebId: webid,
-                  appCatalogUrl: url,
+                  appCatalogSiteId: appcatsiteid,
+                  appCatalogWebId: appcatwebid,
+                  appCatalogUrl: appcaturl,
                   tenantProperties: tenantProps,
                   hubsites: hubsites,
                   departmentIds: []
                 };
                 window.postMessage(JSON.stringify({ function: 'getSiteCollections', success: true, result: datas, source: 'chrome-sp-editor' }), '*');
               }
-            })
         });
-      });
+    });
   });
-
 };
 
 // updateSiteCollection
