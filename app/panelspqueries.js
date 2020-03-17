@@ -2301,7 +2301,6 @@ var getSiteCollections = function getSiteCollections() {
             appcatsiteid = re.PrimarySearchResults[0].SiteId ? re.PrimarySearchResults[0].SiteId : re.PrimarySearchResults[0].siteid
             appcatwebid = re.PrimarySearchResults[0].webid ? re.PrimarySearchResults[0].webid : re.PrimarySearchResults[0].WebId
             appcaturl = re.PrimarySearchResults[0].url ? re.PrimarySearchResults[0].url : re.PrimarySearchResults[0].Url
-            debugger;
             var payload2 = `
               <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
                 <Actions>
