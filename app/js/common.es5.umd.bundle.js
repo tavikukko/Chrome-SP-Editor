@@ -725,7 +725,38 @@ module.exports = g;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "objectToMap", function() { return /* reexport */ objectToMap; });
+__webpack_require__.d(__webpack_exports__, "mergeMaps", function() { return /* reexport */ mergeMaps; });
+__webpack_require__.d(__webpack_exports__, "setup", function() { return /* reexport */ setup; });
+__webpack_require__.d(__webpack_exports__, "RuntimeConfigImpl", function() { return /* reexport */ libconfig_RuntimeConfigImpl; });
+__webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return /* reexport */ RuntimeConfig; });
+__webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return /* reexport */ net["e" /* mergeHeaders */]; });
+__webpack_require__.d(__webpack_exports__, "mergeOptions", function() { return /* reexport */ net["f" /* mergeOptions */]; });
+__webpack_require__.d(__webpack_exports__, "getADALResource", function() { return /* reexport */ net["d" /* getADALResource */]; });
+__webpack_require__.d(__webpack_exports__, "FetchClient", function() { return /* reexport */ net["b" /* FetchClient */]; });
+__webpack_require__.d(__webpack_exports__, "BearerTokenFetchClient", function() { return /* reexport */ net["a" /* BearerTokenFetchClient */]; });
+__webpack_require__.d(__webpack_exports__, "SPFxAdalClient", function() { return /* reexport */ net["c" /* SPFxAdalClient */]; });
+__webpack_require__.d(__webpack_exports__, "PnPClientStorageWrapper", function() { return /* reexport */ storage_PnPClientStorageWrapper; });
+__webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return /* reexport */ PnPClientStorage; });
+__webpack_require__.d(__webpack_exports__, "getCtxCallback", function() { return /* reexport */ util["d" /* getCtxCallback */]; });
+__webpack_require__.d(__webpack_exports__, "dateAdd", function() { return /* reexport */ util["c" /* dateAdd */]; });
+__webpack_require__.d(__webpack_exports__, "combine", function() { return /* reexport */ util["b" /* combine */]; });
+__webpack_require__.d(__webpack_exports__, "getRandomString", function() { return /* reexport */ util["g" /* getRandomString */]; });
+__webpack_require__.d(__webpack_exports__, "getGUID", function() { return /* reexport */ util["e" /* getGUID */]; });
+__webpack_require__.d(__webpack_exports__, "isFunc", function() { return /* reexport */ util["j" /* isFunc */]; });
+__webpack_require__.d(__webpack_exports__, "objectDefinedNotNull", function() { return /* reexport */ util["m" /* objectDefinedNotNull */]; });
+__webpack_require__.d(__webpack_exports__, "isArray", function() { return /* reexport */ util["i" /* isArray */]; });
+__webpack_require__.d(__webpack_exports__, "assign", function() { return /* reexport */ util["a" /* assign */]; });
+__webpack_require__.d(__webpack_exports__, "isUrlAbsolute", function() { return /* reexport */ util["k" /* isUrlAbsolute */]; });
+__webpack_require__.d(__webpack_exports__, "stringIsNullOrEmpty", function() { return /* reexport */ util["o" /* stringIsNullOrEmpty */]; });
+__webpack_require__.d(__webpack_exports__, "sanitizeGuid", function() { return /* reexport */ util["n" /* sanitizeGuid */]; });
+__webpack_require__.d(__webpack_exports__, "jsS", function() { return /* reexport */ util["l" /* jsS */]; });
+__webpack_require__.d(__webpack_exports__, "hOP", function() { return /* reexport */ util["h" /* hOP */]; });
+__webpack_require__.d(__webpack_exports__, "getHashCode", function() { return /* reexport */ util["f" /* getHashCode */]; });
 
 // EXTERNAL MODULE: ./node_modules/@pnp/common/util.js
 var util = __webpack_require__(0);
@@ -1131,34 +1162,6 @@ var PnPClientStorage = /** @class */ (function () {
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./pnpjs-sources/index-common.ts
-/* concated harmony reexport objectToMap */__webpack_require__.d(__webpack_exports__, "objectToMap", function() { return objectToMap; });
-/* concated harmony reexport mergeMaps */__webpack_require__.d(__webpack_exports__, "mergeMaps", function() { return mergeMaps; });
-/* concated harmony reexport setup */__webpack_require__.d(__webpack_exports__, "setup", function() { return setup; });
-/* concated harmony reexport RuntimeConfigImpl */__webpack_require__.d(__webpack_exports__, "RuntimeConfigImpl", function() { return libconfig_RuntimeConfigImpl; });
-/* concated harmony reexport RuntimeConfig */__webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return RuntimeConfig; });
-/* concated harmony reexport mergeHeaders */__webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return net["e" /* mergeHeaders */]; });
-/* concated harmony reexport mergeOptions */__webpack_require__.d(__webpack_exports__, "mergeOptions", function() { return net["f" /* mergeOptions */]; });
-/* concated harmony reexport getADALResource */__webpack_require__.d(__webpack_exports__, "getADALResource", function() { return net["d" /* getADALResource */]; });
-/* concated harmony reexport FetchClient */__webpack_require__.d(__webpack_exports__, "FetchClient", function() { return net["b" /* FetchClient */]; });
-/* concated harmony reexport BearerTokenFetchClient */__webpack_require__.d(__webpack_exports__, "BearerTokenFetchClient", function() { return net["a" /* BearerTokenFetchClient */]; });
-/* concated harmony reexport SPFxAdalClient */__webpack_require__.d(__webpack_exports__, "SPFxAdalClient", function() { return net["c" /* SPFxAdalClient */]; });
-/* concated harmony reexport PnPClientStorageWrapper */__webpack_require__.d(__webpack_exports__, "PnPClientStorageWrapper", function() { return storage_PnPClientStorageWrapper; });
-/* concated harmony reexport PnPClientStorage */__webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return PnPClientStorage; });
-/* concated harmony reexport getCtxCallback */__webpack_require__.d(__webpack_exports__, "getCtxCallback", function() { return util["d" /* getCtxCallback */]; });
-/* concated harmony reexport dateAdd */__webpack_require__.d(__webpack_exports__, "dateAdd", function() { return util["c" /* dateAdd */]; });
-/* concated harmony reexport combine */__webpack_require__.d(__webpack_exports__, "combine", function() { return util["b" /* combine */]; });
-/* concated harmony reexport getRandomString */__webpack_require__.d(__webpack_exports__, "getRandomString", function() { return util["g" /* getRandomString */]; });
-/* concated harmony reexport getGUID */__webpack_require__.d(__webpack_exports__, "getGUID", function() { return util["e" /* getGUID */]; });
-/* concated harmony reexport isFunc */__webpack_require__.d(__webpack_exports__, "isFunc", function() { return util["j" /* isFunc */]; });
-/* concated harmony reexport objectDefinedNotNull */__webpack_require__.d(__webpack_exports__, "objectDefinedNotNull", function() { return util["m" /* objectDefinedNotNull */]; });
-/* concated harmony reexport isArray */__webpack_require__.d(__webpack_exports__, "isArray", function() { return util["i" /* isArray */]; });
-/* concated harmony reexport assign */__webpack_require__.d(__webpack_exports__, "assign", function() { return util["a" /* assign */]; });
-/* concated harmony reexport isUrlAbsolute */__webpack_require__.d(__webpack_exports__, "isUrlAbsolute", function() { return util["k" /* isUrlAbsolute */]; });
-/* concated harmony reexport stringIsNullOrEmpty */__webpack_require__.d(__webpack_exports__, "stringIsNullOrEmpty", function() { return util["o" /* stringIsNullOrEmpty */]; });
-/* concated harmony reexport sanitizeGuid */__webpack_require__.d(__webpack_exports__, "sanitizeGuid", function() { return util["n" /* sanitizeGuid */]; });
-/* concated harmony reexport jsS */__webpack_require__.d(__webpack_exports__, "jsS", function() { return util["l" /* jsS */]; });
-/* concated harmony reexport hOP */__webpack_require__.d(__webpack_exports__, "hOP", function() { return util["h" /* hOP */]; });
-/* concated harmony reexport getHashCode */__webpack_require__.d(__webpack_exports__, "getHashCode", function() { return util["f" /* getHashCode */]; });
 
 
 

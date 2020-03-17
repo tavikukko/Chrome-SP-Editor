@@ -725,7 +725,39 @@ module.exports = g;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "Batch", function() { return /* reexport */ batch_Batch; });
+__webpack_require__.d(__webpack_exports__, "CachingOptions", function() { return /* reexport */ caching_CachingOptions; });
+__webpack_require__.d(__webpack_exports__, "CachingParserWrapper", function() { return /* reexport */ CachingParserWrapper; });
+__webpack_require__.d(__webpack_exports__, "addProp", function() { return /* reexport */ addProp; });
+__webpack_require__.d(__webpack_exports__, "invokableFactory", function() { return /* reexport */ invokableFactory; });
+__webpack_require__.d(__webpack_exports__, "pipelineBinder", function() { return /* reexport */ pipelineBinder; });
+__webpack_require__.d(__webpack_exports__, "defaultPipelineBinder", function() { return /* reexport */ defaultPipelineBinder; });
+__webpack_require__.d(__webpack_exports__, "ODataParser", function() { return /* reexport */ parsers_ODataParser; });
+__webpack_require__.d(__webpack_exports__, "TextParser", function() { return /* reexport */ parsers_TextParser; });
+__webpack_require__.d(__webpack_exports__, "BlobParser", function() { return /* reexport */ parsers_BlobParser; });
+__webpack_require__.d(__webpack_exports__, "JSONParser", function() { return /* reexport */ parsers_JSONParser; });
+__webpack_require__.d(__webpack_exports__, "BufferParser", function() { return /* reexport */ parsers_BufferParser; });
+__webpack_require__.d(__webpack_exports__, "LambdaParser", function() { return /* reexport */ parsers_LambdaParser; });
+__webpack_require__.d(__webpack_exports__, "HttpRequestError", function() { return /* reexport */ parsers_HttpRequestError; });
+__webpack_require__.d(__webpack_exports__, "setResult", function() { return /* reexport */ setResult; });
+__webpack_require__.d(__webpack_exports__, "pipe", function() { return /* reexport */ pipe; });
+__webpack_require__.d(__webpack_exports__, "requestPipelineMethod", function() { return /* reexport */ requestPipelineMethod; });
+__webpack_require__.d(__webpack_exports__, "PipelineMethods", function() { return /* reexport */ pipeline_PipelineMethods; });
+__webpack_require__.d(__webpack_exports__, "getDefaultPipeline", function() { return /* reexport */ getDefaultPipeline; });
+__webpack_require__.d(__webpack_exports__, "cloneQueryableData", function() { return /* reexport */ cloneQueryableData; });
+__webpack_require__.d(__webpack_exports__, "Queryable", function() { return /* reexport */ queryable_Queryable; });
+__webpack_require__.d(__webpack_exports__, "body", function() { return /* reexport */ body; });
+__webpack_require__.d(__webpack_exports__, "headers", function() { return /* reexport */ headers; });
+__webpack_require__.d(__webpack_exports__, "extendGlobal", function() { return /* reexport */ extendGlobal; });
+__webpack_require__.d(__webpack_exports__, "extendObj", function() { return /* reexport */ extendObj; });
+__webpack_require__.d(__webpack_exports__, "extendFactory", function() { return /* reexport */ extendFactory; });
+__webpack_require__.d(__webpack_exports__, "clearGlobalExtensions", function() { return /* reexport */ clearGlobalExtensions; });
+__webpack_require__.d(__webpack_exports__, "enableExtensions", function() { return /* reexport */ enableExtensions; });
+__webpack_require__.d(__webpack_exports__, "disableExtensions", function() { return /* reexport */ disableExtensions; });
 
 // EXTERNAL MODULE: ./node_modules/@pnp/common/util.js
 var util = __webpack_require__(1);
@@ -2382,35 +2414,6 @@ function headers(o, previous) {
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./pnpjs-sources/index-odata.ts
-/* concated harmony reexport Batch */__webpack_require__.d(__webpack_exports__, "Batch", function() { return batch_Batch; });
-/* concated harmony reexport CachingOptions */__webpack_require__.d(__webpack_exports__, "CachingOptions", function() { return caching_CachingOptions; });
-/* concated harmony reexport CachingParserWrapper */__webpack_require__.d(__webpack_exports__, "CachingParserWrapper", function() { return CachingParserWrapper; });
-/* concated harmony reexport addProp */__webpack_require__.d(__webpack_exports__, "addProp", function() { return addProp; });
-/* concated harmony reexport invokableFactory */__webpack_require__.d(__webpack_exports__, "invokableFactory", function() { return invokableFactory; });
-/* concated harmony reexport pipelineBinder */__webpack_require__.d(__webpack_exports__, "pipelineBinder", function() { return pipelineBinder; });
-/* concated harmony reexport defaultPipelineBinder */__webpack_require__.d(__webpack_exports__, "defaultPipelineBinder", function() { return defaultPipelineBinder; });
-/* concated harmony reexport ODataParser */__webpack_require__.d(__webpack_exports__, "ODataParser", function() { return parsers_ODataParser; });
-/* concated harmony reexport TextParser */__webpack_require__.d(__webpack_exports__, "TextParser", function() { return parsers_TextParser; });
-/* concated harmony reexport BlobParser */__webpack_require__.d(__webpack_exports__, "BlobParser", function() { return parsers_BlobParser; });
-/* concated harmony reexport JSONParser */__webpack_require__.d(__webpack_exports__, "JSONParser", function() { return parsers_JSONParser; });
-/* concated harmony reexport BufferParser */__webpack_require__.d(__webpack_exports__, "BufferParser", function() { return parsers_BufferParser; });
-/* concated harmony reexport LambdaParser */__webpack_require__.d(__webpack_exports__, "LambdaParser", function() { return parsers_LambdaParser; });
-/* concated harmony reexport HttpRequestError */__webpack_require__.d(__webpack_exports__, "HttpRequestError", function() { return parsers_HttpRequestError; });
-/* concated harmony reexport setResult */__webpack_require__.d(__webpack_exports__, "setResult", function() { return setResult; });
-/* concated harmony reexport pipe */__webpack_require__.d(__webpack_exports__, "pipe", function() { return pipe; });
-/* concated harmony reexport requestPipelineMethod */__webpack_require__.d(__webpack_exports__, "requestPipelineMethod", function() { return requestPipelineMethod; });
-/* concated harmony reexport PipelineMethods */__webpack_require__.d(__webpack_exports__, "PipelineMethods", function() { return pipeline_PipelineMethods; });
-/* concated harmony reexport getDefaultPipeline */__webpack_require__.d(__webpack_exports__, "getDefaultPipeline", function() { return getDefaultPipeline; });
-/* concated harmony reexport cloneQueryableData */__webpack_require__.d(__webpack_exports__, "cloneQueryableData", function() { return cloneQueryableData; });
-/* concated harmony reexport Queryable */__webpack_require__.d(__webpack_exports__, "Queryable", function() { return queryable_Queryable; });
-/* concated harmony reexport body */__webpack_require__.d(__webpack_exports__, "body", function() { return body; });
-/* concated harmony reexport headers */__webpack_require__.d(__webpack_exports__, "headers", function() { return headers; });
-/* concated harmony reexport extendGlobal */__webpack_require__.d(__webpack_exports__, "extendGlobal", function() { return extendGlobal; });
-/* concated harmony reexport extendObj */__webpack_require__.d(__webpack_exports__, "extendObj", function() { return extendObj; });
-/* concated harmony reexport extendFactory */__webpack_require__.d(__webpack_exports__, "extendFactory", function() { return extendFactory; });
-/* concated harmony reexport clearGlobalExtensions */__webpack_require__.d(__webpack_exports__, "clearGlobalExtensions", function() { return clearGlobalExtensions; });
-/* concated harmony reexport enableExtensions */__webpack_require__.d(__webpack_exports__, "enableExtensions", function() { return enableExtensions; });
-/* concated harmony reexport disableExtensions */__webpack_require__.d(__webpack_exports__, "disableExtensions", function() { return disableExtensions; });
 
 
 

@@ -36,8 +36,8 @@
     "gulp-rename": "^2.0.0",
     "monaco-editor": "^0.20.0",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.7.5",
-    "webpack": "^4.41.6",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {}

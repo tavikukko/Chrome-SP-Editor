@@ -198,17 +198,17 @@ import { taxonomy } from "@pnp/sp-taxonomy"
 
                   var lineRe = line.match("var (.*) = require");
                   var mod = -1;
-                  mod = line.indexOf("@pnp/common") > -1 ? 5 : mod;
-                  mod = line.indexOf("@pnp/config-store") > -1 ? 5 : mod;
-                  mod = line.indexOf("@pnp/graph") > -1 ? 5 : mod;
-                  mod = line.indexOf("@pnp/logging") > -1 ? 5 : mod;
-                  mod = line.indexOf("@pnp/odata") > -1 ? 5 : mod;
+                  mod = line.indexOf("@pnp/common") > -1 ? 0 : mod;
+                  mod = line.indexOf("@pnp/config-store") > -1 ? 1 : mod;
+                  mod = line.indexOf("@pnp/graph") > -1 ? 2 : mod;
+                  mod = line.indexOf("@pnp/logging") > -1 ? 3 : mod;
+                  mod = line.indexOf("@pnp/odata") > -1 ? 4 : mod;
                   mod = line.indexOf("@pnp/pnpjs") > -1 ? 5 : mod;
-                  mod = line.indexOf("@pnp/sp-addinhelpers") > -1 ? 5 : mod;
+                  mod = line.indexOf("@pnp/sp-addinhelpers") > -1 ? 6 : mod;
                   mod = line.indexOf("@pnp/sp-clientsvc") > -1 ? 7 : mod;
-                  mod = line.indexOf("@pnp/sp") > -1 ? 5 : mod;
                   mod = line.indexOf("@pnp/sp-taxonomy") > -1 ? 9 : mod;
                   mod = line.indexOf("@pnp/adaljsclient") > -1 ? 10 : mod;
+                  mod = mod === -1 && line.indexOf("@pnp/sp") > -1 ? 8 : mod;
 
                   prepnp.push('var ' + lineRe[1] + ' = modules[' + mod + '];');
                 }
@@ -312,7 +312,7 @@ import { taxonomy } from "@pnp/sp-taxonomy"
           // find all import lines from code
           this.getImportModules = function (content) {
             var importTexts = []
-            var imports = content.match(/import.*(@pnp|microsoft).*/g)
+            var imports = content.match(/(import|from).*(@pnp|microsoft).*/g)
             if (imports) {
               imports.forEach(iText => {
                 importTexts.push(iText.match(/(["'])(.*?[^\\])\1/g)[0].replace(/\"/g, '').replace(/\'/g, ''))

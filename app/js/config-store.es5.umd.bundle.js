@@ -323,6 +323,29 @@ function __importDefault(mod) {
 
 "use strict";
 
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "r", function() { return /* reexport */ objectToMap; });
+__webpack_require__.d(__webpack_exports__, "o", function() { return /* reexport */ mergeMaps; });
+__webpack_require__.d(__webpack_exports__, "c", function() { return /* reexport */ RuntimeConfig; });
+__webpack_require__.d(__webpack_exports__, "n", function() { return /* reexport */ net["b" /* mergeHeaders */]; });
+__webpack_require__.d(__webpack_exports__, "p", function() { return /* reexport */ net["c" /* mergeOptions */]; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ net["a" /* FetchClient */]; });
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* reexport */ PnPClientStorage; });
+__webpack_require__.d(__webpack_exports__, "g", function() { return /* reexport */ util["d" /* getCtxCallback */]; });
+__webpack_require__.d(__webpack_exports__, "f", function() { return /* reexport */ util["c" /* dateAdd */]; });
+__webpack_require__.d(__webpack_exports__, "e", function() { return /* reexport */ util["b" /* combine */]; });
+__webpack_require__.d(__webpack_exports__, "h", function() { return /* reexport */ util["e" /* getGUID */]; });
+__webpack_require__.d(__webpack_exports__, "k", function() { return /* reexport */ util["h" /* isFunc */]; });
+__webpack_require__.d(__webpack_exports__, "q", function() { return /* reexport */ util["k" /* objectDefinedNotNull */]; });
+__webpack_require__.d(__webpack_exports__, "j", function() { return /* reexport */ util["g" /* isArray */]; });
+__webpack_require__.d(__webpack_exports__, "d", function() { return /* reexport */ util["a" /* assign */]; });
+__webpack_require__.d(__webpack_exports__, "l", function() { return /* reexport */ util["i" /* isUrlAbsolute */]; });
+__webpack_require__.d(__webpack_exports__, "s", function() { return /* reexport */ util["l" /* stringIsNullOrEmpty */]; });
+__webpack_require__.d(__webpack_exports__, "m", function() { return /* reexport */ util["j" /* jsS */]; });
+__webpack_require__.d(__webpack_exports__, "i", function() { return /* reexport */ util["f" /* hOP */]; });
+
+// UNUSED EXPORTS: setup, RuntimeConfigImpl, getADALResource, BearerTokenFetchClient, SPFxAdalClient, PnPClientStorageWrapper, getRandomString, sanitizeGuid, getHashCode
+
 // EXTERNAL MODULE: ./node_modules/@pnp/common/util.js
 var util = __webpack_require__(2);
 
@@ -720,34 +743,6 @@ var PnPClientStorage = /** @class */ (function () {
 
 //# sourceMappingURL=storage.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/common/index.js
-/* concated harmony reexport objectToMap */__webpack_require__.d(__webpack_exports__, "r", function() { return objectToMap; });
-/* concated harmony reexport mergeMaps */__webpack_require__.d(__webpack_exports__, "o", function() { return mergeMaps; });
-/* unused concated harmony import setup */
-/* unused concated harmony import RuntimeConfigImpl */
-/* concated harmony reexport RuntimeConfig */__webpack_require__.d(__webpack_exports__, "c", function() { return RuntimeConfig; });
-/* concated harmony reexport mergeHeaders */__webpack_require__.d(__webpack_exports__, "n", function() { return net["b" /* mergeHeaders */]; });
-/* concated harmony reexport mergeOptions */__webpack_require__.d(__webpack_exports__, "p", function() { return net["c" /* mergeOptions */]; });
-/* unused concated harmony import getADALResource */
-/* concated harmony reexport FetchClient */__webpack_require__.d(__webpack_exports__, "a", function() { return net["a" /* FetchClient */]; });
-/* unused concated harmony import BearerTokenFetchClient */
-/* unused concated harmony import SPFxAdalClient */
-/* unused concated harmony import PnPClientStorageWrapper */
-/* concated harmony reexport PnPClientStorage */__webpack_require__.d(__webpack_exports__, "b", function() { return PnPClientStorage; });
-/* concated harmony reexport getCtxCallback */__webpack_require__.d(__webpack_exports__, "g", function() { return util["d" /* getCtxCallback */]; });
-/* concated harmony reexport dateAdd */__webpack_require__.d(__webpack_exports__, "f", function() { return util["c" /* dateAdd */]; });
-/* concated harmony reexport combine */__webpack_require__.d(__webpack_exports__, "e", function() { return util["b" /* combine */]; });
-/* unused concated harmony import getRandomString */
-/* concated harmony reexport getGUID */__webpack_require__.d(__webpack_exports__, "h", function() { return util["e" /* getGUID */]; });
-/* concated harmony reexport isFunc */__webpack_require__.d(__webpack_exports__, "k", function() { return util["h" /* isFunc */]; });
-/* concated harmony reexport objectDefinedNotNull */__webpack_require__.d(__webpack_exports__, "q", function() { return util["k" /* objectDefinedNotNull */]; });
-/* concated harmony reexport isArray */__webpack_require__.d(__webpack_exports__, "j", function() { return util["g" /* isArray */]; });
-/* concated harmony reexport assign */__webpack_require__.d(__webpack_exports__, "d", function() { return util["a" /* assign */]; });
-/* concated harmony reexport isUrlAbsolute */__webpack_require__.d(__webpack_exports__, "l", function() { return util["i" /* isUrlAbsolute */]; });
-/* concated harmony reexport stringIsNullOrEmpty */__webpack_require__.d(__webpack_exports__, "s", function() { return util["l" /* stringIsNullOrEmpty */]; });
-/* unused concated harmony import sanitizeGuid */
-/* concated harmony reexport jsS */__webpack_require__.d(__webpack_exports__, "m", function() { return util["j" /* jsS */]; });
-/* concated harmony reexport hOP */__webpack_require__.d(__webpack_exports__, "i", function() { return util["f" /* hOP */]; });
-/* unused concated harmony import getHashCode */
 
 
 
@@ -1274,7 +1269,13 @@ module.exports = g;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "Settings", function() { return /* reexport */ configuration_Settings; });
+__webpack_require__.d(__webpack_exports__, "CachingConfigurationProvider", function() { return /* reexport */ cachingConfigurationProvider; });
+__webpack_require__.d(__webpack_exports__, "SPListConfigurationProvider", function() { return /* reexport */ spListConfigurationProvider; });
 
 // EXTERNAL MODULE: ./node_modules/@pnp/common/index.js + 3 modules
 var common = __webpack_require__(1);
@@ -5338,9 +5339,6 @@ var spListConfigurationProvider_SPListConfigurationProvider = /** @class */ (fun
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./pnpjs-sources/index-config-store.ts
-/* concated harmony reexport Settings */__webpack_require__.d(__webpack_exports__, "Settings", function() { return configuration_Settings; });
-/* concated harmony reexport CachingConfigurationProvider */__webpack_require__.d(__webpack_exports__, "CachingConfigurationProvider", function() { return cachingConfigurationProvider; });
-/* concated harmony reexport SPListConfigurationProvider */__webpack_require__.d(__webpack_exports__, "SPListConfigurationProvider", function() { return spListConfigurationProvider; });
 
 
 

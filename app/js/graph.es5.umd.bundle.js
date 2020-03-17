@@ -733,7 +733,71 @@ module.exports = g;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "Attachment", function() { return /* reexport */ Attachment; });
+__webpack_require__.d(__webpack_exports__, "Attachments", function() { return /* reexport */ Attachments; });
+__webpack_require__.d(__webpack_exports__, "Calendar", function() { return /* reexport */ Calendar; });
+__webpack_require__.d(__webpack_exports__, "Calendars", function() { return /* reexport */ Calendars; });
+__webpack_require__.d(__webpack_exports__, "Event", function() { return /* reexport */ Event; });
+__webpack_require__.d(__webpack_exports__, "Events", function() { return /* reexport */ Events; });
+__webpack_require__.d(__webpack_exports__, "Contact", function() { return /* reexport */ Contact; });
+__webpack_require__.d(__webpack_exports__, "ContactFolder", function() { return /* reexport */ ContactFolder; });
+__webpack_require__.d(__webpack_exports__, "ContactFolders", function() { return /* reexport */ ContactFolders; });
+__webpack_require__.d(__webpack_exports__, "Contacts", function() { return /* reexport */ Contacts; });
+__webpack_require__.d(__webpack_exports__, "Conversation", function() { return /* reexport */ Conversation; });
+__webpack_require__.d(__webpack_exports__, "Conversations", function() { return /* reexport */ Conversations; });
+__webpack_require__.d(__webpack_exports__, "Post", function() { return /* reexport */ Post; });
+__webpack_require__.d(__webpack_exports__, "Posts", function() { return /* reexport */ Posts; });
+__webpack_require__.d(__webpack_exports__, "Senders", function() { return /* reexport */ Senders; });
+__webpack_require__.d(__webpack_exports__, "Thread", function() { return /* reexport */ Thread; });
+__webpack_require__.d(__webpack_exports__, "Threads", function() { return /* reexport */ Threads; });
+__webpack_require__.d(__webpack_exports__, "DirectoryObjectTypes", function() { return /* reexport */ DirectoryObjectTypes; });
+__webpack_require__.d(__webpack_exports__, "DirectoryObject", function() { return /* reexport */ DirectoryObject; });
+__webpack_require__.d(__webpack_exports__, "DirectoryObjects", function() { return /* reexport */ DirectoryObjects; });
+__webpack_require__.d(__webpack_exports__, "Group", function() { return /* reexport */ Group; });
+__webpack_require__.d(__webpack_exports__, "GroupType", function() { return /* reexport */ GroupType; });
+__webpack_require__.d(__webpack_exports__, "Groups", function() { return /* reexport */ Groups; });
+__webpack_require__.d(__webpack_exports__, "Member", function() { return /* reexport */ Member; });
+__webpack_require__.d(__webpack_exports__, "Members", function() { return /* reexport */ Members; });
+__webpack_require__.d(__webpack_exports__, "MailFolder", function() { return /* reexport */ MailFolder; });
+__webpack_require__.d(__webpack_exports__, "MailFolders", function() { return /* reexport */ MailFolders; });
+__webpack_require__.d(__webpack_exports__, "MailboxSettings", function() { return /* reexport */ MailboxSettings; });
+__webpack_require__.d(__webpack_exports__, "Message", function() { return /* reexport */ Message; });
+__webpack_require__.d(__webpack_exports__, "Messages", function() { return /* reexport */ Messages; });
+__webpack_require__.d(__webpack_exports__, "Drive", function() { return /* reexport */ Drive; });
+__webpack_require__.d(__webpack_exports__, "DriveItem", function() { return /* reexport */ DriveItem; });
+__webpack_require__.d(__webpack_exports__, "DriveItems", function() { return /* reexport */ DriveItems; });
+__webpack_require__.d(__webpack_exports__, "Drives", function() { return /* reexport */ Drives; });
+__webpack_require__.d(__webpack_exports__, "Root", function() { return /* reexport */ Root; });
+__webpack_require__.d(__webpack_exports__, "Notebook", function() { return /* reexport */ Notebook; });
+__webpack_require__.d(__webpack_exports__, "Notebooks", function() { return /* reexport */ Notebooks; });
+__webpack_require__.d(__webpack_exports__, "OneNote", function() { return /* reexport */ OneNote; });
+__webpack_require__.d(__webpack_exports__, "Section", function() { return /* reexport */ Section; });
+__webpack_require__.d(__webpack_exports__, "Sections", function() { return /* reexport */ Sections; });
+__webpack_require__.d(__webpack_exports__, "Photo", function() { return /* reexport */ Photo; });
+__webpack_require__.d(__webpack_exports__, "Bucket", function() { return /* reexport */ Bucket; });
+__webpack_require__.d(__webpack_exports__, "Buckets", function() { return /* reexport */ Buckets; });
+__webpack_require__.d(__webpack_exports__, "Plan", function() { return /* reexport */ Plan; });
+__webpack_require__.d(__webpack_exports__, "Planner", function() { return /* reexport */ Planner; });
+__webpack_require__.d(__webpack_exports__, "Plans", function() { return /* reexport */ Plans; });
+__webpack_require__.d(__webpack_exports__, "Task", function() { return /* reexport */ Task; });
+__webpack_require__.d(__webpack_exports__, "Tasks", function() { return /* reexport */ Tasks; });
+__webpack_require__.d(__webpack_exports__, "Subscription", function() { return /* reexport */ Subscription; });
+__webpack_require__.d(__webpack_exports__, "Subscriptions", function() { return /* reexport */ Subscriptions; });
+__webpack_require__.d(__webpack_exports__, "Channel", function() { return /* reexport */ Channel; });
+__webpack_require__.d(__webpack_exports__, "Channels", function() { return /* reexport */ Channels; });
+__webpack_require__.d(__webpack_exports__, "Tab", function() { return /* reexport */ Tab; });
+__webpack_require__.d(__webpack_exports__, "Tabs", function() { return /* reexport */ Tabs; });
+__webpack_require__.d(__webpack_exports__, "Team", function() { return /* reexport */ Team; });
+__webpack_require__.d(__webpack_exports__, "Teams", function() { return /* reexport */ Teams; });
+__webpack_require__.d(__webpack_exports__, "User", function() { return /* reexport */ User; });
+__webpack_require__.d(__webpack_exports__, "Users", function() { return /* reexport */ Users; });
+__webpack_require__.d(__webpack_exports__, "People", function() { return /* reexport */ People; });
+__webpack_require__.d(__webpack_exports__, "graph", function() { return /* reexport */ graph; });
+__webpack_require__.d(__webpack_exports__, "GraphRest", function() { return /* reexport */ rest_GraphRest; });
 
 // EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
 var tslib_es6 = __webpack_require__(0);
@@ -5306,67 +5370,6 @@ Reflect.defineProperty(rest_GraphRest.prototype, "users", {
 
 //# sourceMappingURL=all.js.map
 // CONCATENATED MODULE: ./pnpjs-sources/index-graph.ts
-/* concated harmony reexport Attachment */__webpack_require__.d(__webpack_exports__, "Attachment", function() { return Attachment; });
-/* concated harmony reexport Attachments */__webpack_require__.d(__webpack_exports__, "Attachments", function() { return Attachments; });
-/* concated harmony reexport Calendar */__webpack_require__.d(__webpack_exports__, "Calendar", function() { return Calendar; });
-/* concated harmony reexport Calendars */__webpack_require__.d(__webpack_exports__, "Calendars", function() { return Calendars; });
-/* concated harmony reexport Event */__webpack_require__.d(__webpack_exports__, "Event", function() { return Event; });
-/* concated harmony reexport Events */__webpack_require__.d(__webpack_exports__, "Events", function() { return Events; });
-/* concated harmony reexport Contact */__webpack_require__.d(__webpack_exports__, "Contact", function() { return Contact; });
-/* concated harmony reexport ContactFolder */__webpack_require__.d(__webpack_exports__, "ContactFolder", function() { return ContactFolder; });
-/* concated harmony reexport ContactFolders */__webpack_require__.d(__webpack_exports__, "ContactFolders", function() { return ContactFolders; });
-/* concated harmony reexport Contacts */__webpack_require__.d(__webpack_exports__, "Contacts", function() { return Contacts; });
-/* concated harmony reexport Conversation */__webpack_require__.d(__webpack_exports__, "Conversation", function() { return Conversation; });
-/* concated harmony reexport Conversations */__webpack_require__.d(__webpack_exports__, "Conversations", function() { return Conversations; });
-/* concated harmony reexport Post */__webpack_require__.d(__webpack_exports__, "Post", function() { return Post; });
-/* concated harmony reexport Posts */__webpack_require__.d(__webpack_exports__, "Posts", function() { return Posts; });
-/* concated harmony reexport Senders */__webpack_require__.d(__webpack_exports__, "Senders", function() { return Senders; });
-/* concated harmony reexport Thread */__webpack_require__.d(__webpack_exports__, "Thread", function() { return Thread; });
-/* concated harmony reexport Threads */__webpack_require__.d(__webpack_exports__, "Threads", function() { return Threads; });
-/* concated harmony reexport DirectoryObjectTypes */__webpack_require__.d(__webpack_exports__, "DirectoryObjectTypes", function() { return DirectoryObjectTypes; });
-/* concated harmony reexport DirectoryObject */__webpack_require__.d(__webpack_exports__, "DirectoryObject", function() { return DirectoryObject; });
-/* concated harmony reexport DirectoryObjects */__webpack_require__.d(__webpack_exports__, "DirectoryObjects", function() { return DirectoryObjects; });
-/* concated harmony reexport Group */__webpack_require__.d(__webpack_exports__, "Group", function() { return Group; });
-/* concated harmony reexport GroupType */__webpack_require__.d(__webpack_exports__, "GroupType", function() { return GroupType; });
-/* concated harmony reexport Groups */__webpack_require__.d(__webpack_exports__, "Groups", function() { return Groups; });
-/* concated harmony reexport Member */__webpack_require__.d(__webpack_exports__, "Member", function() { return Member; });
-/* concated harmony reexport Members */__webpack_require__.d(__webpack_exports__, "Members", function() { return Members; });
-/* concated harmony reexport MailFolder */__webpack_require__.d(__webpack_exports__, "MailFolder", function() { return MailFolder; });
-/* concated harmony reexport MailFolders */__webpack_require__.d(__webpack_exports__, "MailFolders", function() { return MailFolders; });
-/* concated harmony reexport MailboxSettings */__webpack_require__.d(__webpack_exports__, "MailboxSettings", function() { return MailboxSettings; });
-/* concated harmony reexport Message */__webpack_require__.d(__webpack_exports__, "Message", function() { return Message; });
-/* concated harmony reexport Messages */__webpack_require__.d(__webpack_exports__, "Messages", function() { return Messages; });
-/* concated harmony reexport Drive */__webpack_require__.d(__webpack_exports__, "Drive", function() { return Drive; });
-/* concated harmony reexport DriveItem */__webpack_require__.d(__webpack_exports__, "DriveItem", function() { return DriveItem; });
-/* concated harmony reexport DriveItems */__webpack_require__.d(__webpack_exports__, "DriveItems", function() { return DriveItems; });
-/* concated harmony reexport Drives */__webpack_require__.d(__webpack_exports__, "Drives", function() { return Drives; });
-/* concated harmony reexport Root */__webpack_require__.d(__webpack_exports__, "Root", function() { return Root; });
-/* concated harmony reexport Notebook */__webpack_require__.d(__webpack_exports__, "Notebook", function() { return Notebook; });
-/* concated harmony reexport Notebooks */__webpack_require__.d(__webpack_exports__, "Notebooks", function() { return Notebooks; });
-/* concated harmony reexport OneNote */__webpack_require__.d(__webpack_exports__, "OneNote", function() { return OneNote; });
-/* concated harmony reexport Section */__webpack_require__.d(__webpack_exports__, "Section", function() { return Section; });
-/* concated harmony reexport Sections */__webpack_require__.d(__webpack_exports__, "Sections", function() { return Sections; });
-/* concated harmony reexport Photo */__webpack_require__.d(__webpack_exports__, "Photo", function() { return Photo; });
-/* concated harmony reexport Bucket */__webpack_require__.d(__webpack_exports__, "Bucket", function() { return Bucket; });
-/* concated harmony reexport Buckets */__webpack_require__.d(__webpack_exports__, "Buckets", function() { return Buckets; });
-/* concated harmony reexport Plan */__webpack_require__.d(__webpack_exports__, "Plan", function() { return Plan; });
-/* concated harmony reexport Planner */__webpack_require__.d(__webpack_exports__, "Planner", function() { return Planner; });
-/* concated harmony reexport Plans */__webpack_require__.d(__webpack_exports__, "Plans", function() { return Plans; });
-/* concated harmony reexport Task */__webpack_require__.d(__webpack_exports__, "Task", function() { return Task; });
-/* concated harmony reexport Tasks */__webpack_require__.d(__webpack_exports__, "Tasks", function() { return Tasks; });
-/* concated harmony reexport Subscription */__webpack_require__.d(__webpack_exports__, "Subscription", function() { return Subscription; });
-/* concated harmony reexport Subscriptions */__webpack_require__.d(__webpack_exports__, "Subscriptions", function() { return Subscriptions; });
-/* concated harmony reexport Channel */__webpack_require__.d(__webpack_exports__, "Channel", function() { return Channel; });
-/* concated harmony reexport Channels */__webpack_require__.d(__webpack_exports__, "Channels", function() { return Channels; });
-/* concated harmony reexport Tab */__webpack_require__.d(__webpack_exports__, "Tab", function() { return Tab; });
-/* concated harmony reexport Tabs */__webpack_require__.d(__webpack_exports__, "Tabs", function() { return Tabs; });
-/* concated harmony reexport Team */__webpack_require__.d(__webpack_exports__, "Team", function() { return Team; });
-/* concated harmony reexport Teams */__webpack_require__.d(__webpack_exports__, "Teams", function() { return Teams; });
-/* concated harmony reexport User */__webpack_require__.d(__webpack_exports__, "User", function() { return User; });
-/* concated harmony reexport Users */__webpack_require__.d(__webpack_exports__, "Users", function() { return Users; });
-/* concated harmony reexport People */__webpack_require__.d(__webpack_exports__, "People", function() { return People; });
-/* concated harmony reexport graph */__webpack_require__.d(__webpack_exports__, "graph", function() { return graph; });
-/* concated harmony reexport GraphRest */__webpack_require__.d(__webpack_exports__, "GraphRest", function() { return rest_GraphRest; });
 
 
 
