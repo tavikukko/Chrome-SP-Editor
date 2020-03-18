@@ -43,7 +43,7 @@ const WebPropertiesNewPanel = () => {
       <PrimaryButton
         onClick={() => {
           if (newItem && newItem.key && newItem.key.length > 0) {
-            addWebProperty(dispatch, newItem)
+            addWebProperty(dispatch, newItem, false)
           }
         }
         }

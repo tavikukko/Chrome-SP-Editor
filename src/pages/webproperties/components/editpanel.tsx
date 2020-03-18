@@ -17,6 +17,7 @@ import { IRootState } from '../../../store'
 // mport { updateScriptLink } from '../../../store/scriptlinks/async-actions'
 import { setConfirmEditDialog, setEditPanel, setSelectedItem } from '../../../store/webproperties/actions'
 import { IWebProperty } from '../../../store/webproperties/types'
+import { addWebProperty } from '../chrome/chrome-actions'
 
 const WebPropertiesEditPanel = () => {
 
@@ -74,14 +75,17 @@ const WebPropertiesEditPanel = () => {
             rows={5}
             autoAdjustHeight
             onChange={(event, newValue?: string) => {
-              setEditItem({ ...selectedItem, value: newValue ? newValue : '' })
+              dispatch(setSelectedItem({ ...selectedItem, value: newValue ? newValue : '' }))
             }}
           />
         <Toggle
           label='Indexed'
-          defaultChecked={selectedItem.indexed}
+          checked={selectedItem.indexed}
           onText='Yes'
           offText='No'
+          onChange={(event, checked?: boolean) => {
+            dispatch(setSelectedItem({ ...selectedItem, indexed: checked ? true : false }))
+          }}
         />
 
         </Stack>
@@ -92,16 +96,16 @@ const WebPropertiesEditPanel = () => {
         dialogContentProps={{
           showCloseButton: true,
           type: DialogType.normal,
-          title: 'Edit ScriptLink',
+          title: 'Edit Web Property',
           closeButtonAriaLabel: 'Cancel',
-          subText: `Sure you want to edit the selected scriptlink?`,
+          subText: `Sure you want to edit the selected web property?`,
         }}
         modalProps={{
           isDarkOverlay: isDark,
         }}
       >
         <DialogFooter>
-          <PrimaryButton onClick={() => {/*updateScriptLink(dispatch, selectedItem!)*/ }} text='Update' />
+          <PrimaryButton onClick={() => { addWebProperty(dispatch, selectedItem!, true) }} text='Update' />
           <DefaultButton onClick={() => { dispatch(setConfirmEditDialog(true)) }} text='Cancel' />
         </DialogFooter>
       </Dialog>

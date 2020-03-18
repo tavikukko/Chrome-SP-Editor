@@ -76,12 +76,18 @@ export async function getAllWebProperties(dispatch: Dispatch<WebPropertiesAction
   chrome.devtools.inspectedWindow.eval(script)
 }
 
-export async function addWebProperty(dispatch: Dispatch<WebPropertiesActions | HomeActions>, payload: IWebProperty) {
+export async function addWebProperty(dispatch: Dispatch<WebPropertiesActions | HomeActions>, payload: IWebProperty, update: boolean) {
 
   // show loading spinner
   dispatch(rootActions.setLoading(true))
   // close panel
-  dispatch(actions.setNewPanel(false));
+  if (update) {
+    dispatch(actions.setConfirmEditDialog(true))
+    dispatch(actions.setEditPanel(false))
+  } else {
+    dispatch(actions.setNewPanel(false))
+  }
+
   // add listener to receive the results from inspected page
   (window as any).port.onMessage.addListener(async function addWebPropertyCallback(message: any) {
 
@@ -105,7 +111,7 @@ export async function addWebProperty(dispatch: Dispatch<WebPropertiesActions | H
           // set success message
           dispatch(rootActions.setAppMessage({
             showMessage: true,
-            message: 'Web Property added succesfully!',
+            message: !update ? 'Web Property added succesfully!' : 'Web Property updated succesfully!',
             color: MessageBarColors.success,
           }))
         } else {
