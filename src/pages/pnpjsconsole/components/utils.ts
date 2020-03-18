@@ -139,7 +139,7 @@ export const fixImports = (lines: string[], ecode: string[]) => {
       mod = line.indexOf('@pnp/sp-clientsvc') > -1 ? 7 : mod
       mod = line.indexOf('@pnp/sp-taxonomy') > -1 ? 9 : mod
       mod = line.indexOf('@pnp/adaljsclient') > -1 ? 10 : mod
-      mod = line.indexOf('@pnp/sp') > -1 ? 8 : mod
+      mod = mod === -1 && line.indexOf('@pnp/sp') > -1 ? 8 : mod
       prepnp.push(`var ${lineRe![1]} = modules[${mod}];`)
     }
   })

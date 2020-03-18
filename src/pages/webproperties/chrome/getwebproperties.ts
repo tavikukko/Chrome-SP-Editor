@@ -56,7 +56,7 @@ export function getWebProperties(...args: any) {
 
       const allProps = []
       for (let key in result) {
-        if (key && key !== '__metadata' && key !== 'odata.editLink' && key !== 'odata.id' && key !== 'odata.type') {
+        if (key && key !== 'odata.metadata' && key !== '__metadata' && key !== 'odata.editLink' && key !== 'odata.id' && key !== 'odata.type') {
 
           const re = /_x.*?_/g
           const found = key.match(re)

@@ -6,7 +6,7 @@ import { setConfirmRemoveDialog, setNewPanel, setSearchString } from '../../../s
 
 const WebPropertiesCommands = () => {
 
-  const { selectedItems, selectedItem, webproperties } = useSelector((state: IRootState) => state.webProperties)
+  const { selectedItems, webproperties } = useSelector((state: IRootState) => state.webProperties)
   const dispatch = useDispatch()
 
   // clear search string when unmounting
@@ -41,7 +41,7 @@ const WebPropertiesCommands = () => {
           key: 'deleteRow',
           text: 'Remove',
           iconProps: { iconName: 'Delete' },
-          disabled:  selectedItems.length < 1 ,
+          disabled: selectedItems.length !== 1 ,
           onClick: () => {
             dispatch(setConfirmRemoveDialog(false))
           },

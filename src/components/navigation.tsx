@@ -93,11 +93,13 @@ export const FabricNav = withRouter(({ history }: RouteComponentProps) => {
                   name: 'List properties',
                   url: '/listproperties',
                   key: 'key6',
+                  disabled: true,
                 },
                 {
                   name: 'Webhooks',
                   url: '/webhooks',
                   key: 'key7',
+                  disabled: true,
                 },
                 {
                   name: 'Files',

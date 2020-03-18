@@ -7,7 +7,7 @@ import {
    TextField,
    Toggle,
 } from 'office-ui-fabric-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setNewPanel } from '../../../store/webproperties/actions'
@@ -29,6 +29,14 @@ const WebPropertiesNewPanel = () => {
   const { isDark } = useSelector((state: IRootState) => state.home)
   const panelOverlayProps: IOverlayProps = { isDarkThemed: isDark }
 
+  useEffect(() => {
+    setNewItem({
+      indexed: false,
+      key: '',
+      value: '',
+    })
+  }, [newpanel])
+
   const _onRenderNewFooterContent = () => {
 
     return (
@@ -41,7 +49,6 @@ const WebPropertiesNewPanel = () => {
         }
         style={{ marginRight: '8px' }}
         text={'Add'}
-        // disabled={!valid}
       />
     )
   }
@@ -81,11 +88,11 @@ const WebPropertiesNewPanel = () => {
         />
         <Toggle
           label='Indexed'
-          defaultChecked={false}
+          checked={newItem.indexed}
           onText='Yes'
           offText='No'
           onChange={(event, checked?: boolean) =>
-            setNewItem({ ...newItem, indexed: checked ? checked : false })
+            setNewItem({ ...newItem, indexed: checked ? true : false })
           }
         />
       </Stack >

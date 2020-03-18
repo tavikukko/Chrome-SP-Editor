@@ -10,10 +10,7 @@ export function createWebProperty(...args: any) {
   const functionName = params[0].name
   const key = params[1]
   const value = params[2]
-  const indexed = params[3]
-
-  console.log(key, value, indexed);
-
+  const indexed = params[3];
   /* import pnp */
   (window as any).SystemJS.import(((window as any).speditorpnp)).then(($pnp: typeof pnp) => {
     /*** setup pnp ***/
@@ -85,10 +82,77 @@ export function createWebProperty(...args: any) {
           },
           body: payload,
         })
-          .then((r) => { return r.json()})
           .then((r) => {
-            console.log(r)
-            postMessage()
+            if (indexed) {
+              $pnp.sp.web.allProperties.select('vti_indexedpropertykeys')().then(result => {
+
+                const allProps = []
+                for (let prop in result) {
+                  if (prop && prop !== 'odata.metadata' && prop !== '__metadata' && prop !== 'odata.editLink' && prop !== 'odata.id' && prop !== 'odata.type') {
+
+                    const re = /_x.*?_/g
+                    const found = prop.match(re)
+                    const origKey = prop
+
+                    if (found !== null)
+                      for (const g in found) {
+                        if (g) {
+                          const unesc = found[g].replace('_x', '%u').replace('_', '')
+                          prop = prop.replace(found[g], unescape(unesc))
+                        }
+                      }
+                    allProps.push({ key: prop.replace(/OData_/g, ''), value: result[origKey] })
+                  }
+                }
+
+                const bytes = []
+                for (let i = 0; i < key.length; ++i) {
+                  bytes.push(key.charCodeAt(i))
+                  bytes.push(0)
+                }
+
+                const b64encoded = window.btoa(String.fromCharCode.apply(null, bytes))
+                let newIndexValue = ''
+
+                const propertyBag = allProps.find((el) => el.key === 'vti_indexedpropertykeys')
+
+                // tslint:disable-next-line:prefer-conditional-expression
+                if (propertyBag && propertyBag.value
+                  && propertyBag.value.length > 0) {
+                  newIndexValue = propertyBag.value.indexOf(`${b64encoded}|`) === -1 ? `${propertyBag.value}${b64encoded}|` : propertyBag.value
+                } else {
+                  newIndexValue = `${b64encoded}|`
+                }
+
+                const payload2 = `
+                <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
+                  <Actions>
+                    <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
+                      <Parameters>
+                        <Parameter Type="String">vti_indexedpropertykeys</Parameter>
+                        <Parameter Type="String">${newIndexValue}</Parameter>
+                      </Parameters>
+                    </Method>
+                    <Method Name="Update" Id="10" ObjectPathId="2" />
+                  </Actions>
+                  <ObjectPaths>
+                    <Identity Id="2" Name="740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:${siteid}:web:${webid}" />
+                    <Property Id="4" ParentId="2" Name="AllProperties" />
+                  </ObjectPaths>
+                </Request>`
+
+                client.post(endpoint, {
+                  headers: {
+                    Accept: '*/*',
+                    'Content-Type': 'text/xml;charset="UTF-8"',
+                    'X-Requested-With': 'XMLHttpRequest',
+                  },
+                  body: payload2,
+                }).then(postMessage)
+              })
+            } else {
+              postMessage()
+            }
           })
       })
     })
