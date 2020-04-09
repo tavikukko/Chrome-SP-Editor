@@ -2,6 +2,7 @@ import { IonContent, IonPage } from '@ionic/react'
 import React from 'react'
 import Header from '../../components/header'
 import WebhooksCommands from './components/commands'
+import WebhooksNewPanel from './components/newpanel'
 import WebHooksList from './components/webhookslist'
 
 const Webhooks = () => {
@@ -17,7 +18,7 @@ const Webhooks = () => {
         {/* Panel to edit webhook */}
 
         {/* Panel to create new webhook */}
-
+        <WebhooksNewPanel />
       </IonContent>
     </IonPage>
   )

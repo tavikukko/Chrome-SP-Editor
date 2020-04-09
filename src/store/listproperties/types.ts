@@ -4,8 +4,10 @@ import * as actions from './actions'
 export type ListPropertiesActions = ActionType<typeof actions>
 
 export interface IListProperty {
-  Key: string
-  Value: string
+  key: string
+  value: string
+  listId: string
+  indexed: boolean
 }
 
 export interface IListPropertyList {
@@ -24,6 +26,7 @@ export interface IListPropertiesState {
   selectedItem: IListProperty | undefined,
   confirmremove: boolean,
   confirmedit: boolean,
+  searchstring: string,
 }
 
 export enum Constants {
@@ -39,4 +42,5 @@ export enum Constants {
   LP_SELECTED_ITEMS = 'LP_SELECTED_ITEMS',
   LP_SET_CONFIRM_REMOVE_DIALOG = 'LP_SET_CONFIRM_REMOVE_DIALOG',
   LP_SET_CONFIRM_EDIT_DIALOG = 'LP_SET_CONFIRM_EDIT_DIALOG',
+  LP_SET_SEARCH_STRING = 'LP_SET_SEARCH_STRING',
 }

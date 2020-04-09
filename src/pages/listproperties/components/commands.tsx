@@ -2,11 +2,11 @@ import { CommandBar, Dropdown, IDropdownOption, IStackTokens, ResponsiveMode, Se
 import React, { FormEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
-import { setSelectedList } from '../../../store/listproperties/actions'
+import { setConfirmRemoveDialog, setNewPanel, setSearchString, setSelectedList } from '../../../store/listproperties/actions'
 import { getAllListProperties } from '../chrome/chrome-actions'
 
 const ListPropertiesCommands = () => {
-  const { lists, selectedList } = useSelector((state: IRootState) => state.listProperties)
+  const { lists, selectedList, selectedItems } = useSelector((state: IRootState) => state.listProperties)
   const dispatch = useDispatch()
 
   return (
@@ -24,8 +24,10 @@ const ListPropertiesCommands = () => {
             iconProps: {
               iconName: 'Add',
             },
+            disabled: !selectedList,
             ariaLabel: 'New',
             onClick: () => {
+              dispatch(setNewPanel(true))
             },
           },
           {
@@ -33,7 +35,9 @@ const ListPropertiesCommands = () => {
             text: 'Remove',
             iconProps: { iconName: 'Delete' },
             onClick: () => {
+              dispatch(setConfirmRemoveDialog(false))
             },
+            disabled: selectedItems.length !== 1 ,
           },
           {
             key: 'listSelector',
@@ -53,15 +57,13 @@ const ListPropertiesCommands = () => {
           },
           {
             key: 'search',
-            onClick: () => {
-              // filter web properties
-            },
             onRender: () => <SearchBox
               placeholder='Filter properties'
               onFocus={() => console.log('onFocus called')}
               onBlur={() => console.log('onBlur called')}
               iconProps={{ iconName: 'Filter' }}
               styles={{ root: { width: 300, paddingLeft: '6px' } }}
+              onChange={(ev, value) => dispatch(setSearchString(value ? value : ''))}
             />,
           },
         ]}

@@ -54,3 +54,9 @@ export function setConfirmRemoveDialog(confirmremove: boolean) {
     confirmremove,
   })
 }
+
+export function setSearchString(searchstring: string) {
+  return action(Constants.LP_SET_SEARCH_STRING, {
+    searchstring,
+  })
+}

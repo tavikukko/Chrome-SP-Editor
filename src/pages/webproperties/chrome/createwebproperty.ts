@@ -116,18 +116,21 @@ export function createWebProperty(...args: any) {
 
               const propertyBag = allProps.find((el) => el.key === 'vti_indexedpropertykeys')
 
-              if (indexed) {
-                newIndexValue = propertyBag && propertyBag.value && propertyBag.value.length > 0 ?
-                  propertyBag.value.indexOf(`${b64encoded}|`) === -1 ? `${propertyBag.value}${b64encoded}|` : propertyBag.value
-                  : newIndexValue = `${b64encoded}|`
+              if (!propertyBag && !indexed) {
+                console.log('not indexing the property')
+                postMessage()
               } else {
-                if (propertyBag && propertyBag.value && propertyBag.value.length > 0) {
-                  newIndexValue = propertyBag.value
-                  newIndexValue = newIndexValue.replace(b64encoded + '|', '')
+                if (indexed) {
+                  newIndexValue = propertyBag && propertyBag.value && propertyBag.value.length > 0 ?
+                    propertyBag.value.indexOf(`${b64encoded}|`) === -1 ? `${propertyBag.value}${b64encoded}|` : propertyBag.value
+                    : newIndexValue = `${b64encoded}|`
+                } else {
+                  if (propertyBag && propertyBag.value && propertyBag.value.length > 0) {
+                    newIndexValue = propertyBag.value
+                    newIndexValue = newIndexValue.replace(b64encoded + '|', '')
+                  }
                 }
-              }
-
-              const payload2 = `
+                const payload2 = `
                 <Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="SPEditor">
                   <Actions>
                     <Method Name="SetFieldValue" Id="9" ObjectPathId="4">
@@ -144,14 +147,15 @@ export function createWebProperty(...args: any) {
                   </ObjectPaths>
                 </Request>`
 
-              client.post(endpoint, {
-                headers: {
-                  Accept: '*/*',
-                  'Content-Type': 'text/xml;charset="UTF-8"',
-                  'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: payload2,
-              }).then(postMessage)
+                client.post(endpoint, {
+                  headers: {
+                    Accept: '*/*',
+                    'Content-Type': 'text/xml;charset="UTF-8"',
+                    'X-Requested-With': 'XMLHttpRequest',
+                  },
+                  body: payload2,
+                }).then(postMessage)
+              }
             })
             /*  } else {
                 postMessage()

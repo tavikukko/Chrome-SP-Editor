@@ -4,7 +4,7 @@ import { HomeActions, MessageBarColors } from '../../../store/home/types'
 import * as actions from '../../../store/webproperties/actions'
 import { IWebProperty, WebPropertiesActions } from '../../../store/webproperties/types'
 import { exescript } from '../../../utilities/chromecommon'
-import { delay, getPnpjsPath, getSystemjsPath } from '../../../utilities/utilities'
+import { getPnpjsPath, getSystemjsPath, spDelay } from '../../../utilities/utilities'
 import { createWebProperty } from './createwebproperty'
 import { deleteWebProperties } from './deletewebproperties'
 import { getWebProperties } from './getwebproperties'
@@ -105,7 +105,7 @@ export async function addWebProperty(dispatch: Dispatch<WebPropertiesActions | H
         if (message.success) {
           /* on success */
           // add small delay just be sure SP can process previous requests
-          await delay(500)
+          await spDelay(500)
           // load all scriptlinks
           getAllWebProperties(dispatch)
           // set success message
@@ -159,7 +159,7 @@ export async function removeWebProperties(dispatch: Dispatch<WebPropertiesAction
         if (message.success) {
           /* on success */
           // add small delay just be sure SP can process previous requests
-          await delay(500)
+          await spDelay(500)
           // load all scriptlinks
           getAllWebProperties(dispatch)
           // set success message

@@ -4,7 +4,7 @@ import { HomeActions, MessageBarColors } from '../../../store/home/types'
 import * as actions from '../../../store/scriptlinks/actions'
 import { INewScriptLink, IScriptLink, ScriptLinksActions } from '../../../store/scriptlinks/types'
 import { exescript } from '../../../utilities/chromecommon'
-import { delay, getPnpjsPath, getSystemjsPath } from '../../../utilities/utilities'
+import { getPnpjsPath, getSystemjsPath, spDelay } from '../../../utilities/utilities'
 import { createCustomAction } from './createscriptlink'
 import { deleteCustomActions } from './deletescriptlinks'
 import { getCustomActions } from './getscriptlinks'
@@ -93,7 +93,7 @@ export async function addScriptLink(dispatch: Dispatch<ScriptLinksActions | Home
         if (message.success) {
           /* on success */
           // add small delay just be sure SP can process previous requests
-          await delay(500)
+          await spDelay(500)
           // load all scriptlinks
           getAllScriptLinks(dispatch)
           // set success message
@@ -149,7 +149,7 @@ export async function updateScriptLink(dispatch: Dispatch<ScriptLinksActions | H
         if (message.success) {
           /* on success */
           // add small delay just be sure SP can process previous requests
-          await delay(500)
+          await spDelay(500)
           // load all scriptlinks
           getAllScriptLinks(dispatch)
           // set success message
@@ -203,7 +203,7 @@ export async function deleteScriptLinks(dispatch: Dispatch<ScriptLinksActions | 
         if (message.success) {
           /* on success */
           // add small delay just be sure SP can process previous requests
-          await delay(500)
+          await spDelay(500)
           // load all scriptlinks
           getAllScriptLinks(dispatch)
           // set success message
@@ -257,7 +257,7 @@ export async function cacheScriptLinks(dispatch: Dispatch<ScriptLinksActions | H
         if (message.success) {
           /* on success */
           // add small delay just be sure SP can process previous requests
-          await delay(500)
+          await spDelay(500)
           // load all scriptlinks
           getAllScriptLinks(dispatch)
           // set success message

@@ -7,6 +7,7 @@ export function getListProperties(...args: any) {
 
   /* get parameters */
   const params = args
+  const listId = params[1]
   const functionName = params[0].name;
 
   /* import pnp */
@@ -46,9 +47,8 @@ export function getListProperties(...args: any) {
       }), '*')
     }
 
-    $pnp.sp.web.lists.getById(params[1]).expand('RootFolder/Properties')
+    $pnp.sp.web.lists.getById(listId).expand('RootFolder/Properties')
       .select('RootFolder/Properties')().then(function (result: any) {
-
         const compare = (a: any, b: any) => {
           return (a.key.toLowerCase() < b.key.toLowerCase()) ? -1
             : (a.key.toLowerCase() > b.key.toLowerCase()) ? 1
@@ -70,7 +70,7 @@ export function getListProperties(...args: any) {
                   key = key.replace(found[g], unescape(unesc))
                 }
               }
-            allProps.push({ key: key.replace(/OData_/g, ''), value: result.RootFolder.Properties[origKey] })
+            allProps.push({ key: key.replace(/OData_/g, ''), value: result.RootFolder.Properties[origKey], listId })
           }
         }
 
