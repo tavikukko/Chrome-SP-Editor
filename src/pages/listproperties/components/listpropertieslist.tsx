@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../../store'
 import { setAllListProperties, setConfirmRemoveDialog, setEditPanel, setSearchString, setSelectedItem, setSelectedItems, setSelectedList } from '../../../store/listproperties/actions'
 import { IListProperty } from '../../../store/listproperties/types'
-import { getAllListProperties, getAllLists, removeListProperties } from '../chrome/chrome-actions'
+import { getAllLists, removeListProperties } from '../chrome/chrome-actions'
 
 const ListPropertiesList = () => {
 
