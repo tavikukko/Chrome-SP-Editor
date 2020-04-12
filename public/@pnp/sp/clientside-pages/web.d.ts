@@ -1,8 +1,8 @@
-import { IClientsidePageComponent, IClientsidePage, ClientsidePageLayoutType } from "./types";
+import { IClientsidePageComponent, IClientsidePage, ClientsidePageLayoutType, PromotedState } from "./types";
 declare module "../webs/types" {
     interface _Web {
         getClientsideWebParts(): Promise<IClientsidePageComponent[]>;
-        addClientsidePage(pageName: string, title?: string, libraryTitle?: string): Promise<IClientsidePage>;
+        addClientsidePage(pageName: string, title?: string, libraryTitle?: string, promotedState?: PromotedState): Promise<IClientsidePage>;
         loadClientsidePage(path: string): Promise<IClientsidePage>;
     }
     interface IWeb {
@@ -16,7 +16,7 @@ declare module "../webs/types" {
          * @param pageName Name of the new page
          * @param title Display title of the new page
          */
-        addClientsidePage(pageName: string, title?: string, PageLayoutType?: ClientsidePageLayoutType): Promise<IClientsidePage>;
+        addClientsidePage(pageName: string, title?: string, PageLayoutType?: ClientsidePageLayoutType, promotedState?: PromotedState): Promise<IClientsidePage>;
         /**
          * Loads a page from the provided server relative path to the file
          *

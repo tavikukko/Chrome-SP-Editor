@@ -1,6 +1,6 @@
 /**
  * @license
- * v1.3.10
+ * v1.3.11
  * MIT (https://github.com/pnp/pnpjs/blob/master/LICENSE)
  * Copyright (c) 2020 Microsoft
  * docs: https://pnp.github.io/pnpjs/
@@ -5814,7 +5814,7 @@ var SPBatch = /** @class */ (function (_super) {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.10");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.11");
                 }
                 // write headers into batch body
                 headers.forEach(function (value, name) {
@@ -5985,9 +5985,11 @@ var ClientSidePage = /** @class */ (function (_super) {
      * @param pageName Filename of the page, such as "page"
      * @param title The display title of the page
      * @param pageLayoutType Layout type of the page to use
+     * @param promotedState Allows you to set the promoted state of a page when creating
      */
-    ClientSidePage.create = function (web, pageName, title, pageLayoutType) {
+    ClientSidePage.create = function (web, pageName, title, pageLayoutType, promotedState) {
         if (pageLayoutType === void 0) { pageLayoutType = "Article"; }
+        if (promotedState === void 0) { promotedState = 0; }
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
             var pageInitData, newPage;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
@@ -5999,6 +6001,7 @@ var ClientSidePage = /** @class */ (function (_super) {
                         return [4 /*yield*/, ClientSidePage.initFrom(web, "_api/sitepages/pages").postCore({
                                 body: Object(_pnp_common__WEBPACK_IMPORTED_MODULE_2__["jsS"])(Object.assign(Object(_utils_metadata__WEBPACK_IMPORTED_MODULE_4__["metadata"])("SP.Publishing.SitePage"), {
                                     PageLayoutType: pageLayoutType,
+                                    PromotedState: promotedState,
                                 })),
                             })];
                     case 1:
@@ -6449,14 +6452,16 @@ var ClientSidePage = /** @class */ (function (_super) {
      * @param pageName The file name of the new page
      * @param title The title of the new page
      * @param publish If true the page will be published
+     * @param promotedState Allows you to set the promoted state of a page when making a copy
      */
-    ClientSidePage.prototype.copyPage = function (web, pageName, title, publish) {
+    ClientSidePage.prototype.copyPage = function (web, pageName, title, publish, promotedState) {
         if (publish === void 0) { publish = true; }
+        if (promotedState === void 0) { promotedState = 0; }
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
             var page;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, ClientSidePage.create(web, pageName, title, this.pageLayout)];
+                    case 0: return [4 /*yield*/, ClientSidePage.create(web, pageName, title, this.pageLayout, promotedState)];
                     case 1:
                         page = _a.sent();
                         page.setControls(this.getControls());
@@ -6631,7 +6636,8 @@ var ClientSidePage = /** @class */ (function (_super) {
                 layoutIndex = positionData.layoutIndex;
             }
         }
-        var section = this.getOrCreateSection(zoneIndex, layoutIndex, control.data.emphasis.zoneEmphasis || 0);
+        var zoneEmphasis = (control.data && control.data.emphasis && control.data.emphasis.zoneEmphasis) ? control.data.emphasis.zoneEmphasis : 0;
+        var section = this.getOrCreateSection(zoneIndex, layoutIndex, zoneEmphasis);
         var columns = section.columns.filter(function (c) { return c.order === sectionIndex; });
         if (columns.length < 1) {
             column = section.addColumn(sectionFactor, layoutIndex);
@@ -10414,11 +10420,11 @@ var SPHttpClient = /** @class */ (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.10");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-1.3.11");
         }
         if (!headers.has("User-Agent")) {
             // this marks the requests for understanding by the service
-            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.10");
+            headers.append("User-Agent", "NONISV|SharePointPnP|PnPCoreJS/1.3.11");
         }
         opts = Object(_pnp_common__WEBPACK_IMPORTED_MODULE_1__["extend"])(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {

@@ -4,6 +4,7 @@ declare module "../webs/types" {
         getFileByServerRelativeUrl(fileRelativeUrl: string): IFile;
         getFileByServerRelativePath(fileRelativeUrl: string): IFile;
         getFileById(uniqueId: string): IFile;
+        getFileByUrl(fileUrl: string): IFile;
     }
     interface IWeb {
         /**
@@ -24,6 +25,12 @@ declare module "../webs/types" {
          * @param uniqueId The UniqueId of the file
          */
         getFileById(uniqueId: string): IFile;
+        /**
+         * Gets a file from a sharing link or absolute url
+         *
+         * @param fileUrl Absolute url of the file to get
+         */
+        getFileByUrl(fileUrl: string): IFile;
     }
 }
 //# sourceMappingURL=web.d.ts.map

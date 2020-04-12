@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -99,26 +99,532 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __extends; });
-/* unused harmony export __assign */
-/* unused harmony export __rest */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __decorate; });
-/* unused harmony export __param */
-/* unused harmony export __metadata */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __awaiter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __generator; });
-/* unused harmony export __exportStar */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __values; });
-/* unused harmony export __read */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __spread; });
-/* unused harmony export __spreadArrays */
-/* unused harmony export __await */
-/* unused harmony export __asyncGenerator */
-/* unused harmony export __asyncDelegator */
-/* unused harmony export __asyncValues */
-/* unused harmony export __makeTemplateObject */
-/* unused harmony export __importStar */
-/* unused harmony export __importDefault */
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return safeGlobal; });
+// export either window or global
+var safeGlobal = typeof global === "undefined" ? window : global;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(1)))
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "App", function() { return /* reexport */ App; });
+__webpack_require__.d(__webpack_exports__, "AppCatalog", function() { return /* reexport */ AppCatalog; });
+__webpack_require__.d(__webpack_exports__, "Attachment", function() { return /* reexport */ Attachment; });
+__webpack_require__.d(__webpack_exports__, "Attachments", function() { return /* reexport */ Attachments; });
+__webpack_require__.d(__webpack_exports__, "ClientsidePageFromFile", function() { return /* reexport */ ClientsidePageFromFile; });
+__webpack_require__.d(__webpack_exports__, "CreateClientsidePage", function() { return /* reexport */ CreateClientsidePage; });
+__webpack_require__.d(__webpack_exports__, "CanvasColumn", function() { return /* reexport */ types_CanvasColumn; });
+__webpack_require__.d(__webpack_exports__, "CanvasSection", function() { return /* reexport */ types_CanvasSection; });
+__webpack_require__.d(__webpack_exports__, "ClientsideText", function() { return /* reexport */ types_ClientsideText; });
+__webpack_require__.d(__webpack_exports__, "ClientsideWebpart", function() { return /* reexport */ types_ClientsideWebpart; });
+__webpack_require__.d(__webpack_exports__, "ColumnControl", function() { return /* reexport */ types_ColumnControl; });
+__webpack_require__.d(__webpack_exports__, "PromotedState", function() { return /* reexport */ PromotedState; });
+__webpack_require__.d(__webpack_exports__, "Comment", function() { return /* reexport */ Comment; });
+__webpack_require__.d(__webpack_exports__, "Comments", function() { return /* reexport */ Comments; });
+__webpack_require__.d(__webpack_exports__, "Replies", function() { return /* reexport */ Replies; });
+__webpack_require__.d(__webpack_exports__, "ContentType", function() { return /* reexport */ ContentType; });
+__webpack_require__.d(__webpack_exports__, "ContentTypes", function() { return /* reexport */ ContentTypes; });
+__webpack_require__.d(__webpack_exports__, "FieldLink", function() { return /* reexport */ FieldLink; });
+__webpack_require__.d(__webpack_exports__, "FieldLinks", function() { return /* reexport */ FieldLinks; });
+__webpack_require__.d(__webpack_exports__, "Feature", function() { return /* reexport */ Feature; });
+__webpack_require__.d(__webpack_exports__, "Features", function() { return /* reexport */ Features; });
+__webpack_require__.d(__webpack_exports__, "Fields", function() { return /* reexport */ Fields; });
+__webpack_require__.d(__webpack_exports__, "Field", function() { return /* reexport */ Field; });
+__webpack_require__.d(__webpack_exports__, "AddFieldOptions", function() { return /* reexport */ AddFieldOptions; });
+__webpack_require__.d(__webpack_exports__, "CalendarType", function() { return /* reexport */ CalendarType; });
+__webpack_require__.d(__webpack_exports__, "ChoiceFieldFormatType", function() { return /* reexport */ ChoiceFieldFormatType; });
+__webpack_require__.d(__webpack_exports__, "DateTimeFieldFormatType", function() { return /* reexport */ DateTimeFieldFormatType; });
+__webpack_require__.d(__webpack_exports__, "DateTimeFieldFriendlyFormatType", function() { return /* reexport */ DateTimeFieldFriendlyFormatType; });
+__webpack_require__.d(__webpack_exports__, "FieldTypes", function() { return /* reexport */ FieldTypes; });
+__webpack_require__.d(__webpack_exports__, "FieldUserSelectionMode", function() { return /* reexport */ FieldUserSelectionMode; });
+__webpack_require__.d(__webpack_exports__, "UrlFieldFormatType", function() { return /* reexport */ UrlFieldFormatType; });
+__webpack_require__.d(__webpack_exports__, "File", function() { return /* reexport */ File; });
+__webpack_require__.d(__webpack_exports__, "Files", function() { return /* reexport */ Files; });
+__webpack_require__.d(__webpack_exports__, "CheckinType", function() { return /* reexport */ CheckinType; });
+__webpack_require__.d(__webpack_exports__, "MoveOperations", function() { return /* reexport */ MoveOperations; });
+__webpack_require__.d(__webpack_exports__, "TemplateFileType", function() { return /* reexport */ TemplateFileType; });
+__webpack_require__.d(__webpack_exports__, "Version", function() { return /* reexport */ Version; });
+__webpack_require__.d(__webpack_exports__, "Versions", function() { return /* reexport */ Versions; });
+__webpack_require__.d(__webpack_exports__, "Folder", function() { return /* reexport */ Folder; });
+__webpack_require__.d(__webpack_exports__, "Folders", function() { return /* reexport */ Folders; });
+__webpack_require__.d(__webpack_exports__, "Form", function() { return /* reexport */ Form; });
+__webpack_require__.d(__webpack_exports__, "Forms", function() { return /* reexport */ Forms; });
+__webpack_require__.d(__webpack_exports__, "HubSite", function() { return /* reexport */ HubSite; });
+__webpack_require__.d(__webpack_exports__, "HubSites", function() { return /* reexport */ HubSites; });
+__webpack_require__.d(__webpack_exports__, "Item", function() { return /* reexport */ Item; });
+__webpack_require__.d(__webpack_exports__, "Items", function() { return /* reexport */ Items; });
+__webpack_require__.d(__webpack_exports__, "ItemVersion", function() { return /* reexport */ ItemVersion; });
+__webpack_require__.d(__webpack_exports__, "ItemVersions", function() { return /* reexport */ ItemVersions; });
+__webpack_require__.d(__webpack_exports__, "PagedItemCollection", function() { return /* reexport */ types_PagedItemCollection; });
+__webpack_require__.d(__webpack_exports__, "List", function() { return /* reexport */ List; });
+__webpack_require__.d(__webpack_exports__, "Lists", function() { return /* reexport */ Lists; });
+__webpack_require__.d(__webpack_exports__, "ControlMode", function() { return /* reexport */ ControlMode; });
+__webpack_require__.d(__webpack_exports__, "RenderListDataOptions", function() { return /* reexport */ RenderListDataOptions; });
+__webpack_require__.d(__webpack_exports__, "Navigation", function() { return /* reexport */ Navigation; });
+__webpack_require__.d(__webpack_exports__, "NavigationNode", function() { return /* reexport */ NavigationNode; });
+__webpack_require__.d(__webpack_exports__, "NavigationNodes", function() { return /* reexport */ NavigationNodes; });
+__webpack_require__.d(__webpack_exports__, "NavigationService", function() { return /* reexport */ NavigationService; });
+__webpack_require__.d(__webpack_exports__, "spODataEntity", function() { return /* reexport */ spODataEntity; });
+__webpack_require__.d(__webpack_exports__, "spODataEntityArray", function() { return /* reexport */ spODataEntityArray; });
+__webpack_require__.d(__webpack_exports__, "Profiles", function() { return /* reexport */ Profiles; });
+__webpack_require__.d(__webpack_exports__, "UrlZone", function() { return /* reexport */ UrlZone; });
+__webpack_require__.d(__webpack_exports__, "RegionalSettings", function() { return /* reexport */ RegionalSettings; });
+__webpack_require__.d(__webpack_exports__, "TimeZone", function() { return /* reexport */ TimeZone; });
+__webpack_require__.d(__webpack_exports__, "TimeZones", function() { return /* reexport */ TimeZones; });
+__webpack_require__.d(__webpack_exports__, "RelatedItemManager", function() { return /* reexport */ RelatedItemManager; });
+__webpack_require__.d(__webpack_exports__, "SortDirection", function() { return /* reexport */ SortDirection; });
+__webpack_require__.d(__webpack_exports__, "ReorderingRuleMatchType", function() { return /* reexport */ ReorderingRuleMatchType; });
+__webpack_require__.d(__webpack_exports__, "QueryPropertyValueType", function() { return /* reexport */ QueryPropertyValueType; });
+__webpack_require__.d(__webpack_exports__, "SearchBuiltInSourceId", function() { return /* reexport */ SearchBuiltInSourceId; });
+__webpack_require__.d(__webpack_exports__, "SearchQueryBuilder", function() { return /* reexport */ SearchQueryBuilder; });
+__webpack_require__.d(__webpack_exports__, "SearchResults", function() { return /* reexport */ query_SearchResults; });
+__webpack_require__.d(__webpack_exports__, "Search", function() { return /* reexport */ Search; });
+__webpack_require__.d(__webpack_exports__, "Suggest", function() { return /* reexport */ Suggest; });
+__webpack_require__.d(__webpack_exports__, "RoleAssignment", function() { return /* reexport */ RoleAssignment; });
+__webpack_require__.d(__webpack_exports__, "RoleAssignments", function() { return /* reexport */ RoleAssignments; });
+__webpack_require__.d(__webpack_exports__, "RoleDefinition", function() { return /* reexport */ RoleDefinition; });
+__webpack_require__.d(__webpack_exports__, "RoleDefinitions", function() { return /* reexport */ RoleDefinitions; });
+__webpack_require__.d(__webpack_exports__, "PermissionKind", function() { return /* reexport */ PermissionKind; });
+__webpack_require__.d(__webpack_exports__, "SPSharedObjectType", function() { return /* reexport */ SPSharedObjectType; });
+__webpack_require__.d(__webpack_exports__, "SharingDomainRestrictionMode", function() { return /* reexport */ SharingDomainRestrictionMode; });
+__webpack_require__.d(__webpack_exports__, "SharingLinkKind", function() { return /* reexport */ SharingLinkKind; });
+__webpack_require__.d(__webpack_exports__, "SharingOperationStatusCode", function() { return /* reexport */ SharingOperationStatusCode; });
+__webpack_require__.d(__webpack_exports__, "SharingRole", function() { return /* reexport */ SharingRole; });
+__webpack_require__.d(__webpack_exports__, "RoleType", function() { return /* reexport */ RoleType; });
+__webpack_require__.d(__webpack_exports__, "SiteDesigns", function() { return /* reexport */ SiteDesigns; });
+__webpack_require__.d(__webpack_exports__, "SiteGroup", function() { return /* reexport */ SiteGroup; });
+__webpack_require__.d(__webpack_exports__, "SiteGroups", function() { return /* reexport */ SiteGroups; });
+__webpack_require__.d(__webpack_exports__, "SiteScripts", function() { return /* reexport */ SiteScripts; });
+__webpack_require__.d(__webpack_exports__, "SiteUser", function() { return /* reexport */ SiteUser; });
+__webpack_require__.d(__webpack_exports__, "SiteUsers", function() { return /* reexport */ SiteUsers; });
+__webpack_require__.d(__webpack_exports__, "Site", function() { return /* reexport */ Site; });
+__webpack_require__.d(__webpack_exports__, "MySocial", function() { return /* reexport */ MySocial; });
+__webpack_require__.d(__webpack_exports__, "Social", function() { return /* reexport */ Social; });
+__webpack_require__.d(__webpack_exports__, "SocialActorType", function() { return /* reexport */ SocialActorType; });
+__webpack_require__.d(__webpack_exports__, "SocialActorTypes", function() { return /* reexport */ SocialActorTypes; });
+__webpack_require__.d(__webpack_exports__, "SocialFollowResult", function() { return /* reexport */ SocialFollowResult; });
+__webpack_require__.d(__webpack_exports__, "SocialStatusCode", function() { return /* reexport */ SocialStatusCode; });
+__webpack_require__.d(__webpack_exports__, "Utilities", function() { return /* reexport */ Utilities; });
+__webpack_require__.d(__webpack_exports__, "Subscription", function() { return /* reexport */ Subscription; });
+__webpack_require__.d(__webpack_exports__, "Subscriptions", function() { return /* reexport */ Subscriptions; });
+__webpack_require__.d(__webpack_exports__, "UserCustomAction", function() { return /* reexport */ UserCustomAction; });
+__webpack_require__.d(__webpack_exports__, "UserCustomActions", function() { return /* reexport */ UserCustomActions; });
+__webpack_require__.d(__webpack_exports__, "UserCustomActionRegistrationType", function() { return /* reexport */ UserCustomActionRegistrationType; });
+__webpack_require__.d(__webpack_exports__, "UserCustomActionScope", function() { return /* reexport */ UserCustomActionScope; });
+__webpack_require__.d(__webpack_exports__, "View", function() { return /* reexport */ View; });
+__webpack_require__.d(__webpack_exports__, "ViewFields", function() { return /* reexport */ ViewFields; });
+__webpack_require__.d(__webpack_exports__, "Views", function() { return /* reexport */ Views; });
+__webpack_require__.d(__webpack_exports__, "ViewScope", function() { return /* reexport */ ViewScope; });
+__webpack_require__.d(__webpack_exports__, "WebPartsPersonalizationScope", function() { return /* reexport */ WebPartsPersonalizationScope; });
+__webpack_require__.d(__webpack_exports__, "WebPartDefinitions", function() { return /* reexport */ WebPartDefinitions; });
+__webpack_require__.d(__webpack_exports__, "WebPartDefinition", function() { return /* reexport */ WebPartDefinition; });
+__webpack_require__.d(__webpack_exports__, "LimitedWebPartManager", function() { return /* reexport */ LimitedWebPartManager; });
+__webpack_require__.d(__webpack_exports__, "Web", function() { return /* reexport */ Web; });
+__webpack_require__.d(__webpack_exports__, "Webs", function() { return /* reexport */ Webs; });
+__webpack_require__.d(__webpack_exports__, "SharePointQueryableInstance", function() { return /* reexport */ SharePointQueryableInstance; });
+__webpack_require__.d(__webpack_exports__, "SharePointQueryableCollection", function() { return /* reexport */ SharePointQueryableCollection; });
+__webpack_require__.d(__webpack_exports__, "SharePointQueryable", function() { return /* reexport */ SharePointQueryable; });
+__webpack_require__.d(__webpack_exports__, "spInvokableFactory", function() { return /* reexport */ spInvokableFactory; });
+__webpack_require__.d(__webpack_exports__, "SPBatch", function() { return /* reexport */ batch_SPBatch; });
+__webpack_require__.d(__webpack_exports__, "defaultPath", function() { return /* reexport */ defaultPath; });
+__webpack_require__.d(__webpack_exports__, "spGet", function() { return /* reexport */ spGet; });
+__webpack_require__.d(__webpack_exports__, "spPost", function() { return /* reexport */ spPost; });
+__webpack_require__.d(__webpack_exports__, "spDelete", function() { return /* reexport */ spDelete; });
+__webpack_require__.d(__webpack_exports__, "spPatch", function() { return /* reexport */ spPatch; });
+__webpack_require__.d(__webpack_exports__, "spPostDelete", function() { return /* reexport */ spPostDelete; });
+__webpack_require__.d(__webpack_exports__, "spPostDeleteETag", function() { return /* reexport */ spPostDeleteETag; });
+__webpack_require__.d(__webpack_exports__, "SPHttpClient", function() { return /* reexport */ sphttpclient_SPHttpClient; });
+__webpack_require__.d(__webpack_exports__, "SPRest", function() { return /* reexport */ rest_SPRest; });
+__webpack_require__.d(__webpack_exports__, "PrincipalType", function() { return /* reexport */ PrincipalType; });
+__webpack_require__.d(__webpack_exports__, "PrincipalSource", function() { return /* reexport */ PrincipalSource; });
+__webpack_require__.d(__webpack_exports__, "PageType", function() { return /* reexport */ PageType; });
+__webpack_require__.d(__webpack_exports__, "toAbsoluteUrl", function() { return /* reexport */ toAbsoluteUrl; });
+__webpack_require__.d(__webpack_exports__, "extractWebUrl", function() { return /* reexport */ extractWebUrl; });
+__webpack_require__.d(__webpack_exports__, "objectToSPKeyValueCollection", function() { return /* reexport */ objectToSPKeyValueCollection; });
+__webpack_require__.d(__webpack_exports__, "stripInvalidFileFolderChars", function() { return /* reexport */ stripInvalidFileFolderChars; });
+__webpack_require__.d(__webpack_exports__, "containsInvalidFileFolderChars", function() { return /* reexport */ containsInvalidFileFolderChars; });
+__webpack_require__.d(__webpack_exports__, "sp", function() { return /* reexport */ all_sp; });
+
+// CONCATENATED MODULE: ./node_modules/@pnp/common/util.js
+/**
+ * Gets a callback function which will maintain context across async calls.
+ * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
+ *
+ * @param context The object that will be the 'this' value in the callback
+ * @param method The method to which we will apply the context and parameters
+ * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
+ */
+function getCtxCallback(context, method) {
+    var params = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        params[_i - 2] = arguments[_i];
+    }
+    return function () {
+        method.apply(context, params);
+    };
+}
+/**
+ * Adds a value to a date
+ *
+ * @param date The date to which we will add units, done in local time
+ * @param interval The name of the interval to add, one of: ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second']
+ * @param units The amount to add to date of the given interval
+ *
+ * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
+ */
+function dateAdd(date, interval, units) {
+    var ret = new Date(date.toString()); // don't change original date
+    switch (interval.toLowerCase()) {
+        case "year":
+            ret.setFullYear(ret.getFullYear() + units);
+            break;
+        case "quarter":
+            ret.setMonth(ret.getMonth() + 3 * units);
+            break;
+        case "month":
+            ret.setMonth(ret.getMonth() + units);
+            break;
+        case "week":
+            ret.setDate(ret.getDate() + 7 * units);
+            break;
+        case "day":
+            ret.setDate(ret.getDate() + units);
+            break;
+        case "hour":
+            ret.setTime(ret.getTime() + units * 3600000);
+            break;
+        case "minute":
+            ret.setTime(ret.getTime() + units * 60000);
+            break;
+        case "second":
+            ret.setTime(ret.getTime() + units * 1000);
+            break;
+        default:
+            ret = undefined;
+            break;
+    }
+    return ret;
+}
+/**
+ * Combines an arbitrary set of paths ensuring and normalizes the slashes
+ *
+ * @param paths 0 to n path parts to combine
+ */
+function combine() {
+    var paths = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        paths[_i] = arguments[_i];
+    }
+    return paths
+        .filter(function (path) { return !stringIsNullOrEmpty(path); })
+        .map(function (path) { return path.replace(/^[\\|\/]/, "").replace(/[\\|\/]$/, ""); })
+        .join("/")
+        .replace(/\\/g, "/");
+}
+/**
+ * Gets a random string of chars length
+ *
+ * https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+ *
+ * @param chars The length of the random string to generate
+ */
+function getRandomString(chars) {
+    var text = new Array(chars);
+    for (var i = 0; i < chars; i++) {
+        text[i] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(Math.floor(Math.random() * 62));
+    }
+    return text.join("");
+}
+/**
+ * Gets a random GUID value
+ *
+ * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+ */
+/* tslint:disable no-bitwise */
+function getGUID() {
+    var d = Date.now();
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+/* tslint:enable */
+/**
+ * Determines if a given value is a function
+ *
+ * @param cf The thing to test for functionness
+ */
+function isFunc(f) {
+    return typeof f === "function";
+}
+/**
+ * Determines if an object is both defined and not null
+ * @param obj Object to test
+ */
+function objectDefinedNotNull(obj) {
+    return typeof obj !== "undefined" && obj !== null;
+}
+/**
+ * @returns whether the provided parameter is a JavaScript Array or not.
+*/
+function isArray(array) {
+    return Array.isArray ? Array.isArray(array) : array && typeof array.length === "number" && array.constructor === Array;
+}
+/**
+ * Provides functionality to extend the given object by doing a shallow copy
+ *
+ * @param target The object to which properties will be copied
+ * @param source The source object from which properties will be copied
+ * @param noOverwrite If true existing properties on the target are not overwritten from the source
+ * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
+ *
+ */
+function util_assign(target, source, noOverwrite, filter) {
+    if (noOverwrite === void 0) { noOverwrite = false; }
+    if (filter === void 0) { filter = function () { return true; }; }
+    if (!objectDefinedNotNull(source)) {
+        return target;
+    }
+    // ensure we don't overwrite things we don't want overwritten
+    var check = noOverwrite ? function (o, i) { return !(i in o); } : function () { return true; };
+    // final filter we will use
+    var f = function (v) { return check(target, v) && filter(v); };
+    return Object.getOwnPropertyNames(source)
+        .filter(f)
+        .reduce(function (t, v) {
+        t[v] = source[v];
+        return t;
+    }, target);
+}
+/**
+ * Determines if a given url is absolute
+ *
+ * @param url The url to check to see if it is absolute
+ */
+function isUrlAbsolute(url) {
+    return /^https?:\/\/|^\/\//i.test(url);
+}
+/**
+ * Determines if a string is null or empty or undefined
+ *
+ * @param s The string to test
+ */
+function stringIsNullOrEmpty(s) {
+    return s === undefined || s === null || s.length < 1;
+}
+/**
+ * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
+ *
+ * @param guid The candidate guid
+ */
+function sanitizeGuid(guid) {
+    if (stringIsNullOrEmpty(guid)) {
+        return guid;
+    }
+    var matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
+    return matches === null ? guid : matches[1];
+}
+/**
+ * Shorthand for JSON.stringify
+ *
+ * @param o Any type of object
+ */
+function jsS(o) {
+    return JSON.stringify(o);
+}
+/**
+ * Shorthand for Object.hasOwnProperty
+ *
+ * @param o Object to check for
+ * @param p Name of the property
+ */
+function hOP(o, p) {
+    return Object.hasOwnProperty.call(o, p);
+}
+/**
+ * Generates a ~unique hash code
+ *
+ * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
+ */
+// tslint:disable:no-bitwise
+function getHashCode(s) {
+    var hash = 0;
+    if (s.length === 0) {
+        return hash;
+    }
+    for (var i = 0; i < s.length; i++) {
+        var chr = s.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+}
+// tslint:enable:no-bitwise
+
+// CONCATENATED MODULE: ./node_modules/@pnp/common/collections.js
+
+/**
+ * Used to calculate the object properties, with polyfill if needed
+ */
+var objectEntries = isFunc(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
+/**
+ * Converts the supplied object to a map
+ *
+ * @param o The object to map
+ */
+function objectToMap(o) {
+    if (o !== undefined && o !== null) {
+        return new Map(objectEntries(o));
+    }
+    return new Map();
+}
+/**
+ * Merges to Map instances together, overwriting values in target with matching keys, last in wins
+ *
+ * @param target map into which the other maps are merged
+ * @param maps One or more maps to merge into the target
+ */
+function mergeMaps(target) {
+    var maps = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        maps[_i - 1] = arguments[_i];
+    }
+    for (var i = 0; i < maps.length; i++) {
+        maps[i].forEach(function (v, k) {
+            target.set(k, v);
+        });
+    }
+    return target;
+}
+
+// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
+
+function setup(config) {
+    RuntimeConfig.assign(config);
+}
+// lable mapping for known config values
+var libconfig_s = [
+    "defaultCachingStore",
+    "defaultCachingTimeoutSeconds",
+    "globalCacheDisable",
+    "enableCacheExpiration",
+    "cacheExpirationIntervalMilliseconds",
+    "spfxContext",
+    "ie11",
+];
+var libconfig_RuntimeConfigImpl = /** @class */ (function () {
+    function RuntimeConfigImpl(_v) {
+        if (_v === void 0) { _v = new Map(); }
+        this._v = _v;
+        // setup defaults
+        this._v.set(libconfig_s[0], "session");
+        this._v.set(libconfig_s[1], 60);
+        this._v.set(libconfig_s[2], false);
+        this._v.set(libconfig_s[3], false);
+        this._v.set(libconfig_s[4], 750);
+        this._v.set(libconfig_s[5], null);
+        this._v.set(libconfig_s[6], false);
+    }
+    /**
+     *
+     * @param config The set of properties to add to the globa configuration instance
+     */
+    RuntimeConfigImpl.prototype.assign = function (config) {
+        this._v = mergeMaps(this._v, objectToMap(config));
+    };
+    RuntimeConfigImpl.prototype.get = function (key) {
+        return this._v.get(key);
+    };
+    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingStore", {
+        get: function () {
+            return this.get(libconfig_s[0]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingTimeoutSeconds", {
+        get: function () {
+            return this.get(libconfig_s[1]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "globalCacheDisable", {
+        get: function () {
+            return this.get(libconfig_s[2]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "enableCacheExpiration", {
+        get: function () {
+            return this.get(libconfig_s[3]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "cacheExpirationIntervalMilliseconds", {
+        get: function () {
+            return this.get(libconfig_s[4]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "spfxContext", {
+        get: function () {
+            return this.get(libconfig_s[5]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "ie11", {
+        get: function () {
+            return this.get(libconfig_s[6]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return RuntimeConfigImpl;
+}());
+
+var _runtimeConfig = new libconfig_RuntimeConfigImpl();
+var RuntimeConfig = _runtimeConfig;
+
+// CONCATENATED MODULE: ./node_modules/tslib/tslib.es6.js
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -316,176 +822,135 @@ function __importDefault(mod) {
     return (mod && mod.__esModule) ? mod : { default: mod };
 }
 
+// EXTERNAL MODULE: ./node_modules/@pnp/common/safe-global.js
+var safe_global = __webpack_require__(0);
 
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+// CONCATENATED MODULE: ./node_modules/@pnp/common/net.js
 
-"use strict";
 
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "c", function() { return /* reexport */ RuntimeConfig; });
-__webpack_require__.d(__webpack_exports__, "o", function() { return /* reexport */ net["b" /* mergeHeaders */]; });
-__webpack_require__.d(__webpack_exports__, "p", function() { return /* reexport */ net["c" /* mergeOptions */]; });
-__webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ net["a" /* FetchClient */]; });
-__webpack_require__.d(__webpack_exports__, "b", function() { return /* reexport */ PnPClientStorage; });
-__webpack_require__.d(__webpack_exports__, "g", function() { return /* reexport */ util["d" /* getCtxCallback */]; });
-__webpack_require__.d(__webpack_exports__, "f", function() { return /* reexport */ util["c" /* dateAdd */]; });
-__webpack_require__.d(__webpack_exports__, "e", function() { return /* reexport */ util["b" /* combine */]; });
-__webpack_require__.d(__webpack_exports__, "h", function() { return /* reexport */ util["e" /* getGUID */]; });
-__webpack_require__.d(__webpack_exports__, "l", function() { return /* reexport */ util["i" /* isFunc */]; });
-__webpack_require__.d(__webpack_exports__, "q", function() { return /* reexport */ util["l" /* objectDefinedNotNull */]; });
-__webpack_require__.d(__webpack_exports__, "k", function() { return /* reexport */ util["h" /* isArray */]; });
-__webpack_require__.d(__webpack_exports__, "d", function() { return /* reexport */ util["a" /* assign */]; });
-__webpack_require__.d(__webpack_exports__, "m", function() { return /* reexport */ util["j" /* isUrlAbsolute */]; });
-__webpack_require__.d(__webpack_exports__, "r", function() { return /* reexport */ util["m" /* stringIsNullOrEmpty */]; });
-__webpack_require__.d(__webpack_exports__, "n", function() { return /* reexport */ util["k" /* jsS */]; });
-__webpack_require__.d(__webpack_exports__, "j", function() { return /* reexport */ util["g" /* hOP */]; });
-__webpack_require__.d(__webpack_exports__, "i", function() { return /* reexport */ util["f" /* getHashCode */]; });
 
-// UNUSED EXPORTS: objectToMap, mergeMaps, setup, RuntimeConfigImpl, getADALResource, BearerTokenFetchClient, SPFxAdalClient, PnPClientStorageWrapper, getRandomString, sanitizeGuid
-
-// EXTERNAL MODULE: ./node_modules/@pnp/common/util.js
-var util = __webpack_require__(2);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/common/collections.js
-
-/**
- * Used to calculate the object properties, with polyfill if needed
- */
-var objectEntries = Object(util["i" /* isFunc */])(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
-/**
- * Converts the supplied object to a map
- *
- * @param o The object to map
- */
-function objectToMap(o) {
-    if (o !== undefined && o !== null) {
-        return new Map(objectEntries(o));
-    }
-    return new Map();
-}
-/**
- * Merges to Map instances together, overwriting values in target with matching keys, last in wins
- *
- * @param target map into which the other maps are merged
- * @param maps One or more maps to merge into the target
- */
-function mergeMaps(target) {
-    var maps = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        maps[_i - 1] = arguments[_i];
-    }
-    for (var i = 0; i < maps.length; i++) {
-        maps[i].forEach(function (v, k) {
-            target.set(k, v);
+function mergeHeaders(target, source) {
+    if (objectDefinedNotNull(source)) {
+        var temp = new Request("", { headers: source });
+        temp.headers.forEach(function (value, name) {
+            target.append(name, value);
         });
     }
-    return target;
 }
-
-// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
-
-function setup(config) {
-    RuntimeConfig.assign(config);
-}
-// lable mapping for known config values
-var s = [
-    "defaultCachingStore",
-    "defaultCachingTimeoutSeconds",
-    "globalCacheDisable",
-    "enableCacheExpiration",
-    "cacheExpirationIntervalMilliseconds",
-    "spfxContext",
-    "ie11",
-];
-var libconfig_RuntimeConfigImpl = /** @class */ (function () {
-    function RuntimeConfigImpl(_v) {
-        if (_v === void 0) { _v = new Map(); }
-        this._v = _v;
-        // setup defaults
-        this._v.set(s[0], "session");
-        this._v.set(s[1], 60);
-        this._v.set(s[2], false);
-        this._v.set(s[3], false);
-        this._v.set(s[4], 750);
-        this._v.set(s[5], null);
-        this._v.set(s[6], false);
+function mergeOptions(target, source) {
+    if (objectDefinedNotNull(source)) {
+        var headers = util_assign(target.headers || {}, source.headers);
+        target = util_assign(target, source);
+        target.headers = headers;
     }
-    /**
-     *
-     * @param config The set of properties to add to the globa configuration instance
-     */
-    RuntimeConfigImpl.prototype.assign = function (config) {
-        this._v = mergeMaps(this._v, objectToMap(config));
+}
+/**
+ * Parses out the root of the request url to use as the resource when getting the token
+ *
+  * @param url The url to parse
+ */
+function getADALResource(url) {
+    var u = new URL(url);
+    return u.protocol + "//" + u.hostname;
+}
+/**
+ * Makes requests using the global/window fetch API
+ */
+var net_FetchClient = /** @class */ (function () {
+    function FetchClient() {
+    }
+    FetchClient.prototype.fetch = function (url, options) {
+        return safe_global["a" /* safeGlobal */].fetch(url, options);
     };
-    RuntimeConfigImpl.prototype.get = function (key) {
-        return this._v.get(key);
-    };
-    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingStore", {
-        get: function () {
-            return this.get(s[0]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingTimeoutSeconds", {
-        get: function () {
-            return this.get(s[1]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "globalCacheDisable", {
-        get: function () {
-            return this.get(s[2]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "enableCacheExpiration", {
-        get: function () {
-            return this.get(s[3]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "cacheExpirationIntervalMilliseconds", {
-        get: function () {
-            return this.get(s[4]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "spfxContext", {
-        get: function () {
-            return this.get(s[5]);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "ie11", {
-        get: function () {
-            var v = this.get(s[6]);
-            if (v) {
-                console.warn("PnPjs is running in ie11 compat mode. Not all features may work as expected.");
-            }
-            return v;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return RuntimeConfigImpl;
+    return FetchClient;
 }());
 
-var _runtimeConfig = new libconfig_RuntimeConfigImpl();
-var RuntimeConfig = _runtimeConfig;
+/**
+ * Makes requests using the fetch API adding the supplied token to the Authorization header
+ */
+var net_BearerTokenFetchClient = /** @class */ (function (_super) {
+    __extends(BearerTokenFetchClient, _super);
+    function BearerTokenFetchClient(_token) {
+        var _this = _super.call(this) || this;
+        _this._token = _token;
+        return _this;
+    }
+    Object.defineProperty(BearerTokenFetchClient.prototype, "token", {
+        get: function () {
+            return this._token || "";
+        },
+        set: function (token) {
+            this._token = token;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BearerTokenFetchClient.prototype.fetch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var headers = new Headers();
+        mergeHeaders(headers, options.headers);
+        headers.set("Authorization", "Bearer " + this._token);
+        options.headers = headers;
+        return _super.prototype.fetch.call(this, url, options);
+    };
+    return BearerTokenFetchClient;
+}(net_FetchClient));
 
-// EXTERNAL MODULE: ./node_modules/@pnp/common/net.js
-var net = __webpack_require__(5);
+/**
+ * Client wrapping the aadTokenProvider available from SPFx >= 1.6
+ */
+var net_SPFxAdalClient = /** @class */ (function (_super) {
+    __extends(SPFxAdalClient, _super);
+    /**
+     *
+     * @param context provide the appropriate SPFx Context object
+     */
+    function SPFxAdalClient(context) {
+        var _this = _super.call(this, null) || this;
+        _this.context = context;
+        return _this;
+    }
+    /**
+     * Executes a fetch request using the supplied url and options
+     *
+     * @param url Absolute url of the request
+     * @param options Any options
+     */
+    SPFxAdalClient.prototype.fetch = function (url, options) {
+        return __awaiter(this, void 0, void 0, function () {
+            var token;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getToken(getADALResource(url))];
+                    case 1:
+                        token = _a.sent();
+                        this.token = token;
+                        return [2 /*return*/, _super.prototype.fetch.call(this, url, options)];
+                }
+            });
+        });
+    };
+    /**
+     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
+     *
+     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
+     */
+    SPFxAdalClient.prototype.getToken = function (resource) {
+        return __awaiter(this, void 0, void 0, function () {
+            var provider;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
+                    case 1:
+                        provider = _a.sent();
+                        return [2 /*return*/, provider.getToken(resource)];
+                }
+            });
+        });
+    };
+    return SPFxAdalClient;
+}(net_BearerTokenFetchClient));
 
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./node_modules/@pnp/common/storage.js
 
@@ -525,7 +990,7 @@ var storage_PnPClientStorageWrapper = /** @class */ (function () {
             return null;
         }
         var o = this.store.getItem(key);
-        if (!Object(util["l" /* objectDefinedNotNull */])(o)) {
+        if (!objectDefinedNotNull(o)) {
             return null;
         }
         var persistable = JSON.parse(o);
@@ -567,9 +1032,9 @@ var storage_PnPClientStorageWrapper = /** @class */ (function () {
      * @param expire Optional, if provided the expiration of the item, otherwise the default is used
      */
     PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var o;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.enabled) {
@@ -591,9 +1056,9 @@ var storage_PnPClientStorageWrapper = /** @class */ (function () {
      * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
      */
     PnPClientStorageWrapper.prototype.deleteExpired = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var i, key;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.enabled) {
@@ -644,9 +1109,9 @@ var storage_PnPClientStorageWrapper = /** @class */ (function () {
             if (this.defaultTimeoutMinutes > 0) {
                 defaultTimeout = this.defaultTimeoutMinutes * 60;
             }
-            expire = Object(util["c" /* dateAdd */])(new Date(), "second", defaultTimeout);
+            expire = dateAdd(new Date(), "second", defaultTimeout);
         }
-        return Object(util["k" /* jsS */])({ pnp: 1, expiration: expire, value: o });
+        return jsS({ pnp: 1, expiration: expire, value: o });
     };
     /**
      * Deletes expired items added by this library in this.store and sets a timeout to call itself
@@ -658,7 +1123,7 @@ var storage_PnPClientStorageWrapper = /** @class */ (function () {
         }
         this.deleteExpired().then(function (_) {
             // call ourself in the future
-            setTimeout(Object(util["d" /* getCtxCallback */])(_this, _this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
+            setTimeout(getCtxCallback(_this, _this.cacheExpirationHandler), RuntimeConfig.cacheExpirationIntervalMilliseconds);
         }).catch(console.error);
     };
     return PnPClientStorageWrapper;
@@ -749,262 +1214,18 @@ var PnPClientStorage = /** @class */ (function () {
 
 
 
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/splibconfig.js
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getCtxCallback; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return dateAdd; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return combine; });
-/* unused harmony export getRandomString */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getGUID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return isFunc; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return objectDefinedNotNull; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return isArray; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return assign; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return isUrlAbsolute; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return stringIsNullOrEmpty; });
-/* unused harmony export sanitizeGuid */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return jsS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return hOP; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getHashCode; });
-/**
- * Gets a callback function which will maintain context across async calls.
- * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
- *
- * @param context The object that will be the 'this' value in the callback
- * @param method The method to which we will apply the context and parameters
- * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
- */
-function getCtxCallback(context, method) {
-    var params = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-        params[_i - 2] = arguments[_i];
-    }
-    return function () {
-        method.apply(context, params);
-    };
+var emptyGuid = "00000000-0000-0000-0000-000000000000";
+function splibconfig_setup(config) {
+    RuntimeConfig.assign(config);
 }
-/**
- * Adds a value to a date
- *
- * @param date The date to which we will add units, done in local time
- * @param interval The name of the interval to add, one of: ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second']
- * @param units The amount to add to date of the given interval
- *
- * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
- */
-function dateAdd(date, interval, units) {
-    var ret = new Date(date.toString()); // don't change original date
-    switch (interval.toLowerCase()) {
-        case "year":
-            ret.setFullYear(ret.getFullYear() + units);
-            break;
-        case "quarter":
-            ret.setMonth(ret.getMonth() + 3 * units);
-            break;
-        case "month":
-            ret.setMonth(ret.getMonth() + units);
-            break;
-        case "week":
-            ret.setDate(ret.getDate() + 7 * units);
-            break;
-        case "day":
-            ret.setDate(ret.getDate() + units);
-            break;
-        case "hour":
-            ret.setTime(ret.getTime() + units * 3600000);
-            break;
-        case "minute":
-            ret.setTime(ret.getTime() + units * 60000);
-            break;
-        case "second":
-            ret.setTime(ret.getTime() + units * 1000);
-            break;
-        default:
-            ret = undefined;
-            break;
-    }
-    return ret;
-}
-/**
- * Combines an arbitrary set of paths ensuring and normalizes the slashes
- *
- * @param paths 0 to n path parts to combine
- */
-function combine() {
-    var paths = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        paths[_i] = arguments[_i];
-    }
-    return paths
-        .filter(function (path) { return !stringIsNullOrEmpty(path); })
-        .map(function (path) { return path.replace(/^[\\|\/]/, "").replace(/[\\|\/]$/, ""); })
-        .join("/")
-        .replace(/\\/g, "/");
-}
-/**
- * Gets a random string of chars length
- *
- * https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
- *
- * @param chars The length of the random string to generate
- */
-function getRandomString(chars) {
-    var text = new Array(chars);
-    for (var i = 0; i < chars; i++) {
-        text[i] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(Math.floor(Math.random() * 62));
-    }
-    return text.join("");
-}
-/**
- * Gets a random GUID value
- *
- * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
- */
-/* tslint:disable no-bitwise */
-function getGUID() {
-    var d = Date.now();
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-}
-/* tslint:enable */
-/**
- * Determines if a given value is a function
- *
- * @param cf The thing to test for functionness
- */
-function isFunc(f) {
-    return typeof f === "function";
-}
-/**
- * Determines if an object is both defined and not null
- * @param obj Object to test
- */
-function objectDefinedNotNull(obj) {
-    return typeof obj !== "undefined" && obj !== null;
-}
-/**
- * @returns whether the provided parameter is a JavaScript Array or not.
-*/
-function isArray(array) {
-    return Array.isArray ? Array.isArray(array) : array && typeof array.length === "number" && array.constructor === Array;
-}
-/**
- * Provides functionality to extend the given object by doing a shallow copy
- *
- * @param target The object to which properties will be copied
- * @param source The source object from which properties will be copied
- * @param noOverwrite If true existing properties on the target are not overwritten from the source
- * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
- *
- */
-function assign(target, source, noOverwrite, filter) {
-    if (noOverwrite === void 0) { noOverwrite = false; }
-    if (filter === void 0) { filter = function () { return true; }; }
-    if (!objectDefinedNotNull(source)) {
-        return target;
-    }
-    // ensure we don't overwrite things we don't want overwritten
-    var check = noOverwrite ? function (o, i) { return !(i in o); } : function () { return true; };
-    // final filter we will use
-    var f = function (v) { return check(target, v) && filter(v); };
-    return Object.getOwnPropertyNames(source)
-        .filter(f)
-        .reduce(function (t, v) {
-        t[v] = source[v];
-        return t;
-    }, target);
-}
-/**
- * Determines if a given url is absolute
- *
- * @param url The url to check to see if it is absolute
- */
-function isUrlAbsolute(url) {
-    return /^https?:\/\/|^\/\//i.test(url);
-}
-/**
- * Determines if a string is null or empty or undefined
- *
- * @param s The string to test
- */
-function stringIsNullOrEmpty(s) {
-    return s === undefined || s === null || s.length < 1;
-}
-/**
- * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
- *
- * @param guid The candidate guid
- */
-function sanitizeGuid(guid) {
-    if (stringIsNullOrEmpty(guid)) {
-        return guid;
-    }
-    var matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
-    return matches === null ? guid : matches[1];
-}
-/**
- * Shorthand for JSON.stringify
- *
- * @param o Any type of object
- */
-function jsS(o) {
-    return JSON.stringify(o);
-}
-/**
- * Shorthand for Object.hasOwnProperty
- *
- * @param o Object to check for
- * @param p Name of the property
- */
-function hOP(o, p) {
-    return Object.hasOwnProperty.call(o, p);
-}
-/**
- * Generates a ~unique hash code
- *
- * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
- */
-// tslint:disable:no-bitwise
-function getHashCode(s) {
-    var hash = 0;
-    if (s.length === 0) {
-        return hash;
-    }
-    for (var i = 0; i < s.length; i++) {
-        var chr = s.charCodeAt(i);
-        hash = ((hash << 5) - hash) + chr;
-        hash |= 0; // Convert to 32bit integer
-    }
-    return hash;
-}
-// tslint:enable:no-bitwise
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return setup; });
-/* unused harmony export SPRuntimeConfigImpl */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SPRuntimeConfig; });
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-
-function setup(config) {
-    _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].assign(config);
-}
-var SPRuntimeConfigImpl = /** @class */ (function () {
+var splibconfig_SPRuntimeConfigImpl = /** @class */ (function () {
     function SPRuntimeConfigImpl() {
     }
     Object.defineProperty(SPRuntimeConfigImpl.prototype, "headers", {
         get: function () {
-            var spPart = _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].get("sp");
+            var spPart = RuntimeConfig.get("sp");
             if (spPart !== undefined && spPart.headers !== undefined) {
                 return spPart.headers;
             }
@@ -1015,12 +1236,12 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
     });
     Object.defineProperty(SPRuntimeConfigImpl.prototype, "baseUrl", {
         get: function () {
-            var spPart = _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].get("sp");
+            var spPart = RuntimeConfig.get("sp");
             if (spPart !== undefined && spPart.baseUrl !== undefined) {
                 return spPart.baseUrl;
             }
-            if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* objectDefinedNotNull */ "q"])(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].spfxContext)) {
-                return _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].spfxContext.pageContext.web.absoluteUrl;
+            if (objectDefinedNotNull(RuntimeConfig.spfxContext)) {
+                return RuntimeConfig.spfxContext.pageContext.web.absoluteUrl;
             }
             return null;
         },
@@ -1029,12 +1250,12 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
     });
     Object.defineProperty(SPRuntimeConfigImpl.prototype, "fetchClientFactory", {
         get: function () {
-            var spPart = _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* RuntimeConfig */ "c"].get("sp");
+            var spPart = RuntimeConfig.get("sp");
             if (spPart !== undefined && spPart.fetchClientFactory !== undefined) {
                 return spPart.fetchClientFactory;
             }
             else {
-                return function () { return new _pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* FetchClient */ "a"](); };
+                return function () { return new net_FetchClient(); };
             }
         },
         enumerable: true,
@@ -1043,375 +1264,7 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
     return SPRuntimeConfigImpl;
 }());
 
-var SPRuntimeConfig = new SPRuntimeConfigImpl();
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return toAbsoluteUrl; });
-/* harmony import */ var _pnp_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _splibconfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-
-
-/**
- * Ensures that a given url is absolute for the current web based on context
- *
- * @param candidateUrl The url to make absolute
- *
- */
-function toAbsoluteUrl(candidateUrl) {
-    return new Promise(function (resolve) {
-        if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* isUrlAbsolute */ "m"])(candidateUrl)) {
-            // if we are already absolute, then just return the url
-            return resolve(candidateUrl);
-        }
-        if (_splibconfig__WEBPACK_IMPORTED_MODULE_1__[/* SPRuntimeConfig */ "a"].baseUrl !== null) {
-            // base url specified either with baseUrl of spfxContext config property
-            return resolve(Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* combine */ "e"])(_splibconfig__WEBPACK_IMPORTED_MODULE_1__[/* SPRuntimeConfig */ "a"].baseUrl, candidateUrl));
-        }
-        if (global._spPageContextInfo !== undefined) {
-            // operating in classic pages
-            if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* hOP */ "j"])(global._spPageContextInfo, "webAbsoluteUrl")) {
-                return resolve(Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* combine */ "e"])(global._spPageContextInfo.webAbsoluteUrl, candidateUrl));
-            }
-            else if (Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* hOP */ "j"])(global._spPageContextInfo, "webServerRelativeUrl")) {
-                return resolve(Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* combine */ "e"])(global._spPageContextInfo.webServerRelativeUrl, candidateUrl));
-            }
-        }
-        // does window.location exist and have a certain path part in it?
-        if (global.location !== undefined) {
-            var baseUrl_1 = global.location.toString().toLowerCase();
-            ["/_layouts/", "/siteassets/"].forEach(function (s) {
-                var index = baseUrl_1.indexOf(s);
-                if (index > 0) {
-                    return resolve(Object(_pnp_common__WEBPACK_IMPORTED_MODULE_0__[/* combine */ "e"])(baseUrl_1.substr(0, index), candidateUrl));
-                }
-            });
-        }
-        return resolve(candidateUrl);
-    });
-}
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6)))
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return mergeHeaders; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mergeOptions; });
-/* unused harmony export getADALResource */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FetchClient; });
-/* unused harmony export BearerTokenFetchClient */
-/* unused harmony export SPFxAdalClient */
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-
-
-function mergeHeaders(target, source) {
-    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "l"])(source)) {
-        var temp = new Request("", { headers: source });
-        temp.headers.forEach(function (value, name) {
-            target.append(name, value);
-        });
-    }
-}
-function mergeOptions(target, source) {
-    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "l"])(source)) {
-        var headers = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* assign */ "a"])(target.headers || {}, source.headers);
-        target = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* assign */ "a"])(target, source);
-        target.headers = headers;
-    }
-}
-/**
- * Parses out the root of the request url to use as the resource when getting the token
- *
-  * @param url The url to parse
- */
-function getADALResource(url) {
-    var u = new URL(url);
-    return u.protocol + "//" + u.hostname;
-}
-/**
- * Makes requests using the global/window fetch API
- */
-var FetchClient = /** @class */ (function () {
-    function FetchClient() {
-    }
-    FetchClient.prototype.fetch = function (url, options) {
-        return global.fetch(url, options);
-    };
-    return FetchClient;
-}());
-
-/**
- * Makes requests using the fetch API adding the supplied token to the Authorization header
- */
-var BearerTokenFetchClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(BearerTokenFetchClient, _super);
-    function BearerTokenFetchClient(_token) {
-        var _this = _super.call(this) || this;
-        _this._token = _token;
-        return _this;
-    }
-    Object.defineProperty(BearerTokenFetchClient.prototype, "token", {
-        get: function () {
-            return this._token || "";
-        },
-        set: function (token) {
-            this._token = token;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    BearerTokenFetchClient.prototype.fetch = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var headers = new Headers();
-        mergeHeaders(headers, options.headers);
-        headers.set("Authorization", "Bearer " + this._token);
-        options.headers = headers;
-        return _super.prototype.fetch.call(this, url, options);
-    };
-    return BearerTokenFetchClient;
-}(FetchClient));
-
-/**
- * Client wrapping the aadTokenProvider available from SPFx >= 1.6
- */
-var SPFxAdalClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(SPFxAdalClient, _super);
-    /**
-     *
-     * @param context provide the appropriate SPFx Context object
-     */
-    function SPFxAdalClient(context) {
-        var _this = _super.call(this, null) || this;
-        _this.context = context;
-        return _this;
-    }
-    /**
-     * Executes a fetch request using the supplied url and options
-     *
-     * @param url Absolute url of the request
-     * @param options Any options
-     */
-    SPFxAdalClient.prototype.fetch = function (url, options) {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
-            var token;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getToken(getADALResource(url))];
-                    case 1:
-                        token = _a.sent();
-                        this.token = token;
-                        return [2 /*return*/, _super.prototype.fetch.call(this, url, options)];
-                }
-            });
-        });
-    };
-    /**
-     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
-     *
-     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
-     */
-    SPFxAdalClient.prototype.getToken = function (resource) {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
-            var provider;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
-                    case 1:
-                        provider = _a.sent();
-                        return [2 /*return*/, provider.getToken(resource)];
-                }
-            });
-        });
-    };
-    return SPFxAdalClient;
-}(BearerTokenFetchClient));
-
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "App", function() { return /* reexport */ App; });
-__webpack_require__.d(__webpack_exports__, "AppCatalog", function() { return /* reexport */ AppCatalog; });
-__webpack_require__.d(__webpack_exports__, "Attachment", function() { return /* reexport */ Attachment; });
-__webpack_require__.d(__webpack_exports__, "Attachments", function() { return /* reexport */ Attachments; });
-__webpack_require__.d(__webpack_exports__, "ClientsidePageFromFile", function() { return /* reexport */ ClientsidePageFromFile; });
-__webpack_require__.d(__webpack_exports__, "CreateClientsidePage", function() { return /* reexport */ CreateClientsidePage; });
-__webpack_require__.d(__webpack_exports__, "CanvasColumn", function() { return /* reexport */ types_CanvasColumn; });
-__webpack_require__.d(__webpack_exports__, "CanvasSection", function() { return /* reexport */ types_CanvasSection; });
-__webpack_require__.d(__webpack_exports__, "ClientsideText", function() { return /* reexport */ types_ClientsideText; });
-__webpack_require__.d(__webpack_exports__, "ClientsideWebpart", function() { return /* reexport */ types_ClientsideWebpart; });
-__webpack_require__.d(__webpack_exports__, "ColumnControl", function() { return /* reexport */ types_ColumnControl; });
-__webpack_require__.d(__webpack_exports__, "PromotedState", function() { return /* reexport */ PromotedState; });
-__webpack_require__.d(__webpack_exports__, "Comment", function() { return /* reexport */ Comment; });
-__webpack_require__.d(__webpack_exports__, "Comments", function() { return /* reexport */ Comments; });
-__webpack_require__.d(__webpack_exports__, "Replies", function() { return /* reexport */ Replies; });
-__webpack_require__.d(__webpack_exports__, "ContentType", function() { return /* reexport */ ContentType; });
-__webpack_require__.d(__webpack_exports__, "ContentTypes", function() { return /* reexport */ ContentTypes; });
-__webpack_require__.d(__webpack_exports__, "FieldLink", function() { return /* reexport */ FieldLink; });
-__webpack_require__.d(__webpack_exports__, "FieldLinks", function() { return /* reexport */ FieldLinks; });
-__webpack_require__.d(__webpack_exports__, "Feature", function() { return /* reexport */ Feature; });
-__webpack_require__.d(__webpack_exports__, "Features", function() { return /* reexport */ Features; });
-__webpack_require__.d(__webpack_exports__, "Fields", function() { return /* reexport */ Fields; });
-__webpack_require__.d(__webpack_exports__, "Field", function() { return /* reexport */ Field; });
-__webpack_require__.d(__webpack_exports__, "AddFieldOptions", function() { return /* reexport */ AddFieldOptions; });
-__webpack_require__.d(__webpack_exports__, "CalendarType", function() { return /* reexport */ CalendarType; });
-__webpack_require__.d(__webpack_exports__, "ChoiceFieldFormatType", function() { return /* reexport */ ChoiceFieldFormatType; });
-__webpack_require__.d(__webpack_exports__, "DateTimeFieldFormatType", function() { return /* reexport */ DateTimeFieldFormatType; });
-__webpack_require__.d(__webpack_exports__, "DateTimeFieldFriendlyFormatType", function() { return /* reexport */ DateTimeFieldFriendlyFormatType; });
-__webpack_require__.d(__webpack_exports__, "FieldTypes", function() { return /* reexport */ FieldTypes; });
-__webpack_require__.d(__webpack_exports__, "FieldUserSelectionMode", function() { return /* reexport */ FieldUserSelectionMode; });
-__webpack_require__.d(__webpack_exports__, "UrlFieldFormatType", function() { return /* reexport */ UrlFieldFormatType; });
-__webpack_require__.d(__webpack_exports__, "File", function() { return /* reexport */ File; });
-__webpack_require__.d(__webpack_exports__, "Files", function() { return /* reexport */ Files; });
-__webpack_require__.d(__webpack_exports__, "CheckinType", function() { return /* reexport */ CheckinType; });
-__webpack_require__.d(__webpack_exports__, "MoveOperations", function() { return /* reexport */ MoveOperations; });
-__webpack_require__.d(__webpack_exports__, "TemplateFileType", function() { return /* reexport */ TemplateFileType; });
-__webpack_require__.d(__webpack_exports__, "Version", function() { return /* reexport */ Version; });
-__webpack_require__.d(__webpack_exports__, "Versions", function() { return /* reexport */ Versions; });
-__webpack_require__.d(__webpack_exports__, "Folder", function() { return /* reexport */ Folder; });
-__webpack_require__.d(__webpack_exports__, "Folders", function() { return /* reexport */ Folders; });
-__webpack_require__.d(__webpack_exports__, "Form", function() { return /* reexport */ Form; });
-__webpack_require__.d(__webpack_exports__, "Forms", function() { return /* reexport */ Forms; });
-__webpack_require__.d(__webpack_exports__, "HubSite", function() { return /* reexport */ HubSite; });
-__webpack_require__.d(__webpack_exports__, "HubSites", function() { return /* reexport */ HubSites; });
-__webpack_require__.d(__webpack_exports__, "Item", function() { return /* reexport */ Item; });
-__webpack_require__.d(__webpack_exports__, "Items", function() { return /* reexport */ Items; });
-__webpack_require__.d(__webpack_exports__, "ItemVersion", function() { return /* reexport */ ItemVersion; });
-__webpack_require__.d(__webpack_exports__, "ItemVersions", function() { return /* reexport */ ItemVersions; });
-__webpack_require__.d(__webpack_exports__, "PagedItemCollection", function() { return /* reexport */ types_PagedItemCollection; });
-__webpack_require__.d(__webpack_exports__, "List", function() { return /* reexport */ List; });
-__webpack_require__.d(__webpack_exports__, "Lists", function() { return /* reexport */ Lists; });
-__webpack_require__.d(__webpack_exports__, "ControlMode", function() { return /* reexport */ ControlMode; });
-__webpack_require__.d(__webpack_exports__, "RenderListDataOptions", function() { return /* reexport */ RenderListDataOptions; });
-__webpack_require__.d(__webpack_exports__, "Navigation", function() { return /* reexport */ Navigation; });
-__webpack_require__.d(__webpack_exports__, "NavigationNode", function() { return /* reexport */ NavigationNode; });
-__webpack_require__.d(__webpack_exports__, "NavigationNodes", function() { return /* reexport */ NavigationNodes; });
-__webpack_require__.d(__webpack_exports__, "NavigationService", function() { return /* reexport */ NavigationService; });
-__webpack_require__.d(__webpack_exports__, "spODataEntity", function() { return /* reexport */ spODataEntity; });
-__webpack_require__.d(__webpack_exports__, "spODataEntityArray", function() { return /* reexport */ spODataEntityArray; });
-__webpack_require__.d(__webpack_exports__, "Profiles", function() { return /* reexport */ Profiles; });
-__webpack_require__.d(__webpack_exports__, "UrlZone", function() { return /* reexport */ UrlZone; });
-__webpack_require__.d(__webpack_exports__, "RegionalSettings", function() { return /* reexport */ RegionalSettings; });
-__webpack_require__.d(__webpack_exports__, "TimeZone", function() { return /* reexport */ TimeZone; });
-__webpack_require__.d(__webpack_exports__, "TimeZones", function() { return /* reexport */ TimeZones; });
-__webpack_require__.d(__webpack_exports__, "RelatedItemManager", function() { return /* reexport */ RelatedItemManager; });
-__webpack_require__.d(__webpack_exports__, "SortDirection", function() { return /* reexport */ SortDirection; });
-__webpack_require__.d(__webpack_exports__, "ReorderingRuleMatchType", function() { return /* reexport */ ReorderingRuleMatchType; });
-__webpack_require__.d(__webpack_exports__, "QueryPropertyValueType", function() { return /* reexport */ QueryPropertyValueType; });
-__webpack_require__.d(__webpack_exports__, "SearchBuiltInSourceId", function() { return /* reexport */ SearchBuiltInSourceId; });
-__webpack_require__.d(__webpack_exports__, "SearchQueryBuilder", function() { return /* reexport */ SearchQueryBuilder; });
-__webpack_require__.d(__webpack_exports__, "SearchResults", function() { return /* reexport */ query_SearchResults; });
-__webpack_require__.d(__webpack_exports__, "Search", function() { return /* reexport */ Search; });
-__webpack_require__.d(__webpack_exports__, "Suggest", function() { return /* reexport */ Suggest; });
-__webpack_require__.d(__webpack_exports__, "RoleAssignment", function() { return /* reexport */ RoleAssignment; });
-__webpack_require__.d(__webpack_exports__, "RoleAssignments", function() { return /* reexport */ RoleAssignments; });
-__webpack_require__.d(__webpack_exports__, "RoleDefinition", function() { return /* reexport */ RoleDefinition; });
-__webpack_require__.d(__webpack_exports__, "RoleDefinitions", function() { return /* reexport */ RoleDefinitions; });
-__webpack_require__.d(__webpack_exports__, "PermissionKind", function() { return /* reexport */ PermissionKind; });
-__webpack_require__.d(__webpack_exports__, "SPSharedObjectType", function() { return /* reexport */ SPSharedObjectType; });
-__webpack_require__.d(__webpack_exports__, "SharingDomainRestrictionMode", function() { return /* reexport */ SharingDomainRestrictionMode; });
-__webpack_require__.d(__webpack_exports__, "SharingLinkKind", function() { return /* reexport */ SharingLinkKind; });
-__webpack_require__.d(__webpack_exports__, "SharingOperationStatusCode", function() { return /* reexport */ SharingOperationStatusCode; });
-__webpack_require__.d(__webpack_exports__, "SharingRole", function() { return /* reexport */ SharingRole; });
-__webpack_require__.d(__webpack_exports__, "RoleType", function() { return /* reexport */ RoleType; });
-__webpack_require__.d(__webpack_exports__, "SiteDesigns", function() { return /* reexport */ SiteDesigns; });
-__webpack_require__.d(__webpack_exports__, "SiteGroup", function() { return /* reexport */ SiteGroup; });
-__webpack_require__.d(__webpack_exports__, "SiteGroups", function() { return /* reexport */ SiteGroups; });
-__webpack_require__.d(__webpack_exports__, "SiteScripts", function() { return /* reexport */ SiteScripts; });
-__webpack_require__.d(__webpack_exports__, "SiteUser", function() { return /* reexport */ SiteUser; });
-__webpack_require__.d(__webpack_exports__, "SiteUsers", function() { return /* reexport */ SiteUsers; });
-__webpack_require__.d(__webpack_exports__, "Site", function() { return /* reexport */ Site; });
-__webpack_require__.d(__webpack_exports__, "MySocial", function() { return /* reexport */ MySocial; });
-__webpack_require__.d(__webpack_exports__, "Social", function() { return /* reexport */ Social; });
-__webpack_require__.d(__webpack_exports__, "SocialActorType", function() { return /* reexport */ SocialActorType; });
-__webpack_require__.d(__webpack_exports__, "SocialActorTypes", function() { return /* reexport */ SocialActorTypes; });
-__webpack_require__.d(__webpack_exports__, "SocialFollowResult", function() { return /* reexport */ SocialFollowResult; });
-__webpack_require__.d(__webpack_exports__, "SocialStatusCode", function() { return /* reexport */ SocialStatusCode; });
-__webpack_require__.d(__webpack_exports__, "Utilities", function() { return /* reexport */ Utilities; });
-__webpack_require__.d(__webpack_exports__, "Subscription", function() { return /* reexport */ Subscription; });
-__webpack_require__.d(__webpack_exports__, "Subscriptions", function() { return /* reexport */ Subscriptions; });
-__webpack_require__.d(__webpack_exports__, "UserCustomAction", function() { return /* reexport */ UserCustomAction; });
-__webpack_require__.d(__webpack_exports__, "UserCustomActions", function() { return /* reexport */ UserCustomActions; });
-__webpack_require__.d(__webpack_exports__, "UserCustomActionRegistrationType", function() { return /* reexport */ UserCustomActionRegistrationType; });
-__webpack_require__.d(__webpack_exports__, "UserCustomActionScope", function() { return /* reexport */ UserCustomActionScope; });
-__webpack_require__.d(__webpack_exports__, "View", function() { return /* reexport */ View; });
-__webpack_require__.d(__webpack_exports__, "ViewFields", function() { return /* reexport */ ViewFields; });
-__webpack_require__.d(__webpack_exports__, "Views", function() { return /* reexport */ Views; });
-__webpack_require__.d(__webpack_exports__, "ViewScope", function() { return /* reexport */ ViewScope; });
-__webpack_require__.d(__webpack_exports__, "WebPartsPersonalizationScope", function() { return /* reexport */ WebPartsPersonalizationScope; });
-__webpack_require__.d(__webpack_exports__, "WebPartDefinitions", function() { return /* reexport */ WebPartDefinitions; });
-__webpack_require__.d(__webpack_exports__, "WebPartDefinition", function() { return /* reexport */ WebPartDefinition; });
-__webpack_require__.d(__webpack_exports__, "LimitedWebPartManager", function() { return /* reexport */ LimitedWebPartManager; });
-__webpack_require__.d(__webpack_exports__, "Web", function() { return /* reexport */ Web; });
-__webpack_require__.d(__webpack_exports__, "Webs", function() { return /* reexport */ Webs; });
-__webpack_require__.d(__webpack_exports__, "SharePointQueryableInstance", function() { return /* reexport */ SharePointQueryableInstance; });
-__webpack_require__.d(__webpack_exports__, "SharePointQueryableCollection", function() { return /* reexport */ SharePointQueryableCollection; });
-__webpack_require__.d(__webpack_exports__, "SharePointQueryable", function() { return /* reexport */ SharePointQueryable; });
-__webpack_require__.d(__webpack_exports__, "spInvokableFactory", function() { return /* reexport */ spInvokableFactory; });
-__webpack_require__.d(__webpack_exports__, "SPBatch", function() { return /* reexport */ batch_SPBatch; });
-__webpack_require__.d(__webpack_exports__, "defaultPath", function() { return /* reexport */ defaultPath; });
-__webpack_require__.d(__webpack_exports__, "spGet", function() { return /* reexport */ spGet; });
-__webpack_require__.d(__webpack_exports__, "spPost", function() { return /* reexport */ spPost; });
-__webpack_require__.d(__webpack_exports__, "spDelete", function() { return /* reexport */ spDelete; });
-__webpack_require__.d(__webpack_exports__, "spPatch", function() { return /* reexport */ spPatch; });
-__webpack_require__.d(__webpack_exports__, "spPostDelete", function() { return /* reexport */ spPostDelete; });
-__webpack_require__.d(__webpack_exports__, "spPostDeleteETag", function() { return /* reexport */ spPostDeleteETag; });
-__webpack_require__.d(__webpack_exports__, "SPHttpClient", function() { return /* reexport */ sphttpclient_SPHttpClient; });
-__webpack_require__.d(__webpack_exports__, "SPRest", function() { return /* reexport */ rest_SPRest; });
-__webpack_require__.d(__webpack_exports__, "PrincipalType", function() { return /* reexport */ PrincipalType; });
-__webpack_require__.d(__webpack_exports__, "PrincipalSource", function() { return /* reexport */ PrincipalSource; });
-__webpack_require__.d(__webpack_exports__, "PageType", function() { return /* reexport */ PageType; });
-__webpack_require__.d(__webpack_exports__, "toAbsoluteUrl", function() { return /* reexport */ toabsoluteurl["a" /* toAbsoluteUrl */]; });
-__webpack_require__.d(__webpack_exports__, "extractWebUrl", function() { return /* reexport */ extractWebUrl; });
-__webpack_require__.d(__webpack_exports__, "objectToSPKeyValueCollection", function() { return /* reexport */ objectToSPKeyValueCollection; });
-__webpack_require__.d(__webpack_exports__, "stripInvalidFileFolderChars", function() { return /* reexport */ stripInvalidFileFolderChars; });
-__webpack_require__.d(__webpack_exports__, "containsInvalidFileFolderChars", function() { return /* reexport */ containsInvalidFileFolderChars; });
-__webpack_require__.d(__webpack_exports__, "sp", function() { return /* reexport */ all_sp; });
-
-// EXTERNAL MODULE: ./node_modules/@pnp/sp/splibconfig.js
-var splibconfig = __webpack_require__(3);
+var SPRuntimeConfig = new splibconfig_SPRuntimeConfigImpl();
 
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/rest.js
 
@@ -1449,12 +1302,12 @@ var rest_SPRest = /** @class */ (function () {
      */
     SPRest.prototype.setup = function (config) {
         if (config.pageContext) {
-            Object(splibconfig["b" /* setup */])({
+            splibconfig_setup({
                 spfxContext: config,
             });
         }
         else {
-            Object(splibconfig["b" /* setup */])(config);
+            splibconfig_setup(config);
         }
     };
     return SPRest;
@@ -1462,17 +1315,11 @@ var rest_SPRest = /** @class */ (function () {
 
 var rest_sp = new rest_SPRest();
 
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__(0);
-
-// EXTERNAL MODULE: ./node_modules/@pnp/common/index.js + 3 modules
-var common = __webpack_require__(1);
-
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
 
 var batch_Batch = /** @class */ (function () {
     function Batch(_batchId) {
-        if (_batchId === void 0) { _batchId = Object(common["h" /* getGUID */])(); }
+        if (_batchId === void 0) { _batchId = getGUID(); }
         this._batchId = _batchId;
         this._reqs = [];
         this._deps = [];
@@ -1576,8 +1423,8 @@ var batch_Batch = /** @class */ (function () {
 
 var caching_CachingOptions = /** @class */ (function () {
     function CachingOptions(key, storeName, expiration) {
-        if (storeName === void 0) { storeName = common["c" /* RuntimeConfig */].defaultCachingStore; }
-        if (expiration === void 0) { expiration = Object(common["f" /* dateAdd */])(new Date(), "second", common["c" /* RuntimeConfig */].defaultCachingTimeoutSeconds); }
+        if (storeName === void 0) { storeName = RuntimeConfig.defaultCachingStore; }
+        if (expiration === void 0) { expiration = dateAdd(new Date(), "second", RuntimeConfig.defaultCachingTimeoutSeconds); }
         this.key = key;
         this.storeName = storeName;
         this.expiration = expiration;
@@ -1594,7 +1441,7 @@ var caching_CachingOptions = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    CachingOptions.storage = new common["b" /* PnPClientStorage */]();
+    CachingOptions.storage = new PnPClientStorage();
     return CachingOptions;
 }());
 
@@ -1679,9 +1526,9 @@ var extendFactory = function (factory, extensions) {
     extendCol(factory.__proto__[ObjExtensionsSym], extensions);
 };
 function extendCol(a, e) {
-    if (Object(common["k" /* isArray */])(e)) {
+    if (isArray(e)) {
         // @ts-ignore
-        a.push.apply(a, Object(tslib_es6["e" /* __spread */])(e));
+        a.push.apply(a, __spread(e));
     }
     else {
         // @ts-ignore
@@ -1728,16 +1575,16 @@ function extensionOrDefault(op, or, target) {
         var extensions = [];
         // we need to first invoke extensions tied to only this object
         if (Reflect.has(target, ObjExtensionsSym)) {
-            extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(Reflect.get(target, ObjExtensionsSym)));
+            extensions.push.apply(extensions, __spread(Reflect.get(target, ObjExtensionsSym)));
         }
         // second we need to process any global extensions
-        extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(globaExtensions));
+        extensions.push.apply(extensions, __spread(globaExtensions));
         for (var i = 0; i < extensions.length; i++) {
             var extension = extensions[i];
             var result = undefined;
-            if (Object(common["l" /* isFunc */])(extension)) {
+            if (isFunc(extension)) {
                 // this extension is a function which we call
-                result = extension.apply(void 0, Object(tslib_es6["e" /* __spread */])([op, target], rest));
+                result = extension.apply(void 0, __spread([op, target], rest));
             }
             else if (op === "get" && Reflect.has(extension, rest[0])) {
                 // this extension is a named extension meaning we are overriding a specific method/property
@@ -1745,7 +1592,7 @@ function extensionOrDefault(op, or, target) {
             }
             else if (Reflect.has(extension, op)) {
                 // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
-                result = Reflect.get(extension, op).apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
+                result = Reflect.get(extension, op).apply(void 0, __spread([target], rest));
             }
             if (typeof result !== "undefined") {
                 // if a extension returned a result, we return that
@@ -1755,7 +1602,7 @@ function extensionOrDefault(op, or, target) {
             }
         }
     }
-    return or.apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
+    return or.apply(void 0, __spread([target], rest));
 }
 
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
@@ -1775,11 +1622,11 @@ var invokableBinder = function (invoker) { return function (constructor) {
                     ags[_i] = arguments[_i];
                 }
                 return invoker.apply(r, ags);
-            }, new (constructor.bind.apply(constructor, Object(tslib_es6["e" /* __spread */])([void 0], as)))());
+            }, new (constructor.bind.apply(constructor, __spread([void 0], as)))());
             Reflect.setPrototypeOf(r, constructor.prototype);
             return r;
         };
-        if (common["c" /* RuntimeConfig */].ie11) {
+        if (RuntimeConfig.ie11) {
             return factory(args);
         }
         else {
@@ -1875,15 +1722,15 @@ var parsers_ODataParser = /** @class */ (function () {
      */
     ODataParser.prototype.parseODataJSON = function (json) {
         var result = json;
-        if (Object(common["j" /* hOP */])(json, "d")) {
-            if (Object(common["j" /* hOP */])(json.d, "results")) {
+        if (hOP(json, "d")) {
+            if (hOP(json.d, "results")) {
                 result = json.d.results;
             }
             else {
                 result = json.d;
             }
         }
-        else if (Object(common["j" /* hOP */])(json, "value")) {
+        else if (hOP(json, "value")) {
             result = json.value;
         }
         return result;
@@ -1892,7 +1739,7 @@ var parsers_ODataParser = /** @class */ (function () {
 }());
 
 var parsers_TextParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(TextParser, _super);
+    __extends(TextParser, _super);
     function TextParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1903,7 +1750,7 @@ var parsers_TextParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_BlobParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(BlobParser, _super);
+    __extends(BlobParser, _super);
     function BlobParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1914,7 +1761,7 @@ var parsers_BlobParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_JSONParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(JSONParser, _super);
+    __extends(JSONParser, _super);
     function JSONParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1925,12 +1772,12 @@ var parsers_JSONParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_BufferParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(BufferParser, _super);
+    __extends(BufferParser, _super);
     function BufferParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     BufferParser.prototype.parseImpl = function (r, resolve) {
-        if (Object(common["l" /* isFunc */])(r.arrayBuffer)) {
+        if (isFunc(r.arrayBuffer)) {
             r.arrayBuffer().then(resolve);
         }
         else {
@@ -1941,7 +1788,7 @@ var parsers_BufferParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_LambdaParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(LambdaParser, _super);
+    __extends(LambdaParser, _super);
     function LambdaParser(parser) {
         var _this = _super.call(this) || this;
         _this.parser = parser;
@@ -1954,7 +1801,7 @@ var parsers_LambdaParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_HttpRequestError = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(HttpRequestError, _super);
+    __extends(HttpRequestError, _super);
     function HttpRequestError(message, response, status, statusText) {
         if (status === void 0) { status = response.status; }
         if (statusText === void 0) { statusText = response.statusText; }
@@ -1966,9 +1813,9 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
         return _this;
     }
     HttpRequestError.init = function (r) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var t;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, r.clone().text()];
                     case 1:
@@ -1990,7 +1837,7 @@ function cloneQueryableData(source) {
     var s = JSON.stringify(source, function (key, value) {
         switch (key) {
             case "query":
-                return JSON.stringify(Object(tslib_es6["e" /* __spread */])(value));
+                return JSON.stringify(__spread(value));
             case "batch":
                 return "-";
             case "batchDependency":
@@ -2085,7 +1932,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param options custom options
      */
     Queryable.prototype.configure = function (options) {
-        Object(common["p" /* mergeOptions */])(this.data.options, options);
+        mergeOptions(this.data.options, options);
         return this;
     };
     /**
@@ -2094,7 +1941,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param o Instance from which options should be taken
      */
     Queryable.prototype.configureFrom = function (o) {
-        Object(common["p" /* mergeOptions */])(this.data.options, o.data.options);
+        mergeOptions(this.data.options, o.data.options);
         return this;
     };
     /**
@@ -2103,7 +1950,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param options Defines the options used when caching this request
      */
     Queryable.prototype.usingCaching = function (options) {
-        if (!common["c" /* RuntimeConfig */].globalCacheDisable) {
+        if (!RuntimeConfig.globalCacheDisable) {
             this.data.useCaching = true;
             if (options !== undefined) {
                 this.data.cachingOptions = options;
@@ -2130,7 +1977,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param pathPart The string to append
      */
     Queryable.prototype.append = function (pathPart) {
-        this.data.url = Object(common["e" /* combine */])(this.data.url, pathPart);
+        this.data.url = combine(this.data.url, pathPart);
     };
     /**
      * Adds this query to the supplied batch
@@ -2147,7 +1994,7 @@ var queryable_Queryable = /** @class */ (function () {
         if (this.hasBatch) {
             throw Error("This query is already part of a batch.");
         }
-        if (Object(common["q" /* objectDefinedNotNull */])(batch)) {
+        if (objectDefinedNotNull(batch)) {
             batch.track(this);
         }
         return this;
@@ -2156,7 +2003,7 @@ var queryable_Queryable = /** @class */ (function () {
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
     */
     Queryable.prototype.addBatchDependency = function () {
-        if (Object(common["q" /* objectDefinedNotNull */])(this.data.batch)) {
+        if (objectDefinedNotNull(this.data.batch)) {
             return this.data.batch.addDependency();
         }
         return function () { return null; };
@@ -2167,7 +2014,7 @@ var queryable_Queryable = /** @class */ (function () {
          *
          */
         get: function () {
-            return Object(common["q" /* objectDefinedNotNull */])(this.data.batch);
+            return objectDefinedNotNull(this.data.batch);
         },
         enumerable: true,
         configurable: true
@@ -2512,7 +2359,7 @@ function requestPipelineMethod(alwaysRun) {
                 args[_i] = arguments[_i];
             }
             // if we have a result already in the pipeline, pass it along and don't call the tagged method
-            if (!alwaysRun && args.length > 0 && Object(common["j" /* hOP */])(args[0], "hasResult") && args[0].hasResult) {
+            if (!alwaysRun && args.length > 0 && hOP(args[0], "hasResult") && args[0].hasResult) {
                 Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Skipping request pipeline method " + propertyKey + ", existing result in pipeline.", 0 /* Verbose */);
                 return Promise.resolve(args[0]);
             }
@@ -2552,7 +2399,7 @@ var pipeline_PipelineMethods = /** @class */ (function () {
                 Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Caching is enabled for request, checking cache...", 1 /* Info */);
                 var cacheOptions = new caching_CachingOptions(context.url.toLowerCase());
                 if (context.cachingOptions !== undefined) {
-                    cacheOptions = Object(common["d" /* assign */])(cacheOptions, context.cachingOptions);
+                    cacheOptions = util_assign(cacheOptions, context.cachingOptions);
                 }
                 // we may not have a valid store
                 if (cacheOptions.store !== null) {
@@ -2565,11 +2412,11 @@ var pipeline_PipelineMethods = /** @class */ (function () {
                             message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
                         });
                         // ensure we clear any held batch dependency we are resolving from the cache
-                        if (Object(common["l" /* isFunc */])(context.batchDependency)) {
+                        if (isFunc(context.batchDependency)) {
                             context.batchDependency();
                         }
                         // handle the case where a parser needs to take special actions with a cached result
-                        if (Object(common["j" /* hOP */])(context.parser, "hydrate")) {
+                        if (hOP(context.parser, "hydrate")) {
                             data = context.parser.hydrate(data);
                         }
                         return setResult(context, data).then(function (ctx) { return resolve(ctx); });
@@ -2592,7 +2439,7 @@ var pipeline_PipelineMethods = /** @class */ (function () {
             if (context.isBatched) {
                 var p = context.batch.add(context);
                 // we release the dependency here to ensure the batch does not execute until the request is added to the batch
-                if (Object(common["l" /* isFunc */])(context.batchDependency)) {
+                if (isFunc(context.batchDependency)) {
                     context.batchDependency();
                 }
                 Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request in batch " + context.batch.batchId + ".", 1 /* Info */);
@@ -2603,7 +2450,7 @@ var pipeline_PipelineMethods = /** @class */ (function () {
                 Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Sending request.", 1 /* Info */);
                 // we are not part of a batch, so proceed as normal
                 var client = context.clientFactory();
-                var opts = Object(common["d" /* assign */])(context.options || {}, { method: context.method });
+                var opts = util_assign(context.options || {}, { method: context.method });
                 client.fetch(context.url, opts)
                     .then(function (response) { return context.parser.parse(response); })
                     .then(function (result) { return setResult(context, result); })
@@ -2634,16 +2481,16 @@ var pipeline_PipelineMethods = /** @class */ (function () {
             resolve(context);
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         requestPipelineMethod(true)
     ], PipelineMethods, "logStart", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         requestPipelineMethod()
     ], PipelineMethods, "caching", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         requestPipelineMethod()
     ], PipelineMethods, "send", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         requestPipelineMethod(true)
     ], PipelineMethods, "logEnd", null);
     return PipelineMethods;
@@ -2681,14 +2528,14 @@ function pipelineBinder(pipes) {
                     cloneParentCacheOptions: null,
                     cloneParentWasCaching: false,
                     hasResult: false,
-                    isBatched: Object(common["q" /* objectDefinedNotNull */])(o.batch),
+                    isBatched: objectDefinedNotNull(o.batch),
                     method: method,
                     options: null,
                     parentUrl: "",
                     parser: new parsers_ODataParser(),
                     pipes: pipes.slice(0),
                     query: new Map(),
-                    requestId: Object(common["h" /* getGUID */])(),
+                    requestId: getGUID(),
                     url: "",
                     useCaching: /^get$/i.test(o.method) && o.useCaching,
                 }, cloneQueryableData(o)));
@@ -2701,7 +2548,7 @@ var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
 
 function body(o, previous) {
-    return Object.assign({ body: Object(common["n" /* jsS */])(o) }, previous);
+    return Object.assign({ body: jsS(o) }, previous);
 }
 function request_builders_headers(o, previous) {
     return Object.assign({ headers: o }, previous);
@@ -2729,7 +2576,7 @@ function metadata(type) {
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/extractweburl.js
 
 function extractWebUrl(candidateUrl) {
-    if (Object(common["r" /* stringIsNullOrEmpty */])(candidateUrl)) {
+    if (stringIsNullOrEmpty(candidateUrl)) {
         return "";
     }
     var index = candidateUrl.indexOf("_api/");
@@ -2763,8 +2610,8 @@ function tag(name) {
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
-            return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-                return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
                     this.configure(request_builders_headers({ "X-PnPjs-Tracking": name }));
                     return [2 /*return*/, originalMethod.apply(this, args)];
                 });
@@ -2780,7 +2627,7 @@ tag.getClientTag = function (h, deleteFromCollection) {
         if (deleteFromCollection) {
             h.delete("X-PnPjs-Tracking");
         }
-        if (!Object(common["r" /* stringIsNullOrEmpty */])(methodName)) {
+        if (!stringIsNullOrEmpty(methodName)) {
             return methodName;
         }
     }
@@ -2802,23 +2649,23 @@ tag.isTagged = function (o) {
 
 var sphttpclient_SPHttpClient = /** @class */ (function () {
     function SPHttpClient(_impl) {
-        if (_impl === void 0) { _impl = splibconfig["a" /* SPRuntimeConfig */].fetchClientFactory(); }
+        if (_impl === void 0) { _impl = SPRuntimeConfig.fetchClientFactory(); }
         this._impl = _impl;
         this._digestCache = getDigestFactory(this);
     }
     SPHttpClient.prototype.fetch = function (url, options) {
         if (options === void 0) { options = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var opts, headers, methodName, clientTag, digest;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        opts = Object(common["d" /* assign */])(options, { cache: "no-cache", credentials: "same-origin" }, true);
+                        opts = util_assign(options, { cache: "no-cache", credentials: "same-origin" }, true);
                         headers = new Headers();
                         // first we add the global headers so they can be overwritten by any passed in locally to this call
-                        Object(common["o" /* mergeHeaders */])(headers, splibconfig["a" /* SPRuntimeConfig */].headers);
+                        mergeHeaders(headers, SPRuntimeConfig.headers);
                         // second we add the local options so we can overwrite the globals
-                        Object(common["o" /* mergeHeaders */])(headers, options.headers);
+                        mergeHeaders(headers, options.headers);
                         // lastly we apply any default headers we need that may not exist
                         if (!headers.has("Accept")) {
                             headers.append("Accept", "application/json");
@@ -2828,18 +2675,13 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.3:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.4:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
                             headers.append("X-ClientService-ClientTag", clientTag);
                         }
-                        if (!headers.has("User-Agent")) {
-                            // this marks the requests for understanding by the service
-                            // does not work in browsers
-                            headers.append("User-Agent", "NONISV|SharePointPnP|PnPjs/2.0.3");
-                        }
-                        opts = Object(common["d" /* assign */])(opts, { headers: headers });
+                        opts = util_assign(opts, { headers: headers });
                         if (!(opts.method && opts.method.toUpperCase() !== "GET" && !headers.has("X-RequestDigest") && !headers.has("Authorization"))) return [3 /*break*/, 2];
                         return [4 /*yield*/, this._digestCache(extractWebUrl(url))];
                     case 1:
@@ -2856,15 +2698,15 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         // here we need to normalize the headers
         var rawHeaders = new Headers();
-        Object(common["o" /* mergeHeaders */])(rawHeaders, options.headers);
-        options = Object(common["d" /* assign */])(options, { headers: rawHeaders });
+        mergeHeaders(rawHeaders, options.headers);
+        options = util_assign(options, { headers: rawHeaders });
         var retry = function (ctx) {
             // handles setting the proper timeout for a retry
             var setRetry = function (response) {
                 var delay;
                 if (response.headers.has("Retry-After")) {
-                    // if we have gotten a header, use that value as the delay value
-                    delay = parseInt(response.headers.get("Retry-After"), 10);
+                    // if we have gotten a header, use that value as the delay value in seconds
+                    delay = parseInt(response.headers.get("Retry-After"), 10) * 1000;
                 }
                 else {
                     // grab our current delay
@@ -2879,7 +2721,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                 }
                 else {
                     // Set our retry timeout for {delay} milliseconds.
-                    setTimeout(Object(common["g" /* getCtxCallback */])(_this, retry, ctx), delay);
+                    setTimeout(getCtxCallback(_this, retry, ctx), delay);
                 }
             };
             // send the actual request
@@ -2913,22 +2755,22 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
     };
     SPHttpClient.prototype.get = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(common["d" /* assign */])(options, { method: "GET" });
+        var opts = util_assign(options, { method: "GET" });
         return this.fetch(url, opts);
     };
     SPHttpClient.prototype.post = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(common["d" /* assign */])(options, { method: "POST" });
+        var opts = util_assign(options, { method: "POST" });
         return this.fetch(url, opts);
     };
     SPHttpClient.prototype.patch = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(common["d" /* assign */])(options, { method: "PATCH" });
+        var opts = util_assign(options, { method: "PATCH" });
         return this.fetch(url, opts);
     };
     SPHttpClient.prototype.delete = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(common["d" /* assign */])(options, { method: "DELETE" });
+        var opts = util_assign(options, { method: "DELETE" });
         return this.fetch(url, opts);
     };
     return SPHttpClient;
@@ -2938,9 +2780,9 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
 var digests = new Map();
 function getDigestFactory(client) {
     var _this = this;
-    return function (webUrl) { return Object(tslib_es6["a" /* __awaiter */])(_this, void 0, void 0, function () {
+    return function (webUrl) { return __awaiter(_this, void 0, void 0, function () {
         var cachedDigest, now, url, headers, resp, parsed, newCachedDigest;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     cachedDigest = digests.get(webUrl);
@@ -2950,7 +2792,7 @@ function getDigestFactory(client) {
                             return [2 /*return*/, cachedDigest.value];
                         }
                     }
-                    url = Object(common["e" /* combine */])(webUrl, "/_api/contextinfo");
+                    url = combine(webUrl, "/_api/contextinfo");
                     headers = {
                         "Accept": "application/json;odata=verbose",
                         "Content-Type": "application/json;odata=verbose;charset=utf-8",
@@ -2958,7 +2800,7 @@ function getDigestFactory(client) {
                     return [4 /*yield*/, client.fetchRaw(url, {
                             cache: "no-cache",
                             credentials: "same-origin",
-                            headers: Object(common["d" /* assign */])(headers, splibconfig["a" /* SPRuntimeConfig */].headers, true),
+                            headers: util_assign(headers, SPRuntimeConfig.headers, true),
                             method: "POST",
                         })];
                 case 1:
@@ -2967,7 +2809,7 @@ function getDigestFactory(client) {
                 case 2:
                     parsed = _a.sent();
                     newCachedDigest = {
-                        expiration: Object(common["f" /* dateAdd */])(new Date(), "second", parsed.FormDigestTimeoutSeconds),
+                        expiration: dateAdd(new Date(), "second", parsed.FormDigestTimeoutSeconds),
                         value: parsed.FormDigestValue,
                     };
                     digests.set(webUrl, newCachedDigest);
@@ -2977,8 +2819,47 @@ function getDigestFactory(client) {
     }); };
 }
 
-// EXTERNAL MODULE: ./node_modules/@pnp/sp/utils/toabsoluteurl.js
-var toabsoluteurl = __webpack_require__(4);
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/toabsoluteurl.js
+
+
+/**
+ * Ensures that a given url is absolute for the current web based on context
+ *
+ * @param candidateUrl The url to make absolute
+ *
+ */
+function toAbsoluteUrl(candidateUrl) {
+    return new Promise(function (resolve) {
+        if (isUrlAbsolute(candidateUrl)) {
+            // if we are already absolute, then just return the url
+            return resolve(candidateUrl);
+        }
+        if (SPRuntimeConfig.baseUrl !== null) {
+            // base url specified either with baseUrl of spfxContext config property
+            return resolve(combine(SPRuntimeConfig.baseUrl, candidateUrl));
+        }
+        if (safe_global["a" /* safeGlobal */]._spPageContextInfo !== undefined) {
+            // operating in classic pages
+            if (hOP(safe_global["a" /* safeGlobal */]._spPageContextInfo, "webAbsoluteUrl")) {
+                return resolve(combine(safe_global["a" /* safeGlobal */]._spPageContextInfo.webAbsoluteUrl, candidateUrl));
+            }
+            else if (hOP(safe_global["a" /* safeGlobal */]._spPageContextInfo, "webServerRelativeUrl")) {
+                return resolve(combine(safe_global["a" /* safeGlobal */]._spPageContextInfo.webServerRelativeUrl, candidateUrl));
+            }
+        }
+        // does window.location exist and have a certain path part in it?
+        if (safe_global["a" /* safeGlobal */].location !== undefined) {
+            var baseUrl_1 = safe_global["a" /* safeGlobal */].location.toString().toLowerCase();
+            ["/_layouts/", "/siteassets/"].forEach(function (s) {
+                var index = baseUrl_1.indexOf(s);
+                if (index > 0) {
+                    return resolve(combine(baseUrl_1.substr(0, index), candidateUrl));
+                }
+            });
+        }
+        return resolve(candidateUrl);
+    });
+}
 
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/operations.js
 
@@ -2990,17 +2871,17 @@ var spClientBinder = defaultPipelineBinder(function () { return new sphttpclient
 var send = function (method) {
     var operation = spClientBinder(method);
     return function (o, options) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data, batchDependency, url;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         data = cloneQueryableData(o.data);
-                        batchDependency = Object(common["q" /* objectDefinedNotNull */])(data.batch) ? data.batch.addDependency() : function () { return; };
-                        return [4 /*yield*/, Object(toabsoluteurl["a" /* toAbsoluteUrl */])(o.toUrlAndQuery())];
+                        batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : function () { return; };
+                        return [4 /*yield*/, toAbsoluteUrl(o.toUrlAndQuery())];
                     case 1:
                         url = _a.sent();
-                        Object(common["p" /* mergeOptions */])(data.options, options);
+                        mergeOptions(data.options, options);
                         return [2 /*return*/, operation(Object.assign({}, data, {
                                 batchDependency: batchDependency,
                                 url: url,
@@ -3054,7 +2935,7 @@ var spInvokableFactory = function (f) {
  *
  */
 var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharePointQueryable, _super);
+    __extends(_SharePointQueryable, _super);
     /**
      * Creates a new instance of the SharePointQueryable class
      *
@@ -3070,27 +2951,27 @@ var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
         if (typeof baseUrl === "string") {
             // we need to do some extra parsing to get the parent url correct if we are
             // being created from just a string.
-            if (Object(common["m" /* isUrlAbsolute */])(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
+            if (isUrlAbsolute(baseUrl) || baseUrl.lastIndexOf("/") < 0) {
                 parentUrl = baseUrl;
-                url = Object(common["e" /* combine */])(baseUrl, path);
+                url = combine(baseUrl, path);
             }
             else if (baseUrl.lastIndexOf("/") > baseUrl.lastIndexOf("(")) {
                 // .../items(19)/fields
                 var index = baseUrl.lastIndexOf("/");
                 parentUrl = baseUrl.slice(0, index);
-                path = Object(common["e" /* combine */])(baseUrl.slice(index), path);
-                url = Object(common["e" /* combine */])(parentUrl, path);
+                path = combine(baseUrl.slice(index), path);
+                url = combine(parentUrl, path);
             }
             else {
                 // .../items(19)
                 var index = baseUrl.lastIndexOf("(");
                 parentUrl = baseUrl.slice(0, index);
-                url = Object(common["e" /* combine */])(baseUrl, path);
+                url = combine(baseUrl, path);
             }
         }
         else {
             parentUrl = baseUrl.toUrl();
-            url = Object(common["e" /* combine */])(parentUrl, path || "");
+            url = combine(parentUrl, path || "");
             var target = baseUrl.query.get("@target");
             if (target !== undefined) {
                 query.set("@target", target);
@@ -3208,7 +3089,7 @@ var SharePointQueryable = spInvokableFactory(sharepointqueryable_SharePointQuery
  *
  */
 var sharepointqueryable_SharePointQueryableCollection = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharePointQueryableCollection, _super);
+    __extends(_SharePointQueryableCollection, _super);
     function _SharePointQueryableCollection() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3262,7 +3143,7 @@ var SharePointQueryableCollection = spInvokableFactory(sharepointqueryable_Share
  *
  */
 var sharepointqueryable_SharePointQueryableInstance = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharePointQueryableInstance, _super);
+    __extends(_SharePointQueryableInstance, _super);
     function _SharePointQueryableInstance() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3275,7 +3156,7 @@ var sharepointqueryable_SharePointQueryableInstance = /** @class */ (function (_
     _SharePointQueryableInstance.prototype._update = function (type, mapper) {
         var _this = this;
         return function (props) { return spPost(tag.configure(_this, type + ".Update"), {
-            body: Object(common["n" /* jsS */])(Object(common["d" /* assign */])(metadata(type), props)),
+            body: jsS(util_assign(metadata(type), props)),
             headers: {
                 "X-HTTP-Method": "MERGE",
             },
@@ -3313,7 +3194,7 @@ function deleteableWithETag(t) {
 function defaultPath(path) {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_1, _super);
+            __extends(class_1, _super);
             function class_1() {
                 var args = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
@@ -3338,28 +3219,28 @@ function defaultPath(path) {
 function odataUrlFrom(candidate) {
     var parts = [];
     var s = ["odata.type", "odata.editLink", "__metadata", "odata.metadata", "odata.id"];
-    if (Object(common["j" /* hOP */])(candidate, s[0]) && candidate[s[0]] === "SP.Web") {
+    if (hOP(candidate, s[0]) && candidate[s[0]] === "SP.Web") {
         // webs return an absolute url in the id
-        if (Object(common["j" /* hOP */])(candidate, s[4])) {
+        if (hOP(candidate, s[4])) {
             parts.push(candidate[s[4]]);
         }
-        else if (Object(common["j" /* hOP */])(candidate, s[2])) {
+        else if (hOP(candidate, s[2])) {
             // we are dealing with verbose, which has an absolute uri
             parts.push(candidate.__metadata.uri);
         }
     }
     else {
-        if (Object(common["j" /* hOP */])(candidate, s[3]) && Object(common["j" /* hOP */])(candidate, s[1])) {
+        if (hOP(candidate, s[3]) && hOP(candidate, s[1])) {
             // we are dealign with minimal metadata (default)
             // some entities return an abosolute url in the editlink while for others it is relative
             // without the _api. This code is meant to handle both situations
-            var editLink = Object(common["m" /* isUrlAbsolute */])(candidate[s[1]]) ? candidate[s[1]].split("_api")[1] : candidate[s[1]];
+            var editLink = isUrlAbsolute(candidate[s[1]]) ? candidate[s[1]].split("_api")[1] : candidate[s[1]];
             parts.push(extractWebUrl(candidate[s[3]]), "_api", editLink);
         }
-        else if (Object(common["j" /* hOP */])(candidate, s[1])) {
+        else if (hOP(candidate, s[1])) {
             parts.push("_api", candidate[s[1]]);
         }
-        else if (Object(common["j" /* hOP */])(candidate, s[2])) {
+        else if (hOP(candidate, s[2])) {
             // we are dealing with verbose, which has an absolute uri
             parts.push(candidate.__metadata.uri);
         }
@@ -3368,16 +3249,16 @@ function odataUrlFrom(candidate) {
         Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
         return "";
     }
-    return common["e" /* combine */].apply(void 0, Object(tslib_es6["e" /* __spread */])(parts));
+    return combine.apply(void 0, __spread(parts));
 }
 var odata_SPODataEntityParserImpl = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(SPODataEntityParserImpl, _super);
+    __extends(SPODataEntityParserImpl, _super);
     function SPODataEntityParserImpl(factory) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
         _this.hydrate = function (d) {
             var o = _this.factory(odataUrlFrom(d), null);
-            return Object(common["d" /* assign */])(o, d);
+            return util_assign(o, d);
         };
         return _this;
     }
@@ -3385,20 +3266,20 @@ var odata_SPODataEntityParserImpl = /** @class */ (function (_super) {
         var _this = this;
         return _super.prototype.parse.call(this, r).then(function (d) {
             var o = _this.factory(odataUrlFrom(d), null);
-            return Object(common["d" /* assign */])(o, d);
+            return util_assign(o, d);
         });
     };
     return SPODataEntityParserImpl;
 }(parsers_ODataParser));
 var odata_SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(SPODataEntityArrayParserImpl, _super);
+    __extends(SPODataEntityArrayParserImpl, _super);
     function SPODataEntityArrayParserImpl(factory) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
         _this.hydrate = function (d) {
             return d.map(function (v) {
                 var o = _this.factory(odataUrlFrom(v), null);
-                return Object(common["d" /* assign */])(o, v);
+                return util_assign(o, v);
             });
         };
         return _this;
@@ -3408,7 +3289,7 @@ var odata_SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
         return _super.prototype.parse.call(this, r).then(function (d) {
             return d.map(function (v) {
                 var o = _this.factory(odataUrlFrom(v), null);
-                return Object(common["d" /* assign */])(o, v);
+                return util_assign(o, v);
             });
         });
     };
@@ -3433,7 +3314,7 @@ function spODataEntityArray(factory) {
  * Manages a batch of OData operations
  */
 var batch_SPBatch = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(SPBatch, _super);
+    __extends(SPBatch, _super);
     function SPBatch(baseUrl) {
         var _this = _super.call(this) || this;
         _this.baseUrl = baseUrl;
@@ -3497,10 +3378,10 @@ var batch_SPBatch = /** @class */ (function (_super) {
         return responses;
     };
     SPBatch.prototype.executeImpl = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var client, absoluteRequestUrl, batchBody, currentChangeSetId, i, reqInfo, headers, url, method, castHeaders, batchOptions, fetchResponse, text, responses;
             var _this = this;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
@@ -3511,7 +3392,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                             return [2 /*return*/];
                         }
                         client = new sphttpclient_SPHttpClient();
-                        return [4 /*yield*/, Object(toabsoluteurl["a" /* toAbsoluteUrl */])(this.baseUrl)];
+                        return [4 /*yield*/, toAbsoluteUrl(this.baseUrl)];
                     case 1:
                         absoluteRequestUrl = _a.sent();
                         batchBody = [];
@@ -3529,7 +3410,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                             else {
                                 if (currentChangeSetId.length < 1) {
                                     // start new change set
-                                    currentChangeSetId = Object(common["h" /* getGUID */])();
+                                    currentChangeSetId = getGUID();
                                     batchBody.push("--batch_" + this.batchId + "\n");
                                     batchBody.push("Content-Type: multipart/mixed; boundary=\"changeset_" + currentChangeSetId + "\"\n\n");
                                 }
@@ -3539,12 +3420,12 @@ var batch_SPBatch = /** @class */ (function (_super) {
                             batchBody.push("Content-Type: application/http\n");
                             batchBody.push("Content-Transfer-Encoding: binary\n\n");
                             headers = new Headers();
-                            url = Object(common["m" /* isUrlAbsolute */])(reqInfo.url) ? reqInfo.url : Object(common["e" /* combine */])(absoluteRequestUrl, reqInfo.url);
+                            url = isUrlAbsolute(reqInfo.url) ? reqInfo.url : combine(absoluteRequestUrl, reqInfo.url);
                             Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Adding request " + reqInfo.method + " " + url + " to batch.", 0 /* Verbose */);
                             if (reqInfo.method !== "GET") {
                                 method = reqInfo.method;
                                 castHeaders = reqInfo.options.headers;
-                                if (Object(common["j" /* hOP */])(reqInfo, "options") && Object(common["j" /* hOP */])(reqInfo.options, "headers") && castHeaders["X-HTTP-Method"] !== undefined) {
+                                if (hOP(reqInfo, "options") && hOP(reqInfo.options, "headers") && castHeaders["X-HTTP-Method"] !== undefined) {
                                     method = castHeaders["X-HTTP-Method"];
                                     delete castHeaders["X-HTTP-Method"];
                                 }
@@ -3555,10 +3436,10 @@ var batch_SPBatch = /** @class */ (function (_super) {
                                 batchBody.push(reqInfo.method + " " + url + " HTTP/1.1\n");
                             }
                             // merge global config headers
-                            Object(common["o" /* mergeHeaders */])(headers, splibconfig["a" /* SPRuntimeConfig */].headers);
+                            mergeHeaders(headers, SPRuntimeConfig.headers);
                             // merge per-request headers
                             if (reqInfo.options) {
-                                Object(common["o" /* mergeHeaders */])(headers, reqInfo.options.headers);
+                                mergeHeaders(headers, reqInfo.options.headers);
                             }
                             // lastly we apply any default headers we need that may not exist
                             if (!headers.has("Accept")) {
@@ -3568,7 +3449,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.3:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.4:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -3593,7 +3474,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                             "method": "POST",
                         };
                         Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
-                        return [4 /*yield*/, client.fetch(Object(common["e" /* combine */])(absoluteRequestUrl, "/_api/$batch"), batchOptions)];
+                        return [4 /*yield*/, client.fetch(combine(absoluteRequestUrl, "/_api/$batch"), batchOptions)];
                     case 2:
                         fetchResponse = _a.sent();
                         return [4 /*yield*/, fetchResponse.text()];
@@ -3606,9 +3487,9 @@ var batch_SPBatch = /** @class */ (function (_super) {
                         Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
                         // this structure ensures that we resolve the batched requests in the order we expect
                         // using async this is not guaranteed depending on the requests
-                        return [2 /*return*/, responses.reduce(function (p, response, index) { return p.then(function (_) { return Object(tslib_es6["a" /* __awaiter */])(_this, void 0, void 0, function () {
+                        return [2 /*return*/, responses.reduce(function (p, response, index) { return p.then(function (_) { return __awaiter(_this, void 0, void 0, function () {
                                 var request, _a, _b, e_1;
-                                return Object(tslib_es6["d" /* __generator */])(this, function (_c) {
+                                return __generator(this, function (_c) {
                                     switch (_c.label) {
                                         case 0:
                                             request = this.requests[index];
@@ -3641,7 +3522,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
 
 
 function escapeQueryStrValue(value) {
-    if (Object(common["r" /* stringIsNullOrEmpty */])(value)) {
+    if (stringIsNullOrEmpty(value)) {
         return "";
     }
     // replace all instance of ' with ''
@@ -3674,7 +3555,7 @@ function escapeQueryStrValue(value) {
 
 
 var types_Site = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Site, _super);
+    __extends(_Site, _super);
     function _Site() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3694,9 +3575,9 @@ var types_Site = /** @class */ (function (_super) {
      * correctly setup for chaining within the library
      */
     _Site.prototype.getRootWeb = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var web;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.rootWeb.select("Url")()];
                     case 1:
@@ -3710,16 +3591,16 @@ var types_Site = /** @class */ (function (_super) {
     * Gets the context information for this site collection
     */
     _Site.prototype.getContextInfo = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data, info;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = tag.configure(Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
                         return [4 /*yield*/, spPost(q)];
                     case 1:
                         data = _a.sent();
-                        if (Object(common["j" /* hOP */])(data, "GetContextWebInformation")) {
+                        if (hOP(data, "GetContextWebInformation")) {
                             info = data.GetContextWebInformation;
                             info.SupportedSchemaVersions = info.SupportedSchemaVersions.results;
                             return [2 /*return*/, info];
@@ -3740,9 +3621,9 @@ var types_Site = /** @class */ (function (_super) {
     *
     */
     _Site.prototype.delete = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var site, q;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(Site, "").select("Id")()];
                     case 1:
@@ -3762,9 +3643,9 @@ var types_Site = /** @class */ (function (_super) {
      * @param absoluteWebUrl The absolute url of the web whose document libraries should be returned
      */
     _Site.prototype.getDocumentLibraries = function (absoluteWebUrl) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = tag.configure(SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)"), "si.getDocumentLibraries");
@@ -3772,7 +3653,7 @@ var types_Site = /** @class */ (function (_super) {
                         return [4 /*yield*/, q()];
                     case 1:
                         data = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data];
+                        return [2 /*return*/, hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data];
                 }
             });
         });
@@ -3783,9 +3664,9 @@ var types_Site = /** @class */ (function (_super) {
      * @param absolutePageUrl The absolute url of the page
      */
     _Site.prototype.getWebUrlFromPageUrl = function (absolutePageUrl) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = tag.configure(SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)"), "si.getWebUrlFromPageUrl");
@@ -3793,7 +3674,7 @@ var types_Site = /** @class */ (function (_super) {
                         return [4 /*yield*/, q()];
                     case 1:
                         data = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data];
+                        return [2 /*return*/, hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data];
                 }
             });
         });
@@ -3804,7 +3685,7 @@ var types_Site = /** @class */ (function (_super) {
      * @param query The change query
      */
     _Site.prototype.getChanges = function (query) {
-        var postBody = body({ "query": Object(common["d" /* assign */])(metadata("SP.ChangeQuery"), query) });
+        var postBody = body({ "query": util_assign(metadata("SP.ChangeQuery"), query) });
         return spPost(this.clone(Web, "getchanges"), postBody);
     };
     /**
@@ -3813,9 +3694,9 @@ var types_Site = /** @class */ (function (_super) {
     * @param webId The GUID id of the web to open
     */
     _Site.prototype.openWebById = function (webId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Site, "openWebById('" + webId + "')"))];
                     case 1:
@@ -3842,49 +3723,46 @@ var types_Site = /** @class */ (function (_super) {
      *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
+     * @param hubSiteId The id of the hub site to which the new site should be associated
+     * @param owner Optional owner value, required if executing the method in app only mode
      */
     _Site.prototype.createCommunicationSite = function (title, lcid, shareByEmailEnabled, url, description, classification, siteDesignId, hubSiteId, owner) {
         if (lcid === void 0) { lcid = 1033; }
         if (shareByEmailEnabled === void 0) { shareByEmailEnabled = false; }
-        if (description === void 0) { description = ""; }
-        if (classification === void 0) { classification = ""; }
-        if (siteDesignId === void 0) { siteDesignId = "00000000-0000-0000-0000-000000000000"; }
-        if (hubSiteId === void 0) { hubSiteId = "00000000-0000-0000-0000-000000000000"; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var props, postBody, d, client, methodUrl, r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        props = {
-                            Classification: classification,
-                            Description: description,
-                            HubSiteId: hubSiteId,
-                            Lcid: lcid,
-                            Owner: owner,
-                            ShareByEmailEnabled: shareByEmailEnabled,
-                            SiteDesignId: siteDesignId,
-                            Title: title,
-                            Url: url,
-                            WebTemplate: "SITEPAGEPUBLISHING#0",
-                            WebTemplateExtensionId: "00000000-0000-0000-0000-000000000000",
-                        };
-                        postBody = body({
-                            "request": Object(common["d" /* assign */])(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), props),
-                        }, request_builders_headers({
-                            "Accept": "application/json;odata=verbose",
-                            "Content-Type": "application/json;odata=verbose;charset=utf-8",
-                        }));
-                        return [4 /*yield*/, this.getRootWeb()];
-                    case 1:
-                        d = _a.sent();
-                        client = new sphttpclient_SPHttpClient();
-                        methodUrl = d.parentUrl + "/_api/SPSiteManager/Create";
-                        return [4 /*yield*/, client.post(methodUrl, postBody)];
-                    case 2:
-                        r = _a.sent();
-                        return [4 /*yield*/, r.json()];
-                    case 3: return [2 /*return*/, _a.sent()];
-                }
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.createCommunicationSiteFromProps({
+                        Classification: classification,
+                        Description: description,
+                        HubSiteId: hubSiteId,
+                        Lcid: lcid,
+                        Owner: owner,
+                        ShareByEmailEnabled: shareByEmailEnabled,
+                        SiteDesignId: siteDesignId,
+                        Title: title,
+                        Url: url,
+                    })];
+            });
+        });
+    };
+    _Site.prototype.createCommunicationSiteFromProps = function (props) {
+        return __awaiter(this, void 0, void 0, function () {
+            var p, postBody;
+            return __generator(this, function (_a) {
+                p = Object.assign({}, {
+                    Classification: "",
+                    Description: "",
+                    HubSiteId: emptyGuid,
+                    Lcid: 1033,
+                    ShareByEmailEnabled: false,
+                    SiteDesignId: emptyGuid,
+                    WebTemplate: "SITEPAGEPUBLISHING#0",
+                    WebTemplateExtensionId: emptyGuid,
+                }, props);
+                postBody = body({
+                    "request": util_assign(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), p),
+                });
+                return [2 /*return*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), postBody)];
             });
         });
     };
@@ -3900,61 +3778,63 @@ var types_Site = /** @class */ (function (_super) {
     * @param owners The Owners of the site to be created
     */
     _Site.prototype.createModernTeamSite = function (displayName, alias, isPublic, lcid, description, classification, owners, hubSiteId, siteDesignId) {
-        if (isPublic === void 0) { isPublic = true; }
-        if (lcid === void 0) { lcid = 1033; }
-        if (description === void 0) { description = ""; }
-        if (classification === void 0) { classification = ""; }
-        if (hubSiteId === void 0) { hubSiteId = "00000000-0000-0000-0000-000000000000"; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var postBody, d, client, methodUrl, r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        postBody = {
-                            alias: alias,
-                            displayName: displayName,
-                            isPublic: isPublic,
-                            optionalParams: {
-                                Classification: classification,
-                                CreationOptions: {
-                                    "results": ["SPSiteLanguage:" + lcid, "HubSiteId:" + hubSiteId],
-                                },
-                                Description: description,
-                                Owners: {
-                                    "results": owners ? owners : [],
-                                },
-                            },
-                        };
-                        if (siteDesignId) {
-                            postBody.optionalParams.CreationOptions.results.push("implicit_formula_292aa8a00786498a87a5ca52d9f4214a_" + siteDesignId);
-                        }
-                        return [4 /*yield*/, this.getRootWeb()];
-                    case 1:
-                        d = _a.sent();
-                        client = new sphttpclient_SPHttpClient();
-                        methodUrl = d.parentUrl + "/_api/GroupSiteManager/CreateGroupEx";
-                        return [4 /*yield*/, client.post(methodUrl, {
-                                body: Object(common["n" /* jsS */])(postBody),
-                                headers: {
-                                    "Accept": "application/json;odata=verbose",
-                                    "Content-Type": "application/json;odata=verbose;charset=utf-8",
-                                },
-                            })];
-                    case 2:
-                        r = _a.sent();
-                        return [4 /*yield*/, r.json()];
-                    case 3: return [2 /*return*/, _a.sent()];
-                }
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.createModernTeamSiteFromProps({
+                        alias: alias,
+                        classification: classification,
+                        description: description,
+                        displayName: displayName,
+                        hubSiteId: hubSiteId,
+                        isPublic: isPublic,
+                        lcid: lcid,
+                        owners: owners,
+                        siteDesignId: siteDesignId,
+                    })];
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    _Site.prototype.createModernTeamSiteFromProps = function (props) {
+        return __awaiter(this, void 0, void 0, function () {
+            var p, postBody;
+            return __generator(this, function (_a) {
+                p = Object.assign({}, {
+                    classification: "",
+                    description: "",
+                    hubSiteId: emptyGuid,
+                    isPublic: true,
+                    lcid: 1033,
+                    owners: [],
+                }, props);
+                postBody = {
+                    alias: p.alias,
+                    displayName: p.displayName,
+                    isPublic: p.isPublic,
+                    optionalParams: {
+                        Classification: p.classification,
+                        CreationOptions: {
+                            "results": ["SPSiteLanguage:" + p.lcid, "HubSiteId:" + p.hubSiteId],
+                        },
+                        Description: p.description,
+                        Owners: {
+                            "results": p.owners,
+                        },
+                    },
+                };
+                if (p.siteDesignId) {
+                    postBody.optionalParams.CreationOptions.results.push("implicit_formula_292aa8a00786498a87a5ca52d9f4214a_" + p.siteDesignId);
+                }
+                return [2 /*return*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/GroupSiteManager/CreateGroupEx"), body(postBody))];
+            });
+        });
+    };
+    __decorate([
         tag("si.getChanges")
     ], _Site.prototype, "getChanges", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("si.openWebById")
     ], _Site.prototype, "openWebById", null);
-    _Site = Object(tslib_es6["b" /* __decorate */])([
+    _Site = __decorate([
         defaultPath("_api/site")
     ], _Site);
     return _Site;
@@ -3988,7 +3868,7 @@ Reflect.defineProperty(rest_SPRest.prototype, "site", {
 
 
 var types_Webs = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Webs, _super);
+    __extends(_Webs, _super);
     function _Webs() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4007,13 +3887,13 @@ var types_Webs = /** @class */ (function (_super) {
         if (template === void 0) { template = "STS"; }
         if (language === void 0) { language = 1033; }
         if (inheritPermissions === void 0) { inheritPermissions = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = body({
-                            "parameters": Object(common["d" /* assign */])(metadata("SP.WebCreationInformation"), {
+                            "parameters": util_assign(metadata("SP.WebCreationInformation"), {
                                 Description: description,
                                 Language: language,
                                 Title: title,
@@ -4033,10 +3913,10 @@ var types_Webs = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ws.add")
     ], _Webs.prototype, "add", null);
-    _Webs = Object(tslib_es6["b" /* __decorate */])([
+    _Webs = __decorate([
         defaultPath("webs")
     ], _Webs);
     return _Webs;
@@ -4048,7 +3928,7 @@ var Webs = spInvokableFactory(types_Webs);
  *
  */
 var types_Web = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Web, _super);
+    __extends(_Web, _super);
     function _Web() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("w");
@@ -4070,9 +3950,9 @@ var types_Web = /** @class */ (function (_super) {
      *
      */
     _Web.prototype.getParentWeb = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var ParentWeb;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spGet(this.select("ParentWeb/Id").expand("ParentWeb"))];
                     case 1:
@@ -4128,12 +4008,12 @@ var types_Web = /** @class */ (function (_super) {
      * @param properties A plain object hash of values to update for the web
      */
     _Web.prototype.update = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["d" /* assign */])(metadata("SP.Web"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
+                        postBody = body(util_assign(metadata("SP.Web"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
                         return [4 /*yield*/, spPost(this, postBody)];
                     case 1:
                         data = _a.sent();
@@ -4187,7 +4067,7 @@ var types_Web = /** @class */ (function (_super) {
      * @param query The change query
      */
     _Web.prototype.getChanges = function (query) {
-        var postBody = body({ "query": Object(common["d" /* assign */])(metadata("SP.ChangeQuery"), query) });
+        var postBody = body({ "query": util_assign(metadata("SP.ChangeQuery"), query) });
         return spPost(this.clone(Web, "getchanges"), postBody);
     };
     /**
@@ -4236,34 +4116,34 @@ var types_Web = /** @class */ (function (_super) {
     _Web.prototype.removeStorageEntity = function (key) {
         return spPost(this.clone(Web, "removeStorageEntity('" + escapeQueryStrValue(key) + "')"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.getParentWeb")
     ], _Web.prototype, "getParentWeb", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.update")
     ], _Web.prototype, "update", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.applyTheme")
     ], _Web.prototype, "applyTheme", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.applyWebTemplate")
     ], _Web.prototype, "applyWebTemplate", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.getChanges")
     ], _Web.prototype, "getChanges", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.mapToIcon")
     ], _Web.prototype, "mapToIcon", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.getStorageEntity")
     ], _Web.prototype, "getStorageEntity", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.setStorageEntity")
     ], _Web.prototype, "setStorageEntity", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.removeStorageEntity")
     ], _Web.prototype, "removeStorageEntity", null);
-    _Web = Object(tslib_es6["b" /* __decorate */])([
+    _Web = __decorate([
         defaultPath("_api/web")
     ], _Web);
     return _Web;
@@ -4292,7 +4172,7 @@ function toResourcePath(url) {
 
 
 var types_Lists = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Lists, _super);
+    __extends(_Lists, _super);
     function _Lists() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4326,9 +4206,9 @@ var types_Lists = /** @class */ (function (_super) {
         if (template === void 0) { template = 100; }
         if (enableContentTypes === void 0) { enableContentTypes = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var addSettings, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         addSettings = Object.assign({
@@ -4360,15 +4240,15 @@ var types_Lists = /** @class */ (function (_super) {
         if (template === void 0) { template = 100; }
         if (enableContentTypes === void 0) { enableContentTypes = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var addOrUpdateSettings, list, data, e_1, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this.hasBatch) {
                             throw Error("The ensure list method is not supported for use in a batch.");
                         }
-                        addOrUpdateSettings = Object(common["d" /* assign */])(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
+                        addOrUpdateSettings = util_assign(additionalSettings, { Title: title, Description: desc, ContentTypesEnabled: enableContentTypes }, true);
                         list = this.getByTitle(addOrUpdateSettings.Title);
                         _a.label = 1;
                     case 1:
@@ -4397,9 +4277,9 @@ var types_Lists = /** @class */ (function (_super) {
      * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
      */
     _Lists.prototype.ensureSiteAssetsLibrary = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var json;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Lists, "ensuresiteassetslibrary"))];
                     case 1:
@@ -4413,9 +4293,9 @@ var types_Lists = /** @class */ (function (_super) {
      * Gets a list that is the default location for wiki pages.
      */
     _Lists.prototype.ensureSitePagesLibrary = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var json;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Lists, "ensuresitepageslibrary"))];
                     case 1:
@@ -4425,19 +4305,19 @@ var types_Lists = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.add")
     ], _Lists.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.ensure")
     ], _Lists.prototype, "ensure", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.ensureSiteAssetsLibrary")
     ], _Lists.prototype, "ensureSiteAssetsLibrary", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.ensureSitePagesLibrary")
     ], _Lists.prototype, "ensureSitePagesLibrary", null);
-    _Lists = Object(tslib_es6["b" /* __decorate */])([
+    _Lists = __decorate([
         defaultPath("lists")
     ], _Lists);
     return _Lists;
@@ -4445,7 +4325,7 @@ var types_Lists = /** @class */ (function (_super) {
 
 var Lists = spInvokableFactory(types_Lists);
 var types_List = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_List, _super);
+    __extends(_List, _super);
     function _List() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("l");
@@ -4503,12 +4383,12 @@ var types_List = /** @class */ (function (_super) {
      */
     _List.prototype.update = function (properties, eTag) {
         if (eTag === void 0) { eTag = "*"; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data, list;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["d" /* assign */])(metadata("SP.List"), properties), request_builders_headers({
+                        postBody = body(util_assign(metadata("SP.List"), properties), request_builders_headers({
                             "IF-Match": eTag,
                             "X-HTTP-Method": "MERGE",
                         }));
@@ -4516,7 +4396,7 @@ var types_List = /** @class */ (function (_super) {
                     case 1:
                         data = _a.sent();
                         list = this;
-                        if (Object(common["j" /* hOP */])(properties, "Title")) {
+                        if (hOP(properties, "Title")) {
                             list = this.getParent(List, this.parentUrl, "getByTitle('" + properties.Title + "')");
                         }
                         return [2 /*return*/, {
@@ -4532,7 +4412,7 @@ var types_List = /** @class */ (function (_super) {
      * @param query A query that is performed against the change log.
      */
     _List.prototype.getChanges = function (query) {
-        return spPost(this.clone(List, "getchanges"), body({ query: Object(common["d" /* assign */])(metadata("SP.ChangeQuery"), query) }));
+        return spPost(this.clone(List, "getchanges"), body({ query: util_assign(metadata("SP.ChangeQuery"), query) }));
     };
     /**
      * Returns the collection of items in the list based on the provided CamlQuery
@@ -4545,7 +4425,7 @@ var types_List = /** @class */ (function (_super) {
             expands[_i - 1] = arguments[_i];
         }
         var q = this.clone(List, "getitems");
-        return spPost(q.expand.apply(q, expands), body({ query: Object(common["d" /* assign */])(metadata("SP.CamlQuery"), query) }));
+        return spPost(q.expand.apply(q, expands), body({ query: util_assign(metadata("SP.CamlQuery"), query) }));
     };
     /**
      * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
@@ -4553,20 +4433,20 @@ var types_List = /** @class */ (function (_super) {
      */
     _List.prototype.getListItemChangesSinceToken = function (query) {
         var o = this.clone(List, "getlistitemchangessincetoken").usingParser({ parse: function (r) { return r.text(); } });
-        return spPost(o, body({ "query": Object(common["d" /* assign */])(metadata("SP.ChangeLogItemQuery"), query) }));
+        return spPost(o, body({ "query": util_assign(metadata("SP.ChangeLogItemQuery"), query) }));
     };
     /**
      * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     _List.prototype.recycle = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(List, "recycle"))];
                     case 1:
                         data = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(data, "Recycle") ? data.Recycle : data];
+                        return [2 /*return*/, hOP(data, "Recycle") ? data.Recycle : data];
                 }
             });
         });
@@ -4576,9 +4456,9 @@ var types_List = /** @class */ (function (_super) {
      * @param viewXml A string object representing a view xml
      */
     _List.prototype.renderListData = function (viewXml) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = this.clone(List, "renderlistdata(@viewXml)");
@@ -4587,7 +4467,7 @@ var types_List = /** @class */ (function (_super) {
                     case 1:
                         data = _a.sent();
                         // data will be a string, so we parse it again
-                        return [2 /*return*/, JSON.parse(Object(common["j" /* hOP */])(data, "RenderListData") ? data.RenderListData : data)];
+                        return [2 /*return*/, JSON.parse(hOP(data, "RenderListData") ? data.RenderListData : data)];
                 }
             });
         });
@@ -4602,12 +4482,12 @@ var types_List = /** @class */ (function (_super) {
     _List.prototype.renderListDataAsStream = function (parameters, overrideParameters, queryParams) {
         if (overrideParameters === void 0) { overrideParameters = null; }
         if (queryParams === void 0) { queryParams = new Map(); }
-        if (Object(common["j" /* hOP */])(parameters, "RenderOptions") && Object(common["k" /* isArray */])(parameters.RenderOptions)) {
+        if (hOP(parameters, "RenderOptions") && isArray(parameters.RenderOptions)) {
             parameters.RenderOptions = parameters.RenderOptions.reduce(function (v, c) { return v + c; });
         }
         var postBody = body({
-            overrideParameters: Object(common["d" /* assign */])(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
-            parameters: Object(common["d" /* assign */])(metadata("SP.RenderListDataParameters"), parameters),
+            overrideParameters: util_assign(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
+            parameters: util_assign(metadata("SP.RenderListDataParameters"), parameters),
         });
         var clone = this.clone(List, "RenderListDataAsStream", true);
         if (queryParams && queryParams.size > 0) {
@@ -4622,15 +4502,15 @@ var types_List = /** @class */ (function (_super) {
      * @param mode Enum representing the control mode of the form (Display, Edit, New)
      */
     _List.prototype.renderListFormData = function (itemId, formId, mode) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')"))];
                     case 1:
                         data = _a.sent();
                         // data will be a string, so we parse it again
-                        return [2 /*return*/, JSON.parse(Object(common["j" /* hOP */])(data, "RenderListFormData") ? data.RenderListFormData : data)];
+                        return [2 /*return*/, JSON.parse(hOP(data, "RenderListFormData") ? data.RenderListFormData : data)];
                 }
             });
         });
@@ -4639,14 +4519,14 @@ var types_List = /** @class */ (function (_super) {
      * Reserves a list item ID for idempotent list item creation.
      */
     _List.prototype.reserveListItemId = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(List, "reservelistitemid"))];
                     case 1:
                         data = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(data, "ReserveListItemId") ? data.ReserveListItemId : data];
+                        return [2 /*return*/, hOP(data, "ReserveListItemId") ? data.ReserveListItemId : data];
                 }
             });
         });
@@ -4668,15 +4548,15 @@ var types_List = /** @class */ (function (_super) {
      */
     _List.prototype.addValidateUpdateItemUsingPath = function (formValues, decodedUrl, bNewDocumentUpdate, checkInComment, additionalProps) {
         if (bNewDocumentUpdate === void 0) { bNewDocumentUpdate = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var addProps, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         addProps = {
                             FolderPath: toResourcePath(decodedUrl),
                         };
-                        if (Object(common["q" /* objectDefinedNotNull */])(additionalProps)) {
+                        if (objectDefinedNotNull(additionalProps)) {
                             if (additionalProps.leafName) {
                                 addProps.LeafName = toResourcePath(additionalProps.leafName);
                             }
@@ -4688,46 +4568,46 @@ var types_List = /** @class */ (function (_super) {
                                 bNewDocumentUpdate: bNewDocumentUpdate,
                                 checkInComment: checkInComment,
                                 formValues: formValues,
-                                listItemCreateInfo: Object(common["d" /* assign */])(metadata("SP.ListItemCreationInformationUsingPath"), addProps),
+                                listItemCreateInfo: util_assign(metadata("SP.ListItemCreationInformationUsingPath"), addProps),
                             }))];
                     case 1:
                         res = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(res, "AddValidateUpdateItemUsingPath") ? res.AddValidateUpdateItemUsingPath : res];
+                        return [2 /*return*/, hOP(res, "AddValidateUpdateItemUsingPath") ? res.AddValidateUpdateItemUsingPath : res];
                 }
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.update")
     ], _List.prototype, "update", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.getChanges")
     ], _List.prototype, "getChanges", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.CAMLQuery")
     ], _List.prototype, "getItemsByCAMLQuery", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.ChangesSinceToken")
     ], _List.prototype, "getListItemChangesSinceToken", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.recycle")
     ], _List.prototype, "recycle", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.renderListData")
     ], _List.prototype, "renderListData", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.AsStream")
     ], _List.prototype, "renderListDataAsStream", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.renderListFormData")
     ], _List.prototype, "renderListFormData", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.reserveListItemId")
     ], _List.prototype, "reserveListItemId", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.getListItemEntityTypeFullName")
     ], _List.prototype, "getListItemEntityTypeFullName", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.addValidateUpdateItemUsingPath")
     ], _List.prototype, "addValidateUpdateItemUsingPath", null);
     return _List;
@@ -4783,7 +4663,7 @@ var ControlMode;
  *
  */
 var types_Items = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Items, _super);
+    __extends(_Items, _super);
     function _Items() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4882,17 +4762,17 @@ var types_Items = /** @class */ (function (_super) {
     _Items.prototype.add = function (properties, listItemEntityTypeFullName) {
         if (properties === void 0) { properties = {}; }
         if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var removeDependency, listItemEntityType, postBody, promise;
             var _this = this;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         removeDependency = this.addBatchDependency();
                         return [4 /*yield*/, this.ensureListItemEntityTypeName(listItemEntityTypeFullName)];
                     case 1:
                         listItemEntityType = _a.sent();
-                        postBody = body(Object(common["d" /* assign */])(metadata(listItemEntityType), properties));
+                        postBody = body(util_assign(metadata(listItemEntityType), properties));
                         promise = spPost(this.clone(Items, ""), postBody).then(function (data) {
                             return {
                                 data: data,
@@ -4915,16 +4795,16 @@ var types_Items = /** @class */ (function (_super) {
             Promise.resolve(candidatelistItemEntityTypeFullName) :
             this.getParent(List).getListItemEntityTypeFullName();
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("is.getPaged")
     ], _Items.prototype, "getPaged", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("is.getAll")
     ], _Items.prototype, "getAll", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("is.add")
     ], _Items.prototype, "add", null);
-    _Items = Object(tslib_es6["b" /* __decorate */])([
+    _Items = __decorate([
         defaultPath("items")
     ], _Items);
     return _Items;
@@ -4936,7 +4816,7 @@ var Items = spInvokableFactory(types_Items);
  *
  */
 var types_Item = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Item, _super);
+    __extends(_Item, _super);
     function _Item() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("i");
@@ -5024,16 +4904,16 @@ var types_Item = /** @class */ (function (_super) {
     _Item.prototype.update = function (properties, eTag, listItemEntityTypeFullName) {
         if (eTag === void 0) { eTag = "*"; }
         if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var removeDependency, listItemEntityType, postBody, poster, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         removeDependency = this.addBatchDependency();
                         return [4 /*yield*/, this.ensureListItemEntityTypeName(listItemEntityTypeFullName)];
                     case 1:
                         listItemEntityType = _a.sent();
-                        postBody = body(Object(common["d" /* assign */])(metadata(listItemEntityType), properties), request_builders_headers({
+                        postBody = body(util_assign(metadata(listItemEntityType), properties), request_builders_headers({
                             "IF-Match": eTag,
                             "X-HTTP-Method": "MERGE",
                         }));
@@ -5064,9 +4944,9 @@ var types_Item = /** @class */ (function (_super) {
      */
     _Item.prototype.getWopiFrameUrl = function (action) {
         if (action === void 0) { action = 0; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var i, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         i = this.clone(Item, "getWOPIFrameUrl(@action)");
@@ -5075,7 +4955,7 @@ var types_Item = /** @class */ (function (_super) {
                     case 1:
                         data = _a.sent();
                         // handle verbose mode
-                        if (Object(common["j" /* hOP */])(data, "GetWOPIFrameUrl")) {
+                        if (hOP(data, "GetWOPIFrameUrl")) {
                             return [2 /*return*/, data.GetWOPIFrameUrl];
                         }
                         return [2 /*return*/, data];
@@ -5103,13 +4983,13 @@ var types_Item = /** @class */ (function (_super) {
             Promise.resolve(candidatelistItemEntityTypeFullName) :
             this.list.getListItemEntityTypeFullName();
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("i.recycle")
     ], _Item.prototype, "recycle", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("i.getWopiFrameUrl")
     ], _Item.prototype, "getWopiFrameUrl", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("i.validateUpdateListItem")
     ], _Item.prototype, "validateUpdateListItem", null);
     return _Item;
@@ -5121,7 +5001,7 @@ var Item = spInvokableFactory(types_Item);
  *
  */
 var types_ItemVersions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ItemVersions, _super);
+    __extends(_ItemVersions, _super);
     function _ItemVersions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5133,7 +5013,7 @@ var types_ItemVersions = /** @class */ (function (_super) {
     _ItemVersions.prototype.getById = function (versionId) {
         return tag.configure(ItemVersion(this).concat("(" + versionId + ")"), "iv.getById");
     };
-    _ItemVersions = Object(tslib_es6["b" /* __decorate */])([
+    _ItemVersions = __decorate([
         defaultPath("versions")
     ], _ItemVersions);
     return _ItemVersions;
@@ -5145,7 +5025,7 @@ var ItemVersions = spInvokableFactory(types_ItemVersions);
  *
  */
 var types_ItemVersion = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ItemVersion, _super);
+    __extends(_ItemVersion, _super);
     function _ItemVersion() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("iv");
@@ -5188,7 +5068,7 @@ var types_PagedItemCollection = /** @class */ (function () {
 }());
 
 var types_PagedItemCollectionParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(PagedItemCollectionParser, _super);
+    __extends(PagedItemCollectionParser, _super);
     function PagedItemCollectionParser(_parent) {
         var _this = _super.call(this) || this;
         _this._parent = _parent;
@@ -5199,7 +5079,7 @@ var types_PagedItemCollectionParser = /** @class */ (function (_super) {
         return new Promise(function (resolve, reject) {
             if (_this.handleError(r, reject)) {
                 r.json().then(function (json) {
-                    var nextUrl = Object(common["j" /* hOP */])(json, "d") && Object(common["j" /* hOP */])(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
+                    var nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
                     resolve(new types_PagedItemCollection(_this._parent, nextUrl, _this.parseODataJSON(json)));
                 });
             }
@@ -5208,7 +5088,7 @@ var types_PagedItemCollectionParser = /** @class */ (function (_super) {
     return PagedItemCollectionParser;
 }(parsers_ODataParser));
 var types_ItemUpdatedParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ItemUpdatedParser, _super);
+    __extends(ItemUpdatedParser, _super);
     function ItemUpdatedParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5253,7 +5133,7 @@ addProp(types_List, "items", Items);
  *
  */
 var types_Files = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Files, _super);
+    __extends(_Files, _super);
     function _Files() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5278,9 +5158,9 @@ var types_Files = /** @class */ (function (_super) {
      */
     _Files.prototype.add = function (url, content, shouldOverWrite) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var response;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(Files(this, "add(overwrite=" + shouldOverWrite + ",url='" + escapeQueryStrValue(url) + "')"), {
                             body: content,
@@ -5304,9 +5184,9 @@ var types_Files = /** @class */ (function (_super) {
      */
     _Files.prototype.addUsingPath = function (url, content, parameters) {
         if (parameters === void 0) { parameters = { Overwrite: false }; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var path, resp;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         path = ["AddUsingPath(decodedurl='" + escapeQueryStrValue(url) + "'"];
@@ -5317,7 +5197,7 @@ var types_Files = /** @class */ (function (_super) {
                             if (parameters.AutoCheckoutOnInvalidData) {
                                 path.push(",AutoCheckoutOnInvalidData=true");
                             }
-                            if (!Object(common["r" /* stringIsNullOrEmpty */])(parameters.XorHash)) {
+                            if (!stringIsNullOrEmpty(parameters.XorHash)) {
                                 path.push(",XorHash=" + escapeQueryStrValue(parameters.XorHash));
                             }
                         }
@@ -5346,9 +5226,9 @@ var types_Files = /** @class */ (function (_super) {
     _Files.prototype.addChunked = function (url, content, progress, shouldOverWrite, chunkSize) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
         if (chunkSize === void 0) { chunkSize = 10485760; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var file;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + escapeQueryStrValue(url) + "')", false))];
                     case 1:
@@ -5368,9 +5248,9 @@ var types_Files = /** @class */ (function (_super) {
      * @returns The template file that was added and the raw response.
      */
     _Files.prototype.addTemplateFile = function (fileUrl, templateFileType) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var response;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Files, "addTemplateFile(urloffile='" + escapeQueryStrValue(fileUrl) + "',templatefiletype=" + templateFileType + ")", false))];
                     case 1:
@@ -5383,19 +5263,19 @@ var types_Files = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fis.add")
     ], _Files.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fis.addUsingPath")
     ], _Files.prototype, "addUsingPath", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fis.addChunked")
     ], _Files.prototype, "addChunked", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fis.addTemplateFile")
     ], _Files.prototype, "addTemplateFile", null);
-    _Files = Object(tslib_es6["b" /* __decorate */])([
+    _Files = __decorate([
         defaultPath("files")
     ], _Files);
     return _Files;
@@ -5407,7 +5287,7 @@ var Files = spInvokableFactory(types_Files);
  *
  */
 var types_File = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_File, _super);
+    __extends(_File, _super);
     function _File() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("fi");
@@ -5497,9 +5377,9 @@ var types_File = /** @class */ (function (_super) {
      */
     _File.prototype.copyByPath = function (destUrl, shouldOverWrite, KeepBoth) {
         if (KeepBoth === void 0) { KeepBoth = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+            return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
                     case 1:
@@ -5507,7 +5387,7 @@ var types_File = /** @class */ (function (_super) {
                         webBaseUrl = extractWebUrl(absoluteUrl);
                         hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
                         return [4 /*yield*/, spPost(File(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=" + shouldOverWrite), body({
-                                destPath: toResourcePath(Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl),
+                                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : "" + hostUrl + destUrl),
                                 options: {
                                     KeepBoth: KeepBoth,
                                     ResetAuthorAndCreatedOnCopy: true,
@@ -5516,7 +5396,7 @@ var types_File = /** @class */ (function (_super) {
                                         type: "SP.MoveCopyOptions",
                                     },
                                 },
-                                srcPath: toResourcePath("" + hostUrl + srcUrl),
+                                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : "" + hostUrl + srcUrl),
                             }))];
                     case 2:
                         _b.sent();
@@ -5558,9 +5438,9 @@ var types_File = /** @class */ (function (_super) {
      */
     _File.prototype.moveByPath = function (destUrl, shouldOverWrite, KeepBoth) {
         if (KeepBoth === void 0) { KeepBoth = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+            return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
                     case 1:
@@ -5568,7 +5448,7 @@ var types_File = /** @class */ (function (_super) {
                         webBaseUrl = extractWebUrl(absoluteUrl);
                         hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
                         return [4 /*yield*/, spPost(File(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=" + shouldOverWrite), body({
-                                destPath: toResourcePath(Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl),
+                                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : "" + hostUrl + destUrl),
                                 options: {
                                     KeepBoth: KeepBoth,
                                     ResetAuthorAndCreatedOnCopy: false,
@@ -5577,7 +5457,7 @@ var types_File = /** @class */ (function (_super) {
                                         type: "SP.MoveCopyOptions",
                                     },
                                 },
-                                srcPath: toResourcePath("" + hostUrl + srcUrl),
+                                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : "" + hostUrl + srcUrl),
                             }))];
                     case 2:
                         _b.sent();
@@ -5658,8 +5538,8 @@ var types_File = /** @class */ (function (_super) {
      *
      */
     _File.prototype.setContent = function (content) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(File, "$value", false), {
                             body: content,
@@ -5682,16 +5562,16 @@ var types_File = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
         }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = this.listItemAllFields;
                         return [4 /*yield*/, q.select.apply(q, selects)()];
                     case 1:
                         d = _a.sent();
-                        return [2 /*return*/, Object(common["d" /* assign */])(Item(odataUrlFrom(d)), d)];
+                        return [2 /*return*/, util_assign(Item(odataUrlFrom(d)), d)];
                 }
             });
         });
@@ -5705,17 +5585,17 @@ var types_File = /** @class */ (function (_super) {
      */
     _File.prototype.setContentChunked = function (file, progress, chunkSize) {
         if (chunkSize === void 0) { chunkSize = 10485760; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var fileSize, totalBlocks, uploadId, currentPointer, i;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!Object(common["l" /* isFunc */])(progress)) {
+                        if (!isFunc(progress)) {
                             progress = function () { return null; };
                         }
                         fileSize = file.size;
                         totalBlocks = parseInt((fileSize / chunkSize).toString(), 10) + ((fileSize % chunkSize === 0) ? 1 : 0);
-                        uploadId = Object(common["h" /* getGUID */])();
+                        uploadId = getGUID();
                         // report that we are starting
                         progress({ uploadId: uploadId, blockNumber: 1, chunkSize: chunkSize, currentPointer: 0, fileSize: fileSize, stage: "starting", totalBlocks: totalBlocks });
                         return [4 /*yield*/, this.startUpload(uploadId, file.slice(0, chunkSize))];
@@ -5755,9 +5635,9 @@ var types_File = /** @class */ (function (_super) {
      * @returns The size of the total uploaded data in bytes.
      */
     _File.prototype.startUpload = function (uploadId, fragment) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var n;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(File, "startUpload(uploadId=guid'" + uploadId + "')", false), { body: fragment })];
                     case 1:
@@ -5784,9 +5664,9 @@ var types_File = /** @class */ (function (_super) {
      * @returns The size of the total uploaded data in bytes.
      */
     _File.prototype.continueUpload = function (uploadId, fileOffset, fragment) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var n;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(File, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false), { body: fragment })];
                     case 1:
@@ -5812,9 +5692,9 @@ var types_File = /** @class */ (function (_super) {
      * @returns The newly uploaded file.
      */
     _File.prototype.finishUpload = function (uploadId, fileOffset, fragment) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var response;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(File, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false), { body: fragment })];
                     case 1:
@@ -5827,70 +5707,70 @@ var types_File = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.approve")
     ], _File.prototype, "approve", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.cancelUpload")
     ], _File.prototype, "cancelUpload", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.checkin")
     ], _File.prototype, "checkin", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.checkout")
     ], _File.prototype, "checkout", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.copyTo")
     ], _File.prototype, "copyTo", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.copyByPath")
     ], _File.prototype, "copyByPath", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.deny")
     ], _File.prototype, "deny", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.moveTo")
     ], _File.prototype, "moveTo", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.moveByPath")
     ], _File.prototype, "moveByPath", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.publish")
     ], _File.prototype, "publish", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.recycle")
     ], _File.prototype, "recycle", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.undoCheckout")
     ], _File.prototype, "undoCheckout", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.unpublish")
     ], _File.prototype, "unpublish", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.getText")
     ], _File.prototype, "getText", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.getBlob")
     ], _File.prototype, "getBlob", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.getBuffer")
     ], _File.prototype, "getBuffer", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.getJSON")
     ], _File.prototype, "getJSON", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.setContent")
     ], _File.prototype, "setContent", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.getItem")
     ], _File.prototype, "getItem", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.startUpload")
     ], _File.prototype, "startUpload", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.continueUpload")
     ], _File.prototype, "continueUpload", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.finishUpload")
     ], _File.prototype, "finishUpload", null);
     return _File;
@@ -5902,7 +5782,7 @@ var File = spInvokableFactory(types_File);
  *
  */
 var types_Versions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Versions, _super);
+    __extends(_Versions, _super);
     function _Versions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5961,25 +5841,25 @@ var types_Versions = /** @class */ (function (_super) {
     _Versions.prototype.restoreByLabel = function (label) {
         return spPost(this.clone(Versions, "restoreByLabel(versionlabel='" + escapeQueryStrValue(label) + "')"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.deleteAll")
     ], _Versions.prototype, "deleteAll", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.deleteById")
     ], _Versions.prototype, "deleteById", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.recycleByID")
     ], _Versions.prototype, "recycleByID", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.deleteByLabel")
     ], _Versions.prototype, "deleteByLabel", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.recycleByLabel")
     ], _Versions.prototype, "recycleByLabel", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.restoreByLabel")
     ], _Versions.prototype, "restoreByLabel", null);
-    _Versions = Object(tslib_es6["b" /* __decorate */])([
+    _Versions = __decorate([
         defaultPath("versions")
     ], _Versions);
     return _Versions;
@@ -5991,7 +5871,7 @@ var Versions = spInvokableFactory(types_Versions);
  *
  */
 var types_Version = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Version, _super);
+    __extends(_Version, _super);
     function _Version() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("ver");
@@ -6057,7 +5937,7 @@ rest_SPRest.prototype.createBatch = function () {
 
 
 var types_AppCatalog = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_AppCatalog, _super);
+    __extends(_AppCatalog, _super);
     function _AppCatalog(baseUrl, path) {
         if (path === void 0) { path = "_api/web/tenantappcatalog/AvailableApps"; }
         return _super.call(this, extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path) || this;
@@ -6077,9 +5957,9 @@ var types_AppCatalog = /** @class */ (function (_super) {
      */
     _AppCatalog.prototype.syncSolutionToTeams = function (id, useSharePointItemId) {
         if (useSharePointItemId === void 0) { useSharePointItemId = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var appId, webUrl, web, listId, listItems, poster;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         appId = null;
@@ -6120,9 +6000,9 @@ var types_AppCatalog = /** @class */ (function (_super) {
      */
     _AppCatalog.prototype.add = function (filename, content, shouldOverWrite) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var adder, r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), "_api/web/tenantappcatalog/add(overwrite=" + shouldOverWrite + ",url='" + filename + "')"), "ac.add");
@@ -6146,7 +6026,7 @@ var types_AppCatalog = /** @class */ (function (_super) {
 
 var AppCatalog = spInvokableFactory(types_AppCatalog);
 var types_App = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_App, _super);
+    __extends(_App, _super);
     function _App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6196,22 +6076,22 @@ var types_App = /** @class */ (function (_super) {
     _App.prototype.do = function (path) {
         return spPost(this.clone(App, path));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.deploy")
     ], _App.prototype, "deploy", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.retract")
     ], _App.prototype, "retract", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.install")
     ], _App.prototype, "install", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.uninstall")
     ], _App.prototype, "uninstall", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.upgrade")
     ], _App.prototype, "upgrade", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.remove")
     ], _App.prototype, "remove", null);
     return _App;
@@ -6234,9 +6114,9 @@ types_Web.prototype.getAppCatalog = function (url) {
 
 
 rest_SPRest.prototype.getTenantAppCatalogWeb = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var data;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, SharePointQueryable("/", "_api/SP_TenantSettings_Current")()];
                 case 1:
@@ -6255,7 +6135,7 @@ rest_SPRest.prototype.getTenantAppCatalogWeb = function () {
 
 
 var types_Attachments = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Attachments, _super);
+    __extends(_Attachments, _super);
     function _Attachments() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6276,9 +6156,9 @@ var types_Attachments = /** @class */ (function (_super) {
      * @param content The Base64 file content.
      */
     _Attachments.prototype.add = function (name, content) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var response;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Attachments, "add(FileName='" + name + "')", false), { body: content })];
                     case 1:
@@ -6297,9 +6177,9 @@ var types_Attachments = /** @class */ (function (_super) {
      * @param files The collection of files to add
      */
     _Attachments.prototype.addMultiple = function (files) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var i;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         i = 0;
@@ -6328,9 +6208,9 @@ var types_Attachments = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             files[_i] = arguments[_i];
         }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var i;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         i = 0;
@@ -6359,9 +6239,9 @@ var types_Attachments = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             files[_i] = arguments[_i];
         }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var i;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         i = 0;
@@ -6380,19 +6260,19 @@ var types_Attachments = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ats.add")
     ], _Attachments.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ats.addMultiple")
     ], _Attachments.prototype, "addMultiple", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ats.deleteMultiple")
     ], _Attachments.prototype, "deleteMultiple", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ats.recycleMultiple")
     ], _Attachments.prototype, "recycleMultiple", null);
-    _Attachments = Object(tslib_es6["b" /* __decorate */])([
+    _Attachments = __decorate([
         defaultPath("AttachmentFiles")
     ], _Attachments);
     return _Attachments;
@@ -6400,7 +6280,7 @@ var types_Attachments = /** @class */ (function (_super) {
 
 var Attachments = spInvokableFactory(types_Attachments);
 var types_Attachment = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Attachment, _super);
+    __extends(_Attachment, _super);
     function _Attachment() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("at");
@@ -6438,8 +6318,8 @@ var types_Attachment = /** @class */ (function (_super) {
      * @param content The value to set for the file contents
      */
     _Attachment.prototype.setContent = function (content) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Attachment, "$value", false), request_builders_headers({ "X-HTTP-Method": "PUT" }, {
                             body: content,
@@ -6466,22 +6346,22 @@ var types_Attachment = /** @class */ (function (_super) {
     _Attachment.prototype.getParsed = function (parser) {
         return this.clone(Attachment, "$value", false).usingParser(parser)();
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.getText")
     ], _Attachment.prototype, "getText", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.getBlob")
     ], _Attachment.prototype, "getBlob", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.getBuffer")
     ], _Attachment.prototype, "getBuffer", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.getJSON")
     ], _Attachment.prototype, "getJSON", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.setContent")
     ], _Attachment.prototype, "setContent", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.recycle")
     ], _Attachment.prototype, "recycle", null);
     return _Attachment;
@@ -6517,10 +6397,10 @@ function getNextOrder(collection) {
 function reindex(collection) {
     for (var i = 0; i < collection.length; i++) {
         collection[i].order = i + 1;
-        if (Object(common["j" /* hOP */])(collection[i], "columns")) {
+        if (hOP(collection[i], "columns")) {
             reindex(collection[i].columns);
         }
-        else if (Object(common["j" /* hOP */])(collection[i], "controls")) {
+        else if (hOP(collection[i], "controls")) {
             reindex(collection[i].controls);
         }
     }
@@ -6539,6 +6419,9 @@ types_Web.prototype.getFileByServerRelativePath = function (fileRelativeUrl) {
 types_Web.prototype.getFileById = function (uniqueId) {
     return File(this, "getFileById('" + uniqueId + "')");
 };
+types_Web.prototype.getFileByUrl = function (fileUrl) {
+    return File(this, "getFileByUrl('!@p1::" + escapeQueryStrValue(fileUrl) + "')");
+};
 
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/comments/types.js
 
@@ -6551,7 +6434,7 @@ types_Web.prototype.getFileById = function (uniqueId) {
 
 
 var types_Comments = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Comments, _super);
+    __extends(_Comments, _super);
     function _Comments() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6561,19 +6444,19 @@ var types_Comments = /** @class */ (function (_super) {
      * @param info Comment information to add
      */
     _Comments.prototype.add = function (info) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (typeof info === "string") {
                             info = { text: info };
                         }
-                        postBody = body(Object(common["d" /* assign */])(metadata("Microsoft.SharePoint.Comments.comment"), info));
+                        postBody = body(util_assign(metadata("Microsoft.SharePoint.Comments.comment"), info));
                         return [4 /*yield*/, spPost(this.clone(Comments, null), postBody)];
                     case 1:
                         d = _a.sent();
-                        return [2 /*return*/, Object(common["d" /* assign */])(this.getById(d.id), d)];
+                        return [2 /*return*/, util_assign(this.getById(d.id), d)];
                 }
             });
         });
@@ -6592,10 +6475,10 @@ var types_Comments = /** @class */ (function (_super) {
     _Comments.prototype.clear = function () {
         return spPost(tag.configure(this.clone(Comments, "DeleteAll"), "coms.clear"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("coms.add")
     ], _Comments.prototype, "add", null);
-    _Comments = Object(tslib_es6["b" /* __decorate */])([
+    _Comments = __decorate([
         defaultPath("comments")
     ], _Comments);
     return _Comments;
@@ -6603,7 +6486,7 @@ var types_Comments = /** @class */ (function (_super) {
 
 var Comments = spInvokableFactory(types_Comments);
 var types_Comment = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Comment, _super);
+    __extends(_Comment, _super);
     function _Comment() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6635,13 +6518,13 @@ var types_Comment = /** @class */ (function (_super) {
     _Comment.prototype.delete = function () {
         return spPost(this.clone(Comment, "DeleteComment"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("com.like")
     ], _Comment.prototype, "like", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("com.unlike")
     ], _Comment.prototype, "unlike", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("com.delete")
     ], _Comment.prototype, "delete", null);
     return _Comment;
@@ -6649,7 +6532,7 @@ var types_Comment = /** @class */ (function (_super) {
 
 var Comment = spInvokableFactory(types_Comment);
 var types_Replies = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Replies, _super);
+    __extends(_Replies, _super);
     function _Replies() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6659,27 +6542,27 @@ var types_Replies = /** @class */ (function (_super) {
      * @param info Comment information to add
      */
     _Replies.prototype.add = function (info) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (typeof info === "string") {
                             info = { text: info };
                         }
-                        postBody = body(Object(common["d" /* assign */])(metadata("Microsoft.SharePoint.Comments.comment"), info));
+                        postBody = body(util_assign(metadata("Microsoft.SharePoint.Comments.comment"), info));
                         return [4 /*yield*/, spPost(this.clone(Replies, null), postBody)];
                     case 1:
                         d = _a.sent();
-                        return [2 /*return*/, Object(common["d" /* assign */])(Comment(odataUrlFrom(d)), d)];
+                        return [2 /*return*/, util_assign(Comment(odataUrlFrom(d)), d)];
                 }
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("reps.add")
     ], _Replies.prototype, "add", null);
-    _Replies = Object(tslib_es6["b" /* __decorate */])([
+    _Replies = __decorate([
         defaultPath("replies")
     ], _Replies);
     return _Replies;
@@ -6748,7 +6631,7 @@ function initFrom(o, url) {
  * Represents the data and methods associated with client side "modern" pages
  */
 var types_ClientsidePage = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ClientsidePage, _super);
+    __extends(_ClientsidePage, _super);
     /**
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY, thank you 🐇
      */
@@ -6764,7 +6647,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         // ensure we have a good url to build on for the pages api
         if (typeof baseUrl === "string") {
             _this.data.parentUrl = "";
-            _this.data.url = Object(common["e" /* combine */])(extractWebUrl(baseUrl), path);
+            _this.data.url = combine(extractWebUrl(baseUrl), path);
         }
         else {
             _this.assign(initFrom(baseUrl, null), path);
@@ -6785,6 +6668,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
             id: "cbe7b0a9-3504-44dd-a3a3-0e5cacd07788",
             instanceId: "cbe7b0a9-3504-44dd-a3a3-0e5cacd07788",
             properties: {
+                authorByline: [],
                 authors: [],
                 layoutType: "FullWidthImage",
                 showPublishDate: false,
@@ -6820,12 +6704,12 @@ var types_ClientsidePage = /** @class */ (function (_super) {
     });
     Object.defineProperty(_ClientsidePage.prototype, "topicHeader", {
         get: function () {
-            return Object(common["q" /* objectDefinedNotNull */])(this.json.TopicHeader) ? this.json.TopicHeader : "";
+            return objectDefinedNotNull(this.json.TopicHeader) ? this.json.TopicHeader : "";
         },
         set: function (value) {
             this.json.TopicHeader = value;
             this._layoutPart.properties.topicHeader = value;
-            if (Object(common["r" /* stringIsNullOrEmpty */])(value)) {
+            if (stringIsNullOrEmpty(value)) {
                 this.showTopicHeader = false;
             }
         },
@@ -6890,6 +6774,16 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(_ClientsidePage.prototype, "authorByLine", {
+        get: function () {
+            if (isArray(this.json.AuthorByline) && this.json.AuthorByline.length > 0) {
+                return this.json.AuthorByline[0];
+            }
+            return null;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(_ClientsidePage.prototype, "verticalSection", {
         get: function () {
             if (this.hasVerticalSection) {
@@ -6940,9 +6834,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * Loads this page's content from the server
      */
     _ClientsidePage.prototype.load = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var item, pageData;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getItem("Id", "CommentsDisabled")];
                     case 1:
@@ -6963,9 +6857,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      */
     _ClientsidePage.prototype.save = function (publish) {
         if (publish === void 0) { publish = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var origImgUrl, site, web, imgFile, siteId_1, webId_1, imgId_1, listId_1, webUrl_1, batch, f, saveBody, updater, r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this.json.Id === null) {
@@ -6973,7 +6867,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
                         }
                         if (!this._bannerImageDirty) return [3 /*break*/, 2];
                         origImgUrl = this.json.BannerImageUrl;
-                        if (Object(common["m" /* isUrlAbsolute */])(origImgUrl)) {
+                        if (isUrlAbsolute(origImgUrl)) {
                             // do our best to make this a server relative url by removing the x.sharepoint.com part
                             origImgUrl = origImgUrl.replace(/^https?:\/\/[a-z0-9\.]*?\.[a-z]{2,3}\//i, "/");
                         }
@@ -7000,11 +6894,11 @@ var types_ClientsidePage = /** @class */ (function (_super) {
                         f.query.set("guidWeb", "" + webId_1);
                         f.query.set("guidFile", "" + imgId_1);
                         this.bannerImageUrl = f.toUrlAndQuery();
-                        if (!Object(common["q" /* objectDefinedNotNull */])(this._layoutPart.serverProcessedContent)) {
+                        if (!objectDefinedNotNull(this._layoutPart.serverProcessedContent)) {
                             this._layoutPart.serverProcessedContent = {};
                         }
                         this._layoutPart.serverProcessedContent.imageSources = { imageSource: origImgUrl };
-                        if (!Object(common["q" /* objectDefinedNotNull */])(this._layoutPart.serverProcessedContent.customMetadata)) {
+                        if (!objectDefinedNotNull(this._layoutPart.serverProcessedContent.customMetadata)) {
                             this._layoutPart.serverProcessedContent.customMetadata = {};
                         }
                         this._layoutPart.serverProcessedContent.customMetadata.imageSource = {
@@ -7057,9 +6951,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * Discards the checkout of this page
      */
     _ClientsidePage.prototype.discardPageCheckout = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this.json.Id === null) {
@@ -7078,8 +6972,8 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * Promotes this page as a news item
      */
     _ClientsidePage.prototype.promoteToNews = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 return [2 /*return*/, this.promoteNewsImpl("promoteToNews")];
             });
         });
@@ -7126,13 +7020,13 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * @param title The title of the new page
      * @param publish If true the page will be published
      */
-    _ClientsidePage.prototype.copy = function (web, pageName, title, publish) {
+    _ClientsidePage.prototype.copy = function (web, pageName, title, publish, promotedState) {
         if (publish === void 0) { publish = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var page;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, CreateClientsidePage(web, pageName, title, this.pageLayout)];
+                    case 0: return [4 /*yield*/, CreateClientsidePage(web, pageName, title, this.pageLayout, promotedState)];
                     case 1:
                         page = _a.sent();
                         // we know the method is on the class - but it is protected so not part of the interface
@@ -7155,20 +7049,76 @@ var types_ClientsidePage = /** @class */ (function (_super) {
     _ClientsidePage.prototype.setBannerImage = function (url, props) {
         this.bannerImageUrl = url;
         this._layoutPart.properties.imageSourceType = 2; // this seems to always be true, so default?
-        if (Object(common["q" /* objectDefinedNotNull */])(props)) {
-            if (Object(common["j" /* hOP */])(props, "translateX")) {
+        if (objectDefinedNotNull(props)) {
+            if (hOP(props, "translateX")) {
                 this._layoutPart.properties.translateX = props.translateX;
             }
-            if (Object(common["j" /* hOP */])(props, "translateY")) {
+            if (hOP(props, "translateY")) {
                 this._layoutPart.properties.translateY = props.translateY;
             }
-            if (Object(common["j" /* hOP */])(props, "imageSourceType")) {
+            if (hOP(props, "imageSourceType")) {
                 this._layoutPart.properties.imageSourceType = props.imageSourceType;
             }
-            if (Object(common["j" /* hOP */])(props, "altText")) {
+            if (hOP(props, "altText")) {
                 this._layoutPart.properties.altText = props.altText;
             }
         }
+    };
+    /**
+     * Sets the authors for this page from the supplied list of user integer ids
+     *
+     * @param authorId The integer id of the user to set as the author
+     */
+    _ClientsidePage.prototype.setAuthorById = function (authorId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var userLoginData;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
+                            .configureFrom(this)
+                            .filter("Id eq " + authorId)
+                            .select("LoginName")()];
+                    case 1:
+                        userLoginData = _a.sent();
+                        if (userLoginData.length < 1) {
+                            throw Error("Could not find user with id " + authorId + ".");
+                        }
+                        return [2 /*return*/, this.setAuthorByLoginName(userLoginData[0].LoginName)];
+                }
+            });
+        });
+    };
+    /**
+     * Sets the authors for this page from the supplied list of user integer ids
+     *
+     * @param authorLoginName The login name of the user (ex: i:0#.f|membership|name@tenant.com)
+     */
+    _ClientsidePage.prototype.setAuthorByLoginName = function (authorLoginName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var userLoginData;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
+                            .configureFrom(this)
+                            .filter("LoginName eq '" + encodeURIComponent(authorLoginName) + "'")
+                            .select("UserPrincipalName", "Title")()];
+                    case 1:
+                        userLoginData = _a.sent();
+                        if (userLoginData.length < 1) {
+                            throw Error("Could not find user with login name '" + authorLoginName + "'.");
+                        }
+                        this.json.AuthorByline = [authorLoginName];
+                        this._layoutPart.properties.authorByline = [authorLoginName];
+                        this._layoutPart.properties.authors = [{
+                                id: authorLoginName,
+                                name: userLoginData[0].Title,
+                                role: "",
+                                upn: userLoginData[0].UserPrincipalName,
+                            }];
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     /**
      * Gets the list item associated with this clientside page
@@ -7180,9 +7130,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
         }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var initer, listData, item, itemData;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
@@ -7193,7 +7143,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
                         return [4 /*yield*/, item.select.apply(item, selects)()];
                     case 2:
                         itemData = _a.sent();
-                        return [2 /*return*/, Object(common["d" /* assign */])((Item(odataUrlFrom(itemData))).configureFrom(this), itemData)];
+                        return [2 /*return*/, util_assign((Item(odataUrlFrom(itemData))).configureFrom(this), itemData)];
                 }
             });
         });
@@ -7206,7 +7156,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      */
     _ClientsidePage.prototype.assign = function (parent, path) {
         this.data.parentUrl = parent.data.url;
-        this.data.url = Object(common["e" /* combine */])(this.data.parentUrl, path || "");
+        this.data.url = combine(this.data.parentUrl, path || "");
         this.configureFrom(parent);
     };
     _ClientsidePage.prototype.getCanvasContent1 = function () {
@@ -7224,11 +7174,11 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         if (controls && controls.length) {
             for (var i = 0; i < controls.length; i++) {
                 // if no control type is present this is a column which we give type 0 to let us process it
-                var controlType = Object(common["j" /* hOP */])(controls[i], "controlType") ? controls[i].controlType : 0;
+                var controlType = hOP(controls[i], "controlType") ? controls[i].controlType : 0;
                 switch (controlType) {
                     case 0:
                         // empty canvas column or page settings
-                        if (Object(common["j" /* hOP */])(controls[i], "pageSettingsSlice")) {
+                        if (hOP(controls[i], "pageSettingsSlice")) {
                             this._pageSettings = controls[i];
                         }
                         else {
@@ -7284,15 +7234,15 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         return { zoneEmphasis: value };
     };
     _ClientsidePage.prototype.promoteNewsImpl = function (method) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var lastPubData;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this.json.Id === null) {
                             throw Error("The id for this page is null.");
                         }
-                        if (!Object(common["r" /* stringIsNullOrEmpty */])(this.json.VersionInfo.LastVersionCreatedBy)) return [3 /*break*/, 2];
+                        if (!stringIsNullOrEmpty(this.json.VersionInfo.LastVersionCreatedBy)) return [3 /*break*/, 2];
                         lastPubData = new Date(this.json.VersionInfo.LastVersionCreated);
                         if (!(lastPubData.getFullYear() < 2000)) return [3 /*break*/, 2];
                         return [4 /*yield*/, this.save(true)];
@@ -7311,6 +7261,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * @param control The control to merge
      */
     _ClientsidePage.prototype.mergePartToTree = function (control, positionData) {
+        var _a, _b, _c;
         var column = null;
         var sectionFactor = 12;
         var sectionIndex = 0;
@@ -7318,20 +7269,21 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         var layoutIndex = 1;
         // handle case where we don't have position data (shouldn't happen?)
         if (positionData) {
-            if (Object(common["j" /* hOP */])(positionData, "zoneIndex")) {
+            if (hOP(positionData, "zoneIndex")) {
                 zoneIndex = positionData.zoneIndex;
             }
-            if (Object(common["j" /* hOP */])(positionData, "sectionIndex")) {
+            if (hOP(positionData, "sectionIndex")) {
                 sectionIndex = positionData.sectionIndex;
             }
-            if (Object(common["j" /* hOP */])(positionData, "sectionFactor")) {
+            if (hOP(positionData, "sectionFactor")) {
                 sectionFactor = positionData.sectionFactor;
             }
-            if (Object(common["j" /* hOP */])(positionData, "layoutIndex")) {
+            if (hOP(positionData, "layoutIndex")) {
                 layoutIndex = positionData.layoutIndex;
             }
         }
-        var section = this.getOrCreateSection(zoneIndex, layoutIndex, control.data.emphasis.zoneEmphasis || 0);
+        var zoneEmphasis = (_c = (_b = (_a = control.data) === null || _a === void 0 ? void 0 : _a.emphasis) === null || _b === void 0 ? void 0 : _b.zoneEmphasis, (_c !== null && _c !== void 0 ? _c : 0));
+        var section = this.getOrCreateSection(zoneIndex, layoutIndex, zoneEmphasis);
         var columns = section.columns.filter(function (c) { return c.order === sectionIndex; });
         if (columns.length < 1) {
             column = section.addColumn(sectionFactor, layoutIndex);
@@ -7349,8 +7301,8 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * @param position The position data for the column
      */
     _ClientsidePage.prototype.mergeColumnToTree = function (column) {
-        var order = Object(common["j" /* hOP */])(column.data, "position") && Object(common["j" /* hOP */])(column.data.position, "zoneIndex") ? column.data.position.zoneIndex : 0;
-        var layoutIndex = Object(common["j" /* hOP */])(column.data, "position") && Object(common["j" /* hOP */])(column.data.position, "layoutIndex") ? column.data.position.layoutIndex : 1;
+        var order = hOP(column.data, "position") && hOP(column.data.position, "zoneIndex") ? column.data.position.zoneIndex : 0;
+        var layoutIndex = hOP(column.data, "position") && hOP(column.data.position, "layoutIndex") ? column.data.position.layoutIndex : 1;
         var section = this.getOrCreateSection(order, layoutIndex, column.data.emphasis.zoneEmphasis || 0);
         column.section = section;
         section.columns.push(column);
@@ -7375,22 +7327,22 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         }
         return section;
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.load")
     ], _ClientsidePage.prototype, "load", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.save")
     ], _ClientsidePage.prototype, "save", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.discardPageCheckout")
     ], _ClientsidePage.prototype, "discardPageCheckout", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.promoteToNews")
     ], _ClientsidePage.prototype, "promoteToNews", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.copy")
     ], _ClientsidePage.prototype, "copy", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.getItem")
     ], _ClientsidePage.prototype, "getItem", null);
     return _ClientsidePage;
@@ -7410,9 +7362,9 @@ var ClientsidePage = function (baseUrl, path, json, noInit, sections, commentsDi
  *
  * @param file Source IFile instance
  */
-var ClientsidePageFromFile = function (file) { return Object(tslib_es6["a" /* __awaiter */])(void 0, void 0, void 0, function () {
+var ClientsidePageFromFile = function (file) { return __awaiter(void 0, void 0, void 0, function () {
     var item, page;
-    return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, file.getItem()];
             case 1:
@@ -7430,17 +7382,21 @@ var ClientsidePageFromFile = function (file) { return Object(tslib_es6["a" /* __
  * @param title The page's title
  * @param PageLayoutType Layout to use when creating the page
  */
-var CreateClientsidePage = function (web, pageName, title, PageLayoutType) {
+var CreateClientsidePage = function (web, pageName, title, PageLayoutType, promotedState) {
     if (PageLayoutType === void 0) { PageLayoutType = "Article"; }
-    return Object(tslib_es6["a" /* __awaiter */])(void 0, void 0, void 0, function () {
+    if (promotedState === void 0) { promotedState = 0; }
+    return __awaiter(void 0, void 0, void 0, function () {
         var pageInitData, newPage;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     // patched because previously we used the full page name with the .aspx at the end
                     // this allows folk's existing code to work after the re-write to the new API
                     pageName = pageName.replace(/\.aspx$/i, "");
-                    return [4 /*yield*/, spPost(initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), { PageLayoutType: PageLayoutType })))];
+                    return [4 /*yield*/, spPost(initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), {
+                            PageLayoutType: PageLayoutType,
+                            PromotedState: promotedState,
+                        })))];
                 case 1:
                     pageInitData = _a.sent();
                     newPage = ClientsidePage(web, "", pageInitData);
@@ -7461,7 +7417,7 @@ var types_CanvasSection = /** @class */ (function () {
         this.page = page;
         this.columns = columns;
         this._emphasis = _emphasis;
-        this._memId = Object(common["h" /* getGUID */])();
+        this._memId = getGUID();
         this._order = order;
         this._layoutIndex = layoutIndex;
     }
@@ -7555,7 +7511,7 @@ var types_CanvasColumn = /** @class */ (function () {
         this.json = json;
         this.controls = controls;
         this._section = null;
-        this._memId = Object(common["h" /* getGUID */])();
+        this._memId = getGUID();
     }
     Object.defineProperty(CanvasColumn.prototype, "data", {
         get: function () {
@@ -7667,12 +7623,12 @@ var types_ColumnControl = /** @class */ (function () {
 }());
 
 var types_ClientsideText = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ClientsideText, _super);
+    __extends(ClientsideText, _super);
     function ClientsideText(text, json) {
         if (json === void 0) { json = JSON.parse(JSON.stringify(ClientsideText.Default)); }
         var _this = this;
-        if (Object(common["r" /* stringIsNullOrEmpty */])(json.id)) {
-            json.id = Object(common["h" /* getGUID */])();
+        if (stringIsNullOrEmpty(json.id)) {
+            json.id = getGUID();
             json.anchorComponentId = json.id;
         }
         _this = _super.call(this, json) || this;
@@ -7730,7 +7686,7 @@ var types_ClientsideText = /** @class */ (function (_super) {
 }(types_ColumnControl));
 
 var types_ClientsideWebpart = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ClientsideWebpart, _super);
+    __extends(ClientsideWebpart, _super);
     function ClientsideWebpart(json) {
         if (json === void 0) { json = JSON.parse(JSON.stringify(ClientsideWebpart.Default)); }
         return _super.call(this, json) || this;
@@ -7801,7 +7757,7 @@ var types_ClientsideWebpart = /** @class */ (function (_super) {
         configurable: true
     });
     ClientsideWebpart.prototype.setProperties = function (properties) {
-        this.data.webPartData.properties = Object(common["d" /* assign */])(this.data.webPartData.properties, properties);
+        this.data.webPartData.properties = util_assign(this.data.webPartData.properties, properties);
         return this;
     };
     ClientsideWebpart.prototype.getProperties = function () {
@@ -7815,7 +7771,7 @@ var types_ClientsideWebpart = /** @class */ (function (_super) {
         this.data.position.layoutIndex = col.data.position.layoutIndex;
     };
     ClientsideWebpart.prototype.import = function (component) {
-        var id = Object(common["h" /* getGUID */])();
+        var id = getGUID();
         var componendId = component.Id.replace(/^\{|\}$/g, "").toLowerCase();
         var manifest = JSON.parse(component.Manifest);
         var preconfiguredEntries = manifest.preconfiguredEntries[0];
@@ -7861,15 +7817,670 @@ var types_ClientsideWebpart = /** @class */ (function (_super) {
 types_Web.prototype.getClientsideWebParts = function () {
     return this.clone(SharePointQueryableCollection, "GetClientSideWebParts")();
 };
-types_Web.prototype.addClientsidePage = function (pageName, title, layout) {
-    if (title === void 0) { title = pageName.replace(/\.[^/.]+$/, ""); }
-    return CreateClientsidePage(this, pageName, title, layout);
-};
+types_Web.prototype.addClientsidePage =
+    function (pageName, title, layout, promotedState) {
+        if (title === void 0) { title = pageName.replace(/\.[^/.]+$/, ""); }
+        return CreateClientsidePage(this, pageName, title, layout, promotedState);
+    };
 types_Web.prototype.loadClientsidePage = function (path) {
     return ClientsidePageFromFile(this.getFileByServerRelativePath(path));
 };
 
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/clientside-pages/index.js
+
+
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/folders/types.js
+
+
+
+
+
+
+
+
+
+
+
+
+var types_Folders = /** @class */ (function (_super) {
+    __extends(_Folders, _super);
+    function _Folders() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets a folder by it's name
+     *
+     * @param name Folder's name
+     */
+    _Folders.prototype.getByName = function (name) {
+        return tag.configure(Folder(this).concat("('" + escapeQueryStrValue(name) + "')"), "fs.getByName");
+    };
+    /**
+     * Adds a new folder at the specified URL
+     *
+     * @param url
+     */
+    _Folders.prototype.add = function (url) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this.clone(Folders, "add('" + escapeQueryStrValue(url) + "')"))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                folder: this.getByName(url),
+                            }];
+                }
+            });
+        });
+    };
+    /**
+     * Adds a new folder by path and should be prefered over add
+     *
+     * @param serverRelativeUrl The server relative url of the new folder to create
+     * @param overwrite True to overwrite an existing folder, default false
+     */
+    _Folders.prototype.addUsingPath = function (serverRelativeUrl, overwrite) {
+        if (overwrite === void 0) { overwrite = false; }
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this.clone(Folders, "addUsingPath(DecodedUrl='" + escapeQueryStrValue(serverRelativeUrl) + "',overwrite=" + overwrite + ")"))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                folder: Folder(extractWebUrl(this.toUrl()), "_api/web/getFolderByServerRelativePath(decodedUrl='" + escapeQueryStrValue(serverRelativeUrl) + "')"),
+                            }];
+                }
+            });
+        });
+    };
+    __decorate([
+        tag("fs.add")
+    ], _Folders.prototype, "add", null);
+    __decorate([
+        tag("fs.addUsingPath")
+    ], _Folders.prototype, "addUsingPath", null);
+    _Folders = __decorate([
+        defaultPath("folders")
+    ], _Folders);
+    return _Folders;
+}(sharepointqueryable_SharePointQueryableCollection));
+
+var Folders = spInvokableFactory(types_Folders);
+var types_Folder = /** @class */ (function (_super) {
+    __extends(_Folder, _super);
+    function _Folder() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.delete = deleteableWithETag("f");
+        /**
+         * Updates folder's properties
+         * @param props Folder's properties to update
+         */
+        _this.update = _this._update("SP.Folder", function (data) { return ({ data: data, folder: _this }); });
+        return _this;
+    }
+    Object.defineProperty(_Folder.prototype, "contentTypeOrder", {
+        /**
+         * Specifies the sequence in which content types are displayed.
+         *
+         */
+        get: function () {
+            return tag.configure(SharePointQueryableCollection(this, "contentTypeOrder"), "f.contentTypeOrder");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Folder.prototype, "folders", {
+        /**
+         * Gets this folder's sub folders
+         *
+         */
+        get: function () {
+            return Folders(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Folder.prototype, "listItemAllFields", {
+        /**
+         * Gets this folder's list item field values
+         *
+         */
+        get: function () {
+            return tag.configure(SharePointQueryableInstance(this, "listItemAllFields"), "f.listItemAllFields");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Folder.prototype, "parentFolder", {
+        /**
+         * Gets the parent folder, if available
+         *
+         */
+        get: function () {
+            return tag.configure(Folder(this, "parentFolder"), "f.parentFolder");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Folder.prototype, "properties", {
+        /**
+         * Gets this folder's properties
+         *
+         */
+        get: function () {
+            return tag.configure(SharePointQueryableInstance(this, "properties"), "f.properties");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Folder.prototype, "serverRelativeUrl", {
+        /**
+         * Gets this folder's server relative url
+         *
+         */
+        get: function () {
+            return tag.configure(SharePointQueryable(this, "serverRelativeUrl"), "f.serverRelativeUrl");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(_Folder.prototype, "uniqueContentTypeOrder", {
+        /**
+         * Gets a value that specifies the content type order.
+         *
+         */
+        get: function () {
+            return tag.configure(SharePointQueryableCollection(this, "uniqueContentTypeOrder"), "f.uniqueContentTypeOrder");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+     */
+    _Folder.prototype.recycle = function () {
+        return spPost(this.clone(Folder, "recycle"));
+    };
+    /**
+     * Gets the associated list item for this folder, loading the default properties
+     */
+    _Folder.prototype.getItem = function () {
+        var selects = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            selects[_i] = arguments[_i];
+        }
+        return __awaiter(this, void 0, void 0, function () {
+            var q;
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, (_a = this.listItemAllFields).select.apply(_a, __spread(selects))()];
+                    case 1:
+                        q = _b.sent();
+                        return [2 /*return*/, util_assign(Item(odataUrlFrom(q)), q)];
+                }
+            });
+        });
+    };
+    /**
+     * Moves a folder to destination path
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     */
+    _Folder.prototype.moveTo = function (destUrl) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+                    case 1:
+                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
+                        webBaseUrl = extractWebUrl(absoluteUrl);
+                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolder()"), body({
+                                destUrl: isUrlAbsolute(destUrl) ? destUrl : "" + hostUrl + destUrl,
+                                srcUrl: "" + hostUrl + srcUrl,
+                            }))];
+                    case 2:
+                        _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Moves a folder by path to destination path
+     * Also works with different site collections.
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     * @param keepBoth Keep both if folder with the same name in the same location already exists?
+     */
+    _Folder.prototype.moveByPath = function (destUrl, KeepBoth) {
+        if (KeepBoth === void 0) { KeepBoth = false; }
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+                    case 1:
+                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
+                        webBaseUrl = extractWebUrl(absoluteUrl);
+                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"), body({
+                                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : "" + hostUrl + destUrl),
+                                options: {
+                                    KeepBoth: KeepBoth,
+                                    ResetAuthorAndCreatedOnCopy: true,
+                                    ShouldBypassSharedLocks: true,
+                                    __metadata: {
+                                        type: "SP.MoveCopyOptions",
+                                    },
+                                },
+                                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : "" + hostUrl + srcUrl),
+                            }))];
+                    case 2:
+                        _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Copies a folder to destination path
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     */
+    _Folder.prototype.copyTo = function (destUrl) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+                    case 1:
+                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
+                        webBaseUrl = extractWebUrl(absoluteUrl);
+                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()"), body({
+                                destUrl: isUrlAbsolute(destUrl) ? destUrl : "" + hostUrl + destUrl,
+                                srcUrl: "" + hostUrl + srcUrl,
+                            }))];
+                    case 2:
+                        _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Copies a folder by path to destination path
+     * Also works with different site collections.
+     *
+     * @param destUrl Absolute or relative URL of the destination path
+     * @param keepBoth Keep both if folder with the same name in the same location already exists?
+     */
+    _Folder.prototype.copyByPath = function (destUrl, KeepBoth) {
+        if (KeepBoth === void 0) { KeepBoth = false; }
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+                    case 1:
+                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
+                        webBaseUrl = extractWebUrl(absoluteUrl);
+                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
+                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"), body({
+                                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : "" + hostUrl + destUrl),
+                                options: {
+                                    KeepBoth: KeepBoth,
+                                    ResetAuthorAndCreatedOnCopy: true,
+                                    ShouldBypassSharedLocks: true,
+                                    __metadata: {
+                                        type: "SP.MoveCopyOptions",
+                                    },
+                                },
+                                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : "" + hostUrl + srcUrl),
+                            }))];
+                    case 2:
+                        _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Gets the shareable item associated with this folder
+     */
+    _Folder.prototype.getShareable = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var d, shareable;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")()];
+                    case 1:
+                        d = _a.sent();
+                        shareable = Item(odataUrlFrom(d));
+                        // we need to handle batching
+                        if (this.hasBatch) {
+                            shareable = shareable.inBatch(this.batch);
+                        }
+                        return [2 /*return*/, shareable];
+                }
+            });
+        });
+    };
+    __decorate([
+        tag("f.recycle")
+    ], _Folder.prototype, "recycle", null);
+    __decorate([
+        tag("f.getItem")
+    ], _Folder.prototype, "getItem", null);
+    __decorate([
+        tag("f.moveTo")
+    ], _Folder.prototype, "moveTo", null);
+    __decorate([
+        tag("f.moveByPath")
+    ], _Folder.prototype, "moveByPath", null);
+    __decorate([
+        tag("f.copyTo")
+    ], _Folder.prototype, "copyTo", null);
+    __decorate([
+        tag("f.copyByPath")
+    ], _Folder.prototype, "copyByPath", null);
+    __decorate([
+        tag("f.getShareable")
+    ], _Folder.prototype, "getShareable", null);
+    return _Folder;
+}(sharepointqueryable_SharePointQueryableInstance));
+
+var Folder = spInvokableFactory(types_Folder);
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/column-defaults/list.js
+
+
+
+
+
+
+
+
+
+addProp(types_List, "rootFolder", Folder, "rootFolder");
+types_List.prototype.getDefaultColumnValues = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        var pathPart, webUrl, path, baseFilePath, xml, e_1, matches, tags;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.rootFolder.select("ServerRelativePath")()];
+                case 1:
+                    pathPart = _a.sent();
+                    return [4 /*yield*/, this.select("ParentWeb/Url").expand("ParentWeb")()];
+                case 2:
+                    webUrl = _a.sent();
+                    path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms/client_LocationBasedDefaults.html");
+                    baseFilePath = combine(webUrl.ParentWeb.Url, "_api/web", "getFileByServerRelativePath(decodedUrl='" + escapeQueryStrValue(path) + "')");
+                    xml = "";
+                    _a.label = 3;
+                case 3:
+                    _a.trys.push([3, 5, , 6]);
+                    return [4 /*yield*/, Folder(baseFilePath, "$value").usingParser(new parsers_TextParser())(request_builders_headers({ "binaryStringResponseBody": "true" }))];
+                case 4:
+                    xml = _a.sent();
+                    return [3 /*break*/, 6];
+                case 5:
+                    e_1 = _a.sent();
+                    // if this call fails we assume it is because the file is 404
+                    if (e_1 && e_1.status && e_1.status === 404) {
+                        // return an empty array
+                        return [2 /*return*/, []];
+                    }
+                    throw e_1;
+                case 6:
+                    matches = xml.match(/<a.*?<\/a>/ig);
+                    tags = matches === null ? [] : matches.map(function (t) { return t.trim(); });
+                    // now we need to turn these tags of form into objects
+                    // <a href="/sites/dev/My%20Title"><DefaultValue FieldName="TextField">Test</DefaultValue></a>
+                    return [2 /*return*/, tags.map(function (t) {
+                            var m = /<a href="(.*?)"><DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(t);
+                            // if things worked our captures are:
+                            // 0: whole string
+                            // 1: ENCODED server relative path
+                            // 2: Field internal name
+                            // 3: Default value as string
+                            if (m.length < 1) {
+                                // this indicates an error somewhere, but we have no way to meaningfully recover
+                                // perhaps the way the tags are stored has changed on the server? Check that first.
+                                Logger.write("Could not parse default column value from '" + t + "'", 2 /* Warning */);
+                                return null;
+                            }
+                            // return the parsed out values
+                            return {
+                                name: m[2],
+                                path: decodeURIComponent(m[1]),
+                                value: m[3],
+                            };
+                        }).filter(function (v) { return v !== null; })];
+            }
+        });
+    });
+};
+types_List.prototype.setDefaultColumnValues = function (defaults) {
+    return __awaiter(this, void 0, void 0, function () {
+        var fieldDefs, tags, xml, pathPart, webUrl, path, baseFilePath, existingReceivers;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, SharePointQueryableCollection(this, "fields").select("InternalName", "TypeAsString").filter("Hidden ne true")()];
+                case 1:
+                    fieldDefs = _a.sent();
+                    tags = defaults.map(function (fieldDefault) {
+                        var index = fieldDefs.findIndex(function (fd) { return fd.InternalName === fieldDefault.name; });
+                        if (index < 0) {
+                            throw Error("Field '" + fieldDefault.name + "' does not exist in the list. Please check the internal field name. Failed to set defaults.");
+                        }
+                        var fieldDef = fieldDefs[index];
+                        var value = "";
+                        switch (fieldDef.TypeAsString) {
+                            case "Boolean":
+                            case "Currency":
+                            case "Text":
+                            case "DateTime":
+                            case "Number":
+                            case "Choice":
+                            case "User":
+                                if (isArray(fieldDefault.value)) {
+                                    throw Error("The type '" + fieldDef.TypeAsString + "' does not support multiple values.");
+                                }
+                                value = "" + fieldDefault.value;
+                                break;
+                            case "MultiChoice":
+                                if (isArray(fieldDefault.value)) {
+                                    value = fieldDefault.value.map(function (v) { return "" + v; }).join(";");
+                                }
+                                else {
+                                    value = "" + fieldDefault.value;
+                                }
+                                break;
+                            case "UserMulti":
+                                if (isArray(fieldDefault.value)) {
+                                    value = fieldDefault.value.map(function (v) { return "" + v; }).join(";#");
+                                }
+                                else {
+                                    value = "" + fieldDefault.value;
+                                }
+                                break;
+                            case "Taxonomy":
+                                if (isArray(fieldDefault.value)) {
+                                    throw Error("The type '" + fieldDef.TypeAsString + "' does not support multiple values.");
+                                }
+                                else {
+                                    value = fieldDefault.value.wssId + ";#" + fieldDefault.value.termName + "|" + fieldDefault.value.termId;
+                                }
+                                break;
+                            case "TaxonomyMulti":
+                                if (isArray(fieldDefault.value)) {
+                                    value = fieldDefault.value.map(function (v) { return v.wssId + ";#" + v.termName + "|" + v.termId; }).join(";#");
+                                }
+                                value = fieldDefault.value.wssId + ";#" + fieldDefault.value.termName + "|" + fieldDefault.value.termId;
+                                break;
+                        }
+                        return "<a href=\"" + fieldDefault.path.replace(/ /gi, "%20") + "\"><DefaultValue FieldName=\"" + fieldDefault.name + "\">" + value + "</DefaultValue></a>";
+                    });
+                    xml = "<MetadataDefaults>" + tags.join("") + "</MetadataDefaults>";
+                    return [4 /*yield*/, this.rootFolder.select("ServerRelativePath")()];
+                case 2:
+                    pathPart = _a.sent();
+                    return [4 /*yield*/, this.select("ParentWeb/Url").expand("ParentWeb")()];
+                case 3:
+                    webUrl = _a.sent();
+                    path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms");
+                    baseFilePath = combine(webUrl.ParentWeb.Url, "_api/web", "getFolderByServerRelativePath(decodedUrl='" + escapeQueryStrValue(path) + "')", "files");
+                    return [4 /*yield*/, spPost(Folder(baseFilePath, "add(overwrite=true,url='client_LocationBasedDefaults.html')"), { body: xml })];
+                case 4:
+                    _a.sent();
+                    return [4 /*yield*/, this.eventReceivers.filter("ReceiverName eq 'LocationBasedMetadataDefaultsReceiver ItemAdded'").select("ReceiverId")()];
+                case 5:
+                    existingReceivers = _a.sent();
+                    if (!(existingReceivers.length < 1)) return [3 /*break*/, 7];
+                    return [4 /*yield*/, spPost(List(this.eventReceivers, "add"), body({
+                            eventReceiverCreationInformation: {
+                                EventType: 10001,
+                                ReceiverAssembly: "Microsoft.Office.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c",
+                                ReceiverClass: "Microsoft.Office.DocumentManagement.LocationBasedMetadataDefaultsReceiver",
+                                ReceiverName: "LocationBasedMetadataDefaultsReceiver ItemAdded",
+                                SequenceNumber: 1000,
+                                Synchronization: 1,
+                            },
+                        }))];
+                case 6:
+                    _a.sent();
+                    _a.label = 7;
+                case 7: return [2 /*return*/];
+            }
+        });
+    });
+};
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/web.js
+
+
+
+
+
+
+
+addProp(types_Web, "lists", Lists);
+addProp(types_Web, "siteUserInfoList", List, "siteuserinfolist");
+addProp(types_Web, "defaultDocumentLibrary", List, "DefaultDocumentLibrary");
+addProp(types_Web, "customListTemplates", SharePointQueryableCollection, "getcustomlisttemplates");
+types_Web.prototype.getList = function (listRelativeUrl) {
+    return List(this, "getList('" + escapeQueryStrValue(listRelativeUrl) + "')");
+};
+types_Web.prototype.getCatalog = function (type) {
+    return __awaiter(this, void 0, void 0, function () {
+        var data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.clone(Web, "getcatalog(" + type + ")").select("Id").get()];
+                case 1:
+                    data = _a.sent();
+                    return [2 /*return*/, List(odataUrlFrom(data))];
+            }
+        });
+    });
+};
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/column-defaults/folder.js
+
+
+
+
+
+
+types_Folder.prototype.getDefaultColumnValues = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        var folderProps, serRelPath, web, docLib;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, Folder(this, "Properties").select("vti_x005f_listname")()];
+                case 1:
+                    folderProps = _a.sent();
+                    return [4 /*yield*/, this.select("ServerRelativePath")()];
+                case 2:
+                    serRelPath = (_a.sent()).ServerRelativePath;
+                    web = Web(extractWebUrl(odataUrlFrom(folderProps)));
+                    docLib = web.lists.getById(folderProps.vti_x005f_listname);
+                    return [4 /*yield*/, docLib.getDefaultColumnValues()];
+                case 3: 
+                // and we return the defaults associated with this folder's server relative path only
+                // if you want all the defaults use list.getDefaultColumnValues()
+                return [2 /*return*/, (_a.sent()).filter(function (v) { return v.path.toLowerCase() === serRelPath.DecodedUrl.toLowerCase(); })];
+            }
+        });
+    });
+};
+types_Folder.prototype.setDefaultColumnValues = function (fieldDefaults, merge) {
+    if (merge === void 0) { merge = true; }
+    return __awaiter(this, void 0, void 0, function () {
+        var folderProps, web, docLib, folderPath, existingDefaults, filteredExistingDefaults;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, Folder(this, "Properties").select("vti_x005f_listname")()];
+                case 1:
+                    folderProps = _a.sent();
+                    web = Web(extractWebUrl(odataUrlFrom(folderProps)));
+                    docLib = web.lists.getById(folderProps.vti_x005f_listname);
+                    return [4 /*yield*/, this.select("ServerRelativePath")()];
+                case 2:
+                    folderPath = (_a.sent()).ServerRelativePath.DecodedUrl;
+                    return [4 /*yield*/, docLib.getDefaultColumnValues()];
+                case 3:
+                    existingDefaults = _a.sent();
+                    filteredExistingDefaults = merge ? existingDefaults : existingDefaults.filter(function (f) { return f.path !== folderPath; });
+                    // we update / add any new defaults from those passed to this method
+                    fieldDefaults.forEach(function (d) {
+                        var existing = filteredExistingDefaults.find(function (ed) { return ed.name === d.name && ed.path === folderPath; });
+                        if (existing) {
+                            existing.value = d.value;
+                        }
+                        else {
+                            filteredExistingDefaults.push({
+                                name: d.name,
+                                path: folderPath,
+                                value: d.value,
+                            });
+                        }
+                    });
+                    // after this operation filteredExistingDefaults should contain all the value we want to write to the file
+                    return [4 /*yield*/, docLib.setDefaultColumnValues(filteredExistingDefaults)];
+                case 4:
+                    // after this operation filteredExistingDefaults should contain all the value we want to write to the file
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+};
+types_Folder.prototype.clearDefaultColumnValues = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.setDefaultColumnValues([], false)];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+};
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/column-defaults/index.js
 
 
 
@@ -7886,7 +8497,7 @@ types_Web.prototype.loadClientsidePage = function (path) {
 
 
 var types_ContentTypes = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ContentTypes, _super);
+    __extends(_ContentTypes, _super);
     function _ContentTypes() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -7896,9 +8507,9 @@ var types_ContentTypes = /** @class */ (function (_super) {
      * @param contentTypeId in the following format, for example: 0x010102
      */
     _ContentTypes.prototype.addAvailableContentType = function (contentTypeId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(ContentTypes, "addAvailableContentType"), body({ "contentTypeId": contentTypeId }))];
                     case 1:
@@ -7932,9 +8543,9 @@ var types_ContentTypes = /** @class */ (function (_super) {
         if (description === void 0) { description = ""; }
         if (group === void 0) { group = "Custom Content Types"; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = body(Object.assign(metadata("SP.ContentType"), {
@@ -7951,13 +8562,13 @@ var types_ContentTypes = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("cts.addAvailableContentType")
     ], _ContentTypes.prototype, "addAvailableContentType", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("cts.add")
     ], _ContentTypes.prototype, "add", null);
-    _ContentTypes = Object(tslib_es6["b" /* __decorate */])([
+    _ContentTypes = __decorate([
         defaultPath("contenttypes")
     ], _ContentTypes);
     return _ContentTypes;
@@ -7965,7 +8576,7 @@ var types_ContentTypes = /** @class */ (function (_super) {
 
 var ContentTypes = spInvokableFactory(types_ContentTypes);
 var types_ContentType = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ContentType, _super);
+    __extends(_ContentType, _super);
     function _ContentType() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("ct");
@@ -8016,7 +8627,7 @@ var types_ContentType = /** @class */ (function (_super) {
 
 var ContentType = spInvokableFactory(types_ContentType);
 var types_FieldLinks = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_FieldLinks, _super);
+    __extends(_FieldLinks, _super);
     function _FieldLinks() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8028,7 +8639,7 @@ var types_FieldLinks = /** @class */ (function (_super) {
     _FieldLinks.prototype.getById = function (id) {
         return tag.configure(FieldLink(this).concat("(guid'" + id + "')"), "fls.getById");
     };
-    _FieldLinks = Object(tslib_es6["b" /* __decorate */])([
+    _FieldLinks = __decorate([
         defaultPath("fieldlinks")
     ], _FieldLinks);
     return _FieldLinks;
@@ -8036,7 +8647,7 @@ var types_FieldLinks = /** @class */ (function (_super) {
 
 var FieldLinks = spInvokableFactory(types_FieldLinks);
 var types_FieldLink = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_FieldLink, _super);
+    __extends(_FieldLink, _super);
     function _FieldLink() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8077,7 +8688,7 @@ addProp(types_List, "contentTypes", ContentTypes);
 
 
 var types_Features = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Features, _super);
+    __extends(_Features, _super);
     function _Features() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8089,9 +8700,9 @@ var types_Features = /** @class */ (function (_super) {
      */
     _Features.prototype.add = function (id, force) {
         if (force === void 0) { force = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Features, "add"), body({
                             featdefScope: 0,
@@ -8131,13 +8742,13 @@ var types_Features = /** @class */ (function (_super) {
             force: force,
         }));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fes.add")
     ], _Features.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fes.remove")
     ], _Features.prototype, "remove", null);
-    _Features = Object(tslib_es6["b" /* __decorate */])([
+    _Features = __decorate([
         defaultPath("features")
     ], _Features);
     return _Features;
@@ -8145,7 +8756,7 @@ var types_Features = /** @class */ (function (_super) {
 
 var Features = spInvokableFactory(types_Features);
 var types_Feature = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Feature, _super);
+    __extends(_Feature, _super);
     function _Feature() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8156,9 +8767,9 @@ var types_Feature = /** @class */ (function (_super) {
      */
     _Feature.prototype.deactivate = function (force) {
         if (force === void 0) { force = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var removeDependency, feature, promise;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         removeDependency = this.addBatchDependency();
@@ -8172,7 +8783,7 @@ var types_Feature = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fe.deactivate")
     ], _Feature.prototype, "deactivate", null);
     return _Feature;
@@ -8207,7 +8818,7 @@ addProp(types_Web, "features", Features);
 
 
 var types_Fields = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Fields, _super);
+    __extends(_Fields, _super);
     function _Fields() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8241,16 +8852,16 @@ var types_Fields = /** @class */ (function (_super) {
      * @param xml A string or XmlSchemaFieldCreationInformation instance descrbing the field to create
      */
     _Fields.prototype.createFieldAsXml = function (xml) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (typeof xml === "string") {
                             xml = { SchemaXml: xml };
                         }
                         postBody = body({
-                            "parameters": Object(common["d" /* assign */])(metadata("SP.XmlSchemaFieldCreationInformation"), xml),
+                            "parameters": util_assign(metadata("SP.XmlSchemaFieldCreationInformation"), xml),
                         });
                         return [4 /*yield*/, spPost(this.clone(Fields, "createfieldasxml"), postBody)];
                     case 1:
@@ -8271,9 +8882,9 @@ var types_Fields = /** @class */ (function (_super) {
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
     _Fields.prototype.add = function (title, fieldType, properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = body(Object.assign(metadata(fieldType), {
@@ -8306,7 +8917,7 @@ var types_Fields = /** @class */ (function (_super) {
             FieldTypeKind: 2,
             MaxLength: maxLength,
         };
-        return this.add(title, "SP.FieldText", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldText", util_assign(props, properties));
     };
     /**
      * Adds a new SP.FieldCalculated to the collection
@@ -8325,7 +8936,7 @@ var types_Fields = /** @class */ (function (_super) {
             Formula: formula,
             OutputType: outputType,
         };
-        return this.add(title, "SP.FieldCalculated", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldCalculated", util_assign(props, properties));
     };
     /**
      * Adds a new SP.FieldDateTime to the collection
@@ -8346,7 +8957,7 @@ var types_Fields = /** @class */ (function (_super) {
             FieldTypeKind: 4,
             FriendlyDisplayFormat: friendlyDisplayFormat,
         };
-        return this.add(title, "SP.FieldDateTime", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldDateTime", util_assign(props, properties));
     };
     /**
      * Adds a new SP.FieldNumber to the collection
@@ -8359,12 +8970,12 @@ var types_Fields = /** @class */ (function (_super) {
     _Fields.prototype.addNumber = function (title, minValue, maxValue, properties) {
         var props = { FieldTypeKind: 9 };
         if (minValue !== undefined) {
-            props = Object(common["d" /* assign */])({ MinimumValue: minValue }, props);
+            props = util_assign({ MinimumValue: minValue }, props);
         }
         if (maxValue !== undefined) {
-            props = Object(common["d" /* assign */])({ MaximumValue: maxValue }, props);
+            props = util_assign({ MaximumValue: maxValue }, props);
         }
-        return this.add(title, "SP.FieldNumber", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldNumber", util_assign(props, properties));
     };
     /**
      * Adds a new SP.FieldCurrency to the collection
@@ -8382,12 +8993,12 @@ var types_Fields = /** @class */ (function (_super) {
             FieldTypeKind: 10,
         };
         if (minValue !== undefined) {
-            props = Object(common["d" /* assign */])({ MinimumValue: minValue }, props);
+            props = util_assign({ MinimumValue: minValue }, props);
         }
         if (maxValue !== undefined) {
-            props = Object(common["d" /* assign */])({ MaximumValue: maxValue }, props);
+            props = util_assign({ MaximumValue: maxValue }, props);
         }
-        return this.add(title, "SP.FieldCurrency", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldCurrency", util_assign(props, properties));
     };
     /**
      * Adds a new SP.FieldMultiLineText to the collection
@@ -8415,7 +9026,7 @@ var types_Fields = /** @class */ (function (_super) {
             RestrictedMode: restrictedMode,
             RichText: richText,
         };
-        return this.add(title, "SP.FieldMultiLineText", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldMultiLineText", util_assign(props, properties));
     };
     /**
      * Adds a new SP.FieldUrl to the collection
@@ -8428,7 +9039,7 @@ var types_Fields = /** @class */ (function (_super) {
             DisplayFormat: displayFormat,
             FieldTypeKind: 11,
         };
-        return this.add(title, "SP.FieldUrl", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldUrl", util_assign(props, properties));
     };
     /** Adds a user field to the colleciton
     *
@@ -8442,7 +9053,7 @@ var types_Fields = /** @class */ (function (_super) {
             FieldTypeKind: 20,
             SelectionMode: selectionMode,
         };
-        return this.add(title, "SP.FieldUser", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldUser", util_assign(props, properties));
     };
     /**
      * Adds a SP.FieldLookup to the collection
@@ -8453,19 +9064,19 @@ var types_Fields = /** @class */ (function (_super) {
      * @param properties Set of additional properties to set on the new field
      */
     _Fields.prototype.addLookup = function (title, lookupListId, lookupFieldName, properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var props, postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        props = Object(common["d" /* assign */])({
+                        props = util_assign({
                             FieldTypeKind: 7,
                             LookupFieldName: lookupFieldName,
                             LookupListId: lookupListId,
                             Title: title,
                         }, properties);
                         postBody = body({
-                            "parameters": Object(common["d" /* assign */])(metadata("SP.FieldCreationInformation"), props),
+                            "parameters": util_assign(metadata("SP.FieldCreationInformation"), props),
                         });
                         return [4 /*yield*/, spPost(this.clone(Fields, "addfield"), postBody)];
                     case 1:
@@ -8497,7 +9108,7 @@ var types_Fields = /** @class */ (function (_super) {
             FieldTypeKind: 6,
             FillInChoice: fillIn,
         };
-        return this.add(title, "SP.FieldChoice", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldChoice", util_assign(props, properties));
     };
     /**
      * Adds a new SP.FieldMultiChoice to the collection
@@ -8515,7 +9126,7 @@ var types_Fields = /** @class */ (function (_super) {
             FieldTypeKind: 15,
             FillInChoice: fillIn,
         };
-        return this.add(title, "SP.FieldMultiChoice", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldMultiChoice", util_assign(props, properties));
     };
     /**
      * Adds a new SP.FieldBoolean to the collection
@@ -8527,7 +9138,7 @@ var types_Fields = /** @class */ (function (_super) {
         var props = {
             FieldTypeKind: 8,
         };
-        return this.add(title, "SP.Field", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.Field", util_assign(props, properties));
     };
     /**
     * Creates a secondary (dependent) lookup field, based on the Id of the primary lookup field.
@@ -8537,9 +9148,9 @@ var types_Fields = /** @class */ (function (_super) {
     * @param showField Which field to show from the lookup list.
     */
     _Fields.prototype.addDependentLookupField = function (displayName, primaryLookupFieldId, showField) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var path, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         path = "adddependentlookupfield(displayName='" + displayName + "', primarylookupfieldid='" + primaryLookupFieldId + "', showfield='" + showField + "')";
@@ -8562,54 +9173,54 @@ var types_Fields = /** @class */ (function (_super) {
      */
     _Fields.prototype.addLocation = function (title, properties) {
         var props = { FieldTypeKind: 33 };
-        return this.add(title, "SP.FieldLocation", Object(common["d" /* assign */])(props, properties));
+        return this.add(title, "SP.FieldLocation", util_assign(props, properties));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.createFieldAsXml")
     ], _Fields.prototype, "createFieldAsXml", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addText")
     ], _Fields.prototype, "addText", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addCalculated")
     ], _Fields.prototype, "addCalculated", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addDateTime")
     ], _Fields.prototype, "addDateTime", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addNumber")
     ], _Fields.prototype, "addNumber", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addCurrency")
     ], _Fields.prototype, "addCurrency", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addMultilineText")
     ], _Fields.prototype, "addMultilineText", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addUrl")
     ], _Fields.prototype, "addUrl", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addUser")
     ], _Fields.prototype, "addUser", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addLookup")
     ], _Fields.prototype, "addLookup", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addChoice")
     ], _Fields.prototype, "addChoice", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addMultiChoice")
     ], _Fields.prototype, "addMultiChoice", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addBoolean")
     ], _Fields.prototype, "addBoolean", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addDependentLookupField")
     ], _Fields.prototype, "addDependentLookupField", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addLocation")
     ], _Fields.prototype, "addLocation", null);
-    _Fields = Object(tslib_es6["b" /* __decorate */])([
+    _Fields = __decorate([
         defaultPath("fields")
     ], _Fields);
     return _Fields;
@@ -8617,7 +9228,7 @@ var types_Fields = /** @class */ (function (_super) {
 
 var Fields = spInvokableFactory(types_Fields);
 var types_Field = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Field, _super);
+    __extends(_Field, _super);
     function _Field() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8629,12 +9240,12 @@ var types_Field = /** @class */ (function (_super) {
      */
     _Field.prototype.update = function (properties, fieldType) {
         if (fieldType === void 0) { fieldType = "SP.Field"; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var req, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        req = body(Object(common["d" /* assign */])(metadata(fieldType), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
+                        req = body(util_assign(metadata(fieldType), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
                         return [4 /*yield*/, spPost(this, req)];
                     case 1:
                         data = _a.sent();
@@ -8664,16 +9275,16 @@ var types_Field = /** @class */ (function (_super) {
     _Field.prototype.setShowInNewForm = function (show) {
         return spPost(this.clone(Field, "setshowinnewform(" + show + ")"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.update")
     ], _Field.prototype, "update", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.setShowInDisplayForm")
     ], _Field.prototype, "setShowInDisplayForm", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.setShowInEditForm")
     ], _Field.prototype, "setShowInEditForm", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.setShowInNewForm")
     ], _Field.prototype, "setShowInNewForm", null);
     return _Field;
@@ -8815,376 +9426,6 @@ addProp(types_List, "fields", Fields);
 
 
 
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/folders/types.js
-
-
-
-
-
-
-
-
-
-
-
-
-var types_Folders = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Folders, _super);
-    function _Folders() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Gets a folder by it's name
-     *
-     * @param name Folder's name
-     */
-    _Folders.prototype.getByName = function (name) {
-        return tag.configure(Folder(this).concat("('" + escapeQueryStrValue(name) + "')"), "fs.getByName");
-    };
-    /**
-     * Adds a new folder at the specified URL
-     *
-     * @param url
-     */
-    _Folders.prototype.add = function (url) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, spPost(this.clone(Folders, "add('" + escapeQueryStrValue(url) + "')"))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                folder: this.getByName(url),
-                            }];
-                }
-            });
-        });
-    };
-    /**
-     * Adds a new folder by path and should be prefered over add
-     *
-     * @param serverRelativeUrl The server relative url of the new folder to create
-     * @param overwrite True to overwrite an existing folder, default false
-     */
-    _Folders.prototype.addUsingPath = function (serverRelativeUrl, overwrite) {
-        if (overwrite === void 0) { overwrite = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, spPost(this.clone(Folders, "addUsingPath(DecodedUrl='" + escapeQueryStrValue(serverRelativeUrl) + "',overwrite=" + overwrite + ")"))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                data: data,
-                                folder: Folder(extractWebUrl(this.toUrl()), "_api/web/getFolderByServerRelativePath(decodedUrl='" + escapeQueryStrValue(serverRelativeUrl) + "')"),
-                            }];
-                }
-            });
-        });
-    };
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("fs.add")
-    ], _Folders.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("fs.addUsingPath")
-    ], _Folders.prototype, "addUsingPath", null);
-    _Folders = Object(tslib_es6["b" /* __decorate */])([
-        defaultPath("folders")
-    ], _Folders);
-    return _Folders;
-}(sharepointqueryable_SharePointQueryableCollection));
-
-var Folders = spInvokableFactory(types_Folders);
-var types_Folder = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Folder, _super);
-    function _Folder() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.delete = deleteableWithETag("f");
-        /**
-         * Updates folder's properties
-         * @param props Folder's properties to update
-         */
-        _this.update = _this._update("SP.Folder", function (data) { return ({ data: data, folder: _this }); });
-        return _this;
-    }
-    Object.defineProperty(_Folder.prototype, "contentTypeOrder", {
-        /**
-         * Specifies the sequence in which content types are displayed.
-         *
-         */
-        get: function () {
-            return tag.configure(SharePointQueryableCollection(this, "contentTypeOrder"), "f.contentTypeOrder");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Folder.prototype, "folders", {
-        /**
-         * Gets this folder's sub folders
-         *
-         */
-        get: function () {
-            return Folders(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Folder.prototype, "listItemAllFields", {
-        /**
-         * Gets this folder's list item field values
-         *
-         */
-        get: function () {
-            return tag.configure(SharePointQueryableInstance(this, "listItemAllFields"), "f.listItemAllFields");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Folder.prototype, "parentFolder", {
-        /**
-         * Gets the parent folder, if available
-         *
-         */
-        get: function () {
-            return tag.configure(Folder(this, "parentFolder"), "f.parentFolder");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Folder.prototype, "properties", {
-        /**
-         * Gets this folder's properties
-         *
-         */
-        get: function () {
-            return tag.configure(SharePointQueryableInstance(this, "properties"), "f.properties");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Folder.prototype, "serverRelativeUrl", {
-        /**
-         * Gets this folder's server relative url
-         *
-         */
-        get: function () {
-            return tag.configure(SharePointQueryable(this, "serverRelativeUrl"), "f.serverRelativeUrl");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(_Folder.prototype, "uniqueContentTypeOrder", {
-        /**
-         * Gets a value that specifies the content type order.
-         *
-         */
-        get: function () {
-            return tag.configure(SharePointQueryableCollection(this, "uniqueContentTypeOrder"), "f.uniqueContentTypeOrder");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
-     */
-    _Folder.prototype.recycle = function () {
-        return spPost(this.clone(Folder, "recycle"));
-    };
-    /**
-     * Gets the associated list item for this folder, loading the default properties
-     */
-    _Folder.prototype.getItem = function () {
-        var selects = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            selects[_i] = arguments[_i];
-        }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var q, d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        q = this.listItemAllFields;
-                        return [4 /*yield*/, q.select.apply(q, selects)()];
-                    case 1:
-                        d = _a.sent();
-                        return [2 /*return*/, Object(common["d" /* assign */])(Item(odataUrlFrom(d)), d)];
-                }
-            });
-        });
-    };
-    /**
-     * Moves a folder to destination path
-     *
-     * @param destUrl Absolute or relative URL of the destination path
-     */
-    _Folder.prototype.moveTo = function (destUrl) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
-                    case 1:
-                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
-                        webBaseUrl = extractWebUrl(absoluteUrl);
-                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolder()"), body({
-                                destUrl: Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl,
-                                srcUrl: "" + hostUrl + srcUrl,
-                            }))];
-                    case 2:
-                        _b.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * Moves a folder by path to destination path
-     * Also works with different site collections.
-     *
-     * @param destUrl Absolute or relative URL of the destination path
-     * @param keepBoth Keep both if folder with the same name in the same location already exists?
-     */
-    _Folder.prototype.moveByPath = function (destUrl, KeepBoth) {
-        if (KeepBoth === void 0) { KeepBoth = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
-                    case 1:
-                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
-                        webBaseUrl = extractWebUrl(absoluteUrl);
-                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"), body({
-                                destPath: toResourcePath(Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl),
-                                options: {
-                                    KeepBoth: KeepBoth,
-                                    ResetAuthorAndCreatedOnCopy: true,
-                                    ShouldBypassSharedLocks: true,
-                                    __metadata: {
-                                        type: "SP.MoveCopyOptions",
-                                    },
-                                },
-                                srcPath: toResourcePath("" + hostUrl + srcUrl),
-                            }))];
-                    case 2:
-                        _b.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * Copies a folder to destination path
-     *
-     * @param destUrl Absolute or relative URL of the destination path
-     */
-    _Folder.prototype.copyTo = function (destUrl) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
-                    case 1:
-                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
-                        webBaseUrl = extractWebUrl(absoluteUrl);
-                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()"), body({
-                                destUrl: Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl,
-                                srcUrl: "" + hostUrl + srcUrl,
-                            }))];
-                    case 2:
-                        _b.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * Copies a folder by path to destination path
-     * Also works with different site collections.
-     *
-     * @param destUrl Absolute or relative URL of the destination path
-     * @param keepBoth Keep both if folder with the same name in the same location already exists?
-     */
-    _Folder.prototype.copyByPath = function (destUrl, KeepBoth) {
-        if (KeepBoth === void 0) { KeepBoth = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
-                    case 1:
-                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
-                        webBaseUrl = extractWebUrl(absoluteUrl);
-                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"), body({
-                                destPath: toResourcePath(Object(common["m" /* isUrlAbsolute */])(destUrl) ? destUrl : "" + hostUrl + destUrl),
-                                options: {
-                                    KeepBoth: KeepBoth,
-                                    ResetAuthorAndCreatedOnCopy: true,
-                                    ShouldBypassSharedLocks: true,
-                                    __metadata: {
-                                        type: "SP.MoveCopyOptions",
-                                    },
-                                },
-                                srcPath: toResourcePath("" + hostUrl + srcUrl),
-                            }))];
-                    case 2:
-                        _b.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    _Folder.prototype.getShareable = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var d, shareable;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")()];
-                    case 1:
-                        d = _a.sent();
-                        shareable = Item(odataUrlFrom(d));
-                        // we need to handle batching
-                        if (this.hasBatch) {
-                            shareable = shareable.inBatch(this.batch);
-                        }
-                        return [2 /*return*/, shareable];
-                }
-            });
-        });
-    };
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("f.recycle")
-    ], _Folder.prototype, "recycle", null);
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("f.getItem")
-    ], _Folder.prototype, "getItem", null);
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("f.moveTo")
-    ], _Folder.prototype, "moveTo", null);
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("f.moveByPath")
-    ], _Folder.prototype, "moveByPath", null);
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("f.copyTo")
-    ], _Folder.prototype, "copyTo", null);
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("f.copyByPath")
-    ], _Folder.prototype, "copyByPath", null);
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("f.getShareable")
-    ], _Folder.prototype, "getShareable", null);
-    return _Folder;
-}(sharepointqueryable_SharePointQueryableInstance));
-
-var Folder = spInvokableFactory(types_Folder);
-
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/files/folder.js
 
 
@@ -9248,7 +9489,7 @@ types_Web.prototype.getFolderById = function (uniqueId) {
  *
  */
 var types_Forms = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Forms, _super);
+    __extends(_Forms, _super);
     function _Forms() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9260,7 +9501,7 @@ var types_Forms = /** @class */ (function (_super) {
     _Forms.prototype.getById = function (id) {
         return tag.configure(Form(this).concat("('" + id + "')"), "fos.getById");
     };
-    _Forms = Object(tslib_es6["b" /* __decorate */])([
+    _Forms = __decorate([
         defaultPath("forms")
     ], _Forms);
     return _Forms;
@@ -9272,7 +9513,7 @@ var Forms = spInvokableFactory(types_Forms);
  *
  */
 var types_Form = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Form, _super);
+    __extends(_Form, _super);
     function _Form() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9298,7 +9539,7 @@ addProp(types_List, "forms", Forms, "forms");
 
 
 var types_HubSites = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_HubSites, _super);
+    __extends(_HubSites, _super);
     function _HubSites() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9310,7 +9551,7 @@ var types_HubSites = /** @class */ (function (_super) {
     _HubSites.prototype.getById = function (id) {
         return tag.configure(HubSite(this, "GetById?hubSiteId='" + id + "'"), "hss.getById");
     };
-    _HubSites = Object(tslib_es6["b" /* __decorate */])([
+    _HubSites = __decorate([
         defaultPath("_api/hubsites")
     ], _HubSites);
     return _HubSites;
@@ -9318,7 +9559,7 @@ var types_HubSites = /** @class */ (function (_super) {
 
 var HubSites = spInvokableFactory(types_HubSites);
 var types_HubSite = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_HubSite, _super);
+    __extends(_HubSite, _super);
     function _HubSite() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9326,9 +9567,9 @@ var types_HubSite = /** @class */ (function (_super) {
      * Gets the ISite instance associated with this hubsite
      */
     _HubSite.prototype.getSite = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.select("SiteUrl")()];
                     case 1:
@@ -9338,7 +9579,7 @@ var types_HubSite = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("hs.getSite")
     ], _HubSite.prototype, "getSite", null);
     return _HubSite;
@@ -9351,8 +9592,8 @@ var HubSite = spInvokableFactory(types_HubSite);
 
 
 types_Site.prototype.joinHubSite = function (siteId) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(Site, "joinHubSite('" + siteId + "')"))];
                 case 1:
@@ -9363,8 +9604,8 @@ types_Site.prototype.joinHubSite = function (siteId) {
     });
 };
 types_Site.prototype.registerHubSite = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(Site, "registerHubSite"))];
                 case 1:
@@ -9375,8 +9616,8 @@ types_Site.prototype.registerHubSite = function () {
     });
 };
 types_Site.prototype.unRegisterHubSite = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(Site, "unRegisterHubSite"))];
                 case 1:
@@ -9393,9 +9634,9 @@ types_Site.prototype.unRegisterHubSite = function () {
 
 types_Web.prototype.hubSiteData = function (forceRefresh) {
     if (forceRefresh === void 0) { forceRefresh = false; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var data;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.clone(Web, "hubSiteData(" + forceRefresh + ")")()];
                 case 1:
@@ -9426,35 +9667,6 @@ Reflect.defineProperty(rest_SPRest.prototype, "hubSites", {
     },
 });
 
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/web.js
-
-
-
-
-
-
-
-addProp(types_Web, "lists", Lists);
-addProp(types_Web, "siteUserInfoList", List, "siteuserinfolist");
-addProp(types_Web, "defaultDocumentLibrary", List, "DefaultDocumentLibrary");
-addProp(types_Web, "customListTemplates", SharePointQueryableCollection, "getcustomlisttemplates");
-types_Web.prototype.getList = function (listRelativeUrl) {
-    return List(this, "getList('" + escapeQueryStrValue(listRelativeUrl) + "')");
-};
-types_Web.prototype.getCatalog = function (type) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        var data;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, this.clone(Web, "getcatalog(" + type + ")").select("Id").get()];
-                case 1:
-                    data = _a.sent();
-                    return [2 /*return*/, List(odataUrlFrom(data))];
-            }
-        });
-    });
-};
-
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/index.js
 
 
@@ -9473,7 +9685,7 @@ types_Web.prototype.getCatalog = function (type) {
  *
  */
 var types_NavigationNodes = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_NavigationNodes, _super);
+    __extends(_NavigationNodes, _super);
     function _NavigationNodes() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9494,12 +9706,12 @@ var types_NavigationNodes = /** @class */ (function (_super) {
      */
     _NavigationNodes.prototype.add = function (title, url, visible) {
         if (visible === void 0) { visible = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["d" /* assign */])(metadata("SP.NavigationNode"), {
+                        postBody = body(util_assign(metadata("SP.NavigationNode"), {
                             IsVisible: visible,
                             Title: title,
                             Url: url,
@@ -9528,10 +9740,10 @@ var types_NavigationNodes = /** @class */ (function (_super) {
         });
         return spPost(this.clone(NavigationNodes, "MoveAfter"), postBody);
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("nns.add")
     ], _NavigationNodes.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("nns.moveAfter")
     ], _NavigationNodes.prototype, "moveAfter", null);
     return _NavigationNodes;
@@ -9543,7 +9755,7 @@ var NavigationNodes = spInvokableFactory(types_NavigationNodes);
  *
  */
 var types_NavigationNode = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_NavigationNode, _super);
+    __extends(_NavigationNode, _super);
     function _NavigationNode() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("nn");
@@ -9565,12 +9777,12 @@ var types_NavigationNode = /** @class */ (function (_super) {
      * @param properties Properties used to update this node
      */
     _NavigationNode.prototype.update = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["d" /* assign */])(metadata("SP.NavigationNode"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
+                        postBody = body(util_assign(metadata("SP.NavigationNode"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
                         return [4 /*yield*/, spPost(this, postBody)];
                     case 1:
                         data = _a.sent();
@@ -9582,7 +9794,7 @@ var types_NavigationNode = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("nn.update")
     ], _NavigationNode.prototype, "update", null);
     return _NavigationNode;
@@ -9594,7 +9806,7 @@ var NavigationNode = spInvokableFactory(types_NavigationNode);
  *
  */
 var types_Navigation = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Navigation, _super);
+    __extends(_Navigation, _super);
     function _Navigation() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9620,7 +9832,7 @@ var types_Navigation = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    _Navigation = Object(tslib_es6["b" /* __decorate */])([
+    _Navigation = __decorate([
         defaultPath("navigation")
     ], _Navigation);
     return _Navigation;
@@ -9631,7 +9843,7 @@ var Navigation = spInvokableFactory(types_Navigation);
  * Represents the top level navigation service
  */
 var types_NavigationService = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_NavigationService, _super);
+    __extends(_NavigationService, _super);
     function _NavigationService(path) {
         if (path === void 0) { path = null; }
         return _super.call(this, "_api/navigation", path) || this;
@@ -9669,10 +9881,10 @@ var types_NavigationService = /** @class */ (function (_super) {
             mapProviderName: mapProviderName,
         }));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ns.getMenuState")
     ], _NavigationService.prototype, "getMenuState", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ns.getMenuNodeKey")
     ], _NavigationService.prototype, "getMenuNodeKey", null);
     return _NavigationService;
@@ -9708,7 +9920,7 @@ Reflect.defineProperty(rest_SPRest.prototype, "navigation", {
 
 
 var types_Profiles = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Profiles, _super);
+    __extends(_Profiles, _super);
     /**
      * Creates a new instance of the UserProfileQuery class
      *
@@ -9981,7 +10193,7 @@ var types_Profiles = /** @class */ (function (_super) {
 
 var Profiles = spInvokableFactory(types_Profiles);
 var types_ProfileLoader = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ProfileLoader, _super);
+    __extends(ProfileLoader, _super);
     function ProfileLoader() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10036,7 +10248,7 @@ var types_ProfileLoader = /** @class */ (function (_super) {
     ProfileLoader.prototype.shareAllSocialData = function (share) {
         return spPost(this.clone(ProfileLoaderFactory, "getuserprofile/shareallsocialdata(" + share + ")"));
     };
-    ProfileLoader = Object(tslib_es6["b" /* __decorate */])([
+    ProfileLoader = __decorate([
         defaultPath("_api/sp.userprofiles.profileloader.getprofileloader")
     ], ProfileLoader);
     return ProfileLoader;
@@ -10045,7 +10257,7 @@ var ProfileLoaderFactory = function (baseUrl, path) {
     return new types_ProfileLoader(baseUrl, path);
 };
 var types_ClientPeoplePickerQuery = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ClientPeoplePickerQuery, _super);
+    __extends(ClientPeoplePickerQuery, _super);
     function ClientPeoplePickerQuery() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10055,9 +10267,9 @@ var types_ClientPeoplePickerQuery = /** @class */ (function (_super) {
      * @param queryParams The query parameters used to perform resolve
      */
     ClientPeoplePickerQuery.prototype.clientPeoplePickerResolveUser = function (queryParams) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = this.clone(ClientPeoplePickerFactory, null);
@@ -10076,9 +10288,9 @@ var types_ClientPeoplePickerQuery = /** @class */ (function (_super) {
      * @param queryParams The query parameters used to perform search
      */
     ClientPeoplePickerQuery.prototype.clientPeoplePickerSearchUser = function (queryParams) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = this.clone(ClientPeoplePickerFactory, null);
@@ -10097,9 +10309,9 @@ var types_ClientPeoplePickerQuery = /** @class */ (function (_super) {
      * @param queryParams The query parameters to create request body
      */
     ClientPeoplePickerQuery.prototype.getBodyFrom = function (queryParams) {
-        return body({ "queryParams": Object(common["d" /* assign */])(metadata("SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters"), queryParams) });
+        return body({ "queryParams": util_assign(metadata("SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters"), queryParams) });
     };
-    ClientPeoplePickerQuery = Object(tslib_es6["b" /* __decorate */])([
+    ClientPeoplePickerQuery = __decorate([
         defaultPath("_api/sp.ui.applicationpages.clientpeoplepickerwebserviceinterface")
     ], ClientPeoplePickerQuery);
     return ClientPeoplePickerQuery;
@@ -10155,15 +10367,17 @@ Reflect.defineProperty(rest_SPRest.prototype, "profiles", {
 
 
 var types_RegionalSettings = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RegionalSettings, _super);
+    __extends(_RegionalSettings, _super);
     function _RegionalSettings() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(_RegionalSettings.prototype, "installedLanguages", {
         /**
          * Gets the collection of languages used in a server farm.
+         * ** Please use getInstalledLanguages instead of this method **
          */
         get: function () {
+            console.warn("Deprecated: RegionalSettings.installedLanguages is deprecated, please use RegionalSettings.getInstalledLanguages");
             return tag.configure(SharePointQueryableCollection(this, "installedlanguages"), "rs.installedLanguages");
         },
         enumerable: true,
@@ -10189,7 +10403,23 @@ var types_RegionalSettings = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    _RegionalSettings = Object(tslib_es6["b" /* __decorate */])([
+    /**
+     * Gets the collection of languages used in a server farm.
+     */
+    _RegionalSettings.prototype.getInstalledLanguages = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var results;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, tag.configure(SharePointQueryableCollection(this, "installedlanguages"), "rs.getInstalledLanguages")()];
+                    case 1:
+                        results = _a.sent();
+                        return [2 /*return*/, results.Items];
+                }
+            });
+        });
+    };
+    _RegionalSettings = __decorate([
         defaultPath("regionalsettings")
     ], _RegionalSettings);
     return _RegionalSettings;
@@ -10197,7 +10427,7 @@ var types_RegionalSettings = /** @class */ (function (_super) {
 
 var RegionalSettings = spInvokableFactory(types_RegionalSettings);
 var types_TimeZone = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TimeZone, _super);
+    __extends(_TimeZone, _super);
     function _TimeZone() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10207,9 +10437,9 @@ var types_TimeZone = /** @class */ (function (_super) {
      * @param utcTime UTC Time as Date or ISO String
      */
     _TimeZone.prototype.utcToLocalTime = function (utcTime) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var dateIsoString, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (typeof utcTime === "string") {
@@ -10221,7 +10451,7 @@ var types_TimeZone = /** @class */ (function (_super) {
                         return [4 /*yield*/, spPost(this.clone(TimeZone, "utctolocaltime('" + dateIsoString + "')"))];
                     case 1:
                         res = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(res, "UTCToLocalTime") ? res.UTCToLocalTime : res];
+                        return [2 /*return*/, hOP(res, "UTCToLocalTime") ? res.UTCToLocalTime : res];
                 }
             });
         });
@@ -10232,32 +10462,32 @@ var types_TimeZone = /** @class */ (function (_super) {
      * @param localTime Local Time as Date or ISO String
      */
     _TimeZone.prototype.localTimeToUTC = function (localTime) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var dateIsoString, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (typeof localTime === "string") {
                             dateIsoString = localTime;
                         }
                         else {
-                            dateIsoString = Object(common["f" /* dateAdd */])(localTime, "minute", localTime.getTimezoneOffset() * -1).toISOString();
+                            dateIsoString = dateAdd(localTime, "minute", localTime.getTimezoneOffset() * -1).toISOString();
                         }
                         return [4 /*yield*/, spPost(this.clone(TimeZone, "localtimetoutc('" + dateIsoString + "')"))];
                     case 1:
                         res = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(res, "LocalTimeToUTC") ? res.LocalTimeToUTC : res];
+                        return [2 /*return*/, hOP(res, "LocalTimeToUTC") ? res.LocalTimeToUTC : res];
                 }
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("tz.utcToLocalTime")
     ], _TimeZone.prototype, "utcToLocalTime", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("tz.localTimeToUTC")
     ], _TimeZone.prototype, "localTimeToUTC", null);
-    _TimeZone = Object(tslib_es6["b" /* __decorate */])([
+    _TimeZone = __decorate([
         defaultPath("timezone")
     ], _TimeZone);
     return _TimeZone;
@@ -10265,7 +10495,7 @@ var types_TimeZone = /** @class */ (function (_super) {
 
 var TimeZone = spInvokableFactory(types_TimeZone);
 var types_TimeZones = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TimeZones, _super);
+    __extends(_TimeZones, _super);
     function _TimeZones() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10278,10 +10508,10 @@ var types_TimeZones = /** @class */ (function (_super) {
         // do the post and merge the result into a TimeZone instance so the data and methods are available
         return spPost(this.clone(TimeZones, "GetById(" + id + ")").usingParser(spODataEntity(TimeZone)));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("tzs.getById")
     ], _TimeZones.prototype, "getById", null);
-    _TimeZones = Object(tslib_es6["b" /* __decorate */])([
+    _TimeZones = __decorate([
         defaultPath("timezones")
     ], _TimeZones);
     return _TimeZones;
@@ -10289,13 +10519,149 @@ var types_TimeZones = /** @class */ (function (_super) {
 
 var TimeZones = spInvokableFactory(types_TimeZones);
 
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/funcs.js
+
+
+
+function getValueForUICultureBinder(propName) {
+    return function (cultureName) {
+        return spPost(this.clone(SharePointQueryable, propName + "/getValueForUICulture"), body({ cultureName: cultureName }));
+    };
+}
+
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/web.js
 
 
 
+
 addProp(types_Web, "regionalSettings", RegionalSettings);
+types_Web.prototype.titleResource = getValueForUICultureBinder("titleResource");
+types_Web.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/user-custom-actions/types.js
+
+
+
+
+
+
+
+
+var types_UserCustomActions = /** @class */ (function (_super) {
+    __extends(_UserCustomActions, _super);
+    function _UserCustomActions() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Returns the user custom action with the specified id
+     *
+     * @param id The GUID id of the user custom action to retrieve
+     */
+    _UserCustomActions.prototype.getById = function (id) {
+        return tag.configure(UserCustomAction(this).concat("('" + id + "')"), "ucas.getById");
+    };
+    /**
+     * Creates a user custom action
+     *
+     * @param properties The information object of property names and values which define the new user custom action
+     */
+    _UserCustomActions.prototype.add = function (properties) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this, body(util_assign(metadata("SP.UserCustomAction"), properties)))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                action: this.getById(data.Id),
+                                data: data,
+                            }];
+                }
+            });
+        });
+    };
+    /**
+     * Deletes all user custom actions in the collection
+     */
+    _UserCustomActions.prototype.clear = function () {
+        return spPost(this.clone(UserCustomActions, "clear"));
+    };
+    __decorate([
+        tag("ucas.add")
+    ], _UserCustomActions.prototype, "add", null);
+    __decorate([
+        tag("ucas.clear")
+    ], _UserCustomActions.prototype, "clear", null);
+    _UserCustomActions = __decorate([
+        defaultPath("usercustomactions")
+    ], _UserCustomActions);
+    return _UserCustomActions;
+}(sharepointqueryable_SharePointQueryableCollection));
+
+var UserCustomActions = spInvokableFactory(types_UserCustomActions);
+var types_UserCustomAction = /** @class */ (function (_super) {
+    __extends(_UserCustomAction, _super);
+    function _UserCustomAction() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.delete = deleteable("uca");
+        /**
+        * Updates this user custom action with the supplied properties
+        *
+        * @param properties An information object of property names and values to update for this user custom action
+        */
+        _this.update = _this._update("SP.UserCustomAction", function (data) { return ({ data: data, action: _this }); });
+        return _this;
+    }
+    return _UserCustomAction;
+}(sharepointqueryable_SharePointQueryableInstance));
+
+var UserCustomAction = spInvokableFactory(types_UserCustomAction);
+var UserCustomActionRegistrationType;
+(function (UserCustomActionRegistrationType) {
+    UserCustomActionRegistrationType[UserCustomActionRegistrationType["None"] = 0] = "None";
+    UserCustomActionRegistrationType[UserCustomActionRegistrationType["List"] = 1] = "List";
+    UserCustomActionRegistrationType[UserCustomActionRegistrationType["ContentType"] = 2] = "ContentType";
+    UserCustomActionRegistrationType[UserCustomActionRegistrationType["ProgId"] = 3] = "ProgId";
+    UserCustomActionRegistrationType[UserCustomActionRegistrationType["FileType"] = 4] = "FileType";
+})(UserCustomActionRegistrationType || (UserCustomActionRegistrationType = {}));
+var UserCustomActionScope;
+(function (UserCustomActionScope) {
+    UserCustomActionScope[UserCustomActionScope["Unknown"] = 0] = "Unknown";
+    UserCustomActionScope[UserCustomActionScope["Site"] = 2] = "Site";
+    UserCustomActionScope[UserCustomActionScope["Web"] = 3] = "Web";
+    UserCustomActionScope[UserCustomActionScope["List"] = 4] = "List";
+})(UserCustomActionScope || (UserCustomActionScope = {}));
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/user-custom-actions.js
+
+
+types_UserCustomAction.prototype.titleResource = getValueForUICultureBinder("titleResource");
+types_UserCustomAction.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/list.js
+
+
+types_List.prototype.titleResource = getValueForUICultureBinder("titleResource");
+types_List.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/field.js
+
+
+types_Field.prototype.titleResource = getValueForUICultureBinder("titleResource");
+types_Field.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
+
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/content-type.js
+
+
+types_ContentType.prototype.titleResource = getValueForUICultureBinder("titleResource");
+types_ContentType.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
 
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/index.js
+
+
+
+
 
 
 
@@ -10308,7 +10674,7 @@ addProp(types_Web, "regionalSettings", RegionalSettings);
 
 
 var types_RelatedItemManager = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RelatedItemManager, _super);
+    __extends(_RelatedItemManager, _super);
     function _RelatedItemManager() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10378,25 +10744,25 @@ var types_RelatedItemManager = /** @class */ (function (_super) {
             TryDeleteReverseLink: tryDeleteReverseLink,
         }));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.getRelatedItems")
     ], _RelatedItemManager.prototype, "getRelatedItems", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.getPageOneRelatedItems")
     ], _RelatedItemManager.prototype, "getPageOneRelatedItems", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.addSingleLink")
     ], _RelatedItemManager.prototype, "addSingleLink", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.ToUrl")
     ], _RelatedItemManager.prototype, "addSingleLinkToUrl", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.FromUrl")
     ], _RelatedItemManager.prototype, "addSingleLinkFromUrl", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.deleteSingleLink")
     ], _RelatedItemManager.prototype, "deleteSingleLink", null);
-    _RelatedItemManager = Object(tslib_es6["b" /* __decorate */])([
+    _RelatedItemManager = __decorate([
         defaultPath("_api/SP.RelatedItemManager")
     ], _RelatedItemManager);
     return _RelatedItemManager;
@@ -10494,7 +10860,7 @@ var queryRegex = /_api\/search\/postquery$/i;
  *
  */
 var query_Search = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Search, _super);
+    __extends(_Search, _super);
     function _Search() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10502,14 +10868,14 @@ var query_Search = /** @class */ (function (_super) {
      * @returns Promise
      */
     _Search.prototype.execute = function (queryInit) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var query, postBody, cacheKey, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         query = this.parseQuery(queryInit);
                         postBody = body({
-                            request: Object(common["d" /* assign */])(metadata("Microsoft.Office.Server.Search.REST.SearchRequest"), Object.assign({}, query, {
+                            request: util_assign(metadata("Microsoft.Office.Server.Search.REST.SearchRequest"), Object.assign({}, query, {
                                 HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
                                 Properties: this.fixArrProp(query.Properties),
                                 RefinementFilters: this.fixArrProp(query.RefinementFilters),
@@ -10522,8 +10888,8 @@ var query_Search = /** @class */ (function (_super) {
                         if (this.data.useCaching) {
                             // force use of the cache for this request if .usingCaching was called
                             this._forceCaching = true;
-                            cacheKey = "PnPjs.SearchWithCaching(" + Object(common["i" /* getHashCode */])(postBody.body) + ")";
-                            if (Object(common["q" /* objectDefinedNotNull */])(this.data.cachingOptions)) {
+                            cacheKey = "PnPjs.SearchWithCaching(" + getHashCode(postBody.body) + ")";
+                            if (objectDefinedNotNull(this.data.cachingOptions)) {
                                 // if our key ends in the postquery url we overwrite it
                                 if (queryRegex.test(this.data.cachingOptions.key)) {
                                     this.data.cachingOptions.key = cacheKey;
@@ -10550,7 +10916,7 @@ var query_Search = /** @class */ (function (_super) {
         if (typeof prop === "undefined") {
             return ({ results: [] });
         }
-        return { results: Object(common["k" /* isArray */])(prop) ? prop : [prop] };
+        return { results: isArray(prop) ? prop : [prop] };
     };
     /**
      * Translates one of the query initializers into a SearchQuery instance
@@ -10570,10 +10936,10 @@ var query_Search = /** @class */ (function (_super) {
         }
         return finalQuery;
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("se.execute")
     ], _Search.prototype, "execute", null);
-    _Search = Object(tslib_es6["b" /* __decorate */])([
+    _Search = __decorate([
         defaultPath("_api/search/postquery")
     ], _Search);
     return _Search;
@@ -10654,8 +11020,8 @@ var query_SearchResults = /** @class */ (function () {
         }
         // if pageSize is supplied, then we use that regardless of any previous values
         // otherwise get the previous RowLimit or default to 10
-        var rows = pageSize !== undefined ? pageSize : Object(common["j" /* hOP */])(this._query, "RowLimit") ? this._query.RowLimit : 10;
-        var query = Object(common["d" /* assign */])(this._query, {
+        var rows = pageSize !== undefined ? pageSize : hOP(this._query, "RowLimit") ? this._query.RowLimit : 10;
+        var query = util_assign(this._query, {
             RowLimit: rows,
             StartRow: rows * (pageNumber - 1),
         });
@@ -10675,7 +11041,7 @@ var query_SearchResults = /** @class */ (function () {
         var results = new Array();
         var tempResults = rawResults.results ? rawResults.results : rawResults;
         try {
-            for (var tempResults_1 = Object(tslib_es6["f" /* __values */])(tempResults), tempResults_1_1 = tempResults_1.next(); !tempResults_1_1.done; tempResults_1_1 = tempResults_1.next()) {
+            for (var tempResults_1 = __values(tempResults), tempResults_1_1 = tempResults_1.next(); !tempResults_1_1.done; tempResults_1_1 = tempResults_1.next()) {
                 var tempResult = tempResults_1_1.value;
                 var cells = tempResult.Cells.results ? tempResult.Cells.results : tempResult.Cells;
                 results.push(cells.reduce(function (res, cell) {
@@ -10709,21 +11075,21 @@ var query_SearchResults = /** @class */ (function () {
 
 
 var suggest_Suggest = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Suggest, _super);
+    __extends(_Suggest, _super);
     function _Suggest() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     _Suggest.prototype.execute = function (query) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var response, mapper;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         this.mapQueryToQueryString(query);
                         return [4 /*yield*/, this.get()];
                     case 1:
                         response = _a.sent();
-                        mapper = Object(common["j" /* hOP */])(response, "suggest") ? function (s_1) { return response.suggest[s_1].results; } : function (s_2) { return response[s_2]; };
+                        mapper = hOP(response, "suggest") ? function (s_1) { return response.suggest[s_1].results; } : function (s_2) { return response[s_2]; };
                         return [2 /*return*/, {
                                 PeopleNames: mapper("PeopleNames"),
                                 PersonalResults: mapper("PersonalResults"),
@@ -10736,7 +11102,7 @@ var suggest_Suggest = /** @class */ (function (_super) {
     _Suggest.prototype.mapQueryToQueryString = function (query) {
         var _this = this;
         var setProp = function (q) { return function (checkProp) { return function (sp) {
-            if (Object(common["j" /* hOP */])(q, checkProp)) {
+            if (hOP(q, checkProp)) {
                 _this.query.set(sp, q[checkProp].toString());
             }
         }; }; };
@@ -10753,10 +11119,10 @@ var suggest_Suggest = /** @class */ (function (_super) {
         querySetter("queryRules")("enablequeryrules");
         querySetter("prefixMatch")("fprefixmatchallterms");
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("su.execute")
     ], _Suggest.prototype, "execute", null);
-    _Suggest = Object(tslib_es6["b" /* __decorate */])([
+    _Suggest = __decorate([
         defaultPath("_api/search/suggest")
     ], _Suggest);
     return _Suggest;
@@ -10857,7 +11223,7 @@ rest_SPRest.prototype.searchSuggest = function (query) {
 
 
 var types_SiteUsers = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteUsers, _super);
+    __extends(_SiteUsers, _super);
     function _SiteUsers() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10910,10 +11276,10 @@ var types_SiteUsers = /** @class */ (function (_super) {
      *
      */
     _SiteUsers.prototype.add = function (loginName) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, spPost(this, body(Object(common["d" /* assign */])(metadata("SP.User"), { LoginName: loginName })))];
+                    case 0: return [4 /*yield*/, spPost(this, body(util_assign(metadata("SP.User"), { LoginName: loginName })))];
                     case 1:
                         _a.sent();
                         return [2 /*return*/, this.getByLoginName(loginName)];
@@ -10921,16 +11287,16 @@ var types_SiteUsers = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sus.remId")
     ], _SiteUsers.prototype, "removeById", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sus.remLoginName")
     ], _SiteUsers.prototype, "removeByLoginName", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sus.add")
     ], _SiteUsers.prototype, "add", null);
-    _SiteUsers = Object(tslib_es6["b" /* __decorate */])([
+    _SiteUsers = __decorate([
         defaultPath("siteusers")
     ], _SiteUsers);
     return _SiteUsers;
@@ -10942,7 +11308,7 @@ var SiteUsers = spInvokableFactory(types_SiteUsers);
  *
  */
 var types_SiteUser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteUser, _super);
+    __extends(_SiteUser, _super);
     function _SiteUser() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("su");
@@ -10981,7 +11347,7 @@ var SiteUser = spInvokableFactory(types_SiteUser);
 
 
 var types_SiteGroups = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteGroups, _super);
+    __extends(_SiteGroups, _super);
     function _SiteGroups() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10999,12 +11365,12 @@ var types_SiteGroups = /** @class */ (function (_super) {
      * @param properties The group properties object of property names and values to be set for the group
      */
     _SiteGroups.prototype.add = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["d" /* assign */])(metadata("SP.Group"), properties));
+                        postBody = body(util_assign(metadata("SP.Group"), properties));
                         return [4 /*yield*/, spPost(tag.configure(this, "sgs.add"), postBody)];
                     case 1:
                         data = _a.sent();
@@ -11040,13 +11406,13 @@ var types_SiteGroups = /** @class */ (function (_super) {
     _SiteGroups.prototype.removeByLoginName = function (loginName) {
         return spPost(this.clone(SiteGroups, "removeByLoginName('" + loginName + "')"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sgs.removeById")
     ], _SiteGroups.prototype, "removeById", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sgs.removeByLoginName")
     ], _SiteGroups.prototype, "removeByLoginName", null);
-    _SiteGroups = Object(tslib_es6["b" /* __decorate */])([
+    _SiteGroups = __decorate([
         defaultPath("sitegroups")
     ], _SiteGroups);
     return _SiteGroups;
@@ -11054,7 +11420,7 @@ var types_SiteGroups = /** @class */ (function (_super) {
 
 var SiteGroups = spInvokableFactory(types_SiteGroups);
 var types_SiteGroup = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteGroup, _super);
+    __extends(_SiteGroup, _super);
     function _SiteGroup() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         /**
@@ -11064,7 +11430,7 @@ var types_SiteGroup = /** @class */ (function (_super) {
          */
         _this.update = _this._update("SP.Group", function (d, p) {
             var retGroup = _this;
-            if (Object(common["j" /* hOP */])(p, "Title")) {
+            if (hOP(p, "Title")) {
                 /* tslint:disable-next-line no-string-literal */
                 retGroup = _this.getParent(SiteGroup, _this.parentUrl, "getByName('" + p["Title"] + "')");
             }
@@ -11093,7 +11459,7 @@ var types_SiteGroup = /** @class */ (function (_super) {
     _SiteGroup.prototype.setUserAsOwner = function (userId) {
         return spPost(this.clone(SiteGroup, "SetUserAsOwner(" + userId + ")"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sg.setUserAsOwner")
     ], _SiteGroup.prototype, "setUserAsOwner", null);
     return _SiteGroup;
@@ -11116,7 +11482,7 @@ var SiteGroup = spInvokableFactory(types_SiteGroup);
  *
  */
 var types_RoleAssignments = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RoleAssignments, _super);
+    __extends(_RoleAssignments, _super);
     function _RoleAssignments() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -11136,8 +11502,8 @@ var types_RoleAssignments = /** @class */ (function (_super) {
      *
      */
     _RoleAssignments.prototype.add = function (principalId, roleDefId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(RoleAssignments, "addroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")"))];
                     case 1:
@@ -11155,8 +11521,8 @@ var types_RoleAssignments = /** @class */ (function (_super) {
      *
      */
     _RoleAssignments.prototype.remove = function (principalId, roleDefId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(RoleAssignments, "removeroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")"))];
                     case 1:
@@ -11166,7 +11532,7 @@ var types_RoleAssignments = /** @class */ (function (_super) {
             });
         });
     };
-    _RoleAssignments = Object(tslib_es6["b" /* __decorate */])([
+    _RoleAssignments = __decorate([
         defaultPath("roleassignments")
     ], _RoleAssignments);
     return _RoleAssignments;
@@ -11178,7 +11544,7 @@ var RoleAssignments = spInvokableFactory(types_RoleAssignments);
  *
  */
 var types_RoleAssignment = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RoleAssignment, _super);
+    __extends(_RoleAssignment, _super);
     function _RoleAssignment() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("ra");
@@ -11215,7 +11581,7 @@ var RoleAssignment = spInvokableFactory(types_RoleAssignment);
  *
  */
 var types_RoleDefinitions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RoleDefinitions, _super);
+    __extends(_RoleDefinitions, _super);
     function _RoleDefinitions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -11256,13 +11622,13 @@ var types_RoleDefinitions = /** @class */ (function (_super) {
      *
      */
     _RoleDefinitions.prototype.add = function (name, description, order, basePermissions) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = body({
-                            BasePermissions: Object(common["d" /* assign */])(metadata("SP.BasePermissions"), basePermissions),
+                            BasePermissions: util_assign(metadata("SP.BasePermissions"), basePermissions),
                             Description: description,
                             Name: name,
                             Order: order,
@@ -11279,7 +11645,7 @@ var types_RoleDefinitions = /** @class */ (function (_super) {
             });
         });
     };
-    _RoleDefinitions = Object(tslib_es6["b" /* __decorate */])([
+    _RoleDefinitions = __decorate([
         defaultPath("roledefinitions")
     ], _RoleDefinitions);
     return _RoleDefinitions;
@@ -11291,7 +11657,7 @@ var RoleDefinitions = spInvokableFactory(types_RoleDefinitions);
  *
  */
 var types_RoleDefinition = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RoleDefinition, _super);
+    __extends(_RoleDefinition, _super);
     function _RoleDefinition() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("rd");
@@ -11305,21 +11671,21 @@ var types_RoleDefinition = /** @class */ (function (_super) {
      */
     /* tslint:disable no-string-literal */
     _RoleDefinition.prototype.update = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var s, postBody, data, definition, parent_1;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         s = ["BasePermissions"];
-                        if (Object(common["j" /* hOP */])(properties, s[0]) !== undefined) {
-                            properties[s[0]] = Object(common["d" /* assign */])(metadata("SP." + s[0]), properties[s[0]]);
+                        if (hOP(properties, s[0]) !== undefined) {
+                            properties[s[0]] = util_assign(metadata("SP." + s[0]), properties[s[0]]);
                         }
-                        postBody = body(Object(common["d" /* assign */])(metadata("SP.RoleDefinition"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
+                        postBody = body(util_assign(metadata("SP.RoleDefinition"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
                         return [4 /*yield*/, spPost(this, postBody)];
                     case 1:
                         data = _a.sent();
                         definition = this;
-                        if (Object(common["j" /* hOP */])(properties, "Name")) {
+                        if (hOP(properties, "Name")) {
                             parent_1 = this.getParent(RoleDefinitions, this.parentUrl, "");
                             definition = parent_1.getByName(properties["Name"]);
                         }
@@ -11513,9 +11879,9 @@ var PermissionKind;
 * @param loginName The claims username for the user (ex: i:0#.f|membership|user@domain.com)
 */
 function getUserEffectivePermissions(loginName) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var q, r;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     q = this.clone(SharePointQueryableInstance, "getUserEffectivePermissions(@user)");
@@ -11524,7 +11890,7 @@ function getUserEffectivePermissions(loginName) {
                 case 1:
                     r = _a.sent();
                     // handle verbose mode
-                    return [2 /*return*/, Object(common["j" /* hOP */])(r, "GetUserEffectivePermissions") ? r.GetUserEffectivePermissions : r];
+                    return [2 /*return*/, hOP(r, "GetUserEffectivePermissions") ? r.GetUserEffectivePermissions : r];
             }
         });
     });
@@ -11533,17 +11899,14 @@ function getUserEffectivePermissions(loginName) {
  * Gets the effective permissions for the current user
  */
 function getCurrentUserEffectivePermissions() {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        var w, user;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    w = SharePointQueryableInstance("_api/web", "currentuser");
-                    return [4 /*yield*/, w.configureFrom(this).select("LoginName")()];
-                case 1:
-                    user = _a.sent();
-                    return [2 /*return*/, getUserEffectivePermissions.call(this, user.LoginName)];
-            }
+    return __awaiter(this, void 0, void 0, function () {
+        var q;
+        return __generator(this, function (_a) {
+            q = this.clone(SharePointQueryable, "EffectiveBasePermissions");
+            return [2 /*return*/, q.get().then(function (r) {
+                    // handle verbose mode
+                    return hOP(r, "EffectiveBasePermissions") ? r.EffectiveBasePermissions : r;
+                })];
         });
     });
 }
@@ -11556,8 +11919,8 @@ function getCurrentUserEffectivePermissions() {
 function breakRoleInheritance(copyRoleAssignments, clearSubscopes) {
     if (copyRoleAssignments === void 0) { copyRoleAssignments = false; }
     if (clearSubscopes === void 0) { clearSubscopes = false; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(SharePointQueryable, "breakroleinheritance(copyroleassignments=" + copyRoleAssignments + ", clearsubscopes=" + clearSubscopes + ")"))];
                 case 1:
@@ -11572,8 +11935,8 @@ function breakRoleInheritance(copyRoleAssignments, clearSubscopes) {
  *
  */
 function resetRoleInheritance() {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(SharePointQueryable, "resetroleinheritance"))];
                 case 1:
@@ -11590,9 +11953,9 @@ function resetRoleInheritance() {
  * @param permission The permission being checked
  */
 function userHasPermissions(loginName, permission) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var perms;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getUserEffectivePermissions.call(this, loginName)];
                 case 1:
@@ -11608,9 +11971,9 @@ function userHasPermissions(loginName, permission) {
  * @param permission The permission we wish to check
  */
 function currentUserHasPermissions(permission) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var perms;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getCurrentUserEffectivePermissions.call(this)];
                 case 1:
@@ -11829,6 +12192,7 @@ var RoleType;
 
 
 
+
 /**
  * Shares an object based on the supplied options
  *
@@ -11837,9 +12201,9 @@ var RoleType;
  */
 function shareObject(o, options, bypass) {
     if (bypass === void 0) { bypass = false; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var roleValue, userStr, postBody;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     if (bypass) {
@@ -11847,7 +12211,7 @@ function shareObject(o, options, bypass) {
                         return [2 /*return*/, sendShareObjectRequest(o, options)];
                     }
                     // extend our options with some defaults
-                    options = Object(common["d" /* assign */])(options, {
+                    options = util_assign(options, {
                         group: null,
                         includeAnonymousLinkInEmail: false,
                         propagateAcl: false,
@@ -11860,14 +12224,14 @@ function shareObject(o, options, bypass) {
                     if (!Array.isArray(options.loginNames)) {
                         options.loginNames = [options.loginNames];
                     }
-                    userStr = Object(common["n" /* jsS */])(options.loginNames.map(function (Key) { return ({ Key: Key }); }));
+                    userStr = jsS(options.loginNames.map(function (Key) { return ({ Key: Key }); }));
                     postBody = {
                         peoplePickerInput: userStr,
                         roleValue: roleValue,
                         url: options.url,
                     };
                     if (options.emailData !== undefined && options.emailData !== null) {
-                        postBody = Object(common["d" /* assign */])(postBody, {
+                        postBody = util_assign(postBody, {
                             emailBody: options.emailData.body,
                             emailSubject: options.emailData.subject !== undefined ? options.emailData.subject : "Shared with you.",
                             sendEmail: true,
@@ -11921,7 +12285,7 @@ function getSharingInformation(request, expands) {
     if (request === void 0) { request = null; }
     if (expands === void 0) { expands = []; }
     var o = tag.configure(this.clone(SharePointQueryableInstance, "getSharingInformation"), "sh.getSharingInformation");
-    return spPost(o.expand.apply(o, Object(tslib_es6["e" /* __spread */])(expands)), body({ request: request }));
+    return spPost(o.expand.apply(o, __spread(expands)), body({ request: request }));
 }
 /**
  * Gets the sharing settings of an item.
@@ -11954,7 +12318,7 @@ function deleteLinkByKind(linkKind) {
  * @param shareId
  */
 function unshareLink(linkKind, shareId) {
-    if (shareId === void 0) { shareId = "00000000-0000-0000-0000-000000000000"; }
+    if (shareId === void 0) { shareId = emptyGuid; }
     return spPost(tag.configure(this.clone(SharePointQueryableInstance, "unshareLink"), "sh.unshareLink"), body({ linkKind: linkKind, shareId: shareId }));
 }
 /**
@@ -11969,16 +12333,16 @@ function unshareLink(linkKind, shareId) {
 function shareWith(o, loginNames, role, requireSignin, propagateAcl, emailData) {
     if (requireSignin === void 0) { requireSignin = false; }
     if (propagateAcl === void 0) { propagateAcl = false; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var userStr, roleFilter, w, def, postBody;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     // handle the multiple input types
                     if (!Array.isArray(loginNames)) {
                         loginNames = [loginNames];
                     }
-                    userStr = Object(common["n" /* jsS */])(loginNames.map(function (login) { return { Key: login }; }));
+                    userStr = jsS(loginNames.map(function (login) { return { Key: login }; }));
                     roleFilter = role === SharingRole.Edit ? RoleType.Contributor : RoleType.Reader;
                     w = SharePointQueryableCollection("_api/web", "roledefinitions");
                     return [4 /*yield*/, w.select("Id").filter("RoleTypeKind eq " + roleFilter).get()];
@@ -11995,7 +12359,7 @@ function shareWith(o, loginNames, role, requireSignin, propagateAcl, emailData) 
                         useSimplifiedRoles: true,
                     };
                     if (emailData !== undefined) {
-                        postBody = Object(common["d" /* assign */])(postBody, {
+                        postBody = util_assign(postBody, {
                             emailBody: emailData.body,
                             emailSubject: emailData.subject !== undefined ? emailData.subject : "",
                             sendEmail: true,
@@ -12017,9 +12381,9 @@ function sendShareObjectRequest(o, options) {
  * @param group The Group type
  */
 function getRoleValue(role, group) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var _a, g1, g2, roleFilter, def;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+        return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     if (!(group !== undefined && group !== null)) return [3 /*break*/, 7];
@@ -12080,9 +12444,9 @@ types_Folder.prototype.shareWith = function (loginNames, role, requireSignin, sh
     if (role === void 0) { role = SharingRole.View; }
     if (requireSignin === void 0) { requireSignin = false; }
     if (shareEverything === void 0) { shareEverything = false; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12097,9 +12461,9 @@ types_Folder.prototype.shareWith = function (loginNames, role, requireSignin, sh
 };
 types_Folder.prototype.getShareLink = function (kind, expiration) {
     if (expiration === void 0) { expiration = null; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12113,9 +12477,9 @@ types_Folder.prototype.getShareLink = function (kind, expiration) {
     });
 };
 types_Folder.prototype.checkSharingPermissions = function (recipients) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12129,9 +12493,9 @@ types_Folder.prototype.checkSharingPermissions = function (recipients) {
     });
 };
 types_Folder.prototype.getSharingInformation = function (request, expands) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12146,9 +12510,9 @@ types_Folder.prototype.getSharingInformation = function (request, expands) {
 };
 types_Folder.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
     if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12162,9 +12526,9 @@ types_Folder.prototype.getObjectSharingSettings = function (useSimplifiedRoles) 
     });
 };
 types_Folder.prototype.unshare = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12178,9 +12542,9 @@ types_Folder.prototype.unshare = function () {
     });
 };
 types_Folder.prototype.deleteSharingLinkByKind = function (kind) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12194,9 +12558,9 @@ types_Folder.prototype.deleteSharingLinkByKind = function (kind) {
     });
 };
 types_Folder.prototype.unshareLink = function (kind, shareId) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12245,9 +12609,9 @@ types_Item.prototype.unshareLink = unshareLink;
  */
 types_Web.prototype.shareWith = function (loginNames, role, emailData) {
     if (role === void 0) { role = SharingRole.View; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, web, url;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12256,7 +12620,7 @@ types_Web.prototype.shareWith = function (loginNames, role, emailData) {
                 case 1:
                     url = _a.sent();
                     dependency();
-                    return [2 /*return*/, this.shareObject(Object(common["e" /* combine */])(url, "/_layouts/15/aclinv.aspx?forSharing=1&mbypass=1"), loginNames, role, emailData)];
+                    return [2 /*return*/, this.shareObject(combine(url, "/_layouts/15/aclinv.aspx?forSharing=1&mbypass=1"), loginNames, role, emailData)];
             }
         });
     });
@@ -12321,7 +12685,7 @@ types_Web.prototype.unshareObject = function (url) {
 
 
 var types_SiteDesigns = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteDesigns, _super);
+    __extends(_SiteDesigns, _super);
     function _SiteDesigns(baseUrl, methodName) {
         if (methodName === void 0) { methodName = ""; }
         var _this = this;
@@ -12435,15 +12799,15 @@ var types_SiteDesigns = /** @class */ (function (_super) {
      * @param id The ID of the site design task
      */
     _SiteDesigns.prototype.getSiteDesignTask = function (id) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var task;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(SiteDesignsCloneFactory, "GetSiteDesignTask")
                             .execute({ "taskId": id })];
                     case 1:
                         task = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(task, "ID") ? task : null];
+                        return [2 /*return*/, hOP(task, "ID") ? task : null];
                 }
             });
         });
@@ -12466,46 +12830,46 @@ var types_SiteDesigns = /** @class */ (function (_super) {
         return this.clone(SiteDesignsCloneFactory, "GetSiteDesignRunStatus")
             .execute({ "webUrl": webUrl, runId: runId });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.createSiteDesign")
     ], _SiteDesigns.prototype, "createSiteDesign", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.applySiteDesign")
     ], _SiteDesigns.prototype, "applySiteDesign", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesigns")
     ], _SiteDesigns.prototype, "getSiteDesigns", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesignMetadata")
     ], _SiteDesigns.prototype, "getSiteDesignMetadata", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.updateSiteDesign")
     ], _SiteDesigns.prototype, "updateSiteDesign", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.deleteSiteDesign")
     ], _SiteDesigns.prototype, "deleteSiteDesign", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesignRights")
     ], _SiteDesigns.prototype, "getSiteDesignRights", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.grantSiteDesignRights")
     ], _SiteDesigns.prototype, "grantSiteDesignRights", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.revokeSiteDesignRights")
     ], _SiteDesigns.prototype, "revokeSiteDesignRights", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.addSiteDesignTask")
     ], _SiteDesigns.prototype, "addSiteDesignTask", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.addSiteDesignTaskToCurrentWeb")
     ], _SiteDesigns.prototype, "addSiteDesignTaskToCurrentWeb", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesignTask")
     ], _SiteDesigns.prototype, "getSiteDesignTask", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesignRun")
     ], _SiteDesigns.prototype, "getSiteDesignRun", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesignRunStatus")
     ], _SiteDesigns.prototype, "getSiteDesignRunStatus", null);
     return _SiteDesigns;
@@ -12558,9 +12922,9 @@ addProp(types_Web, "associatedVisitorGroup", SiteGroups, "associatedvisitorgroup
 types_Web.prototype.createDefaultAssociatedGroups = function (groupNameSeed, siteOwner, copyRoleAssignments, clearSubscopes, siteOwner2) {
     if (copyRoleAssignments === void 0) { copyRoleAssignments = false; }
     if (clearSubscopes === void 0) { clearSubscopes = true; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var q;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.breakRoleInheritance(copyRoleAssignments, clearSubscopes)];
                 case 1:
@@ -12588,7 +12952,7 @@ types_Web.prototype.createDefaultAssociatedGroups = function (groupNameSeed, sit
 
 
 var types_SiteScripts = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteScripts, _super);
+    __extends(_SiteScripts, _super);
     function _SiteScripts(baseUrl, methodName) {
         if (methodName === void 0) { methodName = ""; }
         var _this = this;
@@ -12659,27 +13023,39 @@ var types_SiteScripts = /** @class */ (function (_super) {
     _SiteScripts.prototype.getSiteScriptFromWeb = function (webUrl, info) {
         return this.clone(SiteScriptsCloneFactory, "getSiteScriptFromWeb").execute({ webUrl: webUrl, info: info });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    /**
+     * Executes the indicated site design action on the indicated web.
+     *
+     * @param webUrl The absolute url of the web to retrieve site script
+     * @param extractInfo configuration object to specify what to extract
+     */
+    _SiteScripts.prototype.executeSiteScriptAction = function (actionDefinition) {
+        return this.clone(SiteScriptsCloneFactory, "executeSiteScriptAction").execute({ actionDefinition: actionDefinition });
+    };
+    __decorate([
         tag("ss.getSiteScripts")
     ], _SiteScripts.prototype, "getSiteScripts", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.createSiteScript")
     ], _SiteScripts.prototype, "createSiteScript", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.getSiteScriptMetadata")
     ], _SiteScripts.prototype, "getSiteScriptMetadata", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.deleteSiteScript")
     ], _SiteScripts.prototype, "deleteSiteScript", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.updateSiteScript")
     ], _SiteScripts.prototype, "updateSiteScript", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.getSiteScriptFromList")
     ], _SiteScripts.prototype, "getSiteScriptFromList", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.getSiteScriptFromWeb")
     ], _SiteScripts.prototype, "getSiteScriptFromWeb", null);
+    __decorate([
+        tag("ss.executeSiteScriptAction")
+    ], _SiteScripts.prototype, "executeSiteScriptAction", null);
     return _SiteScripts;
 }(sharepointqueryable_SharePointQueryable));
 
@@ -12688,6 +13064,27 @@ var SiteScriptsCloneFactory = function (baseUrl, methodName) {
     if (methodName === void 0) { methodName = ""; }
     return SiteScripts(baseUrl, methodName);
 };
+var SiteScriptActionOutcome;
+(function (SiteScriptActionOutcome) {
+    /**
+     * The stage was deemed to have completed successfully.
+     */
+    SiteScriptActionOutcome[SiteScriptActionOutcome["Success"] = 0] = "Success";
+    /**
+     * The stage was deemed to have failed to complete successfully (non-blocking, rest of recipe
+     * execution should still be able to proceed).
+     */
+    SiteScriptActionOutcome[SiteScriptActionOutcome["Failure"] = 1] = "Failure";
+    /**
+     * No action was taken for this stage / this stage was skipped.
+     */
+    SiteScriptActionOutcome[SiteScriptActionOutcome["NoOp"] = 2] = "NoOp";
+    /**
+     * There was an exception but the operation succeeded. This is analagous to the operation completing
+     * in a "yellow" state.
+     */
+    SiteScriptActionOutcome[SiteScriptActionOutcome["SucceededWithException"] = 3] = "SucceededWithException";
+})(SiteScriptActionOutcome || (SiteScriptActionOutcome = {}));
 
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-scripts/web.js
 
@@ -12705,9 +13102,9 @@ types_Web.prototype.getSiteScript = function (extractInfo) {
 
 
 types_List.prototype.getSiteScript = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var rootFolder, web, absoluteListUrl;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.clone(List).rootFolder.get()];
                 case 1:
@@ -12715,7 +13112,7 @@ types_List.prototype.getSiteScript = function () {
                     return [4 /*yield*/, Web(extractWebUrl(this.toUrl())).select("Url").get()];
                 case 2:
                     web = _a.sent();
-                    absoluteListUrl = Object(common["e" /* combine */])(web.Url, "Lists", rootFolder.Name);
+                    absoluteListUrl = combine(web.Url, "Lists", rootFolder.Name);
                     return [2 /*return*/, SiteScripts(this, "").getSiteScriptFromList(absoluteListUrl)];
             }
         });
@@ -12746,9 +13143,9 @@ Reflect.defineProperty(rest_SPRest.prototype, "siteScripts", {
 addProp(types_Web, "siteUsers", SiteUsers);
 addProp(types_Web, "currentUser", SiteUser, "currentuser");
 types_Web.prototype.ensureUser = function (logonName) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var data;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(Web, "ensureuser"), body({ logonName: logonName }))];
                 case 1:
@@ -12779,7 +13176,7 @@ types_Web.prototype.getUserById = function (id) {
 
 
 var types_Social = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Social, _super);
+    __extends(_Social, _super);
     function _Social() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -12791,9 +13188,9 @@ var types_Social = /** @class */ (function (_super) {
         configurable: true
     });
     _Social.prototype.getFollowedSitesUri = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(SocialCloneFactory, "FollowedSitesUri").get()];
                     case 1:
@@ -12804,9 +13201,9 @@ var types_Social = /** @class */ (function (_super) {
         });
     };
     _Social.prototype.getFollowedDocumentsUri = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(SocialCloneFactory, "FollowedDocumentsUri").get()];
                     case 1:
@@ -12817,8 +13214,8 @@ var types_Social = /** @class */ (function (_super) {
         });
     };
     _Social.prototype.follow = function (actorInfo) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(SocialCloneFactory, "follow"), this.createSocialActorInfoRequestBody(actorInfo))];
                     case 1: return [2 /*return*/, _a.sent()];
@@ -12827,8 +13224,8 @@ var types_Social = /** @class */ (function (_super) {
         });
     };
     _Social.prototype.isFollowed = function (actorInfo) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(SocialCloneFactory, "isfollowed"), this.createSocialActorInfoRequestBody(actorInfo))];
                     case 1: return [2 /*return*/, _a.sent()];
@@ -12837,8 +13234,8 @@ var types_Social = /** @class */ (function (_super) {
         });
     };
     _Social.prototype.stopFollowing = function (actorInfo) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(SocialCloneFactory, "stopfollowing"), this.createSocialActorInfoRequestBody(actorInfo))];
                     case 1: return [2 /*return*/, _a.sent()];
@@ -12853,22 +13250,22 @@ var types_Social = /** @class */ (function (_super) {
             }, actorInfo),
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("soc.getFollowedSitesUri")
     ], _Social.prototype, "getFollowedSitesUri", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("soc.getFollowedDocumentsUri")
     ], _Social.prototype, "getFollowedDocumentsUri", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("soc.follow")
     ], _Social.prototype, "follow", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("soc.isFollowed")
     ], _Social.prototype, "isFollowed", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("soc.stopFollowing")
     ], _Social.prototype, "stopFollowing", null);
-    _Social = Object(tslib_es6["b" /* __decorate */])([
+    _Social = __decorate([
         defaultPath("_api/social.following")
     ], _Social);
     return _Social;
@@ -12883,27 +13280,27 @@ var SocialCloneFactory = function (baseUrl, paths) { return new types_Social(bas
  * Current user's Social instance
  */
 var types_MySocial = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_MySocial, _super);
+    __extends(_MySocial, _super);
     function _MySocial() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     _MySocial.prototype.followed = function (types) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(MySocialCloneFactory, "followed(types=" + types + ")")()];
                     case 1:
                         r = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(r, "Followed") ? r.Followed.results : r];
+                        return [2 /*return*/, hOP(r, "Followed") ? r.Followed.results : r];
                 }
             });
         });
     };
     _MySocial.prototype.followedCount = function (types) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(MySocialCloneFactory, "followedcount(types=" + types + ")")()];
                     case 1:
@@ -12914,44 +13311,44 @@ var types_MySocial = /** @class */ (function (_super) {
         });
     };
     _MySocial.prototype.followers = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(MySocialCloneFactory, "followers")()];
                     case 1:
                         r = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(r, "Followers") ? r.Followers.results : r];
+                        return [2 /*return*/, hOP(r, "Followers") ? r.Followers.results : r];
                 }
             });
         });
     };
     _MySocial.prototype.suggestions = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(MySocialCloneFactory, "suggestions")()];
                     case 1:
                         r = _a.sent();
-                        return [2 /*return*/, Object(common["j" /* hOP */])(r, "Suggestions") ? r.Suggestions.results : r];
+                        return [2 /*return*/, hOP(r, "Suggestions") ? r.Suggestions.results : r];
                 }
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("msoc.followed")
     ], _MySocial.prototype, "followed", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("msoc.followedCount")
     ], _MySocial.prototype, "followedCount", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("msoc.followers")
     ], _MySocial.prototype, "followers", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("msoc.suggestions")
     ], _MySocial.prototype, "suggestions", null);
-    _MySocial = Object(tslib_es6["b" /* __decorate */])([
+    _MySocial = __decorate([
         defaultPath("my")
     ], _MySocial);
     return _MySocial;
@@ -13114,8 +13511,8 @@ Reflect.defineProperty(rest_SPRest.prototype, "social", {
  * @param obj The plain object defining the properties
  */
 function objectToSPKeyValueCollection(obj) {
-    return Object(common["d" /* assign */])(metadata("Collection(SP.KeyValue)"), {
-        results: Object.keys(obj).map(function (key) { return Object(common["d" /* assign */])(metadata("SP.KeyValue"), {
+    return util_assign(metadata("Collection(SP.KeyValue)"), {
+        results: Object.keys(obj).map(function (key) { return util_assign(metadata("SP.KeyValue"), {
             Key: key,
             Value: Reflect.get(obj, key),
             ValueType: "Edm.String",
@@ -13136,7 +13533,7 @@ function objectToSPKeyValueCollection(obj) {
 
 
 var types_Utilities = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Utilities, _super);
+    __extends(_Utilities, _super);
     function _Utilities(baseUrl, methodName) {
         var _this = this;
         var url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
@@ -13148,29 +13545,29 @@ var types_Utilities = /** @class */ (function (_super) {
     };
     _Utilities.prototype.sendEmail = function (props) {
         var params = {
-            properties: Object(common["d" /* assign */])(metadata("SP.Utilities.EmailProperties"), {
+            properties: util_assign(metadata("SP.Utilities.EmailProperties"), {
                 Body: props.Body,
                 From: props.From,
                 Subject: props.Subject,
             }),
         };
         if (props.To && props.To.length > 0) {
-            params.properties = Object(common["d" /* assign */])(params.properties, {
+            params.properties = util_assign(params.properties, {
                 To: { results: props.To },
             });
         }
         if (props.CC && props.CC.length > 0) {
-            params.properties = Object(common["d" /* assign */])(params.properties, {
+            params.properties = util_assign(params.properties, {
                 CC: { results: props.CC },
             });
         }
         if (props.BCC && props.BCC.length > 0) {
-            params.properties = Object(common["d" /* assign */])(params.properties, {
+            params.properties = util_assign(params.properties, {
                 BCC: { results: props.BCC },
             });
         }
         if (props.AdditionalHeaders) {
-            params.properties = Object(common["d" /* assign */])(params.properties, {
+            params.properties = util_assign(params.properties, {
                 AdditionalHeaders: objectToSPKeyValueCollection(props.AdditionalHeaders),
             });
         }
@@ -13220,9 +13617,9 @@ var types_Utilities = /** @class */ (function (_super) {
         return tag.configure(clone, "u.ExpandGroupsToPrincipals").excute(params);
     };
     _Utilities.prototype.createWikiPage = function (info) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var clone, newPage;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         clone = this.clone(UtilitiesCloneFactory, "CreateWikiPageInContextWeb", true);
@@ -13263,7 +13660,7 @@ Reflect.defineProperty(rest_SPRest.prototype, "utility", {
 
 
 var types_Subscriptions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Subscriptions, _super);
+    __extends(_Subscriptions, _super);
     function _Subscriptions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -13283,9 +13680,9 @@ var types_Subscriptions = /** @class */ (function (_super) {
      * @param clientState A client specific string (optional)
      */
     _Subscriptions.prototype.add = function (notificationUrl, expirationDate, clientState) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = {
@@ -13304,10 +13701,10 @@ var types_Subscriptions = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("subs.add")
     ], _Subscriptions.prototype, "add", null);
-    _Subscriptions = Object(tslib_es6["b" /* __decorate */])([
+    _Subscriptions = __decorate([
         defaultPath("subscriptions")
     ], _Subscriptions);
     return _Subscriptions;
@@ -13315,7 +13712,7 @@ var types_Subscriptions = /** @class */ (function (_super) {
 
 var Subscriptions = spInvokableFactory(types_Subscriptions);
 var types_Subscription = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Subscription, _super);
+    __extends(_Subscription, _super);
     function _Subscription() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -13327,9 +13724,9 @@ var types_Subscription = /** @class */ (function (_super) {
      * @param clientState A client specific string (optional)
      */
     _Subscription.prototype.update = function (expirationDate, notificationUrl, clientState) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = {};
@@ -13357,10 +13754,10 @@ var types_Subscription = /** @class */ (function (_super) {
     _Subscription.prototype.delete = function () {
         return spDelete(this);
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sub.update")
     ], _Subscription.prototype, "update", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sub.delete")
     ], _Subscription.prototype, "delete", null);
     return _Subscription;
@@ -13377,101 +13774,6 @@ addProp(types_List, "subscriptions", Subscriptions);
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/subscriptions/index.js
 
 
-
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/user-custom-actions/types.js
-
-
-
-
-
-
-
-
-var types_UserCustomActions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_UserCustomActions, _super);
-    function _UserCustomActions() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Returns the user custom action with the specified id
-     *
-     * @param id The GUID id of the user custom action to retrieve
-     */
-    _UserCustomActions.prototype.getById = function (id) {
-        return tag.configure(UserCustomAction(this).concat("('" + id + "')"), "ucas.getById");
-    };
-    /**
-     * Creates a user custom action
-     *
-     * @param properties The information object of property names and values which define the new user custom action
-     */
-    _UserCustomActions.prototype.add = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, spPost(this, body(Object(common["d" /* assign */])(metadata("SP.UserCustomAction"), properties)))];
-                    case 1:
-                        data = _a.sent();
-                        return [2 /*return*/, {
-                                action: this.getById(data.Id),
-                                data: data,
-                            }];
-                }
-            });
-        });
-    };
-    /**
-     * Deletes all user custom actions in the collection
-     */
-    _UserCustomActions.prototype.clear = function () {
-        return spPost(this.clone(UserCustomActions, "clear"));
-    };
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("ucas.add")
-    ], _UserCustomActions.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
-        tag("ucas.clear")
-    ], _UserCustomActions.prototype, "clear", null);
-    _UserCustomActions = Object(tslib_es6["b" /* __decorate */])([
-        defaultPath("usercustomactions")
-    ], _UserCustomActions);
-    return _UserCustomActions;
-}(sharepointqueryable_SharePointQueryableCollection));
-
-var UserCustomActions = spInvokableFactory(types_UserCustomActions);
-var types_UserCustomAction = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_UserCustomAction, _super);
-    function _UserCustomAction() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.delete = deleteable("uca");
-        /**
-        * Updates this user custom action with the supplied properties
-        *
-        * @param properties An information object of property names and values to update for this user custom action
-        */
-        _this.update = _this._update("SP.UserCustomAction", function (data) { return ({ data: data, action: _this }); });
-        return _this;
-    }
-    return _UserCustomAction;
-}(sharepointqueryable_SharePointQueryableInstance));
-
-var UserCustomAction = spInvokableFactory(types_UserCustomAction);
-var UserCustomActionRegistrationType;
-(function (UserCustomActionRegistrationType) {
-    UserCustomActionRegistrationType[UserCustomActionRegistrationType["None"] = 0] = "None";
-    UserCustomActionRegistrationType[UserCustomActionRegistrationType["List"] = 1] = "List";
-    UserCustomActionRegistrationType[UserCustomActionRegistrationType["ContentType"] = 2] = "ContentType";
-    UserCustomActionRegistrationType[UserCustomActionRegistrationType["ProgId"] = 3] = "ProgId";
-    UserCustomActionRegistrationType[UserCustomActionRegistrationType["FileType"] = 4] = "FileType";
-})(UserCustomActionRegistrationType || (UserCustomActionRegistrationType = {}));
-var UserCustomActionScope;
-(function (UserCustomActionScope) {
-    UserCustomActionScope[UserCustomActionScope["Unknown"] = 0] = "Unknown";
-    UserCustomActionScope[UserCustomActionScope["Site"] = 2] = "Site";
-    UserCustomActionScope[UserCustomActionScope["Web"] = 3] = "Web";
-    UserCustomActionScope[UserCustomActionScope["List"] = 4] = "List";
-})(UserCustomActionScope || (UserCustomActionScope = {}));
 
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/user-custom-actions/list.js
 
@@ -13506,7 +13808,7 @@ addProp(types_Site, "userCustomActions", UserCustomActions);
 
 
 var types_Views = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Views, _super);
+    __extends(_Views, _super);
     function _Views() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -13536,9 +13838,9 @@ var types_Views = /** @class */ (function (_super) {
     _Views.prototype.add = function (title, personalView, additionalSettings) {
         if (personalView === void 0) { personalView = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = body(Object.assign(metadata("SP.View"), {
@@ -13556,10 +13858,10 @@ var types_Views = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vs.add")
     ], _Views.prototype, "add", null);
-    _Views = Object(tslib_es6["b" /* __decorate */])([
+    _Views = __decorate([
         defaultPath("views")
     ], _Views);
     return _Views;
@@ -13567,7 +13869,7 @@ var types_Views = /** @class */ (function (_super) {
 
 var Views = spInvokableFactory(types_Views);
 var types_View = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_View, _super);
+    __extends(_View, _super);
     function _View() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("vw");
@@ -13601,10 +13903,10 @@ var types_View = /** @class */ (function (_super) {
     _View.prototype.setViewXml = function (viewXml) {
         return spPost(this.clone(View, "SetViewXml"), body({ viewXml: viewXml }));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("v.renderAsHtml")
     ], _View.prototype, "renderAsHtml", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("v.setViewXml")
     ], _View.prototype, "setViewXml", null);
     return _View;
@@ -13612,7 +13914,7 @@ var types_View = /** @class */ (function (_super) {
 
 var View = spInvokableFactory(types_View);
 var types_ViewFields = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ViewFields, _super);
+    __extends(_ViewFields, _super);
     function _ViewFields() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -13653,22 +13955,22 @@ var types_ViewFields = /** @class */ (function (_super) {
     _ViewFields.prototype.remove = function (fieldInternalName) {
         return spPost(this.clone(ViewFields, "removeviewfield('" + fieldInternalName + "')"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vfs.getSchemaXml")
     ], _ViewFields.prototype, "getSchemaXml", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vfs.add")
     ], _ViewFields.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vfs.move")
     ], _ViewFields.prototype, "move", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vfs.removeAll")
     ], _ViewFields.prototype, "removeAll", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vfs.remove")
     ], _ViewFields.prototype, "remove", null);
-    _ViewFields = Object(tslib_es6["b" /* __decorate */])([
+    _ViewFields = __decorate([
         defaultPath("viewfields")
     ], _ViewFields);
     return _ViewFields;
@@ -13704,7 +14006,7 @@ types_List.prototype.getView = function (viewId) {
 
 
 var types_LimitedWebPartManager = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_LimitedWebPartManager, _super);
+    __extends(_LimitedWebPartManager, _super);
     function _LimitedWebPartManager() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -13734,7 +14036,7 @@ var types_LimitedWebPartManager = /** @class */ (function (_super) {
 var LimitedWebPartManager = function (baseUrl, path) { return new types_LimitedWebPartManager(baseUrl, path); };
 var LimitedWebPartManagerCloneFactory = function (baseUrl, path) { return LimitedWebPartManager(baseUrl, path); };
 var types_WebPartDefinitions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_WebPartDefinitions, _super);
+    __extends(_WebPartDefinitions, _super);
     function _WebPartDefinitions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -13759,7 +14061,7 @@ var types_WebPartDefinitions = /** @class */ (function (_super) {
 
 var WebPartDefinitions = spInvokableFactory(types_WebPartDefinitions);
 var types_WebPartDefinition = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_WebPartDefinition, _super);
+    __extends(_WebPartDefinition, _super);
     function _WebPartDefinition() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -13962,6 +14264,7 @@ function stripInvalidFileFolderChars(input, replacer, onPremise) {
 
 
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/presets/all.js
+
 
 
 

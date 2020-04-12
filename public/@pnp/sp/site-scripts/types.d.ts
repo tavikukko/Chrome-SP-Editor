@@ -44,6 +44,13 @@ export declare class _SiteScripts extends _SharePointQueryable {
      * @param extractInfo configuration object to specify what to extract
      */
     getSiteScriptFromWeb(webUrl: string, info: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult>;
+    /**
+     * Executes the indicated site design action on the indicated web.
+     *
+     * @param webUrl The absolute url of the web to retrieve site script
+     * @param extractInfo configuration object to specify what to extract
+     */
+    executeSiteScriptAction(actionDefinition: string): Promise<ISiteScriptActionResult>;
 }
 export interface ISiteScripts extends _SiteScripts {
 }
@@ -135,5 +142,43 @@ export interface ISiteScriptSerializationResult {
     * A collection of warnings
     */
     Warnings: string[];
+}
+export interface ISiteScriptActionResult {
+    /**
+     * The title of the action.
+     */
+    Title: string;
+    /**
+     * Text associated with the outcome of the action. If this is present, it is usually an error message.
+     */
+    OutcomeText: string;
+    /**
+     * Indicates the outcome of the action.
+     */
+    Outcome: SiteScriptActionOutcome;
+    /**
+     * Indicates the target of the action.
+     */
+    Target: string;
+}
+export declare enum SiteScriptActionOutcome {
+    /**
+     * The stage was deemed to have completed successfully.
+     */
+    Success = 0,
+    /**
+     * The stage was deemed to have failed to complete successfully (non-blocking, rest of recipe
+     * execution should still be able to proceed).
+     */
+    Failure = 1,
+    /**
+     * No action was taken for this stage / this stage was skipped.
+     */
+    NoOp = 2,
+    /**
+     * There was an exception but the operation succeeded. This is analagous to the operation completing
+     * in a "yellow" state.
+     */
+    SucceededWithException = 3
 }
 //# sourceMappingURL=types.d.ts.map

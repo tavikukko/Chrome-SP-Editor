@@ -1,4 +1,5 @@
 import { ILibraryConfiguration, ITypedHash, IHttpClientImpl } from "@pnp/common";
+export declare const emptyGuid = "00000000-0000-0000-0000-000000000000";
 export interface SPConfigurationPart {
     sp?: {
         /**
