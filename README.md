@@ -8,6 +8,7 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 5.5.5 updates PnPjs to 2.0.4
 - 5.5.4 small fixes
     * Fixed issue with Modern Properties, thanks [@IvanTheBearable](https://github.com/IvanTheBearable) 
 - 5.5.3 updates & speedmode
