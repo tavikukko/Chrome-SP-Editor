@@ -63,6 +63,7 @@ export declare class _ClientsidePage extends _SharePointQueryable implements ICl
     get showPublishDate(): boolean;
     set showPublishDate(value: boolean);
     get hasVerticalSection(): boolean;
+    get authorByLine(): string | null;
     get verticalSection(): CanvasSection | null;
     /**
      * Add a section to this page
@@ -116,7 +117,7 @@ export declare class _ClientsidePage extends _SharePointQueryable implements ICl
      * @param title The title of the new page
      * @param publish If true the page will be published
      */
-    copy(web: IWeb, pageName: string, title: string, publish?: boolean): Promise<IClientsidePage>;
+    copy(web: IWeb, pageName: string, title: string, publish?: boolean, promotedState?: PromotedState): Promise<IClientsidePage>;
     /**
      * Sets the modern page banner image
      *
@@ -130,6 +131,18 @@ export declare class _ClientsidePage extends _SharePointQueryable implements ICl
         translateX?: number;
         translateY?: number;
     }): void;
+    /**
+     * Sets the authors for this page from the supplied list of user integer ids
+     *
+     * @param authorId The integer id of the user to set as the author
+     */
+    setAuthorById(authorId: number): Promise<void>;
+    /**
+     * Sets the authors for this page from the supplied list of user integer ids
+     *
+     * @param authorLoginName The login name of the user (ex: i:0#.f|membership|name@tenant.com)
+     */
+    setAuthorByLoginName(authorLoginName: string): Promise<void>;
     /**
      * Gets the list item associated with this clientside page
      *
@@ -187,7 +200,7 @@ export declare const ClientsidePageFromFile: (file: IFile) => Promise<IClientsid
  * @param title The page's title
  * @param PageLayoutType Layout to use when creating the page
  */
-export declare const CreateClientsidePage: (web: IWeb, pageName: string, title: string, PageLayoutType?: ClientsidePageLayoutType) => Promise<IClientsidePage>;
+export declare const CreateClientsidePage: (web: IWeb, pageName: string, title: string, PageLayoutType?: ClientsidePageLayoutType, promotedState?: PromotedState) => Promise<IClientsidePage>;
 export declare class CanvasSection {
     protected page: IClientsidePage;
     columns: CanvasColumn[];

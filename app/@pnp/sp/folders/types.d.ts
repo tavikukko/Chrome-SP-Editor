@@ -1,6 +1,7 @@
 import { ITypedHash } from "@pnp/common";
 import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePointQueryableCollection, ISharePointQueryableInstance, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable";
 import { IItem } from "../items/types";
+import { IResourcePath } from "../utils/toResourcePath";
 export declare class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
     /**
      * Gets a folder by it's name
@@ -103,6 +104,9 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      * @param keepBoth Keep both if folder with the same name in the same location already exists?
      */
     copyByPath(destUrl: string, KeepBoth?: boolean): Promise<void>;
+    /**
+     * Gets the shareable item associated with this folder
+     */
     protected getShareable(): Promise<IItem>;
 }
 export interface IFolder extends _Folder, IDeleteableWithETag {
@@ -142,6 +146,7 @@ export interface IFolderInfo {
     Name: string;
     ProgID: string | null;
     ServerRelativeUrl: string;
+    ServerRelativePath: IResourcePath;
     TimeCreated: string;
     TimeLastModified: string;
     UniqueId: string;

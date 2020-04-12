@@ -4,6 +4,9 @@ declare module "../lists/types" {
         readonly rootFolder: IFolder;
     }
     interface IList {
+        /**
+         * Root folder for this list/library
+         */
         readonly rootFolder: IFolder;
     }
 }

@@ -61,8 +61,11 @@ export declare class _Site extends _SharePointQueryableInstance {
      *                     Topic: 00000000-0000-0000-0000-000000000000
      *                     Showcase: 6142d2a0-63a5-4ba0-aede-d9fefca2c767
      *                     Blank: f6cc5403-0d63-442e-96c0-285923709ffc
+     * @param hubSiteId The id of the hub site to which the new site should be associated
+     * @param owner Optional owner value, required if executing the method in app only mode
      */
-    createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: string, classification?: string, siteDesignId?: string, hubSiteId?: string, owner?: string): Promise<void>;
+    createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: string, classification?: string, siteDesignId?: string, hubSiteId?: string, owner?: string): Promise<ISiteCreationResponse>;
+    createCommunicationSiteFromProps(props: ICreateCommSiteProps): Promise<ISiteCreationResponse>;
     /**
     * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
     *
@@ -74,7 +77,8 @@ export declare class _Site extends _SharePointQueryableInstance {
     * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
     * @param owners The Owners of the site to be created
     */
-    createModernTeamSite(displayName: string, alias: string, isPublic?: boolean, lcid?: number, description?: string, classification?: string, owners?: string[], hubSiteId?: string, siteDesignId?: string): Promise<void>;
+    createModernTeamSite(displayName: string, alias: string, isPublic?: boolean, lcid?: number, description?: string, classification?: string, owners?: string[], hubSiteId?: string, siteDesignId?: string): Promise<ISiteCreationResponse>;
+    createModernTeamSiteFromProps(props: ICreateTeamSiteProps): Promise<ISiteCreationResponse>;
 }
 export interface ISite extends _Site {
 }
@@ -106,5 +110,34 @@ export interface IDocumentLibraryInformation {
     ModifiedFriendlyDisplay?: string;
     ServerRelativeUrl?: string;
     Title?: string;
+}
+export interface ICreateCommSiteProps {
+    Classification?: string;
+    Description?: string;
+    HubSiteId?: string;
+    Lcid?: number;
+    Owner?: string;
+    ShareByEmailEnabled?: boolean;
+    SiteDesignId?: string;
+    Title: string;
+    Url: string;
+    WebTemplate?: "SITEPAGEPUBLISHING#0" | "STS#3";
+    WebTemplateExtensionId?: string;
+}
+export interface ICreateTeamSiteProps {
+    displayName: string;
+    alias: string;
+    isPublic?: boolean;
+    lcid?: number;
+    description?: string;
+    classification?: string;
+    owners?: string[];
+    hubSiteId?: string;
+    siteDesignId?: string;
+}
+export interface ISiteCreationResponse {
+    "SiteId": string;
+    "SiteStatus": 0 | 1 | 2 | 3;
+    "SiteUrl": string;
 }
 //# sourceMappingURL=types.d.ts.map

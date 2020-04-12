@@ -2,8 +2,11 @@ import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePoi
 export declare class _RegionalSettings extends _SharePointQueryableInstance<IRegionalSettingsInfo> {
     /**
      * Gets the collection of languages used in a server farm.
+     * ** Please use getInstalledLanguages instead of this method **
      */
-    get installedLanguages(): ISharePointQueryableCollection<IInstalledLanguageInfo[]>;
+    get installedLanguages(): ISharePointQueryableCollection<{
+        Items: IInstalledLanguageInfo[];
+    }>;
     /**
      * Gets time zone
      */
@@ -12,6 +15,10 @@ export declare class _RegionalSettings extends _SharePointQueryableInstance<IReg
      * Gets time zones
      */
     get timeZones(): ITimeZones;
+    /**
+     * Gets the collection of languages used in a server farm.
+     */
+    getInstalledLanguages(): Promise<IInstalledLanguageInfo[]>;
 }
 export interface IRegionalSettings extends _RegionalSettings {
 }
@@ -91,5 +98,15 @@ export interface ITimeZoneInfo {
         DaylightBias: number;
         StandardBias: number;
     };
+}
+export interface IUserResources {
+    /**
+     * Gets the resource string for the title
+     */
+    titleResource(cultureName: string): Promise<string>;
+    /**
+     * Gets the resource string for the title description
+     */
+    descriptionResource(cultureName: string): Promise<string>;
 }
 //# sourceMappingURL=types.d.ts.map
