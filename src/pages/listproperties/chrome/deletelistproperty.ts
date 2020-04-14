@@ -51,6 +51,7 @@ export function deleteListProperty(...args: any) {
       sp: {
         headers: {
           Accept: 'application/json; odata=verbose',
+          'Cache-Control': 'no-cache',
         },
       },
     })
@@ -92,35 +93,59 @@ export function deleteListProperty(...args: any) {
       },
       body: listPropertyPayload(key, '', listId, true),
     })
-    .then(x => {
-      $pnp.sp.web.lists.getById(listId).expand('RootFolder/Properties')
-        .select('RootFolder/Properties/vti_x005f_indexedpropertykeys')().then((res: any) => {
-          const vtiprop = res.RootFolder.Properties.vti_x005f_indexedpropertykeys
+      .then(r => r.json())
+      .then(r => {
+        if (r[0]?.ErrorInfo?.ErrorMessage) {
+          window.postMessage(JSON.stringify({
+            function: functionName,
+            success: false,
+            result: null,
+            errorMessage: r[0].ErrorInfo.ErrorMessage,
+            source: 'chrome-sp-editor',
+          }), '*')
+          return
+        }
+        $pnp.sp.web.lists.getById(listId).expand('RootFolder/Properties')
+          .select('RootFolder/Properties/vti_x005f_indexedpropertykeys')().then((res: any) => {
+            const vtiprop = res.RootFolder.Properties.vti_x005f_indexedpropertykeys
 
-          const bytes = []
-          for (let i = 0; i < key.length; ++i) {
-            bytes.push(key.charCodeAt(i))
-            bytes.push(0)
-          }
+            const bytes = []
+            for (let i = 0; i < key.length; ++i) {
+              bytes.push(key.charCodeAt(i))
+              bytes.push(0)
+            }
 
-          const b64encoded = window.btoa(String.fromCharCode.apply(null, bytes)) + '|'
-          let newIndexValue = ''
+            const b64encoded = window.btoa(String.fromCharCode.apply(null, bytes)) + '|'
+            let newIndexValue = ''
 
-          if (vtiprop && vtiprop.indexOf(b64encoded) > -1) {
-            newIndexValue = vtiprop.replace(b64encoded, '')
+            if (vtiprop && vtiprop.indexOf(b64encoded) > -1) {
+              newIndexValue = vtiprop.replace(b64encoded, '')
 
-            client.post(endpoint, {
-              headers: {
-                Accept: '*/*',
-                'Content-Type': 'text/xml;charset="UTF-8"',
-                'X-Requested-With': 'XMLHttpRequest',
-              },
-              body: listPropertyPayload('vti_indexedpropertykeys', newIndexValue, listId, false),
-            }).then(postMessage)
-          } else {
-            postMessage()
-          }
-        })
-    })
+              client.post(endpoint, {
+                headers: {
+                  Accept: '*/*',
+                  'Content-Type': 'text/xml;charset="UTF-8"',
+                  'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: listPropertyPayload('vti_indexedpropertykeys', newIndexValue, listId, false),
+              }).then(r2 => r2.json())
+                .then(r2 => {
+                  if (r2[0]?.ErrorInfo?.ErrorMessage) {
+                    window.postMessage(JSON.stringify({
+                      function: functionName,
+                      success: false,
+                      result: null,
+                      errorMessage: r2[0].ErrorInfo.ErrorMessage,
+                      source: 'chrome-sp-editor',
+                    }), '*')
+                    return
+                  }
+                  postMessage()
+                })
+            } else {
+              postMessage()
+            }
+          })
+      })
   })
 }

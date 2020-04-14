@@ -68,6 +68,7 @@ export function updateCustomAction(...args: any) {
       sp: {
         headers: {
           Accept: 'application/json; odata=verbose',
+          'Cache-Control': 'no-cache',
         },
       },
     })
@@ -97,39 +98,50 @@ export function updateCustomAction(...args: any) {
         source: 'chrome-sp-editor',
       }), '*')
     }
-
-    // site collection scope
-    if (scope === 2) {
-      // check that uca exists in site
-      $pnp.sp.site.userCustomActions.getById(id).get().then(uca => {
-        // update uca if exists
-        if (uca && uca.Id) {
-          $pnp.sp.site.userCustomActions.getById(id).update(payload).then(postMessage)
-        } else {
-          // uca did not exists in site, so scope must have been switched
-          // so lets remove it from web
-          $pnp.sp.web.userCustomActions.getById(id).delete().then(res => {
-            // and then add it to site
-            $pnp.sp.site.userCustomActions.add(payload).then(postMessage)
-          })
-        }
-      })
-    // web scope
-    } else {
-      // check that uca exists in web
-      $pnp.sp.web.userCustomActions.getById(id).get().then(uca => {
-        // update uca if exists
-        if (uca && uca.Id) {
-          $pnp.sp.web.userCustomActions.getById(id).update(payload).then(postMessage)
-        } else {
-          // uca did not exists in web, so scope must have been switched
-          // so lets remove it from site
-          $pnp.sp.site.userCustomActions.getById(id).delete().then(res => {
-            // and then add it to web
-            $pnp.sp.web.userCustomActions.add(payload).then(postMessage)
-          })
-        }
-      })
-    }
+    $pnp.sp.web.select('Id, EffectiveBasePermissions')().then((web: any) => {
+      if (!$pnp.sp.web.hasPermissions(web.EffectiveBasePermissions, $pnp.SPNS.PermissionKind.AddAndCustomizePages)) {
+        window.postMessage(JSON.stringify({
+          function: functionName,
+          success: false,
+          result: null,
+          errorMessage: 'No script is enabled, cannot edit Custom Actions',
+          source: 'chrome-sp-editor',
+        }), '*')
+        return
+      }
+      // site collection scope
+      if (scope === 2) {
+        // check that uca exists in site
+        $pnp.sp.site.userCustomActions.getById(id).get().then(uca => {
+          // update uca if exists
+          if (uca && uca.Id) {
+            $pnp.sp.site.userCustomActions.getById(id).update(payload).then(postMessage)
+          } else {
+            // uca did not exists in site, so scope must have been switched
+            // so lets remove it from web
+            $pnp.sp.web.userCustomActions.getById(id).delete().then(res => {
+              // and then add it to site
+              $pnp.sp.site.userCustomActions.add(payload).then(postMessage)
+            })
+          }
+        })
+        // web scope
+      } else {
+        // check that uca exists in web
+        $pnp.sp.web.userCustomActions.getById(id).get().then(uca => {
+          // update uca if exists
+          if (uca && uca.Id) {
+            $pnp.sp.web.userCustomActions.getById(id).update(payload).then(postMessage)
+          } else {
+            // uca did not exists in web, so scope must have been switched
+            // so lets remove it from site
+            $pnp.sp.site.userCustomActions.getById(id).delete().then(res => {
+              // and then add it to web
+              $pnp.sp.web.userCustomActions.add(payload).then(postMessage)
+            })
+          }
+        })
+      }
+    })
   })
 }

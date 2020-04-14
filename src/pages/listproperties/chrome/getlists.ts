@@ -16,6 +16,7 @@ export function getLists(...args: any) {
       sp: {
         headers: {
           Accept: 'application/json; odata=verbose',
+          'Cache-Control': 'no-cache',
         },
       },
     })

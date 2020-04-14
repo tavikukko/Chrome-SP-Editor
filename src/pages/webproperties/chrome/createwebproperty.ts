@@ -18,6 +18,7 @@ export function createWebProperty(...args: any) {
       sp: {
         headers: {
           Accept: 'application/json; odata=verbose',
+          'Cache-Control': 'no-cache',
         },
       },
     })
@@ -53,7 +54,19 @@ export function createWebProperty(...args: any) {
 
     $pnp.sp.site.select('Id')().then((site) => {
       siteid = site.Id
-      $pnp.sp.web.select('Id')().then((web) => {
+      $pnp.sp.web.select('Id, EffectiveBasePermissions')().then((web: any) => {
+
+        if (!$pnp.sp.web.hasPermissions(web.EffectiveBasePermissions, $pnp.SPNS.PermissionKind.AddAndCustomizePages)) {
+          window.postMessage(JSON.stringify({
+            function: functionName,
+            success: false,
+            result: null,
+            errorMessage: 'No script is enabled, cannot edit Web Properties',
+            source: 'chrome-sp-editor',
+          }), '*')
+          return
+        }
+
         webid = web.Id
         const endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery'
         const payload = `
@@ -79,11 +92,22 @@ export function createWebProperty(...args: any) {
             Accept: '*/*',
             'Content-Type': 'text/xml;charset="UTF-8"',
             'X-Requested-With': 'XMLHttpRequest',
+            'Cache-Control': 'no-cache',
           },
           body: payload,
         })
-          .then((r) => {
-            //  if (indexed) {
+          .then((r) => r.json())
+          .then(r => {
+            if (r[0]?.ErrorInfo?.ErrorMessage) {
+              window.postMessage(JSON.stringify({
+                function: functionName,
+                success: false,
+                result: null,
+                errorMessage: r[0].ErrorInfo.ErrorMessage,
+                source: 'chrome-sp-editor',
+              }), '*')
+              return
+            }
             $pnp.sp.web.allProperties.select('vti_indexedpropertykeys')().then(result => {
 
               const allProps = []
@@ -152,17 +176,27 @@ export function createWebProperty(...args: any) {
                     Accept: '*/*',
                     'Content-Type': 'text/xml;charset="UTF-8"',
                     'X-Requested-With': 'XMLHttpRequest',
+                    'Cache-Control': 'no-cache',
                   },
                   body: payload2,
-                }).then(postMessage)
+                }).then((r2) => r2.json())
+                  .then(r2 => {
+                    if (r2[0]?.ErrorInfo?.ErrorMessage) {
+                      window.postMessage(JSON.stringify({
+                        function: functionName,
+                        success: false,
+                        result: null,
+                        errorMessage: r2[0].ErrorInfo.ErrorMessage,
+                        source: 'chrome-sp-editor',
+                      }), '*')
+                      return
+                    }
+                    postMessage()
+                  })
               }
             })
-            /*  } else {
-                postMessage()
-              }*/
           })
       })
     })
-
   })
 }

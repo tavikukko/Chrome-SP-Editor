@@ -17,6 +17,7 @@ export function deleteCustomActions(...args: any) {
       sp: {
         headers: {
           Accept: 'application/json; odata=verbose',
+          'Cache-Control': 'no-cache',
         },
       },
     })
@@ -48,13 +49,26 @@ export function deleteCustomActions(...args: any) {
     }
     const promises: any[] = []
 
-    ucas.forEach(uca => {
-      if (uca.Scope === 2) {
-        promises.push($pnp.sp.site.userCustomActions.getById(uca.Id).delete())
-      } else {
-        promises.push($pnp.sp.web.userCustomActions.getById(uca.Id).delete())
+    $pnp.sp.web.select('Id, EffectiveBasePermissions')().then((web: any) => {
+      if (!$pnp.sp.web.hasPermissions(web.EffectiveBasePermissions, $pnp.SPNS.PermissionKind.AddAndCustomizePages)) {
+        window.postMessage(JSON.stringify({
+          function: functionName,
+          success: false,
+          result: null,
+          errorMessage: 'No script is enabled, cannot edit Custom Actions',
+          source: 'chrome-sp-editor',
+        }), '*')
+        return
       }
+
+      ucas.forEach(uca => {
+        if (uca.Scope === 2) {
+          promises.push($pnp.sp.site.userCustomActions.getById(uca.Id).delete())
+        } else {
+          promises.push($pnp.sp.web.userCustomActions.getById(uca.Id).delete())
+        }
+      })
+      Promise.all(promises).then(postMessage)
     })
-    Promise.all(promises).then(postMessage)
   })
 }

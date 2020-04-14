@@ -67,6 +67,7 @@ export function createCustomAction(...args: any) {
       sp: {
         headers: {
           Accept: 'application/json; odata=verbose',
+          'Cache-Control': 'no-cache',
         },
       },
     })
@@ -97,10 +98,24 @@ export function createCustomAction(...args: any) {
       }), '*')
     }
 
-    if (scope === 2) {
-      $pnp.sp.site.userCustomActions.add(payload).then(postMessage)
-    } else {
-      $pnp.sp.web.userCustomActions.add(payload).then(postMessage)
-    }
+    $pnp.sp.web.select('Id, EffectiveBasePermissions')().then((web: any) => {
+      if (!$pnp.sp.web.hasPermissions(web.EffectiveBasePermissions, $pnp.SPNS.PermissionKind.AddAndCustomizePages)) {
+        window.postMessage(JSON.stringify({
+          function: functionName,
+          success: false,
+          result: null,
+          errorMessage: 'No script is enabled, cannot edit Custom Actions',
+          source: 'chrome-sp-editor',
+        }), '*')
+        return
+      }
+
+      if (scope === 2) {
+        $pnp.sp.site.userCustomActions.add(payload).then(postMessage)
+      } else {
+        $pnp.sp.web.userCustomActions.add(payload).then(postMessage)
+      }
+
+    })
   })
 }
