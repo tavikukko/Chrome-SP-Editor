@@ -90,6 +90,7 @@ export function deleteListProperty(...args: any) {
         Accept: '*/*',
         'Content-Type': 'text/xml;charset="UTF-8"',
         'X-Requested-With': 'XMLHttpRequest',
+        'Cache-Control': 'no-cache',
       },
       body: listPropertyPayload(key, '', listId, true),
     })
@@ -126,6 +127,7 @@ export function deleteListProperty(...args: any) {
                   Accept: '*/*',
                   'Content-Type': 'text/xml;charset="UTF-8"',
                   'X-Requested-With': 'XMLHttpRequest',
+                  'Cache-Control': 'no-cache',
                 },
                 body: listPropertyPayload('vti_indexedpropertykeys', newIndexValue, listId, false),
               }).then(r2 => r2.json())

@@ -92,6 +92,7 @@ export function createListProperty(...args: any) {
         Accept: '*/*',
         'Content-Type': 'text/xml;charset="UTF-8"',
         'X-Requested-With': 'XMLHttpRequest',
+        'Cache-Control': 'no-cache',
       },
       body: listPropertyPayload(key, value, listId),
     })
@@ -138,6 +139,7 @@ export function createListProperty(...args: any) {
                   Accept: '*/*',
                   'Content-Type': 'text/xml;charset="UTF-8"',
                   'X-Requested-With': 'XMLHttpRequest',
+                  'Cache-Control': 'no-cache',
                 },
                 body: listPropertyPayload('vti_indexedpropertykeys', newIndexValue, listId),
               })

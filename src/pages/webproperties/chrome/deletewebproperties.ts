@@ -94,6 +94,7 @@ export function deleteWebProperties(...args: any) {
             Accept: '*/*',
             'Content-Type': 'text/xml;charset="UTF-8"',
             'X-Requested-With': 'XMLHttpRequest',
+            'Cache-Control': 'no-cache',
           },
           body: payload,
         }).then((r) => r.json())
@@ -167,6 +168,7 @@ export function deleteWebProperties(...args: any) {
                       Accept: '*/*',
                       'Content-Type': 'text/xml;charset="UTF-8"',
                       'X-Requested-With': 'XMLHttpRequest',
+                      'Cache-Control': 'no-cache',
                     },
                     body: payload2,
                   }).then((r2) => r2.json())
