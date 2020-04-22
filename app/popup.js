@@ -140,6 +140,7 @@ riot.tag("spquicklinks", `
           this.my = this.tenant.indexOf("-my") > -1 ? this.tenant : this.tenant + "-my";
           this.my = this.my.replace("-admin", "");
 
+          this.links.unshift({ title: "Login as another user", url: `${this.currSiteUrl}/_layouts/closeConnection.aspx?loginasanotheruser=true&source=${this.currSiteUrl}`, target: "_self", css: "pointer-cursor" });
           this.links.unshift({ title: "Edit user profile", url: `${this.my}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/editprofile.aspx?UserSettingsProvider=dfb95e82-8132-404b-b693-25418fdac9b6`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Current user", url: "", target: "", css: "disabled normal-cursor" });
           this.links.unshift({ title: "Search administration", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/searchadmin/TA_SearchAdministration.aspx`, target: "_blank", css: "pointer-cursor" });
