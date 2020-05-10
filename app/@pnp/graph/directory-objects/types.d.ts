@@ -10,25 +10,19 @@ export declare class _DirectoryObject<GetType = IDirectoryObjectType> extends _G
      *
      * @param securityEnabledOnly
      */
-    getMemberObjects(securityEnabledOnly?: boolean): Promise<{
-        value: string[];
-    }>;
+    getMemberObjects(securityEnabledOnly?: boolean): Promise<string[]>;
     /**
      * Returns all the groups that the specified Directory Object is a member of. The check is transitive
      *
      * @param securityEnabledOnly
      */
-    getMemberGroups(securityEnabledOnly?: boolean): Promise<{
-        value: string[];
-    }>;
+    getMemberGroups(securityEnabledOnly?: boolean): Promise<string[]>;
     /**
      * Check for membership in a specified list of groups, and returns from that list those groups of which the specified user, group, or directory object is a member.
      * This function is transitive.
      * @param groupIds A collection that contains the object IDs of the groups in which to check membership. Up to 20 groups may be specified.
      */
-    checkMemberGroups(groupIds: String[]): Promise<{
-        value: string[];
-    }>;
+    checkMemberGroups(groupIds: String[]): Promise<string[]>;
 }
 export interface IDirectoryObject<GetType = IDirectoryObjectType> extends _DirectoryObject, IDeleteable {
 }

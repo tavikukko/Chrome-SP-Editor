@@ -1074,7 +1074,7 @@ var PnPClientStorage = /** @class */ (function () {
          */
         get: function () {
             if (this._local === null) {
-                this._local = storage_PnPClientStorageWrapper.bind(localStorage);
+                this._local = new storage_PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
             }
             return this._local;
         },
@@ -1087,7 +1087,7 @@ var PnPClientStorage = /** @class */ (function () {
          */
         get: function () {
             if (this._session === null) {
-                this._session = storage_PnPClientStorageWrapper.bind(sessionStorage);
+                this._session = new storage_PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
             }
             return this._session;
         },

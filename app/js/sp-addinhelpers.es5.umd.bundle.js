@@ -1048,7 +1048,7 @@ var PnPClientStorage = /** @class */ (function () {
          */
         get: function () {
             if (this._local === null) {
-                this._local = storage_PnPClientStorageWrapper.bind(localStorage);
+                this._local = new storage_PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
             }
             return this._local;
         },
@@ -1061,7 +1061,7 @@ var PnPClientStorage = /** @class */ (function () {
          */
         get: function () {
             if (this._session === null) {
-                this._session = storage_PnPClientStorageWrapper.bind(sessionStorage);
+                this._session = new storage_PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
             }
             return this._session;
         },
@@ -1746,9 +1746,9 @@ var queryable_Queryable = /** @class */ (function () {
         return this.data.url;
     };
     /**
-     * Directly concatonates the supplied string to the current url, not normalizing "/" chars
+     * Directly concatenates the supplied string to the current url, not normalizing "/" chars
      *
-     * @param pathPart The string to concatonate to the url
+     * @param pathPart The string to concatenate to the url
      */
     Queryable.prototype.concat = function (pathPart) {
         this.data.url += pathPart;
@@ -2566,7 +2566,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.4:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.5:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -3219,7 +3219,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.4:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.5:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -3854,6 +3854,25 @@ var types_Site = /** @class */ (function (_super) {
                     "request": util_assign(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), p),
                 });
                 return [2 /*return*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), postBody)];
+            });
+        });
+    };
+    /**
+     *
+     * @param url Site Url that you want to check if exists
+     */
+    _Site.prototype.exists = function (url) {
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, value;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = body({ url: url });
+                        return [4 /*yield*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists"), postBody)];
+                    case 1:
+                        value = _a.sent();
+                        return [2 /*return*/, value];
+                }
             });
         });
     };

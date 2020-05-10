@@ -57,9 +57,9 @@ export declare abstract class Queryable<DefaultActionType = any> implements IQue
     */
     toUrl(): string;
     /**
-     * Directly concatonates the supplied string to the current url, not normalizing "/" chars
+     * Directly concatenates the supplied string to the current url, not normalizing "/" chars
      *
-     * @param pathPart The string to concatonate to the url
+     * @param pathPart The string to concatenate to the url
      */
     concat(pathPart: string): this;
     /**

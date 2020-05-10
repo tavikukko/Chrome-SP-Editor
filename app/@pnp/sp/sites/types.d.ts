@@ -67,6 +67,11 @@ export declare class _Site extends _SharePointQueryableInstance {
     createCommunicationSite(title: string, lcid: number, shareByEmailEnabled: boolean, url: string, description?: string, classification?: string, siteDesignId?: string, hubSiteId?: string, owner?: string): Promise<ISiteCreationResponse>;
     createCommunicationSiteFromProps(props: ICreateCommSiteProps): Promise<ISiteCreationResponse>;
     /**
+     *
+     * @param url Site Url that you want to check if exists
+     */
+    exists(url: string): Promise<boolean>;
+    /**
     * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
     *
     * @param displayName The title or display name of the Modern team site to be created

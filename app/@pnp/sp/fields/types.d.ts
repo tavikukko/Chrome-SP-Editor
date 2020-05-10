@@ -1,4 +1,4 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable";
 import { ITypedHash } from "@pnp/common";
 export declare class _Fields extends _SharePointQueryableCollection<IFieldInfo[]> {
     /**
@@ -164,11 +164,12 @@ export interface IFields extends _Fields {
 }
 export declare const Fields: import("../sharepointqueryable").ISPInvokableFactory<IFields>;
 export declare class _Field extends _SharePointQueryableInstance<IFieldInfo> {
+    delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>) => Promise<void>;
     /**
      * Updates this field instance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the list
-     * @param fieldType The type value, required to update child field type properties
+     * @param fieldType The type value such as SP.FieldLookup. Optional, looked up from the field if not provided
      */
     update(properties: Partial<IFieldInfo>, fieldType?: string): Promise<IFieldUpdateResult>;
     /**
@@ -184,7 +185,7 @@ export declare class _Field extends _SharePointQueryableInstance<IFieldInfo> {
      */
     setShowInNewForm(show: boolean): Promise<void>;
 }
-export interface IField extends _Field {
+export interface IField extends _Field, IDeleteable {
 }
 export declare const Field: import("../sharepointqueryable").ISPInvokableFactory<IField>;
 /**

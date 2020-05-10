@@ -1182,7 +1182,7 @@ var PnPClientStorage = /** @class */ (function () {
          */
         get: function () {
             if (this._local === null) {
-                this._local = storage_PnPClientStorageWrapper.bind(localStorage);
+                this._local = new storage_PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
             }
             return this._local;
         },
@@ -1195,7 +1195,7 @@ var PnPClientStorage = /** @class */ (function () {
          */
         get: function () {
             if (this._session === null) {
-                this._session = storage_PnPClientStorageWrapper.bind(sessionStorage);
+                this._session = new storage_PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
             }
             return this._session;
         },
@@ -1907,9 +1907,9 @@ var queryable_Queryable = /** @class */ (function () {
         return this.data.url;
     };
     /**
-     * Directly concatonates the supplied string to the current url, not normalizing "/" chars
+     * Directly concatenates the supplied string to the current url, not normalizing "/" chars
      *
-     * @param pathPart The string to concatonate to the url
+     * @param pathPart The string to concatenate to the url
      */
     Queryable.prototype.concat = function (pathPart) {
         this.data.url += pathPart;
@@ -2675,7 +2675,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.4:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.5:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -3449,7 +3449,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.4:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.5:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -3763,6 +3763,25 @@ var types_Site = /** @class */ (function (_super) {
                     "request": util_assign(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), p),
                 });
                 return [2 /*return*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), postBody)];
+            });
+        });
+    };
+    /**
+     *
+     * @param url Site Url that you want to check if exists
+     */
+    _Site.prototype.exists = function (url) {
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, value;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = body({ url: url });
+                        return [4 /*yield*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists"), postBody)];
+                    case 1:
+                        value = _a.sent();
+                        return [2 /*return*/, value];
+                }
             });
         });
     };
@@ -7023,7 +7042,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
     _ClientsidePage.prototype.copy = function (web, pageName, title, publish, promotedState) {
         if (publish === void 0) { publish = true; }
         return __awaiter(this, void 0, void 0, function () {
-            var page;
+            var page, url, makeGuid, guidSite, guidWeb, guidFile, site, id, openWeb, file, props;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, CreateClientsidePage(web, pageName, title, this.pageLayout, promotedState)];
@@ -7031,8 +7050,43 @@ var types_ClientsidePage = /** @class */ (function (_super) {
                         page = _a.sent();
                         // we know the method is on the class - but it is protected so not part of the interface
                         page.setControls(this.getControls());
-                        return [4 /*yield*/, page.save(publish)];
+                        if (!!stringIsNullOrEmpty(this.json.BannerImageUrl)) return [3 /*break*/, 5];
+                        url = new URL(this.json.BannerImageUrl);
+                        makeGuid = function (s) { return s.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/g, "$1-$2-$3-$4-$5"); };
+                        if (!(url.searchParams.has("guidSite") && url.searchParams.has("guidWeb") && url.searchParams.has("guidFile"))) return [3 /*break*/, 5];
+                        guidSite = makeGuid(url.searchParams.get("guidSite"));
+                        guidWeb = makeGuid(url.searchParams.get("guidWeb"));
+                        guidFile = makeGuid(url.searchParams.get("guidFile"));
+                        site = Site(extractWebUrl(this.toUrl()));
+                        return [4 /*yield*/, site.select("Id")()];
                     case 2:
+                        id = _a.sent();
+                        if (!(id.Id === guidSite)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, site.openWebById(guidWeb)];
+                    case 3:
+                        openWeb = _a.sent();
+                        return [4 /*yield*/, openWeb.web.getFileById(guidFile).select("ServerRelativeUrl")()];
+                    case 4:
+                        file = _a.sent();
+                        props = {};
+                        if (this._layoutPart.properties) {
+                            if (hOP(this._layoutPart.properties, "translateX")) {
+                                props.translateX = this._layoutPart.properties.translateX;
+                            }
+                            if (hOP(this._layoutPart.properties, "translateY")) {
+                                props.translateY = this._layoutPart.properties.translateY;
+                            }
+                            if (hOP(this._layoutPart.properties, "imageSourceType")) {
+                                props.imageSourceType = this._layoutPart.properties.imageSourceType;
+                            }
+                            if (hOP(this._layoutPart.properties, "altText")) {
+                                props.altText = this._layoutPart.properties.altText;
+                            }
+                        }
+                        page.setBannerImage(file.ServerRelativeUrl, props);
+                        _a.label = 5;
+                    case 5: return [4 /*yield*/, page.save(publish)];
+                    case 6:
                         _a.sent();
                         return [2 /*return*/, page];
                 }
@@ -9230,24 +9284,32 @@ var Fields = spInvokableFactory(types_Fields);
 var types_Field = /** @class */ (function (_super) {
     __extends(_Field, _super);
     function _Field() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.delete = deleteable("f");
+        return _this;
     }
     /**
      * Updates this field instance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the list
-     * @param fieldType The type value, required to update child field type properties
+     * @param fieldType The type value such as SP.FieldLookup. Optional, looked up from the field if not provided
      */
     _Field.prototype.update = function (properties, fieldType) {
-        if (fieldType === void 0) { fieldType = "SP.Field"; }
         return __awaiter(this, void 0, void 0, function () {
-            var req, data;
+            var info, req, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if (!(typeof fieldType === "undefined" || fieldType === null)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.select("FieldTypeKind")()];
+                    case 1:
+                        info = _a.sent();
+                        fieldType = "SP.Field" + FieldTypes[info.FieldTypeKind];
+                        _a.label = 2;
+                    case 2:
                         req = body(util_assign(metadata(fieldType), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
                         return [4 /*yield*/, spPost(this, req)];
-                    case 1:
+                    case 3:
                         data = _a.sent();
                         return [2 /*return*/, {
                                 data: data,
@@ -10964,28 +11026,32 @@ var query_SearchResults = /** @class */ (function () {
     }
     Object.defineProperty(SearchResults.prototype, "ElapsedTime", {
         get: function () {
-            return this.RawSearchResults.ElapsedTime;
+            var _a, _b;
+            return ((_b = (_a = this) === null || _a === void 0 ? void 0 : _a.RawSearchResults) === null || _b === void 0 ? void 0 : _b.ElapsedTime) || 0;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(SearchResults.prototype, "RowCount", {
         get: function () {
-            return this.RawSearchResults.PrimaryQueryResult.RelevantResults.RowCount;
+            var _a, _b, _c, _d;
+            return ((_d = (_c = (_b = (_a = this) === null || _a === void 0 ? void 0 : _a.RawSearchResults) === null || _b === void 0 ? void 0 : _b.PrimaryQueryResult) === null || _c === void 0 ? void 0 : _c.RelevantResults) === null || _d === void 0 ? void 0 : _d.RowCount) || 0;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(SearchResults.prototype, "TotalRows", {
         get: function () {
-            return this.RawSearchResults.PrimaryQueryResult.RelevantResults.TotalRows;
+            var _a, _b, _c, _d;
+            return ((_d = (_c = (_b = (_a = this) === null || _a === void 0 ? void 0 : _a.RawSearchResults) === null || _b === void 0 ? void 0 : _b.PrimaryQueryResult) === null || _c === void 0 ? void 0 : _c.RelevantResults) === null || _d === void 0 ? void 0 : _d.TotalRows) || 0;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(SearchResults.prototype, "TotalRowsIncludingDuplicates", {
         get: function () {
-            return this.RawSearchResults.PrimaryQueryResult.RelevantResults.TotalRowsIncludingDuplicates;
+            var _a, _b, _c, _d;
+            return ((_d = (_c = (_b = (_a = this) === null || _a === void 0 ? void 0 : _a.RawSearchResults) === null || _b === void 0 ? void 0 : _b.PrimaryQueryResult) === null || _c === void 0 ? void 0 : _c.RelevantResults) === null || _d === void 0 ? void 0 : _d.TotalRowsIncludingDuplicates) || 0;
         },
         enumerable: true,
         configurable: true
@@ -10999,8 +11065,9 @@ var query_SearchResults = /** @class */ (function () {
     });
     Object.defineProperty(SearchResults.prototype, "PrimarySearchResults", {
         get: function () {
+            var _a, _b, _c, _d;
             if (this._primary === null) {
-                this._primary = this.formatSearchResults(this._raw.PrimaryQueryResult.RelevantResults.Table.Rows);
+                this._primary = this.formatSearchResults(((_d = (_c = (_b = (_a = this._raw) === null || _a === void 0 ? void 0 : _a.PrimaryQueryResult) === null || _b === void 0 ? void 0 : _b.RelevantResults) === null || _c === void 0 ? void 0 : _c.Table) === null || _d === void 0 ? void 0 : _d.Rows) || null);
             }
             return this._primary;
         },
@@ -11039,6 +11106,9 @@ var query_SearchResults = /** @class */ (function () {
     SearchResults.prototype.formatSearchResults = function (rawResults) {
         var e_1, _a;
         var results = new Array();
+        if (typeof (rawResults) === "undefined" || rawResults == null) {
+            return [];
+        }
         var tempResults = rawResults.results ? rawResults.results : rawResults;
         try {
             for (var tempResults_1 = __values(tempResults), tempResults_1_1 = tempResults_1.next(); !tempResults_1_1.done; tempResults_1_1 = tempResults_1.next()) {
@@ -11206,7 +11276,7 @@ rest_SPRest.prototype.search = function (query) {
     return Search(this._baseUrl, this._options)(query);
 };
 rest_SPRest.prototype.searchWithCaching = function (query, options) {
-    return (new query_Search(this._baseUrl, null)).configure(this._options).usingCaching(options).execute(query);
+    return (new query_Search(this._baseUrl)).configure(this._options).usingCaching(options).execute(query);
 };
 rest_SPRest.prototype.searchSuggest = function (query) {
     return Suggest(this._baseUrl, this._options)(typeof query === "string" ? { querytext: query } : query);
