@@ -120,6 +120,7 @@ riot.tag("spquicklinks", `
           { title: "Remote workbench", url: this.currSiteUrl + "/_layouts/workbench.aspx", target: "_blank", css: "pointer-cursor" },
           { title: "Local workbench", url: "https://localhost:4321/temp/workbench.html", target: "_blank", css: "pointer-cursor" },
           { title: "Speedmode", url: this.fullUrl + this.queryStr + "env=WebView", target: "_blank", css: "pointer-cursor" },
+          { title: "Maintenance mode", url: this.fullUrl + this.queryStr + "maintenancemode=true", target: "_blank", css: "pointer-cursor" },
         ]
 
         // Add pages library
@@ -150,6 +151,7 @@ riot.tag("spquicklinks", `
         if (this.ctx._spPageContextInfo.isSPO) {
           this.links.unshift({ title: "Search administration", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/searchadmin/TA_SearchAdministration.aspx`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Term store", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/termstoremanager.aspx`, target: "_blank", css: "pointer-cursor" });
+          this.links.unshift({ title: "Modern Term store", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/AdminHome.aspx#/termStoreAdminCenter`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "User profiles", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/tenantprofileadmin/manageuserprofileserviceapplication.aspx`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Classic admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/SiteCollections.aspx`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/AdminHome.aspx#/home`, target: "_blank", css: "pointer-cursor" });
