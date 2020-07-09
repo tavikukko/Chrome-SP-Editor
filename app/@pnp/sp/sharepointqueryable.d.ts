@@ -119,14 +119,14 @@ export declare const SharePointQueryableInstance: ISPInvokableFactory<ISharePoin
 /**
  * Adds the a delete method to the tagged class taking no parameters and calling spPostDelete
  */
-export declare function deleteable(t: string): (this: ISharePointQueryable<any>) => Promise<void>;
+export declare function deleteable(t: string): (this: ISharePointQueryable) => Promise<void>;
 export interface IDeleteable {
     /**
      * Delete this instance
      */
     delete(): Promise<void>;
 }
-export declare function deleteableWithETag(t: string): (this: ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+export declare function deleteableWithETag(t: string): (this: ISharePointQueryable, eTag?: string) => Promise<void>;
 export interface IDeleteableWithETag {
     /**
      * Delete this instance

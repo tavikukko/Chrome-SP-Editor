@@ -33,7 +33,7 @@ export declare class _Search extends _SharePointQueryableInstance {
 export interface ISearch {
     (queryInit: SearchQueryInit): Promise<SearchResults>;
 }
-export declare const Search: (baseUrl: string | ISharePointQueryable<any>, options?: IConfigOptions) => ISearch;
+export declare const Search: (baseUrl: string | ISharePointQueryable, options?: IConfigOptions) => ISearch;
 export declare class SearchResults {
     private _url;
     private _query;

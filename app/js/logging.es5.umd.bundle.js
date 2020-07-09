@@ -126,7 +126,7 @@ var Logger = /** @class */ (function () {
         set: function (value) {
             Logger.instance.activeLogLevel = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Logger, "instance", {
@@ -136,7 +136,7 @@ var Logger = /** @class */ (function () {
             }
             return Logger._instance;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -164,7 +164,7 @@ var Logger = /** @class */ (function () {
         get: function () {
             return Logger.instance.count;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -225,7 +225,7 @@ var LoggerImpl = /** @class */ (function () {
         get: function () {
             return this.subscribers.length;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     LoggerImpl.prototype.write = function (message, level) {

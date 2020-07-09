@@ -46,7 +46,7 @@ export interface ISocial {
 /**
  * Get a new Social instance for the particular Url
  */
-export declare const Social: (baseUrl: string | ISharePointQueryable<any>) => ISocial;
+export declare const Social: (baseUrl: string | ISharePointQueryable) => ISocial;
 /**
  * Current user's Social instance
  */

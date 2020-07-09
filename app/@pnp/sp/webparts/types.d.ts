@@ -27,7 +27,7 @@ export interface ILimitedWebPartManager {
      */
     import(xml: string): Promise<any>;
 }
-export declare const LimitedWebPartManager: (baseUrl: string | ISharePointQueryable<any>, path?: string) => ILimitedWebPartManager;
+export declare const LimitedWebPartManager: (baseUrl: string | ISharePointQueryable, path?: string) => ILimitedWebPartManager;
 export declare class _WebPartDefinitions extends _SharePointQueryableCollection {
     /**
      * Gets a web part definition from the collection by id
