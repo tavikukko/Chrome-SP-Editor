@@ -1,5 +1,5 @@
 import { ITypedHash } from "@pnp/common";
-import { PlannerPlan as IPlannerPlanType, PlannerTask as IPlannerTaskType, PlannerBucket as IPlannerBucketType, Planner as IPlannerType } from "@microsoft/microsoft-graph-types";
+import { PlannerPlan as IPlannerPlanType, PlannerPlanDetails as IPlannerPlanDetailsType, PlannerTask as IPlannerTaskType, PlannerTaskDetails as IPlannerTaskDetailsType, PlannerBucket as IPlannerBucketType, Planner as IPlannerType } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableInstance, _GraphQueryableCollection } from "../graphqueryable";
 import { IGetById, IDeleteableWithETag, IUpdateableWithETag } from "../decorators";
 /**
@@ -14,11 +14,20 @@ export interface IPlanner extends _Planner {
 }
 export declare const Planner: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IPlanner;
 /**
+ * Details
+ */
+export declare class _PlanDetails extends _GraphQueryableInstance<IPlannerPlanDetailsType> {
+}
+export interface IPlanDetails extends _PlanDetails, IUpdateableWithETag<IPlannerPlanDetailsType> {
+}
+export declare const PlanDetails: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => ITaskDetails;
+/**
  * Plan
  */
 export declare class _Plan extends _GraphQueryableInstance<IPlannerPlanType> {
     get tasks(): ITasks;
     get buckets(): IBuckets;
+    get details(): IPlanDetails;
 }
 export interface IPlan extends _Plan, IUpdateableWithETag<IPlannerPlanType>, IDeleteableWithETag {
 }
@@ -36,9 +45,18 @@ export interface IPlans extends _Plans, IGetById<IPlan> {
 }
 export declare const Plans: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IPlans;
 /**
+ * Details
+ */
+export declare class _TaskDetails extends _GraphQueryableInstance<IPlannerTaskDetailsType> {
+}
+export interface ITaskDetails extends _TaskDetails, IUpdateableWithETag<IPlannerTaskDetailsType> {
+}
+export declare const TaskDetails: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => ITaskDetails;
+/**
  * Task
  */
 export declare class _Task extends _GraphQueryableInstance<IPlannerTaskType> {
+    get details(): ITaskDetails;
 }
 export interface ITask extends _Task, IUpdateableWithETag<IPlannerTaskType>, IDeleteableWithETag {
 }

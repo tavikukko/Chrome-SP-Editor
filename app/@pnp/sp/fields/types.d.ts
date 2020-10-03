@@ -171,7 +171,7 @@ export declare class _Field extends _SharePointQueryableInstance<IFieldInfo> {
      * @param properties A plain object hash of values to update for the list
      * @param fieldType The type value such as SP.FieldLookup. Optional, looked up from the field if not provided
      */
-    update(properties: Partial<IFieldInfo>, fieldType?: string): Promise<IFieldUpdateResult>;
+    update(properties: any, fieldType?: string): Promise<IFieldUpdateResult>;
     /**
      * Sets the value of the ShowInDisplayForm property for this field.
      */

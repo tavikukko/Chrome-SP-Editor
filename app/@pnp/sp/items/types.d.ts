@@ -104,6 +104,12 @@ export declare class _Item extends _SharePointQueryableInstance {
      */
     recycle(): Promise<string>;
     /**
+     * Deletes the item object with options.
+     *
+     * @param parameters Specifies the options to use when deleting a item.
+     */
+    deleteWithParams(parameters: Partial<IItemDeleteParams>): Promise<void>;
+    /**
      * Gets a string representation of the full URL to the WOPI frame.
      * If there is no associated WOPI application, or no associated action, an empty string is returned.
      *
@@ -179,5 +185,14 @@ export interface IItemUpdateResult {
 }
 export interface IItemUpdateResultData {
     "odata.etag": string;
+}
+export interface IItemDeleteParams {
+    /**
+     * If true, delete or recycle a file when the LockType
+     * value is SPLockType.Shared or SPLockType.None.
+     * When false, delete or recycle the file when
+     * the LockType value SPLockType.None.
+     */
+    BypassSharedLock: boolean;
 }
 //# sourceMappingURL=types.d.ts.map

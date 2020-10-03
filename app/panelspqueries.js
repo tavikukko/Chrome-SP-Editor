@@ -1966,7 +1966,7 @@ var updateEditorFile = function updateEditorFile() {
     $pnp.sp.site.openWebById(webId).then(w => {
 
       w.web.getFileByServerRelativeUrl(fileUrl).get().then(r => {
-        if (r.CustomizedPageStatus > 0) {
+        if (r.CustomizedPageStatus > 0 || fileUrl.toLowerCase().indexOf("/forms/") > 0) {
           w.web.getFileByServerRelativeUrl(fileUrl).setContent(fileContent).then(f => {
             window.postMessage(JSON.stringify({ function: "updateEditorFile", success: true, result: null, source: 'chrome-sp-editor' }), '*');
           }).catch(function (error) {

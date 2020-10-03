@@ -2,7 +2,7 @@ export { ISharePointQueryable, ISharePointQueryableCollection, ISharePointQuerya
 export { SPBatch, } from "./batch";
 export * from "./decorators";
 export * from "./operations";
-export { SPConfiguration, SPConfigurationPart, } from "./splibconfig";
+export { ISPConfiguration, ISPConfigurationPart, } from "./splibconfig";
 export { SPHttpClient, } from "./sphttpclient";
 export { SPRest, sp, } from "./rest";
 export * from "./types";

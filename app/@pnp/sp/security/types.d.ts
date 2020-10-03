@@ -84,7 +84,7 @@ export declare class _RoleDefinitions extends _SharePointQueryableCollection<IRo
      * @param name The new role definition's name
      * @param description The new role definition's description
      * @param order The order in which the role definition appears
-     * @param basePermissions The permissions mask for this role definition
+     * @param basePermissions The permissions mask for this role definition, high and low values need to be converted to string
      *
      */
     add(name: string, description: string, order: number, basePermissions: IBasePermissions): Promise<IRoleDefinitionAddResult>;

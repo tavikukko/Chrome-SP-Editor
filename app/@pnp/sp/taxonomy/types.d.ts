@@ -7,11 +7,11 @@ export declare class _TermStore extends _SharePointQueryableInstance<ITermStoreI
     /**
      * Gets the term groups associated with this tenant
      */
-    get termGroups(): ITermGroups;
-    /**
-     * Gets the term groups associated with this tenant
-     */
     get groups(): ITermGroups;
+    /**
+     * Gets the term sets associated with this tenant
+     */
+    get sets(): ITermSets;
 }
 export interface ITermStore extends _TermStore {
 }
@@ -31,10 +31,6 @@ export declare class _TermGroup extends _SharePointQueryableInstance<ITermGroupI
     /**
      * Gets the term sets associated with this tenant
      */
-    get termSets(): ITermSets;
-    /**
-     * Gets the term groups associated with this tenant
-     */
     get sets(): ITermSets;
 }
 export interface ITermGroup extends _TermGroup {
@@ -52,28 +48,22 @@ export interface ITermSets extends _TermSets {
 }
 export declare const TermSets: import("../sharepointqueryable").ISPInvokableFactory<ITermSets>;
 export declare class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
-    get terms(): ITerms;
     get parentGroup(): ITermGroup;
-    get children(): ITerms;
+    get children(): IChildren;
     get relations(): IRelations;
+    getTermById(id: string): ITerm;
 }
 export interface ITermSet extends _TermSet {
 }
 export declare const TermSet: import("../sharepointqueryable").ISPInvokableFactory<ITermSet>;
-export declare class _Terms extends _SharePointQueryableCollection<ITermInfo[]> {
-    /**
-     * Gets a term group by id
-     *
-     * @param id Id of the term group to access
-     */
-    getById(id: string): ITerm;
+export declare class _Children extends _SharePointQueryableCollection<ITermInfo[]> {
 }
-export interface ITerms extends _Terms {
+export interface IChildren extends _Children {
 }
-export declare const Terms: import("../sharepointqueryable").ISPInvokableFactory<ITerms>;
+export declare const Children: import("../sharepointqueryable").ISPInvokableFactory<IChildren>;
 export declare class _Term extends _SharePointQueryableInstance<ITermInfo> {
     get parent(): ITerm;
-    get children(): ITerms;
+    get children(): IChildren;
     get relations(): IRelations;
     get set(): ITermSet;
 }
@@ -110,9 +100,11 @@ export interface ITermGroupInfo {
     id: string;
     description: string;
     name: string;
+    displayName: string;
     createdDateTime: string;
     lastModifiedDateTime: string;
     type: string;
+    scope: "global" | "system" | "siteCollection";
     managers?: ITaxonomyUserInfo[];
     contributors?: ITaxonomyUserInfo[];
 }

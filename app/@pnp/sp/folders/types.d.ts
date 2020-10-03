@@ -105,6 +105,18 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      */
     copyByPath(destUrl: string, KeepBoth?: boolean): Promise<void>;
     /**
+     * Deletes the folder object with options.
+     *
+     * @param parameters Specifies the options to use when deleting a folder.
+     */
+    deleteWithParams(parameters: Partial<IFolderDeleteParams>): Promise<void>;
+    /**
+     * Create the subfolder inside the current folder, as specified by the leafPath
+     *
+     * @param leafPath leafName of the new folder
+     */
+    addSubFolderUsingPath(leafPath: string): Promise<IFolder>;
+    /**
      * Gets the shareable item associated with this folder
      */
     protected getShareable(): Promise<IItem>;
@@ -151,5 +163,25 @@ export interface IFolderInfo {
     TimeLastModified: string;
     UniqueId: string;
     WelcomePage: string;
+}
+export interface IFolderDeleteParams {
+    /**
+     * If true, delete or recycle a folder iff all files have
+     * LockType values SPLockType.Shared or SPLockType.None.
+     * When false, delete or recycle the folder if all files
+     * have  the LockType value SPLockType.None. See the <see cref="SPFile.SPLockType"/> enum.
+     */
+    BypassSharedLock: boolean;
+    /**
+     * Gets or sets a string value that allows SPFolder delete
+     * and recycle methods to target a folder with a matching value
+     */
+    ETagMatch: string;
+    /**
+     * Gets or sets a Boolean that controls the way in which folders
+     * are deleted. If set to true, only empty folders will be deleted.
+     * If set to false, folders that are not empty may be deleted.
+     */
+    DeleteIfEmpty: boolean;
 }
 //# sourceMappingURL=types.d.ts.map

@@ -91,234 +91,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __extends; });
-/* unused harmony export __assign */
-/* unused harmony export __rest */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __decorate; });
-/* unused harmony export __param */
-/* unused harmony export __metadata */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __awaiter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __generator; });
-/* unused harmony export __exportStar */
-/* unused harmony export __values */
-/* unused harmony export __read */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __spread; });
-/* unused harmony export __spreadArrays */
-/* unused harmony export __await */
-/* unused harmony export __asyncGenerator */
-/* unused harmony export __asyncDelegator */
-/* unused harmony export __asyncValues */
-/* unused harmony export __makeTemplateObject */
-/* unused harmony export __importStar */
-/* unused harmony export __importDefault */
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    }
-    return __assign.apply(this, arguments);
-}
-
-function __rest(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-}
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-function __param(paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-}
-
-function __metadata(metadataKey, metadataValue) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
-}
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-function __exportStar(m, exports) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-
-function __values(o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
-    if (m) return m.call(o);
-    return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-}
-
-function __read(o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-}
-
-function __spread() {
-    for (var ar = [], i = 0; i < arguments.length; i++)
-        ar = ar.concat(__read(arguments[i]));
-    return ar;
-}
-
-function __spreadArrays() {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
-
-function __await(v) {
-    return this instanceof __await ? (this.v = v, this) : new __await(v);
-}
-
-function __asyncGenerator(thisArg, _arguments, generator) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
-    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
-    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
-    function fulfill(value) { resume("next", value); }
-    function reject(value) { resume("throw", value); }
-    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-}
-
-function __asyncDelegator(o) {
-    var i, p;
-    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
-}
-
-function __asyncValues(o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-}
-
-function __makeTemplateObject(cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-    return cooked;
-};
-
-function __importStar(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result.default = mod;
-    return result;
-}
-
-function __importDefault(mod) {
-    return (mod && mod.__esModule) ? mod : { default: mod };
-}
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -327,15 +104,11 @@ function __importDefault(mod) {
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return _libconfig__WEBPACK_IMPORTED_MODULE_1__["a"]; });
 
 /* harmony import */ var _net__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BearerTokenFetchClient", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SPFxAdalClient", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["a"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SPFxAdalClient", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["b"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["b"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getADALResource", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["c"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["d"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeOptions", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["e"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeOptions", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["c"]; });
 
 /* harmony import */ var _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
 /* harmony import */ var _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__);
@@ -363,10 +136,14 @@ function __importDefault(mod) {
 
 /* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "objectDefinedNotNull")) __webpack_require__.d(__webpack_exports__, "objectDefinedNotNull", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["objectDefinedNotNull"]; });
 
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "safeGlobal")) __webpack_require__.d(__webpack_exports__, "safeGlobal", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["safeGlobal"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "stringIsNullOrEmpty")) __webpack_require__.d(__webpack_exports__, "stringIsNullOrEmpty", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["stringIsNullOrEmpty"]; });
+
 /* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(8);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return _storage__WEBPACK_IMPORTED_MODULE_4__["a"]; });
 
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "assign", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["a"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "combine", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["b"]; });
@@ -389,7 +166,11 @@ function __importDefault(mod) {
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "objectDefinedNotNull", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["k"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stringIsNullOrEmpty", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["l"]; });
+
 /* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(5);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "safeGlobal", function() { return _safe_global__WEBPACK_IMPORTED_MODULE_6__["a"]; });
+
 
 
 
@@ -400,7 +181,7 @@ function __importDefault(mod) {
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -414,7 +195,7 @@ function __importDefault(mod) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return isArray; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return assign; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return isUrlAbsolute; });
-/* unused harmony export stringIsNullOrEmpty */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return stringIsNullOrEmpty; });
 /* unused harmony export sanitizeGuid */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return jsS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return hOP; });
@@ -637,6 +418,263 @@ function getHashCode(s) {
 //# sourceMappingURL=util.js.map
 
 /***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __extends; });
+/* unused harmony export __assign */
+/* unused harmony export __rest */
+/* unused harmony export __decorate */
+/* unused harmony export __param */
+/* unused harmony export __metadata */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __awaiter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __generator; });
+/* unused harmony export __createBinding */
+/* unused harmony export __exportStar */
+/* unused harmony export __values */
+/* unused harmony export __read */
+/* unused harmony export __spread */
+/* unused harmony export __spreadArrays */
+/* unused harmony export __await */
+/* unused harmony export __asyncGenerator */
+/* unused harmony export __asyncDelegator */
+/* unused harmony export __asyncValues */
+/* unused harmony export __makeTemplateObject */
+/* unused harmony export __importStar */
+/* unused harmony export __importDefault */
+/* unused harmony export __classPrivateFieldGet */
+/* unused harmony export __classPrivateFieldSet */
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return __assign.apply(this, arguments);
+}
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var __createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+
+function __exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+var __setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function __classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function __classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
+
+
+/***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -745,7 +783,7 @@ var RuntimeConfig = _runtimeConfig;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return objectToMap; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return mergeMaps; });
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 /**
  * Used to calculate the object properties, with polyfill if needed
@@ -791,21 +829,21 @@ function mergeMaps(target) {
 // export either window or global
 var safeGlobal = typeof global === "undefined" ? window : global;
 //# sourceMappingURL=safe-global.js.map
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(10)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(9)))
 
 /***/ }),
 /* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return mergeHeaders; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return mergeOptions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getADALResource; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return mergeHeaders; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mergeOptions; });
+/* unused harmony export getADALResource */
 /* unused harmony export FetchClient */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BearerTokenFetchClient; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return SPFxAdalClient; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* unused harmony export BearerTokenFetchClient */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SPFxAdalClient; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 
 
@@ -850,7 +888,7 @@ var FetchClient = /** @class */ (function () {
  * Makes requests using the fetch API adding the supplied token to the Authorization header
  */
 var BearerTokenFetchClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(BearerTokenFetchClient, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "b"])(BearerTokenFetchClient, _super);
     function BearerTokenFetchClient(_token) {
         var _this = _super.call(this) || this;
         _this._token = _token;
@@ -881,7 +919,7 @@ var BearerTokenFetchClient = /** @class */ (function (_super) {
  * Client wrapping the aadTokenProvider available from SPFx >= 1.6
  */
 var SPFxAdalClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(SPFxAdalClient, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "b"])(SPFxAdalClient, _super);
     /**
      *
      * @param context provide the appropriate SPFx Context object
@@ -900,7 +938,7 @@ var SPFxAdalClient = /** @class */ (function (_super) {
     SPFxAdalClient.prototype.fetch = function (url, options) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var token;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getToken(getADALResource(url))];
                     case 1:
@@ -919,7 +957,7 @@ var SPFxAdalClient = /** @class */ (function (_super) {
     SPFxAdalClient.prototype.getToken = function (resource) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var provider;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
                     case 1:
@@ -947,8 +985,8 @@ var SPFxAdalClient = /** @class */ (function (_super) {
 "use strict";
 /* unused harmony export PnPClientStorageWrapper */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PnPClientStorage; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 
 
@@ -1031,7 +1069,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
     PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var o;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.enabled) {
@@ -1055,7 +1093,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
     PnPClientStorageWrapper.prototype.deleteExpired = function () {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var i, key;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.enabled) {
@@ -1206,14 +1244,6 @@ var PnPClientStorage = /** @class */ (function () {
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*! adal-angular v1.0.17 2018-02-27 */
-var AuthenticationContext=function(){"use strict";return AuthenticationContext=function(a){if(this.REQUEST_TYPE={LOGIN:"LOGIN",RENEW_TOKEN:"RENEW_TOKEN",UNKNOWN:"UNKNOWN"},this.RESPONSE_TYPE={ID_TOKEN_TOKEN:"id_token token",TOKEN:"token"},this.CONSTANTS={ACCESS_TOKEN:"access_token",EXPIRES_IN:"expires_in",ID_TOKEN:"id_token",ERROR_DESCRIPTION:"error_description",SESSION_STATE:"session_state",ERROR:"error",STORAGE:{TOKEN_KEYS:"adal.token.keys",ACCESS_TOKEN_KEY:"adal.access.token.key",EXPIRATION_KEY:"adal.expiration.key",STATE_LOGIN:"adal.state.login",STATE_RENEW:"adal.state.renew",NONCE_IDTOKEN:"adal.nonce.idtoken",SESSION_STATE:"adal.session.state",USERNAME:"adal.username",IDTOKEN:"adal.idtoken",ERROR:"adal.error",ERROR_DESCRIPTION:"adal.error.description",LOGIN_REQUEST:"adal.login.request",LOGIN_ERROR:"adal.login.error",RENEW_STATUS:"adal.token.renew.status",ANGULAR_LOGIN_REQUEST:"adal.angular.login.request"},RESOURCE_DELIMETER:"|",CACHE_DELIMETER:"||",LOADFRAME_TIMEOUT:6e3,TOKEN_RENEW_STATUS_CANCELED:"Canceled",TOKEN_RENEW_STATUS_COMPLETED:"Completed",TOKEN_RENEW_STATUS_IN_PROGRESS:"In Progress",LOGGING_LEVEL:{ERROR:0,WARN:1,INFO:2,VERBOSE:3},LEVEL_STRING_MAP:{0:"ERROR:",1:"WARNING:",2:"INFO:",3:"VERBOSE:"},POPUP_WIDTH:483,POPUP_HEIGHT:600},AuthenticationContext.prototype._singletonInstance)return AuthenticationContext.prototype._singletonInstance;if(AuthenticationContext.prototype._singletonInstance=this,this.instance="https://login.microsoftonline.com/",this.config={},this.callback=null,this.popUp=!1,this.isAngular=!1,this._user=null,this._activeRenewals={},this._loginInProgress=!1,this._acquireTokenInProgress=!1,this._renewStates=[],this._callBackMappedToRenewStates={},this._callBacksMappedToRenewStates={},this._openedWindows=[],this._requestType=this.REQUEST_TYPE.LOGIN,window._adalInstance=this,a.displayCall&&"function"!=typeof a.displayCall)throw new Error("displayCall is not a function");if(!a.clientId)throw new Error("clientId is required");this.config=this._cloneConfig(a),void 0===this.config.navigateToLoginRequestUrl&&(this.config.navigateToLoginRequestUrl=!0),this.config.popUp&&(this.popUp=!0),this.config.callback&&"function"==typeof this.config.callback&&(this.callback=this.config.callback),this.config.instance&&(this.instance=this.config.instance),this.config.loginResource||(this.config.loginResource=this.config.clientId),this.config.redirectUri||(this.config.redirectUri=window.location.href.split("?")[0].split("#")[0]),this.config.postLogoutRedirectUri||(this.config.postLogoutRedirectUri=window.location.href.split("?")[0].split("#")[0]),this.config.anonymousEndpoints||(this.config.anonymousEndpoints=[]),this.config.isAngular&&(this.isAngular=this.config.isAngular),this.config.loadFrameTimeout&&(this.CONSTANTS.LOADFRAME_TIMEOUT=this.config.loadFrameTimeout)},"undefined"!=typeof window&&(window.Logging={piiLoggingEnabled:!1,level:0,log:function(a){}}),AuthenticationContext.prototype.login=function(){if(this._loginInProgress)return void this.info("Login in progress");this._loginInProgress=!0;var a=this._guid();this.config.state=a,this._idTokenNonce=this._guid();var b=this._getItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST);b&&""!==b?this._saveItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST,""):b=window.location.href,this.verbose("Expected state: "+a+" startPage:"+b),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,b),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,a,!0),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"");var c=this._getNavigateUrl("id_token",null)+"&nonce="+encodeURIComponent(this._idTokenNonce);this.config.displayCall?this.config.displayCall(c):this.popUp?(this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,""),this._renewStates.push(a),this.registerCallback(a,this.config.clientId,this.callback),this._loginPopup(c)):this.promptUser(c)},AuthenticationContext.prototype._openPopup=function(a,b,c,d){try{var e=window.screenLeft?window.screenLeft:window.screenX,f=window.screenTop?window.screenTop:window.screenY,g=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,h=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight,i=g/2-c/2+e,j=h/2-d/2+f,k=window.open(a,b,"width="+c+", height="+d+", top="+j+", left="+i);return k.focus&&k.focus(),k}catch(a){return this.warn("Error opening popup, "+a.message),this._loginInProgress=!1,this._acquireTokenInProgress=!1,null}},AuthenticationContext.prototype._handlePopupError=function(a,b,c,d,e){this.warn(d),this._saveItem(this.CONSTANTS.STORAGE.ERROR,c),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,d),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,e),b&&this._activeRenewals[b]&&(this._activeRenewals[b]=null),this._loginInProgress=!1,this._acquireTokenInProgress=!1,a&&a(d,null,c)},AuthenticationContext.prototype._loginPopup=function(a,b,c){var d=this._openPopup(a,"login",this.CONSTANTS.POPUP_WIDTH,this.CONSTANTS.POPUP_HEIGHT),e=c||this.callback;if(null==d){var f="Popup Window is null. This can happen if you are using IE";return void this._handlePopupError(e,b,"Error opening popup",f,f)}if(this._openedWindows.push(d),-1!=this.config.redirectUri.indexOf("#"))var g=this.config.redirectUri.split("#")[0];else var g=this.config.redirectUri;var h=this,i=window.setInterval(function(){if(!d||d.closed||void 0===d.closed){var a="Popup Window closed",c="Popup Window closed by UI action/ Popup Window handle destroyed due to cross zone navigation in IE/Edge";return h.isAngular&&h._broadcast("adal:popUpClosed",c+h.CONSTANTS.RESOURCE_DELIMETER+a),h._handlePopupError(e,b,a,c,c),void window.clearInterval(i)}try{var f=d.location;if(-1!=encodeURI(f.href).indexOf(encodeURI(g)))return h.isAngular?h._broadcast("adal:popUpHashChanged",f.hash):h.handleWindowCallback(f.hash),window.clearInterval(i),h._loginInProgress=!1,h._acquireTokenInProgress=!1,h.info("Closing popup window"),h._openedWindows=[],void d.close()}catch(a){}},1)},AuthenticationContext.prototype._broadcast=function(a,b){!function(){function a(a,b){b=b||{bubbles:!1,cancelable:!1,detail:void 0};var c=document.createEvent("CustomEvent");return c.initCustomEvent(a,b.bubbles,b.cancelable,b.detail),c}if("function"==typeof window.CustomEvent)return!1;a.prototype=window.Event.prototype,window.CustomEvent=a}();var c=new CustomEvent(a,{detail:b});window.dispatchEvent(c)},AuthenticationContext.prototype.loginInProgress=function(){return this._loginInProgress},AuthenticationContext.prototype._hasResource=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS);return b&&!this._isEmpty(b)&&b.indexOf(a+this.CONSTANTS.RESOURCE_DELIMETER)>-1},AuthenticationContext.prototype.getCachedToken=function(a){if(!this._hasResource(a))return null;var b=this._getItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a),c=this._getItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a),d=this.config.expireOffsetSeconds||300;return c&&c>this._now()+d?b:(this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a,""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a,0),null)},AuthenticationContext.prototype.getCachedUser=function(){if(this._user)return this._user;var a=this._getItem(this.CONSTANTS.STORAGE.IDTOKEN);return this._user=this._createUser(a),this._user},AuthenticationContext.prototype.registerCallback=function(a,b,c){this._activeRenewals[b]=a,this._callBacksMappedToRenewStates[a]||(this._callBacksMappedToRenewStates[a]=[]);var d=this;this._callBacksMappedToRenewStates[a].push(c),this._callBackMappedToRenewStates[a]||(this._callBackMappedToRenewStates[a]=function(c,e,f,g){d._activeRenewals[b]=null;for(var h=0;h<d._callBacksMappedToRenewStates[a].length;++h)try{d._callBacksMappedToRenewStates[a][h](c,e,f,g)}catch(f){d.warn(f)}d._callBacksMappedToRenewStates[a]=null,d._callBackMappedToRenewStates[a]=null})},AuthenticationContext.prototype._renewToken=function(a,b,c){this.info("renewToken is called for resource:"+a);var d=this._addAdalFrame("adalRenewFrame"+a),e=this._guid()+"|"+a;this.config.state=e,this._renewStates.push(e),this.verbose("Renew token Expected state: "+e),c=c||"token";var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl(c,a),"prompt");c===this.RESPONSE_TYPE.ID_TOKEN_TOKEN&&(this._idTokenNonce=this._guid(),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),f+="&nonce="+encodeURIComponent(this._idTokenNonce)),f+="&prompt=none",f=this._addHintParameters(f),this.registerCallback(e,a,b),this.verbosePii("Navigate to:"+f),d.src="about:blank",this._loadFrameTimeout(f,"adalRenewFrame"+a,a)},AuthenticationContext.prototype._renewIdToken=function(a,b){this.info("renewIdToken is called");var c=this._addAdalFrame("adalIdTokenFrame"),d=this._guid()+"|"+this.config.clientId;this._idTokenNonce=this._guid(),this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,this._idTokenNonce,!0),this.config.state=d,this._renewStates.push(d),this.verbose("Renew Idtoken Expected state: "+d);var e=null===b||void 0===b?null:this.config.clientId,b=b||"id_token",f=this._urlRemoveQueryStringParameter(this._getNavigateUrl(b,e),"prompt");f+="&prompt=none",f=this._addHintParameters(f),f+="&nonce="+encodeURIComponent(this._idTokenNonce),this.registerCallback(d,this.config.clientId,a),this.verbosePii("Navigate to:"+f),c.src="about:blank",this._loadFrameTimeout(f,"adalIdTokenFrame",this.config.clientId)},AuthenticationContext.prototype._urlContainsQueryStringParameter=function(a,b){return new RegExp("[\\?&]"+a+"=").test(b)},AuthenticationContext.prototype._urlRemoveQueryStringParameter=function(a,b){var c=new RegExp("(\\&"+b+"=)[^&]+");return a=a.replace(c,""),c=new RegExp("("+b+"=)[^&]+&"),a=a.replace(c,""),c=new RegExp("("+b+"=)[^&]+"),a=a.replace(c,"")},AuthenticationContext.prototype._loadFrameTimeout=function(a,b,c){this.verbose("Set loading state to pending for: "+c),this._saveItem(this.CONSTANTS.STORAGE.RENEW_STATUS+c,this.CONSTANTS.TOKEN_RENEW_STATUS_IN_PROGRESS),this._loadFrame(a,b);var d=this;setTimeout(function(){if(d._getItem(d.CONSTANTS.STORAGE.RENEW_STATUS+c)===d.CONSTANTS.TOKEN_RENEW_STATUS_IN_PROGRESS){d.verbose("Loading frame has timed out after: "+d.CONSTANTS.LOADFRAME_TIMEOUT/1e3+" seconds for resource "+c);var a=d._activeRenewals[c];a&&d._callBackMappedToRenewStates[a]&&d._callBackMappedToRenewStates[a]("Token renewal operation failed due to timeout",null,"Token Renewal Failed"),d._saveItem(d.CONSTANTS.STORAGE.RENEW_STATUS+c,d.CONSTANTS.TOKEN_RENEW_STATUS_CANCELED)}},d.CONSTANTS.LOADFRAME_TIMEOUT)},AuthenticationContext.prototype._loadFrame=function(a,b){var c=this;c.info("LoadFrame: "+b);var d=b;setTimeout(function(){var b=c._addAdalFrame(d);""!==b.src&&"about:blank"!==b.src||(b.src=a,c._loadFrame(a,d))},500)},AuthenticationContext.prototype.acquireToken=function(a,b){if(this._isEmpty(a))return this.warn("resource is required"),void b("resource is required",null,"resource is required");var c=this.getCachedToken(a);return c?(this.info("Token is already in cache for resource:"+a),void b(null,c,null)):this._user||this.config.extraQueryParameter&&-1!==this.config.extraQueryParameter.indexOf("login_hint")?void(this._activeRenewals[a]?this.registerCallback(this._activeRenewals[a],a,b):(this._requestType=this.REQUEST_TYPE.RENEW_TOKEN,a===this.config.clientId?this._user?(this.verbose("renewing idtoken"),this._renewIdToken(b)):(this.verbose("renewing idtoken and access_token"),this._renewIdToken(b,this.RESPONSE_TYPE.ID_TOKEN_TOKEN)):this._user?(this.verbose("renewing access_token"),this._renewToken(a,b)):(this.verbose("renewing idtoken and access_token"),this._renewToken(a,b,this.RESPONSE_TYPE.ID_TOKEN_TOKEN)))):(this.warn("User login is required"),void b("User login is required",null,"login required"))},AuthenticationContext.prototype.acquireTokenPopup=function(a,b,c,d){if(this._isEmpty(a))return this.warn("resource is required"),void d("resource is required",null,"resource is required");if(!this._user)return this.warn("User login is required"),void d("User login is required",null,"login required");if(this._acquireTokenInProgress)return this.warn("Acquire token interactive is already in progress"),void d("Acquire token interactive is already in progress",null,"Acquire token interactive is already in progress");var e=this._guid()+"|"+a;this.config.state=e,this._renewStates.push(e),this._requestType=this.REQUEST_TYPE.RENEW_TOKEN,this.verbose("Renew token Expected state: "+e);var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl("token",a),"prompt");if(f+="&prompt=select_account",b&&(f+=b),c&&-1===f.indexOf("&claims"))f+="&claims="+encodeURIComponent(c);else if(c&&-1!==f.indexOf("&claims"))throw new Error("Claims cannot be passed as an extraQueryParameter");f=this._addHintParameters(f),this._acquireTokenInProgress=!0,this.info("acquireToken interactive is called for the resource "+a),this.registerCallback(e,a,d),this._loginPopup(f,a,d)},AuthenticationContext.prototype.acquireTokenRedirect=function(a,b,c){if(this._isEmpty(a))return this.warn("resource is required"),void d("resource is required",null,"resource is required");var d=this.callback;if(!this._user)return this.warn("User login is required"),void d("User login is required",null,"login required");if(this._acquireTokenInProgress)return this.warn("Acquire token interactive is already in progress"),void d("Acquire token interactive is already in progress",null,"Acquire token interactive is already in progress");var e=this._guid()+"|"+a;this.config.state=e,this.verbose("Renew token Expected state: "+e);var f=this._urlRemoveQueryStringParameter(this._getNavigateUrl("token",a),"prompt");if(f+="&prompt=select_account",b&&(f+=b),c&&-1===f.indexOf("&claims"))f+="&claims="+encodeURIComponent(c);else if(c&&-1!==f.indexOf("&claims"))throw new Error("Claims cannot be passed as an extraQueryParameter");f=this._addHintParameters(f),this._acquireTokenInProgress=!0,this.info("acquireToken interactive is called for the resource "+a),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,window.location.href),this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,e,!0),this.promptUser(f)},AuthenticationContext.prototype.promptUser=function(a){a?(this.infoPii("Navigate to:"+a),window.location.replace(a)):this.info("Navigate url is empty")},AuthenticationContext.prototype.clearCache=function(){this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST,""),this._saveItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST,""),this._saveItem(this.CONSTANTS.STORAGE.SESSION_STATE,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN,""),this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,""),this._renewStates=[],this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN,""),this._saveItem(this.CONSTANTS.STORAGE.IDTOKEN,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,""),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,"");var a=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS);if(!this._isEmpty(a)){a=a.split(this.CONSTANTS.RESOURCE_DELIMETER);for(var b=0;b<a.length&&""!==a[b];b++)this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a[b],""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a[b],0)}this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,"")},AuthenticationContext.prototype.clearCacheForResource=function(a){this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,""),this._hasResource(a)&&(this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+a,""),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+a,0))},AuthenticationContext.prototype.logOut=function(){this.clearCache(),this._user=null;var a;if(this.config.logOutUri)a=this.config.logOutUri;else{var b="common",c="";this.config.tenant&&(b=this.config.tenant),this.config.postLogoutRedirectUri&&(c="post_logout_redirect_uri="+encodeURIComponent(this.config.postLogoutRedirectUri)),a=this.instance+b+"/oauth2/logout?"+c}this.infoPii("Logout navigate to: "+a),this.promptUser(a)},AuthenticationContext.prototype._isEmpty=function(a){return void 0===a||!a||0===a.length},AuthenticationContext.prototype.getUser=function(a){if("function"!=typeof a)throw new Error("callback is not a function");if(this._user)return void a(null,this._user);var b=this._getItem(this.CONSTANTS.STORAGE.IDTOKEN);this._isEmpty(b)?(this.warn("User information is not available"),a("User information is not available",null)):(this.info("User exists in cache: "),this._user=this._createUser(b),a(null,this._user))},AuthenticationContext.prototype._addHintParameters=function(a){if(this._user&&this._user.profile)if(this._user.profile.sid&&-1!==a.indexOf("&prompt=none"))this._urlContainsQueryStringParameter("sid",a)||(a+="&sid="+encodeURIComponent(this._user.profile.sid));else if(this._user.profile.upn&&(this._urlContainsQueryStringParameter("login_hint",a)||(a+="&login_hint="+encodeURIComponent(this._user.profile.upn)),!this._urlContainsQueryStringParameter("domain_hint",a)&&this._user.profile.upn.indexOf("@")>-1)){var b=this._user.profile.upn.split("@");a+="&domain_hint="+encodeURIComponent(b[b.length-1])}return a},AuthenticationContext.prototype._createUser=function(a){var b=null,c=this._extractIdToken(a);return c&&c.hasOwnProperty("aud")&&(c.aud.toLowerCase()===this.config.clientId.toLowerCase()?(b={userName:"",profile:c},c.hasOwnProperty("upn")?b.userName=c.upn:c.hasOwnProperty("email")&&(b.userName=c.email)):this.warn("IdToken has invalid aud field")),b},AuthenticationContext.prototype._getHash=function(a){return a.indexOf("#/")>-1?a=a.substring(a.indexOf("#/")+2):a.indexOf("#")>-1&&(a=a.substring(1)),a},AuthenticationContext.prototype.isCallback=function(a){a=this._getHash(a);var b=this._deserialize(a);return b.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION)||b.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)||b.hasOwnProperty(this.CONSTANTS.ID_TOKEN)},AuthenticationContext.prototype.getLoginError=function(){return this._getItem(this.CONSTANTS.STORAGE.LOGIN_ERROR)},AuthenticationContext.prototype.getRequestInfo=function(a){a=this._getHash(a);var b=this._deserialize(a),c={valid:!1,parameters:{},stateMatch:!1,stateResponse:"",requestType:this.REQUEST_TYPE.UNKNOWN};if(b&&(c.parameters=b,b.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION)||b.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)||b.hasOwnProperty(this.CONSTANTS.ID_TOKEN))){c.valid=!0;var d="";if(!b.hasOwnProperty("state"))return this.warn("No state returned"),c;if(this.verbose("State: "+b.state),d=b.state,c.stateResponse=d,this._matchState(c))return c;if(!c.stateMatch&&window.parent){c.requestType=this._requestType;for(var e=this._renewStates,f=0;f<e.length;f++)if(e[f]===c.stateResponse){c.stateMatch=!0;break}}}return c},AuthenticationContext.prototype._matchNonce=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN);if(b){b=b.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<b.length;c++)if(b[c]===a.profile.nonce)return!0}return!1},AuthenticationContext.prototype._matchState=function(a){var b=this._getItem(this.CONSTANTS.STORAGE.STATE_LOGIN);if(b){b=b.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<b.length;c++)if(b[c]===a.stateResponse)return a.requestType=this.REQUEST_TYPE.LOGIN,a.stateMatch=!0,!0}var d=this._getItem(this.CONSTANTS.STORAGE.STATE_RENEW);if(d){d=d.split(this.CONSTANTS.CACHE_DELIMETER);for(var c=0;c<d.length;c++)if(d[c]===a.stateResponse)return a.requestType=this.REQUEST_TYPE.RENEW_TOKEN,a.stateMatch=!0,!0}return!1},AuthenticationContext.prototype._getResourceFromState=function(a){if(a){var b=a.indexOf("|");if(b>-1&&b+1<a.length)return a.substring(b+1)}return""},AuthenticationContext.prototype.saveTokenFromHash=function(a){this.info("State status:"+a.stateMatch+"; Request type:"+a.requestType),this._saveItem(this.CONSTANTS.STORAGE.ERROR,""),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"");var b=this._getResourceFromState(a.stateResponse);if(a.parameters.hasOwnProperty(this.CONSTANTS.ERROR_DESCRIPTION))this.infoPii("Error :"+a.parameters.error+"; Error description:"+a.parameters[this.CONSTANTS.ERROR_DESCRIPTION]),this._saveItem(this.CONSTANTS.STORAGE.ERROR,a.parameters.error),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,a.parameters[this.CONSTANTS.ERROR_DESCRIPTION]),a.requestType===this.REQUEST_TYPE.LOGIN&&(this._loginInProgress=!1,this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,a.parameters.error_description));else if(a.stateMatch){this.info("State is right"),a.parameters.hasOwnProperty(this.CONSTANTS.SESSION_STATE)&&this._saveItem(this.CONSTANTS.STORAGE.SESSION_STATE,a.parameters[this.CONSTANTS.SESSION_STATE]);var c;a.parameters.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN)&&(this.info("Fragment has access token"),this._hasResource(b)||(c=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS)||"",this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,c+b+this.CONSTANTS.RESOURCE_DELIMETER)),this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+b,a.parameters[this.CONSTANTS.ACCESS_TOKEN]),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+b,this._expiresIn(a.parameters[this.CONSTANTS.EXPIRES_IN]))),a.parameters.hasOwnProperty(this.CONSTANTS.ID_TOKEN)&&(this.info("Fragment has id token"),this._loginInProgress=!1,this._user=this._createUser(a.parameters[this.CONSTANTS.ID_TOKEN]),this._user&&this._user.profile?this._matchNonce(this._user)?(this._saveItem(this.CONSTANTS.STORAGE.IDTOKEN,a.parameters[this.CONSTANTS.ID_TOKEN]),b=this.config.loginResource?this.config.loginResource:this.config.clientId,this._hasResource(b)||(c=this._getItem(this.CONSTANTS.STORAGE.TOKEN_KEYS)||"",this._saveItem(this.CONSTANTS.STORAGE.TOKEN_KEYS,c+b+this.CONSTANTS.RESOURCE_DELIMETER)),this._saveItem(this.CONSTANTS.STORAGE.ACCESS_TOKEN_KEY+b,a.parameters[this.CONSTANTS.ID_TOKEN]),this._saveItem(this.CONSTANTS.STORAGE.EXPIRATION_KEY+b,this._user.profile.exp)):(this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR,"Nonce received: "+this._user.profile.nonce+" is not same as requested: "+this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN)),this._user=null):(a.parameters.error="invalid id_token",a.parameters.error_description="Invalid id_token. id_token: "+a.parameters[this.CONSTANTS.ID_TOKEN],this._saveItem(this.CONSTANTS.STORAGE.ERROR,"invalid id_token"),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"Invalid id_token. id_token: "+a.parameters[this.CONSTANTS.ID_TOKEN])))}else a.parameters.error="Invalid_state",a.parameters.error_description="Invalid_state. state: "+a.stateResponse,this._saveItem(this.CONSTANTS.STORAGE.ERROR,"Invalid_state"),this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION,"Invalid_state. state: "+a.stateResponse);this._saveItem(this.CONSTANTS.STORAGE.RENEW_STATUS+b,this.CONSTANTS.TOKEN_RENEW_STATUS_COMPLETED)},AuthenticationContext.prototype.getResourceForEndpoint=function(a){if(this.config&&this.config.anonymousEndpoints)for(var b=0;b<this.config.anonymousEndpoints.length;b++)if(a.indexOf(this.config.anonymousEndpoints[b])>-1)return null;if(this.config&&this.config.endpoints)for(var c in this.config.endpoints)if(a.indexOf(c)>-1)return this.config.endpoints[c];return a.indexOf("http://")>-1||a.indexOf("https://")>-1?this._getHostFromUri(a)===this._getHostFromUri(this.config.redirectUri)?this.config.loginResource:null:this.config.loginResource},AuthenticationContext.prototype._getHostFromUri=function(a){var b=String(a).replace(/^(https?:)\/\//,"");return b=b.split("/")[0]},AuthenticationContext.prototype.handleWindowCallback=function(a){if(null==a&&(a=window.location.hash),this.isCallback(a)){var b=null,c=!1;this._openedWindows.length>0&&this._openedWindows[this._openedWindows.length-1].opener&&this._openedWindows[this._openedWindows.length-1].opener._adalInstance?(b=this._openedWindows[this._openedWindows.length-1].opener._adalInstance,c=!0):window.parent&&window.parent._adalInstance&&(b=window.parent._adalInstance);var d,e,f=b.getRequestInfo(a),g=null;e=c||window.parent!==window?b._callBackMappedToRenewStates[f.stateResponse]:b.callback,b.info("Returned from redirect url"),b.saveTokenFromHash(f),f.requestType===this.REQUEST_TYPE.RENEW_TOKEN&&window.parent?(window.parent!==window?b.verbose("Window is in iframe, acquiring token silently"):b.verbose("acquiring token interactive in progress"),d=f.parameters[b.CONSTANTS.ACCESS_TOKEN]||f.parameters[b.CONSTANTS.ID_TOKEN],g=b.CONSTANTS.ACCESS_TOKEN):f.requestType===this.REQUEST_TYPE.LOGIN&&(d=f.parameters[b.CONSTANTS.ID_TOKEN],g=b.CONSTANTS.ID_TOKEN);var h=f.parameters[b.CONSTANTS.ERROR_DESCRIPTION],i=f.parameters[b.CONSTANTS.ERROR];try{e&&e(h,d,i,g)}catch(a){b.error("Error occurred in user defined callback function: "+a)}window.parent!==window||c||(b.config.navigateToLoginRequestUrl?window.location.href=b._getItem(b.CONSTANTS.STORAGE.LOGIN_REQUEST):window.location.hash="")}},AuthenticationContext.prototype._getNavigateUrl=function(a,b){var c="common";this.config.tenant&&(c=this.config.tenant);var d=this.instance+c+"/oauth2/authorize"+this._serialize(a,this.config,b)+this._addLibMetadata();return this.info("Navigate url:"+d),d},AuthenticationContext.prototype._extractIdToken=function(a){var b=this._decodeJwt(a);if(!b)return null;try{var c=b.JWSPayload,d=this._base64DecodeStringUrlSafe(c);return d?JSON.parse(d):(this.info("The returned id_token could not be base64 url safe decoded."),null)}catch(a){this.error("The returned id_token could not be decoded",a)}return null},AuthenticationContext.prototype._base64DecodeStringUrlSafe=function(a){return a=a.replace(/-/g,"+").replace(/_/g,"/"),window.atob?decodeURIComponent(escape(window.atob(a))):decodeURIComponent(escape(this._decode(a)))},AuthenticationContext.prototype._decode=function(a){var b="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";a=String(a).replace(/=+$/,"");var c=a.length;if(c%4==1)throw new Error("The token to be decoded is not correctly encoded.");for(var d,e,f,g,h,i,j,k,l="",m=0;m<c;m+=4){if(d=b.indexOf(a.charAt(m)),e=b.indexOf(a.charAt(m+1)),f=b.indexOf(a.charAt(m+2)),g=b.indexOf(a.charAt(m+3)),m+2===c-1){h=d<<18|e<<12|f<<6,i=h>>16&255,j=h>>8&255,l+=String.fromCharCode(i,j);break}if(m+1===c-1){h=d<<18|e<<12,i=h>>16&255,l+=String.fromCharCode(i);break}h=d<<18|e<<12|f<<6|g,i=h>>16&255,j=h>>8&255,k=255&h,l+=String.fromCharCode(i,j,k)}return l},AuthenticationContext.prototype._decodeJwt=function(a){if(this._isEmpty(a))return null;var b=/^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/,c=b.exec(a);return!c||c.length<4?(this.warn("The returned id_token is not parseable."),null):{header:c[1],JWSPayload:c[2],JWSSig:c[3]}},AuthenticationContext.prototype._convertUrlSafeToRegularBase64EncodedString=function(a){return a.replace("-","+").replace("_","/")},AuthenticationContext.prototype._serialize=function(a,b,c){var d=[];if(null!==b){d.push("?response_type="+a),d.push("client_id="+encodeURIComponent(b.clientId)),c&&d.push("resource="+encodeURIComponent(c)),d.push("redirect_uri="+encodeURIComponent(b.redirectUri)),d.push("state="+encodeURIComponent(b.state)),b.hasOwnProperty("slice")&&d.push("slice="+encodeURIComponent(b.slice)),b.hasOwnProperty("extraQueryParameter")&&d.push(b.extraQueryParameter);var e=b.correlationId?b.correlationId:this._guid();d.push("client-request-id="+encodeURIComponent(e))}return d.join("&")},AuthenticationContext.prototype._deserialize=function(a){var b,c=/\+/g,d=/([^&=]+)=([^&]*)/g,e=function(a){return decodeURIComponent(a.replace(c," "))},f={};for(b=d.exec(a);b;)f[e(b[1])]=e(b[2]),b=d.exec(a);return f},AuthenticationContext.prototype._decimalToHex=function(a){for(var b=a.toString(16);b.length<2;)b="0"+b;return b},AuthenticationContext.prototype._guid=function(){var a=window.crypto||window.msCrypto;if(a&&a.getRandomValues){var b=new Uint8Array(16);return a.getRandomValues(b),b[6]|=64,b[6]&=79,b[8]|=128,b[8]&=191,this._decimalToHex(b[0])+this._decimalToHex(b[1])+this._decimalToHex(b[2])+this._decimalToHex(b[3])+"-"+this._decimalToHex(b[4])+this._decimalToHex(b[5])+"-"+this._decimalToHex(b[6])+this._decimalToHex(b[7])+"-"+this._decimalToHex(b[8])+this._decimalToHex(b[9])+"-"+this._decimalToHex(b[10])+this._decimalToHex(b[11])+this._decimalToHex(b[12])+this._decimalToHex(b[13])+this._decimalToHex(b[14])+this._decimalToHex(b[15])}for(var c="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",d="0123456789abcdef",e=0,f="",g=0;g<36;g++)"-"!==c[g]&&"4"!==c[g]&&(e=16*Math.random()|0),"x"===c[g]?f+=d[e]:"y"===c[g]?(e&=3,e|=8,f+=d[e]):f+=c[g];return f},AuthenticationContext.prototype._expiresIn=function(a){return a||(a=3599),this._now()+parseInt(a,10)},AuthenticationContext.prototype._now=function(){return Math.round((new Date).getTime()/1e3)},AuthenticationContext.prototype._addAdalFrame=function(a){if(void 0!==a){this.info("Add adal frame to document:"+a);var b=document.getElementById(a);if(!b){if(document.createElement&&document.documentElement&&(window.opera||-1===window.navigator.userAgent.indexOf("MSIE 5.0"))){var c=document.createElement("iframe");c.setAttribute("id",a),c.setAttribute("aria-hidden","true"),c.style.visibility="hidden",c.style.position="absolute",c.style.width=c.style.height=c.borderWidth="0px",b=document.getElementsByTagName("body")[0].appendChild(c)}else document.body&&document.body.insertAdjacentHTML&&document.body.insertAdjacentHTML("beforeEnd",'<iframe name="'+a+'" id="'+a+'" style="display:none"></iframe>');window.frames&&window.frames[a]&&(b=window.frames[a])}return b}},AuthenticationContext.prototype._saveItem=function(a,b,c){if(this.config&&this.config.cacheLocation&&"localStorage"===this.config.cacheLocation){if(!this._supportsLocalStorage())return this.info("Local storage is not supported"),!1;if(c){var d=this._getItem(a)||"";localStorage.setItem(a,d+b+this.CONSTANTS.CACHE_DELIMETER)}else localStorage.setItem(a,b);return!0}return this._supportsSessionStorage()?(sessionStorage.setItem(a,b),!0):(this.info("Session storage is not supported"),!1)},AuthenticationContext.prototype._getItem=function(a){return this.config&&this.config.cacheLocation&&"localStorage"===this.config.cacheLocation?this._supportsLocalStorage()?localStorage.getItem(a):(this.info("Local storage is not supported"),null):this._supportsSessionStorage()?sessionStorage.getItem(a):(this.info("Session storage is not supported"),null)},AuthenticationContext.prototype._supportsLocalStorage=function(){try{return!!window.localStorage&&(window.localStorage.setItem("storageTest","A"),"A"==window.localStorage.getItem("storageTest")&&(window.localStorage.removeItem("storageTest"),!window.localStorage.getItem("storageTest")))}catch(a){return!1}},AuthenticationContext.prototype._supportsSessionStorage=function(){try{return!!window.sessionStorage&&(window.sessionStorage.setItem("storageTest","A"),"A"==window.sessionStorage.getItem("storageTest")&&(window.sessionStorage.removeItem("storageTest"),!window.sessionStorage.getItem("storageTest")))}catch(a){return!1}},AuthenticationContext.prototype._cloneConfig=function(a){if(null===a||"object"!=typeof a)return a;var b={};for(var c in a)a.hasOwnProperty(c)&&(b[c]=a[c]);return b},AuthenticationContext.prototype._addLibMetadata=function(){return"&x-client-SKU=Js&x-client-Ver="+this._libVersion()},AuthenticationContext.prototype.log=function(a,b,c,d){if(a<=Logging.level){if(!Logging.piiLoggingEnabled&&d)return;var e=(new Date).toUTCString(),f="";f=this.config.correlationId?e+":"+this.config.correlationId+"-"+this._libVersion()+"-"+this.CONSTANTS.LEVEL_STRING_MAP[a]+" "+b:e+":"+this._libVersion()+"-"+this.CONSTANTS.LEVEL_STRING_MAP[a]+" "+b,c&&(f+="\nstack:\n"+c.stack),Logging.log(f)}},AuthenticationContext.prototype.error=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b)},AuthenticationContext.prototype.warn=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null)},AuthenticationContext.prototype.info=function(a){
-this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null)},AuthenticationContext.prototype.verbose=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null)},AuthenticationContext.prototype.errorPii=function(a,b){this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR,a,b,!0)},AuthenticationContext.prototype.warnPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.WARN,a,null,!0)},AuthenticationContext.prototype.infoPii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.INFO,a,null,!0)},AuthenticationContext.prototype.verbosePii=function(a){this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE,a,null,!0)},AuthenticationContext.prototype._libVersion=function(){return"1.0.17"}, true&&module.exports&&(module.exports=AuthenticationContext,module.exports.inject=function(a){return new AuthenticationContext(a)}),AuthenticationContext}();
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1239,7 +1269,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1304,6 +1334,8 @@ __webpack_require__.d(__webpack_exports__, "Planner", function() { return /* ree
 __webpack_require__.d(__webpack_exports__, "Plans", function() { return /* reexport */ Plans; });
 __webpack_require__.d(__webpack_exports__, "Task", function() { return /* reexport */ Task; });
 __webpack_require__.d(__webpack_exports__, "Tasks", function() { return /* reexport */ Tasks; });
+__webpack_require__.d(__webpack_exports__, "TaskDetails", function() { return /* reexport */ TaskDetails; });
+__webpack_require__.d(__webpack_exports__, "PlanDetails", function() { return /* reexport */ PlanDetails; });
 __webpack_require__.d(__webpack_exports__, "Subscription", function() { return /* reexport */ Subscription; });
 __webpack_require__.d(__webpack_exports__, "Subscriptions", function() { return /* reexport */ Subscriptions; });
 __webpack_require__.d(__webpack_exports__, "Channel", function() { return /* reexport */ Channel; });
@@ -1317,12 +1349,245 @@ __webpack_require__.d(__webpack_exports__, "Users", function() { return /* reexp
 __webpack_require__.d(__webpack_exports__, "People", function() { return /* reexport */ People; });
 __webpack_require__.d(__webpack_exports__, "graph", function() { return /* reexport */ graph; });
 __webpack_require__.d(__webpack_exports__, "GraphRest", function() { return /* reexport */ rest_GraphRest; });
+__webpack_require__.d(__webpack_exports__, "GraphBatch", function() { return /* reexport */ batch_GraphBatch; });
+__webpack_require__.d(__webpack_exports__, "GraphQueryable", function() { return /* reexport */ GraphQueryable; });
+__webpack_require__.d(__webpack_exports__, "GraphQueryableCollection", function() { return /* reexport */ GraphQueryableCollection; });
+__webpack_require__.d(__webpack_exports__, "GraphQueryableInstance", function() { return /* reexport */ GraphQueryableInstance; });
+__webpack_require__.d(__webpack_exports__, "GraphQueryableSearchableCollection", function() { return /* reexport */ GraphQueryableSearchableCollection; });
+__webpack_require__.d(__webpack_exports__, "GraphHttpClient", function() { return /* reexport */ graphhttpclient_GraphHttpClient; });
+__webpack_require__.d(__webpack_exports__, "GraphEndpoints", function() { return /* reexport */ GraphEndpoints; });
 
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__(0);
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/node_modules/tslib/tslib.es6.js
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return __assign.apply(this, arguments);
+}
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var __createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+
+function __exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+var __setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function __classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function __classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
 
 // EXTERNAL MODULE: ./node_modules/@pnp/common/index.js
-var common = __webpack_require__(1);
+var common = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
 
@@ -1492,12 +1757,242 @@ function addProp(target, name, factory, path) {
     });
 }
 //# sourceMappingURL=add-prop.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/node_modules/tslib/tslib.es6.js
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var tslib_es6_extendStatics = function(d, b) {
+    tslib_es6_extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return tslib_es6_extendStatics(d, b);
+};
+
+function tslib_es6_extends(d, b) {
+    tslib_es6_extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var tslib_es6_assign = function() {
+    tslib_es6_assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return tslib_es6_assign.apply(this, arguments);
+}
+
+function tslib_es6_rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function tslib_es6_decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function tslib_es6_param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function tslib_es6_metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function tslib_es6_awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function tslib_es6_generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var tslib_es6_createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+
+function tslib_es6_exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) tslib_es6_createBinding(exports, m, p);
+}
+
+function tslib_es6_values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function tslib_es6_read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function tslib_es6_spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(tslib_es6_read(arguments[i]));
+    return ar;
+}
+
+function tslib_es6_spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function tslib_es6_await(v) {
+    return this instanceof tslib_es6_await ? (this.v = v, this) : new tslib_es6_await(v);
+}
+
+function tslib_es6_asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof tslib_es6_await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function tslib_es6_asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: tslib_es6_await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function tslib_es6_asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof tslib_es6_values === "function" ? tslib_es6_values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function tslib_es6_makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+var tslib_es6_setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
+function tslib_es6_importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) tslib_es6_createBinding(result, mod, k);
+    tslib_es6_setModuleDefault(result, mod);
+    return result;
+}
+
+function tslib_es6_importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function tslib_es6_classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
 
 
 var _enableExtensions = false;
-var globaExtensions = [];
-var ObjExtensionsSym = Symbol("__extensions");
+var globalExtensions = [];
+var factoryExtensions = new Map();
+var ObjExtensionsSym = Symbol.for("43f7a601");
 /**
  * Creates global extensions across all invokable objects
  *
@@ -1505,7 +2000,7 @@ var ObjExtensionsSym = Symbol("__extensions");
  */
 var extendGlobal = function (e) {
     _enableExtensions = true;
-    extendCol(globaExtensions, e);
+    extendCol(globalExtensions, e);
 };
 /**
  * Applies the supplied extensions to a single instance
@@ -1529,15 +2024,23 @@ var extendObj = function (target, extensions) {
  */
 var extendFactory = function (factory, extensions) {
     _enableExtensions = true;
-    if (factory.__proto__[ObjExtensionsSym] === undefined) {
-        factory.__proto__[ObjExtensionsSym] = [];
+    // factoryExtensions
+    var proto = Reflect.getPrototypeOf(factory);
+    if (!Reflect.has(proto, ObjExtensionsSym)) {
+        Reflect.defineProperty(proto, ObjExtensionsSym, {
+            value: Object(common["getGUID"])(),
+        });
     }
-    extendCol(factory.__proto__[ObjExtensionsSym], extensions);
+    var key = proto[ObjExtensionsSym];
+    if (!factoryExtensions.has(key)) {
+        factoryExtensions.set(key, []);
+    }
+    extendCol(factoryExtensions.get(key), extensions);
 };
 function extendCol(a, e) {
     if (Object(common["isArray"])(e)) {
         // @ts-ignore
-        a.push.apply(a, Object(tslib_es6["e" /* __spread */])(e));
+        a.push.apply(a, tslib_es6_spread(e));
     }
     else {
         // @ts-ignore
@@ -1548,7 +2051,7 @@ function extendCol(a, e) {
  * Clears all global extensions
  */
 var clearGlobalExtensions = function () {
-    globaExtensions.length = 0;
+    globalExtensions.length = 0;
 };
 /**
  * Disables all extensions
@@ -1570,8 +2073,10 @@ var enableExtensions = function () {
  */
 var applyFactoryExtensions = function (factory, args) {
     var o = factory(args);
-    if (factory.__proto__[ObjExtensionsSym]) {
-        o = extendObj(o, factory.__proto__[ObjExtensionsSym]);
+    var proto = Reflect.getPrototypeOf(factory);
+    if (Reflect.has(proto, ObjExtensionsSym)) {
+        var extensions = factoryExtensions.get(Reflect.get(proto, ObjExtensionsSym));
+        o = extendObj(o, extensions);
     }
     return o;
 };
@@ -1584,16 +2089,16 @@ function extensionOrDefault(op, or, target) {
         var extensions = [];
         // we need to first invoke extensions tied to only this object
         if (Reflect.has(target, ObjExtensionsSym)) {
-            extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(Reflect.get(target, ObjExtensionsSym)));
+            extensions.push.apply(extensions, tslib_es6_spread(Reflect.get(target, ObjExtensionsSym)));
         }
         // second we need to process any global extensions
-        extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(globaExtensions));
+        extensions.push.apply(extensions, tslib_es6_spread(globalExtensions));
         for (var i = 0; i < extensions.length; i++) {
             var extension = extensions[i];
             var result = undefined;
             if (Object(common["isFunc"])(extension)) {
                 // this extension is a function which we call
-                result = extension.apply(void 0, Object(tslib_es6["e" /* __spread */])([op, target], rest));
+                result = extension.apply(void 0, tslib_es6_spread([op, target], rest));
             }
             else if (op === "get" && Reflect.has(extension, rest[0])) {
                 // this extension is a named extension meaning we are overriding a specific method/property
@@ -1601,7 +2106,7 @@ function extensionOrDefault(op, or, target) {
             }
             else if (Reflect.has(extension, op)) {
                 // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
-                result = Reflect.get(extension, op).apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
+                result = Reflect.get(extension, op).apply(void 0, tslib_es6_spread([target], rest));
             }
             if (typeof result !== "undefined") {
                 // if a extension returned a result, we return that
@@ -1611,7 +2116,7 @@ function extensionOrDefault(op, or, target) {
             }
         }
     }
-    return or.apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
+    return or.apply(void 0, tslib_es6_spread([target], rest));
 }
 //# sourceMappingURL=invokable-extensions.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
@@ -1631,7 +2136,7 @@ var invokableBinder = function (invoker) { return function (constructor) {
                     ags[_i] = arguments[_i];
                 }
                 return invoker.apply(r, ags);
-            }, new (constructor.bind.apply(constructor, Object(tslib_es6["e" /* __spread */])([void 0], as)))());
+            }, new (constructor.bind.apply(constructor, tslib_es6_spread([void 0], as)))());
             Reflect.setPrototypeOf(r, constructor.prototype);
             return r;
         };
@@ -1748,7 +2253,7 @@ var parsers_ODataParser = /** @class */ (function () {
 }());
 
 var parsers_TextParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(TextParser, _super);
+    tslib_es6_extends(TextParser, _super);
     function TextParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1759,7 +2264,7 @@ var parsers_TextParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_BlobParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(BlobParser, _super);
+    tslib_es6_extends(BlobParser, _super);
     function BlobParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1770,7 +2275,7 @@ var parsers_BlobParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_JSONParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(JSONParser, _super);
+    tslib_es6_extends(JSONParser, _super);
     function JSONParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1781,7 +2286,7 @@ var parsers_JSONParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_BufferParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(BufferParser, _super);
+    tslib_es6_extends(BufferParser, _super);
     function BufferParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1797,7 +2302,7 @@ var parsers_BufferParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_LambdaParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(LambdaParser, _super);
+    tslib_es6_extends(LambdaParser, _super);
     function LambdaParser(parser) {
         var _this = _super.call(this) || this;
         _this.parser = parser;
@@ -1810,7 +2315,7 @@ var parsers_LambdaParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_HttpRequestError = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(HttpRequestError, _super);
+    tslib_es6_extends(HttpRequestError, _super);
     function HttpRequestError(message, response, status, statusText) {
         if (status === void 0) { status = response.status; }
         if (statusText === void 0) { statusText = response.statusText; }
@@ -1822,9 +2327,9 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
         return _this;
     }
     HttpRequestError.init = function (r) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return tslib_es6_awaiter(this, void 0, void 0, function () {
             var t;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return tslib_es6_generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, r.clone().text()];
                     case 1:
@@ -1843,10 +2348,17 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
 
 
 function cloneQueryableData(source) {
+    var body;
+    // this handles bodies that cannot be JSON encoded (Blob, etc)
+    // Note however, even bodies that can be serialized will not be cloned.
+    if (source.options && source.options.body) {
+        body = source.options.body;
+        source.options.body = "-";
+    }
     var s = JSON.stringify(source, function (key, value) {
         switch (key) {
             case "query":
-                return JSON.stringify(Object(tslib_es6["e" /* __spread */])(value));
+                return JSON.stringify(tslib_es6_spread(value));
             case "batch":
                 return "-";
             case "batchDependency":
@@ -1879,9 +2391,9 @@ function cloneQueryableData(source) {
                 return value;
         }
     });
-    // this handles bodies that cannot be JSON encoded (Blob, etc)
-    if (source.options && source.options.body) {
-        parsed.options.body = source.options.body;
+    if (body) {
+        parsed.options.body = body;
+        source.options.body = body;
     }
     return parsed;
 }
@@ -1903,13 +2415,13 @@ var queryable_Queryable = /** @class */ (function () {
             return this._data;
         },
         set: function (value) {
-            this._data = Object.assign({}, cloneQueryableData(this.data), cloneQueryableData(value));
+            this._data = Object.assign({}, this.data, cloneQueryableData(value));
         },
         enumerable: false,
         configurable: true
     });
     /**
-    * Gets the currentl url
+    * Gets the current url
     *
     */
     Queryable.prototype.toUrl = function () {
@@ -2057,7 +2569,12 @@ var queryable_Queryable = /** @class */ (function () {
      * @param settings [Optional] Settings controlling how clone is applied
      */
     Queryable.prototype.cloneTo = function (target, settings) {
-        if (settings === void 0) { settings = { includeBatch: true }; }
+        if (settings === void 0) { settings = {}; }
+        // default values for settings
+        settings = Object(common["assign"])({
+            includeBatch: true,
+            includeQuery: false,
+        }, settings);
         target.data = Object.assign({}, cloneQueryableData(this.data), {
             batch: null,
             cloneParentCacheOptions: null,
@@ -2066,6 +2583,9 @@ var queryable_Queryable = /** @class */ (function () {
         target.configureFrom(this);
         if (settings.includeBatch) {
             target.inBatch(this.batch);
+        }
+        if (settings.includeQuery && this.query.size > 0) {
+            this.query.forEach(function (v, k) { return target.query.set(k, v); });
         }
         if (this.data.useCaching) {
             target.data.cloneParentWasCaching = true;
@@ -2350,7 +2870,7 @@ function pipe(context) {
         throw e;
     });
     if (context.isBatched) {
-        // this will block the batch's execute method from returning until the child requets have been resolved
+        // this will block the batch's execute method from returning until the child requests have been resolved
         context.batch.addResolveBatchDependency(promise);
     }
     return promise;
@@ -2490,16 +3010,16 @@ var pipeline_PipelineMethods = /** @class */ (function () {
             resolve(context);
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod(true)
     ], PipelineMethods, "logStart", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod()
     ], PipelineMethods, "caching", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod()
     ], PipelineMethods, "send", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod(true)
     ], PipelineMethods, "logEnd", null);
     return PipelineMethods;
@@ -2556,7 +3076,7 @@ var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
 
-function body(o, previous) {
+function request_builders_body(o, previous) {
     return Object.assign({ body: Object(common["jsS"])(o) }, previous);
 }
 function request_builders_headers(o, previous) {
@@ -2587,7 +3107,7 @@ var GraphEndpoints = /** @class */ (function () {
         var all = [GraphEndpoints.Beta, GraphEndpoints.V1];
         var regex = new RegExp(endpoint, "i");
         var replaces = all.filter(function (s) { return !regex.test(s); }).map(function (s) { return s.replace(".", "\\."); });
-        regex = new RegExp("/?(" + replaces.join("|") + ")/", "ig");
+        regex = new RegExp("/?(" + replaces.join("|") + ")/?", "ig");
         return url.replace(regex, "/" + endpoint + "/");
     };
     GraphEndpoints.Beta = "beta";
@@ -2596,177 +3116,7 @@ var GraphEndpoints = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=types.js.map
-// EXTERNAL MODULE: ./node_modules/adal-angular/dist/adal.min.js
-var adal_min = __webpack_require__(9);
-
-// CONCATENATED MODULE: ./node_modules/@pnp/adaljsclient/adalclient.js
-
-
-// @ts-ignore
-
-/**
- * Azure AD Client for use in the browser
- */
-var adalclient_AdalClient = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(AdalClient, _super);
-    /**
-     * Creates a new instance of AdalClient
-     * @param clientId Azure App Id
-     * @param tenant Office 365 tenant (Ex: {tenant}.onmicrosoft.com)
-     * @param redirectUri The redirect url used to authenticate the
-     */
-    function AdalClient(clientId, tenant, redirectUri) {
-        var _this = _super.call(this, null) || this;
-        _this.clientId = clientId;
-        _this.tenant = tenant;
-        _this.redirectUri = redirectUri;
-        _this._displayCallback = null;
-        _this._loginPromise = null;
-        return _this;
-    }
-    /**
-     * Creates a new AdalClient using the values of the supplied SPFx context (requires SPFx >= 1.6)
-     *
-     * @param spfxContext Current SPFx context
-     * @description Using this method requires that the features described in this article
-     * https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-aadhttpclient are activated in the tenant.
-     */
-    AdalClient.fromSPFxContext = function (spfxContext) {
-        return new common["SPFxAdalClient"](spfxContext);
-    };
-    /**
-     * Conducts the fetch opertation against the AAD secured resource
-     *
-     * @param url Absolute URL for the request
-     * @param options Any fetch options passed to the underlying fetch implementation
-     */
-    AdalClient.prototype.fetch = function (url, options) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var token;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!Object(common["isUrlAbsolute"])(url)) {
-                            throw Error("You must supply absolute urls to AdalClient.fetch.");
-                        }
-                        return [4 /*yield*/, this.getToken(Object(common["getADALResource"])(url))];
-                    case 1:
-                        token = _a.sent();
-                        this.token = token;
-                        return [2 /*return*/, _super.prototype.fetch.call(this, url, options)];
-                }
-            });
-        });
-    };
-    /**
-     * Gets a token based on the current user
-     *
-     * @param resource The resource for which we are requesting a token
-     */
-    AdalClient.prototype.getToken = function (resource) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var token;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.ensureAuthContext()];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.login()];
-                    case 2:
-                        _a.sent();
-                        token = null;
-                        AdalClient._authContext.acquireToken(resource, function (message, tok) {
-                            if (message) {
-                                throw Error(message);
-                            }
-                            token = tok;
-                        });
-                        return [2 /*return*/, token];
-                }
-            });
-        });
-    };
-    /**
-     * Ensures we have created and setup the adal AuthenticationContext instance
-     */
-    AdalClient.prototype.ensureAuthContext = function () {
-        var _this = this;
-        return new Promise(function (resolve) {
-            if (AdalClient._authContext === null) {
-                AdalClient._authContext = adal_min["inject"]({
-                    clientId: _this.clientId,
-                    displayCall: function (url) {
-                        if (_this._displayCallback) {
-                            _this._displayCallback(url);
-                        }
-                    },
-                    navigateToLoginRequestUrl: false,
-                    redirectUri: _this.redirectUri,
-                    tenant: _this.tenant,
-                });
-            }
-            resolve();
-        });
-    };
-    /**
-     * Ensures the current user is logged in
-     */
-    AdalClient.prototype.login = function () {
-        var _this = this;
-        if (this._loginPromise) {
-            return this._loginPromise;
-        }
-        this._loginPromise = new Promise(function (resolve, reject) {
-            if (AdalClient._authContext.getCachedUser()) {
-                return resolve();
-            }
-            _this._displayCallback = function (url) {
-                var popupWindow = window.open(url, "login", "width=483, height=600");
-                if (!popupWindow) {
-                    return reject(Error("Could not open pop-up window for auth. Likely pop-ups are blocked by the browser."));
-                }
-                if (popupWindow && popupWindow.focus) {
-                    popupWindow.focus();
-                }
-                var pollTimer = window.setInterval(function () {
-                    if (!popupWindow || popupWindow.closed || popupWindow.closed === undefined) {
-                        window.clearInterval(pollTimer);
-                    }
-                    try {
-                        if (popupWindow.document.URL.indexOf(_this.redirectUri) !== -1) {
-                            window.clearInterval(pollTimer);
-                            AdalClient._authContext.handleWindowCallback(popupWindow.location.hash);
-                            popupWindow.close();
-                            resolve();
-                        }
-                    }
-                    catch (e) {
-                        reject(e);
-                    }
-                }, 30);
-            };
-            // this triggers the login process
-            _this.ensureAuthContext().then(function (_) {
-                AdalClient._authContext._loginInProgress = false;
-                AdalClient._authContext.login();
-                _this._displayCallback = null;
-            });
-        });
-        return this._loginPromise;
-    };
-    /**
-     * Our auth context
-     */
-    AdalClient._authContext = null;
-    return AdalClient;
-}(common["BearerTokenFetchClient"]));
-
-//# sourceMappingURL=adalclient.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/adaljsclient/index.js
-
-//# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/graphlibconfig.js
-
 
 function setup(config) {
     common["RuntimeConfig"].assign(config);
@@ -2777,10 +3127,21 @@ var graphlibconfig_GraphRuntimeConfigImpl = /** @class */ (function () {
     Object.defineProperty(GraphRuntimeConfigImpl.prototype, "headers", {
         get: function () {
             var graphPart = common["RuntimeConfig"].get("graph");
-            if (graphPart !== undefined && graphPart !== null && graphPart.headers !== undefined) {
+            if (graphPart !== undefined && graphPart.headers !== undefined) {
                 return graphPart.headers;
             }
             return {};
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GraphRuntimeConfigImpl.prototype, "baseUrl", {
+        get: function () {
+            var graphPart = common["RuntimeConfig"].get("graph");
+            if (graphPart !== undefined && graphPart.baseUrl !== undefined) {
+                return graphPart.baseUrl;
+            }
+            return null;
         },
         enumerable: false,
         configurable: true
@@ -2789,12 +3150,12 @@ var graphlibconfig_GraphRuntimeConfigImpl = /** @class */ (function () {
         get: function () {
             var graphPart = common["RuntimeConfig"].get("graph");
             // use a configured factory firt
-            if (graphPart !== undefined && graphPart !== null && graphPart.fetchClientFactory !== undefined) {
+            if (graphPart !== undefined && graphPart.fetchClientFactory !== undefined) {
                 return graphPart.fetchClientFactory;
             }
             // then try and use spfx context if available
             if (common["RuntimeConfig"].spfxContext !== undefined) {
-                return function () { return adalclient_AdalClient.fromSPFxContext(common["RuntimeConfig"].spfxContext); };
+                return function () { return new common["SPFxAdalClient"](common["RuntimeConfig"].spfxContext); };
             }
             throw Error("There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup.");
         },
@@ -2825,7 +3186,7 @@ var graphhttpclient_GraphHttpClient = /** @class */ (function () {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/2.0.6");
+            headers.append("SdkVersion", "PnPCoreJS/2.0.10");
         }
         var opts = Object(common["assign"])(options, { headers: headers });
         return this.fetchRaw(url, opts);
@@ -2893,7 +3254,56 @@ var graphhttpclient_GraphHttpClient = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=graphhttpclient.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/utils/toabsoluteurl.js
+
+
+
+/**
+ * Ensures that a given url is absolute for the current web based on context
+ *
+ * @param candidateUrl The url to make absolute
+ *
+ */
+function toAbsoluteUrl(candidateUrl) {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function () {
+        var client, baseUrl, e_1;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    if (Object(common["isUrlAbsolute"])(candidateUrl)) {
+                        // if we are already absolute, then just return the url
+                        return [2 /*return*/, candidateUrl];
+                    }
+                    if (!Object(common["stringIsNullOrEmpty"])(GraphRuntimeConfig.baseUrl)) {
+                        // base url specified either with baseUrl of spfxContext config property
+                        return [2 /*return*/, Object(common["combine"])(GraphRuntimeConfig.baseUrl, candidateUrl)];
+                    }
+                    if (!Object(common["objectDefinedNotNull"])(common["RuntimeConfig"].spfxContext)) return [3 /*break*/, 4];
+                    _c.label = 1;
+                case 1:
+                    _c.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, common["RuntimeConfig"].spfxContext.msGraphClientFactory.getClient()];
+                case 2:
+                    client = _c.sent();
+                    baseUrl = (_b = (_a = client) === null || _a === void 0 ? void 0 : _a.constructor) === null || _b === void 0 ? void 0 : _b._graphBaseUrl;
+                    if (!Object(common["stringIsNullOrEmpty"])(baseUrl)) {
+                        return [2 /*return*/, Object(common["combine"])(baseUrl, candidateUrl)];
+                    }
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_1 = _c.sent();
+                    return [3 /*break*/, 4];
+                case 4: 
+                // try one last time with the default
+                return [2 /*return*/, Object(common["combine"])("https://graph.microsoft.com", candidateUrl)];
+            }
+        });
+    });
+}
+//# sourceMappingURL=toabsoluteurl.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/operations.js
+
 
 
 
@@ -2901,17 +3311,22 @@ var graphhttpclient_GraphHttpClient = /** @class */ (function () {
 var graphClientBinder = defaultPipelineBinder(function () { return new graphhttpclient_GraphHttpClient(); });
 var send = function (operation) {
     return function (o, options) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data, batchDependency, url;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
-                data = cloneQueryableData(o.data);
-                batchDependency = Object(common["objectDefinedNotNull"])(data.batch) ? data.batch.addDependency() : function () { return; };
-                url = o.toUrlAndQuery();
-                Object(common["mergeOptions"])(data.options, options);
-                return [2 /*return*/, operation(Object.assign({}, data, {
-                        batchDependency: batchDependency,
-                        url: url,
-                    }))];
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        data = cloneQueryableData(o.data);
+                        batchDependency = Object(common["objectDefinedNotNull"])(data.batch) ? data.batch.addDependency() : function () { return; };
+                        return [4 /*yield*/, toAbsoluteUrl(o.toUrlAndQuery())];
+                    case 1:
+                        url = _a.sent();
+                        Object(common["mergeOptions"])(data.options, options);
+                        return [2 /*return*/, operation(Object.assign({}, data, {
+                                batchDependency: batchDependency,
+                                url: url,
+                            }))];
+                }
             });
         });
     };
@@ -2936,7 +3351,7 @@ var graphInvokableFactory = function (f) {
  *
  */
 var graphqueryable_GraphQueryable = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_GraphQueryable, _super);
+    __extends(_GraphQueryable, _super);
     /**
      * Creates a new instance of the Queryable class
      *
@@ -2979,7 +3394,7 @@ var graphqueryable_GraphQueryable = /** @class */ (function (_super) {
             selects[_i] = arguments[_i];
         }
         if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
+            this.query.set("$select", selects.map(encodeURIComponent).join(","));
         }
         return this;
     };
@@ -2994,7 +3409,7 @@ var graphqueryable_GraphQueryable = /** @class */ (function (_super) {
             expands[_i] = arguments[_i];
         }
         if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
+            this.query.set("$expand", expands.map(encodeURIComponent).join(","));
         }
         return this;
     };
@@ -3010,14 +3425,15 @@ var graphqueryable_GraphQueryable = /** @class */ (function (_super) {
      */
     _GraphQueryable.prototype.toUrlAndQuery = function () {
         var url = this.toUrl();
-        if (!Object(common["isUrlAbsolute"])(url)) {
-            url = Object(common["combine"])("https://graph.microsoft.com", url);
-        }
         if (this.query.size > 0) {
             var char = url.indexOf("?") > -1 ? "&" : "?";
             url += "" + char + Array.from(this.query).map(function (v) { return v[0] + "=" + v[1]; }).join("&");
         }
         return url;
+    };
+    _GraphQueryable.prototype.setEndpoint = function (endpoint) {
+        this.data.url = GraphEndpoints.ensure(this.data.url, endpoint);
+        return this;
     };
     /**
      * Gets a parent for this instance as specified
@@ -3033,14 +3449,12 @@ var graphqueryable_GraphQueryable = /** @class */ (function (_super) {
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
+     * @param includeQuery If true all of the query values will be copied to the cloned instance
      */
-    _GraphQueryable.prototype.clone = function (factory, additionalPath, includeBatch) {
+    _GraphQueryable.prototype.clone = function (factory, additionalPath, includeBatch, includeQuery) {
         if (includeBatch === void 0) { includeBatch = true; }
-        return _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch });
-    };
-    _GraphQueryable.prototype.setEndpoint = function (endpoint) {
-        this.data.url = GraphEndpoints.ensure(this.data.url, endpoint);
-        return this;
+        if (includeQuery === void 0) { includeQuery = false; }
+        return _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch, includeQuery: includeQuery });
     };
     return _GraphQueryable;
 }(queryable_Queryable));
@@ -3051,7 +3465,7 @@ var GraphQueryable = graphInvokableFactory(graphqueryable_GraphQueryable);
  *
  */
 var graphqueryable_GraphQueryableCollection = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_GraphQueryableCollection, _super);
+    __extends(_GraphQueryableCollection, _super);
     function _GraphQueryableCollection() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3073,7 +3487,7 @@ var graphqueryable_GraphQueryableCollection = /** @class */ (function (_super) {
         if (ascending === void 0) { ascending = true; }
         var o = "$orderby";
         var query = this.query.has(o) ? this.query.get(o).split(",") : [];
-        query.push(orderBy + " " + (ascending ? "asc" : "desc"));
+        query.push(encodeURIComponent(orderBy) + " " + (ascending ? "asc" : "desc"));
         this.query.set(o, query.join(","));
         return this;
     };
@@ -3118,7 +3532,7 @@ var graphqueryable_GraphQueryableCollection = /** @class */ (function (_super) {
 
 var GraphQueryableCollection = graphInvokableFactory(graphqueryable_GraphQueryableCollection);
 var graphqueryable_GraphQueryableSearchableCollection = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_GraphQueryableSearchableCollection, _super);
+    __extends(_GraphQueryableSearchableCollection, _super);
     function _GraphQueryableSearchableCollection() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3138,7 +3552,7 @@ var GraphQueryableSearchableCollection = graphInvokableFactory(graphqueryable_Gr
  *
  */
 var graphqueryable_GraphQueryableInstance = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_GraphQueryableInstance, _super);
+    __extends(_GraphQueryableInstance, _super);
     function _GraphQueryableInstance() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3159,7 +3573,7 @@ var GraphQueryableInstance = graphInvokableFactory(graphqueryable_GraphQueryable
 function defaultPath(path) {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_1, _super);
+            __extends(class_1, _super);
             function class_1() {
                 var args = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
@@ -3177,7 +3591,7 @@ function defaultPath(path) {
 function deleteable() {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_2, _super);
+            __extends(class_2, _super);
             function class_2() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
@@ -3194,7 +3608,7 @@ function deleteable() {
 function deleteableWithETag() {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_3, _super);
+            __extends(class_3, _super);
             function class_3() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
@@ -3214,12 +3628,12 @@ function deleteableWithETag() {
 function updateable() {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_4, _super);
+            __extends(class_4, _super);
             function class_4() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
             class_4.prototype.update = function (props) {
-                return graphPatch(this, body(props));
+                return graphPatch(this, request_builders_body(props));
             };
             return class_4;
         }(target));
@@ -3231,13 +3645,13 @@ function updateable() {
 function updateableWithETag() {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_5, _super);
+            __extends(class_5, _super);
             function class_5() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
             class_5.prototype.update = function (props, eTag) {
                 if (eTag === void 0) { eTag = "*"; }
-                return graphPatch(this, body(props, request_builders_headers({
+                return graphPatch(this, request_builders_body(props, request_builders_headers({
                     "If-Match": eTag,
                 })));
             };
@@ -3251,12 +3665,12 @@ function updateableWithETag() {
 function addable() {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_6, _super);
+            __extends(class_6, _super);
             function class_6() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
             class_6.prototype.add = function (props) {
-                return graphPost(this, body(props));
+                return graphPost(this, request_builders_body(props));
             };
             return class_6;
         }(target));
@@ -3268,7 +3682,7 @@ function addable() {
 function getById(factory) {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_7, _super);
+            __extends(class_7, _super);
             function class_7() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
@@ -3290,7 +3704,7 @@ function getById(factory) {
  * Conversation
  */
 var types_Conversation = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Conversation, _super);
+    __extends(_Conversation, _super);
     function _Conversation() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3304,7 +3718,7 @@ var types_Conversation = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    _Conversation = Object(tslib_es6["b" /* __decorate */])([
+    _Conversation = __decorate([
         updateable(),
         deleteable()
     ], _Conversation);
@@ -3316,11 +3730,11 @@ var Conversation = graphInvokableFactory(types_Conversation);
  * Conversations
  */
 var types_Conversations = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Conversations, _super);
+    __extends(_Conversations, _super);
     function _Conversations() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Conversations = Object(tslib_es6["b" /* __decorate */])([
+    _Conversations = __decorate([
         defaultPath("conversations"),
         addable(),
         getById(Conversation)
@@ -3333,7 +3747,7 @@ var Conversations = graphInvokableFactory(types_Conversations);
  * Thread
  */
 var types_Thread = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Thread, _super);
+    __extends(_Thread, _super);
     function _Thread() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3353,9 +3767,9 @@ var types_Thread = /** @class */ (function (_super) {
      * @param post Contents of the post
      */
     _Thread.prototype.reply = function (post) {
-        return graphPost(this.clone(Thread, "reply"), body(post));
+        return graphPost(this.clone(Thread, "reply"), request_builders_body(post));
     };
-    _Thread = Object(tslib_es6["b" /* __decorate */])([
+    _Thread = __decorate([
         deleteable()
     ], _Thread);
     return _Thread;
@@ -3366,11 +3780,11 @@ var Thread = graphInvokableFactory(types_Thread);
  * Threads
  */
 var types_Threads = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Threads, _super);
+    __extends(_Threads, _super);
     function _Threads() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Threads = Object(tslib_es6["b" /* __decorate */])([
+    _Threads = __decorate([
         defaultPath("threads"),
         addable(),
         getById(Thread)
@@ -3383,7 +3797,7 @@ var Threads = graphInvokableFactory(types_Threads);
  * Post
  */
 var types_Post = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Post, _super);
+    __extends(_Post, _super);
     function _Post() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3391,7 +3805,7 @@ var types_Post = /** @class */ (function (_super) {
      * Forward a post to a recipient
      */
     _Post.prototype.forward = function (info) {
-        return graphPost(this.clone(Post, "forward"), body(info));
+        return graphPost(this.clone(Post, "forward"), request_builders_body(info));
     };
     /**
      * Reply to a thread in a group conversation and add a new post to it
@@ -3399,9 +3813,9 @@ var types_Post = /** @class */ (function (_super) {
      * @param post Contents of the post
      */
     _Post.prototype.reply = function (post) {
-        return graphPost(this.clone(Post, "reply"), body(post));
+        return graphPost(this.clone(Post, "reply"), request_builders_body(post));
     };
-    _Post = Object(tslib_es6["b" /* __decorate */])([
+    _Post = __decorate([
         deleteable()
     ], _Post);
     return _Post;
@@ -3412,11 +3826,11 @@ var Post = graphInvokableFactory(types_Post);
  * Posts
  */
 var types_Posts = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Posts, _super);
+    __extends(_Posts, _super);
     function _Posts() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Posts = Object(tslib_es6["b" /* __decorate */])([
+    _Posts = __decorate([
         defaultPath("posts"),
         addable(),
         getById(Post)
@@ -3429,7 +3843,7 @@ var Posts = graphInvokableFactory(types_Posts);
  * Senders
  */
 var types_Senders = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Senders, _super);
+    __extends(_Senders, _super);
     function _Senders() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3438,7 +3852,7 @@ var types_Senders = /** @class */ (function (_super) {
      * @param id The full @odata.id value to add (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
      */
     _Senders.prototype.add = function (id) {
-        return graphPost(this.clone(Senders, "$ref"), body({ "@odata.id": id }));
+        return graphPost(this.clone(Senders, "$ref"), request_builders_body({ "@odata.id": id }));
     };
     /**
      * Removes the entity from the collection
@@ -3471,7 +3885,7 @@ function type_type(n, a) {
  * Attachment
  */
 var types_Attachment = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Attachment, _super);
+    __extends(_Attachment, _super);
     function _Attachment() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3483,7 +3897,7 @@ var Attachment = graphInvokableFactory(types_Attachment);
  * Attachments
  */
 var types_Attachments = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Attachments, _super);
+    __extends(_Attachments, _super);
     function _Attachments() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3494,12 +3908,12 @@ var types_Attachments = /** @class */ (function (_super) {
      * @param bytes File content
      */
     _Attachments.prototype.addFile = function (name, bytes) {
-        return graphPost(this, body(type_type("#microsoft.graph.fileAttachment", {
+        return graphPost(this, request_builders_body(type_type("#microsoft.graph.fileAttachment", {
             contentBytes: bytes,
             name: name,
         })));
     };
-    _Attachments = Object(tslib_es6["b" /* __decorate */])([
+    _Attachments = __decorate([
         defaultPath("attachments"),
         getById(Attachment)
     ], _Attachments);
@@ -3528,7 +3942,7 @@ addProp(types_Post, "attachments", Attachments);
  * Represents a Directory Object entity
  */
 var types_DirectoryObject = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_DirectoryObject, _super);
+    __extends(_DirectoryObject, _super);
     function _DirectoryObject() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3539,7 +3953,7 @@ var types_DirectoryObject = /** @class */ (function (_super) {
      */
     _DirectoryObject.prototype.getMemberObjects = function (securityEnabledOnly) {
         if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
-        return graphPost(this.clone(DirectoryObject, "getMemberObjects"), body({ securityEnabledOnly: securityEnabledOnly }));
+        return graphPost(this.clone(DirectoryObject, "getMemberObjects"), request_builders_body({ securityEnabledOnly: securityEnabledOnly }));
     };
     /**
      * Returns all the groups that the specified Directory Object is a member of. The check is transitive
@@ -3548,7 +3962,7 @@ var types_DirectoryObject = /** @class */ (function (_super) {
      */
     _DirectoryObject.prototype.getMemberGroups = function (securityEnabledOnly) {
         if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
-        return graphPost(this.clone(DirectoryObject, "getMemberGroups"), body({ securityEnabledOnly: securityEnabledOnly }));
+        return graphPost(this.clone(DirectoryObject, "getMemberGroups"), request_builders_body({ securityEnabledOnly: securityEnabledOnly }));
     };
     /**
      * Check for membership in a specified list of groups, and returns from that list those groups of which the specified user, group, or directory object is a member.
@@ -3556,9 +3970,9 @@ var types_DirectoryObject = /** @class */ (function (_super) {
      * @param groupIds A collection that contains the object IDs of the groups in which to check membership. Up to 20 groups may be specified.
      */
     _DirectoryObject.prototype.checkMemberGroups = function (groupIds) {
-        return graphPost(this.clone(DirectoryObject, "checkMemberGroups"), body({ groupIds: groupIds }));
+        return graphPost(this.clone(DirectoryObject, "checkMemberGroups"), request_builders_body({ groupIds: groupIds }));
     };
-    _DirectoryObject = Object(tslib_es6["b" /* __decorate */])([
+    _DirectoryObject = __decorate([
         deleteable()
     ], _DirectoryObject);
     return _DirectoryObject;
@@ -3570,7 +3984,7 @@ var DirectoryObject = graphInvokableFactory(types_DirectoryObject);
  *
  */
 var types_DirectoryObjects = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_DirectoryObjects, _super);
+    __extends(_DirectoryObjects, _super);
     function _DirectoryObjects() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3583,9 +3997,9 @@ var types_DirectoryObjects = /** @class */ (function (_super) {
     */
     _DirectoryObjects.prototype.getByIds = function (ids, type) {
         if (type === void 0) { type = DirectoryObjectTypes.directoryObject; }
-        return graphPost(this.clone(DirectoryObjects, "getByIds"), body({ ids: ids, type: type }));
+        return graphPost(this.clone(DirectoryObjects, "getByIds"), request_builders_body({ ids: ids, type: type }));
     };
-    _DirectoryObjects = Object(tslib_es6["b" /* __decorate */])([
+    _DirectoryObjects = __decorate([
         defaultPath("directoryObjects"),
         getById(DirectoryObject)
     ], _DirectoryObjects);
@@ -3643,7 +4057,7 @@ var GroupType;
  * Represents a group entity
  */
 var types_Group = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Group, _super);
+    __extends(_Group, _super);
     function _Group() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3691,7 +4105,7 @@ var types_Group = /** @class */ (function (_super) {
         view.query.set("endDateTime", end.toISOString());
         return view();
     };
-    _Group = Object(tslib_es6["b" /* __decorate */])([
+    _Group = __decorate([
         deleteable(),
         updateable()
     ], _Group);
@@ -3704,7 +4118,7 @@ var Group = graphInvokableFactory(types_Group);
  *
  */
 var types_Groups = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Groups, _super);
+    __extends(_Groups, _super);
     function _Groups() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3718,9 +4132,9 @@ var types_Groups = /** @class */ (function (_super) {
      */
     _Groups.prototype.add = function (name, mailNickname, groupType, additionalProperties) {
         if (additionalProperties === void 0) { additionalProperties = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = Object(common["assign"])({
@@ -3735,7 +4149,7 @@ var types_Groups = /** @class */ (function (_super) {
                                 groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
                             });
                         }
-                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -3746,7 +4160,7 @@ var types_Groups = /** @class */ (function (_super) {
             });
         });
     };
-    _Groups = Object(tslib_es6["b" /* __decorate */])([
+    _Groups = __decorate([
         defaultPath("groups"),
         getById(Group)
     ], _Groups);
@@ -3755,34 +4169,39 @@ var types_Groups = /** @class */ (function (_super) {
 
 var Groups = graphInvokableFactory(types_Groups);
 //# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/funcs.js
+
+/**
+ * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range,
+ * from the user's default calendar, or from some other calendar of the user's
+ *
+ * @param this IGraphQueryable instance
+ * @param start start time
+ * @param end end time
+ */
+function calendarView(start, end) {
+    var query = GraphQueryableCollection(this, "calendarView");
+    query.query.set("startDateTime", encodeURIComponent(start));
+    query.query.set("endDateTime", encodeURIComponent(end));
+    return query;
+}
+//# sourceMappingURL=funcs.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/types.js
 
 
 
 
 
-/**
- * Calendars
- */
-var types_Calendars = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Calendars, _super);
-    function _Calendars() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    _Calendars = Object(tslib_es6["b" /* __decorate */])([
-        defaultPath("calendars")
-    ], _Calendars);
-    return _Calendars;
-}(graphqueryable_GraphQueryableCollection));
 
-var Calendars = graphInvokableFactory(types_Calendars);
 /**
  * Calendar
  */
 var types_Calendar = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Calendar, _super);
+    __extends(_Calendar, _super);
     function _Calendar() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.calendarView = calendarView;
+        return _this;
     }
     Object.defineProperty(_Calendar.prototype, "events", {
         get: function () {
@@ -3796,14 +4215,30 @@ var types_Calendar = /** @class */ (function (_super) {
 
 var Calendar = graphInvokableFactory(types_Calendar);
 /**
+ * Calendars
+ */
+var types_Calendars = /** @class */ (function (_super) {
+    __extends(_Calendars, _super);
+    function _Calendars() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Calendars = __decorate([
+        defaultPath("calendars"),
+        getById(Calendar)
+    ], _Calendars);
+    return _Calendars;
+}(graphqueryable_GraphQueryableCollection));
+
+var Calendars = graphInvokableFactory(types_Calendars);
+/**
  * Event
  */
 var types_Event = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Event, _super);
+    __extends(_Event, _super);
     function _Event() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Event = Object(tslib_es6["b" /* __decorate */])([
+    _Event = __decorate([
         deleteable(),
         updateable()
     ], _Event);
@@ -3815,7 +4250,7 @@ var Event = graphInvokableFactory(types_Event);
  * Events
  */
 var types_Events = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Events, _super);
+    __extends(_Events, _super);
     function _Events() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3825,11 +4260,11 @@ var types_Events = /** @class */ (function (_super) {
      * @param properties The set of properties used to create the event
      */
     _Events.prototype.add = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, graphPost(this, body(properties))];
+                    case 0: return [4 /*yield*/, graphPost(this, request_builders_body(properties))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -3840,7 +4275,7 @@ var types_Events = /** @class */ (function (_super) {
             });
         });
     };
-    _Events = Object(tslib_es6["b" /* __decorate */])([
+    _Events = __decorate([
         defaultPath("events"),
         getById(Event)
     ], _Events);
@@ -3856,17 +4291,13 @@ var Events = graphInvokableFactory(types_Events);
 addProp(types_Group, "calendar", Calendar, "calendar");
 addProp(types_Group, "events", Events);
 //# sourceMappingURL=groups.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/index.js
-
-
-//# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/users/types.js
 
 
 
 
 var types_User = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_User, _super);
+    __extends(_User, _super);
     function _User() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3890,7 +4321,7 @@ var types_User = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    _User = Object(tslib_es6["b" /* __decorate */])([
+    _User = __decorate([
         updateable(),
         deleteable()
     ], _User);
@@ -3899,11 +4330,11 @@ var types_User = /** @class */ (function (_super) {
 
 var User = graphInvokableFactory(types_User);
 var types_Users = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Users, _super);
+    __extends(_Users, _super);
     function _Users() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Users = Object(tslib_es6["b" /* __decorate */])([
+    _Users = __decorate([
         defaultPath("users"),
         getById(User)
     ], _Users);
@@ -3912,11 +4343,11 @@ var types_Users = /** @class */ (function (_super) {
 
 var Users = graphInvokableFactory(types_Users);
 var types_People = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_People, _super);
+    __extends(_People, _super);
     function _People() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _People = Object(tslib_es6["b" /* __decorate */])([
+    _People = __decorate([
         defaultPath("people")
     ], _People);
     return _People;
@@ -3924,6 +4355,21 @@ var types_People = /** @class */ (function (_super) {
 
 var People = graphInvokableFactory(types_People);
 //# sourceMappingURL=types.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/users.js
+
+
+
+
+addProp(types_User, "calendar", Calendar, "calendar");
+addProp(types_User, "calendars", Calendars, "calendars");
+addProp(types_User, "events", Events);
+types_User.prototype.calendarView = calendarView;
+//# sourceMappingURL=users.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/index.js
+
+
+
+//# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/types.js
 
 
@@ -3935,11 +4381,11 @@ var People = graphInvokableFactory(types_People);
  * Contact
  */
 var types_Contact = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Contact, _super);
+    __extends(_Contact, _super);
     function _Contact() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Contact = Object(tslib_es6["b" /* __decorate */])([
+    _Contact = __decorate([
         updateable(),
         deleteable()
     ], _Contact);
@@ -3951,7 +4397,7 @@ var Contact = graphInvokableFactory(types_Contact);
  * Contacts
  */
 var types_Contacts = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Contacts, _super);
+    __extends(_Contacts, _super);
     function _Contacts() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3966,13 +4412,13 @@ var types_Contacts = /** @class */ (function (_super) {
     */
     _Contacts.prototype.add = function (givenName, surName, emailAddresses, businessPhones, additionalProperties) {
         if (additionalProperties === void 0) { additionalProperties = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = Object(common["assign"])({ businessPhones: businessPhones, emailAddresses: emailAddresses, givenName: givenName, surName: surName }, additionalProperties);
-                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -3983,7 +4429,7 @@ var types_Contacts = /** @class */ (function (_super) {
             });
         });
     };
-    _Contacts = Object(tslib_es6["b" /* __decorate */])([
+    _Contacts = __decorate([
         defaultPath("contacts"),
         getById(Contact)
     ], _Contacts);
@@ -3995,7 +4441,7 @@ var Contacts = graphInvokableFactory(types_Contacts);
  * Contact Folder
  */
 var types_ContactFolder = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ContactFolder, _super);
+    __extends(_ContactFolder, _super);
     function _ContactFolder() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4019,7 +4465,7 @@ var types_ContactFolder = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    _ContactFolder = Object(tslib_es6["b" /* __decorate */])([
+    _ContactFolder = __decorate([
         deleteable(),
         updateable()
     ], _ContactFolder);
@@ -4031,7 +4477,7 @@ var ContactFolder = graphInvokableFactory(types_ContactFolder);
  * Contact Folders
  */
 var types_ContactFolders = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ContactFolders, _super);
+    __extends(_ContactFolders, _super);
     function _ContactFolders() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4042,16 +4488,16 @@ var types_ContactFolders = /** @class */ (function (_super) {
      * @param parentFolderId The ID of the folder's parent folder.
      */
     _ContactFolders.prototype.add = function (displayName, parentFolderId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = {
                             displayName: displayName,
                             parentFolderId: parentFolderId,
                         };
-                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -4062,7 +4508,7 @@ var types_ContactFolders = /** @class */ (function (_super) {
             });
         });
     };
-    _ContactFolders = Object(tslib_es6["b" /* __decorate */])([
+    _ContactFolders = __decorate([
         defaultPath("contactFolders"),
         getById(ContactFolder)
     ], _ContactFolders);
@@ -4101,10 +4547,11 @@ addProp(types_Group, "rejectedSenders", Senders, "rejectedsenders");
 
 
 
+
 var batch_GraphBatch = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(GraphBatch, _super);
+    __extends(GraphBatch, _super);
     function GraphBatch(batchUrl, maxRequests) {
-        if (batchUrl === void 0) { batchUrl = "https://graph.microsoft.com/v1.0/$batch"; }
+        if (batchUrl === void 0) { batchUrl = "v1.0/$batch"; }
         if (maxRequests === void 0) { maxRequests = 20; }
         var _this = _super.call(this) || this;
         _this.batchUrl = batchUrl;
@@ -4207,15 +4654,15 @@ var batch_GraphBatch = /** @class */ (function (_super) {
         // create a working copy of our requests
         var requests = this.requests.slice();
         var error = false;
-        return new Promise(function (resolve, reject) { return Object(tslib_es6["a" /* __awaiter */])(_this, void 0, void 0, function () {
+        return new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
             var _loop_1, this_1, state_1;
             var _this = this;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _loop_1 = function () {
-                            var requestsChunk, batchRequest, batchOptions;
-                            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+                            var requestsChunk, batchRequest, batchOptions, queryUrl;
+                            return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
                                         requestsChunk = requests.splice(0, this_1.maxRequests);
@@ -4231,7 +4678,10 @@ var batch_GraphBatch = /** @class */ (function (_super) {
                                             method: "POST",
                                         };
                                         Logger.write("[" + this_1.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
-                                        return [4 /*yield*/, client.fetch(this_1.batchUrl, batchOptions)
+                                        return [4 /*yield*/, toAbsoluteUrl(this_1.batchUrl)];
+                                    case 1:
+                                        queryUrl = _a.sent();
+                                        return [4 /*yield*/, client.fetch(queryUrl, batchOptions)
                                                 .then(function (r) { return r.json(); })
                                                 .then(function (j) { return GraphBatch.parseResponse(requestsChunk, j); })
                                                 .then(function (parsedResponse) {
@@ -4245,7 +4695,7 @@ var batch_GraphBatch = /** @class */ (function (_super) {
                                                 reject(e);
                                                 error = true;
                                             })];
-                                    case 1:
+                                    case 2:
                                         _a.sent();
                                         if (error) {
                                             return [2 /*return*/, "break"];
@@ -4284,7 +4734,7 @@ var batch_GraphBatch = /** @class */ (function (_super) {
 
 
 var rest_GraphRest = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(GraphRest, _super);
+    __extends(GraphRest, _super);
     function GraphRest() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4292,7 +4742,14 @@ var rest_GraphRest = /** @class */ (function (_super) {
         return new batch_GraphBatch();
     };
     GraphRest.prototype.setup = function (config) {
-        setup(config);
+        if (config.pageContext) {
+            setup({
+                spfxContext: config,
+            });
+        }
+        else {
+            setup(config);
+        }
     };
     return GraphRest;
 }(graphqueryable_GraphQueryable));
@@ -4331,7 +4788,7 @@ Reflect.defineProperty(rest_GraphRest.prototype, "groups", {
  * Represents a insights entity
  */
 var types_Insights = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Insights, _super);
+    __extends(_Insights, _super);
     function _Insights() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4356,7 +4813,7 @@ var types_Insights = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    _Insights = Object(tslib_es6["b" /* __decorate */])([
+    _Insights = __decorate([
         defaultPath("insights")
     ], _Insights);
     return _Insights;
@@ -4367,7 +4824,7 @@ var Insights = graphInvokableFactory(types_Insights);
  * Describes a Trending Insight instance
  */
 var types_TrendingInsight = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TrendingInsight, _super);
+    __extends(_TrendingInsight, _super);
     function _TrendingInsight() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4387,11 +4844,11 @@ var TrendingInsight = graphInvokableFactory(types_TrendingInsight);
  *
  */
 var types_TrendingInsights = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TrendingInsights, _super);
+    __extends(_TrendingInsights, _super);
     function _TrendingInsights() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _TrendingInsights = Object(tslib_es6["b" /* __decorate */])([
+    _TrendingInsights = __decorate([
         defaultPath("trending"),
         getById(TrendingInsight)
     ], _TrendingInsights);
@@ -4403,7 +4860,7 @@ var TrendingInsights = graphInvokableFactory(types_TrendingInsights);
  * Describes a Used Insight instance
  */
 var types_UsedInsight = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_UsedInsight, _super);
+    __extends(_UsedInsight, _super);
     function _UsedInsight() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4423,11 +4880,11 @@ var UsedInsight = graphInvokableFactory(types_UsedInsight);
  *
  */
 var types_UsedInsights = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_UsedInsights, _super);
+    __extends(_UsedInsights, _super);
     function _UsedInsights() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _UsedInsights = Object(tslib_es6["b" /* __decorate */])([
+    _UsedInsights = __decorate([
         defaultPath("used"),
         getById(UsedInsight)
     ], _UsedInsights);
@@ -4439,7 +4896,7 @@ var UsedInsights = graphInvokableFactory(types_UsedInsights);
  * Describes a Shared Insight instance
  */
 var types_SharedInsight = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharedInsight, _super);
+    __extends(_SharedInsight, _super);
     function _SharedInsight() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4459,11 +4916,11 @@ var SharedInsight = graphInvokableFactory(types_SharedInsight);
  *
  */
 var types_SharedInsights = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharedInsights, _super);
+    __extends(_SharedInsights, _super);
     function _SharedInsights() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _SharedInsights = Object(tslib_es6["b" /* __decorate */])([
+    _SharedInsights = __decorate([
         defaultPath("shared"),
         getById(SharedInsight)
     ], _SharedInsights);
@@ -4475,11 +4932,11 @@ var SharedInsights = graphInvokableFactory(types_SharedInsights);
  * Describes a Resource Entity instance
  */
 var types_Resource = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Resource, _super);
+    __extends(_Resource, _super);
     function _Resource() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Resource = Object(tslib_es6["b" /* __decorate */])([
+    _Resource = __decorate([
         defaultPath("resource")
     ], _Resource);
     return _Resource;
@@ -4508,7 +4965,7 @@ addProp(types_User, "insights", Insights);
  * Invitations
  */
 var types_Invitations = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Invitations, _super);
+    __extends(_Invitations, _super);
     function _Invitations() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4521,13 +4978,13 @@ var types_Invitations = /** @class */ (function (_super) {
      */
     _Invitations.prototype.create = function (invitedUserEmailAddress, inviteRedirectUrl, additionalProperties) {
         if (additionalProperties === void 0) { additionalProperties = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = Object(common["assign"])({ inviteRedirectUrl: inviteRedirectUrl, invitedUserEmailAddress: invitedUserEmailAddress }, additionalProperties);
-                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, { data: data }];
@@ -4535,7 +4992,7 @@ var types_Invitations = /** @class */ (function (_super) {
             });
         });
     };
-    _Invitations = Object(tslib_es6["b" /* __decorate */])([
+    _Invitations = __decorate([
         defaultPath("invitations")
     ], _Invitations);
     return _Invitations;
@@ -4565,7 +5022,7 @@ Reflect.defineProperty(rest_GraphRest.prototype, "invitations", {
  * Member
  */
 var types_Member = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Member, _super);
+    __extends(_Member, _super);
     function _Member() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4583,7 +5040,7 @@ var Member = graphInvokableFactory(types_Member);
  * Members
  */
 var types_Members = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Members, _super);
+    __extends(_Members, _super);
     function _Members() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4595,9 +5052,9 @@ var types_Members = /** @class */ (function (_super) {
      * @param id Full @odata.id of the directoryObject, user, or group object you want to add (ex: `https://graph.microsoft.com/v1.0/directoryObjects/${id}`)
      */
     _Members.prototype.add = function (id) {
-        return graphPost(this.clone(Members, "$ref"), body({ "@odata.id": id }));
+        return graphPost(this.clone(Members, "$ref"), request_builders_body({ "@odata.id": id }));
     };
-    _Members = Object(tslib_es6["b" /* __decorate */])([
+    _Members = __decorate([
         defaultPath("members"),
         getById(Member)
     ], _Members);
@@ -4625,7 +5082,7 @@ addProp(types_Group, "members", Members);
  * Message
  */
 var types_Message = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Message, _super);
+    __extends(_Message, _super);
     function _Message() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4637,11 +5094,11 @@ var Message = graphInvokableFactory(types_Message);
  * Messages
  */
 var types_Messages = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Messages, _super);
+    __extends(_Messages, _super);
     function _Messages() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Messages = Object(tslib_es6["b" /* __decorate */])([
+    _Messages = __decorate([
         defaultPath("messages"),
         getById(Message),
         addable()
@@ -4654,7 +5111,7 @@ var Messages = graphInvokableFactory(types_Messages);
  * MailFolder
  */
 var types_MailFolder = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_MailFolder, _super);
+    __extends(_MailFolder, _super);
     function _MailFolder() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4666,11 +5123,11 @@ var MailFolder = graphInvokableFactory(types_MailFolder);
  * MailFolders
  */
 var types_MailFolders = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_MailFolders, _super);
+    __extends(_MailFolders, _super);
     function _MailFolders() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _MailFolders = Object(tslib_es6["b" /* __decorate */])([
+    _MailFolders = __decorate([
         defaultPath("mailFolders"),
         getById(MailFolder),
         addable()
@@ -4683,11 +5140,11 @@ var MailFolders = graphInvokableFactory(types_MailFolders);
  * MailboxSettings
  */
 var types_MailboxSettings = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_MailboxSettings, _super);
+    __extends(_MailboxSettings, _super);
     function _MailboxSettings() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _MailboxSettings = Object(tslib_es6["b" /* __decorate */])([
+    _MailboxSettings = __decorate([
         defaultPath("mailboxSettings"),
         updateable()
     ], _MailboxSettings);
@@ -4705,7 +5162,7 @@ addProp(types_User, "messages", Messages);
 addProp(types_User, "mailboxSettings", MailboxSettings);
 addProp(types_User, "mailFolders", MailFolders);
 types_User.prototype.sendMail = function (message) {
-    return graphPost(this.clone(User, "sendMail"), body(message));
+    return graphPost(this.clone(User, "sendMail"), request_builders_body(message));
 };
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/messages/index.js
@@ -4724,7 +5181,7 @@ types_User.prototype.sendMail = function (message) {
  *
  */
 var types_Drive = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Drive, _super);
+    __extends(_Drive, _super);
     function _Drive() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4759,7 +5216,7 @@ var types_Drive = /** @class */ (function (_super) {
     _Drive.prototype.getItemById = function (id) {
         return DriveItem(this, Object(common["combine"])("items", id));
     };
-    _Drive = Object(tslib_es6["b" /* __decorate */])([
+    _Drive = __decorate([
         defaultPath("drive")
     ], _Drive);
     return _Drive;
@@ -4771,11 +5228,11 @@ var Drive = graphInvokableFactory(types_Drive);
  *
  */
 var types_Drives = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Drives, _super);
+    __extends(_Drives, _super);
     function _Drives() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Drives = Object(tslib_es6["b" /* __decorate */])([
+    _Drives = __decorate([
         defaultPath("drives"),
         getById(Drive)
     ], _Drives);
@@ -4788,7 +5245,7 @@ var Drives = graphInvokableFactory(types_Drives);
  *
  */
 var types_Root = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Root, _super);
+    __extends(_Root, _super);
     function _Root() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4811,7 +5268,7 @@ var types_Root = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    _Root = Object(tslib_es6["b" /* __decorate */])([
+    _Root = __decorate([
         defaultPath("root")
     ], _Root);
     return _Root;
@@ -4823,7 +5280,7 @@ var Root = graphInvokableFactory(types_Root);
  *
  */
 var types_DriveItem = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_DriveItem, _super);
+    __extends(_DriveItem, _super);
     function _DriveItem() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4849,17 +5306,37 @@ var types_DriveItem = /** @class */ (function (_super) {
         configurable: true
     });
     _DriveItem.prototype.move = function (parentReference, name) {
-        return graphPatch(this, body(Object(common["assign"])(parentReference, { name: name })));
+        return graphPatch(this, request_builders_body(Object(common["assign"])(parentReference, { name: name })));
     };
     _DriveItem.prototype.getContent = function () {
-        return graphGet(this.clone(DriveItem, "content"));
+        return __awaiter(this, void 0, void 0, function () {
+            var info, r, p;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this()];
+                    case 1:
+                        info = _a.sent();
+                        return [4 /*yield*/, common["safeGlobal"].fetch(info["@microsoft.graph.downloadUrl"], {
+                                headers: {
+                                    "accept": "application/json",
+                                },
+                                method: "GET",
+                                responseType: "arraybuffer",
+                            })];
+                    case 2:
+                        r = _a.sent();
+                        p = new parsers_BlobParser();
+                        return [2 /*return*/, p.parse(r)];
+                }
+            });
+        });
     };
     _DriveItem.prototype.setContent = function (content) {
         return graphPut(this.clone(DriveItem, "content"), {
             body: content,
         });
     };
-    _DriveItem = Object(tslib_es6["b" /* __decorate */])([
+    _DriveItem = __decorate([
         deleteable(),
         updateable()
     ], _DriveItem);
@@ -4872,11 +5349,11 @@ var DriveItem = graphInvokableFactory(types_DriveItem);
  *
  */
 var types_DriveItems = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_DriveItems, _super);
+    __extends(_DriveItems, _super);
     function _DriveItems() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _DriveItems = Object(tslib_es6["b" /* __decorate */])([
+    _DriveItems = __decorate([
         getById(DriveItem)
     ], _DriveItems);
     return _DriveItems;
@@ -4905,7 +5382,7 @@ addProp(types_User, "drives", Drives);
  * Represents a onenote entity
  */
 var types_OneNote = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_OneNote, _super);
+    __extends(_OneNote, _super);
     function _OneNote() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4930,7 +5407,7 @@ var types_OneNote = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    _OneNote = Object(tslib_es6["b" /* __decorate */])([
+    _OneNote = __decorate([
         defaultPath("onenote")
     ], _OneNote);
     return _OneNote;
@@ -4942,7 +5419,7 @@ var OneNote = graphInvokableFactory(types_OneNote);
  *
  */
 var types_Notebook = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Notebook, _super);
+    __extends(_Notebook, _super);
     function _Notebook() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4962,7 +5439,7 @@ var Notebook = graphInvokableFactory(types_Notebook);
  *
  */
 var types_Notebooks = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Notebooks, _super);
+    __extends(_Notebooks, _super);
     function _Notebooks() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4972,11 +5449,11 @@ var types_Notebooks = /** @class */ (function (_super) {
      * @param displayName Notebook display name
      */
     _Notebooks.prototype.add = function (displayName) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, graphPost(this, body({ displayName: displayName }))];
+                    case 0: return [4 /*yield*/, graphPost(this, request_builders_body({ displayName: displayName }))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -4987,7 +5464,7 @@ var types_Notebooks = /** @class */ (function (_super) {
             });
         });
     };
-    _Notebooks = Object(tslib_es6["b" /* __decorate */])([
+    _Notebooks = __decorate([
         defaultPath("notebooks"),
         getById(Notebook)
     ], _Notebooks);
@@ -4999,7 +5476,7 @@ var Notebooks = graphInvokableFactory(types_Notebooks);
  * Describes a sections instance
  */
 var types_Section = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Section, _super);
+    __extends(_Section, _super);
     function _Section() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5012,7 +5489,7 @@ var Section = graphInvokableFactory(types_Section);
  *
  */
 var types_Sections = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Sections, _super);
+    __extends(_Sections, _super);
     function _Sections() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5022,11 +5499,11 @@ var types_Sections = /** @class */ (function (_super) {
      * @param displayName New section display name
      */
     _Sections.prototype.add = function (displayName) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, graphPost(this, body({ displayName: displayName }))];
+                    case 0: return [4 /*yield*/, graphPost(this, request_builders_body({ displayName: displayName }))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5037,7 +5514,7 @@ var types_Sections = /** @class */ (function (_super) {
             });
         });
     };
-    _Sections = Object(tslib_es6["b" /* __decorate */])([
+    _Sections = __decorate([
         defaultPath("sections"),
         getById(Section)
     ], _Sections);
@@ -5063,7 +5540,7 @@ addProp(types_User, "onenote", OneNote);
 
 
 var types_Photo = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Photo, _super);
+    __extends(_Photo, _super);
     function _Photo() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5087,7 +5564,7 @@ var types_Photo = /** @class */ (function (_super) {
     _Photo.prototype.setContent = function (content) {
         return graphPatch(this.clone(Photo, "$value", false), { body: content });
     };
-    _Photo = Object(tslib_es6["b" /* __decorate */])([
+    _Photo = __decorate([
         defaultPath("photo")
     ], _Photo);
     return _Photo;
@@ -5101,7 +5578,14 @@ var Photo = graphInvokableFactory(types_Photo);
 
 addProp(types_Group, "photo", Photo);
 //# sourceMappingURL=groups.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/users.js
+
+
+
+addProp(types_User, "photo", Photo);
+//# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/index.js
+
 
 
 //# sourceMappingURL=index.js.map
@@ -5117,7 +5601,7 @@ addProp(types_Group, "photo", Photo);
  * Planner
  */
 var types_Planner = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Planner, _super);
+    __extends(_Planner, _super);
     function _Planner() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5145,7 +5629,7 @@ var types_Planner = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    _Planner = Object(tslib_es6["b" /* __decorate */])([
+    _Planner = __decorate([
         defaultPath("planner")
     ], _Planner);
     return _Planner;
@@ -5153,10 +5637,26 @@ var types_Planner = /** @class */ (function (_super) {
 
 var Planner = graphInvokableFactory(types_Planner);
 /**
+ * Details
+ */
+var types_PlanDetails = /** @class */ (function (_super) {
+    __extends(_PlanDetails, _super);
+    function _PlanDetails() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _PlanDetails = __decorate([
+        defaultPath("details"),
+        updateableWithETag()
+    ], _PlanDetails);
+    return _PlanDetails;
+}(graphqueryable_GraphQueryableInstance));
+
+var PlanDetails = graphInvokableFactory(types_PlanDetails);
+/**
  * Plan
  */
 var types_Plan = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Plan, _super);
+    __extends(_Plan, _super);
     function _Plan() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5174,7 +5674,14 @@ var types_Plan = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    _Plan = Object(tslib_es6["b" /* __decorate */])([
+    Object.defineProperty(_Plan.prototype, "details", {
+        get: function () {
+            return PlanDetails(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Plan = __decorate([
         updateableWithETag(),
         deleteableWithETag()
     ], _Plan);
@@ -5183,7 +5690,7 @@ var types_Plan = /** @class */ (function (_super) {
 
 var Plan = graphInvokableFactory(types_Plan);
 var types_Plans = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Plans, _super);
+    __extends(_Plans, _super);
     function _Plans() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5194,11 +5701,11 @@ var types_Plans = /** @class */ (function (_super) {
      * @param title The Title of the Plan.
      */
     _Plans.prototype.add = function (owner, title) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, graphPost(this, body({ owner: owner, title: title }))];
+                    case 0: return [4 /*yield*/, graphPost(this, request_builders_body({ owner: owner, title: title }))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5209,7 +5716,7 @@ var types_Plans = /** @class */ (function (_super) {
             });
         });
     };
-    _Plans = Object(tslib_es6["b" /* __decorate */])([
+    _Plans = __decorate([
         defaultPath("plans"),
         getById(Plan)
     ], _Plans);
@@ -5218,14 +5725,37 @@ var types_Plans = /** @class */ (function (_super) {
 
 var Plans = graphInvokableFactory(types_Plans);
 /**
+ * Details
+ */
+var types_TaskDetails = /** @class */ (function (_super) {
+    __extends(_TaskDetails, _super);
+    function _TaskDetails() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _TaskDetails = __decorate([
+        defaultPath("details"),
+        updateableWithETag()
+    ], _TaskDetails);
+    return _TaskDetails;
+}(graphqueryable_GraphQueryableInstance));
+
+var TaskDetails = graphInvokableFactory(types_TaskDetails);
+/**
  * Task
  */
 var types_Task = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Task, _super);
+    __extends(_Task, _super);
     function _Task() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Task = Object(tslib_es6["b" /* __decorate */])([
+    Object.defineProperty(_Task.prototype, "details", {
+        get: function () {
+            return TaskDetails(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Task = __decorate([
         updateableWithETag(),
         deleteableWithETag()
     ], _Task);
@@ -5237,7 +5767,7 @@ var Task = graphInvokableFactory(types_Task);
  * Tasks
  */
 var types_Tasks = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Tasks, _super);
+    __extends(_Tasks, _super);
     function _Tasks() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5250,9 +5780,9 @@ var types_Tasks = /** @class */ (function (_super) {
      * @param bucketId Id of Bucket
      */
     _Tasks.prototype.add = function (planId, title, assignments, bucketId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = Object(common["assign"])({
@@ -5264,7 +5794,7 @@ var types_Tasks = /** @class */ (function (_super) {
                                 bucketId: bucketId,
                             });
                         }
-                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5275,7 +5805,7 @@ var types_Tasks = /** @class */ (function (_super) {
             });
         });
     };
-    _Tasks = Object(tslib_es6["b" /* __decorate */])([
+    _Tasks = __decorate([
         defaultPath("tasks"),
         getById(Task)
     ], _Tasks);
@@ -5287,7 +5817,7 @@ var Tasks = graphInvokableFactory(types_Tasks);
  * Bucket
  */
 var types_Bucket = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Bucket, _super);
+    __extends(_Bucket, _super);
     function _Bucket() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5298,7 +5828,7 @@ var types_Bucket = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    _Bucket = Object(tslib_es6["b" /* __decorate */])([
+    _Bucket = __decorate([
         updateableWithETag(),
         deleteableWithETag()
     ], _Bucket);
@@ -5310,7 +5840,7 @@ var Bucket = graphInvokableFactory(types_Bucket);
  * Buckets
  */
 var types_Buckets = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Buckets, _super);
+    __extends(_Buckets, _super);
     function _Buckets() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5322,9 +5852,9 @@ var types_Buckets = /** @class */ (function (_super) {
      * @param oderHint Hint used to order items of this type in a list view.
      */
     _Buckets.prototype.add = function (name, planId, orderHint) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = {
@@ -5332,7 +5862,7 @@ var types_Buckets = /** @class */ (function (_super) {
                             orderHint: orderHint ? orderHint : "",
                             planId: planId,
                         };
-                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5343,7 +5873,7 @@ var types_Buckets = /** @class */ (function (_super) {
             });
         });
     };
-    _Buckets = Object(tslib_es6["b" /* __decorate */])([
+    _Buckets = __decorate([
         defaultPath("buckets"),
         getById(Bucket)
     ], _Buckets);
@@ -5389,11 +5919,11 @@ Reflect.defineProperty(rest_GraphRest.prototype, "planner", {
  * Subscription
  */
 var types_Subscription = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Subscription, _super);
+    __extends(_Subscription, _super);
     function _Subscription() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Subscription = Object(tslib_es6["b" /* __decorate */])([
+    _Subscription = __decorate([
         deleteable(),
         updateable()
     ], _Subscription);
@@ -5405,7 +5935,7 @@ var Subscription = graphInvokableFactory(types_Subscription);
  * Subscriptions
  */
 var types_Subscriptions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Subscriptions, _super);
+    __extends(_Subscriptions, _super);
     function _Subscriptions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5421,9 +5951,9 @@ var types_Subscriptions = /** @class */ (function (_super) {
      */
     _Subscriptions.prototype.add = function (changeType, notificationUrl, resource, expirationDateTime, props) {
         if (props === void 0) { props = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = Object(common["assign"])({
@@ -5432,7 +5962,7 @@ var types_Subscriptions = /** @class */ (function (_super) {
                             notificationUrl: notificationUrl,
                             resource: resource,
                         }, props);
-                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5443,7 +5973,7 @@ var types_Subscriptions = /** @class */ (function (_super) {
             });
         });
     };
-    _Subscriptions = Object(tslib_es6["b" /* __decorate */])([
+    _Subscriptions = __decorate([
         defaultPath("subscriptions"),
         getById(Subscription)
     ], _Subscriptions);
@@ -5476,7 +6006,7 @@ Reflect.defineProperty(rest_GraphRest.prototype, "subscriptions", {
  * Represents a Microsoft Team
  */
 var types_Team = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Team, _super);
+    __extends(_Team, _super);
     function _Team() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5494,7 +6024,7 @@ var types_Team = /** @class */ (function (_super) {
      */
     _Team.prototype.archive = function (shouldSetSpoSiteReadOnlyForMembers) {
         if (shouldSetSpoSiteReadOnlyForMembers === void 0) { shouldSetSpoSiteReadOnlyForMembers = false; }
-        return graphPost(this.clone(Team, "archive"), body({ shouldSetSpoSiteReadOnlyForMembers: shouldSetSpoSiteReadOnlyForMembers }));
+        return graphPost(this.clone(Team, "archive"), request_builders_body({ shouldSetSpoSiteReadOnlyForMembers: shouldSetSpoSiteReadOnlyForMembers }));
     };
     /**
     * Unarchives this Team
@@ -5524,9 +6054,9 @@ var types_Team = /** @class */ (function (_super) {
         // instance that folks can query to see if/when this is complete
         // it could just have a single method getResult (or whatever) that returns a promise that
         // resolves when the operation is successful or rejects when it is not
-        return graphPost(this.clone(Team, "clone"), body(postBody));
+        return graphPost(this.clone(Team, "clone"), request_builders_body(postBody));
     };
-    _Team = Object(tslib_es6["b" /* __decorate */])([
+    _Team = __decorate([
         defaultPath("team"),
         updateable()
     ], _Team);
@@ -5538,11 +6068,11 @@ var Team = graphInvokableFactory(types_Team);
  * Teams
  */
 var types_Teams = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Teams, _super);
+    __extends(_Teams, _super);
     function _Teams() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Teams = Object(tslib_es6["b" /* __decorate */])([
+    _Teams = __decorate([
         defaultPath("teams"),
         getById(Team)
     ], _Teams);
@@ -5554,7 +6084,7 @@ var Teams = graphInvokableFactory(types_Teams);
  * Channel
  */
 var types_Channel = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Channel, _super);
+    __extends(_Channel, _super);
     function _Channel() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5573,7 +6103,7 @@ var Channel = graphInvokableFactory(types_Channel);
  * Channels
  */
 var types_Channels = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Channels, _super);
+    __extends(_Channels, _super);
     function _Channels() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5585,16 +6115,16 @@ var types_Channels = /** @class */ (function (_super) {
      */
     _Channels.prototype.add = function (displayName, description) {
         if (description === void 0) { description = ""; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = {
                             description: description,
                             displayName: displayName,
                         };
-                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5605,7 +6135,7 @@ var types_Channels = /** @class */ (function (_super) {
             });
         });
     };
-    _Channels = Object(tslib_es6["b" /* __decorate */])([
+    _Channels = __decorate([
         defaultPath("channels"),
         getById(Channel)
     ], _Channels);
@@ -5617,11 +6147,11 @@ var Channels = graphInvokableFactory(types_Channels);
  * Tab
  */
 var types_Tab = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Tab, _super);
+    __extends(_Tab, _super);
     function _Tab() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _Tab = Object(tslib_es6["b" /* __decorate */])([
+    _Tab = __decorate([
         defaultPath("tab"),
         updateable(),
         deleteable()
@@ -5634,7 +6164,7 @@ var Tab = graphInvokableFactory(types_Tab);
  * Tabs
  */
 var types_Tabs = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Tabs, _super);
+    __extends(_Tabs, _super);
     function _Tabs() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5645,16 +6175,16 @@ var types_Tabs = /** @class */ (function (_super) {
      * @param tabsConfiguration visit https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/teamstab_add for reference
      */
     _Tabs.prototype.add = function (name, appUrl, properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = Object(common["assign"])({
                             displayName: name,
                             "teamsApp@odata.bind": appUrl,
                         }, properties);
-                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5665,7 +6195,7 @@ var types_Tabs = /** @class */ (function (_super) {
             });
         });
     };
-    _Tabs = Object(tslib_es6["b" /* __decorate */])([
+    _Tabs = __decorate([
         defaultPath("tabs"),
         getById(Tab)
     ], _Tabs);
@@ -5691,11 +6221,11 @@ addProp(types_User, "joinedTeams", Teams, "joinedTeams");
 
 addProp(types_Group, "team", Team);
 types_Group.prototype.createTeam = function (props) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var data;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, graphPut(this.clone(Group, "team"), body(props))];
+                case 0: return [4 /*yield*/, graphPut(this.clone(Group, "team"), request_builders_body(props))];
                 case 1:
                     data = _a.sent();
                     return [2 /*return*/, {
@@ -5732,6 +6262,13 @@ Reflect.defineProperty(rest_GraphRest.prototype, "users", {
         return Users(this);
     },
 });
+//# sourceMappingURL=index.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/graph/index.js
+
+
+
+
+
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/presets/all.js
 

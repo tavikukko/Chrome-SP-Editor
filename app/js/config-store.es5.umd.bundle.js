@@ -99,229 +99,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __extends; });
-/* unused harmony export __assign */
-/* unused harmony export __rest */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __decorate; });
-/* unused harmony export __param */
-/* unused harmony export __metadata */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __awaiter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __generator; });
-/* unused harmony export __exportStar */
-/* unused harmony export __values */
-/* unused harmony export __read */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __spread; });
-/* unused harmony export __spreadArrays */
-/* unused harmony export __await */
-/* unused harmony export __asyncGenerator */
-/* unused harmony export __asyncDelegator */
-/* unused harmony export __asyncValues */
-/* unused harmony export __makeTemplateObject */
-/* unused harmony export __importStar */
-/* unused harmony export __importDefault */
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    }
-    return __assign.apply(this, arguments);
-}
-
-function __rest(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-}
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-function __param(paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-}
-
-function __metadata(metadataKey, metadataValue) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
-}
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-function __exportStar(m, exports) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-
-function __values(o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
-    if (m) return m.call(o);
-    return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-}
-
-function __read(o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-}
-
-function __spread() {
-    for (var ar = [], i = 0; i < arguments.length; i++)
-        ar = ar.concat(__read(arguments[i]));
-    return ar;
-}
-
-function __spreadArrays() {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
-
-function __await(v) {
-    return this instanceof __await ? (this.v = v, this) : new __await(v);
-}
-
-function __asyncGenerator(thisArg, _arguments, generator) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
-    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
-    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
-    function fulfill(value) { resume("next", value); }
-    function reject(value) { resume("throw", value); }
-    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-}
-
-function __asyncDelegator(o) {
-    var i, p;
-    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
-}
-
-function __asyncValues(o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-}
-
-function __makeTemplateObject(cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-    return cooked;
-};
-
-function __importStar(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result.default = mod;
-    return result;
-}
-
-function __importDefault(mod) {
-    return (mod && mod.__esModule) ? mod : { default: mod };
-}
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeMaps", function() { return _collections__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
@@ -370,7 +147,7 @@ function __importDefault(mod) {
 /* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(8);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return _storage__WEBPACK_IMPORTED_MODULE_4__["a"]; });
 
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "assign", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["a"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "combine", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["b"]; });
@@ -408,7 +185,7 @@ function __importDefault(mod) {
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -645,6 +422,263 @@ function getHashCode(s) {
 //# sourceMappingURL=util.js.map
 
 /***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __extends; });
+/* unused harmony export __assign */
+/* unused harmony export __rest */
+/* unused harmony export __decorate */
+/* unused harmony export __param */
+/* unused harmony export __metadata */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __awaiter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __generator; });
+/* unused harmony export __createBinding */
+/* unused harmony export __exportStar */
+/* unused harmony export __values */
+/* unused harmony export __read */
+/* unused harmony export __spread */
+/* unused harmony export __spreadArrays */
+/* unused harmony export __await */
+/* unused harmony export __asyncGenerator */
+/* unused harmony export __asyncDelegator */
+/* unused harmony export __asyncValues */
+/* unused harmony export __makeTemplateObject */
+/* unused harmony export __importStar */
+/* unused harmony export __importDefault */
+/* unused harmony export __classPrivateFieldGet */
+/* unused harmony export __classPrivateFieldSet */
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return __assign.apply(this, arguments);
+}
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var __createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+
+function __exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+var __setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function __classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function __classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
+
+
+/***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -753,7 +787,7 @@ var RuntimeConfig = _runtimeConfig;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return objectToMap; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return mergeMaps; });
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 /**
  * Used to calculate the object properties, with polyfill if needed
@@ -812,8 +846,8 @@ var safeGlobal = typeof global === "undefined" ? window : global;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FetchClient; });
 /* unused harmony export BearerTokenFetchClient */
 /* unused harmony export SPFxAdalClient */
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 
 
@@ -858,7 +892,7 @@ var FetchClient = /** @class */ (function () {
  * Makes requests using the fetch API adding the supplied token to the Authorization header
  */
 var BearerTokenFetchClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(BearerTokenFetchClient, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "b"])(BearerTokenFetchClient, _super);
     function BearerTokenFetchClient(_token) {
         var _this = _super.call(this) || this;
         _this._token = _token;
@@ -889,7 +923,7 @@ var BearerTokenFetchClient = /** @class */ (function (_super) {
  * Client wrapping the aadTokenProvider available from SPFx >= 1.6
  */
 var SPFxAdalClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(SPFxAdalClient, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "b"])(SPFxAdalClient, _super);
     /**
      *
      * @param context provide the appropriate SPFx Context object
@@ -908,7 +942,7 @@ var SPFxAdalClient = /** @class */ (function (_super) {
     SPFxAdalClient.prototype.fetch = function (url, options) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var token;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getToken(getADALResource(url))];
                     case 1:
@@ -927,7 +961,7 @@ var SPFxAdalClient = /** @class */ (function (_super) {
     SPFxAdalClient.prototype.getToken = function (resource) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var provider;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
                     case 1:
@@ -955,8 +989,8 @@ var SPFxAdalClient = /** @class */ (function (_super) {
 "use strict";
 /* unused harmony export PnPClientStorageWrapper */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PnPClientStorage; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 
 
@@ -1039,7 +1073,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
     PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var o;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.enabled) {
@@ -1063,7 +1097,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
     PnPClientStorageWrapper.prototype.deleteExpired = function () {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var i, key;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.enabled) {
@@ -1252,7 +1286,7 @@ __webpack_require__.d(__webpack_exports__, "CachingConfigurationProvider", funct
 __webpack_require__.d(__webpack_exports__, "SPListConfigurationProvider", function() { return /* reexport */ spListConfigurationProvider; });
 
 // EXTERNAL MODULE: ./node_modules/@pnp/common/index.js
-var common = __webpack_require__(1);
+var common = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./node_modules/@pnp/config-store/configuration.js
 
@@ -1405,8 +1439,234 @@ var cachingConfigurationProvider_CachingConfigurationProvider = /** @class */ (f
 }());
 /* harmony default export */ var cachingConfigurationProvider = (cachingConfigurationProvider_CachingConfigurationProvider);
 //# sourceMappingURL=cachingConfigurationProvider.js.map
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__(0);
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/node_modules/tslib/tslib.es6.js
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return __assign.apply(this, arguments);
+}
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var __createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+
+function __exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+var __setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function __classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function __classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
 
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
 
@@ -1576,12 +1836,242 @@ function addProp(target, name, factory, path) {
     });
 }
 //# sourceMappingURL=add-prop.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/node_modules/tslib/tslib.es6.js
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var tslib_es6_extendStatics = function(d, b) {
+    tslib_es6_extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return tslib_es6_extendStatics(d, b);
+};
+
+function tslib_es6_extends(d, b) {
+    tslib_es6_extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var tslib_es6_assign = function() {
+    tslib_es6_assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return tslib_es6_assign.apply(this, arguments);
+}
+
+function tslib_es6_rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function tslib_es6_decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function tslib_es6_param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function tslib_es6_metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function tslib_es6_awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function tslib_es6_generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var tslib_es6_createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+
+function tslib_es6_exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) tslib_es6_createBinding(exports, m, p);
+}
+
+function tslib_es6_values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function tslib_es6_read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function tslib_es6_spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(tslib_es6_read(arguments[i]));
+    return ar;
+}
+
+function tslib_es6_spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function tslib_es6_await(v) {
+    return this instanceof tslib_es6_await ? (this.v = v, this) : new tslib_es6_await(v);
+}
+
+function tslib_es6_asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof tslib_es6_await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function tslib_es6_asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: tslib_es6_await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function tslib_es6_asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof tslib_es6_values === "function" ? tslib_es6_values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function tslib_es6_makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+var tslib_es6_setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
+function tslib_es6_importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) tslib_es6_createBinding(result, mod, k);
+    tslib_es6_setModuleDefault(result, mod);
+    return result;
+}
+
+function tslib_es6_importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function tslib_es6_classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
 
 
 var _enableExtensions = false;
-var globaExtensions = [];
-var ObjExtensionsSym = Symbol("__extensions");
+var globalExtensions = [];
+var factoryExtensions = new Map();
+var ObjExtensionsSym = Symbol.for("43f7a601");
 /**
  * Creates global extensions across all invokable objects
  *
@@ -1589,7 +2079,7 @@ var ObjExtensionsSym = Symbol("__extensions");
  */
 var extendGlobal = function (e) {
     _enableExtensions = true;
-    extendCol(globaExtensions, e);
+    extendCol(globalExtensions, e);
 };
 /**
  * Applies the supplied extensions to a single instance
@@ -1613,15 +2103,23 @@ var extendObj = function (target, extensions) {
  */
 var extendFactory = function (factory, extensions) {
     _enableExtensions = true;
-    if (factory.__proto__[ObjExtensionsSym] === undefined) {
-        factory.__proto__[ObjExtensionsSym] = [];
+    // factoryExtensions
+    var proto = Reflect.getPrototypeOf(factory);
+    if (!Reflect.has(proto, ObjExtensionsSym)) {
+        Reflect.defineProperty(proto, ObjExtensionsSym, {
+            value: Object(common["getGUID"])(),
+        });
     }
-    extendCol(factory.__proto__[ObjExtensionsSym], extensions);
+    var key = proto[ObjExtensionsSym];
+    if (!factoryExtensions.has(key)) {
+        factoryExtensions.set(key, []);
+    }
+    extendCol(factoryExtensions.get(key), extensions);
 };
 function extendCol(a, e) {
     if (Object(common["isArray"])(e)) {
         // @ts-ignore
-        a.push.apply(a, Object(tslib_es6["e" /* __spread */])(e));
+        a.push.apply(a, tslib_es6_spread(e));
     }
     else {
         // @ts-ignore
@@ -1632,7 +2130,7 @@ function extendCol(a, e) {
  * Clears all global extensions
  */
 var clearGlobalExtensions = function () {
-    globaExtensions.length = 0;
+    globalExtensions.length = 0;
 };
 /**
  * Disables all extensions
@@ -1654,8 +2152,10 @@ var enableExtensions = function () {
  */
 var applyFactoryExtensions = function (factory, args) {
     var o = factory(args);
-    if (factory.__proto__[ObjExtensionsSym]) {
-        o = extendObj(o, factory.__proto__[ObjExtensionsSym]);
+    var proto = Reflect.getPrototypeOf(factory);
+    if (Reflect.has(proto, ObjExtensionsSym)) {
+        var extensions = factoryExtensions.get(Reflect.get(proto, ObjExtensionsSym));
+        o = extendObj(o, extensions);
     }
     return o;
 };
@@ -1668,16 +2168,16 @@ function extensionOrDefault(op, or, target) {
         var extensions = [];
         // we need to first invoke extensions tied to only this object
         if (Reflect.has(target, ObjExtensionsSym)) {
-            extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(Reflect.get(target, ObjExtensionsSym)));
+            extensions.push.apply(extensions, tslib_es6_spread(Reflect.get(target, ObjExtensionsSym)));
         }
         // second we need to process any global extensions
-        extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(globaExtensions));
+        extensions.push.apply(extensions, tslib_es6_spread(globalExtensions));
         for (var i = 0; i < extensions.length; i++) {
             var extension = extensions[i];
             var result = undefined;
             if (Object(common["isFunc"])(extension)) {
                 // this extension is a function which we call
-                result = extension.apply(void 0, Object(tslib_es6["e" /* __spread */])([op, target], rest));
+                result = extension.apply(void 0, tslib_es6_spread([op, target], rest));
             }
             else if (op === "get" && Reflect.has(extension, rest[0])) {
                 // this extension is a named extension meaning we are overriding a specific method/property
@@ -1685,7 +2185,7 @@ function extensionOrDefault(op, or, target) {
             }
             else if (Reflect.has(extension, op)) {
                 // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
-                result = Reflect.get(extension, op).apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
+                result = Reflect.get(extension, op).apply(void 0, tslib_es6_spread([target], rest));
             }
             if (typeof result !== "undefined") {
                 // if a extension returned a result, we return that
@@ -1695,7 +2195,7 @@ function extensionOrDefault(op, or, target) {
             }
         }
     }
-    return or.apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
+    return or.apply(void 0, tslib_es6_spread([target], rest));
 }
 //# sourceMappingURL=invokable-extensions.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
@@ -1715,7 +2215,7 @@ var invokableBinder = function (invoker) { return function (constructor) {
                     ags[_i] = arguments[_i];
                 }
                 return invoker.apply(r, ags);
-            }, new (constructor.bind.apply(constructor, Object(tslib_es6["e" /* __spread */])([void 0], as)))());
+            }, new (constructor.bind.apply(constructor, tslib_es6_spread([void 0], as)))());
             Reflect.setPrototypeOf(r, constructor.prototype);
             return r;
         };
@@ -1832,7 +2332,7 @@ var parsers_ODataParser = /** @class */ (function () {
 }());
 
 var parsers_TextParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(TextParser, _super);
+    tslib_es6_extends(TextParser, _super);
     function TextParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1843,7 +2343,7 @@ var parsers_TextParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_BlobParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(BlobParser, _super);
+    tslib_es6_extends(BlobParser, _super);
     function BlobParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1854,7 +2354,7 @@ var parsers_BlobParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_JSONParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(JSONParser, _super);
+    tslib_es6_extends(JSONParser, _super);
     function JSONParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1865,7 +2365,7 @@ var parsers_JSONParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_BufferParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(BufferParser, _super);
+    tslib_es6_extends(BufferParser, _super);
     function BufferParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1881,7 +2381,7 @@ var parsers_BufferParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_LambdaParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(LambdaParser, _super);
+    tslib_es6_extends(LambdaParser, _super);
     function LambdaParser(parser) {
         var _this = _super.call(this) || this;
         _this.parser = parser;
@@ -1894,7 +2394,7 @@ var parsers_LambdaParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_HttpRequestError = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(HttpRequestError, _super);
+    tslib_es6_extends(HttpRequestError, _super);
     function HttpRequestError(message, response, status, statusText) {
         if (status === void 0) { status = response.status; }
         if (statusText === void 0) { statusText = response.statusText; }
@@ -1906,9 +2406,9 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
         return _this;
     }
     HttpRequestError.init = function (r) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return tslib_es6_awaiter(this, void 0, void 0, function () {
             var t;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return tslib_es6_generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, r.clone().text()];
                     case 1:
@@ -1927,10 +2427,17 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
 
 
 function cloneQueryableData(source) {
+    var body;
+    // this handles bodies that cannot be JSON encoded (Blob, etc)
+    // Note however, even bodies that can be serialized will not be cloned.
+    if (source.options && source.options.body) {
+        body = source.options.body;
+        source.options.body = "-";
+    }
     var s = JSON.stringify(source, function (key, value) {
         switch (key) {
             case "query":
-                return JSON.stringify(Object(tslib_es6["e" /* __spread */])(value));
+                return JSON.stringify(tslib_es6_spread(value));
             case "batch":
                 return "-";
             case "batchDependency":
@@ -1963,9 +2470,9 @@ function cloneQueryableData(source) {
                 return value;
         }
     });
-    // this handles bodies that cannot be JSON encoded (Blob, etc)
-    if (source.options && source.options.body) {
-        parsed.options.body = source.options.body;
+    if (body) {
+        parsed.options.body = body;
+        source.options.body = body;
     }
     return parsed;
 }
@@ -1987,13 +2494,13 @@ var queryable_Queryable = /** @class */ (function () {
             return this._data;
         },
         set: function (value) {
-            this._data = Object.assign({}, cloneQueryableData(this.data), cloneQueryableData(value));
+            this._data = Object.assign({}, this.data, cloneQueryableData(value));
         },
         enumerable: false,
         configurable: true
     });
     /**
-    * Gets the currentl url
+    * Gets the current url
     *
     */
     Queryable.prototype.toUrl = function () {
@@ -2141,7 +2648,12 @@ var queryable_Queryable = /** @class */ (function () {
      * @param settings [Optional] Settings controlling how clone is applied
      */
     Queryable.prototype.cloneTo = function (target, settings) {
-        if (settings === void 0) { settings = { includeBatch: true }; }
+        if (settings === void 0) { settings = {}; }
+        // default values for settings
+        settings = Object(common["assign"])({
+            includeBatch: true,
+            includeQuery: false,
+        }, settings);
         target.data = Object.assign({}, cloneQueryableData(this.data), {
             batch: null,
             cloneParentCacheOptions: null,
@@ -2150,6 +2662,9 @@ var queryable_Queryable = /** @class */ (function () {
         target.configureFrom(this);
         if (settings.includeBatch) {
             target.inBatch(this.batch);
+        }
+        if (settings.includeQuery && this.query.size > 0) {
+            this.query.forEach(function (v, k) { return target.query.set(k, v); });
         }
         if (this.data.useCaching) {
             target.data.cloneParentWasCaching = true;
@@ -2434,7 +2949,7 @@ function pipe(context) {
         throw e;
     });
     if (context.isBatched) {
-        // this will block the batch's execute method from returning until the child requets have been resolved
+        // this will block the batch's execute method from returning until the child requests have been resolved
         context.batch.addResolveBatchDependency(promise);
     }
     return promise;
@@ -2574,16 +3089,16 @@ var pipeline_PipelineMethods = /** @class */ (function () {
             resolve(context);
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod(true)
     ], PipelineMethods, "logStart", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod()
     ], PipelineMethods, "caching", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod()
     ], PipelineMethods, "send", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod(true)
     ], PipelineMethods, "logEnd", null);
     return PipelineMethods;
@@ -2640,7 +3155,7 @@ var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
 
-function body(o, previous) {
+function request_builders_body(o, previous) {
     return Object.assign({ body: Object(common["jsS"])(o) }, previous);
 }
 function request_builders_headers(o, previous) {
@@ -2755,8 +3270,8 @@ function tag(name) {
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
-            return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-                return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
                     this.configure(request_builders_headers({ "X-PnPjs-Tracking": name }));
                     return [2 /*return*/, originalMethod.apply(this, args)];
                 });
@@ -2800,9 +3315,9 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
     }
     SPHttpClient.prototype.fetch = function (url, options) {
         if (options === void 0) { options = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var opts, headers, methodName, clientTag, digest;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         opts = Object(common["assign"])(options, { cache: "no-cache", credentials: "same-origin" }, true);
@@ -2820,7 +3335,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.6:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.10:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -2925,9 +3440,9 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
 var digests = new Map();
 function getDigestFactory(client) {
     var _this = this;
-    return function (webUrl) { return Object(tslib_es6["a" /* __awaiter */])(_this, void 0, void 0, function () {
+    return function (webUrl) { return __awaiter(_this, void 0, void 0, function () {
         var cachedDigest, now, url, headers, resp, parsed, newCachedDigest;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     cachedDigest = digests.get(webUrl);
@@ -2967,6 +3482,7 @@ function getDigestFactory(client) {
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/toabsoluteurl.js
 
 
+
 /**
  * Ensures that a given url is absolute for the current web based on context
  *
@@ -2974,35 +3490,38 @@ function getDigestFactory(client) {
  *
  */
 function toAbsoluteUrl(candidateUrl) {
-    return new Promise(function (resolve) {
-        if (Object(common["isUrlAbsolute"])(candidateUrl)) {
-            // if we are already absolute, then just return the url
-            return resolve(candidateUrl);
-        }
-        if (SPRuntimeConfig.baseUrl !== null) {
-            // base url specified either with baseUrl of spfxContext config property
-            return resolve(Object(common["combine"])(SPRuntimeConfig.baseUrl, candidateUrl));
-        }
-        if (common["safeGlobal"]._spPageContextInfo !== undefined) {
-            // operating in classic pages
-            if (Object(common["hOP"])(common["safeGlobal"]._spPageContextInfo, "webAbsoluteUrl")) {
-                return resolve(Object(common["combine"])(common["safeGlobal"]._spPageContextInfo.webAbsoluteUrl, candidateUrl));
+    return __awaiter(this, void 0, void 0, function () {
+        var baseUrl_1;
+        return __generator(this, function (_a) {
+            if (Object(common["isUrlAbsolute"])(candidateUrl)) {
+                // if we are already absolute, then just return the url
+                return [2 /*return*/, candidateUrl];
             }
-            else if (Object(common["hOP"])(common["safeGlobal"]._spPageContextInfo, "webServerRelativeUrl")) {
-                return resolve(Object(common["combine"])(common["safeGlobal"]._spPageContextInfo.webServerRelativeUrl, candidateUrl));
+            if (SPRuntimeConfig.baseUrl !== null) {
+                // base url specified either with baseUrl of spfxContext config property
+                return [2 /*return*/, Object(common["combine"])(SPRuntimeConfig.baseUrl, candidateUrl)];
             }
-        }
-        // does window.location exist and have a certain path part in it?
-        if (common["safeGlobal"].location !== undefined) {
-            var baseUrl_1 = common["safeGlobal"].location.toString().toLowerCase();
-            ["/_layouts/", "/siteassets/"].forEach(function (s) {
-                var index = baseUrl_1.indexOf(s);
-                if (index > 0) {
-                    return resolve(Object(common["combine"])(baseUrl_1.substr(0, index), candidateUrl));
+            if (common["safeGlobal"]._spPageContextInfo !== undefined) {
+                // operating in classic pages
+                if (Object(common["hOP"])(common["safeGlobal"]._spPageContextInfo, "webAbsoluteUrl")) {
+                    return [2 /*return*/, Object(common["combine"])(common["safeGlobal"]._spPageContextInfo.webAbsoluteUrl, candidateUrl)];
                 }
-            });
-        }
-        return resolve(candidateUrl);
+                else if (Object(common["hOP"])(common["safeGlobal"]._spPageContextInfo, "webServerRelativeUrl")) {
+                    return [2 /*return*/, Object(common["combine"])(common["safeGlobal"]._spPageContextInfo.webServerRelativeUrl, candidateUrl)];
+                }
+            }
+            // does window.location exist and have a certain path part in it?
+            if (common["safeGlobal"].location !== undefined) {
+                baseUrl_1 = common["safeGlobal"].location.toString().toLowerCase();
+                ["/_layouts/", "/siteassets/"].forEach(function (s) {
+                    var index = baseUrl_1.indexOf(s);
+                    if (index > 0) {
+                        return Object(common["combine"])(baseUrl_1.substr(0, index), candidateUrl);
+                    }
+                });
+            }
+            return [2 /*return*/, candidateUrl];
+        });
     });
 }
 //# sourceMappingURL=toabsoluteurl.js.map
@@ -3012,13 +3531,16 @@ function toAbsoluteUrl(candidateUrl) {
 
 
 
-var spClientBinder = defaultPipelineBinder(function () { return new sphttpclient_SPHttpClient(); });
+function registerCustomRequestClientFactory(requestClientFactory) {
+    operations_factory = Object(common["isFunc"])(requestClientFactory) ? requestClientFactory : function () { return new sphttpclient_SPHttpClient(); };
+}
+var operations_factory = function () { return new sphttpclient_SPHttpClient(); };
 var send = function (method) {
-    var operation = spClientBinder(method);
+    var operation = defaultPipelineBinder(operations_factory)(method);
     return function (o, options) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data, batchDependency, url;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         data = cloneQueryableData(o.data);
@@ -3051,9 +3573,9 @@ var spGet = function (o, options) {
     }
     return send("GET")(o, options);
 };
-var spPost = send("POST");
-var spDelete = send("DELETE");
-var spPatch = send("PATCH");
+var spPost = function (o, options) { return send("POST")(o, options); };
+var spDelete = function (o, options) { return send("DELETE")(o, options); };
+var spPatch = function (o, options) { return send("PATCH")(o, options); };
 var spPostDelete = function (o, options) {
     var opts = Object.assign(request_builders_headers({ "X-HTTP-Method": "DELETE" }), options);
     return spPost(o, opts);
@@ -3080,7 +3602,7 @@ var spInvokableFactory = function (f) {
  *
  */
 var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharePointQueryable, _super);
+    __extends(_SharePointQueryable, _super);
     /**
      * Creates a new instance of the SharePointQueryable class
      *
@@ -3162,7 +3684,7 @@ var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
             selects[_i] = arguments[_i];
         }
         if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
+            this.query.set("$select", selects.map(encodeURIComponent).join(","));
         }
         return this;
     };
@@ -3180,7 +3702,7 @@ var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
             expands[_i] = arguments[_i];
         }
         if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
+            this.query.set("$expand", expands.map(encodeURIComponent).join(","));
         }
         return this;
     };
@@ -3189,14 +3711,19 @@ var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
+     * @param includeQuery If true all of the query values will be copied to the cloned instance
      */
-    _SharePointQueryable.prototype.clone = function (factory, additionalPath, includeBatch) {
+    _SharePointQueryable.prototype.clone = function (factory, additionalPath, includeBatch, includeQuery) {
         if (includeBatch === void 0) { includeBatch = true; }
-        var clone = _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch });
+        if (includeQuery === void 0) { includeQuery = false; }
+        var clone = _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch, includeQuery: includeQuery });
         // handle sp specific clone actions
-        var t = "@target";
-        if (this.query.has(t)) {
-            clone.query.set(t, this.query.get(t));
+        if (!includeQuery) {
+            // we would have already copied this over if we got the entire query
+            var t = "@target";
+            if (this.query.has(t)) {
+                clone.query.set(t, this.query.get(t));
+            }
         }
         return clone;
     };
@@ -3234,7 +3761,7 @@ var SharePointQueryable = spInvokableFactory(sharepointqueryable_SharePointQuery
  *
  */
 var sharepointqueryable_SharePointQueryableCollection = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharePointQueryableCollection, _super);
+    __extends(_SharePointQueryableCollection, _super);
     function _SharePointQueryableCollection() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3244,7 +3771,7 @@ var sharepointqueryable_SharePointQueryableCollection = /** @class */ (function 
      * @param filter The string representing the filter query
      */
     _SharePointQueryableCollection.prototype.filter = function (filter) {
-        this.query.set("$filter", filter);
+        this.query.set("$filter", encodeURIComponent(filter));
         return this;
     };
     /**
@@ -3257,7 +3784,7 @@ var sharepointqueryable_SharePointQueryableCollection = /** @class */ (function 
         if (ascending === void 0) { ascending = true; }
         var o = "$orderby";
         var query = this.query.has(o) ? this.query.get(o).split(",") : [];
-        query.push(orderBy + " " + (ascending ? "asc" : "desc"));
+        query.push(encodeURIComponent(orderBy) + " " + (ascending ? "asc" : "desc"));
         this.query.set(o, query.join(","));
         return this;
     };
@@ -3288,7 +3815,7 @@ var SharePointQueryableCollection = spInvokableFactory(sharepointqueryable_Share
  *
  */
 var sharepointqueryable_SharePointQueryableInstance = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharePointQueryableInstance, _super);
+    __extends(_SharePointQueryableInstance, _super);
     function _SharePointQueryableInstance() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3339,7 +3866,7 @@ function deleteableWithETag(t) {
 function defaultPath(path) {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_1, _super);
+            __extends(class_1, _super);
             function class_1() {
                 var args = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
@@ -3394,10 +3921,10 @@ function odataUrlFrom(candidate) {
         Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
         return "";
     }
-    return common["combine"].apply(void 0, Object(tslib_es6["e" /* __spread */])(parts));
+    return common["combine"].apply(void 0, __spread(parts));
 }
 var odata_SPODataEntityParserImpl = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(SPODataEntityParserImpl, _super);
+    __extends(SPODataEntityParserImpl, _super);
     function SPODataEntityParserImpl(factory) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
@@ -3417,7 +3944,7 @@ var odata_SPODataEntityParserImpl = /** @class */ (function (_super) {
     return SPODataEntityParserImpl;
 }(parsers_ODataParser));
 var odata_SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(SPODataEntityArrayParserImpl, _super);
+    __extends(SPODataEntityArrayParserImpl, _super);
     function SPODataEntityArrayParserImpl(factory) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
@@ -3459,7 +3986,7 @@ function spODataEntityArray(factory) {
  * Manages a batch of OData operations
  */
 var batch_SPBatch = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(SPBatch, _super);
+    __extends(SPBatch, _super);
     function SPBatch(baseUrl) {
         var _this = _super.call(this) || this;
         _this.baseUrl = baseUrl;
@@ -3523,10 +4050,10 @@ var batch_SPBatch = /** @class */ (function (_super) {
         return responses;
     };
     SPBatch.prototype.executeImpl = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var client, absoluteRequestUrl, batchBody, currentChangeSetId, i, reqInfo, headers, url, method, castHeaders, batchOptions, fetchResponse, text, responses;
             var _this = this;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
@@ -3594,7 +4121,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.6:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.10:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -3622,8 +4149,14 @@ var batch_SPBatch = /** @class */ (function (_super) {
                         return [4 /*yield*/, client.fetch(Object(common["combine"])(absoluteRequestUrl, "/_api/$batch"), batchOptions)];
                     case 2:
                         fetchResponse = _a.sent();
-                        return [4 /*yield*/, fetchResponse.text()];
-                    case 3:
+                        if (!!fetchResponse.ok) return [3 /*break*/, 4];
+                        return [4 /*yield*/, parsers_HttpRequestError.init(fetchResponse)];
+                    case 3: 
+                    // the entire batch resulted in an error and we need to handle that better #1356
+                    // things consistently with the rest of the http errors
+                    throw (_a.sent());
+                    case 4: return [4 /*yield*/, fetchResponse.clone().text()];
+                    case 5:
                         text = _a.sent();
                         responses = SPBatch.ParseResponse(text);
                         if (responses.length !== this.requests.length) {
@@ -3632,9 +4165,9 @@ var batch_SPBatch = /** @class */ (function (_super) {
                         Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
                         // this structure ensures that we resolve the batched requests in the order we expect
                         // using async this is not guaranteed depending on the requests
-                        return [2 /*return*/, responses.reduce(function (p, response, index) { return p.then(function (_) { return Object(tslib_es6["a" /* __awaiter */])(_this, void 0, void 0, function () {
+                        return [2 /*return*/, responses.reduce(function (p, response, index) { return p.then(function (_) { return __awaiter(_this, void 0, void 0, function () {
                                 var request, _a, _b, e_1;
-                                return Object(tslib_es6["d" /* __generator */])(this, function (_c) {
+                                return __generator(this, function (_c) {
                                     switch (_c.label) {
                                         case 0:
                                             request = this.requests[index];
@@ -3749,7 +4282,7 @@ function escapeQueryStrValue(value) {
 
 
 var types_Site = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Site, _super);
+    __extends(_Site, _super);
     function _Site() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3769,9 +4302,9 @@ var types_Site = /** @class */ (function (_super) {
      * correctly setup for chaining within the library
      */
     _Site.prototype.getRootWeb = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var web;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.rootWeb.select("Url")()];
                     case 1:
@@ -3785,9 +4318,9 @@ var types_Site = /** @class */ (function (_super) {
     * Gets the context information for this site collection
     */
     _Site.prototype.getContextInfo = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data, info;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = tag.configure(Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
@@ -3815,15 +4348,15 @@ var types_Site = /** @class */ (function (_super) {
     *
     */
     _Site.prototype.delete = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var site, q;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(Site, "").select("Id")()];
                     case 1:
                         site = _a.sent();
                         q = tag.configure(Site(this.parentUrl, "_api/SPSiteManager/Delete"), "si.delete");
-                        return [4 /*yield*/, spPost(q, body({ siteId: site.Id }))];
+                        return [4 /*yield*/, spPost(q, request_builders_body({ siteId: site.Id }))];
                     case 2:
                         _a.sent();
                         return [2 /*return*/];
@@ -3837,9 +4370,9 @@ var types_Site = /** @class */ (function (_super) {
      * @param absoluteWebUrl The absolute url of the web whose document libraries should be returned
      */
     _Site.prototype.getDocumentLibraries = function (absoluteWebUrl) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = tag.configure(SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)"), "si.getDocumentLibraries");
@@ -3858,9 +4391,9 @@ var types_Site = /** @class */ (function (_super) {
      * @param absolutePageUrl The absolute url of the page
      */
     _Site.prototype.getWebUrlFromPageUrl = function (absolutePageUrl) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = tag.configure(SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)"), "si.getWebUrlFromPageUrl");
@@ -3879,7 +4412,7 @@ var types_Site = /** @class */ (function (_super) {
      * @param query The change query
      */
     _Site.prototype.getChanges = function (query) {
-        var postBody = body({ "query": Object(common["assign"])(metadata("SP.ChangeQuery"), query) });
+        var postBody = request_builders_body({ "query": Object(common["assign"])(metadata("SP.ChangeQuery"), query) });
         return spPost(this.clone(Web, "getchanges"), postBody);
     };
     /**
@@ -3888,9 +4421,9 @@ var types_Site = /** @class */ (function (_super) {
     * @param webId The GUID id of the web to open
     */
     _Site.prototype.openWebById = function (webId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Site, "openWebById('" + webId + "')"))];
                     case 1:
@@ -3923,8 +4456,8 @@ var types_Site = /** @class */ (function (_super) {
     _Site.prototype.createCommunicationSite = function (title, lcid, shareByEmailEnabled, url, description, classification, siteDesignId, hubSiteId, owner) {
         if (lcid === void 0) { lcid = 1033; }
         if (shareByEmailEnabled === void 0) { shareByEmailEnabled = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 return [2 /*return*/, this.createCommunicationSiteFromProps({
                         Classification: classification,
                         Description: description,
@@ -3940,9 +4473,9 @@ var types_Site = /** @class */ (function (_super) {
         });
     };
     _Site.prototype.createCommunicationSiteFromProps = function (props) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var p, postBody;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 p = Object.assign({}, {
                     Classification: "",
                     Description: "",
@@ -3953,7 +4486,7 @@ var types_Site = /** @class */ (function (_super) {
                     WebTemplate: "SITEPAGEPUBLISHING#0",
                     WebTemplateExtensionId: emptyGuid,
                 }, props);
-                postBody = body({
+                postBody = request_builders_body({
                     "request": Object(common["assign"])(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), p),
                 });
                 return [2 /*return*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), postBody)];
@@ -3965,12 +4498,12 @@ var types_Site = /** @class */ (function (_super) {
      * @param url Site Url that you want to check if exists
      */
     _Site.prototype.exists = function (url) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, value;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body({ url: url });
+                        postBody = request_builders_body({ url: url });
                         return [4 /*yield*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists"), postBody)];
                     case 1:
                         value = _a.sent();
@@ -3991,8 +4524,8 @@ var types_Site = /** @class */ (function (_super) {
     * @param owners The Owners of the site to be created
     */
     _Site.prototype.createModernTeamSite = function (displayName, alias, isPublic, lcid, description, classification, owners, hubSiteId, siteDesignId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 return [2 /*return*/, this.createModernTeamSiteFromProps({
                         alias: alias,
                         classification: classification,
@@ -4008,9 +4541,9 @@ var types_Site = /** @class */ (function (_super) {
         });
     };
     _Site.prototype.createModernTeamSiteFromProps = function (props) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var p, postBody;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 p = Object.assign({}, {
                     classification: "",
                     description: "",
@@ -4037,17 +4570,17 @@ var types_Site = /** @class */ (function (_super) {
                 if (p.siteDesignId) {
                     postBody.optionalParams.CreationOptions.results.push("implicit_formula_292aa8a00786498a87a5ca52d9f4214a_" + p.siteDesignId);
                 }
-                return [2 /*return*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/GroupSiteManager/CreateGroupEx"), body(postBody))];
+                return [2 /*return*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/GroupSiteManager/CreateGroupEx"), request_builders_body(postBody))];
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("si.getChanges")
     ], _Site.prototype, "getChanges", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("si.openWebById")
     ], _Site.prototype, "openWebById", null);
-    _Site = Object(tslib_es6["b" /* __decorate */])([
+    _Site = __decorate([
         defaultPath("_api/site")
     ], _Site);
     return _Site;
@@ -4081,7 +4614,7 @@ Reflect.defineProperty(rest_SPRest.prototype, "site", {
 
 
 var types_Webs = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Webs, _super);
+    __extends(_Webs, _super);
     function _Webs() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4100,12 +4633,12 @@ var types_Webs = /** @class */ (function (_super) {
         if (template === void 0) { template = "STS"; }
         if (language === void 0) { language = 1033; }
         if (inheritPermissions === void 0) { inheritPermissions = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body({
+                        postBody = request_builders_body({
                             "parameters": Object(common["assign"])(metadata("SP.WebCreationInformation"), {
                                 Description: description,
                                 Language: language,
@@ -4126,10 +4659,10 @@ var types_Webs = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ws.add")
     ], _Webs.prototype, "add", null);
-    _Webs = Object(tslib_es6["b" /* __decorate */])([
+    _Webs = __decorate([
         defaultPath("webs")
     ], _Webs);
     return _Webs;
@@ -4141,7 +4674,7 @@ var Webs = spInvokableFactory(types_Webs);
  *
  */
 var types_Web = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Web, _super);
+    __extends(_Web, _super);
     function _Web() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("w");
@@ -4163,14 +4696,14 @@ var types_Web = /** @class */ (function (_super) {
      *
      */
     _Web.prototype.getParentWeb = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var ParentWeb;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spGet(this.select("ParentWeb/Id").expand("ParentWeb"))];
                     case 1:
                         ParentWeb = (_a.sent()).ParentWeb;
-                        return [2 /*return*/, ParentWeb ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null];
+                        return [2 /*return*/, (ParentWeb === null || ParentWeb === void 0 ? void 0 : ParentWeb.Id) ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null];
                 }
             });
         });
@@ -4221,12 +4754,12 @@ var types_Web = /** @class */ (function (_super) {
      * @param properties A plain object hash of values to update for the web
      */
     _Web.prototype.update = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["assign"])(metadata("SP.Web"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
+                        postBody = request_builders_body(Object(common["assign"])(metadata("SP.Web"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
                         return [4 /*yield*/, spPost(this, postBody)];
                     case 1:
                         data = _a.sent();
@@ -4244,7 +4777,7 @@ var types_Web = /** @class */ (function (_super) {
      * @param shareGenerated When true, the generated theme files are stored in the root site. When false, they are stored in this web
      */
     _Web.prototype.applyTheme = function (colorPaletteUrl, fontSchemeUrl, backgroundImageUrl, shareGenerated) {
-        var postBody = body({
+        var postBody = request_builders_body({
             backgroundImageUrl: backgroundImageUrl,
             colorPaletteUrl: colorPaletteUrl,
             fontSchemeUrl: fontSchemeUrl,
@@ -4280,7 +4813,7 @@ var types_Web = /** @class */ (function (_super) {
      * @param query The change query
      */
     _Web.prototype.getChanges = function (query) {
-        var postBody = body({ "query": Object(common["assign"])(metadata("SP.ChangeQuery"), query) });
+        var postBody = request_builders_body({ "query": Object(common["assign"])(metadata("SP.ChangeQuery"), query) });
         return spPost(this.clone(Web, "getchanges"), postBody);
     };
     /**
@@ -4314,7 +4847,7 @@ var types_Web = /** @class */ (function (_super) {
     _Web.prototype.setStorageEntity = function (key, value, description, comments) {
         if (description === void 0) { description = ""; }
         if (comments === void 0) { comments = ""; }
-        return spPost(this.clone(Web, "setStorageEntity"), body({
+        return spPost(this.clone(Web, "setStorageEntity"), request_builders_body({
             comments: comments,
             description: description,
             key: key,
@@ -4329,34 +4862,34 @@ var types_Web = /** @class */ (function (_super) {
     _Web.prototype.removeStorageEntity = function (key) {
         return spPost(this.clone(Web, "removeStorageEntity('" + escapeQueryStrValue(key) + "')"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.getParentWeb")
     ], _Web.prototype, "getParentWeb", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.update")
     ], _Web.prototype, "update", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.applyTheme")
     ], _Web.prototype, "applyTheme", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.applyWebTemplate")
     ], _Web.prototype, "applyWebTemplate", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.getChanges")
     ], _Web.prototype, "getChanges", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.mapToIcon")
     ], _Web.prototype, "mapToIcon", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.getStorageEntity")
     ], _Web.prototype, "getStorageEntity", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.setStorageEntity")
     ], _Web.prototype, "setStorageEntity", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.removeStorageEntity")
     ], _Web.prototype, "removeStorageEntity", null);
-    _Web = Object(tslib_es6["b" /* __decorate */])([
+    _Web = __decorate([
         defaultPath("_api/web")
     ], _Web);
     return _Web;
@@ -4385,7 +4918,7 @@ function toResourcePath(url) {
 
 
 var types_Lists = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Lists, _super);
+    __extends(_Lists, _super);
     function _Lists() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4419,9 +4952,9 @@ var types_Lists = /** @class */ (function (_super) {
         if (template === void 0) { template = 100; }
         if (enableContentTypes === void 0) { enableContentTypes = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var addSettings, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         addSettings = Object.assign({
@@ -4431,7 +4964,7 @@ var types_Lists = /** @class */ (function (_super) {
                             "Description": desc,
                             "Title": title,
                         }, metadata("SP.List"), additionalSettings);
-                        return [4 /*yield*/, spPost(this, body(addSettings))];
+                        return [4 /*yield*/, spPost(this, request_builders_body(addSettings))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, { data: data, list: this.getByTitle(addSettings.Title) }];
@@ -4453,9 +4986,9 @@ var types_Lists = /** @class */ (function (_super) {
         if (template === void 0) { template = 100; }
         if (enableContentTypes === void 0) { enableContentTypes = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var addOrUpdateSettings, list, data, e_1, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this.hasBatch) {
@@ -4490,9 +5023,9 @@ var types_Lists = /** @class */ (function (_super) {
      * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
      */
     _Lists.prototype.ensureSiteAssetsLibrary = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var json;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Lists, "ensuresiteassetslibrary"))];
                     case 1:
@@ -4506,9 +5039,9 @@ var types_Lists = /** @class */ (function (_super) {
      * Gets a list that is the default location for wiki pages.
      */
     _Lists.prototype.ensureSitePagesLibrary = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var json;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Lists, "ensuresitepageslibrary"))];
                     case 1:
@@ -4518,19 +5051,19 @@ var types_Lists = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.add")
     ], _Lists.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.ensure")
     ], _Lists.prototype, "ensure", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.ensureSiteAssetsLibrary")
     ], _Lists.prototype, "ensureSiteAssetsLibrary", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.ensureSitePagesLibrary")
     ], _Lists.prototype, "ensureSitePagesLibrary", null);
-    _Lists = Object(tslib_es6["b" /* __decorate */])([
+    _Lists = __decorate([
         defaultPath("lists")
     ], _Lists);
     return _Lists;
@@ -4538,7 +5071,7 @@ var types_Lists = /** @class */ (function (_super) {
 
 var Lists = spInvokableFactory(types_Lists);
 var types_List = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_List, _super);
+    __extends(_List, _super);
     function _List() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("l");
@@ -4596,12 +5129,12 @@ var types_List = /** @class */ (function (_super) {
      */
     _List.prototype.update = function (properties, eTag) {
         if (eTag === void 0) { eTag = "*"; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data, list;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["assign"])(metadata("SP.List"), properties), request_builders_headers({
+                        postBody = request_builders_body(Object(common["assign"])(metadata("SP.List"), properties), request_builders_headers({
                             "IF-Match": eTag,
                             "X-HTTP-Method": "MERGE",
                         }));
@@ -4625,7 +5158,7 @@ var types_List = /** @class */ (function (_super) {
      * @param query A query that is performed against the change log.
      */
     _List.prototype.getChanges = function (query) {
-        return spPost(this.clone(List, "getchanges"), body({ query: Object(common["assign"])(metadata("SP.ChangeQuery"), query) }));
+        return spPost(this.clone(List, "getchanges"), request_builders_body({ query: Object(common["assign"])(metadata("SP.ChangeQuery"), query) }));
     };
     /**
      * Returns the collection of items in the list based on the provided CamlQuery
@@ -4638,7 +5171,7 @@ var types_List = /** @class */ (function (_super) {
             expands[_i - 1] = arguments[_i];
         }
         var q = this.clone(List, "getitems");
-        return spPost(q.expand.apply(q, expands), body({ query: Object(common["assign"])(metadata("SP.CamlQuery"), query) }));
+        return spPost(q.expand.apply(q, expands), request_builders_body({ query: Object(common["assign"])(metadata("SP.CamlQuery"), query) }));
     };
     /**
      * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
@@ -4646,15 +5179,15 @@ var types_List = /** @class */ (function (_super) {
      */
     _List.prototype.getListItemChangesSinceToken = function (query) {
         var o = this.clone(List, "getlistitemchangessincetoken").usingParser({ parse: function (r) { return r.text(); } });
-        return spPost(o, body({ "query": Object(common["assign"])(metadata("SP.ChangeLogItemQuery"), query) }));
+        return spPost(o, request_builders_body({ "query": Object(common["assign"])(metadata("SP.ChangeLogItemQuery"), query) }));
     };
     /**
      * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     _List.prototype.recycle = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(List, "recycle"))];
                     case 1:
@@ -4669,9 +5202,9 @@ var types_List = /** @class */ (function (_super) {
      * @param viewXml A string object representing a view xml
      */
     _List.prototype.renderListData = function (viewXml) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = this.clone(List, "renderlistdata(@viewXml)");
@@ -4698,15 +5231,12 @@ var types_List = /** @class */ (function (_super) {
         if (Object(common["hOP"])(parameters, "RenderOptions") && Object(common["isArray"])(parameters.RenderOptions)) {
             parameters.RenderOptions = parameters.RenderOptions.reduce(function (v, c) { return v + c; });
         }
-        var postBody = body({
-            overrideParameters: Object(common["assign"])(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
-            parameters: Object(common["assign"])(metadata("SP.RenderListDataParameters"), parameters),
-        });
-        var clone = this.clone(List, "RenderListDataAsStream", true);
-        if (queryParams && queryParams.size > 0) {
-            queryParams.forEach(function (v, k) { return clone.query.set(k, v); });
+        var bodyOptions = { parameters: Object(common["assign"])(metadata("SP.RenderListDataParameters"), parameters) };
+        if (Object(common["objectDefinedNotNull"])(overrideParameters)) {
+            bodyOptions = Object(common["assign"])(bodyOptions, { overrideParameters: Object(common["assign"])(metadata("SP.RenderListDataOverrideParameters"), overrideParameters) });
         }
-        return spPost(clone, postBody);
+        var clone = this.clone(List, "RenderListDataAsStream", true, true);
+        return spPost(clone, request_builders_body(bodyOptions));
     };
     /**
      * Gets the field values and field schema attributes for a list item.
@@ -4715,9 +5245,9 @@ var types_List = /** @class */ (function (_super) {
      * @param mode Enum representing the control mode of the form (Display, Edit, New)
      */
     _List.prototype.renderListFormData = function (itemId, formId, mode) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')"))];
                     case 1:
@@ -4732,9 +5262,9 @@ var types_List = /** @class */ (function (_super) {
      * Reserves a list item ID for idempotent list item creation.
      */
     _List.prototype.reserveListItemId = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(List, "reservelistitemid"))];
                     case 1:
@@ -4761,9 +5291,9 @@ var types_List = /** @class */ (function (_super) {
      */
     _List.prototype.addValidateUpdateItemUsingPath = function (formValues, decodedUrl, bNewDocumentUpdate, checkInComment, additionalProps) {
         if (bNewDocumentUpdate === void 0) { bNewDocumentUpdate = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var addProps, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         addProps = {
@@ -4777,7 +5307,7 @@ var types_List = /** @class */ (function (_super) {
                                 addProps.UnderlyingObjectType = additionalProps.objectType;
                             }
                         }
-                        return [4 /*yield*/, spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), body({
+                        return [4 /*yield*/, spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), request_builders_body({
                                 bNewDocumentUpdate: bNewDocumentUpdate,
                                 checkInComment: checkInComment,
                                 formValues: formValues,
@@ -4790,37 +5320,37 @@ var types_List = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.update")
     ], _List.prototype, "update", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.getChanges")
     ], _List.prototype, "getChanges", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.CAMLQuery")
     ], _List.prototype, "getItemsByCAMLQuery", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.ChangesSinceToken")
     ], _List.prototype, "getListItemChangesSinceToken", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.recycle")
     ], _List.prototype, "recycle", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.renderListData")
     ], _List.prototype, "renderListData", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.AsStream")
     ], _List.prototype, "renderListDataAsStream", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.renderListFormData")
     ], _List.prototype, "renderListFormData", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.reserveListItemId")
     ], _List.prototype, "reserveListItemId", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.getListItemEntityTypeFullName")
     ], _List.prototype, "getListItemEntityTypeFullName", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.addValidateUpdateItemUsingPath")
     ], _List.prototype, "addValidateUpdateItemUsingPath", null);
     return _List;
@@ -4876,9 +5406,9 @@ types_Web.prototype.getList = function (listRelativeUrl) {
     return List(this, "getList('" + escapeQueryStrValue(listRelativeUrl) + "')");
 };
 types_Web.prototype.getCatalog = function (type) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var data;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.clone(Web, "getcatalog(" + type + ")").select("Id").get()];
                 case 1:
@@ -4905,7 +5435,7 @@ types_Web.prototype.getCatalog = function (type) {
  *
  */
 var types_Items = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Items, _super);
+    __extends(_Items, _super);
     function _Items() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5004,17 +5534,17 @@ var types_Items = /** @class */ (function (_super) {
     _Items.prototype.add = function (properties, listItemEntityTypeFullName) {
         if (properties === void 0) { properties = {}; }
         if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var removeDependency, listItemEntityType, postBody, promise;
             var _this = this;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         removeDependency = this.addBatchDependency();
                         return [4 /*yield*/, this.ensureListItemEntityTypeName(listItemEntityTypeFullName)];
                     case 1:
                         listItemEntityType = _a.sent();
-                        postBody = body(Object(common["assign"])(metadata(listItemEntityType), properties));
+                        postBody = request_builders_body(Object(common["assign"])(metadata(listItemEntityType), properties));
                         promise = spPost(this.clone(Items, ""), postBody).then(function (data) {
                             return {
                                 data: data,
@@ -5037,16 +5567,16 @@ var types_Items = /** @class */ (function (_super) {
             Promise.resolve(candidatelistItemEntityTypeFullName) :
             this.getParent(List).getListItemEntityTypeFullName();
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("is.getPaged")
     ], _Items.prototype, "getPaged", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("is.getAll")
     ], _Items.prototype, "getAll", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("is.add")
     ], _Items.prototype, "add", null);
-    _Items = Object(tslib_es6["b" /* __decorate */])([
+    _Items = __decorate([
         defaultPath("items")
     ], _Items);
     return _Items;
@@ -5058,7 +5588,7 @@ var Items = spInvokableFactory(types_Items);
  *
  */
 var types_Item = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Item, _super);
+    __extends(_Item, _super);
     function _Item() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("i");
@@ -5146,16 +5676,16 @@ var types_Item = /** @class */ (function (_super) {
     _Item.prototype.update = function (properties, eTag, listItemEntityTypeFullName) {
         if (eTag === void 0) { eTag = "*"; }
         if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var removeDependency, listItemEntityType, postBody, poster, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         removeDependency = this.addBatchDependency();
                         return [4 /*yield*/, this.ensureListItemEntityTypeName(listItemEntityTypeFullName)];
                     case 1:
                         listItemEntityType = _a.sent();
-                        postBody = body(Object(common["assign"])(metadata(listItemEntityType), properties), request_builders_headers({
+                        postBody = request_builders_body(Object(common["assign"])(metadata(listItemEntityType), properties), request_builders_headers({
                             "IF-Match": eTag,
                             "X-HTTP-Method": "MERGE",
                         }));
@@ -5179,6 +5709,18 @@ var types_Item = /** @class */ (function (_super) {
         return spPost(this.clone(Item, "recycle"));
     };
     /**
+     * Deletes the item object with options.
+     *
+     * @param parameters Specifies the options to use when deleting a item.
+     */
+    _Item.prototype.deleteWithParams = function (parameters) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, spPost(this.clone(Item, "DeleteWithParameters"), request_builders_body({ parameters: parameters }))];
+            });
+        });
+    };
+    /**
      * Gets a string representation of the full URL to the WOPI frame.
      * If there is no associated WOPI application, or no associated action, an empty string is returned.
      *
@@ -5186,9 +5728,9 @@ var types_Item = /** @class */ (function (_super) {
      */
     _Item.prototype.getWopiFrameUrl = function (action) {
         if (action === void 0) { action = 0; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var i, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         i = this.clone(Item, "getWOPIFrameUrl(@action)");
@@ -5213,7 +5755,7 @@ var types_Item = /** @class */ (function (_super) {
      */
     _Item.prototype.validateUpdateListItem = function (formValues, bNewDocumentUpdate) {
         if (bNewDocumentUpdate === void 0) { bNewDocumentUpdate = false; }
-        return spPost(this.clone(Item, "validateupdatelistitem"), body({ formValues: formValues, bNewDocumentUpdate: bNewDocumentUpdate }));
+        return spPost(this.clone(Item, "validateupdatelistitem"), request_builders_body({ formValues: formValues, bNewDocumentUpdate: bNewDocumentUpdate }));
     };
     /**
      * Ensures we have the proper list item entity type name, either from the value provided or from the list
@@ -5225,13 +5767,16 @@ var types_Item = /** @class */ (function (_super) {
             Promise.resolve(candidatelistItemEntityTypeFullName) :
             this.list.getListItemEntityTypeFullName();
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("i.recycle")
     ], _Item.prototype, "recycle", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
+        tag("i.del-params")
+    ], _Item.prototype, "deleteWithParams", null);
+    __decorate([
         tag("i.getWopiFrameUrl")
     ], _Item.prototype, "getWopiFrameUrl", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("i.validateUpdateListItem")
     ], _Item.prototype, "validateUpdateListItem", null);
     return _Item;
@@ -5243,7 +5788,7 @@ var Item = spInvokableFactory(types_Item);
  *
  */
 var types_ItemVersions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ItemVersions, _super);
+    __extends(_ItemVersions, _super);
     function _ItemVersions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5255,7 +5800,7 @@ var types_ItemVersions = /** @class */ (function (_super) {
     _ItemVersions.prototype.getById = function (versionId) {
         return tag.configure(ItemVersion(this).concat("(" + versionId + ")"), "iv.getById");
     };
-    _ItemVersions = Object(tslib_es6["b" /* __decorate */])([
+    _ItemVersions = __decorate([
         defaultPath("versions")
     ], _ItemVersions);
     return _ItemVersions;
@@ -5267,7 +5812,7 @@ var ItemVersions = spInvokableFactory(types_ItemVersions);
  *
  */
 var types_ItemVersion = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ItemVersion, _super);
+    __extends(_ItemVersion, _super);
     function _ItemVersion() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("iv");
@@ -5310,7 +5855,7 @@ var types_PagedItemCollection = /** @class */ (function () {
 }());
 
 var types_PagedItemCollectionParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(PagedItemCollectionParser, _super);
+    __extends(PagedItemCollectionParser, _super);
     function PagedItemCollectionParser(_parent) {
         var _this = _super.call(this) || this;
         _this._parent = _parent;
@@ -5330,7 +5875,7 @@ var types_PagedItemCollectionParser = /** @class */ (function (_super) {
     return PagedItemCollectionParser;
 }(parsers_ODataParser));
 var types_ItemUpdatedParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ItemUpdatedParser, _super);
+    __extends(ItemUpdatedParser, _super);
     function ItemUpdatedParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }

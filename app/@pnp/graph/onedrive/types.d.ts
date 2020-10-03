@@ -47,7 +47,7 @@ export declare class _DriveItem extends _GraphQueryableInstance<any> {
     move(parentReference: {
         id: "string";
     }, name: string): Promise<void>;
-    getContent(): Promise<any>;
+    getContent(): Promise<Blob>;
     setContent(content: any): Promise<{
         id: string;
         name: string;

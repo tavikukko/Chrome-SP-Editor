@@ -52,7 +52,7 @@ export declare abstract class Queryable<DefaultActionType = any> implements IQue
      */
     abstract defaultAction(options?: IFetchOptions): Promise<DefaultActionType>;
     /**
-    * Gets the currentl url
+    * Gets the current url
     *
     */
     toUrl(): string;
@@ -136,7 +136,8 @@ export declare abstract class Queryable<DefaultActionType = any> implements IQue
      * @param settings [Optional] Settings controlling how clone is applied
      */
     protected cloneTo<T extends IQueryable<any>>(target: T, settings?: {
-        includeBatch: boolean;
+        includeBatch?: boolean;
+        includeQuery?: boolean;
     }): T;
 }
 //# sourceMappingURL=queryable.d.ts.map

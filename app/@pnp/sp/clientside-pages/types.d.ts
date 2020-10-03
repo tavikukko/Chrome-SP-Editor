@@ -41,6 +41,7 @@ export declare class _ClientsidePage extends _SharePointQueryable implements ICl
     private _pageSettings;
     private _layoutPart;
     private _bannerImageDirty;
+    private _bannerImageThumbnailUrlDirty;
     /**
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY, thank you 🐇
      */
@@ -50,10 +51,16 @@ export declare class _ClientsidePage extends _SharePointQueryable implements ICl
     set pageLayout(value: ClientsidePageLayoutType);
     get bannerImageUrl(): string;
     set bannerImageUrl(value: string);
+    get thumbnailUrl(): string;
+    set thumbnailUrl(value: string);
     get topicHeader(): string;
     set topicHeader(value: string);
     get title(): string;
     set title(value: string);
+    get reservedHeight(): number;
+    set reservedHeight(value: number);
+    get description(): string;
+    set description(value: string);
     get layoutType(): LayoutType;
     set layoutType(value: LayoutType);
     get headerTextAlignment(): TextAlignment;
@@ -307,6 +314,7 @@ export interface IPageData {
     AbsoluteUrl: string;
     AuthorByline: string[] | null;
     BannerImageUrl: string;
+    BannerThumbnailUrl: string;
     ContentTypeId: null | string;
     Description: string;
     DoesUserHaveEditPermission: boolean;
@@ -372,6 +380,7 @@ export interface ICanvasControlBaseData extends IClientsideControlBaseData {
     displayMode: number;
 }
 export interface IClientsidePageSettingsSlice extends IClientsideControlBaseData {
+    htmlAttributes?: string[];
     pageSettingsSlice: {
         "isDefaultDescription": boolean;
         "isDefaultThumbnail": boolean;

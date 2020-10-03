@@ -99,229 +99,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __extends; });
-/* unused harmony export __assign */
-/* unused harmony export __rest */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __decorate; });
-/* unused harmony export __param */
-/* unused harmony export __metadata */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __awaiter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __generator; });
-/* unused harmony export __exportStar */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __values; });
-/* unused harmony export __read */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __spread; });
-/* unused harmony export __spreadArrays */
-/* unused harmony export __await */
-/* unused harmony export __asyncGenerator */
-/* unused harmony export __asyncDelegator */
-/* unused harmony export __asyncValues */
-/* unused harmony export __makeTemplateObject */
-/* unused harmony export __importStar */
-/* unused harmony export __importDefault */
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    }
-    return __assign.apply(this, arguments);
-}
-
-function __rest(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-}
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-function __param(paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-}
-
-function __metadata(metadataKey, metadataValue) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
-}
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-function __exportStar(m, exports) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-
-function __values(o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
-    if (m) return m.call(o);
-    return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-}
-
-function __read(o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-}
-
-function __spread() {
-    for (var ar = [], i = 0; i < arguments.length; i++)
-        ar = ar.concat(__read(arguments[i]));
-    return ar;
-}
-
-function __spreadArrays() {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
-
-function __await(v) {
-    return this instanceof __await ? (this.v = v, this) : new __await(v);
-}
-
-function __asyncGenerator(thisArg, _arguments, generator) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
-    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
-    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
-    function fulfill(value) { resume("next", value); }
-    function reject(value) { resume("throw", value); }
-    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-}
-
-function __asyncDelegator(o) {
-    var i, p;
-    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
-}
-
-function __asyncValues(o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-}
-
-function __makeTemplateObject(cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-    return cooked;
-};
-
-function __importStar(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result.default = mod;
-    return result;
-}
-
-function __importDefault(mod) {
-    return (mod && mod.__esModule) ? mod : { default: mod };
-}
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return _libconfig__WEBPACK_IMPORTED_MODULE_1__["a"]; });
@@ -368,7 +145,7 @@ function __importDefault(mod) {
 /* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(8);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return _storage__WEBPACK_IMPORTED_MODULE_4__["a"]; });
 
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "assign", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["a"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "combine", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["b"]; });
@@ -408,7 +185,7 @@ function __importDefault(mod) {
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -645,6 +422,263 @@ function getHashCode(s) {
 //# sourceMappingURL=util.js.map
 
 /***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __extends; });
+/* unused harmony export __assign */
+/* unused harmony export __rest */
+/* unused harmony export __decorate */
+/* unused harmony export __param */
+/* unused harmony export __metadata */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __awaiter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __generator; });
+/* unused harmony export __createBinding */
+/* unused harmony export __exportStar */
+/* unused harmony export __values */
+/* unused harmony export __read */
+/* unused harmony export __spread */
+/* unused harmony export __spreadArrays */
+/* unused harmony export __await */
+/* unused harmony export __asyncGenerator */
+/* unused harmony export __asyncDelegator */
+/* unused harmony export __asyncValues */
+/* unused harmony export __makeTemplateObject */
+/* unused harmony export __importStar */
+/* unused harmony export __importDefault */
+/* unused harmony export __classPrivateFieldGet */
+/* unused harmony export __classPrivateFieldSet */
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return __assign.apply(this, arguments);
+}
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var __createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+
+function __exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+var __setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function __classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function __classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
+
+
+/***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -753,7 +787,7 @@ var RuntimeConfig = _runtimeConfig;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return objectToMap; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return mergeMaps; });
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 /**
  * Used to calculate the object properties, with polyfill if needed
@@ -812,8 +846,8 @@ var safeGlobal = typeof global === "undefined" ? window : global;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FetchClient; });
 /* unused harmony export BearerTokenFetchClient */
 /* unused harmony export SPFxAdalClient */
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 
 
@@ -858,7 +892,7 @@ var FetchClient = /** @class */ (function () {
  * Makes requests using the fetch API adding the supplied token to the Authorization header
  */
 var BearerTokenFetchClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(BearerTokenFetchClient, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "b"])(BearerTokenFetchClient, _super);
     function BearerTokenFetchClient(_token) {
         var _this = _super.call(this) || this;
         _this._token = _token;
@@ -889,7 +923,7 @@ var BearerTokenFetchClient = /** @class */ (function (_super) {
  * Client wrapping the aadTokenProvider available from SPFx >= 1.6
  */
 var SPFxAdalClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(SPFxAdalClient, _super);
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "b"])(SPFxAdalClient, _super);
     /**
      *
      * @param context provide the appropriate SPFx Context object
@@ -908,7 +942,7 @@ var SPFxAdalClient = /** @class */ (function (_super) {
     SPFxAdalClient.prototype.fetch = function (url, options) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var token;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getToken(getADALResource(url))];
                     case 1:
@@ -927,7 +961,7 @@ var SPFxAdalClient = /** @class */ (function (_super) {
     SPFxAdalClient.prototype.getToken = function (resource) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var provider;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
                     case 1:
@@ -955,8 +989,8 @@ var SPFxAdalClient = /** @class */ (function (_super) {
 "use strict";
 /* unused harmony export PnPClientStorageWrapper */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PnPClientStorage; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 
 
@@ -1039,7 +1073,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
     PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var o;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.enabled) {
@@ -1063,7 +1097,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
     PnPClientStorageWrapper.prototype.deleteExpired = function () {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
             var i, key;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "d"])(this, function (_a) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.enabled) {
@@ -1352,10 +1386,10 @@ __webpack_require__.d(__webpack_exports__, "TermGroup", function() { return /* r
 __webpack_require__.d(__webpack_exports__, "TermGroups", function() { return /* reexport */ TermGroups; });
 __webpack_require__.d(__webpack_exports__, "TermSets", function() { return /* reexport */ TermSets; });
 __webpack_require__.d(__webpack_exports__, "TermSet", function() { return /* reexport */ TermSet; });
-__webpack_require__.d(__webpack_exports__, "Terms", function() { return /* reexport */ Terms; });
 __webpack_require__.d(__webpack_exports__, "Relation", function() { return /* reexport */ Relation; });
 __webpack_require__.d(__webpack_exports__, "Relations", function() { return /* reexport */ Relations; });
 __webpack_require__.d(__webpack_exports__, "Term", function() { return /* reexport */ Term; });
+__webpack_require__.d(__webpack_exports__, "Children", function() { return /* reexport */ Children; });
 __webpack_require__.d(__webpack_exports__, "UserCustomAction", function() { return /* reexport */ UserCustomAction; });
 __webpack_require__.d(__webpack_exports__, "UserCustomActions", function() { return /* reexport */ UserCustomActions; });
 __webpack_require__.d(__webpack_exports__, "UserCustomActionRegistrationType", function() { return /* reexport */ UserCustomActionRegistrationType; });
@@ -1376,6 +1410,7 @@ __webpack_require__.d(__webpack_exports__, "SharePointQueryable", function() { r
 __webpack_require__.d(__webpack_exports__, "spInvokableFactory", function() { return /* reexport */ spInvokableFactory; });
 __webpack_require__.d(__webpack_exports__, "SPBatch", function() { return /* reexport */ batch_SPBatch; });
 __webpack_require__.d(__webpack_exports__, "defaultPath", function() { return /* reexport */ defaultPath; });
+__webpack_require__.d(__webpack_exports__, "registerCustomRequestClientFactory", function() { return /* reexport */ registerCustomRequestClientFactory; });
 __webpack_require__.d(__webpack_exports__, "spGet", function() { return /* reexport */ spGet; });
 __webpack_require__.d(__webpack_exports__, "spPost", function() { return /* reexport */ spPost; });
 __webpack_require__.d(__webpack_exports__, "spDelete", function() { return /* reexport */ spDelete; });
@@ -1395,7 +1430,7 @@ __webpack_require__.d(__webpack_exports__, "containsInvalidFileFolderChars", fun
 __webpack_require__.d(__webpack_exports__, "sp", function() { return /* reexport */ all_sp; });
 
 // EXTERNAL MODULE: ./node_modules/@pnp/common/index.js
-var common = __webpack_require__(1);
+var common = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/splibconfig.js
 
@@ -1498,8 +1533,234 @@ var rest_SPRest = /** @class */ (function () {
 
 var rest_sp = new rest_SPRest();
 //# sourceMappingURL=rest.js.map
-// EXTERNAL MODULE: ./node_modules/tslib/tslib.es6.js
-var tslib_es6 = __webpack_require__(0);
+// CONCATENATED MODULE: ./node_modules/@pnp/sp/node_modules/tslib/tslib.es6.js
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return __assign.apply(this, arguments);
+}
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var __createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+
+function __exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+var __setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function __classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function __classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
 
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
 
@@ -1669,12 +1930,242 @@ function addProp(target, name, factory, path) {
     });
 }
 //# sourceMappingURL=add-prop.js.map
+// CONCATENATED MODULE: ./node_modules/@pnp/odata/node_modules/tslib/tslib.es6.js
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var tslib_es6_extendStatics = function(d, b) {
+    tslib_es6_extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return tslib_es6_extendStatics(d, b);
+};
+
+function tslib_es6_extends(d, b) {
+    tslib_es6_extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var tslib_es6_assign = function() {
+    tslib_es6_assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    }
+    return tslib_es6_assign.apply(this, arguments);
+}
+
+function tslib_es6_rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function tslib_es6_decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function tslib_es6_param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function tslib_es6_metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function tslib_es6_awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function tslib_es6_generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var tslib_es6_createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+
+function tslib_es6_exportStar(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) tslib_es6_createBinding(exports, m, p);
+}
+
+function tslib_es6_values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function tslib_es6_read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function tslib_es6_spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(tslib_es6_read(arguments[i]));
+    return ar;
+}
+
+function tslib_es6_spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+
+function tslib_es6_await(v) {
+    return this instanceof tslib_es6_await ? (this.v = v, this) : new tslib_es6_await(v);
+}
+
+function tslib_es6_asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof tslib_es6_await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function tslib_es6_asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: tslib_es6_await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+}
+
+function tslib_es6_asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof tslib_es6_values === "function" ? tslib_es6_values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function tslib_es6_makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+
+var tslib_es6_setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
+function tslib_es6_importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) tslib_es6_createBinding(result, mod, k);
+    tslib_es6_setModuleDefault(result, mod);
+    return result;
+}
+
+function tslib_es6_importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function tslib_es6_classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+
+function tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
+
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
 
 
 var _enableExtensions = false;
-var globaExtensions = [];
-var ObjExtensionsSym = Symbol("__extensions");
+var globalExtensions = [];
+var factoryExtensions = new Map();
+var ObjExtensionsSym = Symbol.for("43f7a601");
 /**
  * Creates global extensions across all invokable objects
  *
@@ -1682,7 +2173,7 @@ var ObjExtensionsSym = Symbol("__extensions");
  */
 var extendGlobal = function (e) {
     _enableExtensions = true;
-    extendCol(globaExtensions, e);
+    extendCol(globalExtensions, e);
 };
 /**
  * Applies the supplied extensions to a single instance
@@ -1706,15 +2197,23 @@ var extendObj = function (target, extensions) {
  */
 var extendFactory = function (factory, extensions) {
     _enableExtensions = true;
-    if (factory.__proto__[ObjExtensionsSym] === undefined) {
-        factory.__proto__[ObjExtensionsSym] = [];
+    // factoryExtensions
+    var proto = Reflect.getPrototypeOf(factory);
+    if (!Reflect.has(proto, ObjExtensionsSym)) {
+        Reflect.defineProperty(proto, ObjExtensionsSym, {
+            value: Object(common["getGUID"])(),
+        });
     }
-    extendCol(factory.__proto__[ObjExtensionsSym], extensions);
+    var key = proto[ObjExtensionsSym];
+    if (!factoryExtensions.has(key)) {
+        factoryExtensions.set(key, []);
+    }
+    extendCol(factoryExtensions.get(key), extensions);
 };
 function extendCol(a, e) {
     if (Object(common["isArray"])(e)) {
         // @ts-ignore
-        a.push.apply(a, Object(tslib_es6["e" /* __spread */])(e));
+        a.push.apply(a, tslib_es6_spread(e));
     }
     else {
         // @ts-ignore
@@ -1725,7 +2224,7 @@ function extendCol(a, e) {
  * Clears all global extensions
  */
 var clearGlobalExtensions = function () {
-    globaExtensions.length = 0;
+    globalExtensions.length = 0;
 };
 /**
  * Disables all extensions
@@ -1747,8 +2246,10 @@ var enableExtensions = function () {
  */
 var applyFactoryExtensions = function (factory, args) {
     var o = factory(args);
-    if (factory.__proto__[ObjExtensionsSym]) {
-        o = extendObj(o, factory.__proto__[ObjExtensionsSym]);
+    var proto = Reflect.getPrototypeOf(factory);
+    if (Reflect.has(proto, ObjExtensionsSym)) {
+        var extensions = factoryExtensions.get(Reflect.get(proto, ObjExtensionsSym));
+        o = extendObj(o, extensions);
     }
     return o;
 };
@@ -1761,16 +2262,16 @@ function extensionOrDefault(op, or, target) {
         var extensions = [];
         // we need to first invoke extensions tied to only this object
         if (Reflect.has(target, ObjExtensionsSym)) {
-            extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(Reflect.get(target, ObjExtensionsSym)));
+            extensions.push.apply(extensions, tslib_es6_spread(Reflect.get(target, ObjExtensionsSym)));
         }
         // second we need to process any global extensions
-        extensions.push.apply(extensions, Object(tslib_es6["e" /* __spread */])(globaExtensions));
+        extensions.push.apply(extensions, tslib_es6_spread(globalExtensions));
         for (var i = 0; i < extensions.length; i++) {
             var extension = extensions[i];
             var result = undefined;
             if (Object(common["isFunc"])(extension)) {
                 // this extension is a function which we call
-                result = extension.apply(void 0, Object(tslib_es6["e" /* __spread */])([op, target], rest));
+                result = extension.apply(void 0, tslib_es6_spread([op, target], rest));
             }
             else if (op === "get" && Reflect.has(extension, rest[0])) {
                 // this extension is a named extension meaning we are overriding a specific method/property
@@ -1778,7 +2279,7 @@ function extensionOrDefault(op, or, target) {
             }
             else if (Reflect.has(extension, op)) {
                 // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
-                result = Reflect.get(extension, op).apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
+                result = Reflect.get(extension, op).apply(void 0, tslib_es6_spread([target], rest));
             }
             if (typeof result !== "undefined") {
                 // if a extension returned a result, we return that
@@ -1788,7 +2289,7 @@ function extensionOrDefault(op, or, target) {
             }
         }
     }
-    return or.apply(void 0, Object(tslib_es6["e" /* __spread */])([target], rest));
+    return or.apply(void 0, tslib_es6_spread([target], rest));
 }
 //# sourceMappingURL=invokable-extensions.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
@@ -1808,7 +2309,7 @@ var invokableBinder = function (invoker) { return function (constructor) {
                     ags[_i] = arguments[_i];
                 }
                 return invoker.apply(r, ags);
-            }, new (constructor.bind.apply(constructor, Object(tslib_es6["e" /* __spread */])([void 0], as)))());
+            }, new (constructor.bind.apply(constructor, tslib_es6_spread([void 0], as)))());
             Reflect.setPrototypeOf(r, constructor.prototype);
             return r;
         };
@@ -1925,7 +2426,7 @@ var parsers_ODataParser = /** @class */ (function () {
 }());
 
 var parsers_TextParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(TextParser, _super);
+    tslib_es6_extends(TextParser, _super);
     function TextParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1936,7 +2437,7 @@ var parsers_TextParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_BlobParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(BlobParser, _super);
+    tslib_es6_extends(BlobParser, _super);
     function BlobParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1947,7 +2448,7 @@ var parsers_BlobParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_JSONParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(JSONParser, _super);
+    tslib_es6_extends(JSONParser, _super);
     function JSONParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1958,7 +2459,7 @@ var parsers_JSONParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_BufferParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(BufferParser, _super);
+    tslib_es6_extends(BufferParser, _super);
     function BufferParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -1974,7 +2475,7 @@ var parsers_BufferParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_LambdaParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(LambdaParser, _super);
+    tslib_es6_extends(LambdaParser, _super);
     function LambdaParser(parser) {
         var _this = _super.call(this) || this;
         _this.parser = parser;
@@ -1987,7 +2488,7 @@ var parsers_LambdaParser = /** @class */ (function (_super) {
 }(parsers_ODataParser));
 
 var parsers_HttpRequestError = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(HttpRequestError, _super);
+    tslib_es6_extends(HttpRequestError, _super);
     function HttpRequestError(message, response, status, statusText) {
         if (status === void 0) { status = response.status; }
         if (statusText === void 0) { statusText = response.statusText; }
@@ -1999,9 +2500,9 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
         return _this;
     }
     HttpRequestError.init = function (r) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return tslib_es6_awaiter(this, void 0, void 0, function () {
             var t;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return tslib_es6_generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, r.clone().text()];
                     case 1:
@@ -2020,10 +2521,17 @@ var parsers_HttpRequestError = /** @class */ (function (_super) {
 
 
 function cloneQueryableData(source) {
+    var body;
+    // this handles bodies that cannot be JSON encoded (Blob, etc)
+    // Note however, even bodies that can be serialized will not be cloned.
+    if (source.options && source.options.body) {
+        body = source.options.body;
+        source.options.body = "-";
+    }
     var s = JSON.stringify(source, function (key, value) {
         switch (key) {
             case "query":
-                return JSON.stringify(Object(tslib_es6["e" /* __spread */])(value));
+                return JSON.stringify(tslib_es6_spread(value));
             case "batch":
                 return "-";
             case "batchDependency":
@@ -2056,9 +2564,9 @@ function cloneQueryableData(source) {
                 return value;
         }
     });
-    // this handles bodies that cannot be JSON encoded (Blob, etc)
-    if (source.options && source.options.body) {
-        parsed.options.body = source.options.body;
+    if (body) {
+        parsed.options.body = body;
+        source.options.body = body;
     }
     return parsed;
 }
@@ -2080,13 +2588,13 @@ var queryable_Queryable = /** @class */ (function () {
             return this._data;
         },
         set: function (value) {
-            this._data = Object.assign({}, cloneQueryableData(this.data), cloneQueryableData(value));
+            this._data = Object.assign({}, this.data, cloneQueryableData(value));
         },
         enumerable: false,
         configurable: true
     });
     /**
-    * Gets the currentl url
+    * Gets the current url
     *
     */
     Queryable.prototype.toUrl = function () {
@@ -2234,7 +2742,12 @@ var queryable_Queryable = /** @class */ (function () {
      * @param settings [Optional] Settings controlling how clone is applied
      */
     Queryable.prototype.cloneTo = function (target, settings) {
-        if (settings === void 0) { settings = { includeBatch: true }; }
+        if (settings === void 0) { settings = {}; }
+        // default values for settings
+        settings = Object(common["assign"])({
+            includeBatch: true,
+            includeQuery: false,
+        }, settings);
         target.data = Object.assign({}, cloneQueryableData(this.data), {
             batch: null,
             cloneParentCacheOptions: null,
@@ -2243,6 +2756,9 @@ var queryable_Queryable = /** @class */ (function () {
         target.configureFrom(this);
         if (settings.includeBatch) {
             target.inBatch(this.batch);
+        }
+        if (settings.includeQuery && this.query.size > 0) {
+            this.query.forEach(function (v, k) { return target.query.set(k, v); });
         }
         if (this.data.useCaching) {
             target.data.cloneParentWasCaching = true;
@@ -2527,7 +3043,7 @@ function pipe(context) {
         throw e;
     });
     if (context.isBatched) {
-        // this will block the batch's execute method from returning until the child requets have been resolved
+        // this will block the batch's execute method from returning until the child requests have been resolved
         context.batch.addResolveBatchDependency(promise);
     }
     return promise;
@@ -2667,16 +3183,16 @@ var pipeline_PipelineMethods = /** @class */ (function () {
             resolve(context);
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod(true)
     ], PipelineMethods, "logStart", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod()
     ], PipelineMethods, "caching", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod()
     ], PipelineMethods, "send", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    tslib_es6_decorate([
         requestPipelineMethod(true)
     ], PipelineMethods, "logEnd", null);
     return PipelineMethods;
@@ -2733,7 +3249,7 @@ var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
 
-function body(o, previous) {
+function request_builders_body(o, previous) {
     return Object.assign({ body: Object(common["jsS"])(o) }, previous);
 }
 function request_builders_headers(o, previous) {
@@ -2796,8 +3312,8 @@ function tag(name) {
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
-            return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-                return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
                     this.configure(request_builders_headers({ "X-PnPjs-Tracking": name }));
                     return [2 /*return*/, originalMethod.apply(this, args)];
                 });
@@ -2841,9 +3357,9 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
     }
     SPHttpClient.prototype.fetch = function (url, options) {
         if (options === void 0) { options = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var opts, headers, methodName, clientTag, digest;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         opts = Object(common["assign"])(options, { cache: "no-cache", credentials: "same-origin" }, true);
@@ -2861,7 +3377,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.6:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.10:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -2966,9 +3482,9 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
 var digests = new Map();
 function getDigestFactory(client) {
     var _this = this;
-    return function (webUrl) { return Object(tslib_es6["a" /* __awaiter */])(_this, void 0, void 0, function () {
+    return function (webUrl) { return __awaiter(_this, void 0, void 0, function () {
         var cachedDigest, now, url, headers, resp, parsed, newCachedDigest;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     cachedDigest = digests.get(webUrl);
@@ -3008,6 +3524,7 @@ function getDigestFactory(client) {
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/toabsoluteurl.js
 
 
+
 /**
  * Ensures that a given url is absolute for the current web based on context
  *
@@ -3015,35 +3532,38 @@ function getDigestFactory(client) {
  *
  */
 function toAbsoluteUrl(candidateUrl) {
-    return new Promise(function (resolve) {
-        if (Object(common["isUrlAbsolute"])(candidateUrl)) {
-            // if we are already absolute, then just return the url
-            return resolve(candidateUrl);
-        }
-        if (SPRuntimeConfig.baseUrl !== null) {
-            // base url specified either with baseUrl of spfxContext config property
-            return resolve(Object(common["combine"])(SPRuntimeConfig.baseUrl, candidateUrl));
-        }
-        if (common["safeGlobal"]._spPageContextInfo !== undefined) {
-            // operating in classic pages
-            if (Object(common["hOP"])(common["safeGlobal"]._spPageContextInfo, "webAbsoluteUrl")) {
-                return resolve(Object(common["combine"])(common["safeGlobal"]._spPageContextInfo.webAbsoluteUrl, candidateUrl));
+    return __awaiter(this, void 0, void 0, function () {
+        var baseUrl_1;
+        return __generator(this, function (_a) {
+            if (Object(common["isUrlAbsolute"])(candidateUrl)) {
+                // if we are already absolute, then just return the url
+                return [2 /*return*/, candidateUrl];
             }
-            else if (Object(common["hOP"])(common["safeGlobal"]._spPageContextInfo, "webServerRelativeUrl")) {
-                return resolve(Object(common["combine"])(common["safeGlobal"]._spPageContextInfo.webServerRelativeUrl, candidateUrl));
+            if (SPRuntimeConfig.baseUrl !== null) {
+                // base url specified either with baseUrl of spfxContext config property
+                return [2 /*return*/, Object(common["combine"])(SPRuntimeConfig.baseUrl, candidateUrl)];
             }
-        }
-        // does window.location exist and have a certain path part in it?
-        if (common["safeGlobal"].location !== undefined) {
-            var baseUrl_1 = common["safeGlobal"].location.toString().toLowerCase();
-            ["/_layouts/", "/siteassets/"].forEach(function (s) {
-                var index = baseUrl_1.indexOf(s);
-                if (index > 0) {
-                    return resolve(Object(common["combine"])(baseUrl_1.substr(0, index), candidateUrl));
+            if (common["safeGlobal"]._spPageContextInfo !== undefined) {
+                // operating in classic pages
+                if (Object(common["hOP"])(common["safeGlobal"]._spPageContextInfo, "webAbsoluteUrl")) {
+                    return [2 /*return*/, Object(common["combine"])(common["safeGlobal"]._spPageContextInfo.webAbsoluteUrl, candidateUrl)];
                 }
-            });
-        }
-        return resolve(candidateUrl);
+                else if (Object(common["hOP"])(common["safeGlobal"]._spPageContextInfo, "webServerRelativeUrl")) {
+                    return [2 /*return*/, Object(common["combine"])(common["safeGlobal"]._spPageContextInfo.webServerRelativeUrl, candidateUrl)];
+                }
+            }
+            // does window.location exist and have a certain path part in it?
+            if (common["safeGlobal"].location !== undefined) {
+                baseUrl_1 = common["safeGlobal"].location.toString().toLowerCase();
+                ["/_layouts/", "/siteassets/"].forEach(function (s) {
+                    var index = baseUrl_1.indexOf(s);
+                    if (index > 0) {
+                        return Object(common["combine"])(baseUrl_1.substr(0, index), candidateUrl);
+                    }
+                });
+            }
+            return [2 /*return*/, candidateUrl];
+        });
     });
 }
 //# sourceMappingURL=toabsoluteurl.js.map
@@ -3053,13 +3573,16 @@ function toAbsoluteUrl(candidateUrl) {
 
 
 
-var spClientBinder = defaultPipelineBinder(function () { return new sphttpclient_SPHttpClient(); });
+function registerCustomRequestClientFactory(requestClientFactory) {
+    operations_factory = Object(common["isFunc"])(requestClientFactory) ? requestClientFactory : function () { return new sphttpclient_SPHttpClient(); };
+}
+var operations_factory = function () { return new sphttpclient_SPHttpClient(); };
 var send = function (method) {
-    var operation = spClientBinder(method);
+    var operation = defaultPipelineBinder(operations_factory)(method);
     return function (o, options) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data, batchDependency, url;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         data = cloneQueryableData(o.data);
@@ -3092,9 +3615,9 @@ var spGet = function (o, options) {
     }
     return send("GET")(o, options);
 };
-var spPost = send("POST");
-var spDelete = send("DELETE");
-var spPatch = send("PATCH");
+var spPost = function (o, options) { return send("POST")(o, options); };
+var spDelete = function (o, options) { return send("DELETE")(o, options); };
+var spPatch = function (o, options) { return send("PATCH")(o, options); };
 var spPostDelete = function (o, options) {
     var opts = Object.assign(request_builders_headers({ "X-HTTP-Method": "DELETE" }), options);
     return spPost(o, opts);
@@ -3121,7 +3644,7 @@ var spInvokableFactory = function (f) {
  *
  */
 var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharePointQueryable, _super);
+    __extends(_SharePointQueryable, _super);
     /**
      * Creates a new instance of the SharePointQueryable class
      *
@@ -3203,7 +3726,7 @@ var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
             selects[_i] = arguments[_i];
         }
         if (selects.length > 0) {
-            this.query.set("$select", selects.join(","));
+            this.query.set("$select", selects.map(encodeURIComponent).join(","));
         }
         return this;
     };
@@ -3221,7 +3744,7 @@ var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
             expands[_i] = arguments[_i];
         }
         if (expands.length > 0) {
-            this.query.set("$expand", expands.join(","));
+            this.query.set("$expand", expands.map(encodeURIComponent).join(","));
         }
         return this;
     };
@@ -3230,14 +3753,19 @@ var sharepointqueryable_SharePointQueryable = /** @class */ (function (_super) {
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
+     * @param includeQuery If true all of the query values will be copied to the cloned instance
      */
-    _SharePointQueryable.prototype.clone = function (factory, additionalPath, includeBatch) {
+    _SharePointQueryable.prototype.clone = function (factory, additionalPath, includeBatch, includeQuery) {
         if (includeBatch === void 0) { includeBatch = true; }
-        var clone = _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch });
+        if (includeQuery === void 0) { includeQuery = false; }
+        var clone = _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch, includeQuery: includeQuery });
         // handle sp specific clone actions
-        var t = "@target";
-        if (this.query.has(t)) {
-            clone.query.set(t, this.query.get(t));
+        if (!includeQuery) {
+            // we would have already copied this over if we got the entire query
+            var t = "@target";
+            if (this.query.has(t)) {
+                clone.query.set(t, this.query.get(t));
+            }
         }
         return clone;
     };
@@ -3275,7 +3803,7 @@ var SharePointQueryable = spInvokableFactory(sharepointqueryable_SharePointQuery
  *
  */
 var sharepointqueryable_SharePointQueryableCollection = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharePointQueryableCollection, _super);
+    __extends(_SharePointQueryableCollection, _super);
     function _SharePointQueryableCollection() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3285,7 +3813,7 @@ var sharepointqueryable_SharePointQueryableCollection = /** @class */ (function 
      * @param filter The string representing the filter query
      */
     _SharePointQueryableCollection.prototype.filter = function (filter) {
-        this.query.set("$filter", filter);
+        this.query.set("$filter", encodeURIComponent(filter));
         return this;
     };
     /**
@@ -3298,7 +3826,7 @@ var sharepointqueryable_SharePointQueryableCollection = /** @class */ (function 
         if (ascending === void 0) { ascending = true; }
         var o = "$orderby";
         var query = this.query.has(o) ? this.query.get(o).split(",") : [];
-        query.push(orderBy + " " + (ascending ? "asc" : "desc"));
+        query.push(encodeURIComponent(orderBy) + " " + (ascending ? "asc" : "desc"));
         this.query.set(o, query.join(","));
         return this;
     };
@@ -3329,7 +3857,7 @@ var SharePointQueryableCollection = spInvokableFactory(sharepointqueryable_Share
  *
  */
 var sharepointqueryable_SharePointQueryableInstance = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SharePointQueryableInstance, _super);
+    __extends(_SharePointQueryableInstance, _super);
     function _SharePointQueryableInstance() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3380,7 +3908,7 @@ function deleteableWithETag(t) {
 function defaultPath(path) {
     return function (target) {
         return /** @class */ (function (_super) {
-            Object(tslib_es6["c" /* __extends */])(class_1, _super);
+            __extends(class_1, _super);
             function class_1() {
                 var args = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
@@ -3435,10 +3963,10 @@ function odataUrlFrom(candidate) {
         Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
         return "";
     }
-    return common["combine"].apply(void 0, Object(tslib_es6["e" /* __spread */])(parts));
+    return common["combine"].apply(void 0, __spread(parts));
 }
 var odata_SPODataEntityParserImpl = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(SPODataEntityParserImpl, _super);
+    __extends(SPODataEntityParserImpl, _super);
     function SPODataEntityParserImpl(factory) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
@@ -3458,7 +3986,7 @@ var odata_SPODataEntityParserImpl = /** @class */ (function (_super) {
     return SPODataEntityParserImpl;
 }(parsers_ODataParser));
 var odata_SPODataEntityArrayParserImpl = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(SPODataEntityArrayParserImpl, _super);
+    __extends(SPODataEntityArrayParserImpl, _super);
     function SPODataEntityArrayParserImpl(factory) {
         var _this = _super.call(this) || this;
         _this.factory = factory;
@@ -3500,7 +4028,7 @@ function spODataEntityArray(factory) {
  * Manages a batch of OData operations
  */
 var batch_SPBatch = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(SPBatch, _super);
+    __extends(SPBatch, _super);
     function SPBatch(baseUrl) {
         var _this = _super.call(this) || this;
         _this.baseUrl = baseUrl;
@@ -3564,10 +4092,10 @@ var batch_SPBatch = /** @class */ (function (_super) {
         return responses;
     };
     SPBatch.prototype.executeImpl = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var client, absoluteRequestUrl, batchBody, currentChangeSetId, i, reqInfo, headers, url, method, castHeaders, batchOptions, fetchResponse, text, responses;
             var _this = this;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
@@ -3635,7 +4163,7 @@ var batch_SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.6:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.10:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -3663,8 +4191,14 @@ var batch_SPBatch = /** @class */ (function (_super) {
                         return [4 /*yield*/, client.fetch(Object(common["combine"])(absoluteRequestUrl, "/_api/$batch"), batchOptions)];
                     case 2:
                         fetchResponse = _a.sent();
-                        return [4 /*yield*/, fetchResponse.text()];
-                    case 3:
+                        if (!!fetchResponse.ok) return [3 /*break*/, 4];
+                        return [4 /*yield*/, parsers_HttpRequestError.init(fetchResponse)];
+                    case 3: 
+                    // the entire batch resulted in an error and we need to handle that better #1356
+                    // things consistently with the rest of the http errors
+                    throw (_a.sent());
+                    case 4: return [4 /*yield*/, fetchResponse.clone().text()];
+                    case 5:
                         text = _a.sent();
                         responses = SPBatch.ParseResponse(text);
                         if (responses.length !== this.requests.length) {
@@ -3673,9 +4207,9 @@ var batch_SPBatch = /** @class */ (function (_super) {
                         Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
                         // this structure ensures that we resolve the batched requests in the order we expect
                         // using async this is not guaranteed depending on the requests
-                        return [2 /*return*/, responses.reduce(function (p, response, index) { return p.then(function (_) { return Object(tslib_es6["a" /* __awaiter */])(_this, void 0, void 0, function () {
+                        return [2 /*return*/, responses.reduce(function (p, response, index) { return p.then(function (_) { return __awaiter(_this, void 0, void 0, function () {
                                 var request, _a, _b, e_1;
-                                return Object(tslib_es6["d" /* __generator */])(this, function (_c) {
+                                return __generator(this, function (_c) {
                                     switch (_c.label) {
                                         case 0:
                                             request = this.requests[index];
@@ -3741,7 +4275,7 @@ function escapeQueryStrValue(value) {
 
 
 var types_Site = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Site, _super);
+    __extends(_Site, _super);
     function _Site() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -3761,9 +4295,9 @@ var types_Site = /** @class */ (function (_super) {
      * correctly setup for chaining within the library
      */
     _Site.prototype.getRootWeb = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var web;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.rootWeb.select("Url")()];
                     case 1:
@@ -3777,9 +4311,9 @@ var types_Site = /** @class */ (function (_super) {
     * Gets the context information for this site collection
     */
     _Site.prototype.getContextInfo = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data, info;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = tag.configure(Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
@@ -3807,15 +4341,15 @@ var types_Site = /** @class */ (function (_super) {
     *
     */
     _Site.prototype.delete = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var site, q;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(Site, "").select("Id")()];
                     case 1:
                         site = _a.sent();
                         q = tag.configure(Site(this.parentUrl, "_api/SPSiteManager/Delete"), "si.delete");
-                        return [4 /*yield*/, spPost(q, body({ siteId: site.Id }))];
+                        return [4 /*yield*/, spPost(q, request_builders_body({ siteId: site.Id }))];
                     case 2:
                         _a.sent();
                         return [2 /*return*/];
@@ -3829,9 +4363,9 @@ var types_Site = /** @class */ (function (_super) {
      * @param absoluteWebUrl The absolute url of the web whose document libraries should be returned
      */
     _Site.prototype.getDocumentLibraries = function (absoluteWebUrl) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = tag.configure(SharePointQueryable("", "_api/sp.web.getdocumentlibraries(@v)"), "si.getDocumentLibraries");
@@ -3850,9 +4384,9 @@ var types_Site = /** @class */ (function (_super) {
      * @param absolutePageUrl The absolute url of the page
      */
     _Site.prototype.getWebUrlFromPageUrl = function (absolutePageUrl) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = tag.configure(SharePointQueryable("", "_api/sp.web.getweburlfrompageurl(@v)"), "si.getWebUrlFromPageUrl");
@@ -3871,7 +4405,7 @@ var types_Site = /** @class */ (function (_super) {
      * @param query The change query
      */
     _Site.prototype.getChanges = function (query) {
-        var postBody = body({ "query": Object(common["assign"])(metadata("SP.ChangeQuery"), query) });
+        var postBody = request_builders_body({ "query": Object(common["assign"])(metadata("SP.ChangeQuery"), query) });
         return spPost(this.clone(Web, "getchanges"), postBody);
     };
     /**
@@ -3880,9 +4414,9 @@ var types_Site = /** @class */ (function (_super) {
     * @param webId The GUID id of the web to open
     */
     _Site.prototype.openWebById = function (webId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Site, "openWebById('" + webId + "')"))];
                     case 1:
@@ -3915,8 +4449,8 @@ var types_Site = /** @class */ (function (_super) {
     _Site.prototype.createCommunicationSite = function (title, lcid, shareByEmailEnabled, url, description, classification, siteDesignId, hubSiteId, owner) {
         if (lcid === void 0) { lcid = 1033; }
         if (shareByEmailEnabled === void 0) { shareByEmailEnabled = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 return [2 /*return*/, this.createCommunicationSiteFromProps({
                         Classification: classification,
                         Description: description,
@@ -3932,9 +4466,9 @@ var types_Site = /** @class */ (function (_super) {
         });
     };
     _Site.prototype.createCommunicationSiteFromProps = function (props) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var p, postBody;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 p = Object.assign({}, {
                     Classification: "",
                     Description: "",
@@ -3945,7 +4479,7 @@ var types_Site = /** @class */ (function (_super) {
                     WebTemplate: "SITEPAGEPUBLISHING#0",
                     WebTemplateExtensionId: emptyGuid,
                 }, props);
-                postBody = body({
+                postBody = request_builders_body({
                     "request": Object(common["assign"])(metadata("Microsoft.SharePoint.Portal.SPSiteCreationRequest"), p),
                 });
                 return [2 /*return*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/SPSiteManager/Create"), postBody)];
@@ -3957,12 +4491,12 @@ var types_Site = /** @class */ (function (_super) {
      * @param url Site Url that you want to check if exists
      */
     _Site.prototype.exists = function (url) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, value;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body({ url: url });
+                        postBody = request_builders_body({ url: url });
                         return [4 /*yield*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/SP.Site.Exists"), postBody)];
                     case 1:
                         value = _a.sent();
@@ -3983,8 +4517,8 @@ var types_Site = /** @class */ (function (_super) {
     * @param owners The Owners of the site to be created
     */
     _Site.prototype.createModernTeamSite = function (displayName, alias, isPublic, lcid, description, classification, owners, hubSiteId, siteDesignId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 return [2 /*return*/, this.createModernTeamSiteFromProps({
                         alias: alias,
                         classification: classification,
@@ -4000,9 +4534,9 @@ var types_Site = /** @class */ (function (_super) {
         });
     };
     _Site.prototype.createModernTeamSiteFromProps = function (props) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var p, postBody;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 p = Object.assign({}, {
                     classification: "",
                     description: "",
@@ -4029,17 +4563,17 @@ var types_Site = /** @class */ (function (_super) {
                 if (p.siteDesignId) {
                     postBody.optionalParams.CreationOptions.results.push("implicit_formula_292aa8a00786498a87a5ca52d9f4214a_" + p.siteDesignId);
                 }
-                return [2 /*return*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/GroupSiteManager/CreateGroupEx"), body(postBody))];
+                return [2 /*return*/, spPost(Site(extractWebUrl(this.toUrl()), "/_api/GroupSiteManager/CreateGroupEx"), request_builders_body(postBody))];
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("si.getChanges")
     ], _Site.prototype, "getChanges", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("si.openWebById")
     ], _Site.prototype, "openWebById", null);
-    _Site = Object(tslib_es6["b" /* __decorate */])([
+    _Site = __decorate([
         defaultPath("_api/site")
     ], _Site);
     return _Site;
@@ -4073,7 +4607,7 @@ Reflect.defineProperty(rest_SPRest.prototype, "site", {
 
 
 var types_Webs = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Webs, _super);
+    __extends(_Webs, _super);
     function _Webs() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4092,12 +4626,12 @@ var types_Webs = /** @class */ (function (_super) {
         if (template === void 0) { template = "STS"; }
         if (language === void 0) { language = 1033; }
         if (inheritPermissions === void 0) { inheritPermissions = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body({
+                        postBody = request_builders_body({
                             "parameters": Object(common["assign"])(metadata("SP.WebCreationInformation"), {
                                 Description: description,
                                 Language: language,
@@ -4118,10 +4652,10 @@ var types_Webs = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ws.add")
     ], _Webs.prototype, "add", null);
-    _Webs = Object(tslib_es6["b" /* __decorate */])([
+    _Webs = __decorate([
         defaultPath("webs")
     ], _Webs);
     return _Webs;
@@ -4133,7 +4667,7 @@ var Webs = spInvokableFactory(types_Webs);
  *
  */
 var types_Web = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Web, _super);
+    __extends(_Web, _super);
     function _Web() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("w");
@@ -4155,14 +4689,14 @@ var types_Web = /** @class */ (function (_super) {
      *
      */
     _Web.prototype.getParentWeb = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var ParentWeb;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spGet(this.select("ParentWeb/Id").expand("ParentWeb"))];
                     case 1:
                         ParentWeb = (_a.sent()).ParentWeb;
-                        return [2 /*return*/, ParentWeb ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null];
+                        return [2 /*return*/, (ParentWeb === null || ParentWeb === void 0 ? void 0 : ParentWeb.Id) ? Site(this.parentUrl).openWebById(ParentWeb.Id) : null];
                 }
             });
         });
@@ -4213,12 +4747,12 @@ var types_Web = /** @class */ (function (_super) {
      * @param properties A plain object hash of values to update for the web
      */
     _Web.prototype.update = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["assign"])(metadata("SP.Web"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
+                        postBody = request_builders_body(Object(common["assign"])(metadata("SP.Web"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
                         return [4 /*yield*/, spPost(this, postBody)];
                     case 1:
                         data = _a.sent();
@@ -4236,7 +4770,7 @@ var types_Web = /** @class */ (function (_super) {
      * @param shareGenerated When true, the generated theme files are stored in the root site. When false, they are stored in this web
      */
     _Web.prototype.applyTheme = function (colorPaletteUrl, fontSchemeUrl, backgroundImageUrl, shareGenerated) {
-        var postBody = body({
+        var postBody = request_builders_body({
             backgroundImageUrl: backgroundImageUrl,
             colorPaletteUrl: colorPaletteUrl,
             fontSchemeUrl: fontSchemeUrl,
@@ -4272,7 +4806,7 @@ var types_Web = /** @class */ (function (_super) {
      * @param query The change query
      */
     _Web.prototype.getChanges = function (query) {
-        var postBody = body({ "query": Object(common["assign"])(metadata("SP.ChangeQuery"), query) });
+        var postBody = request_builders_body({ "query": Object(common["assign"])(metadata("SP.ChangeQuery"), query) });
         return spPost(this.clone(Web, "getchanges"), postBody);
     };
     /**
@@ -4306,7 +4840,7 @@ var types_Web = /** @class */ (function (_super) {
     _Web.prototype.setStorageEntity = function (key, value, description, comments) {
         if (description === void 0) { description = ""; }
         if (comments === void 0) { comments = ""; }
-        return spPost(this.clone(Web, "setStorageEntity"), body({
+        return spPost(this.clone(Web, "setStorageEntity"), request_builders_body({
             comments: comments,
             description: description,
             key: key,
@@ -4321,34 +4855,34 @@ var types_Web = /** @class */ (function (_super) {
     _Web.prototype.removeStorageEntity = function (key) {
         return spPost(this.clone(Web, "removeStorageEntity('" + escapeQueryStrValue(key) + "')"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.getParentWeb")
     ], _Web.prototype, "getParentWeb", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.update")
     ], _Web.prototype, "update", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.applyTheme")
     ], _Web.prototype, "applyTheme", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.applyWebTemplate")
     ], _Web.prototype, "applyWebTemplate", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.getChanges")
     ], _Web.prototype, "getChanges", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.mapToIcon")
     ], _Web.prototype, "mapToIcon", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.getStorageEntity")
     ], _Web.prototype, "getStorageEntity", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.setStorageEntity")
     ], _Web.prototype, "setStorageEntity", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("w.removeStorageEntity")
     ], _Web.prototype, "removeStorageEntity", null);
-    _Web = Object(tslib_es6["b" /* __decorate */])([
+    _Web = __decorate([
         defaultPath("_api/web")
     ], _Web);
     return _Web;
@@ -4377,7 +4911,7 @@ function toResourcePath(url) {
 
 
 var types_Lists = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Lists, _super);
+    __extends(_Lists, _super);
     function _Lists() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4411,9 +4945,9 @@ var types_Lists = /** @class */ (function (_super) {
         if (template === void 0) { template = 100; }
         if (enableContentTypes === void 0) { enableContentTypes = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var addSettings, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         addSettings = Object.assign({
@@ -4423,7 +4957,7 @@ var types_Lists = /** @class */ (function (_super) {
                             "Description": desc,
                             "Title": title,
                         }, metadata("SP.List"), additionalSettings);
-                        return [4 /*yield*/, spPost(this, body(addSettings))];
+                        return [4 /*yield*/, spPost(this, request_builders_body(addSettings))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, { data: data, list: this.getByTitle(addSettings.Title) }];
@@ -4445,9 +4979,9 @@ var types_Lists = /** @class */ (function (_super) {
         if (template === void 0) { template = 100; }
         if (enableContentTypes === void 0) { enableContentTypes = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var addOrUpdateSettings, list, data, e_1, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this.hasBatch) {
@@ -4482,9 +5016,9 @@ var types_Lists = /** @class */ (function (_super) {
      * Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
      */
     _Lists.prototype.ensureSiteAssetsLibrary = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var json;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Lists, "ensuresiteassetslibrary"))];
                     case 1:
@@ -4498,9 +5032,9 @@ var types_Lists = /** @class */ (function (_super) {
      * Gets a list that is the default location for wiki pages.
      */
     _Lists.prototype.ensureSitePagesLibrary = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var json;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Lists, "ensuresitepageslibrary"))];
                     case 1:
@@ -4510,19 +5044,19 @@ var types_Lists = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.add")
     ], _Lists.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.ensure")
     ], _Lists.prototype, "ensure", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.ensureSiteAssetsLibrary")
     ], _Lists.prototype, "ensureSiteAssetsLibrary", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ls.ensureSitePagesLibrary")
     ], _Lists.prototype, "ensureSitePagesLibrary", null);
-    _Lists = Object(tslib_es6["b" /* __decorate */])([
+    _Lists = __decorate([
         defaultPath("lists")
     ], _Lists);
     return _Lists;
@@ -4530,7 +5064,7 @@ var types_Lists = /** @class */ (function (_super) {
 
 var Lists = spInvokableFactory(types_Lists);
 var types_List = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_List, _super);
+    __extends(_List, _super);
     function _List() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("l");
@@ -4588,12 +5122,12 @@ var types_List = /** @class */ (function (_super) {
      */
     _List.prototype.update = function (properties, eTag) {
         if (eTag === void 0) { eTag = "*"; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data, list;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["assign"])(metadata("SP.List"), properties), request_builders_headers({
+                        postBody = request_builders_body(Object(common["assign"])(metadata("SP.List"), properties), request_builders_headers({
                             "IF-Match": eTag,
                             "X-HTTP-Method": "MERGE",
                         }));
@@ -4617,7 +5151,7 @@ var types_List = /** @class */ (function (_super) {
      * @param query A query that is performed against the change log.
      */
     _List.prototype.getChanges = function (query) {
-        return spPost(this.clone(List, "getchanges"), body({ query: Object(common["assign"])(metadata("SP.ChangeQuery"), query) }));
+        return spPost(this.clone(List, "getchanges"), request_builders_body({ query: Object(common["assign"])(metadata("SP.ChangeQuery"), query) }));
     };
     /**
      * Returns the collection of items in the list based on the provided CamlQuery
@@ -4630,7 +5164,7 @@ var types_List = /** @class */ (function (_super) {
             expands[_i - 1] = arguments[_i];
         }
         var q = this.clone(List, "getitems");
-        return spPost(q.expand.apply(q, expands), body({ query: Object(common["assign"])(metadata("SP.CamlQuery"), query) }));
+        return spPost(q.expand.apply(q, expands), request_builders_body({ query: Object(common["assign"])(metadata("SP.CamlQuery"), query) }));
     };
     /**
      * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
@@ -4638,15 +5172,15 @@ var types_List = /** @class */ (function (_super) {
      */
     _List.prototype.getListItemChangesSinceToken = function (query) {
         var o = this.clone(List, "getlistitemchangessincetoken").usingParser({ parse: function (r) { return r.text(); } });
-        return spPost(o, body({ "query": Object(common["assign"])(metadata("SP.ChangeLogItemQuery"), query) }));
+        return spPost(o, request_builders_body({ "query": Object(common["assign"])(metadata("SP.ChangeLogItemQuery"), query) }));
     };
     /**
      * Moves the list to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
     _List.prototype.recycle = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(List, "recycle"))];
                     case 1:
@@ -4661,9 +5195,9 @@ var types_List = /** @class */ (function (_super) {
      * @param viewXml A string object representing a view xml
      */
     _List.prototype.renderListData = function (viewXml) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = this.clone(List, "renderlistdata(@viewXml)");
@@ -4690,15 +5224,12 @@ var types_List = /** @class */ (function (_super) {
         if (Object(common["hOP"])(parameters, "RenderOptions") && Object(common["isArray"])(parameters.RenderOptions)) {
             parameters.RenderOptions = parameters.RenderOptions.reduce(function (v, c) { return v + c; });
         }
-        var postBody = body({
-            overrideParameters: Object(common["assign"])(metadata("SP.RenderListDataOverrideParameters"), overrideParameters),
-            parameters: Object(common["assign"])(metadata("SP.RenderListDataParameters"), parameters),
-        });
-        var clone = this.clone(List, "RenderListDataAsStream", true);
-        if (queryParams && queryParams.size > 0) {
-            queryParams.forEach(function (v, k) { return clone.query.set(k, v); });
+        var bodyOptions = { parameters: Object(common["assign"])(metadata("SP.RenderListDataParameters"), parameters) };
+        if (Object(common["objectDefinedNotNull"])(overrideParameters)) {
+            bodyOptions = Object(common["assign"])(bodyOptions, { overrideParameters: Object(common["assign"])(metadata("SP.RenderListDataOverrideParameters"), overrideParameters) });
         }
-        return spPost(clone, postBody);
+        var clone = this.clone(List, "RenderListDataAsStream", true, true);
+        return spPost(clone, request_builders_body(bodyOptions));
     };
     /**
      * Gets the field values and field schema attributes for a list item.
@@ -4707,9 +5238,9 @@ var types_List = /** @class */ (function (_super) {
      * @param mode Enum representing the control mode of the form (Display, Edit, New)
      */
     _List.prototype.renderListFormData = function (itemId, formId, mode) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(List, "renderlistformdata(itemid=" + itemId + ", formid='" + formId + "', mode='" + mode + "')"))];
                     case 1:
@@ -4724,9 +5255,9 @@ var types_List = /** @class */ (function (_super) {
      * Reserves a list item ID for idempotent list item creation.
      */
     _List.prototype.reserveListItemId = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(List, "reservelistitemid"))];
                     case 1:
@@ -4753,9 +5284,9 @@ var types_List = /** @class */ (function (_super) {
      */
     _List.prototype.addValidateUpdateItemUsingPath = function (formValues, decodedUrl, bNewDocumentUpdate, checkInComment, additionalProps) {
         if (bNewDocumentUpdate === void 0) { bNewDocumentUpdate = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var addProps, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         addProps = {
@@ -4769,7 +5300,7 @@ var types_List = /** @class */ (function (_super) {
                                 addProps.UnderlyingObjectType = additionalProps.objectType;
                             }
                         }
-                        return [4 /*yield*/, spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), body({
+                        return [4 /*yield*/, spPost(this.clone(List, "AddValidateUpdateItemUsingPath()"), request_builders_body({
                                 bNewDocumentUpdate: bNewDocumentUpdate,
                                 checkInComment: checkInComment,
                                 formValues: formValues,
@@ -4782,37 +5313,37 @@ var types_List = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.update")
     ], _List.prototype, "update", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.getChanges")
     ], _List.prototype, "getChanges", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.CAMLQuery")
     ], _List.prototype, "getItemsByCAMLQuery", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.ChangesSinceToken")
     ], _List.prototype, "getListItemChangesSinceToken", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.recycle")
     ], _List.prototype, "recycle", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.renderListData")
     ], _List.prototype, "renderListData", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.AsStream")
     ], _List.prototype, "renderListDataAsStream", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.renderListFormData")
     ], _List.prototype, "renderListFormData", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.reserveListItemId")
     ], _List.prototype, "reserveListItemId", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.getListItemEntityTypeFullName")
     ], _List.prototype, "getListItemEntityTypeFullName", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("l.addValidateUpdateItemUsingPath")
     ], _List.prototype, "addValidateUpdateItemUsingPath", null);
     return _List;
@@ -4868,7 +5399,7 @@ var ControlMode;
  *
  */
 var types_Items = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Items, _super);
+    __extends(_Items, _super);
     function _Items() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -4967,17 +5498,17 @@ var types_Items = /** @class */ (function (_super) {
     _Items.prototype.add = function (properties, listItemEntityTypeFullName) {
         if (properties === void 0) { properties = {}; }
         if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var removeDependency, listItemEntityType, postBody, promise;
             var _this = this;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         removeDependency = this.addBatchDependency();
                         return [4 /*yield*/, this.ensureListItemEntityTypeName(listItemEntityTypeFullName)];
                     case 1:
                         listItemEntityType = _a.sent();
-                        postBody = body(Object(common["assign"])(metadata(listItemEntityType), properties));
+                        postBody = request_builders_body(Object(common["assign"])(metadata(listItemEntityType), properties));
                         promise = spPost(this.clone(Items, ""), postBody).then(function (data) {
                             return {
                                 data: data,
@@ -5000,16 +5531,16 @@ var types_Items = /** @class */ (function (_super) {
             Promise.resolve(candidatelistItemEntityTypeFullName) :
             this.getParent(List).getListItemEntityTypeFullName();
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("is.getPaged")
     ], _Items.prototype, "getPaged", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("is.getAll")
     ], _Items.prototype, "getAll", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("is.add")
     ], _Items.prototype, "add", null);
-    _Items = Object(tslib_es6["b" /* __decorate */])([
+    _Items = __decorate([
         defaultPath("items")
     ], _Items);
     return _Items;
@@ -5021,7 +5552,7 @@ var Items = spInvokableFactory(types_Items);
  *
  */
 var types_Item = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Item, _super);
+    __extends(_Item, _super);
     function _Item() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("i");
@@ -5109,16 +5640,16 @@ var types_Item = /** @class */ (function (_super) {
     _Item.prototype.update = function (properties, eTag, listItemEntityTypeFullName) {
         if (eTag === void 0) { eTag = "*"; }
         if (listItemEntityTypeFullName === void 0) { listItemEntityTypeFullName = null; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var removeDependency, listItemEntityType, postBody, poster, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         removeDependency = this.addBatchDependency();
                         return [4 /*yield*/, this.ensureListItemEntityTypeName(listItemEntityTypeFullName)];
                     case 1:
                         listItemEntityType = _a.sent();
-                        postBody = body(Object(common["assign"])(metadata(listItemEntityType), properties), request_builders_headers({
+                        postBody = request_builders_body(Object(common["assign"])(metadata(listItemEntityType), properties), request_builders_headers({
                             "IF-Match": eTag,
                             "X-HTTP-Method": "MERGE",
                         }));
@@ -5142,6 +5673,18 @@ var types_Item = /** @class */ (function (_super) {
         return spPost(this.clone(Item, "recycle"));
     };
     /**
+     * Deletes the item object with options.
+     *
+     * @param parameters Specifies the options to use when deleting a item.
+     */
+    _Item.prototype.deleteWithParams = function (parameters) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, spPost(this.clone(Item, "DeleteWithParameters"), request_builders_body({ parameters: parameters }))];
+            });
+        });
+    };
+    /**
      * Gets a string representation of the full URL to the WOPI frame.
      * If there is no associated WOPI application, or no associated action, an empty string is returned.
      *
@@ -5149,9 +5692,9 @@ var types_Item = /** @class */ (function (_super) {
      */
     _Item.prototype.getWopiFrameUrl = function (action) {
         if (action === void 0) { action = 0; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var i, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         i = this.clone(Item, "getWOPIFrameUrl(@action)");
@@ -5176,7 +5719,7 @@ var types_Item = /** @class */ (function (_super) {
      */
     _Item.prototype.validateUpdateListItem = function (formValues, bNewDocumentUpdate) {
         if (bNewDocumentUpdate === void 0) { bNewDocumentUpdate = false; }
-        return spPost(this.clone(Item, "validateupdatelistitem"), body({ formValues: formValues, bNewDocumentUpdate: bNewDocumentUpdate }));
+        return spPost(this.clone(Item, "validateupdatelistitem"), request_builders_body({ formValues: formValues, bNewDocumentUpdate: bNewDocumentUpdate }));
     };
     /**
      * Ensures we have the proper list item entity type name, either from the value provided or from the list
@@ -5188,13 +5731,16 @@ var types_Item = /** @class */ (function (_super) {
             Promise.resolve(candidatelistItemEntityTypeFullName) :
             this.list.getListItemEntityTypeFullName();
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("i.recycle")
     ], _Item.prototype, "recycle", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
+        tag("i.del-params")
+    ], _Item.prototype, "deleteWithParams", null);
+    __decorate([
         tag("i.getWopiFrameUrl")
     ], _Item.prototype, "getWopiFrameUrl", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("i.validateUpdateListItem")
     ], _Item.prototype, "validateUpdateListItem", null);
     return _Item;
@@ -5206,7 +5752,7 @@ var Item = spInvokableFactory(types_Item);
  *
  */
 var types_ItemVersions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ItemVersions, _super);
+    __extends(_ItemVersions, _super);
     function _ItemVersions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5218,7 +5764,7 @@ var types_ItemVersions = /** @class */ (function (_super) {
     _ItemVersions.prototype.getById = function (versionId) {
         return tag.configure(ItemVersion(this).concat("(" + versionId + ")"), "iv.getById");
     };
-    _ItemVersions = Object(tslib_es6["b" /* __decorate */])([
+    _ItemVersions = __decorate([
         defaultPath("versions")
     ], _ItemVersions);
     return _ItemVersions;
@@ -5230,7 +5776,7 @@ var ItemVersions = spInvokableFactory(types_ItemVersions);
  *
  */
 var types_ItemVersion = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ItemVersion, _super);
+    __extends(_ItemVersion, _super);
     function _ItemVersion() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("iv");
@@ -5273,7 +5819,7 @@ var types_PagedItemCollection = /** @class */ (function () {
 }());
 
 var types_PagedItemCollectionParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(PagedItemCollectionParser, _super);
+    __extends(PagedItemCollectionParser, _super);
     function PagedItemCollectionParser(_parent) {
         var _this = _super.call(this) || this;
         _this._parent = _parent;
@@ -5293,7 +5839,7 @@ var types_PagedItemCollectionParser = /** @class */ (function (_super) {
     return PagedItemCollectionParser;
 }(parsers_ODataParser));
 var types_ItemUpdatedParser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ItemUpdatedParser, _super);
+    __extends(ItemUpdatedParser, _super);
     function ItemUpdatedParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5338,7 +5884,7 @@ addProp(types_List, "items", Items);
  *
  */
 var types_Files = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Files, _super);
+    __extends(_Files, _super);
     function _Files() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -5357,15 +5903,15 @@ var types_Files = /** @class */ (function (_super) {
      * Uploads a file. Not supported for batching
      *
      * @param url The folder-relative url of the file.
-     * @param content The file contents blob.
+     * @param content The file contents
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
      * @returns The new File and the raw response.
      */
     _Files.prototype.add = function (url, content, shouldOverWrite) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var response;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(Files(this, "add(overwrite=" + shouldOverWrite + ",url='" + escapeQueryStrValue(url) + "')"), {
                             body: content,
@@ -5389,9 +5935,9 @@ var types_Files = /** @class */ (function (_super) {
      */
     _Files.prototype.addUsingPath = function (url, content, parameters) {
         if (parameters === void 0) { parameters = { Overwrite: false }; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var path, resp;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         path = ["AddUsingPath(decodedurl='" + escapeQueryStrValue(url) + "'"];
@@ -5431,9 +5977,9 @@ var types_Files = /** @class */ (function (_super) {
     _Files.prototype.addChunked = function (url, content, progress, shouldOverWrite, chunkSize) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
         if (chunkSize === void 0) { chunkSize = 10485760; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var file;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + escapeQueryStrValue(url) + "')", false))];
                     case 1:
@@ -5453,9 +5999,9 @@ var types_Files = /** @class */ (function (_super) {
      * @returns The template file that was added and the raw response.
      */
     _Files.prototype.addTemplateFile = function (fileUrl, templateFileType) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var response;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Files, "addTemplateFile(urloffile='" + escapeQueryStrValue(fileUrl) + "',templatefiletype=" + templateFileType + ")", false))];
                     case 1:
@@ -5468,19 +6014,19 @@ var types_Files = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fis.add")
     ], _Files.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fis.addUsingPath")
     ], _Files.prototype, "addUsingPath", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fis.addChunked")
     ], _Files.prototype, "addChunked", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fis.addTemplateFile")
     ], _Files.prototype, "addTemplateFile", null);
-    _Files = Object(tslib_es6["b" /* __decorate */])([
+    _Files = __decorate([
         defaultPath("files")
     ], _Files);
     return _Files;
@@ -5492,7 +6038,7 @@ var Files = spInvokableFactory(types_Files);
  *
  */
 var types_File = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_File, _super);
+    __extends(_File, _super);
     function _File() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("fi");
@@ -5582,16 +6128,16 @@ var types_File = /** @class */ (function (_super) {
      */
     _File.prototype.copyByPath = function (destUrl, shouldOverWrite, KeepBoth) {
         if (KeepBoth === void 0) { KeepBoth = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+            return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
                     case 1:
                         _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
                         webBaseUrl = extractWebUrl(absoluteUrl);
                         hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(File(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=" + shouldOverWrite), body({
+                        return [4 /*yield*/, spPost(File(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=" + shouldOverWrite), request_builders_body({
                                 destPath: toResourcePath(Object(common["isUrlAbsolute"])(destUrl) ? destUrl : "" + hostUrl + destUrl),
                                 options: {
                                     KeepBoth: KeepBoth,
@@ -5643,16 +6189,16 @@ var types_File = /** @class */ (function (_super) {
      */
     _File.prototype.moveByPath = function (destUrl, shouldOverWrite, KeepBoth) {
         if (KeepBoth === void 0) { KeepBoth = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+            return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
                     case 1:
                         _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
                         webBaseUrl = extractWebUrl(absoluteUrl);
                         hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(File(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=" + shouldOverWrite), body({
+                        return [4 /*yield*/, spPost(File(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=" + shouldOverWrite), request_builders_body({
                                 destPath: toResourcePath(Object(common["isUrlAbsolute"])(destUrl) ? destUrl : "" + hostUrl + destUrl),
                                 options: {
                                     KeepBoth: KeepBoth,
@@ -5692,6 +6238,18 @@ var types_File = /** @class */ (function (_super) {
         return spPost(this.clone(File, "recycle"));
     };
     /**
+     * Deletes the file object with options.
+     *
+     * @param parameters Specifies the options to use when deleting a file.
+     */
+    _File.prototype.deleteWithParams = function (parameters) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, spPost(this.clone(File, "DeleteWithParameters"), request_builders_body({ parameters: parameters }))];
+            });
+        });
+    };
+    /**
      * Reverts an existing checkout for the file.
      *
      */
@@ -5709,6 +6267,31 @@ var types_File = /** @class */ (function (_super) {
             throw Error("The maximum comment length is 1023 characters.");
         }
         return spPost(this.clone(File, "unpublish(comment='" + escapeQueryStrValue(comment) + "')"));
+    };
+    /**
+     * Checks to see if the file represented by this object exists
+     *
+     */
+    _File.prototype.exists = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var r, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.clone(File).select("Exists")()];
+                    case 1:
+                        r = _a.sent();
+                        return [2 /*return*/, r.Exists];
+                    case 2:
+                        e_1 = _a.sent();
+                        // this treats any error here as the file not existing, which
+                        // might not be true, but is good enough.
+                        return [2 /*return*/, false];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
     };
     /**
      * Gets the contents of the file as text. Not supported in batching.
@@ -5743,8 +6326,8 @@ var types_File = /** @class */ (function (_super) {
      *
      */
     _File.prototype.setContent = function (content) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(File, "$value", false), {
                             body: content,
@@ -5767,9 +6350,9 @@ var types_File = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
         }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = this.listItemAllFields;
@@ -5790,9 +6373,9 @@ var types_File = /** @class */ (function (_super) {
      */
     _File.prototype.setContentChunked = function (file, progress, chunkSize) {
         if (chunkSize === void 0) { chunkSize = 10485760; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var fileSize, totalBlocks, uploadId, currentPointer, i;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!Object(common["isFunc"])(progress)) {
@@ -5840,9 +6423,9 @@ var types_File = /** @class */ (function (_super) {
      * @returns The size of the total uploaded data in bytes.
      */
     _File.prototype.startUpload = function (uploadId, fragment) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var n;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(File, "startUpload(uploadId=guid'" + uploadId + "')", false), { body: fragment })];
                     case 1:
@@ -5869,9 +6452,9 @@ var types_File = /** @class */ (function (_super) {
      * @returns The size of the total uploaded data in bytes.
      */
     _File.prototype.continueUpload = function (uploadId, fileOffset, fragment) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var n;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(File, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false), { body: fragment })];
                     case 1:
@@ -5897,9 +6480,9 @@ var types_File = /** @class */ (function (_super) {
      * @returns The newly uploaded file.
      */
     _File.prototype.finishUpload = function (uploadId, fileOffset, fragment) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var response;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(File, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")", false), { body: fragment })];
                     case 1:
@@ -5912,70 +6495,76 @@ var types_File = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.approve")
     ], _File.prototype, "approve", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.cancelUpload")
     ], _File.prototype, "cancelUpload", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.checkin")
     ], _File.prototype, "checkin", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.checkout")
     ], _File.prototype, "checkout", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.copyTo")
     ], _File.prototype, "copyTo", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.copyByPath")
     ], _File.prototype, "copyByPath", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.deny")
     ], _File.prototype, "deny", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.moveTo")
     ], _File.prototype, "moveTo", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.moveByPath")
     ], _File.prototype, "moveByPath", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.publish")
     ], _File.prototype, "publish", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.recycle")
     ], _File.prototype, "recycle", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
+        tag("fi.del-params")
+    ], _File.prototype, "deleteWithParams", null);
+    __decorate([
         tag("fi.undoCheckout")
     ], _File.prototype, "undoCheckout", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.unpublish")
     ], _File.prototype, "unpublish", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
+        tag("fi.exists")
+    ], _File.prototype, "exists", null);
+    __decorate([
         tag("fi.getText")
     ], _File.prototype, "getText", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.getBlob")
     ], _File.prototype, "getBlob", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.getBuffer")
     ], _File.prototype, "getBuffer", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.getJSON")
     ], _File.prototype, "getJSON", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.setContent")
     ], _File.prototype, "setContent", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.getItem")
     ], _File.prototype, "getItem", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.startUpload")
     ], _File.prototype, "startUpload", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.continueUpload")
     ], _File.prototype, "continueUpload", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fi.finishUpload")
     ], _File.prototype, "finishUpload", null);
     return _File;
@@ -5987,7 +6576,7 @@ var File = spInvokableFactory(types_File);
  *
  */
 var types_Versions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Versions, _super);
+    __extends(_Versions, _super);
     function _Versions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6046,25 +6635,25 @@ var types_Versions = /** @class */ (function (_super) {
     _Versions.prototype.restoreByLabel = function (label) {
         return spPost(this.clone(Versions, "restoreByLabel(versionlabel='" + escapeQueryStrValue(label) + "')"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.deleteAll")
     ], _Versions.prototype, "deleteAll", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.deleteById")
     ], _Versions.prototype, "deleteById", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.recycleByID")
     ], _Versions.prototype, "recycleByID", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.deleteByLabel")
     ], _Versions.prototype, "deleteByLabel", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.recycleByLabel")
     ], _Versions.prototype, "recycleByLabel", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vers.restoreByLabel")
     ], _Versions.prototype, "restoreByLabel", null);
-    _Versions = Object(tslib_es6["b" /* __decorate */])([
+    _Versions = __decorate([
         defaultPath("versions")
     ], _Versions);
     return _Versions;
@@ -6076,7 +6665,7 @@ var Versions = spInvokableFactory(types_Versions);
  *
  */
 var types_Version = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Version, _super);
+    __extends(_Version, _super);
     function _Version() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("ver");
@@ -6142,7 +6731,7 @@ rest_SPRest.prototype.createBatch = function () {
 
 
 var types_AppCatalog = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_AppCatalog, _super);
+    __extends(_AppCatalog, _super);
     function _AppCatalog(baseUrl, path) {
         if (path === void 0) { path = "_api/web/tenantappcatalog/AvailableApps"; }
         return _super.call(this, extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path) || this;
@@ -6162,9 +6751,9 @@ var types_AppCatalog = /** @class */ (function (_super) {
      */
     _AppCatalog.prototype.syncSolutionToTeams = function (id, useSharePointItemId) {
         if (useSharePointItemId === void 0) { useSharePointItemId = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var appId, webUrl, web, listId, listItems, poster;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         appId = null;
@@ -6205,9 +6794,9 @@ var types_AppCatalog = /** @class */ (function (_super) {
      */
     _AppCatalog.prototype.add = function (filename, content, shouldOverWrite) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var adder, r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), "_api/web/tenantappcatalog/add(overwrite=" + shouldOverWrite + ",url='" + filename + "')"), "ac.add");
@@ -6231,7 +6820,7 @@ var types_AppCatalog = /** @class */ (function (_super) {
 
 var AppCatalog = spInvokableFactory(types_AppCatalog);
 var types_App = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_App, _super);
+    __extends(_App, _super);
     function _App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6281,22 +6870,22 @@ var types_App = /** @class */ (function (_super) {
     _App.prototype.do = function (path) {
         return spPost(this.clone(App, path));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.deploy")
     ], _App.prototype, "deploy", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.retract")
     ], _App.prototype, "retract", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.install")
     ], _App.prototype, "install", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.uninstall")
     ], _App.prototype, "uninstall", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.upgrade")
     ], _App.prototype, "upgrade", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("app.remove")
     ], _App.prototype, "remove", null);
     return _App;
@@ -6319,9 +6908,9 @@ types_Web.prototype.getAppCatalog = function (url) {
 
 
 rest_SPRest.prototype.getTenantAppCatalogWeb = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var data;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, SharePointQueryable("/", "_api/SP_TenantSettings_Current")()];
                 case 1:
@@ -6340,7 +6929,7 @@ rest_SPRest.prototype.getTenantAppCatalogWeb = function () {
 
 
 var types_Attachments = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Attachments, _super);
+    __extends(_Attachments, _super);
     function _Attachments() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6361,9 +6950,9 @@ var types_Attachments = /** @class */ (function (_super) {
      * @param content The Base64 file content.
      */
     _Attachments.prototype.add = function (name, content) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var response;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Attachments, "add(FileName='" + name + "')", false), { body: content })];
                     case 1:
@@ -6382,9 +6971,9 @@ var types_Attachments = /** @class */ (function (_super) {
      * @param files The collection of files to add
      */
     _Attachments.prototype.addMultiple = function (files) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var i;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         i = 0;
@@ -6413,9 +7002,9 @@ var types_Attachments = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             files[_i] = arguments[_i];
         }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var i;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         i = 0;
@@ -6444,9 +7033,9 @@ var types_Attachments = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             files[_i] = arguments[_i];
         }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var i;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         i = 0;
@@ -6465,19 +7054,19 @@ var types_Attachments = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ats.add")
     ], _Attachments.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ats.addMultiple")
     ], _Attachments.prototype, "addMultiple", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ats.deleteMultiple")
     ], _Attachments.prototype, "deleteMultiple", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ats.recycleMultiple")
     ], _Attachments.prototype, "recycleMultiple", null);
-    _Attachments = Object(tslib_es6["b" /* __decorate */])([
+    _Attachments = __decorate([
         defaultPath("AttachmentFiles")
     ], _Attachments);
     return _Attachments;
@@ -6485,7 +7074,7 @@ var types_Attachments = /** @class */ (function (_super) {
 
 var Attachments = spInvokableFactory(types_Attachments);
 var types_Attachment = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Attachment, _super);
+    __extends(_Attachment, _super);
     function _Attachment() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("at");
@@ -6523,8 +7112,8 @@ var types_Attachment = /** @class */ (function (_super) {
      * @param content The value to set for the file contents
      */
     _Attachment.prototype.setContent = function (content) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Attachment, "$value", false), request_builders_headers({ "X-HTTP-Method": "PUT" }, {
                             body: content,
@@ -6551,22 +7140,22 @@ var types_Attachment = /** @class */ (function (_super) {
     _Attachment.prototype.getParsed = function (parser) {
         return this.clone(Attachment, "$value", false).usingParser(parser)();
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.getText")
     ], _Attachment.prototype, "getText", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.getBlob")
     ], _Attachment.prototype, "getBlob", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.getBuffer")
     ], _Attachment.prototype, "getBuffer", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.getJSON")
     ], _Attachment.prototype, "getJSON", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.setContent")
     ], _Attachment.prototype, "setContent", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("at.recycle")
     ], _Attachment.prototype, "recycle", null);
     return _Attachment;
@@ -6639,7 +7228,7 @@ types_Web.prototype.getFileByUrl = function (fileUrl) {
 
 
 var types_Comments = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Comments, _super);
+    __extends(_Comments, _super);
     function _Comments() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6649,15 +7238,15 @@ var types_Comments = /** @class */ (function (_super) {
      * @param info Comment information to add
      */
     _Comments.prototype.add = function (info) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (typeof info === "string") {
                             info = { text: info };
                         }
-                        postBody = body(Object(common["assign"])(metadata("Microsoft.SharePoint.Comments.comment"), info));
+                        postBody = request_builders_body(Object(common["assign"])(metadata("Microsoft.SharePoint.Comments.comment"), info));
                         return [4 /*yield*/, spPost(this.clone(Comments, null), postBody)];
                     case 1:
                         d = _a.sent();
@@ -6680,10 +7269,10 @@ var types_Comments = /** @class */ (function (_super) {
     _Comments.prototype.clear = function () {
         return spPost(tag.configure(this.clone(Comments, "DeleteAll"), "coms.clear"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("coms.add")
     ], _Comments.prototype, "add", null);
-    _Comments = Object(tslib_es6["b" /* __decorate */])([
+    _Comments = __decorate([
         defaultPath("comments")
     ], _Comments);
     return _Comments;
@@ -6691,7 +7280,7 @@ var types_Comments = /** @class */ (function (_super) {
 
 var Comments = spInvokableFactory(types_Comments);
 var types_Comment = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Comment, _super);
+    __extends(_Comment, _super);
     function _Comment() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6723,13 +7312,13 @@ var types_Comment = /** @class */ (function (_super) {
     _Comment.prototype.delete = function () {
         return spPost(this.clone(Comment, "DeleteComment"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("com.like")
     ], _Comment.prototype, "like", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("com.unlike")
     ], _Comment.prototype, "unlike", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("com.delete")
     ], _Comment.prototype, "delete", null);
     return _Comment;
@@ -6737,7 +7326,7 @@ var types_Comment = /** @class */ (function (_super) {
 
 var Comment = spInvokableFactory(types_Comment);
 var types_Replies = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Replies, _super);
+    __extends(_Replies, _super);
     function _Replies() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -6747,15 +7336,15 @@ var types_Replies = /** @class */ (function (_super) {
      * @param info Comment information to add
      */
     _Replies.prototype.add = function (info) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (typeof info === "string") {
                             info = { text: info };
                         }
-                        postBody = body(Object(common["assign"])(metadata("Microsoft.SharePoint.Comments.comment"), info));
+                        postBody = request_builders_body(Object(common["assign"])(metadata("Microsoft.SharePoint.Comments.comment"), info));
                         return [4 /*yield*/, spPost(this.clone(Replies, null), postBody)];
                     case 1:
                         d = _a.sent();
@@ -6764,10 +7353,10 @@ var types_Replies = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("reps.add")
     ], _Replies.prototype, "add", null);
-    _Replies = Object(tslib_es6["b" /* __decorate */])([
+    _Replies = __decorate([
         defaultPath("replies")
     ], _Replies);
     return _Replies;
@@ -6836,7 +7425,7 @@ function initFrom(o, url) {
  * Represents the data and methods associated with client side "modern" pages
  */
 var types_ClientsidePage = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ClientsidePage, _super);
+    __extends(_ClientsidePage, _super);
     /**
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY, thank you 🐇
      */
@@ -6849,6 +7438,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         _this.sections = sections;
         _this.commentsDisabled = commentsDisabled;
         _this._bannerImageDirty = false;
+        _this._bannerImageThumbnailUrlDirty = false;
         // ensure we have a good url to build on for the pages api
         if (typeof baseUrl === "string") {
             _this.data.parentUrl = "";
@@ -6882,6 +7472,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
                 title: "",
                 topicHeader: "",
             },
+            reservedHeight: 280,
             serverProcessedContent: { htmlStrings: {}, searchablePlainTexts: {}, imageSources: {}, links: {} },
             title: "Title area",
         };
@@ -6901,8 +7492,19 @@ var types_ClientsidePage = /** @class */ (function (_super) {
             return this.json.BannerImageUrl;
         },
         set: function (value) {
-            this.json.BannerImageUrl = value;
-            this._bannerImageDirty = true;
+            this.setBannerImage(value);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_ClientsidePage.prototype, "thumbnailUrl", {
+        get: function () {
+            return this._pageSettings.pageSettingsSlice.isDefaultThumbnail ? this.json.BannerImageUrl : this.json.BannerThumbnailUrl;
+        },
+        set: function (value) {
+            this.json.BannerThumbnailUrl = value;
+            this._bannerImageThumbnailUrlDirty = true;
+            this._pageSettings.pageSettingsSlice.isDefaultThumbnail = false;
         },
         enumerable: false,
         configurable: true
@@ -6928,6 +7530,36 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         set: function (value) {
             this.json.Title = value;
             this._layoutPart.properties.title = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_ClientsidePage.prototype, "reservedHeight", {
+        get: function () {
+            return this._layoutPart.reservedHeight;
+        },
+        set: function (value) {
+            this._layoutPart.reservedHeight = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_ClientsidePage.prototype, "description", {
+        get: function () {
+            return this.json.Description;
+        },
+        set: function (value) {
+            if (!Object(common["stringIsNullOrEmpty"])(value) && value.length > 255) {
+                throw Error("Modern Page description is limited to 255 chars.");
+            }
+            this.json.Description = value;
+            if (!Object(common["hOP"])(this._pageSettings, "htmlAttributes")) {
+                this._pageSettings.htmlAttributes = [];
+            }
+            if (this._pageSettings.htmlAttributes.indexOf("modifiedDescription") < 0) {
+                this._pageSettings.htmlAttributes.push("modifiedDescription");
+            }
+            this._pageSettings.pageSettingsSlice.isDefaultDescription = false;
         },
         enumerable: false,
         configurable: true
@@ -7039,9 +7671,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * Loads this page's content from the server
      */
     _ClientsidePage.prototype.load = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var item, pageData;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getItem("Id", "CommentsDisabled")];
                     case 1:
@@ -7062,9 +7694,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      */
     _ClientsidePage.prototype.save = function (publish) {
         if (publish === void 0) { publish = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            var origImgUrl, site, web, imgFile, siteId_1, webId_1, imgId_1, listId_1, webUrl_1, batch, f, saveBody, updater, r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            var origImgUrl, site, web, imgFile, siteId_1, webId_1, imgId_1, listId_1, webUrl_1, batch, f, saveBody, bannerImageUrlValue, updater, r;
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this.json.Id === null) {
@@ -7078,7 +7710,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
                         }
                         site = Site(extractWebUrl(this.toUrl()));
                         web = Web(extractWebUrl(this.toUrl()));
-                        imgFile = web.getFileByServerRelativePath(origImgUrl);
+                        imgFile = web.getFileByServerRelativePath(origImgUrl.replace(/%20/ig, " "));
                         siteId_1 = "";
                         webId_1 = "";
                         imgId_1 = "";
@@ -7126,14 +7758,20 @@ var types_ClientsidePage = /** @class */ (function (_super) {
                     case 4:
                         saveBody = Object.assign(metadata("SP.Publishing.SitePage"), {
                             AuthorByline: this.json.AuthorByline || [],
-                            BannerImageUrl: this.bannerImageUrl,
                             CanvasContent1: this.getCanvasContent1(),
+                            Description: this.description,
                             LayoutWebpartsContent: this.getLayoutWebpartsContent(),
                             Title: this.title,
                             TopicHeader: this.topicHeader,
                         });
+                        if (this._bannerImageDirty || this._bannerImageThumbnailUrlDirty) {
+                            bannerImageUrlValue = this._bannerImageThumbnailUrlDirty ? this.thumbnailUrl : this.bannerImageUrl;
+                            saveBody = Object(common["assign"])(saveBody, {
+                                BannerImageUrl: bannerImageUrlValue,
+                            });
+                        }
                         updater = initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/savepage");
-                        return [4 /*yield*/, spPost(updater, request_builders_headers({ "if-match": "*" }, body(saveBody)))];
+                        return [4 /*yield*/, spPost(updater, request_builders_headers({ "if-match": "*" }, request_builders_body(saveBody)))];
                     case 5:
                         _a.sent();
                         r = true;
@@ -7147,6 +7785,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
                         _a.label = 7;
                     case 7:
                         this._bannerImageDirty = false;
+                        this._bannerImageThumbnailUrlDirty = false;
                         return [2 /*return*/, r];
                 }
             });
@@ -7156,15 +7795,15 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * Discards the checkout of this page
      */
     _ClientsidePage.prototype.discardPageCheckout = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this.json.Id === null) {
                             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
                         }
-                        return [4 /*yield*/, spPost(initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/discardPage"), body(metadata("SP.Publishing.SitePage")))];
+                        return [4 /*yield*/, spPost(initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/discardPage"), request_builders_body(metadata("SP.Publishing.SitePage")))];
                     case 1:
                         d = _a.sent();
                         this.fromJSON(d);
@@ -7177,8 +7816,8 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * Promotes this page as a news item
      */
     _ClientsidePage.prototype.promoteToNews = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 return [2 /*return*/, this.promoteNewsImpl("promoteToNews")];
             });
         });
@@ -7227,9 +7866,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      */
     _ClientsidePage.prototype.copy = function (web, pageName, title, publish, promotedState) {
         if (publish === void 0) { publish = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var page, url, makeGuid, guidSite, guidWeb, guidFile, site, id, openWeb, file, props;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, CreateClientsidePage(web, pageName, title, this.pageLayout, promotedState)];
                     case 1:
@@ -7287,8 +7926,20 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * @param bannerProps Additional properties to control display of the banner
      */
     _ClientsidePage.prototype.setBannerImage = function (url, props) {
-        this.bannerImageUrl = url;
-        this._layoutPart.properties.imageSourceType = 2; // this seems to always be true, so default?
+        this.json.BannerImageUrl = url;
+        this._bannerImageDirty = true;
+        /*
+            setting the banner image resets the thumbnail image (matching UI functionality)
+            but if the thumbnail is dirty they are likely trying to set them both to
+            different values, so we allow that here.
+            Also allows the banner image to be updated safely with the calculated one in save()
+        */
+        if (!this._bannerImageThumbnailUrlDirty) {
+            this.thumbnailUrl = url;
+            this._pageSettings.pageSettingsSlice.isDefaultThumbnail = true;
+        }
+        // this seems to always be true, so default
+        this._layoutPart.properties.imageSourceType = 2;
         if (Object(common["objectDefinedNotNull"])(props)) {
             if (Object(common["hOP"])(props, "translateX")) {
                 this._layoutPart.properties.translateX = props.translateX;
@@ -7310,9 +7961,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * @param authorId The integer id of the user to set as the author
      */
     _ClientsidePage.prototype.setAuthorById = function (authorId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var userLoginData;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
                             .configureFrom(this)
@@ -7334,9 +7985,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * @param authorLoginName The login name of the user (ex: i:0#.f|membership|name@tenant.com)
      */
     _ClientsidePage.prototype.setAuthorByLoginName = function (authorLoginName) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var userLoginData;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, SharePointQueryableCollection(extractWebUrl(this.toUrl()), "/_api/web/siteusers")
                             .configureFrom(this)
@@ -7370,9 +8021,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
         }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var initer, listData, item, itemData;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         initer = initFrom(this, "/_api/lists/EnsureClientRenderedSitePagesLibrary").select("EnableModeration", "EnableMinorVersions", "Id");
@@ -7411,6 +8062,8 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         }
     };
     _ClientsidePage.prototype.setControls = function (controls) {
+        // reset the sections
+        this.sections = [];
         if (controls && controls.length) {
             for (var i = 0; i < controls.length; i++) {
                 // if no control type is present this is a column which we give type 0 to let us process it
@@ -7474,9 +8127,9 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         return { zoneEmphasis: value };
     };
     _ClientsidePage.prototype.promoteNewsImpl = function (method) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var lastPubData;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this.json.Id === null) {
@@ -7489,7 +8142,7 @@ var types_ClientsidePage = /** @class */ (function (_super) {
                     case 1:
                         _a.sent();
                         _a.label = 2;
-                    case 2: return [4 /*yield*/, spPost(initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/" + method), body(metadata("SP.Publishing.SitePage")))];
+                    case 2: return [4 /*yield*/, spPost(initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/" + method), request_builders_body(metadata("SP.Publishing.SitePage")))];
                     case 3: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -7541,9 +8194,10 @@ var types_ClientsidePage = /** @class */ (function (_super) {
      * @param position The position data for the column
      */
     _ClientsidePage.prototype.mergeColumnToTree = function (column) {
+        var _a, _b;
         var order = Object(common["hOP"])(column.data, "position") && Object(common["hOP"])(column.data.position, "zoneIndex") ? column.data.position.zoneIndex : 0;
         var layoutIndex = Object(common["hOP"])(column.data, "position") && Object(common["hOP"])(column.data.position, "layoutIndex") ? column.data.position.layoutIndex : 1;
-        var section = this.getOrCreateSection(order, layoutIndex, column.data.emphasis.zoneEmphasis || 0);
+        var section = this.getOrCreateSection(order, layoutIndex, ((_b = (_a = column.data) === null || _a === void 0 ? void 0 : _a.emphasis) === null || _b === void 0 ? void 0 : _b.zoneEmphasis) || 0);
         column.section = section;
         section.columns.push(column);
     };
@@ -7567,22 +8221,22 @@ var types_ClientsidePage = /** @class */ (function (_super) {
         }
         return section;
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.load")
     ], _ClientsidePage.prototype, "load", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.save")
     ], _ClientsidePage.prototype, "save", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.discardPageCheckout")
     ], _ClientsidePage.prototype, "discardPageCheckout", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.promoteToNews")
     ], _ClientsidePage.prototype, "promoteToNews", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.copy")
     ], _ClientsidePage.prototype, "copy", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("csp.getItem")
     ], _ClientsidePage.prototype, "getItem", null);
     return _ClientsidePage;
@@ -7602,9 +8256,9 @@ var ClientsidePage = function (baseUrl, path, json, noInit, sections, commentsDi
  *
  * @param file Source IFile instance
  */
-var ClientsidePageFromFile = function (file) { return Object(tslib_es6["a" /* __awaiter */])(void 0, void 0, void 0, function () {
+var ClientsidePageFromFile = function (file) { return __awaiter(void 0, void 0, void 0, function () {
     var item, page;
-    return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, file.getItem()];
             case 1:
@@ -7625,15 +8279,15 @@ var ClientsidePageFromFile = function (file) { return Object(tslib_es6["a" /* __
 var CreateClientsidePage = function (web, pageName, title, PageLayoutType, promotedState) {
     if (PageLayoutType === void 0) { PageLayoutType = "Article"; }
     if (promotedState === void 0) { promotedState = 0; }
-    return Object(tslib_es6["a" /* __awaiter */])(void 0, void 0, void 0, function () {
+    return __awaiter(void 0, void 0, void 0, function () {
         var pageInitData, newPage;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     // patched because previously we used the full page name with the .aspx at the end
                     // this allows folk's existing code to work after the re-write to the new API
                     pageName = pageName.replace(/\.aspx$/i, "");
-                    return [4 /*yield*/, spPost(initFrom(web, "_api/sitepages/pages"), body(Object.assign(metadata("SP.Publishing.SitePage"), {
+                    return [4 /*yield*/, spPost(initFrom(web, "_api/sitepages/pages"), request_builders_body(Object.assign(metadata("SP.Publishing.SitePage"), {
                             PageLayoutType: PageLayoutType,
                             PromotedState: promotedState,
                         })))];
@@ -7704,7 +8358,7 @@ var types_CanvasSection = /** @class */ (function () {
      * Adds a new column to this section
      */
     CanvasSection.prototype.addColumn = function (factor, layoutIndex) {
-        if (layoutIndex === void 0) { layoutIndex = 1; }
+        if (layoutIndex === void 0) { layoutIndex = this.layoutIndex; }
         var column = new types_CanvasColumn();
         column.section = this;
         column.data.position.zoneIndex = this.order;
@@ -7863,7 +8517,7 @@ var types_ColumnControl = /** @class */ (function () {
 }());
 
 var types_ClientsideText = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ClientsideText, _super);
+    __extends(ClientsideText, _super);
     function ClientsideText(text, json) {
         if (json === void 0) { json = JSON.parse(JSON.stringify(ClientsideText.Default)); }
         var _this = this;
@@ -7926,7 +8580,7 @@ var types_ClientsideText = /** @class */ (function (_super) {
 }(types_ColumnControl));
 
 var types_ClientsideWebpart = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ClientsideWebpart, _super);
+    __extends(ClientsideWebpart, _super);
     function ClientsideWebpart(json) {
         if (json === void 0) { json = JSON.parse(JSON.stringify(ClientsideWebpart.Default)); }
         return _super.call(this, json) || this;
@@ -8084,7 +8738,7 @@ types_Web.prototype.loadClientsidePage = function (path) {
 
 
 var types_Folders = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Folders, _super);
+    __extends(_Folders, _super);
     function _Folders() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8102,9 +8756,9 @@ var types_Folders = /** @class */ (function (_super) {
      * @param url
      */
     _Folders.prototype.add = function (url) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Folders, "add('" + escapeQueryStrValue(url) + "')"))];
                     case 1:
@@ -8125,9 +8779,9 @@ var types_Folders = /** @class */ (function (_super) {
      */
     _Folders.prototype.addUsingPath = function (serverRelativeUrl, overwrite) {
         if (overwrite === void 0) { overwrite = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Folders, "addUsingPath(DecodedUrl='" + escapeQueryStrValue(serverRelativeUrl) + "',overwrite=" + overwrite + ")"))];
                     case 1:
@@ -8140,13 +8794,13 @@ var types_Folders = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.add")
     ], _Folders.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addUsingPath")
     ], _Folders.prototype, "addUsingPath", null);
-    _Folders = Object(tslib_es6["b" /* __decorate */])([
+    _Folders = __decorate([
         defaultPath("folders")
     ], _Folders);
     return _Folders;
@@ -8154,7 +8808,7 @@ var types_Folders = /** @class */ (function (_super) {
 
 var Folders = spInvokableFactory(types_Folders);
 var types_Folder = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Folder, _super);
+    __extends(_Folder, _super);
     function _Folder() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteableWithETag("f");
@@ -8256,12 +8910,12 @@ var types_Folder = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             selects[_i] = arguments[_i];
         }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q;
             var _a;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+            return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, (_a = this.listItemAllFields).select.apply(_a, Object(tslib_es6["e" /* __spread */])(selects))()];
+                    case 0: return [4 /*yield*/, (_a = this.listItemAllFields).select.apply(_a, __spread(selects))()];
                     case 1:
                         q = _b.sent();
                         return [2 /*return*/, Object(common["assign"])(Item(odataUrlFrom(q)), q)];
@@ -8275,16 +8929,16 @@ var types_Folder = /** @class */ (function (_super) {
      * @param destUrl Absolute or relative URL of the destination path
      */
     _Folder.prototype.moveTo = function (destUrl) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+            return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
                     case 1:
                         _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
                         webBaseUrl = extractWebUrl(absoluteUrl);
                         hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolder()"), body({
+                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolder()"), request_builders_body({
                                 destUrl: Object(common["isUrlAbsolute"])(destUrl) ? destUrl : "" + hostUrl + destUrl,
                                 srcUrl: "" + hostUrl + srcUrl,
                             }))];
@@ -8304,16 +8958,16 @@ var types_Folder = /** @class */ (function (_super) {
      */
     _Folder.prototype.moveByPath = function (destUrl, KeepBoth) {
         if (KeepBoth === void 0) { KeepBoth = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+            return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
                     case 1:
                         _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
                         webBaseUrl = extractWebUrl(absoluteUrl);
                         hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"), body({
+                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"), request_builders_body({
                                 destPath: toResourcePath(Object(common["isUrlAbsolute"])(destUrl) ? destUrl : "" + hostUrl + destUrl),
                                 options: {
                                     KeepBoth: KeepBoth,
@@ -8338,16 +8992,16 @@ var types_Folder = /** @class */ (function (_super) {
      * @param destUrl Absolute or relative URL of the destination path
      */
     _Folder.prototype.copyTo = function (destUrl) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+            return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
                     case 1:
                         _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
                         webBaseUrl = extractWebUrl(absoluteUrl);
                         hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()"), body({
+                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()"), request_builders_body({
                                 destUrl: Object(common["isUrlAbsolute"])(destUrl) ? destUrl : "" + hostUrl + destUrl,
                                 srcUrl: "" + hostUrl + srcUrl,
                             }))];
@@ -8367,16 +9021,16 @@ var types_Folder = /** @class */ (function (_super) {
      */
     _Folder.prototype.copyByPath = function (destUrl, KeepBoth) {
         if (KeepBoth === void 0) { KeepBoth = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+            return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
                     case 1:
                         _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
                         webBaseUrl = extractWebUrl(absoluteUrl);
                         hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"), body({
+                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"), request_builders_body({
                                 destPath: toResourcePath(Object(common["isUrlAbsolute"])(destUrl) ? destUrl : "" + hostUrl + destUrl),
                                 options: {
                                     KeepBoth: KeepBoth,
@@ -8396,12 +9050,41 @@ var types_Folder = /** @class */ (function (_super) {
         });
     };
     /**
+     * Deletes the folder object with options.
+     *
+     * @param parameters Specifies the options to use when deleting a folder.
+     */
+    _Folder.prototype.deleteWithParams = function (parameters) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, spPost(this.clone(Folder, "DeleteWithParameters"), request_builders_body({ parameters: parameters }))];
+            });
+        });
+    };
+    /**
+     * Create the subfolder inside the current folder, as specified by the leafPath
+     *
+     * @param leafPath leafName of the new folder
+     */
+    _Folder.prototype.addSubFolderUsingPath = function (leafPath) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(this.clone(Folder, "AddSubFolderUsingPath"), request_builders_body({ leafPath: toResourcePath(leafPath) }))];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, this.folders.getByName(leafPath)];
+                }
+            });
+        });
+    };
+    /**
      * Gets the shareable item associated with this folder
      */
     _Folder.prototype.getShareable = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var d, shareable;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")()];
                     case 1:
@@ -8416,25 +9099,28 @@ var types_Folder = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.recycle")
     ], _Folder.prototype, "recycle", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.getItem")
     ], _Folder.prototype, "getItem", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.moveTo")
     ], _Folder.prototype, "moveTo", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.moveByPath")
     ], _Folder.prototype, "moveByPath", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.copyTo")
     ], _Folder.prototype, "copyTo", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.copyByPath")
     ], _Folder.prototype, "copyByPath", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
+        tag("f.del-params")
+    ], _Folder.prototype, "deleteWithParams", null);
+    __decorate([
         tag("f.getShareable")
     ], _Folder.prototype, "getShareable", null);
     return _Folder;
@@ -8454,9 +9140,9 @@ var Folder = spInvokableFactory(types_Folder);
 
 addProp(types_List, "rootFolder", Folder, "rootFolder");
 types_List.prototype.getDefaultColumnValues = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var pathPart, webUrl, path, baseFilePath, xml, e_1, matches, tags;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.rootFolder.select("ServerRelativePath")()];
                 case 1:
@@ -8512,9 +9198,9 @@ types_List.prototype.getDefaultColumnValues = function () {
     });
 };
 types_List.prototype.setDefaultColumnValues = function (defaults) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var fieldDefs, tags, xml, pathPart, webUrl, path, baseFilePath, existingReceivers;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, SharePointQueryableCollection(this, "fields").select("InternalName", "TypeAsString").filter("Hidden ne true")()];
                 case 1:
@@ -8588,7 +9274,7 @@ types_List.prototype.setDefaultColumnValues = function (defaults) {
                 case 5:
                     existingReceivers = _a.sent();
                     if (!(existingReceivers.length < 1)) return [3 /*break*/, 7];
-                    return [4 /*yield*/, spPost(List(this.eventReceivers, "add"), body({
+                    return [4 /*yield*/, spPost(List(this.eventReceivers, "add"), request_builders_body({
                             eventReceiverCreationInformation: {
                                 EventType: 10001,
                                 ReceiverAssembly: "Microsoft.Office.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c",
@@ -8623,9 +9309,9 @@ types_Web.prototype.getList = function (listRelativeUrl) {
     return List(this, "getList('" + escapeQueryStrValue(listRelativeUrl) + "')");
 };
 types_Web.prototype.getCatalog = function (type) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var data;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.clone(Web, "getcatalog(" + type + ")").select("Id").get()];
                 case 1:
@@ -8644,9 +9330,9 @@ types_Web.prototype.getCatalog = function (type) {
 
 
 types_Folder.prototype.getDefaultColumnValues = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var folderProps, serRelPath, web, docLib;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, Folder(this, "Properties").select("vti_x005f_listname")()];
                 case 1:
@@ -8667,9 +9353,9 @@ types_Folder.prototype.getDefaultColumnValues = function () {
 };
 types_Folder.prototype.setDefaultColumnValues = function (fieldDefaults, merge) {
     if (merge === void 0) { merge = true; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var folderProps, web, docLib, folderPath, existingDefaults, filteredExistingDefaults;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, Folder(this, "Properties").select("vti_x005f_listname")()];
                 case 1:
@@ -8708,8 +9394,8 @@ types_Folder.prototype.setDefaultColumnValues = function (fieldDefaults, merge) 
     });
 };
 types_Folder.prototype.clearDefaultColumnValues = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.setDefaultColumnValues([], false)];
                 case 1:
@@ -8737,7 +9423,7 @@ types_Folder.prototype.clearDefaultColumnValues = function () {
 
 
 var types_ContentTypes = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ContentTypes, _super);
+    __extends(_ContentTypes, _super);
     function _ContentTypes() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8747,11 +9433,11 @@ var types_ContentTypes = /** @class */ (function (_super) {
      * @param contentTypeId in the following format, for example: 0x010102
      */
     _ContentTypes.prototype.addAvailableContentType = function (contentTypeId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, spPost(this.clone(ContentTypes, "addAvailableContentType"), body({ "contentTypeId": contentTypeId }))];
+                    case 0: return [4 /*yield*/, spPost(this.clone(ContentTypes, "addAvailableContentType"), request_builders_body({ "contentTypeId": contentTypeId }))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -8783,12 +9469,12 @@ var types_ContentTypes = /** @class */ (function (_super) {
         if (description === void 0) { description = ""; }
         if (group === void 0) { group = "Custom Content Types"; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object.assign(metadata("SP.ContentType"), {
+                        postBody = request_builders_body(Object.assign(metadata("SP.ContentType"), {
                             "Description": description,
                             "Group": group,
                             "Id": { "StringValue": id },
@@ -8802,13 +9488,13 @@ var types_ContentTypes = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("cts.addAvailableContentType")
     ], _ContentTypes.prototype, "addAvailableContentType", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("cts.add")
     ], _ContentTypes.prototype, "add", null);
-    _ContentTypes = Object(tslib_es6["b" /* __decorate */])([
+    _ContentTypes = __decorate([
         defaultPath("contenttypes")
     ], _ContentTypes);
     return _ContentTypes;
@@ -8816,7 +9502,7 @@ var types_ContentTypes = /** @class */ (function (_super) {
 
 var ContentTypes = spInvokableFactory(types_ContentTypes);
 var types_ContentType = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ContentType, _super);
+    __extends(_ContentType, _super);
     function _ContentType() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("ct");
@@ -8867,7 +9553,7 @@ var types_ContentType = /** @class */ (function (_super) {
 
 var ContentType = spInvokableFactory(types_ContentType);
 var types_FieldLinks = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_FieldLinks, _super);
+    __extends(_FieldLinks, _super);
     function _FieldLinks() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8879,7 +9565,7 @@ var types_FieldLinks = /** @class */ (function (_super) {
     _FieldLinks.prototype.getById = function (id) {
         return tag.configure(FieldLink(this).concat("(guid'" + id + "')"), "fls.getById");
     };
-    _FieldLinks = Object(tslib_es6["b" /* __decorate */])([
+    _FieldLinks = __decorate([
         defaultPath("fieldlinks")
     ], _FieldLinks);
     return _FieldLinks;
@@ -8887,7 +9573,7 @@ var types_FieldLinks = /** @class */ (function (_super) {
 
 var FieldLinks = spInvokableFactory(types_FieldLinks);
 var types_FieldLink = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_FieldLink, _super);
+    __extends(_FieldLink, _super);
     function _FieldLink() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8928,7 +9614,7 @@ addProp(types_List, "contentTypes", ContentTypes);
 
 
 var types_Features = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Features, _super);
+    __extends(_Features, _super);
     function _Features() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -8940,11 +9626,11 @@ var types_Features = /** @class */ (function (_super) {
      */
     _Features.prototype.add = function (id, force) {
         if (force === void 0) { force = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, spPost(this.clone(Features, "add"), body({
+                    case 0: return [4 /*yield*/, spPost(this.clone(Features, "add"), request_builders_body({
                             featdefScope: 0,
                             featureId: id,
                             force: force,
@@ -8977,18 +9663,18 @@ var types_Features = /** @class */ (function (_super) {
      */
     _Features.prototype.remove = function (id, force) {
         if (force === void 0) { force = false; }
-        return spPost(this.clone(Features, "remove"), body({
+        return spPost(this.clone(Features, "remove"), request_builders_body({
             featureId: id,
             force: force,
         }));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fes.add")
     ], _Features.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fes.remove")
     ], _Features.prototype, "remove", null);
-    _Features = Object(tslib_es6["b" /* __decorate */])([
+    _Features = __decorate([
         defaultPath("features")
     ], _Features);
     return _Features;
@@ -8996,7 +9682,7 @@ var types_Features = /** @class */ (function (_super) {
 
 var Features = spInvokableFactory(types_Features);
 var types_Feature = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Feature, _super);
+    __extends(_Feature, _super);
     function _Feature() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9007,9 +9693,9 @@ var types_Feature = /** @class */ (function (_super) {
      */
     _Feature.prototype.deactivate = function (force) {
         if (force === void 0) { force = false; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var removeDependency, feature, promise;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         removeDependency = this.addBatchDependency();
@@ -9023,7 +9709,7 @@ var types_Feature = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fe.deactivate")
     ], _Feature.prototype, "deactivate", null);
     return _Feature;
@@ -9058,7 +9744,7 @@ addProp(types_Web, "features", Features);
 
 
 var types_Fields = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Fields, _super);
+    __extends(_Fields, _super);
     function _Fields() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9092,15 +9778,15 @@ var types_Fields = /** @class */ (function (_super) {
      * @param xml A string or XmlSchemaFieldCreationInformation instance descrbing the field to create
      */
     _Fields.prototype.createFieldAsXml = function (xml) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (typeof xml === "string") {
                             xml = { SchemaXml: xml };
                         }
-                        postBody = body({
+                        postBody = request_builders_body({
                             "parameters": Object(common["assign"])(metadata("SP.XmlSchemaFieldCreationInformation"), xml),
                         });
                         return [4 /*yield*/, spPost(this.clone(Fields, "createfieldasxml"), postBody)];
@@ -9122,12 +9808,12 @@ var types_Fields = /** @class */ (function (_super) {
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
     _Fields.prototype.add = function (title, fieldType, properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object.assign(metadata(fieldType), {
+                        postBody = request_builders_body(Object.assign(metadata(fieldType), {
                             "Title": title,
                         }, properties));
                         if (!tag.isTagged(this)) {
@@ -9304,9 +9990,9 @@ var types_Fields = /** @class */ (function (_super) {
      * @param properties Set of additional properties to set on the new field
      */
     _Fields.prototype.addLookup = function (title, lookupListId, lookupFieldName, properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var props, postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         props = Object(common["assign"])({
@@ -9315,7 +10001,7 @@ var types_Fields = /** @class */ (function (_super) {
                             LookupListId: lookupListId,
                             Title: title,
                         }, properties);
-                        postBody = body({
+                        postBody = request_builders_body({
                             "parameters": Object(common["assign"])(metadata("SP.FieldCreationInformation"), props),
                         });
                         return [4 /*yield*/, spPost(this.clone(Fields, "addfield"), postBody)];
@@ -9388,9 +10074,9 @@ var types_Fields = /** @class */ (function (_super) {
     * @param showField Which field to show from the lookup list.
     */
     _Fields.prototype.addDependentLookupField = function (displayName, primaryLookupFieldId, showField) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var path, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         path = "adddependentlookupfield(displayName='" + displayName + "', primarylookupfieldid='" + primaryLookupFieldId + "', showfield='" + showField + "')";
@@ -9415,52 +10101,52 @@ var types_Fields = /** @class */ (function (_super) {
         var props = { FieldTypeKind: 33 };
         return this.add(title, "SP.FieldLocation", Object(common["assign"])(props, properties));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.createFieldAsXml")
     ], _Fields.prototype, "createFieldAsXml", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addText")
     ], _Fields.prototype, "addText", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addCalculated")
     ], _Fields.prototype, "addCalculated", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addDateTime")
     ], _Fields.prototype, "addDateTime", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addNumber")
     ], _Fields.prototype, "addNumber", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addCurrency")
     ], _Fields.prototype, "addCurrency", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addMultilineText")
     ], _Fields.prototype, "addMultilineText", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addUrl")
     ], _Fields.prototype, "addUrl", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addUser")
     ], _Fields.prototype, "addUser", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addLookup")
     ], _Fields.prototype, "addLookup", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addChoice")
     ], _Fields.prototype, "addChoice", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addMultiChoice")
     ], _Fields.prototype, "addMultiChoice", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addBoolean")
     ], _Fields.prototype, "addBoolean", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addDependentLookupField")
     ], _Fields.prototype, "addDependentLookupField", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("fs.addLocation")
     ], _Fields.prototype, "addLocation", null);
-    _Fields = Object(tslib_es6["b" /* __decorate */])([
+    _Fields = __decorate([
         defaultPath("fields")
     ], _Fields);
     return _Fields;
@@ -9468,7 +10154,7 @@ var types_Fields = /** @class */ (function (_super) {
 
 var Fields = spInvokableFactory(types_Fields);
 var types_Field = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Field, _super);
+    __extends(_Field, _super);
     function _Field() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("f");
@@ -9481,19 +10167,23 @@ var types_Field = /** @class */ (function (_super) {
      * @param fieldType The type value such as SP.FieldLookup. Optional, looked up from the field if not provided
      */
     _Field.prototype.update = function (properties, fieldType) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var info, req, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!(typeof fieldType === "undefined" || fieldType === null)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.select("FieldTypeKind")()];
+                        return [4 /*yield*/, Field(this).select("FieldTypeKind").configure({
+                                headers: {
+                                    "Accept": "application/json",
+                                },
+                            })()];
                     case 1:
                         info = _a.sent();
-                        fieldType = "SP.Field" + FieldTypes[info.FieldTypeKind];
+                        fieldType = info["odata.type"];
                         _a.label = 2;
                     case 2:
-                        req = body(Object(common["assign"])(metadata(fieldType), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
+                        req = request_builders_body(Object(common["assign"])(metadata(fieldType), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
                         return [4 /*yield*/, spPost(this, req)];
                     case 3:
                         data = _a.sent();
@@ -9523,16 +10213,16 @@ var types_Field = /** @class */ (function (_super) {
     _Field.prototype.setShowInNewForm = function (show) {
         return spPost(this.clone(Field, "setshowinnewform(" + show + ")"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.update")
     ], _Field.prototype, "update", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.setShowInDisplayForm")
     ], _Field.prototype, "setShowInDisplayForm", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.setShowInEditForm")
     ], _Field.prototype, "setShowInEditForm", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("f.setShowInNewForm")
     ], _Field.prototype, "setShowInNewForm", null);
     return _Field;
@@ -9737,7 +10427,7 @@ types_Web.prototype.getFolderById = function (uniqueId) {
  *
  */
 var types_Forms = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Forms, _super);
+    __extends(_Forms, _super);
     function _Forms() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9749,7 +10439,7 @@ var types_Forms = /** @class */ (function (_super) {
     _Forms.prototype.getById = function (id) {
         return tag.configure(Form(this).concat("('" + id + "')"), "fos.getById");
     };
-    _Forms = Object(tslib_es6["b" /* __decorate */])([
+    _Forms = __decorate([
         defaultPath("forms")
     ], _Forms);
     return _Forms;
@@ -9761,7 +10451,7 @@ var Forms = spInvokableFactory(types_Forms);
  *
  */
 var types_Form = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Form, _super);
+    __extends(_Form, _super);
     function _Form() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9787,7 +10477,7 @@ addProp(types_List, "forms", Forms, "forms");
 
 
 var types_HubSites = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_HubSites, _super);
+    __extends(_HubSites, _super);
     function _HubSites() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9799,7 +10489,7 @@ var types_HubSites = /** @class */ (function (_super) {
     _HubSites.prototype.getById = function (id) {
         return tag.configure(HubSite(this, "GetById?hubSiteId='" + id + "'"), "hss.getById");
     };
-    _HubSites = Object(tslib_es6["b" /* __decorate */])([
+    _HubSites = __decorate([
         defaultPath("_api/hubsites")
     ], _HubSites);
     return _HubSites;
@@ -9807,7 +10497,7 @@ var types_HubSites = /** @class */ (function (_super) {
 
 var HubSites = spInvokableFactory(types_HubSites);
 var types_HubSite = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_HubSite, _super);
+    __extends(_HubSite, _super);
     function _HubSite() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9815,9 +10505,9 @@ var types_HubSite = /** @class */ (function (_super) {
      * Gets the ISite instance associated with this hubsite
      */
     _HubSite.prototype.getSite = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var d;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.select("SiteUrl")()];
                     case 1:
@@ -9827,7 +10517,7 @@ var types_HubSite = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("hs.getSite")
     ], _HubSite.prototype, "getSite", null);
     return _HubSite;
@@ -9840,8 +10530,8 @@ var HubSite = spInvokableFactory(types_HubSite);
 
 
 types_Site.prototype.joinHubSite = function (siteId) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(Site, "joinHubSite('" + siteId + "')"))];
                 case 1:
@@ -9852,8 +10542,8 @@ types_Site.prototype.joinHubSite = function (siteId) {
     });
 };
 types_Site.prototype.registerHubSite = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(Site, "registerHubSite"))];
                 case 1:
@@ -9864,8 +10554,8 @@ types_Site.prototype.registerHubSite = function () {
     });
 };
 types_Site.prototype.unRegisterHubSite = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(Site, "unRegisterHubSite"))];
                 case 1:
@@ -9882,9 +10572,9 @@ types_Site.prototype.unRegisterHubSite = function () {
 
 types_Web.prototype.hubSiteData = function (forceRefresh) {
     if (forceRefresh === void 0) { forceRefresh = false; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var data;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.clone(Web, "hubSiteData(" + forceRefresh + ")")()];
                 case 1:
@@ -9933,7 +10623,7 @@ Reflect.defineProperty(rest_SPRest.prototype, "hubSites", {
  *
  */
 var types_NavigationNodes = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_NavigationNodes, _super);
+    __extends(_NavigationNodes, _super);
     function _NavigationNodes() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -9954,12 +10644,12 @@ var types_NavigationNodes = /** @class */ (function (_super) {
      */
     _NavigationNodes.prototype.add = function (title, url, visible) {
         if (visible === void 0) { visible = true; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["assign"])(metadata("SP.NavigationNode"), {
+                        postBody = request_builders_body(Object(common["assign"])(metadata("SP.NavigationNode"), {
                             IsVisible: visible,
                             Title: title,
                             Url: url,
@@ -9982,16 +10672,16 @@ var types_NavigationNodes = /** @class */ (function (_super) {
      * @param previousNodeId Id of the node after which we move the node specified by nodeId
      */
     _NavigationNodes.prototype.moveAfter = function (nodeId, previousNodeId) {
-        var postBody = body({
+        var postBody = request_builders_body({
             nodeId: nodeId,
             previousNodeId: previousNodeId,
         });
         return spPost(this.clone(NavigationNodes, "MoveAfter"), postBody);
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("nns.add")
     ], _NavigationNodes.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("nns.moveAfter")
     ], _NavigationNodes.prototype, "moveAfter", null);
     return _NavigationNodes;
@@ -10003,7 +10693,7 @@ var NavigationNodes = spInvokableFactory(types_NavigationNodes);
  *
  */
 var types_NavigationNode = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_NavigationNode, _super);
+    __extends(_NavigationNode, _super);
     function _NavigationNode() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("nn");
@@ -10025,12 +10715,12 @@ var types_NavigationNode = /** @class */ (function (_super) {
      * @param properties Properties used to update this node
      */
     _NavigationNode.prototype.update = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["assign"])(metadata("SP.NavigationNode"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
+                        postBody = request_builders_body(Object(common["assign"])(metadata("SP.NavigationNode"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
                         return [4 /*yield*/, spPost(this, postBody)];
                     case 1:
                         data = _a.sent();
@@ -10042,7 +10732,7 @@ var types_NavigationNode = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("nn.update")
     ], _NavigationNode.prototype, "update", null);
     return _NavigationNode;
@@ -10054,7 +10744,7 @@ var NavigationNode = spInvokableFactory(types_NavigationNode);
  *
  */
 var types_Navigation = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Navigation, _super);
+    __extends(_Navigation, _super);
     function _Navigation() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10080,7 +10770,7 @@ var types_Navigation = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    _Navigation = Object(tslib_es6["b" /* __decorate */])([
+    _Navigation = __decorate([
         defaultPath("navigation")
     ], _Navigation);
     return _Navigation;
@@ -10091,7 +10781,7 @@ var Navigation = spInvokableFactory(types_Navigation);
  * Represents the top level navigation service
  */
 var types_NavigationService = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_NavigationService, _super);
+    __extends(_NavigationService, _super);
     function _NavigationService(path) {
         if (path === void 0) { path = null; }
         return _super.call(this, "_api/navigation", path) || this;
@@ -10109,7 +10799,7 @@ var types_NavigationService = /** @class */ (function (_super) {
         if (depth === void 0) { depth = 10; }
         if (mapProviderName === void 0) { mapProviderName = null; }
         if (customProperties === void 0) { customProperties = null; }
-        return spPost(NavigationService("MenuState"), body({
+        return spPost(NavigationService("MenuState"), request_builders_body({
             customProperties: customProperties,
             depth: depth,
             mapProviderName: mapProviderName,
@@ -10124,15 +10814,15 @@ var types_NavigationService = /** @class */ (function (_super) {
      */
     _NavigationService.prototype.getMenuNodeKey = function (currentUrl, mapProviderName) {
         if (mapProviderName === void 0) { mapProviderName = null; }
-        return spPost(NavigationService("MenuNodeKey"), body({
+        return spPost(NavigationService("MenuNodeKey"), request_builders_body({
             currentUrl: currentUrl,
             mapProviderName: mapProviderName,
         }));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ns.getMenuState")
     ], _NavigationService.prototype, "getMenuState", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ns.getMenuNodeKey")
     ], _NavigationService.prototype, "getMenuNodeKey", null);
     return _NavigationService;
@@ -10168,7 +10858,7 @@ Reflect.defineProperty(rest_SPRest.prototype, "navigation", {
 
 
 var types_Profiles = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Profiles, _super);
+    __extends(_Profiles, _super);
     /**
      * Creates a new instance of the UserProfileQuery class
      *
@@ -10335,12 +11025,33 @@ var types_Profiles = /** @class */ (function (_super) {
      * @param profilePicSource Blob data representing the user's picture in BMP, JPEG, or PNG format of up to 4.76MB
      */
     _Profiles.prototype.setMyProfilePic = function (profilePicSource) {
-        var buffer = null;
-        var reader = new FileReader();
-        reader.onload = function (e) { return buffer = e.target.result; };
-        reader.readAsArrayBuffer(profilePicSource);
-        var request = new _Profiles(this, "setmyprofilepicture");
-        return spPost(request, body(String.fromCharCode.apply(null, new Uint16Array(buffer))));
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function (e) { return __awaiter(_this, void 0, void 0, function () {
+                var buffer, e_1;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            buffer = e.target.result;
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 3, , 4]);
+                            return [4 /*yield*/, spPost(Profiles(this, "setmyprofilepicture"), { body: buffer })];
+                        case 2:
+                            _a.sent();
+                            resolve();
+                            return [3 /*break*/, 4];
+                        case 3:
+                            e_1 = _a.sent();
+                            reject(e_1);
+                            return [3 /*break*/, 4];
+                        case 4: return [2 /*return*/];
+                    }
+                });
+            }); };
+            reader.readAsArrayBuffer(profilePicSource);
+        });
     };
     /**
      * Sets single value User Profile property
@@ -10350,7 +11061,7 @@ var types_Profiles = /** @class */ (function (_super) {
      * @param propertyValue Property value
      */
     _Profiles.prototype.setSingleValueProfileProperty = function (accountName, propertyName, propertyValue) {
-        return spPost(this.clone(Profiles, "SetSingleValueProfileProperty"), body({
+        return spPost(this.clone(Profiles, "SetSingleValueProfileProperty"), request_builders_body({
             accountName: accountName,
             propertyName: propertyName,
             propertyValue: propertyValue,
@@ -10364,7 +11075,7 @@ var types_Profiles = /** @class */ (function (_super) {
      * @param propertyValues Property values
      */
     _Profiles.prototype.setMultiValuedProfileProperty = function (accountName, propertyName, propertyValues) {
-        return spPost(this.clone(Profiles, "SetMultiValuedProfileProperty"), body({
+        return spPost(this.clone(Profiles, "SetMultiValuedProfileProperty"), request_builders_body({
             accountName: accountName,
             propertyName: propertyName,
             propertyValues: propertyValues,
@@ -10441,7 +11152,7 @@ var types_Profiles = /** @class */ (function (_super) {
 
 var Profiles = spInvokableFactory(types_Profiles);
 var types_ProfileLoader = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ProfileLoader, _super);
+    __extends(ProfileLoader, _super);
     function ProfileLoader() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10451,7 +11162,7 @@ var types_ProfileLoader = /** @class */ (function (_super) {
      * @param emails The email addresses of the users to provision sites for
      */
     ProfileLoader.prototype.createPersonalSiteEnqueueBulk = function (emails) {
-        return spPost(this.clone(ProfileLoaderFactory, "createpersonalsiteenqueuebulk", false), body({ "emailIDs": emails }));
+        return spPost(this.clone(ProfileLoaderFactory, "createpersonalsiteenqueuebulk", false), request_builders_body({ "emailIDs": emails }));
     };
     Object.defineProperty(ProfileLoader.prototype, "ownerUserProfile", {
         /**
@@ -10496,7 +11207,7 @@ var types_ProfileLoader = /** @class */ (function (_super) {
     ProfileLoader.prototype.shareAllSocialData = function (share) {
         return spPost(this.clone(ProfileLoaderFactory, "getuserprofile/shareallsocialdata(" + share + ")"));
     };
-    ProfileLoader = Object(tslib_es6["b" /* __decorate */])([
+    ProfileLoader = __decorate([
         defaultPath("_api/sp.userprofiles.profileloader.getprofileloader")
     ], ProfileLoader);
     return ProfileLoader;
@@ -10505,7 +11216,7 @@ var ProfileLoaderFactory = function (baseUrl, path) {
     return new types_ProfileLoader(baseUrl, path);
 };
 var types_ClientPeoplePickerQuery = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(ClientPeoplePickerQuery, _super);
+    __extends(ClientPeoplePickerQuery, _super);
     function ClientPeoplePickerQuery() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10515,9 +11226,9 @@ var types_ClientPeoplePickerQuery = /** @class */ (function (_super) {
      * @param queryParams The query parameters used to perform resolve
      */
     ClientPeoplePickerQuery.prototype.clientPeoplePickerResolveUser = function (queryParams) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = this.clone(ClientPeoplePickerFactory, null);
@@ -10536,9 +11247,9 @@ var types_ClientPeoplePickerQuery = /** @class */ (function (_super) {
      * @param queryParams The query parameters used to perform search
      */
     ClientPeoplePickerQuery.prototype.clientPeoplePickerSearchUser = function (queryParams) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var q, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         q = this.clone(ClientPeoplePickerFactory, null);
@@ -10557,9 +11268,9 @@ var types_ClientPeoplePickerQuery = /** @class */ (function (_super) {
      * @param queryParams The query parameters to create request body
      */
     ClientPeoplePickerQuery.prototype.getBodyFrom = function (queryParams) {
-        return body({ "queryParams": Object(common["assign"])(metadata("SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters"), queryParams) });
+        return request_builders_body({ "queryParams": Object(common["assign"])(metadata("SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters"), queryParams) });
     };
-    ClientPeoplePickerQuery = Object(tslib_es6["b" /* __decorate */])([
+    ClientPeoplePickerQuery = __decorate([
         defaultPath("_api/sp.ui.applicationpages.clientpeoplepickerwebserviceinterface")
     ], ClientPeoplePickerQuery);
     return ClientPeoplePickerQuery;
@@ -10615,7 +11326,7 @@ Reflect.defineProperty(rest_SPRest.prototype, "profiles", {
 
 
 var types_RegionalSettings = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RegionalSettings, _super);
+    __extends(_RegionalSettings, _super);
     function _RegionalSettings() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10655,9 +11366,9 @@ var types_RegionalSettings = /** @class */ (function (_super) {
      * Gets the collection of languages used in a server farm.
      */
     _RegionalSettings.prototype.getInstalledLanguages = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var results;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, tag.configure(SharePointQueryableCollection(this, "installedlanguages"), "rs.getInstalledLanguages")()];
                     case 1:
@@ -10667,7 +11378,7 @@ var types_RegionalSettings = /** @class */ (function (_super) {
             });
         });
     };
-    _RegionalSettings = Object(tslib_es6["b" /* __decorate */])([
+    _RegionalSettings = __decorate([
         defaultPath("regionalsettings")
     ], _RegionalSettings);
     return _RegionalSettings;
@@ -10675,7 +11386,7 @@ var types_RegionalSettings = /** @class */ (function (_super) {
 
 var RegionalSettings = spInvokableFactory(types_RegionalSettings);
 var types_TimeZone = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TimeZone, _super);
+    __extends(_TimeZone, _super);
     function _TimeZone() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10685,9 +11396,9 @@ var types_TimeZone = /** @class */ (function (_super) {
      * @param utcTime UTC Time as Date or ISO String
      */
     _TimeZone.prototype.utcToLocalTime = function (utcTime) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var dateIsoString, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (typeof utcTime === "string") {
@@ -10710,9 +11421,9 @@ var types_TimeZone = /** @class */ (function (_super) {
      * @param localTime Local Time as Date or ISO String
      */
     _TimeZone.prototype.localTimeToUTC = function (localTime) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var dateIsoString, res;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (typeof localTime === "string") {
@@ -10729,13 +11440,13 @@ var types_TimeZone = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("tz.utcToLocalTime")
     ], _TimeZone.prototype, "utcToLocalTime", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("tz.localTimeToUTC")
     ], _TimeZone.prototype, "localTimeToUTC", null);
-    _TimeZone = Object(tslib_es6["b" /* __decorate */])([
+    _TimeZone = __decorate([
         defaultPath("timezone")
     ], _TimeZone);
     return _TimeZone;
@@ -10743,7 +11454,7 @@ var types_TimeZone = /** @class */ (function (_super) {
 
 var TimeZone = spInvokableFactory(types_TimeZone);
 var types_TimeZones = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TimeZones, _super);
+    __extends(_TimeZones, _super);
     function _TimeZones() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10756,10 +11467,10 @@ var types_TimeZones = /** @class */ (function (_super) {
         // do the post and merge the result into a TimeZone instance so the data and methods are available
         return spPost(this.clone(TimeZones, "GetById(" + id + ")").usingParser(spODataEntity(TimeZone)));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("tzs.getById")
     ], _TimeZones.prototype, "getById", null);
-    _TimeZones = Object(tslib_es6["b" /* __decorate */])([
+    _TimeZones = __decorate([
         defaultPath("timezones")
     ], _TimeZones);
     return _TimeZones;
@@ -10773,7 +11484,7 @@ var TimeZones = spInvokableFactory(types_TimeZones);
 
 function getValueForUICultureBinder(propName) {
     return function (cultureName) {
-        return spPost(this.clone(SharePointQueryable, propName + "/getValueForUICulture"), body({ cultureName: cultureName }));
+        return spPost(this.clone(SharePointQueryable, propName + "/getValueForUICulture"), request_builders_body({ cultureName: cultureName }));
     };
 }
 //# sourceMappingURL=funcs.js.map
@@ -10796,7 +11507,7 @@ types_Web.prototype.descriptionResource = getValueForUICultureBinder("descriptio
 
 
 var types_UserCustomActions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_UserCustomActions, _super);
+    __extends(_UserCustomActions, _super);
     function _UserCustomActions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -10814,11 +11525,11 @@ var types_UserCustomActions = /** @class */ (function (_super) {
      * @param properties The information object of property names and values which define the new user custom action
      */
     _UserCustomActions.prototype.add = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, spPost(this, body(Object(common["assign"])(metadata("SP.UserCustomAction"), properties)))];
+                    case 0: return [4 /*yield*/, spPost(this, request_builders_body(Object(common["assign"])(metadata("SP.UserCustomAction"), properties)))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -10835,13 +11546,13 @@ var types_UserCustomActions = /** @class */ (function (_super) {
     _UserCustomActions.prototype.clear = function () {
         return spPost(this.clone(UserCustomActions, "clear"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ucas.add")
     ], _UserCustomActions.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ucas.clear")
     ], _UserCustomActions.prototype, "clear", null);
-    _UserCustomActions = Object(tslib_es6["b" /* __decorate */])([
+    _UserCustomActions = __decorate([
         defaultPath("usercustomactions")
     ], _UserCustomActions);
     return _UserCustomActions;
@@ -10849,7 +11560,7 @@ var types_UserCustomActions = /** @class */ (function (_super) {
 
 var UserCustomActions = spInvokableFactory(types_UserCustomActions);
 var types_UserCustomAction = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_UserCustomAction, _super);
+    __extends(_UserCustomAction, _super);
     function _UserCustomAction() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("uca");
@@ -10922,14 +11633,14 @@ types_ContentType.prototype.descriptionResource = getValueForUICultureBinder("de
 
 
 var types_RelatedItemManager = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RelatedItemManager, _super);
+    __extends(_RelatedItemManager, _super);
     function _RelatedItemManager() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     _RelatedItemManager.prototype.getRelatedItems = function (sourceListName, sourceItemId) {
         var query = this.clone(RelatedItemManager, null);
         query.concat(".GetRelatedItems");
-        return spPost(query, body({
+        return spPost(query, request_builders_body({
             SourceItemID: sourceItemId,
             SourceListName: sourceListName,
         }));
@@ -10937,7 +11648,7 @@ var types_RelatedItemManager = /** @class */ (function (_super) {
     _RelatedItemManager.prototype.getPageOneRelatedItems = function (sourceListName, sourceItemId) {
         var query = this.clone(RelatedItemManager, null);
         query.concat(".GetPageOneRelatedItems");
-        return spPost(query, body({
+        return spPost(query, request_builders_body({
             SourceItemID: sourceItemId,
             SourceListName: sourceListName,
         }));
@@ -10946,7 +11657,7 @@ var types_RelatedItemManager = /** @class */ (function (_super) {
         if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
         var query = this.clone(RelatedItemManager, null);
         query.concat(".AddSingleLink");
-        return spPost(query, body({
+        return spPost(query, request_builders_body({
             SourceItemID: sourceItemId,
             SourceListName: sourceListName,
             SourceWebUrl: sourceWebUrl,
@@ -10960,7 +11671,7 @@ var types_RelatedItemManager = /** @class */ (function (_super) {
         if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
         var query = this.clone(RelatedItemManager, null);
         query.concat(".AddSingleLinkToUrl");
-        return spPost(query, body({
+        return spPost(query, request_builders_body({
             SourceItemID: sourceItemId,
             SourceListName: sourceListName,
             TargetItemUrl: targetItemUrl,
@@ -10971,7 +11682,7 @@ var types_RelatedItemManager = /** @class */ (function (_super) {
         if (tryAddReverseLink === void 0) { tryAddReverseLink = false; }
         var query = this.clone(RelatedItemManager, null);
         query.concat(".AddSingleLinkFromUrl");
-        return spPost(query, body({
+        return spPost(query, request_builders_body({
             SourceItemUrl: sourceItemUrl,
             TargetItemID: targetItemId,
             TargetListName: targetListName,
@@ -10982,7 +11693,7 @@ var types_RelatedItemManager = /** @class */ (function (_super) {
         if (tryDeleteReverseLink === void 0) { tryDeleteReverseLink = false; }
         var query = this.clone(RelatedItemManager, null);
         query.concat(".DeleteSingleLink");
-        return spPost(query, body({
+        return spPost(query, request_builders_body({
             SourceItemID: sourceItemId,
             SourceListName: sourceListName,
             SourceWebUrl: sourceWebUrl,
@@ -10992,25 +11703,25 @@ var types_RelatedItemManager = /** @class */ (function (_super) {
             TryDeleteReverseLink: tryDeleteReverseLink,
         }));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.getRelatedItems")
     ], _RelatedItemManager.prototype, "getRelatedItems", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.getPageOneRelatedItems")
     ], _RelatedItemManager.prototype, "getPageOneRelatedItems", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.addSingleLink")
     ], _RelatedItemManager.prototype, "addSingleLink", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.ToUrl")
     ], _RelatedItemManager.prototype, "addSingleLinkToUrl", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.FromUrl")
     ], _RelatedItemManager.prototype, "addSingleLinkFromUrl", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("rim.deleteSingleLink")
     ], _RelatedItemManager.prototype, "deleteSingleLink", null);
-    _RelatedItemManager = Object(tslib_es6["b" /* __decorate */])([
+    _RelatedItemManager = __decorate([
         defaultPath("_api/SP.RelatedItemManager")
     ], _RelatedItemManager);
     return _RelatedItemManager;
@@ -11108,7 +11819,7 @@ var queryRegex = /_api\/search\/postquery$/i;
  *
  */
 var query_Search = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Search, _super);
+    __extends(_Search, _super);
     function _Search() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -11116,13 +11827,13 @@ var query_Search = /** @class */ (function (_super) {
      * @returns Promise
      */
     _Search.prototype.execute = function (queryInit) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var query, postBody, cacheKey, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         query = this.parseQuery(queryInit);
-                        postBody = body({
+                        postBody = request_builders_body({
                             request: Object(common["assign"])(metadata("Microsoft.Office.Server.Search.REST.SearchRequest"), Object.assign({}, query, {
                                 HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
                                 Properties: this.fixArrProp(query.Properties),
@@ -11184,10 +11895,10 @@ var query_Search = /** @class */ (function (_super) {
         }
         return finalQuery;
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("se.execute")
     ], _Search.prototype, "execute", null);
-    _Search = Object(tslib_es6["b" /* __decorate */])([
+    _Search = __decorate([
         defaultPath("_api/search/postquery")
     ], _Search);
     return _Search;
@@ -11297,7 +12008,7 @@ var query_SearchResults = /** @class */ (function () {
         }
         var tempResults = rawResults.results ? rawResults.results : rawResults;
         try {
-            for (var tempResults_1 = Object(tslib_es6["f" /* __values */])(tempResults), tempResults_1_1 = tempResults_1.next(); !tempResults_1_1.done; tempResults_1_1 = tempResults_1.next()) {
+            for (var tempResults_1 = __values(tempResults), tempResults_1_1 = tempResults_1.next(); !tempResults_1_1.done; tempResults_1_1 = tempResults_1.next()) {
                 var tempResult = tempResults_1_1.value;
                 var cells = tempResult.Cells.results ? tempResult.Cells.results : tempResult.Cells;
                 results.push(cells.reduce(function (res, cell) {
@@ -11331,14 +12042,14 @@ var query_SearchResults = /** @class */ (function () {
 
 
 var suggest_Suggest = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Suggest, _super);
+    __extends(_Suggest, _super);
     function _Suggest() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     _Suggest.prototype.execute = function (query) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var response, mapper;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         this.mapQueryToQueryString(query);
@@ -11375,10 +12086,10 @@ var suggest_Suggest = /** @class */ (function (_super) {
         querySetter("queryRules")("enablequeryrules");
         querySetter("prefixMatch")("fprefixmatchallterms");
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("su.execute")
     ], _Suggest.prototype, "execute", null);
-    _Suggest = Object(tslib_es6["b" /* __decorate */])([
+    _Suggest = __decorate([
         defaultPath("_api/search/suggest")
     ], _Suggest);
     return _Suggest;
@@ -11479,7 +12190,7 @@ rest_SPRest.prototype.searchSuggest = function (query) {
 
 
 var types_SiteUsers = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteUsers, _super);
+    __extends(_SiteUsers, _super);
     function _SiteUsers() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -11532,10 +12243,10 @@ var types_SiteUsers = /** @class */ (function (_super) {
      *
      */
     _SiteUsers.prototype.add = function (loginName) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, spPost(this, body(Object(common["assign"])(metadata("SP.User"), { LoginName: loginName })))];
+                    case 0: return [4 /*yield*/, spPost(this, request_builders_body(Object(common["assign"])(metadata("SP.User"), { LoginName: loginName })))];
                     case 1:
                         _a.sent();
                         return [2 /*return*/, this.getByLoginName(loginName)];
@@ -11543,16 +12254,16 @@ var types_SiteUsers = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sus.remId")
     ], _SiteUsers.prototype, "removeById", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sus.remLoginName")
     ], _SiteUsers.prototype, "removeByLoginName", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sus.add")
     ], _SiteUsers.prototype, "add", null);
-    _SiteUsers = Object(tslib_es6["b" /* __decorate */])([
+    _SiteUsers = __decorate([
         defaultPath("siteusers")
     ], _SiteUsers);
     return _SiteUsers;
@@ -11564,7 +12275,7 @@ var SiteUsers = spInvokableFactory(types_SiteUsers);
  *
  */
 var types_SiteUser = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteUser, _super);
+    __extends(_SiteUser, _super);
     function _SiteUser() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("su");
@@ -11603,7 +12314,7 @@ var SiteUser = spInvokableFactory(types_SiteUser);
 
 
 var types_SiteGroups = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteGroups, _super);
+    __extends(_SiteGroups, _super);
     function _SiteGroups() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -11621,12 +12332,12 @@ var types_SiteGroups = /** @class */ (function (_super) {
      * @param properties The group properties object of property names and values to be set for the group
      */
     _SiteGroups.prototype.add = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object(common["assign"])(metadata("SP.Group"), properties));
+                        postBody = request_builders_body(Object(common["assign"])(metadata("SP.Group"), properties));
                         return [4 /*yield*/, spPost(tag.configure(this, "sgs.add"), postBody)];
                     case 1:
                         data = _a.sent();
@@ -11662,13 +12373,13 @@ var types_SiteGroups = /** @class */ (function (_super) {
     _SiteGroups.prototype.removeByLoginName = function (loginName) {
         return spPost(this.clone(SiteGroups, "removeByLoginName('" + loginName + "')"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sgs.removeById")
     ], _SiteGroups.prototype, "removeById", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sgs.removeByLoginName")
     ], _SiteGroups.prototype, "removeByLoginName", null);
-    _SiteGroups = Object(tslib_es6["b" /* __decorate */])([
+    _SiteGroups = __decorate([
         defaultPath("sitegroups")
     ], _SiteGroups);
     return _SiteGroups;
@@ -11676,7 +12387,7 @@ var types_SiteGroups = /** @class */ (function (_super) {
 
 var SiteGroups = spInvokableFactory(types_SiteGroups);
 var types_SiteGroup = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteGroup, _super);
+    __extends(_SiteGroup, _super);
     function _SiteGroup() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         /**
@@ -11715,7 +12426,7 @@ var types_SiteGroup = /** @class */ (function (_super) {
     _SiteGroup.prototype.setUserAsOwner = function (userId) {
         return spPost(this.clone(SiteGroup, "SetUserAsOwner(" + userId + ")"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sg.setUserAsOwner")
     ], _SiteGroup.prototype, "setUserAsOwner", null);
     return _SiteGroup;
@@ -11738,7 +12449,7 @@ var SiteGroup = spInvokableFactory(types_SiteGroup);
  *
  */
 var types_RoleAssignments = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RoleAssignments, _super);
+    __extends(_RoleAssignments, _super);
     function _RoleAssignments() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -11758,8 +12469,8 @@ var types_RoleAssignments = /** @class */ (function (_super) {
      *
      */
     _RoleAssignments.prototype.add = function (principalId, roleDefId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(RoleAssignments, "addroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")"))];
                     case 1:
@@ -11777,8 +12488,8 @@ var types_RoleAssignments = /** @class */ (function (_super) {
      *
      */
     _RoleAssignments.prototype.remove = function (principalId, roleDefId) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(RoleAssignments, "removeroleassignment(principalid=" + principalId + ", roledefid=" + roleDefId + ")"))];
                     case 1:
@@ -11788,7 +12499,7 @@ var types_RoleAssignments = /** @class */ (function (_super) {
             });
         });
     };
-    _RoleAssignments = Object(tslib_es6["b" /* __decorate */])([
+    _RoleAssignments = __decorate([
         defaultPath("roleassignments")
     ], _RoleAssignments);
     return _RoleAssignments;
@@ -11800,7 +12511,7 @@ var RoleAssignments = spInvokableFactory(types_RoleAssignments);
  *
  */
 var types_RoleAssignment = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RoleAssignment, _super);
+    __extends(_RoleAssignment, _super);
     function _RoleAssignment() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("ra");
@@ -11837,7 +12548,7 @@ var RoleAssignment = spInvokableFactory(types_RoleAssignment);
  *
  */
 var types_RoleDefinitions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RoleDefinitions, _super);
+    __extends(_RoleDefinitions, _super);
     function _RoleDefinitions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -11874,17 +12585,17 @@ var types_RoleDefinitions = /** @class */ (function (_super) {
      * @param name The new role definition's name
      * @param description The new role definition's description
      * @param order The order in which the role definition appears
-     * @param basePermissions The permissions mask for this role definition
+     * @param basePermissions The permissions mask for this role definition, high and low values need to be converted to string
      *
      */
     _RoleDefinitions.prototype.add = function (name, description, order, basePermissions) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body({
-                            BasePermissions: Object(common["assign"])(metadata("SP.BasePermissions"), basePermissions),
+                        postBody = request_builders_body({
+                            BasePermissions: { "High": basePermissions.High.toString(), "Low": basePermissions.Low.toString() },
                             Description: description,
                             Name: name,
                             Order: order,
@@ -11901,7 +12612,7 @@ var types_RoleDefinitions = /** @class */ (function (_super) {
             });
         });
     };
-    _RoleDefinitions = Object(tslib_es6["b" /* __decorate */])([
+    _RoleDefinitions = __decorate([
         defaultPath("roledefinitions")
     ], _RoleDefinitions);
     return _RoleDefinitions;
@@ -11913,7 +12624,7 @@ var RoleDefinitions = spInvokableFactory(types_RoleDefinitions);
  *
  */
 var types_RoleDefinition = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_RoleDefinition, _super);
+    __extends(_RoleDefinition, _super);
     function _RoleDefinition() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("rd");
@@ -11927,16 +12638,16 @@ var types_RoleDefinition = /** @class */ (function (_super) {
      */
     /* tslint:disable no-string-literal */
     _RoleDefinition.prototype.update = function (properties) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var s, postBody, data, definition, parent_1;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         s = ["BasePermissions"];
                         if (Object(common["hOP"])(properties, s[0]) !== undefined) {
                             properties[s[0]] = Object(common["assign"])(metadata("SP." + s[0]), properties[s[0]]);
                         }
-                        postBody = body(Object(common["assign"])(metadata("SP.RoleDefinition"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
+                        postBody = request_builders_body(Object(common["assign"])(metadata("SP.RoleDefinition"), properties), request_builders_headers({ "X-HTTP-Method": "MERGE" }));
                         return [4 /*yield*/, spPost(this, postBody)];
                     case 1:
                         data = _a.sent();
@@ -12135,9 +12846,9 @@ var PermissionKind;
 * @param loginName The claims username for the user (ex: i:0#.f|membership|user@domain.com)
 */
 function getUserEffectivePermissions(loginName) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var q, r;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     q = this.clone(SharePointQueryableInstance, "getUserEffectivePermissions(@user)");
@@ -12155,9 +12866,9 @@ function getUserEffectivePermissions(loginName) {
  * Gets the effective permissions for the current user
  */
 function getCurrentUserEffectivePermissions() {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var q;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             q = this.clone(SharePointQueryable, "EffectiveBasePermissions");
             return [2 /*return*/, q.get().then(function (r) {
                     // handle verbose mode
@@ -12175,8 +12886,8 @@ function getCurrentUserEffectivePermissions() {
 function breakRoleInheritance(copyRoleAssignments, clearSubscopes) {
     if (copyRoleAssignments === void 0) { copyRoleAssignments = false; }
     if (clearSubscopes === void 0) { clearSubscopes = false; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(SharePointQueryable, "breakroleinheritance(copyroleassignments=" + copyRoleAssignments + ", clearsubscopes=" + clearSubscopes + ")"))];
                 case 1:
@@ -12191,8 +12902,8 @@ function breakRoleInheritance(copyRoleAssignments, clearSubscopes) {
  *
  */
 function resetRoleInheritance() {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, spPost(this.clone(SharePointQueryable, "resetroleinheritance"))];
                 case 1:
@@ -12209,9 +12920,9 @@ function resetRoleInheritance() {
  * @param permission The permission being checked
  */
 function userHasPermissions(loginName, permission) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var perms;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getUserEffectivePermissions.call(this, loginName)];
                 case 1:
@@ -12227,9 +12938,9 @@ function userHasPermissions(loginName, permission) {
  * @param permission The permission we wish to check
  */
 function currentUserHasPermissions(permission) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var perms;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getCurrentUserEffectivePermissions.call(this)];
                 case 1:
@@ -12457,9 +13168,9 @@ var RoleType;
  */
 function shareObject(o, options, bypass) {
     if (bypass === void 0) { bypass = false; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var roleValue, userStr, postBody;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     if (bypass) {
@@ -12510,7 +13221,7 @@ function getShareLink(kind, expiration) {
     var expString = expiration !== null ? expiration.toISOString() : null;
     // clone using the factory and send the request
     var o = tag.configure(this.clone(SharePointQueryableInstance, "shareLink"), "sh.getShareLink");
-    return spPost(o, body({
+    return spPost(o, request_builders_body({
         request: {
             createLink: true,
             emailData: null,
@@ -12528,7 +13239,7 @@ function getShareLink(kind, expiration) {
  */
 function checkPermissions(recipients) {
     var o = tag.configure(this.clone(SharePointQueryableInstance, "checkPermissions"), "sh.checkPermissions");
-    return spPost(o, body({ recipients: recipients }));
+    return spPost(o, request_builders_body({ recipients: recipients }));
 }
 /**
  * Get Sharing Information.
@@ -12541,7 +13252,7 @@ function getSharingInformation(request, expands) {
     if (request === void 0) { request = null; }
     if (expands === void 0) { expands = []; }
     var o = tag.configure(this.clone(SharePointQueryableInstance, "getSharingInformation"), "sh.getSharingInformation");
-    return spPost(o.expand.apply(o, Object(tslib_es6["e" /* __spread */])(expands)), body({ request: request }));
+    return spPost(o.expand.apply(o, __spread(expands)), request_builders_body({ request: request }));
 }
 /**
  * Gets the sharing settings of an item.
@@ -12551,7 +13262,7 @@ function getSharingInformation(request, expands) {
 function getObjectSharingSettings(useSimplifiedRoles) {
     if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
     var o = tag.configure(this.clone(SharePointQueryableInstance, "getObjectSharingSettings"), "sh.getObjectSharingSettings");
-    return spPost(o, body({ useSimplifiedRoles: useSimplifiedRoles }));
+    return spPost(o, request_builders_body({ useSimplifiedRoles: useSimplifiedRoles }));
 }
 /**
  * Unshares this object
@@ -12565,7 +13276,7 @@ function unshareObject() {
  * @param kind Deletes a sharing link by the kind of link
  */
 function deleteLinkByKind(linkKind) {
-    return spPost(tag.configure(this.clone(SharePointQueryableInstance, "deleteLinkByKind"), "sh.deleteLinkByKind"), body({ linkKind: linkKind }));
+    return spPost(tag.configure(this.clone(SharePointQueryableInstance, "deleteLinkByKind"), "sh.deleteLinkByKind"), request_builders_body({ linkKind: linkKind }));
 }
 /**
  * Removes the specified link to the item.
@@ -12575,7 +13286,7 @@ function deleteLinkByKind(linkKind) {
  */
 function unshareLink(linkKind, shareId) {
     if (shareId === void 0) { shareId = emptyGuid; }
-    return spPost(tag.configure(this.clone(SharePointQueryableInstance, "unshareLink"), "sh.unshareLink"), body({ linkKind: linkKind, shareId: shareId }));
+    return spPost(tag.configure(this.clone(SharePointQueryableInstance, "unshareLink"), "sh.unshareLink"), request_builders_body({ linkKind: linkKind, shareId: shareId }));
 }
 /**
  * Shares this instance with the supplied users
@@ -12589,9 +13300,9 @@ function unshareLink(linkKind, shareId) {
 function shareWith(o, loginNames, role, requireSignin, propagateAcl, emailData) {
     if (requireSignin === void 0) { requireSignin = false; }
     if (propagateAcl === void 0) { propagateAcl = false; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var userStr, roleFilter, w, def, postBody;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     // handle the multiple input types
@@ -12621,14 +13332,14 @@ function shareWith(o, loginNames, role, requireSignin, propagateAcl, emailData) 
                             sendEmail: true,
                         });
                     }
-                    return [2 /*return*/, spPost(tag.configure(o.clone(SharePointQueryableInstance, "shareObject"), "sh.shareWith"), body(postBody))];
+                    return [2 /*return*/, spPost(tag.configure(o.clone(SharePointQueryableInstance, "shareObject"), "sh.shareWith"), request_builders_body(postBody))];
             }
         });
     });
 }
 function sendShareObjectRequest(o, options) {
     var w = tag.configure(Web(extractWebUrl(o.toUrl()), "/_api/SP.Web.ShareObject"), "sh.sendShareObjectRequest");
-    return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
+    return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), request_builders_body(options));
 }
 /**
  * Calculates the roleValue string used in the sharing query
@@ -12637,9 +13348,9 @@ function sendShareObjectRequest(o, options) {
  * @param group The Group type
  */
 function getRoleValue(role, group) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var _a, g1, g2, roleFilter, def;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_b) {
+        return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     if (!(group !== undefined && group !== null)) return [3 /*break*/, 7];
@@ -12700,9 +13411,9 @@ types_Folder.prototype.shareWith = function (loginNames, role, requireSignin, sh
     if (role === void 0) { role = SharingRole.View; }
     if (requireSignin === void 0) { requireSignin = false; }
     if (shareEverything === void 0) { shareEverything = false; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12717,9 +13428,9 @@ types_Folder.prototype.shareWith = function (loginNames, role, requireSignin, sh
 };
 types_Folder.prototype.getShareLink = function (kind, expiration) {
     if (expiration === void 0) { expiration = null; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12733,9 +13444,9 @@ types_Folder.prototype.getShareLink = function (kind, expiration) {
     });
 };
 types_Folder.prototype.checkSharingPermissions = function (recipients) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12749,9 +13460,9 @@ types_Folder.prototype.checkSharingPermissions = function (recipients) {
     });
 };
 types_Folder.prototype.getSharingInformation = function (request, expands) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12766,9 +13477,9 @@ types_Folder.prototype.getSharingInformation = function (request, expands) {
 };
 types_Folder.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
     if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12782,9 +13493,9 @@ types_Folder.prototype.getObjectSharingSettings = function (useSimplifiedRoles) 
     });
 };
 types_Folder.prototype.unshare = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12798,9 +13509,9 @@ types_Folder.prototype.unshare = function () {
     });
 };
 types_Folder.prototype.deleteSharingLinkByKind = function (kind) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12814,9 +13525,9 @@ types_Folder.prototype.deleteSharingLinkByKind = function (kind) {
     });
 };
 types_Folder.prototype.unshareLink = function (kind, shareId) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, shareable;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12865,9 +13576,9 @@ types_Item.prototype.unshareLink = unshareLink;
  */
 types_Web.prototype.shareWith = function (loginNames, role, emailData) {
     if (role === void 0) { role = SharingRole.View; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var dependency, web, url;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     dependency = this.addBatchDependency();
@@ -12922,7 +13633,7 @@ types_Web.prototype.shareObjectRaw = function (options) {
  * @param options The set of options to send to ShareObject
  */
 types_Web.prototype.unshareObject = function (url) {
-    return spPost(Web(this, "unshareObject"), body({ url: url }));
+    return spPost(Web(this, "unshareObject"), request_builders_body({ url: url }));
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/index.js
@@ -12941,7 +13652,7 @@ types_Web.prototype.unshareObject = function (url) {
 
 
 var types_SiteDesigns = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteDesigns, _super);
+    __extends(_SiteDesigns, _super);
     function _SiteDesigns(baseUrl, methodName) {
         if (methodName === void 0) { methodName = ""; }
         var _this = this;
@@ -12950,7 +13661,7 @@ var types_SiteDesigns = /** @class */ (function (_super) {
         return _this;
     }
     _SiteDesigns.prototype.execute = function (props) {
-        return spPost(this, body(props, request_builders_headers({ "Content-Type": "application/json;charset=utf-8" })));
+        return spPost(this, request_builders_body(props, request_builders_headers({ "Content-Type": "application/json;charset=utf-8" })));
     };
     /**
      * Creates a new site design available to users when they create a new site from the SharePoint home page.
@@ -13055,9 +13766,9 @@ var types_SiteDesigns = /** @class */ (function (_super) {
      * @param id The ID of the site design task
      */
     _SiteDesigns.prototype.getSiteDesignTask = function (id) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var task;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(SiteDesignsCloneFactory, "GetSiteDesignTask")
                             .execute({ "taskId": id })];
@@ -13086,46 +13797,46 @@ var types_SiteDesigns = /** @class */ (function (_super) {
         return this.clone(SiteDesignsCloneFactory, "GetSiteDesignRunStatus")
             .execute({ "webUrl": webUrl, runId: runId });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.createSiteDesign")
     ], _SiteDesigns.prototype, "createSiteDesign", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.applySiteDesign")
     ], _SiteDesigns.prototype, "applySiteDesign", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesigns")
     ], _SiteDesigns.prototype, "getSiteDesigns", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesignMetadata")
     ], _SiteDesigns.prototype, "getSiteDesignMetadata", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.updateSiteDesign")
     ], _SiteDesigns.prototype, "updateSiteDesign", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.deleteSiteDesign")
     ], _SiteDesigns.prototype, "deleteSiteDesign", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesignRights")
     ], _SiteDesigns.prototype, "getSiteDesignRights", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.grantSiteDesignRights")
     ], _SiteDesigns.prototype, "grantSiteDesignRights", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.revokeSiteDesignRights")
     ], _SiteDesigns.prototype, "revokeSiteDesignRights", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.addSiteDesignTask")
     ], _SiteDesigns.prototype, "addSiteDesignTask", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.addSiteDesignTaskToCurrentWeb")
     ], _SiteDesigns.prototype, "addSiteDesignTaskToCurrentWeb", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesignTask")
     ], _SiteDesigns.prototype, "getSiteDesignTask", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesignRun")
     ], _SiteDesigns.prototype, "getSiteDesignRun", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sd.getSiteDesignRunStatus")
     ], _SiteDesigns.prototype, "getSiteDesignRunStatus", null);
     return _SiteDesigns;
@@ -13178,9 +13889,9 @@ addProp(types_Web, "associatedVisitorGroup", SiteGroups, "associatedvisitorgroup
 types_Web.prototype.createDefaultAssociatedGroups = function (groupNameSeed, siteOwner, copyRoleAssignments, clearSubscopes, siteOwner2) {
     if (copyRoleAssignments === void 0) { copyRoleAssignments = false; }
     if (clearSubscopes === void 0) { clearSubscopes = true; }
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var q;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.breakRoleInheritance(copyRoleAssignments, clearSubscopes)];
                 case 1:
@@ -13208,7 +13919,7 @@ types_Web.prototype.createDefaultAssociatedGroups = function (groupNameSeed, sit
 
 
 var types_SiteScripts = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_SiteScripts, _super);
+    __extends(_SiteScripts, _super);
     function _SiteScripts(baseUrl, methodName) {
         if (methodName === void 0) { methodName = ""; }
         var _this = this;
@@ -13217,7 +13928,7 @@ var types_SiteScripts = /** @class */ (function (_super) {
         return _this;
     }
     _SiteScripts.prototype.execute = function (props) {
-        return spPost(this, body(props));
+        return spPost(this, request_builders_body(props));
     };
     /**
      * Gets a list of information on all existing site scripts.
@@ -13288,28 +13999,28 @@ var types_SiteScripts = /** @class */ (function (_super) {
     _SiteScripts.prototype.executeSiteScriptAction = function (actionDefinition) {
         return this.clone(SiteScriptsCloneFactory, "executeSiteScriptAction").execute({ actionDefinition: actionDefinition });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.getSiteScripts")
     ], _SiteScripts.prototype, "getSiteScripts", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.createSiteScript")
     ], _SiteScripts.prototype, "createSiteScript", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.getSiteScriptMetadata")
     ], _SiteScripts.prototype, "getSiteScriptMetadata", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.deleteSiteScript")
     ], _SiteScripts.prototype, "deleteSiteScript", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.updateSiteScript")
     ], _SiteScripts.prototype, "updateSiteScript", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.getSiteScriptFromList")
     ], _SiteScripts.prototype, "getSiteScriptFromList", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.getSiteScriptFromWeb")
     ], _SiteScripts.prototype, "getSiteScriptFromWeb", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("ss.executeSiteScriptAction")
     ], _SiteScripts.prototype, "executeSiteScriptAction", null);
     return _SiteScripts;
@@ -13358,9 +14069,9 @@ types_Web.prototype.getSiteScript = function (extractInfo) {
 
 
 types_List.prototype.getSiteScript = function () {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var rootFolder, web, absoluteListUrl;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.clone(List).rootFolder.get()];
                 case 1:
@@ -13399,11 +14110,11 @@ Reflect.defineProperty(rest_SPRest.prototype, "siteScripts", {
 addProp(types_Web, "siteUsers", SiteUsers);
 addProp(types_Web, "currentUser", SiteUser, "currentuser");
 types_Web.prototype.ensureUser = function (logonName) {
-    return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+    return __awaiter(this, void 0, void 0, function () {
         var data;
-        return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, spPost(this.clone(Web, "ensureuser"), body({ logonName: logonName }))];
+                case 0: return [4 /*yield*/, spPost(this.clone(Web, "ensureuser"), request_builders_body({ logonName: logonName }))];
                 case 1:
                     data = _a.sent();
                     return [2 /*return*/, {
@@ -13432,7 +14143,7 @@ types_Web.prototype.getUserById = function (id) {
 
 
 var types_Social = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Social, _super);
+    __extends(_Social, _super);
     function _Social() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -13444,9 +14155,9 @@ var types_Social = /** @class */ (function (_super) {
         configurable: true
     });
     _Social.prototype.getFollowedSitesUri = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(SocialCloneFactory, "FollowedSitesUri").get()];
                     case 1:
@@ -13457,9 +14168,9 @@ var types_Social = /** @class */ (function (_super) {
         });
     };
     _Social.prototype.getFollowedDocumentsUri = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(SocialCloneFactory, "FollowedDocumentsUri").get()];
                     case 1:
@@ -13470,8 +14181,8 @@ var types_Social = /** @class */ (function (_super) {
         });
     };
     _Social.prototype.follow = function (actorInfo) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(SocialCloneFactory, "follow"), this.createSocialActorInfoRequestBody(actorInfo))];
                     case 1: return [2 /*return*/, _a.sent()];
@@ -13480,8 +14191,8 @@ var types_Social = /** @class */ (function (_super) {
         });
     };
     _Social.prototype.isFollowed = function (actorInfo) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(SocialCloneFactory, "isfollowed"), this.createSocialActorInfoRequestBody(actorInfo))];
                     case 1: return [2 /*return*/, _a.sent()];
@@ -13490,8 +14201,8 @@ var types_Social = /** @class */ (function (_super) {
         });
     };
     _Social.prototype.stopFollowing = function (actorInfo) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(SocialCloneFactory, "stopfollowing"), this.createSocialActorInfoRequestBody(actorInfo))];
                     case 1: return [2 /*return*/, _a.sent()];
@@ -13500,28 +14211,28 @@ var types_Social = /** @class */ (function (_super) {
         });
     };
     _Social.prototype.createSocialActorInfoRequestBody = function (actorInfo) {
-        return body({
+        return request_builders_body({
             "actor": Object.assign(metadata("SP.Social.SocialActorInfo"), {
                 Id: null,
             }, actorInfo),
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("soc.getFollowedSitesUri")
     ], _Social.prototype, "getFollowedSitesUri", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("soc.getFollowedDocumentsUri")
     ], _Social.prototype, "getFollowedDocumentsUri", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("soc.follow")
     ], _Social.prototype, "follow", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("soc.isFollowed")
     ], _Social.prototype, "isFollowed", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("soc.stopFollowing")
     ], _Social.prototype, "stopFollowing", null);
-    _Social = Object(tslib_es6["b" /* __decorate */])([
+    _Social = __decorate([
         defaultPath("_api/social.following")
     ], _Social);
     return _Social;
@@ -13536,14 +14247,14 @@ var SocialCloneFactory = function (baseUrl, paths) { return new types_Social(bas
  * Current user's Social instance
  */
 var types_MySocial = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_MySocial, _super);
+    __extends(_MySocial, _super);
     function _MySocial() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     _MySocial.prototype.followed = function (types) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(MySocialCloneFactory, "followed(types=" + types + ")")()];
                     case 1:
@@ -13554,9 +14265,9 @@ var types_MySocial = /** @class */ (function (_super) {
         });
     };
     _MySocial.prototype.followedCount = function (types) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(MySocialCloneFactory, "followedcount(types=" + types + ")")()];
                     case 1:
@@ -13567,9 +14278,9 @@ var types_MySocial = /** @class */ (function (_super) {
         });
     };
     _MySocial.prototype.followers = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(MySocialCloneFactory, "followers")()];
                     case 1:
@@ -13580,9 +14291,9 @@ var types_MySocial = /** @class */ (function (_super) {
         });
     };
     _MySocial.prototype.suggestions = function () {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var r;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.clone(MySocialCloneFactory, "suggestions")()];
                     case 1:
@@ -13592,19 +14303,19 @@ var types_MySocial = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("msoc.followed")
     ], _MySocial.prototype, "followed", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("msoc.followedCount")
     ], _MySocial.prototype, "followedCount", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("msoc.followers")
     ], _MySocial.prototype, "followers", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("msoc.suggestions")
     ], _MySocial.prototype, "suggestions", null);
-    _MySocial = Object(tslib_es6["b" /* __decorate */])([
+    _MySocial = __decorate([
         defaultPath("my")
     ], _MySocial);
     return _MySocial;
@@ -13789,7 +14500,7 @@ function objectToSPKeyValueCollection(obj) {
 
 
 var types_Utilities = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Utilities, _super);
+    __extends(_Utilities, _super);
     function _Utilities(baseUrl, methodName) {
         var _this = this;
         var url = typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl();
@@ -13797,7 +14508,7 @@ var types_Utilities = /** @class */ (function (_super) {
         return _this;
     }
     _Utilities.prototype.excute = function (props) {
-        return spPost(this, body(props));
+        return spPost(this, request_builders_body(props));
     };
     _Utilities.prototype.sendEmail = function (props) {
         var params = {
@@ -13873,9 +14584,9 @@ var types_Utilities = /** @class */ (function (_super) {
         return tag.configure(clone, "u.ExpandGroupsToPrincipals").excute(params);
     };
     _Utilities.prototype.createWikiPage = function (info) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var clone, newPage;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         clone = this.clone(UtilitiesCloneFactory, "CreateWikiPageInContextWeb", true);
@@ -13916,7 +14627,7 @@ Reflect.defineProperty(rest_SPRest.prototype, "utility", {
 
 
 var types_Subscriptions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Subscriptions, _super);
+    __extends(_Subscriptions, _super);
     function _Subscriptions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -13936,9 +14647,9 @@ var types_Subscriptions = /** @class */ (function (_super) {
      * @param clientState A client specific string (optional)
      */
     _Subscriptions.prototype.add = function (notificationUrl, expirationDate, clientState) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = {
@@ -13949,7 +14660,7 @@ var types_Subscriptions = /** @class */ (function (_super) {
                         if (clientState) {
                             postBody.clientState = clientState;
                         }
-                        return [4 /*yield*/, spPost(this, body(postBody, request_builders_headers({ "Content-Type": "application/json" })))];
+                        return [4 /*yield*/, spPost(this, request_builders_body(postBody, request_builders_headers({ "Content-Type": "application/json" })))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, { data: data, subscription: this.getById(data.id) }];
@@ -13957,10 +14668,10 @@ var types_Subscriptions = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("subs.add")
     ], _Subscriptions.prototype, "add", null);
-    _Subscriptions = Object(tslib_es6["b" /* __decorate */])([
+    _Subscriptions = __decorate([
         defaultPath("subscriptions")
     ], _Subscriptions);
     return _Subscriptions;
@@ -13968,7 +14679,7 @@ var types_Subscriptions = /** @class */ (function (_super) {
 
 var Subscriptions = spInvokableFactory(types_Subscriptions);
 var types_Subscription = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Subscription, _super);
+    __extends(_Subscription, _super);
     function _Subscription() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -13980,9 +14691,9 @@ var types_Subscription = /** @class */ (function (_super) {
      * @param clientState A client specific string (optional)
      */
     _Subscription.prototype.update = function (expirationDate, notificationUrl, clientState) {
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         postBody = {};
@@ -13995,7 +14706,7 @@ var types_Subscription = /** @class */ (function (_super) {
                         if (clientState) {
                             postBody.clientState = clientState;
                         }
-                        return [4 /*yield*/, spPatch(this, body(postBody, request_builders_headers({ "Content-Type": "application/json" })))];
+                        return [4 /*yield*/, spPatch(this, request_builders_body(postBody, request_builders_headers({ "Content-Type": "application/json" })))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, { data: data, subscription: this }];
@@ -14010,10 +14721,10 @@ var types_Subscription = /** @class */ (function (_super) {
     _Subscription.prototype.delete = function () {
         return spDelete(this);
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sub.update")
     ], _Subscription.prototype, "update", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("sub.delete")
     ], _Subscription.prototype, "delete", null);
     return _Subscription;
@@ -14035,38 +14746,37 @@ addProp(types_List, "subscriptions", Subscriptions);
 
 
 
-// TODO::
-// import { tag } from "../telemetry";
+
 /**
  * Describes a collection of Form objects
  *
  */
 var types_TermStore = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TermStore, _super);
+    __extends(_TermStore, _super);
     function _TermStore() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(_TermStore.prototype, "termGroups", {
-        /**
-         * Gets the term groups associated with this tenant
-         */
-        get: function () {
-            return TermGroups(this);
-        },
-        enumerable: false,
-        configurable: true
-    });
     Object.defineProperty(_TermStore.prototype, "groups", {
         /**
          * Gets the term groups associated with this tenant
          */
         get: function () {
-            return TermGroups(this, "groups");
+            return tag.configure(TermGroups(this), "txts.groups");
         },
         enumerable: false,
         configurable: true
     });
-    _TermStore = Object(tslib_es6["b" /* __decorate */])([
+    Object.defineProperty(_TermStore.prototype, "sets", {
+        /**
+         * Gets the term sets associated with this tenant
+         */
+        get: function () {
+            return tag.configure(TermSets(this), "txts.sets");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _TermStore = __decorate([
         defaultPath("_api/v2.1/termstore")
     ], _TermStore);
     return _TermStore;
@@ -14074,7 +14784,7 @@ var types_TermStore = /** @class */ (function (_super) {
 
 var TermStore = spInvokableFactory(types_TermStore);
 var types_TermGroups = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TermGroups, _super);
+    __extends(_TermGroups, _super);
     function _TermGroups() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -14084,36 +14794,26 @@ var types_TermGroups = /** @class */ (function (_super) {
      * @param id Id of the term group to access
      */
     _TermGroups.prototype.getById = function (id) {
-        return TermGroup(this, id);
+        return tag.configure(TermGroup(this, id), "txtgs.getById");
     };
-    _TermGroups = Object(tslib_es6["b" /* __decorate */])([
-        defaultPath("termgroups")
+    _TermGroups = __decorate([
+        defaultPath("groups")
     ], _TermGroups);
     return _TermGroups;
 }(sharepointqueryable_SharePointQueryableCollection));
 
 var TermGroups = spInvokableFactory(types_TermGroups);
 var types_TermGroup = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TermGroup, _super);
+    __extends(_TermGroup, _super);
     function _TermGroup() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(_TermGroup.prototype, "termSets", {
+    Object.defineProperty(_TermGroup.prototype, "sets", {
         /**
          * Gets the term sets associated with this tenant
          */
         get: function () {
-            return TermSets(this);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(_TermGroup.prototype, "sets", {
-        /**
-         * Gets the term groups associated with this tenant
-         */
-        get: function () {
-            return TermSets(this, "sets");
+            return tag.configure(TermSets(this, "sets"), "txtg.sets");
         },
         enumerable: false,
         configurable: true
@@ -14123,7 +14823,7 @@ var types_TermGroup = /** @class */ (function (_super) {
 
 var TermGroup = spInvokableFactory(types_TermGroup);
 var types_TermSets = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TermSets, _super);
+    __extends(_TermSets, _super);
     function _TermSets() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -14133,101 +14833,105 @@ var types_TermSets = /** @class */ (function (_super) {
      * @param id Id of the term group to access
      */
     _TermSets.prototype.getById = function (id) {
-        return TermSet(this, id);
+        return tag.configure(TermSet(this, id), "txts.getById");
     };
-    _TermSets = Object(tslib_es6["b" /* __decorate */])([
-        defaultPath("termsets")
+    _TermSets = __decorate([
+        defaultPath("sets")
     ], _TermSets);
     return _TermSets;
 }(sharepointqueryable_SharePointQueryableCollection));
 
 var TermSets = spInvokableFactory(types_TermSets);
 var types_TermSet = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_TermSet, _super);
+    __extends(_TermSet, _super);
     function _TermSet() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(_TermSet.prototype, "terms", {
-        get: function () {
-            return Terms(this);
-        },
-        enumerable: false,
-        configurable: true
-    });
     Object.defineProperty(_TermSet.prototype, "parentGroup", {
+        // public get terms(): ITerms {
+        //     return Terms(this);
+        // }
         get: function () {
-            return TermGroup(this, "parentGroup");
+            return tag.configure(TermGroup(this, "parentGroup"), "txts.parentGroup");
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(_TermSet.prototype, "children", {
         get: function () {
-            return Terms(this, "children");
+            return tag.configure(Children(this), "txts.children");
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(_TermSet.prototype, "relations", {
         get: function () {
-            return Relations(this);
+            return tag.configure(Relations(this), "txts.relations");
         },
         enumerable: false,
         configurable: true
     });
+    _TermSet.prototype.getTermById = function (id) {
+        return tag.configure(this.clone(Term, "terms/" + id), "txts.getTermById");
+    };
     return _TermSet;
 }(sharepointqueryable_SharePointQueryableInstance));
 
 var TermSet = spInvokableFactory(types_TermSet);
-var types_Terms = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Terms, _super);
-    function _Terms() {
+// @defaultPath("terms")
+// export class _Terms extends _SharePointQueryableCollection<ITermInfo[]> {
+//     /**
+//      * Gets a term group by id
+//      *
+//      * @param id Id of the term group to access
+//      */
+//     public getById(id: string): ITerm {
+//         return Term(this, id);
+//     }
+// }
+// export interface ITerms extends _Terms { }
+// export const Terms = spInvokableFactory<ITerms>(_Terms);
+var types_Children = /** @class */ (function (_super) {
+    __extends(_Children, _super);
+    function _Children() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    /**
-     * Gets a term group by id
-     *
-     * @param id Id of the term group to access
-     */
-    _Terms.prototype.getById = function (id) {
-        return Term(this, id);
-    };
-    _Terms = Object(tslib_es6["b" /* __decorate */])([
-        defaultPath("terms")
-    ], _Terms);
-    return _Terms;
+    _Children = __decorate([
+        defaultPath("children")
+    ], _Children);
+    return _Children;
 }(sharepointqueryable_SharePointQueryableCollection));
 
-var Terms = spInvokableFactory(types_Terms);
+var Children = spInvokableFactory(types_Children);
 var types_Term = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Term, _super);
+    __extends(_Term, _super);
     function _Term() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(_Term.prototype, "parent", {
         get: function () {
-            return Term(this, "parent");
+            return tag.configure(Term(this, "parent"), "txt.parent");
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(_Term.prototype, "children", {
         get: function () {
-            return Terms(this, "children");
+            return tag.configure(Children(this), "txt.children");
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(_Term.prototype, "relations", {
         get: function () {
-            return Relations(this);
+            return tag.configure(Relations(this), "txt.relations");
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(_Term.prototype, "set", {
         get: function () {
-            return TermSet(this, "set");
+            return tag.configure(TermSet(this, "set"), "txt.set");
         },
         enumerable: false,
         configurable: true
@@ -14237,7 +14941,7 @@ var types_Term = /** @class */ (function (_super) {
 
 var Term = spInvokableFactory(types_Term);
 var types_Relations = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Relations, _super);
+    __extends(_Relations, _super);
     function _Relations() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -14247,9 +14951,9 @@ var types_Relations = /** @class */ (function (_super) {
      * @param id Id of the term group to access
      */
     _Relations.prototype.getById = function (id) {
-        return Relation(this, id);
+        return tag.configure(Relation(this, id), "txrs.getById");
     };
-    _Relations = Object(tslib_es6["b" /* __decorate */])([
+    _Relations = __decorate([
         defaultPath("relations")
     ], _Relations);
     return _Relations;
@@ -14257,27 +14961,27 @@ var types_Relations = /** @class */ (function (_super) {
 
 var Relations = spInvokableFactory(types_Relations);
 var types_Relation = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Relation, _super);
+    __extends(_Relation, _super);
     function _Relation() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(_Relation.prototype, "fromTerm", {
         get: function () {
-            return Term(this, "fromTerm");
+            return tag.configure(Term(this, "fromTerm"), "txr.fromTerm");
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(_Relation.prototype, "toTerm", {
         get: function () {
-            return Term(this, "toTerm");
+            return tag.configure(Term(this, "toTerm"), "txr.toTerm");
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(_Relation.prototype, "set", {
         get: function () {
-            return TermSet(this, "set");
+            return tag.configure(TermSet(this, "set"), "txr.set");
         },
         enumerable: false,
         configurable: true
@@ -14332,7 +15036,7 @@ addProp(types_Site, "userCustomActions", UserCustomActions);
 
 
 var types_Views = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_Views, _super);
+    __extends(_Views, _super);
     function _Views() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -14362,12 +15066,12 @@ var types_Views = /** @class */ (function (_super) {
     _Views.prototype.add = function (title, personalView, additionalSettings) {
         if (personalView === void 0) { personalView = false; }
         if (additionalSettings === void 0) { additionalSettings = {}; }
-        return Object(tslib_es6["a" /* __awaiter */])(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var postBody, data;
-            return Object(tslib_es6["d" /* __generator */])(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = body(Object.assign(metadata("SP.View"), {
+                        postBody = request_builders_body(Object.assign(metadata("SP.View"), {
                             "PersonalView": personalView,
                             "Title": title,
                         }, additionalSettings));
@@ -14382,10 +15086,10 @@ var types_Views = /** @class */ (function (_super) {
             });
         });
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vs.add")
     ], _Views.prototype, "add", null);
-    _Views = Object(tslib_es6["b" /* __decorate */])([
+    _Views = __decorate([
         defaultPath("views")
     ], _Views);
     return _Views;
@@ -14393,7 +15097,7 @@ var types_Views = /** @class */ (function (_super) {
 
 var Views = spInvokableFactory(types_Views);
 var types_View = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_View, _super);
+    __extends(_View, _super);
     function _View() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.delete = deleteable("vw");
@@ -14425,12 +15129,12 @@ var types_View = /** @class */ (function (_super) {
      * @param viewXml The view XML to set
      */
     _View.prototype.setViewXml = function (viewXml) {
-        return spPost(this.clone(View, "SetViewXml"), body({ viewXml: viewXml }));
+        return spPost(this.clone(View, "SetViewXml"), request_builders_body({ viewXml: viewXml }));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("v.renderAsHtml")
     ], _View.prototype, "renderAsHtml", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("v.setViewXml")
     ], _View.prototype, "setViewXml", null);
     return _View;
@@ -14438,7 +15142,7 @@ var types_View = /** @class */ (function (_super) {
 
 var View = spInvokableFactory(types_View);
 var types_ViewFields = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_ViewFields, _super);
+    __extends(_ViewFields, _super);
     function _ViewFields() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -14463,7 +15167,7 @@ var types_ViewFields = /** @class */ (function (_super) {
      * @param index The zero-based index of the new position for the field.
      */
     _ViewFields.prototype.move = function (field, index) {
-        return spPost(this.clone(ViewFields, "moveviewfieldto"), body({ field: field, index: index }));
+        return spPost(this.clone(ViewFields, "moveviewfieldto"), request_builders_body({ field: field, index: index }));
     };
     /**
      * Removes all the fields from the collection.
@@ -14479,22 +15183,22 @@ var types_ViewFields = /** @class */ (function (_super) {
     _ViewFields.prototype.remove = function (fieldInternalName) {
         return spPost(this.clone(ViewFields, "removeviewfield('" + fieldInternalName + "')"));
     };
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vfs.getSchemaXml")
     ], _ViewFields.prototype, "getSchemaXml", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vfs.add")
     ], _ViewFields.prototype, "add", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vfs.move")
     ], _ViewFields.prototype, "move", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vfs.removeAll")
     ], _ViewFields.prototype, "removeAll", null);
-    Object(tslib_es6["b" /* __decorate */])([
+    __decorate([
         tag("vfs.remove")
     ], _ViewFields.prototype, "remove", null);
-    _ViewFields = Object(tslib_es6["b" /* __decorate */])([
+    _ViewFields = __decorate([
         defaultPath("viewfields")
     ], _ViewFields);
     return _ViewFields;
@@ -14530,7 +15234,7 @@ types_List.prototype.getView = function (viewId) {
 
 
 var types_LimitedWebPartManager = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_LimitedWebPartManager, _super);
+    __extends(_LimitedWebPartManager, _super);
     function _LimitedWebPartManager() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -14549,10 +15253,10 @@ var types_LimitedWebPartManager = /** @class */ (function (_super) {
         configurable: true
     });
     _LimitedWebPartManager.prototype.export = function (id) {
-        return spPost(this.clone(LimitedWebPartManagerCloneFactory, "ExportWebPart"), body({ webPartId: id }));
+        return spPost(this.clone(LimitedWebPartManagerCloneFactory, "ExportWebPart"), request_builders_body({ webPartId: id }));
     };
     _LimitedWebPartManager.prototype.import = function (xml) {
-        return spPost(this.clone(LimitedWebPartManagerCloneFactory, "ImportWebPart"), body({ webPartXml: xml }));
+        return spPost(this.clone(LimitedWebPartManagerCloneFactory, "ImportWebPart"), request_builders_body({ webPartXml: xml }));
     };
     return _LimitedWebPartManager;
 }(sharepointqueryable_SharePointQueryable));
@@ -14560,7 +15264,7 @@ var types_LimitedWebPartManager = /** @class */ (function (_super) {
 var LimitedWebPartManager = function (baseUrl, path) { return new types_LimitedWebPartManager(baseUrl, path); };
 var LimitedWebPartManagerCloneFactory = function (baseUrl, path) { return LimitedWebPartManager(baseUrl, path); };
 var types_WebPartDefinitions = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_WebPartDefinitions, _super);
+    __extends(_WebPartDefinitions, _super);
     function _WebPartDefinitions() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -14585,7 +15289,7 @@ var types_WebPartDefinitions = /** @class */ (function (_super) {
 
 var WebPartDefinitions = spInvokableFactory(types_WebPartDefinitions);
 var types_WebPartDefinition = /** @class */ (function (_super) {
-    Object(tslib_es6["c" /* __extends */])(_WebPartDefinition, _super);
+    __extends(_WebPartDefinition, _super);
     function _WebPartDefinition() {
         return _super !== null && _super.apply(this, arguments) || this;
     }

@@ -1,5 +1,5 @@
 import { IConfigOptions, ISPFXContext } from "@pnp/common";
-import { SPConfiguration } from "./splibconfig";
+import { ISPConfiguration } from "./splibconfig";
 /**
  * Root of the SharePoint REST module
  */
@@ -26,7 +26,7 @@ export declare class SPRest {
      *
      * @param config The SharePoint configuration to apply
      */
-    setup(config: SPConfiguration | ISPFXContext): void;
+    setup(config: ISPConfiguration | ISPFXContext): void;
 }
 export declare const sp: SPRest;
 //# sourceMappingURL=rest.d.ts.map

@@ -1,6 +1,10 @@
 import { ILibraryConfiguration, ITypedHash, IHttpClientImpl } from "@pnp/common";
-export interface GraphConfigurationPart {
+export interface IGraphConfigurationPart {
     graph?: {
+        /**
+         * The base url used for all requests (default: none)
+         */
+        baseUrl?: string;
         /**
          * Any headers to apply to all requests
          */
@@ -11,11 +15,12 @@ export interface GraphConfigurationPart {
         fetchClientFactory?: () => IHttpClientImpl;
     };
 }
-export interface GraphConfiguration extends ILibraryConfiguration, GraphConfigurationPart {
+export interface IGraphConfiguration extends ILibraryConfiguration, IGraphConfigurationPart {
 }
-export declare function setup(config: GraphConfiguration): void;
+export declare function setup(config: IGraphConfiguration): void;
 export declare class GraphRuntimeConfigImpl {
     get headers(): ITypedHash<string>;
+    get baseUrl(): string;
     get fetchClientFactory(): () => IHttpClientImpl;
 }
 export declare let GraphRuntimeConfig: GraphRuntimeConfigImpl;

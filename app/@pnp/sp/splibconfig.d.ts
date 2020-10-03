@@ -1,6 +1,6 @@
 import { ILibraryConfiguration, ITypedHash, IHttpClientImpl } from "@pnp/common";
 export declare const emptyGuid = "00000000-0000-0000-0000-000000000000";
-export interface SPConfigurationPart {
+export interface ISPConfigurationPart {
     sp?: {
         /**
          * Any headers to apply to all requests
@@ -16,9 +16,9 @@ export interface SPConfigurationPart {
         fetchClientFactory?: () => IHttpClientImpl;
     };
 }
-export interface SPConfiguration extends ILibraryConfiguration, SPConfigurationPart {
+export interface ISPConfiguration extends ILibraryConfiguration, ISPConfigurationPart {
 }
-export declare function setup(config: SPConfiguration): void;
+export declare function setup(config: ISPConfiguration): void;
 export declare class SPRuntimeConfigImpl {
     get headers(): ITypedHash<string>;
     get baseUrl(): string | null;

@@ -36,6 +36,7 @@ export declare class _GraphQueryable<GetType = any> extends Queryable<GetType> i
      *
      */
     toUrlAndQuery(): string;
+    setEndpoint(endpoint: "beta" | "v1.0"): this;
     /**
      * Gets a parent for this instance as specified
      *
@@ -47,9 +48,9 @@ export declare class _GraphQueryable<GetType = any> extends Queryable<GetType> i
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
      * @param includeBatch If true this instance's batch will be added to the cloned instance
+     * @param includeQuery If true all of the query values will be copied to the cloned instance
      */
-    protected clone<T extends IGraphQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch?: boolean): T;
-    protected setEndpoint(endpoint: string): this;
+    protected clone<T extends IGraphQueryable>(factory: (...args: any[]) => T, additionalPath?: string, includeBatch?: boolean, includeQuery?: boolean): T;
 }
 export interface IGraphQueryable<GetType = any> extends IInvokable, IQueryable<GetType> {
     /**
@@ -64,7 +65,17 @@ export interface IGraphQueryable<GetType = any> extends IInvokable, IQueryable<G
      * @param expands The Fields for which to expand the values
      */
     expand(...expands: string[]): this;
+    /**
+     *
+     * @param options
+     */
     defaultAction(options?: IFetchOptions): Promise<GetType>;
+    /**
+     * Allows you to set the graph endpoint version string
+     *
+     * @param endpoint The string either beta of v1.0
+     */
+    setEndpoint(endpoint: "beta" | "v1.0"): this;
     /**
      * Gets the full url with query information
      *

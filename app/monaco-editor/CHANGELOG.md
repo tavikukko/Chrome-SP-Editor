@@ -1,8 +1,105 @@
 # Monaco Editor Changelog
 
+## [0.21.2] (27.09.2020)
+
+Fixes [a regression in monaco-css](https://github.com/microsoft/monaco-editor/issues/2158).
+
+## [0.21.1] (24.09.2020)
+
+Fixes [a few regressions](https://github.com/microsoft/monaco-editor/issues?q=is%3Aissue+milestone%3A%22August+2020+%282%29%22+is%3Aclosed).
+
+### Thank you
+
+Contributions to `monaco-html`:
+
+* [Pankaj Khandelwal (@pankajk07)](https://github.com/pankajk07): Fixes microsoft/monaco-editor#2101 [PR #12](https://github.com/microsoft/monaco-html/pull/12)
+
+Contributions to `monaco-languages`:
+
+* [Marc Bernard (@mbtools)](https://github.com/mbtools): Overhaul of ABAP language based on release 7.54 [PR #112](https://github.com/microsoft/monaco-languages/pull/112)
+
+Contributions to `monaco-typescript`:
+
+* [PG Herveou (@pgherveou)](https://github.com/pgherveou): Add missing setWorkerOptions [PR #71](https://github.com/microsoft/monaco-typescript/pull/71)
+
+## [0.21.0] (21.09.2020)
+
+### New & Noteworthy
+* Added `Paste` in the context menu in browsers which support the clipboard API.
+* Many improvements in `monaco-typescript`: support for "deprecated" tags, API to participate in the web worker, improved lib.d.ts resolving.
+* New tokenization support for: Julia, Scala, Lexon, Terraform HCL, Dart, Systemverilog.
+* New semantic tokens provider [sample on the playground](https://microsoft.github.io/monaco-editor/playground.html#extending-language-services-semantic-tokens-provider-example).
+* New [shadow dom sample](https://github.com/microsoft/monaco-editor-samples/tree/master/browser-amd-shadow-dom)
+* New `overflowWidgetsDomNode` constructor option to pass in a parent for overflowing widgets.
+* New `minimap.size` option: `proportional`, `fill`, `fit`.
+* New `OnTypeRename` provider and option `renameOnType`.
+* Fixed issue where cross-origin web workers were not working on Safari.
+* Fixed many issues around embedding the editor in iframes or in shadow dom.
+* Fixed issue with `automaticLayout`.
+* Fixed issue with scrolling speed on Firefox.
+* New options: `tabIndex`, `scrollPredominantAxis`, `columnSelection`, `padding`, `unfoldOnClickAfterEndOfLine`, `renderLineHighlightOnlyWhenFocus`, `definitionLinkOpensInPeek`, `showDeprecated`, `comments.ignoreEmptyLines`, `find.cursorMoveOnType`, `find.loop`.
+* New diff editor options: `originalCodeLens`, `modifiedCodeLens`.
+* Changed options: `rulers` can now define different colors, `renderWhitespace` can now be `trailing`.
+
+### Breaking changes
+* `CompletionItemLabel.signature` has been renamed to `CompletionItemLabel.parameters`.
+* The signature of `CompletionItemProvider.resolveCompletionItem` has changed.
+* `IMarker.code.link` was renamed to `IMarker.code.target`.
+* `IMarkerData.code.link` was renamed to `IMarkerData.code.target`.
+* `EditorLayoutInfo` has been restructured.
+
+### Thank you
+
+Contributions to `monaco-editor`:
+
+* [Hugo Fonseca (@fonsecas72)](https://github.com/fonsecas72): Adding terraform / hcl samples [PR #2102](https://github.com/microsoft/monaco-editor/pull/2102)
+* [@KapitanOczywisty](https://github.com/KapitanOczywisty)
+  * Update example: allow peek definition [PR #2112](https://github.com/microsoft/monaco-editor/pull/2112)
+  * Semantic tokens provider example [PR #2103](https://github.com/microsoft/monaco-editor/pull/2103)
+* [Tuan Le Minh (@minhtuanchannhan)](https://github.com/minhtuanchannhan): Correct url of Microsoft logo [PR #2132](https://github.com/microsoft/monaco-editor/pull/2132)
+* [Max Schmitt (@mxschmitt)](https://github.com/mxschmitt): ci: fixed smoke tests by increasing timeout [PR #1964](https://github.com/microsoft/monaco-editor/pull/1964)
+* [Nicholas Rayburn (@nrayburn-tech)](https://github.com/nrayburn-tech): Monarch documentation changes [PR #1844](https://github.com/microsoft/monaco-editor/pull/1844)
+* [ZHAO Jinxiang (@xiaoxiangmoe)](https://github.com/xiaoxiangmoe): fix: A 'declare' modifier cannot be used in an already ambient context [PR #2121](https://github.com/microsoft/monaco-editor/pull/2121)
+
+Contributions to `monaco-typescript`:
+
+* [Sebastian Pahnke (@spahnke)](https://github.com/spahnke)
+  * Adopt "deprecated" API [PR #67](https://github.com/microsoft/monaco-typescript/pull/67)
+  * Format signature and parameter documentation as Markdown [PR #66](https://github.com/microsoft/monaco-typescript/pull/66)
+* [Spencer (@SpencerSharkey)](https://github.com/SpencerSharkey): Use typescript language for hover tooltip header [PR #70](https://github.com/microsoft/monaco-typescript/pull/70)
+
+Contributions to `monaco-json`:
+
+* [@pankajk07](https://github.com/pankajk07): Fixes microsoft/monaco-editor#1999 [PR #12](https://github.com/microsoft/monaco-json/pull/12)
+
+Contributions to `monaco-languages`:
+
+* [theangryepicbanana (@ALANVF)](https://github.com/ALANVF)
+  * Add support for Julia [PR #82](https://github.com/microsoft/monaco-languages/pull/82)
+  * Add Scala support [PR #98](https://github.com/microsoft/monaco-languages/pull/98)
+* [Arjan van Eersel (@arjanvaneersel)](https://github.com/arjanvaneersel): Implemented Lexon highlighting [PR #86](https://github.com/microsoft/monaco-languages/pull/86)
+* [Basarat Ali Syed (@basarat)](https://github.com/basarat): add .mjs support :rose: [PR #92](https://github.com/microsoft/monaco-languages/pull/92)
+* [@bolinfest](https://github.com/bolinfest): Update Python grammar to include keywords introduced in Python 3 [PR #91](https://github.com/microsoft/monaco-languages/pull/91)
+* [Hugo Fonseca (@fonsecas72)](https://github.com/fonsecas72)
+  * Adding Gemfile to ruby filenames [PR #111](https://github.com/microsoft/monaco-languages/pull/111)
+  * Adding hcl / terraform language [PR #109](https://github.com/microsoft/monaco-languages/pull/109)
+  * Terraform HCL : Fixing, Improving, adding tests [PR #110](https://github.com/microsoft/monaco-languages/pull/110)
+* [Lars Hvam (@larshp)](https://github.com/larshp)
+  * Mocha, fix deprecation warning regarding mocha.opts [PR #88](https://github.com/microsoft/monaco-languages/pull/88)
+  * [ABAP] Language fixes [PR #87](https://github.com/microsoft/monaco-languages/pull/87)
+* [Kenny Lin (@LinKCoding)](https://github.com/LinKCoding): Added ".rmd" file extension to R's list of supported languages [PR #83](https://github.com/microsoft/monaco-languages/pull/83)
+* [Justin Mancusi (@mancusi)](https://github.com/mancusi): Updates the comment tokenization for handlebars syntax. [PR #93](https://github.com/microsoft/monaco-languages/pull/93)
+* [Mert Caliskan (@mulderbaba)](https://github.com/mulderbaba): introduce preliminary Scala support, highly inspired by src/java content [PR #97](https://github.com/microsoft/monaco-languages/pull/97)
+* [Nicholas Rayburn (@nrayburn-tech)](https://github.com/nrayburn-tech): Add _ as a supported character for Python tags/keywords [PR #81](https://github.com/microsoft/monaco-languages/pull/81)
+* [@skacurt](https://github.com/skacurt): [vb] fix string literals [PR #94](https://github.com/microsoft/monaco-languages/pull/94)
+* [Taymon A. Beal (@taymonbeal)](https://github.com/taymonbeal): Add asserts, bigint, and unknown to TypeScript keywords [PR #96](https://github.com/microsoft/monaco-languages/pull/96)
+* [Sabolch Varha (@VarghaSabee)](https://github.com/VarghaSabee): Feature - dart language support [PR #84](https://github.com/microsoft/monaco-languages/pull/84)
+* [@xadegunt](https://github.com/xadegunt): Add Systemverilog language support [PR #108](https://github.com/microsoft/monaco-languages/pull/108)
+
 ## [0.20.0] (11.02.2020)
 
 ### New & Noteworthy
+* The editor can now be hosted inside a Shadow Root.
 * There is new API to read the editor's content width and height.
 * New editor options:
   * `renderValidationDecorations` - render validation decorations even in read only editors
@@ -15,6 +112,7 @@
 * Renamed `onCompositionStart`, `onCompositionEnd` to `onDidCompositionStart`, `onDidCompositionEnd`
 * Changed the argument passed in to `onDidPaste`
 * `WorkspaceEdit.edits` has now changed its shape such that edits must no longer be grouped by resource.
+* The Monaco Editor no longer supports IE 11. The last version that was tested in IE 11 is 0.18.1.
 
 ### Thank you
 
@@ -79,6 +177,7 @@ Contributions to `monaco-languages`:
 ### Breaking changes
 
 * `getConfiguration()` is replaced by `getRawOptions()`, which returns the passed in editor options.
+* Starting with this version, the Monaco Editor no longer supports IE 11. The last version that was tested in IE 11 is 0.18.1.
 
 ### Thank you
 
