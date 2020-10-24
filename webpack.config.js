@@ -10,7 +10,14 @@ module.exports = [{
           loader: "ts-loader",
         }],
       },
-    ],
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto",
+      },
+    ]
   },
   output: {
     filename: "sp.es5.umd.bundle.js",
@@ -40,7 +47,14 @@ module.exports = [{
           loader: "ts-loader",
         }],
       },
-    ],
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto",
+      },
+    ]
   },
   output: {
     filename: "graph.es5.umd.bundle.js",
@@ -70,7 +84,14 @@ module.exports = [{
           loader: "ts-loader",
         }],
       },
-    ],
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto",
+      },
+    ]
   },
   output: {
     filename: "sp-addinhelpers.es5.umd.bundle.js",
@@ -100,7 +121,14 @@ module.exports = [{
           loader: "ts-loader",
         }],
       },
-    ],
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto",
+      },
+    ]
   },
   output: {
     filename: "odata.es5.umd.bundle.js",
@@ -130,7 +158,14 @@ module.exports = [{
           loader: "ts-loader",
         }],
       },
-    ],
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto",
+      },
+    ]
   },
   output: {
     filename: "logging.es5.umd.bundle.js",
@@ -160,7 +195,14 @@ module.exports = [{
           loader: "ts-loader",
         }],
       },
-    ],
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto",
+      },
+    ]
   },
   output: {
     filename: "config-store.es5.umd.bundle.js",
@@ -190,7 +232,14 @@ module.exports = [{
           loader: "ts-loader",
         }],
       },
-    ],
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto",
+      },
+    ]
   },
   output: {
     filename: "common.es5.umd.bundle.js",
@@ -220,7 +269,14 @@ module.exports = [{
           loader: "ts-loader",
         }],
       },
-    ],
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto",
+      },
+    ]
   },
   output: {
     filename: "adaljsclient.es5.umd.bundle.js",
@@ -250,7 +306,14 @@ module.exports = [{
           loader: "ts-loader",
         }],
       },
-    ],
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto",
+      },
+    ]
   },
   output: {
     filename: "pnpjs.es5.umd.bundle.js",

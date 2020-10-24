@@ -7,170 +7,103 @@
 		exports["pnp.graph"] = factory();
 	else
 		root["pnp.graph"] = factory();
-})(window, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+})(self, function() {
+return /******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 911:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-/* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
-/* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RuntimeConfig", function() { return _libconfig__WEBPACK_IMPORTED_MODULE_1__["a"]; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "R": () => /* binding */ objectToMap,
+/* harmony export */   "d": () => /* binding */ mergeMaps
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(499);
 
-/* harmony import */ var _net__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SPFxAdalClient", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["a"]; });
+/**
+ * Used to calculate the object properties, with polyfill if needed
+ */
+var objectEntries = (0,_util__WEBPACK_IMPORTED_MODULE_0__/* .isFunc */ .Wl)(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
+/**
+ * Converts the supplied object to a map
+ *
+ * @param o The object to map
+ */
+function objectToMap(o) {
+    if (o !== undefined && o !== null) {
+        return new Map(objectEntries(o));
+    }
+    return new Map();
+}
+/**
+ * Merges to Map instances together, overwriting values in target with matching keys, last in wins
+ *
+ * @param target map into which the other maps are merged
+ * @param maps One or more maps to merge into the target
+ */
+function mergeMaps(target) {
+    var maps = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        maps[_i - 1] = arguments[_i];
+    }
+    for (var i = 0; i < maps.length; i++) {
+        maps[i].forEach(function (v, k) {
+            target.set(k, v);
+        });
+    }
+    return target;
+}
+//# sourceMappingURL=collections.js.map
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeHeaders", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["b"]; });
+/***/ }),
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeOptions", function() { return _net__WEBPACK_IMPORTED_MODULE_2__["c"]; });
+/***/ 621:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-/* harmony import */ var _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "c4": () => /* reexport safe */ _libconfig__WEBPACK_IMPORTED_MODULE_1__.c4,
+/* harmony export */   "eu": () => /* reexport safe */ _net__WEBPACK_IMPORTED_MODULE_2__.eu,
+/* harmony export */   "m_": () => /* reexport safe */ _net__WEBPACK_IMPORTED_MODULE_2__.m_,
+/* harmony export */   "JH": () => /* reexport safe */ _net__WEBPACK_IMPORTED_MODULE_2__.JH,
+/* harmony export */   "PnPClientStorage": () => /* reexport safe */ _storage__WEBPACK_IMPORTED_MODULE_4__.k,
+/* harmony export */   "assign": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.f0,
+/* harmony export */   "combine": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.$e,
+/* harmony export */   "dateAdd": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.sO,
+/* harmony export */   "getCtxCallback": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.y8,
+/* harmony export */   "getGUID": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.x$,
+/* harmony export */   "hOP": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.gm,
+/* harmony export */   "isArray": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.kJ,
+/* harmony export */   "isFunc": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.Wl,
+/* harmony export */   "isUrlAbsolute": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.zz,
+/* harmony export */   "jsS": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.wk,
+/* harmony export */   "objectDefinedNotNull": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.Sv,
+/* harmony export */   "stringIsNullOrEmpty": () => /* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_5__.MG,
+/* harmony export */   "safeGlobal": () => /* reexport safe */ _safe_global__WEBPACK_IMPORTED_MODULE_6__.t
+/* harmony export */ });
+/* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(911);
+/* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(534);
+/* harmony import */ var _net__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(762);
+/* harmony import */ var _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(172);
 /* harmony import */ var _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "PnPClientStorage")) __webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["PnPClientStorage"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "assign")) __webpack_require__.d(__webpack_exports__, "assign", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["assign"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "combine")) __webpack_require__.d(__webpack_exports__, "combine", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["combine"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "dateAdd")) __webpack_require__.d(__webpack_exports__, "dateAdd", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["dateAdd"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "getCtxCallback")) __webpack_require__.d(__webpack_exports__, "getCtxCallback", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["getCtxCallback"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "getGUID")) __webpack_require__.d(__webpack_exports__, "getGUID", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["getGUID"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "hOP")) __webpack_require__.d(__webpack_exports__, "hOP", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["hOP"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "isArray")) __webpack_require__.d(__webpack_exports__, "isArray", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["isArray"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "isFunc")) __webpack_require__.d(__webpack_exports__, "isFunc", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["isFunc"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "isUrlAbsolute")) __webpack_require__.d(__webpack_exports__, "isUrlAbsolute", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["isUrlAbsolute"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "jsS")) __webpack_require__.d(__webpack_exports__, "jsS", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["jsS"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "objectDefinedNotNull")) __webpack_require__.d(__webpack_exports__, "objectDefinedNotNull", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["objectDefinedNotNull"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "safeGlobal")) __webpack_require__.d(__webpack_exports__, "safeGlobal", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["safeGlobal"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "stringIsNullOrEmpty")) __webpack_require__.d(__webpack_exports__, "stringIsNullOrEmpty", function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__["stringIsNullOrEmpty"]; });
-
-/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(8);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PnPClientStorage", function() { return _storage__WEBPACK_IMPORTED_MODULE_4__["a"]; });
-
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "assign", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["a"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "combine", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["b"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "dateAdd", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["c"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCtxCallback", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["d"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getGUID", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["e"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hOP", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["f"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isArray", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["g"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isFunc", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["h"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isUrlAbsolute", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["i"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "jsS", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["j"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "objectDefinedNotNull", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["k"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stringIsNullOrEmpty", function() { return _util__WEBPACK_IMPORTED_MODULE_5__["l"]; });
-
-/* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(5);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "safeGlobal", function() { return _safe_global__WEBPACK_IMPORTED_MODULE_6__["a"]; });
-
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "PnPClientStorage")) __webpack_require__.d(__webpack_exports__, { "PnPClientStorage": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.PnPClientStorage; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "assign")) __webpack_require__.d(__webpack_exports__, { "assign": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.assign; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "combine")) __webpack_require__.d(__webpack_exports__, { "combine": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.combine; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "dateAdd")) __webpack_require__.d(__webpack_exports__, { "dateAdd": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.dateAdd; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "getCtxCallback")) __webpack_require__.d(__webpack_exports__, { "getCtxCallback": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.getCtxCallback; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "getGUID")) __webpack_require__.d(__webpack_exports__, { "getGUID": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.getGUID; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "hOP")) __webpack_require__.d(__webpack_exports__, { "hOP": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.hOP; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "isArray")) __webpack_require__.d(__webpack_exports__, { "isArray": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.isArray; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "isFunc")) __webpack_require__.d(__webpack_exports__, { "isFunc": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.isFunc; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "isUrlAbsolute")) __webpack_require__.d(__webpack_exports__, { "isUrlAbsolute": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.isUrlAbsolute; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "jsS")) __webpack_require__.d(__webpack_exports__, { "jsS": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.jsS; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "objectDefinedNotNull")) __webpack_require__.d(__webpack_exports__, { "objectDefinedNotNull": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.objectDefinedNotNull; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "safeGlobal")) __webpack_require__.d(__webpack_exports__, { "safeGlobal": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.safeGlobal; } });
+/* harmony reexport (checked) */ if(__webpack_require__.o(_spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__, "stringIsNullOrEmpty")) __webpack_require__.d(__webpack_exports__, { "stringIsNullOrEmpty": function() { return _spfxcontextinterface__WEBPACK_IMPORTED_MODULE_3__.stringIsNullOrEmpty; } });
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(481);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(499);
+/* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(294);
 
 
 
@@ -181,270 +114,263 @@ return /******/ (function(modules) { // webpackBootstrap
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+/***/ 534:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getCtxCallback; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return dateAdd; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return combine; });
-/* unused harmony export getRandomString */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getGUID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return isFunc; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return objectDefinedNotNull; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return isArray; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return assign; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return isUrlAbsolute; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return stringIsNullOrEmpty; });
-/* unused harmony export sanitizeGuid */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return jsS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return hOP; });
-/* unused harmony export getHashCode */
-/**
- * Gets a callback function which will maintain context across async calls.
- * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
- *
- * @param context The object that will be the 'this' value in the callback
- * @param method The method to which we will apply the context and parameters
- * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
- */
-function getCtxCallback(context, method) {
-    var params = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-        params[_i - 2] = arguments[_i];
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "c4": () => /* binding */ RuntimeConfig
+/* harmony export */ });
+/* unused harmony exports setup, RuntimeConfigImpl */
+/* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(911);
+
+function setup(config) {
+    RuntimeConfig.assign(config);
+}
+// lable mapping for known config values
+var s = [
+    "defaultCachingStore",
+    "defaultCachingTimeoutSeconds",
+    "globalCacheDisable",
+    "enableCacheExpiration",
+    "cacheExpirationIntervalMilliseconds",
+    "spfxContext",
+    "ie11",
+];
+var RuntimeConfigImpl = /** @class */ (function () {
+    function RuntimeConfigImpl(_v) {
+        if (_v === void 0) { _v = new Map(); }
+        this._v = _v;
+        // setup defaults
+        this._v.set(s[0], "session");
+        this._v.set(s[1], 60);
+        this._v.set(s[2], false);
+        this._v.set(s[3], false);
+        this._v.set(s[4], 750);
+        this._v.set(s[5], null);
+        this._v.set(s[6], false);
     }
-    return function () {
-        method.apply(context, params);
+    /**
+     *
+     * @param config The set of properties to add to the globa configuration instance
+     */
+    RuntimeConfigImpl.prototype.assign = function (config) {
+        this._v = (0,_collections__WEBPACK_IMPORTED_MODULE_0__/* .mergeMaps */ .d)(this._v, (0,_collections__WEBPACK_IMPORTED_MODULE_0__/* .objectToMap */ .R)(config));
     };
-}
-/**
- * Adds a value to a date
- *
- * @param date The date to which we will add units, done in local time
- * @param interval The name of the interval to add, one of: ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second']
- * @param units The amount to add to date of the given interval
- *
- * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
- */
-function dateAdd(date, interval, units) {
-    var ret = new Date(date.toString()); // don't change original date
-    switch (interval.toLowerCase()) {
-        case "year":
-            ret.setFullYear(ret.getFullYear() + units);
-            break;
-        case "quarter":
-            ret.setMonth(ret.getMonth() + 3 * units);
-            break;
-        case "month":
-            ret.setMonth(ret.getMonth() + units);
-            break;
-        case "week":
-            ret.setDate(ret.getDate() + 7 * units);
-            break;
-        case "day":
-            ret.setDate(ret.getDate() + units);
-            break;
-        case "hour":
-            ret.setTime(ret.getTime() + units * 3600000);
-            break;
-        case "minute":
-            ret.setTime(ret.getTime() + units * 60000);
-            break;
-        case "second":
-            ret.setTime(ret.getTime() + units * 1000);
-            break;
-        default:
-            ret = undefined;
-            break;
-    }
-    return ret;
-}
-/**
- * Combines an arbitrary set of paths ensuring and normalizes the slashes
- *
- * @param paths 0 to n path parts to combine
- */
-function combine() {
-    var paths = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        paths[_i] = arguments[_i];
-    }
-    return paths
-        .filter(function (path) { return !stringIsNullOrEmpty(path); })
-        .map(function (path) { return path.replace(/^[\\|\/]/, "").replace(/[\\|\/]$/, ""); })
-        .join("/")
-        .replace(/\\/g, "/");
-}
-/**
- * Gets a random string of chars length
- *
- * https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
- *
- * @param chars The length of the random string to generate
- */
-function getRandomString(chars) {
-    var text = new Array(chars);
-    for (var i = 0; i < chars; i++) {
-        text[i] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(Math.floor(Math.random() * 62));
-    }
-    return text.join("");
-}
-/**
- * Gets a random GUID value
- *
- * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
- */
-/* tslint:disable no-bitwise */
-function getGUID() {
-    var d = Date.now();
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
+    RuntimeConfigImpl.prototype.get = function (key) {
+        return this._v.get(key);
+    };
+    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingStore", {
+        get: function () {
+            return this.get(s[0]);
+        },
+        enumerable: false,
+        configurable: true
     });
-}
-/* tslint:enable */
-/**
- * Determines if a given value is a function
- *
- * @param cf The thing to test for functionness
- */
-function isFunc(f) {
-    return typeof f === "function";
-}
-/**
- * Determines if an object is both defined and not null
- * @param obj Object to test
- */
-function objectDefinedNotNull(obj) {
-    return typeof obj !== "undefined" && obj !== null;
-}
-/**
- * @returns whether the provided parameter is a JavaScript Array or not.
-*/
-function isArray(array) {
-    return Array.isArray ? Array.isArray(array) : array && typeof array.length === "number" && array.constructor === Array;
-}
-/**
- * Provides functionality to extend the given object by doing a shallow copy
- *
- * @param target The object to which properties will be copied
- * @param source The source object from which properties will be copied
- * @param noOverwrite If true existing properties on the target are not overwritten from the source
- * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
- *
- */
-function assign(target, source, noOverwrite, filter) {
-    if (noOverwrite === void 0) { noOverwrite = false; }
-    if (filter === void 0) { filter = function () { return true; }; }
-    if (!objectDefinedNotNull(source)) {
-        return target;
-    }
-    // ensure we don't overwrite things we don't want overwritten
-    var check = noOverwrite ? function (o, i) { return !(i in o); } : function () { return true; };
-    // final filter we will use
-    var f = function (v) { return check(target, v) && filter(v); };
-    return Object.getOwnPropertyNames(source)
-        .filter(f)
-        .reduce(function (t, v) {
-        t[v] = source[v];
-        return t;
-    }, target);
-}
-/**
- * Determines if a given url is absolute
- *
- * @param url The url to check to see if it is absolute
- */
-function isUrlAbsolute(url) {
-    return /^https?:\/\/|^\/\//i.test(url);
-}
-/**
- * Determines if a string is null or empty or undefined
- *
- * @param s The string to test
- */
-function stringIsNullOrEmpty(s) {
-    return s === undefined || s === null || s.length < 1;
-}
-/**
- * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
- *
- * @param guid The candidate guid
- */
-function sanitizeGuid(guid) {
-    if (stringIsNullOrEmpty(guid)) {
-        return guid;
-    }
-    var matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
-    return matches === null ? guid : matches[1];
-}
-/**
- * Shorthand for JSON.stringify
- *
- * @param o Any type of object
- */
-function jsS(o) {
-    return JSON.stringify(o);
-}
-/**
- * Shorthand for Object.hasOwnProperty
- *
- * @param o Object to check for
- * @param p Name of the property
- */
-function hOP(o, p) {
-    return Object.hasOwnProperty.call(o, p);
-}
-/**
- * Generates a ~unique hash code
- *
- * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
- */
-// tslint:disable:no-bitwise
-function getHashCode(s) {
-    var hash = 0;
-    if (s.length === 0) {
-        return hash;
-    }
-    for (var i = 0; i < s.length; i++) {
-        var chr = s.charCodeAt(i);
-        hash = ((hash << 5) - hash) + chr;
-        hash |= 0; // Convert to 32bit integer
-    }
-    return hash;
-}
-// tslint:enable:no-bitwise
-//# sourceMappingURL=util.js.map
+    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingTimeoutSeconds", {
+        get: function () {
+            return this.get(s[1]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "globalCacheDisable", {
+        get: function () {
+            return this.get(s[2]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "enableCacheExpiration", {
+        get: function () {
+            return this.get(s[3]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "cacheExpirationIntervalMilliseconds", {
+        get: function () {
+            return this.get(s[4]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "spfxContext", {
+        get: function () {
+            return this.get(s[5]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(RuntimeConfigImpl.prototype, "ie11", {
+        get: function () {
+            return this.get(s[6]);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return RuntimeConfigImpl;
+}());
+
+var _runtimeConfig = new RuntimeConfigImpl();
+var RuntimeConfig = _runtimeConfig;
+//# sourceMappingURL=libconfig.js.map
 
 /***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+/***/ 762:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __extends; });
-/* unused harmony export __assign */
-/* unused harmony export __rest */
-/* unused harmony export __decorate */
-/* unused harmony export __param */
-/* unused harmony export __metadata */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __awaiter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __generator; });
-/* unused harmony export __createBinding */
-/* unused harmony export __exportStar */
-/* unused harmony export __values */
-/* unused harmony export __read */
-/* unused harmony export __spread */
-/* unused harmony export __spreadArrays */
-/* unused harmony export __await */
-/* unused harmony export __asyncGenerator */
-/* unused harmony export __asyncDelegator */
-/* unused harmony export __asyncValues */
-/* unused harmony export __makeTemplateObject */
-/* unused harmony export __importStar */
-/* unused harmony export __importDefault */
-/* unused harmony export __classPrivateFieldGet */
-/* unused harmony export __classPrivateFieldSet */
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "m_": () => /* binding */ mergeHeaders,
+/* harmony export */   "JH": () => /* binding */ mergeOptions,
+/* harmony export */   "eu": () => /* binding */ SPFxAdalClient
+/* harmony export */ });
+/* unused harmony exports getADALResource, FetchClient, BearerTokenFetchClient */
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(138);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(499);
+/* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(294);
+
+
+
+function mergeHeaders(target, source) {
+    if ((0,_util__WEBPACK_IMPORTED_MODULE_1__/* .objectDefinedNotNull */ .Sv)(source)) {
+        var temp = new Request("", { headers: source });
+        temp.headers.forEach(function (value, name) {
+            target.append(name, value);
+        });
+    }
+}
+function mergeOptions(target, source) {
+    if ((0,_util__WEBPACK_IMPORTED_MODULE_1__/* .objectDefinedNotNull */ .Sv)(source)) {
+        var headers = (0,_util__WEBPACK_IMPORTED_MODULE_1__/* .assign */ .f0)(target.headers || {}, source.headers);
+        target = (0,_util__WEBPACK_IMPORTED_MODULE_1__/* .assign */ .f0)(target, source);
+        target.headers = headers;
+    }
+}
+/**
+ * Parses out the root of the request url to use as the resource when getting the token
+ *
+  * @param url The url to parse
+ */
+function getADALResource(url) {
+    var u = new URL(url);
+    return u.protocol + "//" + u.hostname;
+}
+/**
+ * Makes requests using the global/window fetch API
+ */
+var FetchClient = /** @class */ (function () {
+    function FetchClient() {
+    }
+    FetchClient.prototype.fetch = function (url, options) {
+        return _safe_global__WEBPACK_IMPORTED_MODULE_0__/* .safeGlobal.fetch */ .t.fetch(url, options);
+    };
+    return FetchClient;
+}());
+
+/**
+ * Makes requests using the fetch API adding the supplied token to the Authorization header
+ */
+var BearerTokenFetchClient = /** @class */ (function (_super) {
+    (0,tslib__WEBPACK_IMPORTED_MODULE_2__/* .__extends */ .ZT)(BearerTokenFetchClient, _super);
+    function BearerTokenFetchClient(_token) {
+        var _this = _super.call(this) || this;
+        _this._token = _token;
+        return _this;
+    }
+    Object.defineProperty(BearerTokenFetchClient.prototype, "token", {
+        get: function () {
+            return this._token || "";
+        },
+        set: function (token) {
+            this._token = token;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    BearerTokenFetchClient.prototype.fetch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var headers = new Headers();
+        mergeHeaders(headers, options.headers);
+        headers.set("Authorization", "Bearer " + this._token);
+        options.headers = headers;
+        return _super.prototype.fetch.call(this, url, options);
+    };
+    return BearerTokenFetchClient;
+}(FetchClient));
+
+/**
+ * Client wrapping the aadTokenProvider available from SPFx >= 1.6
+ */
+var SPFxAdalClient = /** @class */ (function (_super) {
+    (0,tslib__WEBPACK_IMPORTED_MODULE_2__/* .__extends */ .ZT)(SPFxAdalClient, _super);
+    /**
+     *
+     * @param context provide the appropriate SPFx Context object
+     */
+    function SPFxAdalClient(context) {
+        var _this = _super.call(this, null) || this;
+        _this.context = context;
+        return _this;
+    }
+    /**
+     * Executes a fetch request using the supplied url and options
+     *
+     * @param url Absolute url of the request
+     * @param options Any options
+     */
+    SPFxAdalClient.prototype.fetch = function (url, options) {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_2__/* .__awaiter */ .mG)(this, void 0, void 0, function () {
+            var token;
+            return (0,tslib__WEBPACK_IMPORTED_MODULE_2__/* .__generator */ .Jh)(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getToken(getADALResource(url))];
+                    case 1:
+                        token = _a.sent();
+                        this.token = token;
+                        return [2 /*return*/, _super.prototype.fetch.call(this, url, options)];
+                }
+            });
+        });
+    };
+    /**
+     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
+     *
+     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
+     */
+    SPFxAdalClient.prototype.getToken = function (resource) {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_2__/* .__awaiter */ .mG)(this, void 0, void 0, function () {
+            var provider;
+            return (0,tslib__WEBPACK_IMPORTED_MODULE_2__/* .__generator */ .Jh)(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
+                    case 1:
+                        provider = _a.sent();
+                        return [2 /*return*/, provider.getToken(resource)];
+                }
+            });
+        });
+    };
+    return SPFxAdalClient;
+}(BearerTokenFetchClient));
+
+//# sourceMappingURL=net.js.map
+
+/***/ }),
+
+/***/ 138:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ZT": () => /* binding */ __extends,
+/* harmony export */   "mG": () => /* binding */ __awaiter,
+/* harmony export */   "Jh": () => /* binding */ __generator
+/* harmony export */ });
+/* unused harmony exports __assign, __rest, __decorate, __param, __metadata, __createBinding, __exportStar, __values, __read, __spread, __spreadArrays, __await, __asyncGenerator, __asyncDelegator, __asyncValues, __makeTemplateObject, __importStar, __importDefault, __classPrivateFieldGet, __classPrivateFieldSet */
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -675,319 +601,38 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+/***/ 294:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-/* unused harmony export setup */
-/* unused harmony export RuntimeConfigImpl */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RuntimeConfig; });
-/* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
-
-function setup(config) {
-    RuntimeConfig.assign(config);
-}
-// lable mapping for known config values
-var s = [
-    "defaultCachingStore",
-    "defaultCachingTimeoutSeconds",
-    "globalCacheDisable",
-    "enableCacheExpiration",
-    "cacheExpirationIntervalMilliseconds",
-    "spfxContext",
-    "ie11",
-];
-var RuntimeConfigImpl = /** @class */ (function () {
-    function RuntimeConfigImpl(_v) {
-        if (_v === void 0) { _v = new Map(); }
-        this._v = _v;
-        // setup defaults
-        this._v.set(s[0], "session");
-        this._v.set(s[1], 60);
-        this._v.set(s[2], false);
-        this._v.set(s[3], false);
-        this._v.set(s[4], 750);
-        this._v.set(s[5], null);
-        this._v.set(s[6], false);
-    }
-    /**
-     *
-     * @param config The set of properties to add to the globa configuration instance
-     */
-    RuntimeConfigImpl.prototype.assign = function (config) {
-        this._v = Object(_collections__WEBPACK_IMPORTED_MODULE_0__[/* mergeMaps */ "a"])(this._v, Object(_collections__WEBPACK_IMPORTED_MODULE_0__[/* objectToMap */ "b"])(config));
-    };
-    RuntimeConfigImpl.prototype.get = function (key) {
-        return this._v.get(key);
-    };
-    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingStore", {
-        get: function () {
-            return this.get(s[0]);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "defaultCachingTimeoutSeconds", {
-        get: function () {
-            return this.get(s[1]);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "globalCacheDisable", {
-        get: function () {
-            return this.get(s[2]);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "enableCacheExpiration", {
-        get: function () {
-            return this.get(s[3]);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "cacheExpirationIntervalMilliseconds", {
-        get: function () {
-            return this.get(s[4]);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "spfxContext", {
-        get: function () {
-            return this.get(s[5]);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(RuntimeConfigImpl.prototype, "ie11", {
-        get: function () {
-            return this.get(s[6]);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return RuntimeConfigImpl;
-}());
-
-var _runtimeConfig = new RuntimeConfigImpl();
-var RuntimeConfig = _runtimeConfig;
-//# sourceMappingURL=libconfig.js.map
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return objectToMap; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return mergeMaps; });
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-
-/**
- * Used to calculate the object properties, with polyfill if needed
- */
-var objectEntries = Object(_util__WEBPACK_IMPORTED_MODULE_0__[/* isFunc */ "h"])(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
-/**
- * Converts the supplied object to a map
- *
- * @param o The object to map
- */
-function objectToMap(o) {
-    if (o !== undefined && o !== null) {
-        return new Map(objectEntries(o));
-    }
-    return new Map();
-}
-/**
- * Merges to Map instances together, overwriting values in target with matching keys, last in wins
- *
- * @param target map into which the other maps are merged
- * @param maps One or more maps to merge into the target
- */
-function mergeMaps(target) {
-    var maps = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        maps[_i - 1] = arguments[_i];
-    }
-    for (var i = 0; i < maps.length; i++) {
-        maps[i].forEach(function (v, k) {
-            target.set(k, v);
-        });
-    }
-    return target;
-}
-//# sourceMappingURL=collections.js.map
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return safeGlobal; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "t": () => /* binding */ safeGlobal
+/* harmony export */ });
 // export either window or global
-var safeGlobal = typeof global === "undefined" ? window : global;
+var safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __webpack_require__.g;
 //# sourceMappingURL=safe-global.js.map
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(9)))
 
 /***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return mergeHeaders; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mergeOptions; });
-/* unused harmony export getADALResource */
-/* unused harmony export FetchClient */
-/* unused harmony export BearerTokenFetchClient */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SPFxAdalClient; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
-
-
-
-function mergeHeaders(target, source) {
-    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "k"])(source)) {
-        var temp = new Request("", { headers: source });
-        temp.headers.forEach(function (value, name) {
-            target.append(name, value);
-        });
-    }
-}
-function mergeOptions(target, source) {
-    if (Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "k"])(source)) {
-        var headers = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* assign */ "a"])(target.headers || {}, source.headers);
-        target = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* assign */ "a"])(target, source);
-        target.headers = headers;
-    }
-}
-/**
- * Parses out the root of the request url to use as the resource when getting the token
- *
-  * @param url The url to parse
- */
-function getADALResource(url) {
-    var u = new URL(url);
-    return u.protocol + "//" + u.hostname;
-}
-/**
- * Makes requests using the global/window fetch API
- */
-var FetchClient = /** @class */ (function () {
-    function FetchClient() {
-    }
-    FetchClient.prototype.fetch = function (url, options) {
-        return _safe_global__WEBPACK_IMPORTED_MODULE_2__[/* safeGlobal */ "a"].fetch(url, options);
-    };
-    return FetchClient;
-}());
-
-/**
- * Makes requests using the fetch API adding the supplied token to the Authorization header
- */
-var BearerTokenFetchClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "b"])(BearerTokenFetchClient, _super);
-    function BearerTokenFetchClient(_token) {
-        var _this = _super.call(this) || this;
-        _this._token = _token;
-        return _this;
-    }
-    Object.defineProperty(BearerTokenFetchClient.prototype, "token", {
-        get: function () {
-            return this._token || "";
-        },
-        set: function (token) {
-            this._token = token;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    BearerTokenFetchClient.prototype.fetch = function (url, options) {
-        if (options === void 0) { options = {}; }
-        var headers = new Headers();
-        mergeHeaders(headers, options.headers);
-        headers.set("Authorization", "Bearer " + this._token);
-        options.headers = headers;
-        return _super.prototype.fetch.call(this, url, options);
-    };
-    return BearerTokenFetchClient;
-}(FetchClient));
-
-/**
- * Client wrapping the aadTokenProvider available from SPFx >= 1.6
- */
-var SPFxAdalClient = /** @class */ (function (_super) {
-    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "b"])(SPFxAdalClient, _super);
-    /**
-     *
-     * @param context provide the appropriate SPFx Context object
-     */
-    function SPFxAdalClient(context) {
-        var _this = _super.call(this, null) || this;
-        _this.context = context;
-        return _this;
-    }
-    /**
-     * Executes a fetch request using the supplied url and options
-     *
-     * @param url Absolute url of the request
-     * @param options Any options
-     */
-    SPFxAdalClient.prototype.fetch = function (url, options) {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
-            var token;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getToken(getADALResource(url))];
-                    case 1:
-                        token = _a.sent();
-                        this.token = token;
-                        return [2 /*return*/, _super.prototype.fetch.call(this, url, options)];
-                }
-            });
-        });
-    };
-    /**
-     * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
-     *
-     * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
-     */
-    SPFxAdalClient.prototype.getToken = function (resource) {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
-            var provider;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
-                    case 1:
-                        provider = _a.sent();
-                        return [2 /*return*/, provider.getToken(resource)];
-                }
-            });
-        });
-    };
-    return SPFxAdalClient;
-}(BearerTokenFetchClient));
-
-//# sourceMappingURL=net.js.map
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
+/***/ 172:
+/***/ (() => {
 
 //# sourceMappingURL=spfxcontextinterface.js.map
 
 /***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+/***/ 481:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "k": () => /* binding */ PnPClientStorage
+/* harmony export */ });
 /* unused harmony export PnPClientStorageWrapper */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PnPClientStorage; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(138);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(499);
+/* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(534);
 
 
 
@@ -1008,7 +653,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
         this.enabled = this.test();
         // if the cache timeout is enabled call the handler
         // this will clear any expired items and set the timeout function
-        if (_libconfig__WEBPACK_IMPORTED_MODULE_2__[/* RuntimeConfig */ "a"].enableCacheExpiration) {
+        if (_libconfig__WEBPACK_IMPORTED_MODULE_0__/* .RuntimeConfig.enableCacheExpiration */ .c4.enableCacheExpiration) {
             this.cacheExpirationHandler();
         }
     }
@@ -1025,7 +670,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
             return null;
         }
         var o = this.store.getItem(key);
-        if (!Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* objectDefinedNotNull */ "k"])(o)) {
+        if (!(0,_util__WEBPACK_IMPORTED_MODULE_1__/* .objectDefinedNotNull */ .Sv)(o)) {
             return null;
         }
         var persistable = JSON.parse(o);
@@ -1067,9 +712,9 @@ var PnPClientStorageWrapper = /** @class */ (function () {
      * @param expire Optional, if provided the expiration of the item, otherwise the default is used
      */
     PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_2__/* .__awaiter */ .mG)(this, void 0, void 0, function () {
             var o;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
+            return (0,tslib__WEBPACK_IMPORTED_MODULE_2__/* .__generator */ .Jh)(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.enabled) {
@@ -1091,9 +736,9 @@ var PnPClientStorageWrapper = /** @class */ (function () {
      * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
      */
     PnPClientStorageWrapper.prototype.deleteExpired = function () {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __awaiter */ "a"])(this, void 0, void 0, function () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_2__/* .__awaiter */ .mG)(this, void 0, void 0, function () {
             var i, key;
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __generator */ "c"])(this, function (_a) {
+            return (0,tslib__WEBPACK_IMPORTED_MODULE_2__/* .__generator */ .Jh)(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.enabled) {
@@ -1140,13 +785,13 @@ var PnPClientStorageWrapper = /** @class */ (function () {
     PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
         if (expire === undefined) {
             // ensure we are by default inline with the global library setting
-            var defaultTimeout = _libconfig__WEBPACK_IMPORTED_MODULE_2__[/* RuntimeConfig */ "a"].defaultCachingTimeoutSeconds;
+            var defaultTimeout = _libconfig__WEBPACK_IMPORTED_MODULE_0__/* .RuntimeConfig.defaultCachingTimeoutSeconds */ .c4.defaultCachingTimeoutSeconds;
             if (this.defaultTimeoutMinutes > 0) {
                 defaultTimeout = this.defaultTimeoutMinutes * 60;
             }
-            expire = Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* dateAdd */ "c"])(new Date(), "second", defaultTimeout);
+            expire = (0,_util__WEBPACK_IMPORTED_MODULE_1__/* .dateAdd */ .sO)(new Date(), "second", defaultTimeout);
         }
-        return Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* jsS */ "j"])({ pnp: 1, expiration: expire, value: o });
+        return (0,_util__WEBPACK_IMPORTED_MODULE_1__/* .jsS */ .wk)({ pnp: 1, expiration: expire, value: o });
     };
     /**
      * Deletes expired items added by this library in this.store and sets a timeout to call itself
@@ -1158,7 +803,7 @@ var PnPClientStorageWrapper = /** @class */ (function () {
         }
         this.deleteExpired().then(function (_) {
             // call ourself in the future
-            setTimeout(Object(_util__WEBPACK_IMPORTED_MODULE_1__[/* getCtxCallback */ "d"])(_this, _this.cacheExpirationHandler), _libconfig__WEBPACK_IMPORTED_MODULE_2__[/* RuntimeConfig */ "a"].cacheExpirationIntervalMilliseconds);
+            setTimeout((0,_util__WEBPACK_IMPORTED_MODULE_1__/* .getCtxCallback */ .y8)(_this, _this.cacheExpirationHandler), _libconfig__WEBPACK_IMPORTED_MODULE_0__/* .RuntimeConfig.cacheExpirationIntervalMilliseconds */ .c4.cacheExpirationIntervalMilliseconds);
         }).catch(console.error);
     };
     return PnPClientStorageWrapper;
@@ -1243,119 +888,334 @@ var PnPClientStorage = /** @class */ (function () {
 //# sourceMappingURL=storage.js.map
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports) {
 
-var g;
+/***/ 499:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "y8": () => /* binding */ getCtxCallback,
+/* harmony export */   "sO": () => /* binding */ dateAdd,
+/* harmony export */   "$e": () => /* binding */ combine,
+/* harmony export */   "x$": () => /* binding */ getGUID,
+/* harmony export */   "Wl": () => /* binding */ isFunc,
+/* harmony export */   "Sv": () => /* binding */ objectDefinedNotNull,
+/* harmony export */   "kJ": () => /* binding */ isArray,
+/* harmony export */   "f0": () => /* binding */ assign,
+/* harmony export */   "zz": () => /* binding */ isUrlAbsolute,
+/* harmony export */   "MG": () => /* binding */ stringIsNullOrEmpty,
+/* harmony export */   "wk": () => /* binding */ jsS,
+/* harmony export */   "gm": () => /* binding */ hOP
+/* harmony export */ });
+/* unused harmony exports getRandomString, sanitizeGuid, getHashCode */
+/**
+ * Gets a callback function which will maintain context across async calls.
+ * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
+ *
+ * @param context The object that will be the 'this' value in the callback
+ * @param method The method to which we will apply the context and parameters
+ * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
+ */
+function getCtxCallback(context, method) {
+    var params = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        params[_i - 2] = arguments[_i];
+    }
+    return function () {
+        method.apply(context, params);
+    };
 }
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
+/**
+ * Adds a value to a date
+ *
+ * @param date The date to which we will add units, done in local time
+ * @param interval The name of the interval to add, one of: ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second']
+ * @param units The amount to add to date of the given interval
+ *
+ * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
+ */
+function dateAdd(date, interval, units) {
+    var ret = new Date(date.toString()); // don't change original date
+    switch (interval.toLowerCase()) {
+        case "year":
+            ret.setFullYear(ret.getFullYear() + units);
+            break;
+        case "quarter":
+            ret.setMonth(ret.getMonth() + 3 * units);
+            break;
+        case "month":
+            ret.setMonth(ret.getMonth() + units);
+            break;
+        case "week":
+            ret.setDate(ret.getDate() + 7 * units);
+            break;
+        case "day":
+            ret.setDate(ret.getDate() + units);
+            break;
+        case "hour":
+            ret.setTime(ret.getTime() + units * 3600000);
+            break;
+        case "minute":
+            ret.setTime(ret.getTime() + units * 60000);
+            break;
+        case "second":
+            ret.setTime(ret.getTime() + units * 1000);
+            break;
+        default:
+            ret = undefined;
+            break;
+    }
+    return ret;
+}
+/**
+ * Combines an arbitrary set of paths ensuring and normalizes the slashes
+ *
+ * @param paths 0 to n path parts to combine
+ */
+function combine() {
+    var paths = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        paths[_i] = arguments[_i];
+    }
+    return paths
+        .filter(function (path) { return !stringIsNullOrEmpty(path); })
+        .map(function (path) { return path.replace(/^[\\|\/]/, "").replace(/[\\|\/]$/, ""); })
+        .join("/")
+        .replace(/\\/g, "/");
+}
+/**
+ * Gets a random string of chars length
+ *
+ * https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+ *
+ * @param chars The length of the random string to generate
+ */
+function getRandomString(chars) {
+    var text = new Array(chars);
+    for (var i = 0; i < chars; i++) {
+        text[i] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(Math.floor(Math.random() * 62));
+    }
+    return text.join("");
+}
+/**
+ * Gets a random GUID value
+ *
+ * http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+ */
+/* tslint:disable no-bitwise */
+function getGUID() {
+    var d = Date.now();
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+/* tslint:enable */
+/**
+ * Determines if a given value is a function
+ *
+ * @param cf The thing to test for functionness
+ */
+function isFunc(f) {
+    return typeof f === "function";
+}
+/**
+ * Determines if an object is both defined and not null
+ * @param obj Object to test
+ */
+function objectDefinedNotNull(obj) {
+    return typeof obj !== "undefined" && obj !== null;
+}
+/**
+ * @returns whether the provided parameter is a JavaScript Array or not.
+*/
+function isArray(array) {
+    return Array.isArray ? Array.isArray(array) : array && typeof array.length === "number" && array.constructor === Array;
+}
+/**
+ * Provides functionality to extend the given object by doing a shallow copy
+ *
+ * @param target The object to which properties will be copied
+ * @param source The source object from which properties will be copied
+ * @param noOverwrite If true existing properties on the target are not overwritten from the source
+ * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
+ *
+ */
+function assign(target, source, noOverwrite, filter) {
+    if (noOverwrite === void 0) { noOverwrite = false; }
+    if (filter === void 0) { filter = function () { return true; }; }
+    if (!objectDefinedNotNull(source)) {
+        return target;
+    }
+    // ensure we don't overwrite things we don't want overwritten
+    var check = noOverwrite ? function (o, i) { return !(i in o); } : function () { return true; };
+    // final filter we will use
+    var f = function (v) { return check(target, v) && filter(v); };
+    return Object.getOwnPropertyNames(source)
+        .filter(f)
+        .reduce(function (t, v) {
+        t[v] = source[v];
+        return t;
+    }, target);
+}
+/**
+ * Determines if a given url is absolute
+ *
+ * @param url The url to check to see if it is absolute
+ */
+function isUrlAbsolute(url) {
+    return /^https?:\/\/|^\/\//i.test(url);
+}
+/**
+ * Determines if a string is null or empty or undefined
+ *
+ * @param s The string to test
+ */
+function stringIsNullOrEmpty(s) {
+    return s === undefined || s === null || s.length < 1;
+}
+/**
+ * Ensures guid values are represented consistently as "ea123463-137d-4ae3-89b8-cf3fc578ca05"
+ *
+ * @param guid The candidate guid
+ */
+function sanitizeGuid(guid) {
+    if (stringIsNullOrEmpty(guid)) {
+        return guid;
+    }
+    var matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
+    return matches === null ? guid : matches[1];
+}
+/**
+ * Shorthand for JSON.stringify
+ *
+ * @param o Any type of object
+ */
+function jsS(o) {
+    return JSON.stringify(o);
+}
+/**
+ * Shorthand for Object.hasOwnProperty
+ *
+ * @param o Object to check for
+ * @param p Name of the property
+ */
+function hOP(o, p) {
+    return Object.hasOwnProperty.call(o, p);
+}
+/**
+ * Generates a ~unique hash code
+ *
+ * From: https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
+ */
+// tslint:disable:no-bitwise
+function getHashCode(s) {
+    var hash = 0;
+    if (s.length === 0) {
+        return hash;
+    }
+    for (var i = 0; i < s.length; i++) {
+        var chr = s.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+}
+// tslint:enable:no-bitwise
+//# sourceMappingURL=util.js.map
 
 /***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+/***/ 149:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
-__webpack_require__.d(__webpack_exports__, "Attachment", function() { return /* reexport */ Attachment; });
-__webpack_require__.d(__webpack_exports__, "Attachments", function() { return /* reexport */ Attachments; });
-__webpack_require__.d(__webpack_exports__, "Calendar", function() { return /* reexport */ Calendar; });
-__webpack_require__.d(__webpack_exports__, "Calendars", function() { return /* reexport */ Calendars; });
-__webpack_require__.d(__webpack_exports__, "Event", function() { return /* reexport */ Event; });
-__webpack_require__.d(__webpack_exports__, "Events", function() { return /* reexport */ Events; });
-__webpack_require__.d(__webpack_exports__, "Contact", function() { return /* reexport */ Contact; });
-__webpack_require__.d(__webpack_exports__, "ContactFolder", function() { return /* reexport */ ContactFolder; });
-__webpack_require__.d(__webpack_exports__, "ContactFolders", function() { return /* reexport */ ContactFolders; });
-__webpack_require__.d(__webpack_exports__, "Contacts", function() { return /* reexport */ Contacts; });
-__webpack_require__.d(__webpack_exports__, "Conversation", function() { return /* reexport */ Conversation; });
-__webpack_require__.d(__webpack_exports__, "Conversations", function() { return /* reexport */ Conversations; });
-__webpack_require__.d(__webpack_exports__, "Post", function() { return /* reexport */ Post; });
-__webpack_require__.d(__webpack_exports__, "Posts", function() { return /* reexport */ Posts; });
-__webpack_require__.d(__webpack_exports__, "Senders", function() { return /* reexport */ Senders; });
-__webpack_require__.d(__webpack_exports__, "Thread", function() { return /* reexport */ Thread; });
-__webpack_require__.d(__webpack_exports__, "Threads", function() { return /* reexport */ Threads; });
-__webpack_require__.d(__webpack_exports__, "DirectoryObjectTypes", function() { return /* reexport */ DirectoryObjectTypes; });
-__webpack_require__.d(__webpack_exports__, "DirectoryObject", function() { return /* reexport */ DirectoryObject; });
-__webpack_require__.d(__webpack_exports__, "DirectoryObjects", function() { return /* reexport */ DirectoryObjects; });
-__webpack_require__.d(__webpack_exports__, "Group", function() { return /* reexport */ Group; });
-__webpack_require__.d(__webpack_exports__, "GroupType", function() { return /* reexport */ GroupType; });
-__webpack_require__.d(__webpack_exports__, "Groups", function() { return /* reexport */ Groups; });
-__webpack_require__.d(__webpack_exports__, "Insights", function() { return /* reexport */ Insights; });
-__webpack_require__.d(__webpack_exports__, "SharedInsight", function() { return /* reexport */ SharedInsight; });
-__webpack_require__.d(__webpack_exports__, "SharedInsights", function() { return /* reexport */ SharedInsights; });
-__webpack_require__.d(__webpack_exports__, "TrendingInsight", function() { return /* reexport */ TrendingInsight; });
-__webpack_require__.d(__webpack_exports__, "TrendingInsights", function() { return /* reexport */ TrendingInsights; });
-__webpack_require__.d(__webpack_exports__, "UsedInsight", function() { return /* reexport */ UsedInsight; });
-__webpack_require__.d(__webpack_exports__, "UsedInsights", function() { return /* reexport */ UsedInsights; });
-__webpack_require__.d(__webpack_exports__, "Resource", function() { return /* reexport */ Resource; });
-__webpack_require__.d(__webpack_exports__, "Invitations", function() { return /* reexport */ Invitations; });
-__webpack_require__.d(__webpack_exports__, "Member", function() { return /* reexport */ Member; });
-__webpack_require__.d(__webpack_exports__, "Members", function() { return /* reexport */ Members; });
-__webpack_require__.d(__webpack_exports__, "MailFolder", function() { return /* reexport */ MailFolder; });
-__webpack_require__.d(__webpack_exports__, "MailFolders", function() { return /* reexport */ MailFolders; });
-__webpack_require__.d(__webpack_exports__, "MailboxSettings", function() { return /* reexport */ MailboxSettings; });
-__webpack_require__.d(__webpack_exports__, "Message", function() { return /* reexport */ Message; });
-__webpack_require__.d(__webpack_exports__, "Messages", function() { return /* reexport */ Messages; });
-__webpack_require__.d(__webpack_exports__, "Drive", function() { return /* reexport */ Drive; });
-__webpack_require__.d(__webpack_exports__, "DriveItem", function() { return /* reexport */ DriveItem; });
-__webpack_require__.d(__webpack_exports__, "DriveItems", function() { return /* reexport */ DriveItems; });
-__webpack_require__.d(__webpack_exports__, "Drives", function() { return /* reexport */ Drives; });
-__webpack_require__.d(__webpack_exports__, "Root", function() { return /* reexport */ Root; });
-__webpack_require__.d(__webpack_exports__, "Notebook", function() { return /* reexport */ Notebook; });
-__webpack_require__.d(__webpack_exports__, "Notebooks", function() { return /* reexport */ Notebooks; });
-__webpack_require__.d(__webpack_exports__, "OneNote", function() { return /* reexport */ OneNote; });
-__webpack_require__.d(__webpack_exports__, "Section", function() { return /* reexport */ Section; });
-__webpack_require__.d(__webpack_exports__, "Sections", function() { return /* reexport */ Sections; });
-__webpack_require__.d(__webpack_exports__, "Photo", function() { return /* reexport */ Photo; });
-__webpack_require__.d(__webpack_exports__, "Bucket", function() { return /* reexport */ Bucket; });
-__webpack_require__.d(__webpack_exports__, "Buckets", function() { return /* reexport */ Buckets; });
-__webpack_require__.d(__webpack_exports__, "Plan", function() { return /* reexport */ Plan; });
-__webpack_require__.d(__webpack_exports__, "Planner", function() { return /* reexport */ Planner; });
-__webpack_require__.d(__webpack_exports__, "Plans", function() { return /* reexport */ Plans; });
-__webpack_require__.d(__webpack_exports__, "Task", function() { return /* reexport */ Task; });
-__webpack_require__.d(__webpack_exports__, "Tasks", function() { return /* reexport */ Tasks; });
-__webpack_require__.d(__webpack_exports__, "TaskDetails", function() { return /* reexport */ TaskDetails; });
-__webpack_require__.d(__webpack_exports__, "PlanDetails", function() { return /* reexport */ PlanDetails; });
-__webpack_require__.d(__webpack_exports__, "Subscription", function() { return /* reexport */ Subscription; });
-__webpack_require__.d(__webpack_exports__, "Subscriptions", function() { return /* reexport */ Subscriptions; });
-__webpack_require__.d(__webpack_exports__, "Channel", function() { return /* reexport */ Channel; });
-__webpack_require__.d(__webpack_exports__, "Channels", function() { return /* reexport */ Channels; });
-__webpack_require__.d(__webpack_exports__, "Tab", function() { return /* reexport */ Tab; });
-__webpack_require__.d(__webpack_exports__, "Tabs", function() { return /* reexport */ Tabs; });
-__webpack_require__.d(__webpack_exports__, "Team", function() { return /* reexport */ Team; });
-__webpack_require__.d(__webpack_exports__, "Teams", function() { return /* reexport */ Teams; });
-__webpack_require__.d(__webpack_exports__, "User", function() { return /* reexport */ User; });
-__webpack_require__.d(__webpack_exports__, "Users", function() { return /* reexport */ Users; });
-__webpack_require__.d(__webpack_exports__, "People", function() { return /* reexport */ People; });
-__webpack_require__.d(__webpack_exports__, "graph", function() { return /* reexport */ graph; });
-__webpack_require__.d(__webpack_exports__, "GraphRest", function() { return /* reexport */ rest_GraphRest; });
-__webpack_require__.d(__webpack_exports__, "GraphBatch", function() { return /* reexport */ batch_GraphBatch; });
-__webpack_require__.d(__webpack_exports__, "GraphQueryable", function() { return /* reexport */ GraphQueryable; });
-__webpack_require__.d(__webpack_exports__, "GraphQueryableCollection", function() { return /* reexport */ GraphQueryableCollection; });
-__webpack_require__.d(__webpack_exports__, "GraphQueryableInstance", function() { return /* reexport */ GraphQueryableInstance; });
-__webpack_require__.d(__webpack_exports__, "GraphQueryableSearchableCollection", function() { return /* reexport */ GraphQueryableSearchableCollection; });
-__webpack_require__.d(__webpack_exports__, "GraphHttpClient", function() { return /* reexport */ graphhttpclient_GraphHttpClient; });
-__webpack_require__.d(__webpack_exports__, "GraphEndpoints", function() { return /* reexport */ GraphEndpoints; });
+__webpack_require__.d(__webpack_exports__, {
+  "Attachment": () => /* reexport */ Attachment,
+  "Attachments": () => /* reexport */ Attachments,
+  "Bucket": () => /* reexport */ Bucket,
+  "Buckets": () => /* reexport */ Buckets,
+  "Calendar": () => /* reexport */ Calendar,
+  "Calendars": () => /* reexport */ Calendars,
+  "Channel": () => /* reexport */ Channel,
+  "Channels": () => /* reexport */ Channels,
+  "Contact": () => /* reexport */ Contact,
+  "ContactFolder": () => /* reexport */ ContactFolder,
+  "ContactFolders": () => /* reexport */ ContactFolders,
+  "Contacts": () => /* reexport */ Contacts,
+  "Conversation": () => /* reexport */ Conversation,
+  "Conversations": () => /* reexport */ Conversations,
+  "DirectoryObject": () => /* reexport */ DirectoryObject,
+  "DirectoryObjectTypes": () => /* reexport */ DirectoryObjectTypes,
+  "DirectoryObjects": () => /* reexport */ DirectoryObjects,
+  "Drive": () => /* reexport */ Drive,
+  "DriveItem": () => /* reexport */ DriveItem,
+  "DriveItems": () => /* reexport */ DriveItems,
+  "Drives": () => /* reexport */ Drives,
+  "Event": () => /* reexport */ Event,
+  "Events": () => /* reexport */ Events,
+  "GraphBatch": () => /* reexport */ GraphBatch,
+  "GraphEndpoints": () => /* reexport */ GraphEndpoints,
+  "GraphHttpClient": () => /* reexport */ GraphHttpClient,
+  "GraphQueryable": () => /* reexport */ GraphQueryable,
+  "GraphQueryableCollection": () => /* reexport */ GraphQueryableCollection,
+  "GraphQueryableInstance": () => /* reexport */ GraphQueryableInstance,
+  "GraphQueryableSearchableCollection": () => /* reexport */ GraphQueryableSearchableCollection,
+  "GraphRest": () => /* reexport */ GraphRest,
+  "Group": () => /* reexport */ Group,
+  "GroupType": () => /* reexport */ GroupType,
+  "Groups": () => /* reexport */ Groups,
+  "Insights": () => /* reexport */ Insights,
+  "Invitations": () => /* reexport */ Invitations,
+  "MailFolder": () => /* reexport */ MailFolder,
+  "MailFolders": () => /* reexport */ MailFolders,
+  "MailboxSettings": () => /* reexport */ MailboxSettings,
+  "Member": () => /* reexport */ Member,
+  "Members": () => /* reexport */ Members,
+  "Message": () => /* reexport */ Message,
+  "Messages": () => /* reexport */ Messages,
+  "Notebook": () => /* reexport */ Notebook,
+  "Notebooks": () => /* reexport */ Notebooks,
+  "OneNote": () => /* reexport */ OneNote,
+  "People": () => /* reexport */ People,
+  "Photo": () => /* reexport */ Photo,
+  "Plan": () => /* reexport */ Plan,
+  "PlanDetails": () => /* reexport */ PlanDetails,
+  "Planner": () => /* reexport */ Planner,
+  "Plans": () => /* reexport */ Plans,
+  "Post": () => /* reexport */ Post,
+  "Posts": () => /* reexport */ Posts,
+  "Resource": () => /* reexport */ Resource,
+  "Root": () => /* reexport */ Root,
+  "Section": () => /* reexport */ Section,
+  "Sections": () => /* reexport */ Sections,
+  "Senders": () => /* reexport */ Senders,
+  "SharedInsight": () => /* reexport */ SharedInsight,
+  "SharedInsights": () => /* reexport */ SharedInsights,
+  "Subscription": () => /* reexport */ Subscription,
+  "Subscriptions": () => /* reexport */ Subscriptions,
+  "Tab": () => /* reexport */ Tab,
+  "Tabs": () => /* reexport */ Tabs,
+  "Task": () => /* reexport */ Task,
+  "TaskDetails": () => /* reexport */ TaskDetails,
+  "Tasks": () => /* reexport */ Tasks,
+  "Team": () => /* reexport */ Team,
+  "Teams": () => /* reexport */ Teams,
+  "Thread": () => /* reexport */ Thread,
+  "Threads": () => /* reexport */ Threads,
+  "TrendingInsight": () => /* reexport */ TrendingInsight,
+  "TrendingInsights": () => /* reexport */ TrendingInsights,
+  "UsedInsight": () => /* reexport */ UsedInsight,
+  "UsedInsights": () => /* reexport */ UsedInsights,
+  "User": () => /* reexport */ User,
+  "Users": () => /* reexport */ Users,
+  "graph": () => /* reexport */ graph
+});
 
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/node_modules/tslib/tslib.es6.js
 /*! *****************************************************************************
@@ -1587,13 +1447,12 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 }
 
 // EXTERNAL MODULE: ./node_modules/@pnp/common/index.js
-var common = __webpack_require__(0);
-
+var common = __webpack_require__(621);
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
 
-var batch_Batch = /** @class */ (function () {
+var Batch = /** @class */ (function () {
     function Batch(_batchId) {
-        if (_batchId === void 0) { _batchId = Object(common["getGUID"])(); }
+        if (_batchId === void 0) { _batchId = (0,common.getGUID)(); }
         this._batchId = _batchId;
         this._reqs = [];
         this._deps = [];
@@ -1695,10 +1554,10 @@ var batch_Batch = /** @class */ (function () {
 //# sourceMappingURL=batch.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
 
-var caching_CachingOptions = /** @class */ (function () {
+var CachingOptions = /** @class */ (function () {
     function CachingOptions(key, storeName, expiration) {
-        if (storeName === void 0) { storeName = common["RuntimeConfig"].defaultCachingStore; }
-        if (expiration === void 0) { expiration = Object(common["dateAdd"])(new Date(), "second", common["RuntimeConfig"].defaultCachingTimeoutSeconds); }
+        if (storeName === void 0) { storeName = common/* RuntimeConfig.defaultCachingStore */.c4.defaultCachingStore; }
+        if (expiration === void 0) { expiration = (0,common.dateAdd)(new Date(), "second", common/* RuntimeConfig.defaultCachingTimeoutSeconds */.c4.defaultCachingTimeoutSeconds); }
         this.key = key;
         this.storeName = storeName;
         this.expiration = expiration;
@@ -1715,7 +1574,7 @@ var caching_CachingOptions = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    CachingOptions.storage = new common["PnPClientStorage"]();
+    CachingOptions.storage = new common.PnPClientStorage();
     return CachingOptions;
 }());
 
@@ -2028,7 +1887,7 @@ var extendFactory = function (factory, extensions) {
     var proto = Reflect.getPrototypeOf(factory);
     if (!Reflect.has(proto, ObjExtensionsSym)) {
         Reflect.defineProperty(proto, ObjExtensionsSym, {
-            value: Object(common["getGUID"])(),
+            value: getGUID(),
         });
     }
     var key = proto[ObjExtensionsSym];
@@ -2038,7 +1897,7 @@ var extendFactory = function (factory, extensions) {
     extendCol(factoryExtensions.get(key), extensions);
 };
 function extendCol(a, e) {
-    if (Object(common["isArray"])(e)) {
+    if ((0,common.isArray)(e)) {
         // @ts-ignore
         a.push.apply(a, tslib_es6_spread(e));
     }
@@ -2096,7 +1955,7 @@ function extensionOrDefault(op, or, target) {
         for (var i = 0; i < extensions.length; i++) {
             var extension = extensions[i];
             var result = undefined;
-            if (Object(common["isFunc"])(extension)) {
+            if ((0,common.isFunc)(extension)) {
                 // this extension is a function which we call
                 result = extension.apply(void 0, tslib_es6_spread([op, target], rest));
             }
@@ -2140,7 +1999,7 @@ var invokableBinder = function (invoker) { return function (constructor) {
             Reflect.setPrototypeOf(r, constructor.prototype);
             return r;
         };
-        if (common["RuntimeConfig"].ie11) {
+        if (common/* RuntimeConfig.ie11 */.c4.ie11) {
             return factory(args);
         }
         else {
@@ -2192,7 +2051,7 @@ var invokableFactory = invokableBinder(function (options) {
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
 
 
-var parsers_ODataParser = /** @class */ (function () {
+var ODataParser = /** @class */ (function () {
     function ODataParser() {
     }
     ODataParser.prototype.parse = function (r) {
@@ -2225,7 +2084,7 @@ var parsers_ODataParser = /** @class */ (function () {
      */
     ODataParser.prototype.handleError = function (r, reject) {
         if (!r.ok) {
-            parsers_HttpRequestError.init(r).then(reject);
+            HttpRequestError.init(r).then(reject);
         }
         return r.ok;
     };
@@ -2236,15 +2095,15 @@ var parsers_ODataParser = /** @class */ (function () {
      */
     ODataParser.prototype.parseODataJSON = function (json) {
         var result = json;
-        if (Object(common["hOP"])(json, "d")) {
-            if (Object(common["hOP"])(json.d, "results")) {
+        if ((0,common.hOP)(json, "d")) {
+            if ((0,common.hOP)(json.d, "results")) {
                 result = json.d.results;
             }
             else {
                 result = json.d;
             }
         }
-        else if (Object(common["hOP"])(json, "value")) {
+        else if ((0,common.hOP)(json, "value")) {
             result = json.value;
         }
         return result;
@@ -2252,7 +2111,7 @@ var parsers_ODataParser = /** @class */ (function () {
     return ODataParser;
 }());
 
-var parsers_TextParser = /** @class */ (function (_super) {
+var TextParser = /** @class */ (function (_super) {
     tslib_es6_extends(TextParser, _super);
     function TextParser() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -2261,9 +2120,9 @@ var parsers_TextParser = /** @class */ (function (_super) {
         r.text().then(resolve);
     };
     return TextParser;
-}(parsers_ODataParser));
+}(ODataParser));
 
-var parsers_BlobParser = /** @class */ (function (_super) {
+var BlobParser = /** @class */ (function (_super) {
     tslib_es6_extends(BlobParser, _super);
     function BlobParser() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -2272,9 +2131,9 @@ var parsers_BlobParser = /** @class */ (function (_super) {
         r.blob().then(resolve);
     };
     return BlobParser;
-}(parsers_ODataParser));
+}(ODataParser));
 
-var parsers_JSONParser = /** @class */ (function (_super) {
+var JSONParser = /** @class */ (function (_super) {
     tslib_es6_extends(JSONParser, _super);
     function JSONParser() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -2283,15 +2142,15 @@ var parsers_JSONParser = /** @class */ (function (_super) {
         r.json().then(resolve);
     };
     return JSONParser;
-}(parsers_ODataParser));
+}(ODataParser));
 
-var parsers_BufferParser = /** @class */ (function (_super) {
+var BufferParser = /** @class */ (function (_super) {
     tslib_es6_extends(BufferParser, _super);
     function BufferParser() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     BufferParser.prototype.parseImpl = function (r, resolve) {
-        if (Object(common["isFunc"])(r.arrayBuffer)) {
+        if ((0,common.isFunc)(r.arrayBuffer)) {
             r.arrayBuffer().then(resolve);
         }
         else {
@@ -2299,9 +2158,9 @@ var parsers_BufferParser = /** @class */ (function (_super) {
         }
     };
     return BufferParser;
-}(parsers_ODataParser));
+}(ODataParser));
 
-var parsers_LambdaParser = /** @class */ (function (_super) {
+var LambdaParser = /** @class */ (function (_super) {
     tslib_es6_extends(LambdaParser, _super);
     function LambdaParser(parser) {
         var _this = _super.call(this) || this;
@@ -2312,9 +2171,9 @@ var parsers_LambdaParser = /** @class */ (function (_super) {
         this.parser(r).then(resolve);
     };
     return LambdaParser;
-}(parsers_ODataParser));
+}(ODataParser));
 
-var parsers_HttpRequestError = /** @class */ (function (_super) {
+var HttpRequestError = /** @class */ (function (_super) {
     tslib_es6_extends(HttpRequestError, _super);
     function HttpRequestError(message, response, status, statusText) {
         if (status === void 0) { status = response.status; }
@@ -2397,14 +2256,14 @@ function cloneQueryableData(source) {
     }
     return parsed;
 }
-var queryable_Queryable = /** @class */ (function () {
+var Queryable = /** @class */ (function () {
     function Queryable(dataSeed) {
         if (dataSeed === void 0) { dataSeed = {}; }
         this._data = Object.assign({}, {
             cloneParentWasCaching: false,
             options: {},
             parentUrl: "",
-            parser: new parsers_ODataParser(),
+            parser: new ODataParser(),
             query: new Map(),
             url: "",
             useCaching: false,
@@ -2453,7 +2312,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param options custom options
      */
     Queryable.prototype.configure = function (options) {
-        Object(common["mergeOptions"])(this.data.options, options);
+        (0,common/* mergeOptions */.JH)(this.data.options, options);
         return this;
     };
     /**
@@ -2462,7 +2321,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param o Instance from which options should be taken
      */
     Queryable.prototype.configureFrom = function (o) {
-        Object(common["mergeOptions"])(this.data.options, o.data.options);
+        (0,common/* mergeOptions */.JH)(this.data.options, o.data.options);
         return this;
     };
     /**
@@ -2471,7 +2330,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param options Defines the options used when caching this request
      */
     Queryable.prototype.usingCaching = function (options) {
-        if (!common["RuntimeConfig"].globalCacheDisable) {
+        if (!common/* RuntimeConfig.globalCacheDisable */.c4.globalCacheDisable) {
             this.data.useCaching = true;
             if (options !== undefined) {
                 this.data.cachingOptions = options;
@@ -2498,7 +2357,7 @@ var queryable_Queryable = /** @class */ (function () {
      * @param pathPart The string to append
      */
     Queryable.prototype.append = function (pathPart) {
-        this.data.url = Object(common["combine"])(this.data.url, pathPart);
+        this.data.url = (0,common.combine)(this.data.url, pathPart);
     };
     /**
      * Adds this query to the supplied batch
@@ -2515,7 +2374,7 @@ var queryable_Queryable = /** @class */ (function () {
         if (this.hasBatch) {
             throw Error("This query is already part of a batch.");
         }
-        if (Object(common["objectDefinedNotNull"])(batch)) {
+        if ((0,common.objectDefinedNotNull)(batch)) {
             batch.track(this);
         }
         return this;
@@ -2524,7 +2383,7 @@ var queryable_Queryable = /** @class */ (function () {
      * Blocks a batch call from occuring, MUST be cleared by calling the returned function
     */
     Queryable.prototype.addBatchDependency = function () {
-        if (Object(common["objectDefinedNotNull"])(this.data.batch)) {
+        if ((0,common.objectDefinedNotNull)(this.data.batch)) {
             return this.data.batch.addDependency();
         }
         return function () { return null; };
@@ -2535,7 +2394,7 @@ var queryable_Queryable = /** @class */ (function () {
          *
          */
         get: function () {
-            return Object(common["objectDefinedNotNull"])(this.data.batch);
+            return (0,common.objectDefinedNotNull)(this.data.batch);
         },
         enumerable: false,
         configurable: true
@@ -2571,7 +2430,7 @@ var queryable_Queryable = /** @class */ (function () {
     Queryable.prototype.cloneTo = function (target, settings) {
         if (settings === void 0) { settings = {}; }
         // default values for settings
-        settings = Object(common["assign"])({
+        settings = (0,common.assign)({
             includeBatch: true,
             includeQuery: false,
         }, settings);
@@ -2888,7 +2747,7 @@ function requestPipelineMethod(alwaysRun) {
                 args[_i] = arguments[_i];
             }
             // if we have a result already in the pipeline, pass it along and don't call the tagged method
-            if (!alwaysRun && args.length > 0 && Object(common["hOP"])(args[0], "hasResult") && args[0].hasResult) {
+            if (!alwaysRun && args.length > 0 && (0,common.hOP)(args[0], "hasResult") && args[0].hasResult) {
                 Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Skipping request pipeline method " + propertyKey + ", existing result in pipeline.", 0 /* Verbose */);
                 return Promise.resolve(args[0]);
             }
@@ -2902,7 +2761,7 @@ function requestPipelineMethod(alwaysRun) {
 /**
  * Contains the methods used within the request pipeline
  */
-var pipeline_PipelineMethods = /** @class */ (function () {
+var PipelineMethods = /** @class */ (function () {
     function PipelineMethods() {
     }
     /**
@@ -2926,9 +2785,9 @@ var pipeline_PipelineMethods = /** @class */ (function () {
             // handle caching, if applicable
             if (context.useCaching) {
                 Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Caching is enabled for request, checking cache...", 1 /* Info */);
-                var cacheOptions = new caching_CachingOptions(context.url.toLowerCase());
+                var cacheOptions = new CachingOptions(context.url.toLowerCase());
                 if (context.cachingOptions !== undefined) {
-                    cacheOptions = Object(common["assign"])(cacheOptions, context.cachingOptions);
+                    cacheOptions = (0,common.assign)(cacheOptions, context.cachingOptions);
                 }
                 // we may not have a valid store
                 if (cacheOptions.store !== null) {
@@ -2941,11 +2800,11 @@ var pipeline_PipelineMethods = /** @class */ (function () {
                             message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
                         });
                         // ensure we clear any held batch dependency we are resolving from the cache
-                        if (Object(common["isFunc"])(context.batchDependency)) {
+                        if ((0,common.isFunc)(context.batchDependency)) {
                             context.batchDependency();
                         }
                         // handle the case where a parser needs to take special actions with a cached result
-                        if (Object(common["hOP"])(context.parser, "hydrate")) {
+                        if ((0,common.hOP)(context.parser, "hydrate")) {
                             data = context.parser.hydrate(data);
                         }
                         return setResult(context, data).then(function (ctx) { return resolve(ctx); });
@@ -2968,7 +2827,7 @@ var pipeline_PipelineMethods = /** @class */ (function () {
             if (context.isBatched) {
                 var p = context.batch.add(context);
                 // we release the dependency here to ensure the batch does not execute until the request is added to the batch
-                if (Object(common["isFunc"])(context.batchDependency)) {
+                if ((0,common.isFunc)(context.batchDependency)) {
                     context.batchDependency();
                 }
                 Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request in batch " + context.batch.batchId + ".", 1 /* Info */);
@@ -2979,7 +2838,7 @@ var pipeline_PipelineMethods = /** @class */ (function () {
                 Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Sending request.", 1 /* Info */);
                 // we are not part of a batch, so proceed as normal
                 var client = context.clientFactory();
-                var opts = Object(common["assign"])(context.options || {}, { method: context.method });
+                var opts = (0,common.assign)(context.options || {}, { method: context.method });
                 client.fetch(context.url, opts)
                     .then(function (response) { return context.parser.parse(response); })
                     .then(function (result) { return setResult(context, result); })
@@ -3027,10 +2886,10 @@ var pipeline_PipelineMethods = /** @class */ (function () {
 
 function getDefaultPipeline() {
     return [
-        pipeline_PipelineMethods.logStart,
-        pipeline_PipelineMethods.caching,
-        pipeline_PipelineMethods.send,
-        pipeline_PipelineMethods.logEnd,
+        PipelineMethods.logStart,
+        PipelineMethods.caching,
+        PipelineMethods.send,
+        PipelineMethods.logEnd,
     ].slice(0);
 }
 //# sourceMappingURL=pipeline.js.map
@@ -3057,14 +2916,14 @@ function pipelineBinder(pipes) {
                     cloneParentCacheOptions: null,
                     cloneParentWasCaching: false,
                     hasResult: false,
-                    isBatched: Object(common["objectDefinedNotNull"])(o.batch),
+                    isBatched: (0,common.objectDefinedNotNull)(o.batch),
                     method: method,
                     options: null,
                     parentUrl: "",
-                    parser: new parsers_ODataParser(),
+                    parser: new ODataParser(),
                     pipes: pipes.slice(0),
                     query: new Map(),
-                    requestId: Object(common["getGUID"])(),
+                    requestId: (0,common.getGUID)(),
                     url: "",
                     useCaching: /^get$/i.test(o.method) && o.useCaching,
                 }, cloneQueryableData(o)));
@@ -3076,10 +2935,10 @@ var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
 
-function request_builders_body(o, previous) {
-    return Object.assign({ body: Object(common["jsS"])(o) }, previous);
+function body(o, previous) {
+    return Object.assign({ body: (0,common.jsS)(o) }, previous);
 }
-function request_builders_headers(o, previous) {
+function headers(o, previous) {
     return Object.assign({ headers: o }, previous);
 }
 //# sourceMappingURL=request-builders.js.map
@@ -3119,14 +2978,14 @@ var GraphEndpoints = /** @class */ (function () {
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/graphlibconfig.js
 
 function setup(config) {
-    common["RuntimeConfig"].assign(config);
+    common/* RuntimeConfig.assign */.c4.assign(config);
 }
-var graphlibconfig_GraphRuntimeConfigImpl = /** @class */ (function () {
+var GraphRuntimeConfigImpl = /** @class */ (function () {
     function GraphRuntimeConfigImpl() {
     }
     Object.defineProperty(GraphRuntimeConfigImpl.prototype, "headers", {
         get: function () {
-            var graphPart = common["RuntimeConfig"].get("graph");
+            var graphPart = common/* RuntimeConfig.get */.c4.get("graph");
             if (graphPart !== undefined && graphPart.headers !== undefined) {
                 return graphPart.headers;
             }
@@ -3137,7 +2996,7 @@ var graphlibconfig_GraphRuntimeConfigImpl = /** @class */ (function () {
     });
     Object.defineProperty(GraphRuntimeConfigImpl.prototype, "baseUrl", {
         get: function () {
-            var graphPart = common["RuntimeConfig"].get("graph");
+            var graphPart = common/* RuntimeConfig.get */.c4.get("graph");
             if (graphPart !== undefined && graphPart.baseUrl !== undefined) {
                 return graphPart.baseUrl;
             }
@@ -3148,14 +3007,14 @@ var graphlibconfig_GraphRuntimeConfigImpl = /** @class */ (function () {
     });
     Object.defineProperty(GraphRuntimeConfigImpl.prototype, "fetchClientFactory", {
         get: function () {
-            var graphPart = common["RuntimeConfig"].get("graph");
+            var graphPart = common/* RuntimeConfig.get */.c4.get("graph");
             // use a configured factory firt
             if (graphPart !== undefined && graphPart.fetchClientFactory !== undefined) {
                 return graphPart.fetchClientFactory;
             }
             // then try and use spfx context if available
-            if (common["RuntimeConfig"].spfxContext !== undefined) {
-                return function () { return new common["SPFxAdalClient"](common["RuntimeConfig"].spfxContext); };
+            if (common/* RuntimeConfig.spfxContext */.c4.spfxContext !== undefined) {
+                return function () { return new common/* SPFxAdalClient */.eu(common/* RuntimeConfig.spfxContext */.c4.spfxContext); };
             }
             throw Error("There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context using setup.");
         },
@@ -3165,12 +3024,12 @@ var graphlibconfig_GraphRuntimeConfigImpl = /** @class */ (function () {
     return GraphRuntimeConfigImpl;
 }());
 
-var GraphRuntimeConfig = new graphlibconfig_GraphRuntimeConfigImpl();
+var GraphRuntimeConfig = new GraphRuntimeConfigImpl();
 //# sourceMappingURL=graphlibconfig.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/graphhttpclient.js
 
 
-var graphhttpclient_GraphHttpClient = /** @class */ (function () {
+var GraphHttpClient = /** @class */ (function () {
     function GraphHttpClient() {
         this._impl = GraphRuntimeConfig.fetchClientFactory();
     }
@@ -3178,17 +3037,17 @@ var graphhttpclient_GraphHttpClient = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         var headers = new Headers();
         // first we add the global headers so they can be overwritten by any passed in locally to this call
-        Object(common["mergeHeaders"])(headers, GraphRuntimeConfig.headers);
+        (0,common/* mergeHeaders */.m_)(headers, GraphRuntimeConfig.headers);
         // second we add the local options so we can overwrite the globals
-        Object(common["mergeHeaders"])(headers, options.headers);
+        (0,common/* mergeHeaders */.m_)(headers, options.headers);
         if (!headers.has("Content-Type")) {
             headers.append("Content-Type", "application/json");
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/2.0.10");
+            headers.append("SdkVersion", "PnPCoreJS/2.0.11");
         }
-        var opts = Object(common["assign"])(options, { headers: headers });
+        var opts = (0,common.assign)(options, { headers: headers });
         return this.fetchRaw(url, opts);
     };
     GraphHttpClient.prototype.fetchRaw = function (url, options) {
@@ -3196,8 +3055,8 @@ var graphhttpclient_GraphHttpClient = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         // here we need to normalize the headers
         var rawHeaders = new Headers();
-        Object(common["mergeHeaders"])(rawHeaders, options.headers);
-        options = Object(common["assign"])(options, { headers: rawHeaders });
+        (0,common/* mergeHeaders */.m_)(rawHeaders, options.headers);
+        options = (0,common.assign)(options, { headers: rawHeaders });
         var retry = function (ctx) {
             _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
                 // Check if request was throttled - http status code 429
@@ -3216,7 +3075,7 @@ var graphhttpclient_GraphHttpClient = /** @class */ (function () {
                     ctx.reject(response);
                 }
                 // Set our retry timeout for {delay} milliseconds.
-                setTimeout(Object(common["getCtxCallback"])(_this, retry, ctx), delay);
+                setTimeout((0,common.getCtxCallback)(_this, retry, ctx), delay);
             });
         };
         return new Promise(function (resolve, reject) {
@@ -3232,22 +3091,22 @@ var graphhttpclient_GraphHttpClient = /** @class */ (function () {
     };
     GraphHttpClient.prototype.get = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(common["assign"])(options, { method: "GET" });
+        var opts = (0,common.assign)(options, { method: "GET" });
         return this.fetch(url, opts);
     };
     GraphHttpClient.prototype.post = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(common["assign"])(options, { method: "POST" });
+        var opts = (0,common.assign)(options, { method: "POST" });
         return this.fetch(url, opts);
     };
     GraphHttpClient.prototype.patch = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(common["assign"])(options, { method: "PATCH" });
+        var opts = (0,common.assign)(options, { method: "PATCH" });
         return this.fetch(url, opts);
     };
     GraphHttpClient.prototype.delete = function (url, options) {
         if (options === void 0) { options = {}; }
-        var opts = Object(common["assign"])(options, { method: "DELETE" });
+        var opts = (0,common.assign)(options, { method: "DELETE" });
         return this.fetch(url, opts);
     };
     return GraphHttpClient;
@@ -3271,24 +3130,24 @@ function toAbsoluteUrl(candidateUrl) {
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    if (Object(common["isUrlAbsolute"])(candidateUrl)) {
+                    if ((0,common.isUrlAbsolute)(candidateUrl)) {
                         // if we are already absolute, then just return the url
                         return [2 /*return*/, candidateUrl];
                     }
-                    if (!Object(common["stringIsNullOrEmpty"])(GraphRuntimeConfig.baseUrl)) {
+                    if (!(0,common.stringIsNullOrEmpty)(GraphRuntimeConfig.baseUrl)) {
                         // base url specified either with baseUrl of spfxContext config property
-                        return [2 /*return*/, Object(common["combine"])(GraphRuntimeConfig.baseUrl, candidateUrl)];
+                        return [2 /*return*/, (0,common.combine)(GraphRuntimeConfig.baseUrl, candidateUrl)];
                     }
-                    if (!Object(common["objectDefinedNotNull"])(common["RuntimeConfig"].spfxContext)) return [3 /*break*/, 4];
+                    if (!(0,common.objectDefinedNotNull)(common/* RuntimeConfig.spfxContext */.c4.spfxContext)) return [3 /*break*/, 4];
                     _c.label = 1;
                 case 1:
                     _c.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, common["RuntimeConfig"].spfxContext.msGraphClientFactory.getClient()];
+                    return [4 /*yield*/, common/* RuntimeConfig.spfxContext.msGraphClientFactory.getClient */.c4.spfxContext.msGraphClientFactory.getClient()];
                 case 2:
                     client = _c.sent();
                     baseUrl = (_b = (_a = client) === null || _a === void 0 ? void 0 : _a.constructor) === null || _b === void 0 ? void 0 : _b._graphBaseUrl;
-                    if (!Object(common["stringIsNullOrEmpty"])(baseUrl)) {
-                        return [2 /*return*/, Object(common["combine"])(baseUrl, candidateUrl)];
+                    if (!(0,common.stringIsNullOrEmpty)(baseUrl)) {
+                        return [2 /*return*/, (0,common.combine)(baseUrl, candidateUrl)];
                     }
                     return [3 /*break*/, 4];
                 case 3:
@@ -3296,7 +3155,7 @@ function toAbsoluteUrl(candidateUrl) {
                     return [3 /*break*/, 4];
                 case 4: 
                 // try one last time with the default
-                return [2 /*return*/, Object(common["combine"])("https://graph.microsoft.com", candidateUrl)];
+                return [2 /*return*/, (0,common.combine)("https://graph.microsoft.com", candidateUrl)];
             }
         });
     });
@@ -3308,7 +3167,7 @@ function toAbsoluteUrl(candidateUrl) {
 
 
 
-var graphClientBinder = defaultPipelineBinder(function () { return new graphhttpclient_GraphHttpClient(); });
+var graphClientBinder = defaultPipelineBinder(function () { return new GraphHttpClient(); });
 var send = function (operation) {
     return function (o, options) {
         return __awaiter(this, void 0, void 0, function () {
@@ -3317,11 +3176,11 @@ var send = function (operation) {
                 switch (_a.label) {
                     case 0:
                         data = cloneQueryableData(o.data);
-                        batchDependency = Object(common["objectDefinedNotNull"])(data.batch) ? data.batch.addDependency() : function () { return; };
+                        batchDependency = (0,common.objectDefinedNotNull)(data.batch) ? data.batch.addDependency() : function () { return; };
                         return [4 /*yield*/, toAbsoluteUrl(o.toUrlAndQuery())];
                     case 1:
                         url = _a.sent();
-                        Object(common["mergeOptions"])(data.options, options);
+                        (0,common/* mergeOptions */.JH)(data.options, options);
                         return [2 /*return*/, operation(Object.assign({}, data, {
                                 batchDependency: batchDependency,
                                 url: url,
@@ -3350,7 +3209,7 @@ var graphInvokableFactory = function (f) {
  * Queryable Base Class
  *
  */
-var graphqueryable_GraphQueryable = /** @class */ (function (_super) {
+var _GraphQueryable = /** @class */ (function (_super) {
     __extends(_GraphQueryable, _super);
     /**
      * Creates a new instance of the Queryable class
@@ -3366,11 +3225,11 @@ var graphqueryable_GraphQueryable = /** @class */ (function (_super) {
         var query = new Map();
         if (typeof baseUrl === "string") {
             parentUrl = baseUrl;
-            url = Object(common["combine"])(parentUrl, path);
+            url = (0,common.combine)(parentUrl, path);
         }
         else {
             parentUrl = baseUrl.toUrl();
-            url = Object(common["combine"])(parentUrl, path);
+            url = (0,common.combine)(parentUrl, path);
         }
         _this = _super.call(this, {
             parentUrl: parentUrl,
@@ -3457,14 +3316,14 @@ var graphqueryable_GraphQueryable = /** @class */ (function (_super) {
         return _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch, includeQuery: includeQuery });
     };
     return _GraphQueryable;
-}(queryable_Queryable));
+}(Queryable));
 
-var GraphQueryable = graphInvokableFactory(graphqueryable_GraphQueryable);
+var GraphQueryable = graphInvokableFactory(_GraphQueryable);
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-var graphqueryable_GraphQueryableCollection = /** @class */ (function (_super) {
+var _GraphQueryableCollection = /** @class */ (function (_super) {
     __extends(_GraphQueryableCollection, _super);
     function _GraphQueryableCollection() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3528,10 +3387,10 @@ var graphqueryable_GraphQueryableCollection = /** @class */ (function (_super) {
         configurable: true
     });
     return _GraphQueryableCollection;
-}(graphqueryable_GraphQueryable));
+}(_GraphQueryable));
 
-var GraphQueryableCollection = graphInvokableFactory(graphqueryable_GraphQueryableCollection);
-var graphqueryable_GraphQueryableSearchableCollection = /** @class */ (function (_super) {
+var GraphQueryableCollection = graphInvokableFactory(_GraphQueryableCollection);
+var _GraphQueryableSearchableCollection = /** @class */ (function (_super) {
     __extends(_GraphQueryableSearchableCollection, _super);
     function _GraphQueryableSearchableCollection() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3544,22 +3403,22 @@ var graphqueryable_GraphQueryableSearchableCollection = /** @class */ (function 
         return this;
     };
     return _GraphQueryableSearchableCollection;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var GraphQueryableSearchableCollection = graphInvokableFactory(graphqueryable_GraphQueryableSearchableCollection);
+var GraphQueryableSearchableCollection = graphInvokableFactory(_GraphQueryableSearchableCollection);
 /**
  * Represents an instance that can be selected
  *
  */
-var graphqueryable_GraphQueryableInstance = /** @class */ (function (_super) {
+var _GraphQueryableInstance = /** @class */ (function (_super) {
     __extends(_GraphQueryableInstance, _super);
     function _GraphQueryableInstance() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return _GraphQueryableInstance;
-}(graphqueryable_GraphQueryable));
+}(_GraphQueryable));
 
-var GraphQueryableInstance = graphInvokableFactory(graphqueryable_GraphQueryableInstance);
+var GraphQueryableInstance = graphInvokableFactory(_GraphQueryableInstance);
 //# sourceMappingURL=graphqueryable.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/decorators.js
 
@@ -3614,7 +3473,7 @@ function deleteableWithETag() {
             }
             class_3.prototype.delete = function (eTag) {
                 if (eTag === void 0) { eTag = "*"; }
-                return graphDelete(this, request_builders_headers({
+                return graphDelete(this, headers({
                     "If-Match": eTag,
                 }));
             };
@@ -3633,7 +3492,7 @@ function updateable() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
             class_4.prototype.update = function (props) {
-                return graphPatch(this, request_builders_body(props));
+                return graphPatch(this, body(props));
             };
             return class_4;
         }(target));
@@ -3651,7 +3510,7 @@ function updateableWithETag() {
             }
             class_5.prototype.update = function (props, eTag) {
                 if (eTag === void 0) { eTag = "*"; }
-                return graphPatch(this, request_builders_body(props, request_builders_headers({
+                return graphPatch(this, body(props, headers({
                     "If-Match": eTag,
                 })));
             };
@@ -3670,7 +3529,7 @@ function addable() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
             class_6.prototype.add = function (props) {
-                return graphPost(this, request_builders_body(props));
+                return graphPost(this, body(props));
             };
             return class_6;
         }(target));
@@ -3703,7 +3562,7 @@ function getById(factory) {
 /**
  * Conversation
  */
-var types_Conversation = /** @class */ (function (_super) {
+var _Conversation = /** @class */ (function (_super) {
     __extends(_Conversation, _super);
     function _Conversation() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3723,13 +3582,13 @@ var types_Conversation = /** @class */ (function (_super) {
         deleteable()
     ], _Conversation);
     return _Conversation;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Conversation = graphInvokableFactory(types_Conversation);
+var Conversation = graphInvokableFactory(_Conversation);
 /**
  * Conversations
  */
-var types_Conversations = /** @class */ (function (_super) {
+var _Conversations = /** @class */ (function (_super) {
     __extends(_Conversations, _super);
     function _Conversations() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3740,13 +3599,13 @@ var types_Conversations = /** @class */ (function (_super) {
         getById(Conversation)
     ], _Conversations);
     return _Conversations;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Conversations = graphInvokableFactory(types_Conversations);
+var Conversations = graphInvokableFactory(_Conversations);
 /**
  * Thread
  */
-var types_Thread = /** @class */ (function (_super) {
+var _Thread = /** @class */ (function (_super) {
     __extends(_Thread, _super);
     function _Thread() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3767,19 +3626,19 @@ var types_Thread = /** @class */ (function (_super) {
      * @param post Contents of the post
      */
     _Thread.prototype.reply = function (post) {
-        return graphPost(this.clone(Thread, "reply"), request_builders_body(post));
+        return graphPost(this.clone(Thread, "reply"), body(post));
     };
     _Thread = __decorate([
         deleteable()
     ], _Thread);
     return _Thread;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Thread = graphInvokableFactory(types_Thread);
+var Thread = graphInvokableFactory(_Thread);
 /**
  * Threads
  */
-var types_Threads = /** @class */ (function (_super) {
+var _Threads = /** @class */ (function (_super) {
     __extends(_Threads, _super);
     function _Threads() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3790,13 +3649,13 @@ var types_Threads = /** @class */ (function (_super) {
         getById(Thread)
     ], _Threads);
     return _Threads;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Threads = graphInvokableFactory(types_Threads);
+var Threads = graphInvokableFactory(_Threads);
 /**
  * Post
  */
-var types_Post = /** @class */ (function (_super) {
+var _Post = /** @class */ (function (_super) {
     __extends(_Post, _super);
     function _Post() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3805,7 +3664,7 @@ var types_Post = /** @class */ (function (_super) {
      * Forward a post to a recipient
      */
     _Post.prototype.forward = function (info) {
-        return graphPost(this.clone(Post, "forward"), request_builders_body(info));
+        return graphPost(this.clone(Post, "forward"), body(info));
     };
     /**
      * Reply to a thread in a group conversation and add a new post to it
@@ -3813,19 +3672,19 @@ var types_Post = /** @class */ (function (_super) {
      * @param post Contents of the post
      */
     _Post.prototype.reply = function (post) {
-        return graphPost(this.clone(Post, "reply"), request_builders_body(post));
+        return graphPost(this.clone(Post, "reply"), body(post));
     };
     _Post = __decorate([
         deleteable()
     ], _Post);
     return _Post;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Post = graphInvokableFactory(types_Post);
+var Post = graphInvokableFactory(_Post);
 /**
  * Posts
  */
-var types_Posts = /** @class */ (function (_super) {
+var _Posts = /** @class */ (function (_super) {
     __extends(_Posts, _super);
     function _Posts() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3836,13 +3695,13 @@ var types_Posts = /** @class */ (function (_super) {
         getById(Post)
     ], _Posts);
     return _Posts;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Posts = graphInvokableFactory(types_Posts);
+var Posts = graphInvokableFactory(_Posts);
 /**
  * Senders
  */
-var types_Senders = /** @class */ (function (_super) {
+var _Senders = /** @class */ (function (_super) {
     __extends(_Senders, _super);
     function _Senders() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3852,7 +3711,7 @@ var types_Senders = /** @class */ (function (_super) {
      * @param id The full @odata.id value to add (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
      */
     _Senders.prototype.add = function (id) {
-        return graphPost(this.clone(Senders, "$ref"), request_builders_body({ "@odata.id": id }));
+        return graphPost(this.clone(Senders, "$ref"), body({ "@odata.id": id }));
     };
     /**
      * Removes the entity from the collection
@@ -3865,12 +3724,12 @@ var types_Senders = /** @class */ (function (_super) {
         return graphDelete(remover);
     };
     return _Senders;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Senders = graphInvokableFactory(types_Senders);
+var Senders = graphInvokableFactory(_Senders);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/utils/type.js
-function type_type(n, a) {
+function type(n, a) {
     return Object.assign({ "@odata.type": n }, a);
 }
 //# sourceMappingURL=type.js.map
@@ -3884,19 +3743,19 @@ function type_type(n, a) {
 /**
  * Attachment
  */
-var types_Attachment = /** @class */ (function (_super) {
+var _Attachment = /** @class */ (function (_super) {
     __extends(_Attachment, _super);
     function _Attachment() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return _Attachment;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Attachment = graphInvokableFactory(types_Attachment);
+var Attachment = graphInvokableFactory(_Attachment);
 /**
  * Attachments
  */
-var types_Attachments = /** @class */ (function (_super) {
+var _Attachments = /** @class */ (function (_super) {
     __extends(_Attachments, _super);
     function _Attachments() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3908,7 +3767,7 @@ var types_Attachments = /** @class */ (function (_super) {
      * @param bytes File content
      */
     _Attachments.prototype.addFile = function (name, bytes) {
-        return graphPost(this, request_builders_body(type_type("#microsoft.graph.fileAttachment", {
+        return graphPost(this, body(type("#microsoft.graph.fileAttachment", {
             contentBytes: bytes,
             name: name,
         })));
@@ -3918,15 +3777,15 @@ var types_Attachments = /** @class */ (function (_super) {
         getById(Attachment)
     ], _Attachments);
     return _Attachments;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Attachments = graphInvokableFactory(types_Attachments);
+var Attachments = graphInvokableFactory(_Attachments);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/attachments/conversations.js
 
 
 
-addProp(types_Post, "attachments", Attachments);
+addProp(_Post, "attachments", Attachments);
 //# sourceMappingURL=conversations.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/attachments/index.js
 
@@ -3941,7 +3800,7 @@ addProp(types_Post, "attachments", Attachments);
 /**
  * Represents a Directory Object entity
  */
-var types_DirectoryObject = /** @class */ (function (_super) {
+var _DirectoryObject = /** @class */ (function (_super) {
     __extends(_DirectoryObject, _super);
     function _DirectoryObject() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3953,7 +3812,7 @@ var types_DirectoryObject = /** @class */ (function (_super) {
      */
     _DirectoryObject.prototype.getMemberObjects = function (securityEnabledOnly) {
         if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
-        return graphPost(this.clone(DirectoryObject, "getMemberObjects"), request_builders_body({ securityEnabledOnly: securityEnabledOnly }));
+        return graphPost(this.clone(DirectoryObject, "getMemberObjects"), body({ securityEnabledOnly: securityEnabledOnly }));
     };
     /**
      * Returns all the groups that the specified Directory Object is a member of. The check is transitive
@@ -3962,7 +3821,7 @@ var types_DirectoryObject = /** @class */ (function (_super) {
      */
     _DirectoryObject.prototype.getMemberGroups = function (securityEnabledOnly) {
         if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
-        return graphPost(this.clone(DirectoryObject, "getMemberGroups"), request_builders_body({ securityEnabledOnly: securityEnabledOnly }));
+        return graphPost(this.clone(DirectoryObject, "getMemberGroups"), body({ securityEnabledOnly: securityEnabledOnly }));
     };
     /**
      * Check for membership in a specified list of groups, and returns from that list those groups of which the specified user, group, or directory object is a member.
@@ -3970,20 +3829,20 @@ var types_DirectoryObject = /** @class */ (function (_super) {
      * @param groupIds A collection that contains the object IDs of the groups in which to check membership. Up to 20 groups may be specified.
      */
     _DirectoryObject.prototype.checkMemberGroups = function (groupIds) {
-        return graphPost(this.clone(DirectoryObject, "checkMemberGroups"), request_builders_body({ groupIds: groupIds }));
+        return graphPost(this.clone(DirectoryObject, "checkMemberGroups"), body({ groupIds: groupIds }));
     };
     _DirectoryObject = __decorate([
         deleteable()
     ], _DirectoryObject);
     return _DirectoryObject;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var DirectoryObject = graphInvokableFactory(types_DirectoryObject);
+var DirectoryObject = graphInvokableFactory(_DirectoryObject);
 /**
  * Describes a collection of Directory Objects
  *
  */
-var types_DirectoryObjects = /** @class */ (function (_super) {
+var _DirectoryObjects = /** @class */ (function (_super) {
     __extends(_DirectoryObjects, _super);
     function _DirectoryObjects() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -3997,16 +3856,16 @@ var types_DirectoryObjects = /** @class */ (function (_super) {
     */
     _DirectoryObjects.prototype.getByIds = function (ids, type) {
         if (type === void 0) { type = DirectoryObjectTypes.directoryObject; }
-        return graphPost(this.clone(DirectoryObjects, "getByIds"), request_builders_body({ ids: ids, type: type }));
+        return graphPost(this.clone(DirectoryObjects, "getByIds"), body({ ids: ids, type: type }));
     };
     _DirectoryObjects = __decorate([
         defaultPath("directoryObjects"),
         getById(DirectoryObject)
     ], _DirectoryObjects);
     return _DirectoryObjects;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var DirectoryObjects = graphInvokableFactory(types_DirectoryObjects);
+var DirectoryObjects = graphInvokableFactory(_DirectoryObjects);
 /**
  * DirectoryObjectTypes
  */
@@ -4056,7 +3915,7 @@ var GroupType;
 /**
  * Represents a group entity
  */
-var types_Group = /** @class */ (function (_super) {
+var _Group = /** @class */ (function (_super) {
     __extends(_Group, _super);
     function _Group() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4110,14 +3969,14 @@ var types_Group = /** @class */ (function (_super) {
         updateable()
     ], _Group);
     return _Group;
-}(types_DirectoryObject));
+}(_DirectoryObject));
 
-var Group = graphInvokableFactory(types_Group);
+var Group = graphInvokableFactory(_Group);
 /**
  * Describes a collection of Field objects
  *
  */
-var types_Groups = /** @class */ (function (_super) {
+var _Groups = /** @class */ (function (_super) {
     __extends(_Groups, _super);
     function _Groups() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4137,7 +3996,7 @@ var types_Groups = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = Object(common["assign"])({
+                        postBody = (0,common.assign)({
                             displayName: name,
                             mailEnabled: groupType === GroupType.Office365,
                             mailNickname: mailNickname,
@@ -4145,11 +4004,11 @@ var types_Groups = /** @class */ (function (_super) {
                         }, additionalProperties);
                         // include a group type if required
                         if (groupType !== GroupType.Security) {
-                            postBody = Object(common["assign"])(postBody, {
+                            postBody = (0,common.assign)(postBody, {
                                 groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
                             });
                         }
-                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -4165,9 +4024,9 @@ var types_Groups = /** @class */ (function (_super) {
         getById(Group)
     ], _Groups);
     return _Groups;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Groups = graphInvokableFactory(types_Groups);
+var Groups = graphInvokableFactory(_Groups);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/funcs.js
 
@@ -4196,7 +4055,7 @@ function calendarView(start, end) {
 /**
  * Calendar
  */
-var types_Calendar = /** @class */ (function (_super) {
+var _Calendar = /** @class */ (function (_super) {
     __extends(_Calendar, _super);
     function _Calendar() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -4211,13 +4070,13 @@ var types_Calendar = /** @class */ (function (_super) {
         configurable: true
     });
     return _Calendar;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Calendar = graphInvokableFactory(types_Calendar);
+var Calendar = graphInvokableFactory(_Calendar);
 /**
  * Calendars
  */
-var types_Calendars = /** @class */ (function (_super) {
+var _Calendars = /** @class */ (function (_super) {
     __extends(_Calendars, _super);
     function _Calendars() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4227,13 +4086,13 @@ var types_Calendars = /** @class */ (function (_super) {
         getById(Calendar)
     ], _Calendars);
     return _Calendars;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Calendars = graphInvokableFactory(types_Calendars);
+var Calendars = graphInvokableFactory(_Calendars);
 /**
  * Event
  */
-var types_Event = /** @class */ (function (_super) {
+var _Event = /** @class */ (function (_super) {
     __extends(_Event, _super);
     function _Event() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4243,13 +4102,13 @@ var types_Event = /** @class */ (function (_super) {
         updateable()
     ], _Event);
     return _Event;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Event = graphInvokableFactory(types_Event);
+var Event = graphInvokableFactory(_Event);
 /**
  * Events
  */
-var types_Events = /** @class */ (function (_super) {
+var _Events = /** @class */ (function (_super) {
     __extends(_Events, _super);
     function _Events() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4264,7 +4123,7 @@ var types_Events = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, graphPost(this, request_builders_body(properties))];
+                    case 0: return [4 /*yield*/, graphPost(this, body(properties))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -4280,23 +4139,23 @@ var types_Events = /** @class */ (function (_super) {
         getById(Event)
     ], _Events);
     return _Events;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Events = graphInvokableFactory(types_Events);
+var Events = graphInvokableFactory(_Events);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/groups.js
 
 
 
-addProp(types_Group, "calendar", Calendar, "calendar");
-addProp(types_Group, "events", Events);
+addProp(_Group, "calendar", Calendar, "calendar");
+addProp(_Group, "events", Events);
 //# sourceMappingURL=groups.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/users/types.js
 
 
 
 
-var types_User = /** @class */ (function (_super) {
+var _User = /** @class */ (function (_super) {
     __extends(_User, _super);
     function _User() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4326,10 +4185,10 @@ var types_User = /** @class */ (function (_super) {
         deleteable()
     ], _User);
     return _User;
-}(types_DirectoryObject));
+}(_DirectoryObject));
 
-var User = graphInvokableFactory(types_User);
-var types_Users = /** @class */ (function (_super) {
+var User = graphInvokableFactory(_User);
+var _Users = /** @class */ (function (_super) {
     __extends(_Users, _super);
     function _Users() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4339,10 +4198,10 @@ var types_Users = /** @class */ (function (_super) {
         getById(User)
     ], _Users);
     return _Users;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Users = graphInvokableFactory(types_Users);
-var types_People = /** @class */ (function (_super) {
+var Users = graphInvokableFactory(_Users);
+var _People = /** @class */ (function (_super) {
     __extends(_People, _super);
     function _People() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4351,19 +4210,19 @@ var types_People = /** @class */ (function (_super) {
         defaultPath("people")
     ], _People);
     return _People;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var People = graphInvokableFactory(types_People);
+var People = graphInvokableFactory(_People);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/users.js
 
 
 
 
-addProp(types_User, "calendar", Calendar, "calendar");
-addProp(types_User, "calendars", Calendars, "calendars");
-addProp(types_User, "events", Events);
-types_User.prototype.calendarView = calendarView;
+addProp(_User, "calendar", Calendar, "calendar");
+addProp(_User, "calendars", Calendars, "calendars");
+addProp(_User, "events", Events);
+_User.prototype.calendarView = calendarView;
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/index.js
 
@@ -4380,7 +4239,7 @@ types_User.prototype.calendarView = calendarView;
 /**
  * Contact
  */
-var types_Contact = /** @class */ (function (_super) {
+var _Contact = /** @class */ (function (_super) {
     __extends(_Contact, _super);
     function _Contact() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4390,13 +4249,13 @@ var types_Contact = /** @class */ (function (_super) {
         deleteable()
     ], _Contact);
     return _Contact;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Contact = graphInvokableFactory(types_Contact);
+var Contact = graphInvokableFactory(_Contact);
 /**
  * Contacts
  */
-var types_Contacts = /** @class */ (function (_super) {
+var _Contacts = /** @class */ (function (_super) {
     __extends(_Contacts, _super);
     function _Contacts() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4417,8 +4276,8 @@ var types_Contacts = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = Object(common["assign"])({ businessPhones: businessPhones, emailAddresses: emailAddresses, givenName: givenName, surName: surName }, additionalProperties);
-                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
+                        postBody = (0,common.assign)({ businessPhones: businessPhones, emailAddresses: emailAddresses, givenName: givenName, surName: surName }, additionalProperties);
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -4434,13 +4293,13 @@ var types_Contacts = /** @class */ (function (_super) {
         getById(Contact)
     ], _Contacts);
     return _Contacts;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Contacts = graphInvokableFactory(types_Contacts);
+var Contacts = graphInvokableFactory(_Contacts);
 /**
  * Contact Folder
  */
-var types_ContactFolder = /** @class */ (function (_super) {
+var _ContactFolder = /** @class */ (function (_super) {
     __extends(_ContactFolder, _super);
     function _ContactFolder() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4470,13 +4329,13 @@ var types_ContactFolder = /** @class */ (function (_super) {
         updateable()
     ], _ContactFolder);
     return _ContactFolder;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var ContactFolder = graphInvokableFactory(types_ContactFolder);
+var ContactFolder = graphInvokableFactory(_ContactFolder);
 /**
  * Contact Folders
  */
-var types_ContactFolders = /** @class */ (function (_super) {
+var _ContactFolders = /** @class */ (function (_super) {
     __extends(_ContactFolders, _super);
     function _ContactFolders() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4497,7 +4356,7 @@ var types_ContactFolders = /** @class */ (function (_super) {
                             displayName: displayName,
                             parentFolderId: parentFolderId,
                         };
-                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -4513,16 +4372,16 @@ var types_ContactFolders = /** @class */ (function (_super) {
         getById(ContactFolder)
     ], _ContactFolders);
     return _ContactFolders;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var ContactFolders = graphInvokableFactory(types_ContactFolders);
+var ContactFolders = graphInvokableFactory(_ContactFolders);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/users.js
 
 
 
-addProp(types_User, "contacts", Contacts);
-addProp(types_User, "contactFolders", ContactFolders);
+addProp(_User, "contacts", Contacts);
+addProp(_User, "contactFolders", ContactFolders);
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/index.js
 
@@ -4532,9 +4391,9 @@ addProp(types_User, "contactFolders", ContactFolders);
 
 
 
-addProp(types_Group, "conversations", Conversations);
-addProp(types_Group, "acceptedSenders", Senders, "acceptedsenders");
-addProp(types_Group, "rejectedSenders", Senders, "rejectedsenders");
+addProp(_Group, "conversations", Conversations);
+addProp(_Group, "acceptedSenders", Senders, "acceptedsenders");
+addProp(_Group, "rejectedSenders", Senders, "rejectedsenders");
 //# sourceMappingURL=groups.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/conversations/index.js
 
@@ -4548,7 +4407,7 @@ addProp(types_Group, "rejectedSenders", Senders, "rejectedsenders");
 
 
 
-var batch_GraphBatch = /** @class */ (function (_super) {
+var GraphBatch = /** @class */ (function (_super) {
     __extends(GraphBatch, _super);
     function GraphBatch(batchUrl, maxRequests) {
         if (batchUrl === void 0) { batchUrl = "v1.0/$batch"; }
@@ -4563,7 +4422,7 @@ var batch_GraphBatch = /** @class */ (function (_super) {
      * @param url Url to ensure is relative
      */
     GraphBatch.makeUrlRelative = function (url) {
-        if (!Object(common["isUrlAbsolute"])(url)) {
+        if (!(0,common.isUrlAbsolute)(url)) {
             // already not absolute, just give it back
             return url;
         }
@@ -4593,12 +4452,12 @@ var batch_GraphBatch = /** @class */ (function (_super) {
             var headers = {};
             // merge global config headers
             if (GraphRuntimeConfig.headers !== undefined && GraphRuntimeConfig.headers !== null) {
-                headers = Object(common["assign"])(headers, GraphRuntimeConfig.headers);
+                headers = (0,common.assign)(headers, GraphRuntimeConfig.headers);
             }
             if (reqInfo.options !== undefined) {
                 // merge per request headers
                 if (reqInfo.options.headers !== undefined && reqInfo.options.headers !== null) {
-                    headers = Object(common["assign"])(headers, reqInfo.options.headers);
+                    headers = (0,common.assign)(headers, reqInfo.options.headers);
                 }
                 // all non-get requests need their own content-type header
                 if (reqInfo.method !== "GET") {
@@ -4607,12 +4466,12 @@ var batch_GraphBatch = /** @class */ (function (_super) {
                 // add a request body
                 if (reqInfo.options.body !== undefined && reqInfo.options.body !== null) {
                     // we need to parse the body which was previously turned into a string
-                    requestFragment = Object(common["assign"])(requestFragment, {
+                    requestFragment = (0,common.assign)(requestFragment, {
                         body: JSON.parse(reqInfo.options.body),
                     });
                 }
             }
-            requestFragment = Object(common["assign"])(requestFragment, {
+            requestFragment = (0,common.assign)(requestFragment, {
                 headers: headers,
             });
             return requestFragment;
@@ -4621,7 +4480,7 @@ var batch_GraphBatch = /** @class */ (function (_super) {
     GraphBatch.parseResponse = function (requests, graphResponse) {
         return new Promise(function (resolve, reject) {
             // we need to see if we have an error and report that
-            if (Object(common["hOP"])(graphResponse, "error")) {
+            if ((0,common.hOP)(graphResponse, "error")) {
                 return reject(Error("Error Porcessing Batch: (" + graphResponse.error.code + ") " + graphResponse.error.message));
             }
             var parsedResponses = new Array(requests.length).fill(null);
@@ -4650,7 +4509,7 @@ var batch_GraphBatch = /** @class */ (function (_super) {
             Logger.write("Resolving empty batch.", 1 /* Info */);
             return Promise.resolve();
         }
-        var client = new graphhttpclient_GraphHttpClient();
+        var client = new GraphHttpClient();
         // create a working copy of our requests
         var requests = this.requests.slice();
         var error = false;
@@ -4670,7 +4529,7 @@ var batch_GraphBatch = /** @class */ (function (_super) {
                                             requests: GraphBatch.formatRequests(requestsChunk),
                                         };
                                         batchOptions = {
-                                            body: Object(common["jsS"])(batchRequest),
+                                            body: (0,common.jsS)(batchRequest),
                                             headers: {
                                                 "Accept": "application/json",
                                                 "Content-Type": "application/json",
@@ -4725,7 +4584,7 @@ var batch_GraphBatch = /** @class */ (function (_super) {
         }); });
     };
     return GraphBatch;
-}(batch_Batch));
+}(Batch));
 
 //# sourceMappingURL=batch.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/rest.js
@@ -4733,13 +4592,13 @@ var batch_GraphBatch = /** @class */ (function (_super) {
 
 
 
-var rest_GraphRest = /** @class */ (function (_super) {
+var GraphRest = /** @class */ (function (_super) {
     __extends(GraphRest, _super);
     function GraphRest() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     GraphRest.prototype.createBatch = function () {
-        return new batch_GraphBatch();
+        return new GraphBatch();
     };
     GraphRest.prototype.setup = function (config) {
         if (config.pageContext) {
@@ -4752,15 +4611,15 @@ var rest_GraphRest = /** @class */ (function (_super) {
         }
     };
     return GraphRest;
-}(graphqueryable_GraphQueryable));
+}(_GraphQueryable));
 
-var graph = new rest_GraphRest("v1.0");
+var graph = new GraphRest("v1.0");
 //# sourceMappingURL=rest.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/directory-objects/index.js
 
 
 
-Reflect.defineProperty(rest_GraphRest.prototype, "directoryObjects", {
+Reflect.defineProperty(GraphRest.prototype, "directoryObjects", {
     configurable: true,
     enumerable: true,
     get: function () {
@@ -4772,7 +4631,7 @@ Reflect.defineProperty(rest_GraphRest.prototype, "directoryObjects", {
 
 
 
-Reflect.defineProperty(rest_GraphRest.prototype, "groups", {
+Reflect.defineProperty(GraphRest.prototype, "groups", {
     configurable: true,
     enumerable: true,
     get: function () {
@@ -4787,7 +4646,7 @@ Reflect.defineProperty(rest_GraphRest.prototype, "groups", {
 /**
  * Represents a insights entity
  */
-var types_Insights = /** @class */ (function (_super) {
+var _Insights = /** @class */ (function (_super) {
     __extends(_Insights, _super);
     function _Insights() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4817,13 +4676,13 @@ var types_Insights = /** @class */ (function (_super) {
         defaultPath("insights")
     ], _Insights);
     return _Insights;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Insights = graphInvokableFactory(types_Insights);
+var Insights = graphInvokableFactory(_Insights);
 /**
  * Describes a Trending Insight instance
  */
-var types_TrendingInsight = /** @class */ (function (_super) {
+var _TrendingInsight = /** @class */ (function (_super) {
     __extends(_TrendingInsight, _super);
     function _TrendingInsight() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4836,14 +4695,14 @@ var types_TrendingInsight = /** @class */ (function (_super) {
         configurable: true
     });
     return _TrendingInsight;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var TrendingInsight = graphInvokableFactory(types_TrendingInsight);
+var TrendingInsight = graphInvokableFactory(_TrendingInsight);
 /**
  * Describes a collection of Trending Insight objects
  *
  */
-var types_TrendingInsights = /** @class */ (function (_super) {
+var _TrendingInsights = /** @class */ (function (_super) {
     __extends(_TrendingInsights, _super);
     function _TrendingInsights() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4853,13 +4712,13 @@ var types_TrendingInsights = /** @class */ (function (_super) {
         getById(TrendingInsight)
     ], _TrendingInsights);
     return _TrendingInsights;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var TrendingInsights = graphInvokableFactory(types_TrendingInsights);
+var TrendingInsights = graphInvokableFactory(_TrendingInsights);
 /**
  * Describes a Used Insight instance
  */
-var types_UsedInsight = /** @class */ (function (_super) {
+var _UsedInsight = /** @class */ (function (_super) {
     __extends(_UsedInsight, _super);
     function _UsedInsight() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4872,14 +4731,14 @@ var types_UsedInsight = /** @class */ (function (_super) {
         configurable: true
     });
     return _UsedInsight;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var UsedInsight = graphInvokableFactory(types_UsedInsight);
+var UsedInsight = graphInvokableFactory(_UsedInsight);
 /**
  * Describes a collection of Used Insight objects
  *
  */
-var types_UsedInsights = /** @class */ (function (_super) {
+var _UsedInsights = /** @class */ (function (_super) {
     __extends(_UsedInsights, _super);
     function _UsedInsights() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4889,13 +4748,13 @@ var types_UsedInsights = /** @class */ (function (_super) {
         getById(UsedInsight)
     ], _UsedInsights);
     return _UsedInsights;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var UsedInsights = graphInvokableFactory(types_UsedInsights);
+var UsedInsights = graphInvokableFactory(_UsedInsights);
 /**
  * Describes a Shared Insight instance
  */
-var types_SharedInsight = /** @class */ (function (_super) {
+var _SharedInsight = /** @class */ (function (_super) {
     __extends(_SharedInsight, _super);
     function _SharedInsight() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4908,14 +4767,14 @@ var types_SharedInsight = /** @class */ (function (_super) {
         configurable: true
     });
     return _SharedInsight;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var SharedInsight = graphInvokableFactory(types_SharedInsight);
+var SharedInsight = graphInvokableFactory(_SharedInsight);
 /**
  * Describes a collection of Shared Insight objects
  *
  */
-var types_SharedInsights = /** @class */ (function (_super) {
+var _SharedInsights = /** @class */ (function (_super) {
     __extends(_SharedInsights, _super);
     function _SharedInsights() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4925,13 +4784,13 @@ var types_SharedInsights = /** @class */ (function (_super) {
         getById(SharedInsight)
     ], _SharedInsights);
     return _SharedInsights;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var SharedInsights = graphInvokableFactory(types_SharedInsights);
+var SharedInsights = graphInvokableFactory(_SharedInsights);
 /**
  * Describes a Resource Entity instance
  */
-var types_Resource = /** @class */ (function (_super) {
+var _Resource = /** @class */ (function (_super) {
     __extends(_Resource, _super);
     function _Resource() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4940,15 +4799,15 @@ var types_Resource = /** @class */ (function (_super) {
         defaultPath("resource")
     ], _Resource);
     return _Resource;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Resource = graphInvokableFactory(types_Resource);
+var Resource = graphInvokableFactory(_Resource);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/insights/users.js
 
 
 
-addProp(types_User, "insights", Insights);
+addProp(_User, "insights", Insights);
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/insights/index.js
 
@@ -4964,7 +4823,7 @@ addProp(types_User, "insights", Insights);
 /**
  * Invitations
  */
-var types_Invitations = /** @class */ (function (_super) {
+var _Invitations = /** @class */ (function (_super) {
     __extends(_Invitations, _super);
     function _Invitations() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4983,8 +4842,8 @@ var types_Invitations = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = Object(common["assign"])({ inviteRedirectUrl: inviteRedirectUrl, invitedUserEmailAddress: invitedUserEmailAddress }, additionalProperties);
-                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
+                        postBody = (0,common.assign)({ inviteRedirectUrl: inviteRedirectUrl, invitedUserEmailAddress: invitedUserEmailAddress }, additionalProperties);
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, { data: data }];
@@ -4996,15 +4855,15 @@ var types_Invitations = /** @class */ (function (_super) {
         defaultPath("invitations")
     ], _Invitations);
     return _Invitations;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Invitations = graphInvokableFactory(types_Invitations);
+var Invitations = graphInvokableFactory(_Invitations);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/invitations/index.js
 
 
 
-Reflect.defineProperty(rest_GraphRest.prototype, "invitations", {
+Reflect.defineProperty(GraphRest.prototype, "invitations", {
     configurable: true,
     enumerable: true,
     get: function () {
@@ -5021,7 +4880,7 @@ Reflect.defineProperty(rest_GraphRest.prototype, "invitations", {
 /**
  * Member
  */
-var types_Member = /** @class */ (function (_super) {
+var _Member = /** @class */ (function (_super) {
     __extends(_Member, _super);
     function _Member() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5033,13 +4892,13 @@ var types_Member = /** @class */ (function (_super) {
         return graphDelete(this.clone(Member, "$ref"));
     };
     return _Member;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Member = graphInvokableFactory(types_Member);
+var Member = graphInvokableFactory(_Member);
 /**
  * Members
  */
-var types_Members = /** @class */ (function (_super) {
+var _Members = /** @class */ (function (_super) {
     __extends(_Members, _super);
     function _Members() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5052,23 +4911,23 @@ var types_Members = /** @class */ (function (_super) {
      * @param id Full @odata.id of the directoryObject, user, or group object you want to add (ex: `https://graph.microsoft.com/v1.0/directoryObjects/${id}`)
      */
     _Members.prototype.add = function (id) {
-        return graphPost(this.clone(Members, "$ref"), request_builders_body({ "@odata.id": id }));
+        return graphPost(this.clone(Members, "$ref"), body({ "@odata.id": id }));
     };
     _Members = __decorate([
         defaultPath("members"),
         getById(Member)
     ], _Members);
     return _Members;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Members = graphInvokableFactory(types_Members);
+var Members = graphInvokableFactory(_Members);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/members/groups.js
 
 
 
-addProp(types_Group, "owners", Members, "owners");
-addProp(types_Group, "members", Members);
+addProp(_Group, "owners", Members, "owners");
+addProp(_Group, "members", Members);
 //# sourceMappingURL=groups.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/members/index.js
 
@@ -5081,19 +4940,19 @@ addProp(types_Group, "members", Members);
 /**
  * Message
  */
-var types_Message = /** @class */ (function (_super) {
+var _Message = /** @class */ (function (_super) {
     __extends(_Message, _super);
     function _Message() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return _Message;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Message = graphInvokableFactory(types_Message);
+var Message = graphInvokableFactory(_Message);
 /**
  * Messages
  */
-var types_Messages = /** @class */ (function (_super) {
+var _Messages = /** @class */ (function (_super) {
     __extends(_Messages, _super);
     function _Messages() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5104,25 +4963,25 @@ var types_Messages = /** @class */ (function (_super) {
         addable()
     ], _Messages);
     return _Messages;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Messages = graphInvokableFactory(types_Messages);
+var Messages = graphInvokableFactory(_Messages);
 /**
  * MailFolder
  */
-var types_MailFolder = /** @class */ (function (_super) {
+var _MailFolder = /** @class */ (function (_super) {
     __extends(_MailFolder, _super);
     function _MailFolder() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return _MailFolder;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var MailFolder = graphInvokableFactory(types_MailFolder);
+var MailFolder = graphInvokableFactory(_MailFolder);
 /**
  * MailFolders
  */
-var types_MailFolders = /** @class */ (function (_super) {
+var _MailFolders = /** @class */ (function (_super) {
     __extends(_MailFolders, _super);
     function _MailFolders() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5133,13 +4992,13 @@ var types_MailFolders = /** @class */ (function (_super) {
         addable()
     ], _MailFolders);
     return _MailFolders;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var MailFolders = graphInvokableFactory(types_MailFolders);
+var MailFolders = graphInvokableFactory(_MailFolders);
 /**
  * MailboxSettings
  */
-var types_MailboxSettings = /** @class */ (function (_super) {
+var _MailboxSettings = /** @class */ (function (_super) {
     __extends(_MailboxSettings, _super);
     function _MailboxSettings() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5149,20 +5008,20 @@ var types_MailboxSettings = /** @class */ (function (_super) {
         updateable()
     ], _MailboxSettings);
     return _MailboxSettings;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var MailboxSettings = graphInvokableFactory(types_MailboxSettings);
+var MailboxSettings = graphInvokableFactory(_MailboxSettings);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/messages/users.js
 
 
 
 
-addProp(types_User, "messages", Messages);
-addProp(types_User, "mailboxSettings", MailboxSettings);
-addProp(types_User, "mailFolders", MailFolders);
-types_User.prototype.sendMail = function (message) {
-    return graphPost(this.clone(User, "sendMail"), request_builders_body(message));
+addProp(_User, "messages", Messages);
+addProp(_User, "mailboxSettings", MailboxSettings);
+addProp(_User, "mailFolders", MailFolders);
+_User.prototype.sendMail = function (message) {
+    return graphPost(this.clone(User, "sendMail"), body(message));
 };
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/messages/index.js
@@ -5180,7 +5039,7 @@ types_User.prototype.sendMail = function (message) {
  * Describes a Drive instance
  *
  */
-var types_Drive = /** @class */ (function (_super) {
+var _Drive = /** @class */ (function (_super) {
     __extends(_Drive, _super);
     function _Drive() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5214,20 +5073,20 @@ var types_Drive = /** @class */ (function (_super) {
         configurable: true
     });
     _Drive.prototype.getItemById = function (id) {
-        return DriveItem(this, Object(common["combine"])("items", id));
+        return DriveItem(this, (0,common.combine)("items", id));
     };
     _Drive = __decorate([
         defaultPath("drive")
     ], _Drive);
     return _Drive;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Drive = graphInvokableFactory(types_Drive);
+var Drive = graphInvokableFactory(_Drive);
 /**
  * Describes a collection of Drive objects
  *
  */
-var types_Drives = /** @class */ (function (_super) {
+var _Drives = /** @class */ (function (_super) {
     __extends(_Drives, _super);
     function _Drives() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5237,14 +5096,14 @@ var types_Drives = /** @class */ (function (_super) {
         getById(Drive)
     ], _Drives);
     return _Drives;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Drives = graphInvokableFactory(types_Drives);
+var Drives = graphInvokableFactory(_Drives);
 /**
  * Describes a Root instance
  *
  */
-var types_Root = /** @class */ (function (_super) {
+var _Root = /** @class */ (function (_super) {
     __extends(_Root, _super);
     function _Root() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5272,14 +5131,14 @@ var types_Root = /** @class */ (function (_super) {
         defaultPath("root")
     ], _Root);
     return _Root;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Root = graphInvokableFactory(types_Root);
+var Root = graphInvokableFactory(_Root);
 /**
  * Describes a Drive Item instance
  *
  */
-var types_DriveItem = /** @class */ (function (_super) {
+var _DriveItem = /** @class */ (function (_super) {
     __extends(_DriveItem, _super);
     function _DriveItem() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5306,7 +5165,7 @@ var types_DriveItem = /** @class */ (function (_super) {
         configurable: true
     });
     _DriveItem.prototype.move = function (parentReference, name) {
-        return graphPatch(this, request_builders_body(Object(common["assign"])(parentReference, { name: name })));
+        return graphPatch(this, body((0,common.assign)(parentReference, { name: name })));
     };
     _DriveItem.prototype.getContent = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -5316,7 +5175,7 @@ var types_DriveItem = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, this()];
                     case 1:
                         info = _a.sent();
-                        return [4 /*yield*/, common["safeGlobal"].fetch(info["@microsoft.graph.downloadUrl"], {
+                        return [4 /*yield*/, common.safeGlobal.fetch(info["@microsoft.graph.downloadUrl"], {
                                 headers: {
                                     "accept": "application/json",
                                 },
@@ -5325,7 +5184,7 @@ var types_DriveItem = /** @class */ (function (_super) {
                             })];
                     case 2:
                         r = _a.sent();
-                        p = new parsers_BlobParser();
+                        p = new BlobParser();
                         return [2 /*return*/, p.parse(r)];
                 }
             });
@@ -5341,14 +5200,14 @@ var types_DriveItem = /** @class */ (function (_super) {
         updateable()
     ], _DriveItem);
     return _DriveItem;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var DriveItem = graphInvokableFactory(types_DriveItem);
+var DriveItem = graphInvokableFactory(_DriveItem);
 /**
  * Describes a collection of Drive Item objects
  *
  */
-var types_DriveItems = /** @class */ (function (_super) {
+var _DriveItems = /** @class */ (function (_super) {
     __extends(_DriveItems, _super);
     function _DriveItems() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5357,16 +5216,16 @@ var types_DriveItems = /** @class */ (function (_super) {
         getById(DriveItem)
     ], _DriveItems);
     return _DriveItems;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var DriveItems = graphInvokableFactory(types_DriveItems);
+var DriveItems = graphInvokableFactory(_DriveItems);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/onedrive/users.js
 
 
 
-addProp(types_User, "drive", Drive);
-addProp(types_User, "drives", Drives);
+addProp(_User, "drive", Drive);
+addProp(_User, "drives", Drives);
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/onedrive/index.js
 
@@ -5381,7 +5240,7 @@ addProp(types_User, "drives", Drives);
 /**
  * Represents a onenote entity
  */
-var types_OneNote = /** @class */ (function (_super) {
+var _OneNote = /** @class */ (function (_super) {
     __extends(_OneNote, _super);
     function _OneNote() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5411,14 +5270,14 @@ var types_OneNote = /** @class */ (function (_super) {
         defaultPath("onenote")
     ], _OneNote);
     return _OneNote;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var OneNote = graphInvokableFactory(types_OneNote);
+var OneNote = graphInvokableFactory(_OneNote);
 /**
  * Describes a notebook instance
  *
  */
-var types_Notebook = /** @class */ (function (_super) {
+var _Notebook = /** @class */ (function (_super) {
     __extends(_Notebook, _super);
     function _Notebook() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5431,14 +5290,14 @@ var types_Notebook = /** @class */ (function (_super) {
         configurable: true
     });
     return _Notebook;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Notebook = graphInvokableFactory(types_Notebook);
+var Notebook = graphInvokableFactory(_Notebook);
 /**
  * Describes a collection of Notebook objects
  *
  */
-var types_Notebooks = /** @class */ (function (_super) {
+var _Notebooks = /** @class */ (function (_super) {
     __extends(_Notebooks, _super);
     function _Notebooks() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5453,7 +5312,7 @@ var types_Notebooks = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, graphPost(this, request_builders_body({ displayName: displayName }))];
+                    case 0: return [4 /*yield*/, graphPost(this, body({ displayName: displayName }))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5469,26 +5328,26 @@ var types_Notebooks = /** @class */ (function (_super) {
         getById(Notebook)
     ], _Notebooks);
     return _Notebooks;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Notebooks = graphInvokableFactory(types_Notebooks);
+var Notebooks = graphInvokableFactory(_Notebooks);
 /**
  * Describes a sections instance
  */
-var types_Section = /** @class */ (function (_super) {
+var _Section = /** @class */ (function (_super) {
     __extends(_Section, _super);
     function _Section() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return _Section;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Section = graphInvokableFactory(types_Section);
+var Section = graphInvokableFactory(_Section);
 /**
  * Describes a collection of Sections objects
  *
  */
-var types_Sections = /** @class */ (function (_super) {
+var _Sections = /** @class */ (function (_super) {
     __extends(_Sections, _super);
     function _Sections() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5503,7 +5362,7 @@ var types_Sections = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, graphPost(this, request_builders_body({ displayName: displayName }))];
+                    case 0: return [4 /*yield*/, graphPost(this, body({ displayName: displayName }))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5519,15 +5378,15 @@ var types_Sections = /** @class */ (function (_super) {
         getById(Section)
     ], _Sections);
     return _Sections;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Sections = graphInvokableFactory(types_Sections);
+var Sections = graphInvokableFactory(_Sections);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/onenote/users.js
 
 
 
-addProp(types_User, "onenote", OneNote);
+addProp(_User, "onenote", OneNote);
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/onenote/index.js
 
@@ -5539,7 +5398,7 @@ addProp(types_User, "onenote", OneNote);
 
 
 
-var types_Photo = /** @class */ (function (_super) {
+var _Photo = /** @class */ (function (_super) {
     __extends(_Photo, _super);
     function _Photo() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5548,13 +5407,13 @@ var types_Photo = /** @class */ (function (_super) {
      * Gets the image bytes as a blob (browser)
      */
     _Photo.prototype.getBlob = function () {
-        return this.clone(Photo, "$value", false).usingParser(new parsers_BlobParser())();
+        return this.clone(Photo, "$value", false).usingParser(new BlobParser())();
     };
     /**
-     * Gets the image file byets as a Buffer (node.js)
+     * Gets the image file bytes as a Buffer (node.js)
      */
     _Photo.prototype.getBuffer = function () {
-        return this.clone(Photo, "$value", false).usingParser(new parsers_BufferParser())();
+        return this.clone(Photo, "$value", false).usingParser(new BufferParser())();
     };
     /**
      * Sets the file bytes
@@ -5568,21 +5427,21 @@ var types_Photo = /** @class */ (function (_super) {
         defaultPath("photo")
     ], _Photo);
     return _Photo;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Photo = graphInvokableFactory(types_Photo);
+var Photo = graphInvokableFactory(_Photo);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/groups.js
 
 
 
-addProp(types_Group, "photo", Photo);
+addProp(_Group, "photo", Photo);
 //# sourceMappingURL=groups.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/users.js
 
 
 
-addProp(types_User, "photo", Photo);
+addProp(_User, "photo", Photo);
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/index.js
 
@@ -5600,7 +5459,7 @@ addProp(types_User, "photo", Photo);
 /**
  * Planner
  */
-var types_Planner = /** @class */ (function (_super) {
+var _Planner = /** @class */ (function (_super) {
     __extends(_Planner, _super);
     function _Planner() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5633,13 +5492,13 @@ var types_Planner = /** @class */ (function (_super) {
         defaultPath("planner")
     ], _Planner);
     return _Planner;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Planner = graphInvokableFactory(types_Planner);
+var Planner = graphInvokableFactory(_Planner);
 /**
  * Details
  */
-var types_PlanDetails = /** @class */ (function (_super) {
+var _PlanDetails = /** @class */ (function (_super) {
     __extends(_PlanDetails, _super);
     function _PlanDetails() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5649,13 +5508,13 @@ var types_PlanDetails = /** @class */ (function (_super) {
         updateableWithETag()
     ], _PlanDetails);
     return _PlanDetails;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var PlanDetails = graphInvokableFactory(types_PlanDetails);
+var PlanDetails = graphInvokableFactory(_PlanDetails);
 /**
  * Plan
  */
-var types_Plan = /** @class */ (function (_super) {
+var _Plan = /** @class */ (function (_super) {
     __extends(_Plan, _super);
     function _Plan() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5686,10 +5545,10 @@ var types_Plan = /** @class */ (function (_super) {
         deleteableWithETag()
     ], _Plan);
     return _Plan;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Plan = graphInvokableFactory(types_Plan);
-var types_Plans = /** @class */ (function (_super) {
+var Plan = graphInvokableFactory(_Plan);
+var _Plans = /** @class */ (function (_super) {
     __extends(_Plans, _super);
     function _Plans() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5705,7 +5564,7 @@ var types_Plans = /** @class */ (function (_super) {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, graphPost(this, request_builders_body({ owner: owner, title: title }))];
+                    case 0: return [4 /*yield*/, graphPost(this, body({ owner: owner, title: title }))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5721,13 +5580,13 @@ var types_Plans = /** @class */ (function (_super) {
         getById(Plan)
     ], _Plans);
     return _Plans;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Plans = graphInvokableFactory(types_Plans);
+var Plans = graphInvokableFactory(_Plans);
 /**
  * Details
  */
-var types_TaskDetails = /** @class */ (function (_super) {
+var _TaskDetails = /** @class */ (function (_super) {
     __extends(_TaskDetails, _super);
     function _TaskDetails() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5737,13 +5596,13 @@ var types_TaskDetails = /** @class */ (function (_super) {
         updateableWithETag()
     ], _TaskDetails);
     return _TaskDetails;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var TaskDetails = graphInvokableFactory(types_TaskDetails);
+var TaskDetails = graphInvokableFactory(_TaskDetails);
 /**
  * Task
  */
-var types_Task = /** @class */ (function (_super) {
+var _Task = /** @class */ (function (_super) {
     __extends(_Task, _super);
     function _Task() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5760,13 +5619,13 @@ var types_Task = /** @class */ (function (_super) {
         deleteableWithETag()
     ], _Task);
     return _Task;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Task = graphInvokableFactory(types_Task);
+var Task = graphInvokableFactory(_Task);
 /**
  * Tasks
  */
-var types_Tasks = /** @class */ (function (_super) {
+var _Tasks = /** @class */ (function (_super) {
     __extends(_Tasks, _super);
     function _Tasks() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5785,16 +5644,16 @@ var types_Tasks = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = Object(common["assign"])({
+                        postBody = (0,common.assign)({
                             planId: planId,
                             title: title,
                         }, assignments);
                         if (bucketId) {
-                            postBody = Object(common["assign"])(postBody, {
+                            postBody = (0,common.assign)(postBody, {
                                 bucketId: bucketId,
                             });
                         }
-                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5810,13 +5669,13 @@ var types_Tasks = /** @class */ (function (_super) {
         getById(Task)
     ], _Tasks);
     return _Tasks;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Tasks = graphInvokableFactory(types_Tasks);
+var Tasks = graphInvokableFactory(_Tasks);
 /**
  * Bucket
  */
-var types_Bucket = /** @class */ (function (_super) {
+var _Bucket = /** @class */ (function (_super) {
     __extends(_Bucket, _super);
     function _Bucket() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5833,13 +5692,13 @@ var types_Bucket = /** @class */ (function (_super) {
         deleteableWithETag()
     ], _Bucket);
     return _Bucket;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Bucket = graphInvokableFactory(types_Bucket);
+var Bucket = graphInvokableFactory(_Bucket);
 /**
  * Buckets
  */
-var types_Buckets = /** @class */ (function (_super) {
+var _Buckets = /** @class */ (function (_super) {
     __extends(_Buckets, _super);
     function _Buckets() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5862,7 +5721,7 @@ var types_Buckets = /** @class */ (function (_super) {
                             orderHint: orderHint ? orderHint : "",
                             planId: planId,
                         };
-                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5878,21 +5737,21 @@ var types_Buckets = /** @class */ (function (_super) {
         getById(Bucket)
     ], _Buckets);
     return _Buckets;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Buckets = graphInvokableFactory(types_Buckets);
+var Buckets = graphInvokableFactory(_Buckets);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/groups.js
 
 
 
-addProp(types_Group, "plans", Plans, "planner/plans");
+addProp(_Group, "plans", Plans, "planner/plans");
 //# sourceMappingURL=groups.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/users.js
 
 
 
-addProp(types_User, "tasks", Tasks, "planner/tasks");
+addProp(_User, "tasks", Tasks, "planner/tasks");
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/index.js
 
@@ -5900,7 +5759,7 @@ addProp(types_User, "tasks", Tasks, "planner/tasks");
 
 
 
-Reflect.defineProperty(rest_GraphRest.prototype, "planner", {
+Reflect.defineProperty(GraphRest.prototype, "planner", {
     configurable: true,
     enumerable: true,
     get: function () {
@@ -5918,7 +5777,7 @@ Reflect.defineProperty(rest_GraphRest.prototype, "planner", {
 /**
  * Subscription
  */
-var types_Subscription = /** @class */ (function (_super) {
+var _Subscription = /** @class */ (function (_super) {
     __extends(_Subscription, _super);
     function _Subscription() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5928,13 +5787,13 @@ var types_Subscription = /** @class */ (function (_super) {
         updateable()
     ], _Subscription);
     return _Subscription;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Subscription = graphInvokableFactory(types_Subscription);
+var Subscription = graphInvokableFactory(_Subscription);
 /**
  * Subscriptions
  */
-var types_Subscriptions = /** @class */ (function (_super) {
+var _Subscriptions = /** @class */ (function (_super) {
     __extends(_Subscriptions, _super);
     function _Subscriptions() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -5956,13 +5815,13 @@ var types_Subscriptions = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = Object(common["assign"])({
+                        postBody = (0,common.assign)({
                             changeType: changeType,
                             expirationDateTime: expirationDateTime,
                             notificationUrl: notificationUrl,
                             resource: resource,
                         }, props);
-                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -5978,15 +5837,15 @@ var types_Subscriptions = /** @class */ (function (_super) {
         getById(Subscription)
     ], _Subscriptions);
     return _Subscriptions;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Subscriptions = graphInvokableFactory(types_Subscriptions);
+var Subscriptions = graphInvokableFactory(_Subscriptions);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/subscriptions/index.js
 
 
 
-Reflect.defineProperty(rest_GraphRest.prototype, "subscriptions", {
+Reflect.defineProperty(GraphRest.prototype, "subscriptions", {
     configurable: true,
     enumerable: true,
     get: function () {
@@ -6005,7 +5864,7 @@ Reflect.defineProperty(rest_GraphRest.prototype, "subscriptions", {
 /**
  * Represents a Microsoft Team
  */
-var types_Team = /** @class */ (function (_super) {
+var _Team = /** @class */ (function (_super) {
     __extends(_Team, _super);
     function _Team() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -6024,7 +5883,7 @@ var types_Team = /** @class */ (function (_super) {
      */
     _Team.prototype.archive = function (shouldSetSpoSiteReadOnlyForMembers) {
         if (shouldSetSpoSiteReadOnlyForMembers === void 0) { shouldSetSpoSiteReadOnlyForMembers = false; }
-        return graphPost(this.clone(Team, "archive"), request_builders_body({ shouldSetSpoSiteReadOnlyForMembers: shouldSetSpoSiteReadOnlyForMembers }));
+        return graphPost(this.clone(Team, "archive"), body({ shouldSetSpoSiteReadOnlyForMembers: shouldSetSpoSiteReadOnlyForMembers }));
     };
     /**
     * Unarchives this Team
@@ -6054,20 +5913,20 @@ var types_Team = /** @class */ (function (_super) {
         // instance that folks can query to see if/when this is complete
         // it could just have a single method getResult (or whatever) that returns a promise that
         // resolves when the operation is successful or rejects when it is not
-        return graphPost(this.clone(Team, "clone"), request_builders_body(postBody));
+        return graphPost(this.clone(Team, "clone"), body(postBody));
     };
     _Team = __decorate([
         defaultPath("team"),
         updateable()
     ], _Team);
     return _Team;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Team = graphInvokableFactory(types_Team);
+var Team = graphInvokableFactory(_Team);
 /**
  * Teams
  */
-var types_Teams = /** @class */ (function (_super) {
+var _Teams = /** @class */ (function (_super) {
     __extends(_Teams, _super);
     function _Teams() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -6077,13 +5936,13 @@ var types_Teams = /** @class */ (function (_super) {
         getById(Team)
     ], _Teams);
     return _Teams;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Teams = graphInvokableFactory(types_Teams);
+var Teams = graphInvokableFactory(_Teams);
 /**
  * Channel
  */
-var types_Channel = /** @class */ (function (_super) {
+var _Channel = /** @class */ (function (_super) {
     __extends(_Channel, _super);
     function _Channel() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -6096,13 +5955,13 @@ var types_Channel = /** @class */ (function (_super) {
         configurable: true
     });
     return _Channel;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Channel = graphInvokableFactory(types_Channel);
+var Channel = graphInvokableFactory(_Channel);
 /**
  * Channels
  */
-var types_Channels = /** @class */ (function (_super) {
+var _Channels = /** @class */ (function (_super) {
     __extends(_Channels, _super);
     function _Channels() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -6124,7 +5983,7 @@ var types_Channels = /** @class */ (function (_super) {
                             description: description,
                             displayName: displayName,
                         };
-                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -6140,13 +5999,13 @@ var types_Channels = /** @class */ (function (_super) {
         getById(Channel)
     ], _Channels);
     return _Channels;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Channels = graphInvokableFactory(types_Channels);
+var Channels = graphInvokableFactory(_Channels);
 /**
  * Tab
  */
-var types_Tab = /** @class */ (function (_super) {
+var _Tab = /** @class */ (function (_super) {
     __extends(_Tab, _super);
     function _Tab() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -6157,13 +6016,13 @@ var types_Tab = /** @class */ (function (_super) {
         deleteable()
     ], _Tab);
     return _Tab;
-}(graphqueryable_GraphQueryableInstance));
+}(_GraphQueryableInstance));
 
-var Tab = graphInvokableFactory(types_Tab);
+var Tab = graphInvokableFactory(_Tab);
 /**
  * Tabs
  */
-var types_Tabs = /** @class */ (function (_super) {
+var _Tabs = /** @class */ (function (_super) {
     __extends(_Tabs, _super);
     function _Tabs() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -6180,11 +6039,11 @@ var types_Tabs = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        postBody = Object(common["assign"])({
+                        postBody = (0,common.assign)({
                             displayName: name,
                             "teamsApp@odata.bind": appUrl,
                         }, properties);
-                        return [4 /*yield*/, graphPost(this, request_builders_body(postBody))];
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, {
@@ -6200,15 +6059,15 @@ var types_Tabs = /** @class */ (function (_super) {
         getById(Tab)
     ], _Tabs);
     return _Tabs;
-}(graphqueryable_GraphQueryableCollection));
+}(_GraphQueryableCollection));
 
-var Tabs = graphInvokableFactory(types_Tabs);
+var Tabs = graphInvokableFactory(_Tabs);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/teams/users.js
 
 
 
-addProp(types_User, "joinedTeams", Teams, "joinedTeams");
+addProp(_User, "joinedTeams", Teams, "joinedTeams");
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/teams/index.js
 
@@ -6219,13 +6078,13 @@ addProp(types_User, "joinedTeams", Teams, "joinedTeams");
 
 
 
-addProp(types_Group, "team", Team);
-types_Group.prototype.createTeam = function (props) {
+addProp(_Group, "team", Team);
+_Group.prototype.createTeam = function (props) {
     return __awaiter(this, void 0, void 0, function () {
         var data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, graphPut(this.clone(Group, "team"), request_builders_body(props))];
+                case 0: return [4 /*yield*/, graphPut(this.clone(Group, "team"), body(props))];
                 case 1:
                     data = _a.sent();
                     return [2 /*return*/, {
@@ -6236,7 +6095,7 @@ types_Group.prototype.createTeam = function (props) {
         });
     });
 };
-Reflect.defineProperty(rest_GraphRest.prototype, "teams", {
+Reflect.defineProperty(GraphRest.prototype, "teams", {
     configurable: true,
     enumerable: true,
     get: function () {
@@ -6248,14 +6107,14 @@ Reflect.defineProperty(rest_GraphRest.prototype, "teams", {
 
 
 
-Reflect.defineProperty(rest_GraphRest.prototype, "me", {
+Reflect.defineProperty(GraphRest.prototype, "me", {
     configurable: true,
     enumerable: true,
     get: function () {
         return User(this, "me");
     },
 });
-Reflect.defineProperty(rest_GraphRest.prototype, "users", {
+Reflect.defineProperty(GraphRest.prototype, "users", {
     configurable: true,
     enumerable: true,
     get: function () {
@@ -6312,5 +6171,90 @@ Reflect.defineProperty(rest_GraphRest.prototype, "users", {
 
 
 /***/ })
-/******/ ]);
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => module['default'] :
+/******/ 				() => module;
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	// module exports must be returned from runtime so entry inlining is disabled
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(149);
+/******/ })()
+;
 });
