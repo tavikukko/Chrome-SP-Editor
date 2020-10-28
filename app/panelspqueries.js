@@ -13,6 +13,8 @@ var mod_addin = "var mod_addin = '" + chrome.extension.getURL('app/js/sp-addinhe
 var mod_client = "var mod_client = '" + chrome.extension.getURL('app/js/sp-clientsvc.es5.umd.bundle.js') + "';";
 var mod_taxonomy = "var mod_taxonomy = '" + chrome.extension.getURL('app/js/sp-taxonomy.es5.umd.bundle.js') + "';";
 var mod_sp = "var mod_sp = '" + chrome.extension.getURL('app/js/sp.es5.umd.bundle.js') + "';";
+var mod_msal = "var mod_msal = '" + chrome.extension.getURL('app/js/msal2.js') + "';";
+var mod_graph_sdk = "var mod_graph_sdk = '" + chrome.extension.getURL('app/js/graph-sdk.es5.umd.bundle.js') + "';";
 
 // getCustomActions
 var getCustomActions = function getCustomActions() {
@@ -3401,7 +3403,7 @@ function hideDimmer() {
     elem('dimmer').style.display = 'none';
 }
 
-var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman', 'modernproperties', 'sitedesigns', 'sitescriptscontainer', 'search'];
+var allElements = ['save', 'scrlinks', 'files', 'webproperties', 'listproperties', 'webhooks', 'pnpjsconsole', 'graphsdkconsole', 'about', 'pageeditor', 'fileeditorcontainer', 'appcatalogcontainer', 'graphman', 'modernproperties', 'sitedesigns', 'sitescriptscontainer', 'search'];
 
 function swap(visibleElement) {
   for (var i = 0; i < allElements.length; i++) {

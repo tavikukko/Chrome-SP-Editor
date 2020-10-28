@@ -65,7 +65,7 @@ riot.tag("pnpjsconsole", `
           playground = monaco.editor.create(document.getElementById('pnpjsconsole'), {
             model: monaco.editor.createModel(
               `/*
-  Hit CTRL/CMD + D to run the code, view console for results
+  Hit 'ctrl + d' or 'cmd + d' to run the code, view console for results
 */
 import { sp } from "@pnp/sp/presets/all";
 
@@ -84,6 +84,8 @@ import { sp } from "@pnp/sp/presets/all";
 import { graph } from "@pnp/graph"
 import "@pnp/graph/users"
 
+// wrapping the code inside self-excecuting async function
+// enables you to use await expression
 (async () => {
 
   // To be able to load context, the inspected page needs to be a modern page

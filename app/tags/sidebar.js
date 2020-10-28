@@ -30,11 +30,14 @@ riot.tag("sidebar", `
                   <a href="#" onclick="{ btnPnPJSConsole }">PnPjs Console v2.0.11</a>
                 </li>
                 <li>
-                  <a href="#" onclick="{ btnSearch }">Search</a>
+                  <a href="#" onclick="{ btnGraphSDKConsole }">Graph SDK Console v2.1.0</a>
                 </li>
                 <li>
-                  <a href="#" onclick="{ btnGraphMan }">Graph Man</a>
+                  <a href="#" onclick="{ btnSearch }">Search</a>
                 </li>
+                <!--<li>
+                  <a href="#" onclick="{ btnGraphMan }">Graph Man</a>
+                </li>-->
                 <li>
                   <a href="#" onclick="{ btnPageEditor }">Page editor</a>
                 </li>
@@ -116,8 +119,25 @@ riot.tag("sidebar", `
 
     this.btnPnPJSConsole = function () {
       swap("pnpjsconsole");
-      if (pnpjsconsole) { playground.layout(); return; }
+      if (pnpjsconsole) {
+        playground.layout();
+        let model = playground.getModel().getValue();
+        playground.setValue(model + ' ');
+        return;
+      }
       pnpjsconsole = riot.mount("pnpjsconsole");
+    }.bind(this);
+
+    this.btnGraphSDKConsole = function () {
+      swap("graphsdkconsole");
+      if (graphsdkconsole) {
+        playground2.layout();
+        playgroundresults.layout();
+        let model2 = playground2.getModel().getValue();
+        playground2.setValue(model2 + ' ');
+        return;
+      }
+      graphsdkconsole = riot.mount("graphsdkconsole");
     }.bind(this);
 
     this.btnSearch = function () {

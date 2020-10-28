@@ -330,4 +330,41 @@ module.exports = [{
   optimization: {
     minimize: false
   },
+},
+{
+  // graph-sdk.js.js
+  entry: "./pnpjs-sources/index-graph-sdk.ts",
+  mode: "production",
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: [{
+          loader: "ts-loader",
+        }],
+      },
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto",
+      },
+    ]
+  },
+  output: {
+    filename: "graph-sdk.es5.umd.bundle.js",
+    library: "graph-sdk",
+    libraryTarget: "umd",
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".json"],
+  },
+  stats: {
+    assets: false,
+    colors: true,
+  },
+  optimization: {
+    minimize: false
+  },
 }];

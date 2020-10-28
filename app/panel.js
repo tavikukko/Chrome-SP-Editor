@@ -28,6 +28,7 @@ if (window.location.href.indexOf("#access_token=") < 0) {
   var graphman = null;
   var graphmantoken = "";
   var pnpjsconsole = null;
+  var graphsdkconsole = null;
   var fileeditorsubs = [];
   var fileeditormain = null;
   var fileeditoreditor;
@@ -67,6 +68,7 @@ if (window.location.href.indexOf("#access_token=") < 0) {
 
     getDir(directoryEntry, 'app/@pnp');
     getDir(directoryEntry, 'app/@microsoft');
+    getDir(directoryEntry, 'app/msal');
 
   });
   // this is called from multiple tabs, so it will be here

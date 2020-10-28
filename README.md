@@ -8,6 +8,9 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 5.6.0 New feature
+    * Graph SDK Console
+    * removed Graph Man
 - 5.5.11 updates
     * Updated PnPjs to 2.0.11
 - 5.5.10 updates

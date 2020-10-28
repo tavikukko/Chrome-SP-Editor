@@ -196,6 +196,19 @@ sitescriptscontainer {
   border-left:1px solid grey;
   overflow: hidden;
 }
+#graphsdkconsole {
+  width:100%;
+  height:70vh;
+  border-left:1px solid grey;
+  overflow: hidden;
+}
+#consoleresults {
+  width:100%;
+  height:30vh;
+  border-left:1px solid grey;
+  border-top:5px solid grey;
+  overflow: hidden;
+}
 #webpart-xml-container {
   width: 78%;
   height: 92%;
