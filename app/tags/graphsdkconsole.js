@@ -87,13 +87,13 @@ import {
 (async () => {
   /*
     - If you wish to use your own app (V2) remember to add
-        "chrome-extension://lmbnnfjlkpcmilgoennlphggfmmjoedm/app/panel.html"
+        "chrome-extension://ecblfcmjnbbgaojblcpmjoamegpbodhd/app/panel.html"
       as redirectUrl
   */
   const msalConfig: Configuration = {
     auth: {
       clientId: "20d34c96-396e-4bf0-a008-472ef10a5099", // SP Editor azure ad multitenant app
-      redirectUri: "chrome-extension://lmbnnfjlkpcmilgoennlphggfmmjoedm/app/panel.html",
+      redirectUri: "chrome-extension://ecblfcmjnbbgaojblcpmjoamegpbodhd/app/panel.html",
     },
     cache: {
       cacheLocation: 'sessionStorage',
