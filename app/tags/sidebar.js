@@ -27,10 +27,10 @@ riot.tag("sidebar", `
                   <a href="#" onclick="{ btnWebhooks }">Webhooks</a>
                 </li>
                 <li>
-                  <a href="#" onclick="{ btnPnPJSConsole }">PnPjs Console v2.0.11</a>
+                  <a href="#" onclick="{ btnPnPJSConsole }">PnPjs Console v2.0.12</a>
                 </li>
                 <li>
-                  <a href="#" onclick="{ btnGraphSDKConsole }">Graph SDK Console v2.1.0</a>
+                  <a href="#" onclick="{ btnGraphSDKConsole }">Graph SDK Console v2.1.1</a>
                 </li>
                 <li>
                   <a href="#" onclick="{ btnSearch }">Search</a>

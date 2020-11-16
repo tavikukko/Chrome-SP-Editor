@@ -7,4 +7,4 @@
 /**
  * @module Version
  */
-export declare const PACKAGE_VERSION = "2.1.0";
+export declare const PACKAGE_VERSION = "2.1.1";

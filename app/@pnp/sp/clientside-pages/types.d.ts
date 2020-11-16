@@ -132,12 +132,14 @@ export declare class _ClientsidePage extends _SharePointQueryable implements ICl
      * @param altText Alt text to describe the image
      * @param bannerProps Additional properties to control display of the banner
      */
-    setBannerImage(url: string, props?: {
-        altText?: string;
-        imageSourceType?: number;
-        translateX?: number;
-        translateY?: number;
-    }): void;
+    setBannerImage(url: string, props?: IBannerImageProps): void;
+    /**
+     * Sets the banner image url from an external source. You must call save to persist the changes
+     *
+     * @param url absolute url of the external file
+     * @param props optional set of properties to control display of the banner image
+     */
+    setBannerImageFromExternalUrl(url: string, props?: IBannerImageProps): Promise<void>;
     /**
      * Sets the authors for this page from the supplied list of user integer ids
      *
@@ -434,5 +436,11 @@ export interface IClientControlEmphasis {
 }
 export declare type LayoutType = "FullWidthImage" | "NoImage" | "ColorBlock" | "CutInShape";
 export declare type TextAlignment = "Left" | "Center";
+export interface IBannerImageProps {
+    altText?: string;
+    imageSourceType?: number;
+    translateX?: number;
+    translateY?: number;
+}
 export {};
 //# sourceMappingURL=types.d.ts.map

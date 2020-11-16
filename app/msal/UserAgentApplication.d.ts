@@ -249,7 +249,7 @@ export declare class UserAgentApplication {
     private logoutAsync;
     /**
      * @hidden
-     * Clear all access tokens in the cache.
+     * Clear all access tokens and ID tokens in the cache.
      * @ignore
      */
     protected clearCache(): void;

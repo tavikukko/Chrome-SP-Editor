@@ -117,6 +117,10 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      */
     addSubFolderUsingPath(leafPath: string): Promise<IFolder>;
     /**
+     * Gets the parent information for this folder's list and web
+     */
+    getParentInfos(): Promise<IFolderParentInfos>;
+    /**
      * Gets the shareable item associated with this folder
      */
     protected getShareable(): Promise<IItem>;
@@ -183,5 +187,22 @@ export interface IFolderDeleteParams {
      * If set to false, folders that are not empty may be deleted.
      */
     DeleteIfEmpty: boolean;
+}
+export interface IFolderParentInfos {
+    Folder: {
+        ServerRelativeUrl: string;
+    };
+    ParentList: {
+        Id: string;
+        RootFolderServerRelativePath: IResourcePath;
+        RootFolderServerRelativeUrl: string;
+        RootFolderUniqueId: string;
+    };
+    ParentWeb: {
+        Id: string;
+        ServerRelativePath: IResourcePath;
+        ServerRelativeUrl: string;
+        Url: string;
+    };
 }
 //# sourceMappingURL=types.d.ts.map

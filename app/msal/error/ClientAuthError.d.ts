@@ -1,14 +1,6 @@
 import { AuthError } from "./AuthError";
 import { IdToken } from "../IdToken";
 export declare const ClientAuthErrorMessage: {
-    multipleMatchingTokens: {
-        code: string;
-        desc: string;
-    };
-    multipleMatchingIdTokens: {
-        code: string;
-        desc: string;
-    };
     multipleCacheAuthorities: {
         code: string;
         desc: string;
@@ -100,7 +92,6 @@ export declare const ClientAuthErrorMessage: {
 export declare class ClientAuthError extends AuthError {
     constructor(errorCode: string, errorMessage?: string);
     static createEndpointResolutionError(errDetail?: string): ClientAuthError;
-    static createMultipleMatchingTokensInCacheError(tokenType: string, scopes: Array<string>): ClientAuthError;
     static createMultipleAuthoritiesInCacheError(scope: string): ClientAuthError;
     static createPopupWindowError(errDetail?: string): ClientAuthError;
     static createTokenRenewalTimeoutError(): ClientAuthError;

@@ -2,6 +2,7 @@ import { _SharePointQueryableInstance, ISharePointQueryableInstance, _SharePoint
 import { ITypedHash } from "@pnp/common";
 import { IListItemFormUpdateValue } from "../lists/types";
 import { IList } from "../lists";
+import { IResourcePath } from '../utils/toResourcePath';
 /**
  * Describes a collection of Item objects
  *
@@ -124,6 +125,10 @@ export declare class _Item extends _SharePointQueryableInstance {
      */
     validateUpdateListItem(formValues: IListItemFormUpdateValue[], bNewDocumentUpdate?: boolean): Promise<IListItemFormUpdateValue[]>;
     /**
+     * Gets the parent information for this item's list and web
+     */
+    getParentInfos(): Promise<IItemParentInfos>;
+    /**
      * Ensures we have the proper list item entity type name, either from the value provided or from the list
      *
      * @param candidatelistItemEntityTypeFullName The potential type name
@@ -194,5 +199,22 @@ export interface IItemDeleteParams {
      * the LockType value SPLockType.None.
      */
     BypassSharedLock: boolean;
+}
+export interface IItemParentInfos {
+    Item: {
+        Id: string;
+    };
+    ParentList: {
+        Id: string;
+        RootFolderServerRelativePath: IResourcePath;
+        RootFolderServerRelativeUrl: string;
+        RootFolderUniqueId: string;
+    };
+    ParentWeb: {
+        Id: string;
+        ServerRelativePath: IResourcePath;
+        ServerRelativeUrl: string;
+        Url: string;
+    };
 }
 //# sourceMappingURL=types.d.ts.map

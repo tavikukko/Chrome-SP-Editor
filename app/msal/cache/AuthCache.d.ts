@@ -95,6 +95,12 @@ export declare class AuthCache extends BrowserStorage {
      */
     getAllIdTokens(clientId: string, homeAccountIdentifier: string): Array<AccessTokenCacheItem>;
     /**
+     * Get all access and ID tokens in the cache
+     * @param clientId
+     * @param homeAccountIdentifier
+     */
+    getAllTokens(clientId: string, homeAccountIdentifier: string): Array<AccessTokenCacheItem>;
+    /**
      * Return if the token renewal is still in progress
      *
      * @param stateValue

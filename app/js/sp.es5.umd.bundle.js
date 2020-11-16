@@ -20,7 +20,7 @@ return /******/ (() => { // webpackBootstrap
 /* harmony export */   "d": () => /* binding */ mergeMaps
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(499);
-
+;
 /**
  * Used to calculate the object properties, with polyfill if needed
  */
@@ -126,7 +126,7 @@ function mergeMaps(target) {
 /* harmony export */ });
 /* unused harmony exports setup, RuntimeConfigImpl */
 /* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(911);
-
+;
 function setup(config) {
     RuntimeConfig.assign(config);
 }
@@ -234,7 +234,7 @@ var RuntimeConfig = _runtimeConfig;
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(138);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(499);
 /* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(294);
-
+;
 
 
 function mergeHeaders(target, source) {
@@ -635,7 +635,7 @@ var safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __webpa
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(138);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(499);
 /* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(534);
-
+;
 
 
 /**
@@ -1291,7 +1291,7 @@ __webpack_require__.d(__webpack_exports__, {
 // EXTERNAL MODULE: ./node_modules/@pnp/common/index.js
 var common = __webpack_require__(621);
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/splibconfig.js
-
+;
 var emptyGuid = "00000000-0000-0000-0000-000000000000";
 function setup(config) {
     common/* RuntimeConfig.assign */.c4.assign(config);
@@ -1343,7 +1343,7 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
 var SPRuntimeConfig = new SPRuntimeConfigImpl();
 //# sourceMappingURL=splibconfig.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/rest.js
-
+;
 /**
  * Root of the SharePoint REST module
  */
@@ -1621,7 +1621,7 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 }
 
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
-
+;
 var Batch = /** @class */ (function () {
     function Batch(_batchId) {
         if (_batchId === void 0) { _batchId = (0,common.getGUID)(); }
@@ -1725,7 +1725,7 @@ var Batch = /** @class */ (function () {
 
 //# sourceMappingURL=batch.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
-
+;
 var CachingOptions = /** @class */ (function () {
     function CachingOptions(key, storeName, expiration) {
         if (storeName === void 0) { storeName = common/* RuntimeConfig.defaultCachingStore */.c4.defaultCachingStore; }
@@ -2018,7 +2018,7 @@ function tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
 }
 
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
-
+;
 
 var _enableExtensions = false;
 var globalExtensions = [];
@@ -2151,7 +2151,7 @@ function extensionOrDefault(op, or, target) {
 }
 //# sourceMappingURL=invokable-extensions.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
-
+;
 
 
 var invokableBinder = function (invoker) { return function (constructor) {
@@ -2221,7 +2221,7 @@ var invokableFactory = invokableBinder(function (options) {
 });
 //# sourceMappingURL=invokable-binder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
-
+;
 
 var ODataParser = /** @class */ (function () {
     function ODataParser() {
@@ -2375,7 +2375,7 @@ var HttpRequestError = /** @class */ (function (_super) {
 
 //# sourceMappingURL=parsers.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/queryable.js
-
+;
 
 
 function cloneQueryableData(source) {
@@ -2851,7 +2851,7 @@ var FunctionListener = /** @class */ (function () {
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline.js
-
+;
 
 
 
@@ -3066,7 +3066,7 @@ function getDefaultPipeline() {
 }
 //# sourceMappingURL=pipeline.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline-binder.js
-
+;
 
 
 
@@ -3106,7 +3106,7 @@ function pipelineBinder(pipes) {
 var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
-
+;
 function body(o, previous) {
     return Object.assign({ body: (0,common.jsS)(o) }, previous);
 }
@@ -3134,7 +3134,7 @@ function metadata(type) {
 }
 //# sourceMappingURL=metadata.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/extractweburl.js
-
+;
 function extractWebUrl(candidateUrl) {
     if ((0,common.stringIsNullOrEmpty)(candidateUrl)) {
         return "";
@@ -3151,7 +3151,7 @@ function extractWebUrl(candidateUrl) {
 }
 //# sourceMappingURL=extractweburl.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/telemetry.js
-
+;
 
 
 /**
@@ -3201,7 +3201,7 @@ tag.isTagged = function (o) {
 };
 //# sourceMappingURL=telemetry.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sphttpclient.js
-
+;
 
 
 
@@ -3235,7 +3235,7 @@ var SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.11:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.12:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -3380,7 +3380,7 @@ function getDigestFactory(client) {
 }
 //# sourceMappingURL=sphttpclient.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/toabsoluteurl.js
-
+;
 
 
 /**
@@ -3426,7 +3426,7 @@ function toAbsoluteUrl(candidateUrl) {
 }
 //# sourceMappingURL=toabsoluteurl.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/operations.js
-
+;
 
 
 
@@ -3487,7 +3487,7 @@ var spPostDeleteETag = function (o, options, eTag) {
 };
 //# sourceMappingURL=operations.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sharepointqueryable.js
-
+;
 
 
 
@@ -3757,7 +3757,7 @@ function deleteableWithETag(t) {
 /**
  * Class Decorators
  */
-
+;
 /**
  * Decorator used to specify the default path for SharePointQueryable objects
  *
@@ -3783,7 +3783,7 @@ function defaultPath(path) {
 // redirect to graph api
 //# sourceMappingURL=decorators.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/odata.js
-
+;
 
 
 
@@ -3875,7 +3875,7 @@ function spODataEntityArray(factory) {
 }
 //# sourceMappingURL=odata.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/batch.js
-
+;
 
 
 
@@ -4021,7 +4021,7 @@ var SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.11:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.12:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -4097,7 +4097,7 @@ var SPBatch = /** @class */ (function (_super) {
 
 //# sourceMappingURL=batch.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/escapeQueryStrValue.js
-
+;
 
 function escapeQueryStrValue(value) {
     if ((0,common.stringIsNullOrEmpty)(value)) {
@@ -4118,7 +4118,7 @@ function escapeQueryStrValue(value) {
 }
 //# sourceMappingURL=escapeQueryStrValue.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/types.js
-
+;
 
 
 
@@ -4440,7 +4440,7 @@ var _Site = /** @class */ (function (_super) {
 var Site = spInvokableFactory(_Site);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/index.js
-
+;
 
 
 Reflect.defineProperty(SPRest.prototype, "site", {
@@ -4452,7 +4452,7 @@ Reflect.defineProperty(SPRest.prototype, "site", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/webs/types.js
-
+;
 
 
 
@@ -4757,7 +4757,7 @@ function toResourcePath(url) {
 }
 //# sourceMappingURL=toResourcePath.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/types.js
-
+;
 
 
 
@@ -5073,20 +5073,23 @@ var _List = /** @class */ (function (_super) {
      * Returns the data for the specified query view
      *
      * @param parameters The parameters to be used to render list data as JSON string.
-     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
-     * @param queryParams Allows setting of query parameters
+     * @param overrideParams The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     * @param query Allows setting of query parameters
      */
-    _List.prototype.renderListDataAsStream = function (parameters, overrideParameters, queryParams) {
-        if (overrideParameters === void 0) { overrideParameters = null; }
-        if (queryParams === void 0) { queryParams = new Map(); }
+    _List.prototype.renderListDataAsStream = function (parameters, overrideParams, query) {
+        if (overrideParams === void 0) { overrideParams = null; }
+        if (query === void 0) { query = new Map(); }
         if ((0,common.hOP)(parameters, "RenderOptions") && (0,common.isArray)(parameters.RenderOptions)) {
             parameters.RenderOptions = parameters.RenderOptions.reduce(function (v, c) { return v + c; });
         }
         var bodyOptions = { parameters: (0,common.assign)(metadata("SP.RenderListDataParameters"), parameters) };
-        if ((0,common.objectDefinedNotNull)(overrideParameters)) {
-            bodyOptions = (0,common.assign)(bodyOptions, { overrideParameters: (0,common.assign)(metadata("SP.RenderListDataOverrideParameters"), overrideParameters) });
+        if ((0,common.objectDefinedNotNull)(overrideParams)) {
+            bodyOptions = (0,common.assign)(bodyOptions, { overrideParameters: (0,common.assign)(metadata("SP.RenderListDataOverrideParameters"), overrideParams) });
         }
         var clone = this.clone(List, "RenderListDataAsStream", true, true);
+        if (query && query.size > 0) {
+            query.forEach(function (v, k) { return clone.query.set(k, v); });
+        }
         return spPost(clone, body(bodyOptions));
     };
     /**
@@ -5171,6 +5174,35 @@ var _List = /** @class */ (function (_super) {
             });
         });
     };
+    /**
+     * Gets the parent information for this item's list and web
+     */
+    _List.prototype.getParentInfos = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var urlInfo;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.select("Id", "RootFolder/UniqueId", "RootFolder/ServerRelativeUrl", "RootFolder/ServerRelativePath", "ParentWeb/Id", "ParentWeb/Url", "ParentWeb/ServerRelativeUrl", "ParentWeb/ServerRelativePath").expand("RootFolder", "ParentWeb")()];
+                    case 1:
+                        urlInfo = _a.sent();
+                        return [2 /*return*/, {
+                                List: {
+                                    Id: urlInfo.Id,
+                                    RootFolderServerRelativePath: urlInfo.RootFolder.ServerRelativePath,
+                                    RootFolderServerRelativeUrl: urlInfo.RootFolder.ServerRelativeUrl,
+                                    RootFolderUniqueId: urlInfo.RootFolder.UniqueId,
+                                },
+                                ParentWeb: {
+                                    Id: urlInfo.ParentWeb.Id,
+                                    ServerRelativePath: urlInfo.ParentWeb.ServerRelativePath,
+                                    ServerRelativeUrl: urlInfo.ParentWeb.ServerRelativeUrl,
+                                    Url: urlInfo.ParentWeb.Url,
+                                },
+                            }];
+                }
+            });
+        });
+    };
     __decorate([
         tag("l.update")
     ], _List.prototype, "update", null);
@@ -5242,7 +5274,7 @@ var ControlMode;
 })(ControlMode || (ControlMode = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/items/types.js
-
+;
 
 
 
@@ -5580,6 +5612,38 @@ var _Item = /** @class */ (function (_super) {
         return spPost(this.clone(Item, "validateupdatelistitem"), body({ formValues: formValues, bNewDocumentUpdate: bNewDocumentUpdate }));
     };
     /**
+     * Gets the parent information for this item's list and web
+     */
+    _Item.prototype.getParentInfos = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var urlInfo;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.select("Id", "ParentList/Id", "ParentList/RootFolder/UniqueId", "ParentList/RootFolder/ServerRelativeUrl", "ParentList/RootFolder/ServerRelativePath", "ParentList/ParentWeb/Id", "ParentList/ParentWeb/Url", "ParentList/ParentWeb/ServerRelativeUrl", "ParentList/ParentWeb/ServerRelativePath").expand("ParentList", "ParentList/RootFolder", "ParentList/ParentWeb")()];
+                    case 1:
+                        urlInfo = _a.sent();
+                        return [2 /*return*/, {
+                                Item: {
+                                    Id: urlInfo.Id,
+                                },
+                                ParentList: {
+                                    Id: urlInfo.ParentList.Id,
+                                    RootFolderServerRelativePath: urlInfo.ParentList.RootFolder.ServerRelativePath,
+                                    RootFolderServerRelativeUrl: urlInfo.ParentList.RootFolder.ServerRelativeUrl,
+                                    RootFolderUniqueId: urlInfo.ParentList.RootFolder.UniqueId,
+                                },
+                                ParentWeb: {
+                                    Id: urlInfo.ParentList.ParentWeb.Id,
+                                    ServerRelativePath: urlInfo.ParentList.ParentWeb.ServerRelativePath,
+                                    ServerRelativeUrl: urlInfo.ParentList.ParentWeb.ServerRelativeUrl,
+                                    Url: urlInfo.ParentList.ParentWeb.Url,
+                                },
+                            }];
+                }
+            });
+        });
+    };
+    /**
      * Ensures we have the proper list item entity type name, either from the value provided or from the list
      *
      * @param candidatelistItemEntityTypeFullName The potential type name
@@ -5715,17 +5779,17 @@ var ItemUpdatedParser = /** @class */ (function (_super) {
 }(ODataParser));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/items/list.js
-
+;
 
 
 addProp(_List, "items", Items);
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/items/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/files/types.js
-
+;
 
 
 
@@ -5836,13 +5900,13 @@ var _Files = /** @class */ (function (_super) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
         if (chunkSize === void 0) { chunkSize = 10485760; }
         return __awaiter(this, void 0, void 0, function () {
-            var file;
+            var info, file;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + escapeQueryStrValue(url) + "')", false))];
                     case 1:
-                        _a.sent();
-                        file = this.getByName(url);
+                        info = _a.sent();
+                        file = File("_api/web/getFileByServerRelativeUrl('" + info.ServerRelativeUrl + "')");
                         return [4 /*yield*/, file.setContentChunked(content, progress, chunkSize)];
                     case 2: return [2 /*return*/, _a.sent()];
                 }
@@ -6564,7 +6628,7 @@ var TemplateFileType;
 })(TemplateFileType || (TemplateFileType = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/webs/index.js
-
+;
 
 
 Reflect.defineProperty(SPRest.prototype, "web", {
@@ -6579,7 +6643,7 @@ SPRest.prototype.createBatch = function () {
 };
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/appcatalog/types.js
-
+;
 
 
 
@@ -6752,14 +6816,14 @@ var _App = /** @class */ (function (_super) {
 var App = spInvokableFactory(_App);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/appcatalog/web.js
-
+;
 
 _Web.prototype.getAppCatalog = function (url) {
     return AppCatalog(url || this);
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/appcatalog/index.js
-
+;
 
 
 
@@ -6780,7 +6844,7 @@ SPRest.prototype.getTenantAppCatalogWeb = function () {
 };
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/attachments/types.js
-
+;
 
 
 
@@ -7022,17 +7086,17 @@ var _Attachment = /** @class */ (function (_super) {
 var Attachment = spInvokableFactory(_Attachment);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/attachments/item.js
-
+;
 
 
 addProp(_Item, "attachmentFiles", Attachments);
 //# sourceMappingURL=item.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/attachments/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/clientside-pages/funcs.js
-
+;
 /**
  * Gets the next order value 1 based for the provided collection
  *
@@ -7059,7 +7123,7 @@ function reindex(collection) {
 }
 //# sourceMappingURL=funcs.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/files/web.js
-
+;
 
 
 _Web.prototype.getFileByServerRelativeUrl = function (fileRelativeUrl) {
@@ -7076,7 +7140,7 @@ _Web.prototype.getFileByUrl = function (fileUrl) {
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/comments/types.js
-
+;
 
 
 
@@ -7223,7 +7287,7 @@ var _Replies = /** @class */ (function (_super) {
 var Replies = spInvokableFactory(_Replies);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/comments/item.js
-
+;
 
 
 
@@ -7242,7 +7306,7 @@ _Item.prototype.getLikedByInformation = function () {
 };
 //# sourceMappingURL=item.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/clientside-pages/types.js
-
+;
 
 
 
@@ -7553,7 +7617,7 @@ var _ClientsidePage = /** @class */ (function (_super) {
     _ClientsidePage.prototype.save = function (publish) {
         if (publish === void 0) { publish = true; }
         return __awaiter(this, void 0, void 0, function () {
-            var origImgUrl, site, web, imgFile, siteId_1, webId_1, imgId_1, listId_1, webUrl_1, batch, f, saveBody, bannerImageUrlValue, updater, r;
+            var serverRelativePath, imgInfo_1, webUrl_1, web, batch, f, saveBody, bannerImageUrlValue, updater, r;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -7561,51 +7625,39 @@ var _ClientsidePage = /** @class */ (function (_super) {
                             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
                         }
                         if (!this._bannerImageDirty) return [3 /*break*/, 2];
-                        origImgUrl = this.json.BannerImageUrl;
-                        if ((0,common.isUrlAbsolute)(origImgUrl)) {
-                            // do our best to make this a server relative url by removing the x.sharepoint.com part
-                            origImgUrl = origImgUrl.replace(/^https?:\/\/[a-z0-9\.]*?\.[a-z]{2,3}\//i, "/");
-                        }
-                        site = Site(extractWebUrl(this.toUrl()));
+                        serverRelativePath = this.bannerImageUrl;
                         web = Web(extractWebUrl(this.toUrl()));
-                        imgFile = web.getFileByServerRelativePath(origImgUrl.replace(/%20/ig, " "));
-                        siteId_1 = "";
-                        webId_1 = "";
-                        imgId_1 = "";
-                        listId_1 = "";
-                        webUrl_1 = "";
                         batch = web.createBatch();
-                        site.select("Id", "Url").inBatch(batch)().then(function (r1) { return siteId_1 = r1.Id; });
-                        web.select("Id", "Url").inBatch(batch)().then(function (r2) { webId_1 = r2.Id; webUrl_1 = r2.Url; });
-                        imgFile.listItemAllFields.select("UniqueId", "ParentList/Id").expand("ParentList").inBatch(batch)()
-                            .then(function (r3) { imgId_1 = r3.UniqueId; listId_1 = r3.ParentList.Id; });
+                        web.getFileByServerRelativePath(serverRelativePath.replace(/%20/ig, " "))
+                            .select("ListId", "WebId", "UniqueId", "Name", "SiteId").inBatch(batch)().then(function (r1) { return imgInfo_1 = r1; });
+                        web.select("Url").inBatch(batch)().then(function (r2) { return webUrl_1 = r2.Url; });
                         // we know the .then calls above will run before execute resolves, ensuring the vars are set
                         return [4 /*yield*/, batch.execute()];
                     case 1:
                         // we know the .then calls above will run before execute resolves, ensuring the vars are set
                         _a.sent();
                         f = SharePointQueryable(webUrl_1, "_layouts/15/getpreview.ashx");
-                        f.query.set("guidSite", "" + siteId_1);
-                        f.query.set("guidWeb", "" + webId_1);
-                        f.query.set("guidFile", "" + imgId_1);
+                        f.query.set("guidSite", "" + imgInfo_1.SiteId);
+                        f.query.set("guidWeb", "" + imgInfo_1.WebId);
+                        f.query.set("guidFile", "" + imgInfo_1.UniqueId);
                         this.bannerImageUrl = f.toUrlAndQuery();
                         if (!(0,common.objectDefinedNotNull)(this._layoutPart.serverProcessedContent)) {
                             this._layoutPart.serverProcessedContent = {};
                         }
-                        this._layoutPart.serverProcessedContent.imageSources = { imageSource: origImgUrl };
+                        this._layoutPart.serverProcessedContent.imageSources = { imageSource: serverRelativePath };
                         if (!(0,common.objectDefinedNotNull)(this._layoutPart.serverProcessedContent.customMetadata)) {
                             this._layoutPart.serverProcessedContent.customMetadata = {};
                         }
                         this._layoutPart.serverProcessedContent.customMetadata.imageSource = {
-                            listId: listId_1,
-                            siteId: siteId_1,
-                            uniqueId: imgId_1,
-                            webId: webId_1,
+                            listId: imgInfo_1.ListId,
+                            siteId: imgInfo_1.SiteId,
+                            uniqueId: imgInfo_1.UniqueId,
+                            webId: imgInfo_1.WebId,
                         };
-                        this._layoutPart.properties.webId = webId_1;
-                        this._layoutPart.properties.siteId = siteId_1;
-                        this._layoutPart.properties.listId = listId_1;
-                        this._layoutPart.properties.uniqueId = imgId_1;
+                        this._layoutPart.properties.webId = imgInfo_1.WebId;
+                        this._layoutPart.properties.siteId = imgInfo_1.SiteId;
+                        this._layoutPart.properties.listId = imgInfo_1.ListId;
+                        this._layoutPart.properties.uniqueId = imgInfo_1.UniqueId;
                         _a.label = 2;
                     case 2:
                         if (!!this.json.IsPageCheckedOutToCurrentUser) return [3 /*break*/, 4];
@@ -7784,6 +7836,10 @@ var _ClientsidePage = /** @class */ (function (_super) {
      * @param bannerProps Additional properties to control display of the banner
      */
     _ClientsidePage.prototype.setBannerImage = function (url, props) {
+        if ((0,common.isUrlAbsolute)(url)) {
+            // do our best to make this a server relative url by removing the x.sharepoint.com part
+            url = url.replace(/^https?:\/\/[a-z0-9\.]*?\.[a-z]{2,3}\//i, "/");
+        }
         this.json.BannerImageUrl = url;
         this._bannerImageDirty = true;
         /*
@@ -7812,6 +7868,36 @@ var _ClientsidePage = /** @class */ (function (_super) {
                 this._layoutPart.properties.altText = props.altText;
             }
         }
+    };
+    /**
+     * Sets the banner image url from an external source. You must call save to persist the changes
+     *
+     * @param url absolute url of the external file
+     * @param props optional set of properties to control display of the banner image
+     */
+    _ClientsidePage.prototype.setBannerImageFromExternalUrl = function (url, props) {
+        return __awaiter(this, void 0, void 0, function () {
+            var fileUrl, pageName, filename, request, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        fileUrl = new URL(url);
+                        pageName = this.json.FileName.replace(/\.[^/.]+$/, "");
+                        filename = fileUrl.pathname.split(/[\\\/]/i).pop();
+                        request = initFrom(this, "_api/sitepages/AddImageFromExternalUrl");
+                        request.query.set("imageFileName", "'" + encodeURIComponent(filename) + "'");
+                        request.query.set("pageName", "'" + encodeURIComponent(pageName) + "'");
+                        request.query.set("externalUrl", "'" + encodeURIComponent(url) + "'");
+                        request.select("ServerRelativeUrl");
+                        return [4 /*yield*/, spPost(request)];
+                    case 1:
+                        result = _a.sent();
+                        // set with the newly created relative url
+                        this.setBannerImage(result.ServerRelativeUrl, props);
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     /**
      * Sets the authors for this page from the supplied list of user integer ids
@@ -8392,9 +8478,6 @@ var ClientsideText = /** @class */ (function (_super) {
             return this.data.innerHTML;
         },
         set: function (value) {
-            if (!value.startsWith("<p>")) {
-                value = "<p>" + value + "</p>";
-            }
             this.data.innerHTML = value;
         },
         enumerable: false,
@@ -8563,7 +8646,7 @@ var ClientsideWebpart = /** @class */ (function (_super) {
 
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/clientside-pages/web.js
-
+;
 
 
 _Web.prototype.getClientsideWebParts = function () {
@@ -8579,11 +8662,11 @@ _Web.prototype.loadClientsidePage = function (path) {
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/clientside-pages/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/folders/types.js
-
+;
 
 
 
@@ -8788,20 +8871,19 @@ var _Folder = /** @class */ (function (_super) {
      */
     _Folder.prototype.moveTo = function (destUrl) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+            var urlInfo, uri;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getParentInfos()];
                     case 1:
-                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
-                        webBaseUrl = extractWebUrl(absoluteUrl);
-                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolder()"), body({
-                                destUrl: (0,common.isUrlAbsolute)(destUrl) ? destUrl : "" + hostUrl + destUrl,
-                                srcUrl: "" + hostUrl + srcUrl,
+                        urlInfo = _a.sent();
+                        uri = new URL(urlInfo.ParentWeb.Url);
+                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolder()"), body({
+                                destUrl: (0,common.isUrlAbsolute)(destUrl) ? destUrl : (0,common.combine)(uri.origin, destUrl),
+                                srcUrl: (0,common.combine)(uri.origin, urlInfo.Folder.ServerRelativeUrl),
                             }))];
                     case 2:
-                        _b.sent();
+                        _a.sent();
                         return [2 /*return*/];
                 }
             });
@@ -8817,16 +8899,15 @@ var _Folder = /** @class */ (function (_super) {
     _Folder.prototype.moveByPath = function (destUrl, KeepBoth) {
         if (KeepBoth === void 0) { KeepBoth = false; }
         return __awaiter(this, void 0, void 0, function () {
-            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+            var urlInfo, uri;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getParentInfos()];
                     case 1:
-                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
-                        webBaseUrl = extractWebUrl(absoluteUrl);
-                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"), body({
-                                destPath: toResourcePath((0,common.isUrlAbsolute)(destUrl) ? destUrl : "" + hostUrl + destUrl),
+                        urlInfo = _a.sent();
+                        uri = new URL(urlInfo.ParentWeb.Url);
+                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"), body({
+                                destPath: toResourcePath((0,common.isUrlAbsolute)(destUrl) ? destUrl : (0,common.combine)(uri.origin, destUrl)),
                                 options: {
                                     KeepBoth: KeepBoth,
                                     ResetAuthorAndCreatedOnCopy: true,
@@ -8835,10 +8916,10 @@ var _Folder = /** @class */ (function (_super) {
                                         type: "SP.MoveCopyOptions",
                                     },
                                 },
-                                srcPath: toResourcePath((0,common.isUrlAbsolute)(srcUrl) ? srcUrl : "" + hostUrl + srcUrl),
+                                srcPath: toResourcePath((0,common.combine)(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
                             }))];
                     case 2:
-                        _b.sent();
+                        _a.sent();
                         return [2 /*return*/];
                 }
             });
@@ -8851,20 +8932,19 @@ var _Folder = /** @class */ (function (_super) {
      */
     _Folder.prototype.copyTo = function (destUrl) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+            var urlInfo, uri;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getParentInfos()];
                     case 1:
-                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
-                        webBaseUrl = extractWebUrl(absoluteUrl);
-                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolder()"), body({
-                                destUrl: (0,common.isUrlAbsolute)(destUrl) ? destUrl : "" + hostUrl + destUrl,
-                                srcUrl: "" + hostUrl + srcUrl,
+                        urlInfo = _a.sent();
+                        uri = new URL(urlInfo.ParentWeb.Url);
+                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolder()"), body({
+                                destUrl: (0,common.isUrlAbsolute)(destUrl) ? destUrl : (0,common.combine)(uri.origin, destUrl),
+                                srcUrl: (0,common.combine)(uri.origin, urlInfo.Folder.ServerRelativeUrl),
                             }))];
                     case 2:
-                        _b.sent();
+                        _a.sent();
                         return [2 /*return*/];
                 }
             });
@@ -8880,16 +8960,15 @@ var _Folder = /** @class */ (function (_super) {
     _Folder.prototype.copyByPath = function (destUrl, KeepBoth) {
         if (KeepBoth === void 0) { KeepBoth = false; }
         return __awaiter(this, void 0, void 0, function () {
-            var _a, srcUrl, absoluteUrl, webBaseUrl, hostUrl;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl")()];
+            var urlInfo, uri;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getParentInfos()];
                     case 1:
-                        _a = _b.sent(), srcUrl = _a.ServerRelativeUrl, absoluteUrl = _a["odata.id"];
-                        webBaseUrl = extractWebUrl(absoluteUrl);
-                        hostUrl = webBaseUrl.replace("://", "___").split("/")[0].replace("___", "://");
-                        return [4 /*yield*/, spPost(Folder(webBaseUrl, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"), body({
-                                destPath: toResourcePath((0,common.isUrlAbsolute)(destUrl) ? destUrl : "" + hostUrl + destUrl),
+                        urlInfo = _a.sent();
+                        uri = new URL(urlInfo.ParentWeb.Url);
+                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"), body({
+                                destPath: toResourcePath((0,common.isUrlAbsolute)(destUrl) ? destUrl : (0,common.combine)(uri.origin, destUrl)),
                                 options: {
                                     KeepBoth: KeepBoth,
                                     ResetAuthorAndCreatedOnCopy: true,
@@ -8898,10 +8977,10 @@ var _Folder = /** @class */ (function (_super) {
                                         type: "SP.MoveCopyOptions",
                                     },
                                 },
-                                srcPath: toResourcePath((0,common.isUrlAbsolute)(srcUrl) ? srcUrl : "" + hostUrl + srcUrl),
+                                srcPath: toResourcePath((0,common.combine)(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
                             }))];
                     case 2:
-                        _b.sent();
+                        _a.sent();
                         return [2 /*return*/];
                 }
             });
@@ -8932,6 +9011,38 @@ var _Folder = /** @class */ (function (_super) {
                     case 1:
                         _a.sent();
                         return [2 /*return*/, this.folders.getByName(leafPath)];
+                }
+            });
+        });
+    };
+    /**
+     * Gets the parent information for this folder's list and web
+     */
+    _Folder.prototype.getParentInfos = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var urlInfo;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.select("ServerRelativeUrl", "ListItemAllFields/ParentList/Id", "ListItemAllFields/ParentList/RootFolder/UniqueId", "ListItemAllFields/ParentList/RootFolder/ServerRelativeUrl", "ListItemAllFields/ParentList/RootFolder/ServerRelativePath", "ListItemAllFields/ParentList/ParentWeb/Id", "ListItemAllFields/ParentList/ParentWeb/Url", "ListItemAllFields/ParentList/ParentWeb/ServerRelativeUrl", "ListItemAllFields/ParentList/ParentWeb/ServerRelativePath").expand("ListItemAllFields/ParentList", "ListItemAllFields/ParentList/RootFolder", "ListItemAllFields/ParentList/ParentWeb")()];
+                    case 1:
+                        urlInfo = _a.sent();
+                        return [2 /*return*/, {
+                                Folder: {
+                                    ServerRelativeUrl: urlInfo.ServerRelativeUrl,
+                                },
+                                ParentList: {
+                                    Id: urlInfo.ListItemAllFields.ParentList.Id,
+                                    RootFolderServerRelativePath: urlInfo.ListItemAllFields.ParentList.RootFolder.ServerRelativePath,
+                                    RootFolderServerRelativeUrl: urlInfo.ListItemAllFields.ParentList.RootFolder.ServerRelativeUrl,
+                                    RootFolderUniqueId: urlInfo.ListItemAllFields.ParentList.RootFolder.UniqueId,
+                                },
+                                ParentWeb: {
+                                    Id: urlInfo.ListItemAllFields.ParentList.ParentWeb.Id,
+                                    ServerRelativePath: urlInfo.ListItemAllFields.ParentList.ParentWeb.ServerRelativePath,
+                                    ServerRelativeUrl: urlInfo.ListItemAllFields.ParentList.ParentWeb.ServerRelativeUrl,
+                                    Url: urlInfo.ListItemAllFields.ParentList.ParentWeb.Url,
+                                },
+                            }];
                 }
             });
         });
@@ -8987,7 +9098,7 @@ var _Folder = /** @class */ (function (_super) {
 var Folder = spInvokableFactory(_Folder);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/column-defaults/list.js
-
+;
 
 
 
@@ -9031,13 +9142,11 @@ _List.prototype.getDefaultColumnValues = function () {
                     tags = matches === null ? [] : matches.map(function (t) { return t.trim(); });
                     // now we need to turn these tags of form into objects
                     // <a href="/sites/dev/My%20Title"><DefaultValue FieldName="TextField">Test</DefaultValue></a>
-                    return [2 /*return*/, tags.map(function (t) {
-                            var m = /<a href="(.*?)"><DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(t);
-                            // if things worked our captures are:
+                    return [2 /*return*/, tags.reduce(function (defVals, t) {
+                            var m = /<a href="(.*?)">/ig.exec(t);
+                            // if things worked out captures are:
                             // 0: whole string
                             // 1: ENCODED server relative path
-                            // 2: Field internal name
-                            // 3: Default value as string
                             if (m.length < 1) {
                                 // this indicates an error somewhere, but we have no way to meaningfully recover
                                 // perhaps the way the tags are stored has changed on the server? Check that first.
@@ -9045,12 +9154,27 @@ _List.prototype.getDefaultColumnValues = function () {
                                 return null;
                             }
                             // return the parsed out values
-                            return {
-                                name: m[2],
-                                path: decodeURIComponent(m[1]),
-                                value: m[3],
-                            };
-                        }).filter(function (v) { return v !== null; })];
+                            var subMatches = t.match(/<DefaultValue.*?<\/DefaultValue>/ig);
+                            var subTags = subMatches === null ? [] : subMatches.map(function (st) { return st.trim(); });
+                            subTags.map(function (st) {
+                                var sm = /<DefaultValue FieldName="(.*?)">(.*?)<\/DefaultValue>/ig.exec(st);
+                                // if things worked out captures are:
+                                // 0: whole string
+                                // 1: Field internal name
+                                // 2: Default value as string
+                                if (sm.length < 1) {
+                                    Logger.write("Could not parse default column value from '" + st + "'", 2 /* Warning */);
+                                }
+                                else {
+                                    defVals.push({
+                                        name: sm[1],
+                                        path: decodeURIComponent(m[1]),
+                                        value: sm[2],
+                                    });
+                                }
+                            });
+                            return defVals;
+                        }, []).filter(function (v) { return v !== null; })];
             }
         });
     });
@@ -9100,6 +9224,7 @@ _List.prototype.setDefaultColumnValues = function (defaults) {
                                 }
                                 break;
                             case "Taxonomy":
+                            case "TaxonomyFieldType":
                                 if ((0,common.isArray)(fieldDefault.value)) {
                                     throw Error("The type '" + fieldDef.TypeAsString + "' does not support multiple values.");
                                 }
@@ -9108,6 +9233,7 @@ _List.prototype.setDefaultColumnValues = function (defaults) {
                                 }
                                 break;
                             case "TaxonomyMulti":
+                            case "TaxonomyFieldTypeMulti":
                                 if ((0,common.isArray)(fieldDefault.value)) {
                                     value = fieldDefault.value.map(function (v) { return v.wssId + ";#" + v.termName + "|" + v.termId; }).join(";#");
                                 }
@@ -9152,7 +9278,7 @@ _List.prototype.setDefaultColumnValues = function (defaults) {
 };
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/web.js
-
+;
 
 
 
@@ -9181,7 +9307,7 @@ _Web.prototype.getCatalog = function (type) {
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/column-defaults/folder.js
-
+;
 
 
 
@@ -9265,15 +9391,15 @@ _Folder.prototype.clearDefaultColumnValues = function () {
 };
 //# sourceMappingURL=folder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/column-defaults/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/comments/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/content-types/types.js
-
+;
 
 
 
@@ -9441,31 +9567,31 @@ var _FieldLink = /** @class */ (function (_super) {
 var FieldLink = spInvokableFactory(_FieldLink);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/content-types/web.js
-
+;
 
 
 addProp(_Web, "contentTypes", ContentTypes);
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/content-types/item.js
-
+;
 
 
 addProp(_Item, "contentType", ContentType, "ContentType");
 //# sourceMappingURL=item.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/content-types/list.js
-
+;
 
 
 addProp(_List, "contentTypes", ContentTypes);
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/content-types/index.js
-
+;
 
 
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/features/types.js
-
+;
 
 
 
@@ -9576,24 +9702,24 @@ var _Feature = /** @class */ (function (_super) {
 var Feature = spInvokableFactory(_Feature);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/features/site.js
-
+;
 
 
 addProp(_Site, "features", Features);
 //# sourceMappingURL=site.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/features/web.js
-
+;
 
 
 addProp(_Web, "features", Features);
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/features/index.js
-
+;
 
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/fields/types.js
-
+;
 
 
 
@@ -10204,56 +10330,56 @@ var ChoiceFieldFormatType;
 })(ChoiceFieldFormatType || (ChoiceFieldFormatType = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/fields/web.js
-
+;
 
 
 addProp(_Web, "fields", Fields);
 addProp(_Web, "availablefields", Fields, "availablefields");
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/fields/list.js
-
+;
 
 
 addProp(_List, "fields", Fields);
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/fields/index.js
-
+;
 
 
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/files/folder.js
-
+;
 
 
 addProp(_Folder, "files", Files);
 //# sourceMappingURL=folder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/files/item.js
-
+;
 
 
 addProp(_Item, "file", File, "file");
 //# sourceMappingURL=item.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/files/index.js
-
+;
 
 
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/folders/item.js
-
+;
 
 
 addProp(_Item, "folder", Folder, "folder");
 //# sourceMappingURL=item.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/folders/list.js
-
+;
 
 
 addProp(_List, "rootFolder", Folder, "rootFolder");
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/folders/web.js
-
+;
 
 
 
@@ -10270,13 +10396,13 @@ _Web.prototype.getFolderById = function (uniqueId) {
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/folders/index.js
-
+;
 
 
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/forms/types.js
-
+;
 
 
 
@@ -10319,17 +10445,17 @@ var _Form = /** @class */ (function (_super) {
 var Form = spInvokableFactory(_Form);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/forms/list.js
-
+;
 
 
 addProp(_List, "forms", Forms, "forms");
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/forms/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/hubsites/types.js
-
+;
 
 
 
@@ -10384,7 +10510,7 @@ var _HubSite = /** @class */ (function (_super) {
 var HubSite = spInvokableFactory(_HubSite);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/hubsites/site.js
-
+;
 
 
 _Site.prototype.joinHubSite = function (siteId) {
@@ -10425,7 +10551,7 @@ _Site.prototype.unRegisterHubSite = function () {
 };
 //# sourceMappingURL=site.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/hubsites/web.js
-
+;
 
 
 _Web.prototype.hubSiteData = function (forceRefresh) {
@@ -10450,7 +10576,7 @@ _Web.prototype.syncHubSiteTheme = function () {
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/hubsites/index.js
-
+;
 
 
 
@@ -10464,11 +10590,11 @@ Reflect.defineProperty(SPRest.prototype, "hubSites", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/navigation/types.js
-
+;
 
 
 
@@ -10689,13 +10815,13 @@ var _NavigationService = /** @class */ (function (_super) {
 var NavigationService = function (path) { return new _NavigationService(path); };
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/navigation/web.js
-
+;
 
 
 addProp(_Web, "navigation", Navigation);
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/navigation/index.js
-
+;
 
 
 
@@ -10708,7 +10834,7 @@ Reflect.defineProperty(SPRest.prototype, "navigation", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/profiles/types.js
-
+;
 
 
 
@@ -11164,7 +11290,7 @@ var UrlZone;
 })(UrlZone || (UrlZone = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/profiles/index.js
-
+;
 
 
 Reflect.defineProperty(SPRest.prototype, "profiles", {
@@ -11176,7 +11302,7 @@ Reflect.defineProperty(SPRest.prototype, "profiles", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/types.js
-
+;
 
 
 
@@ -11337,7 +11463,7 @@ var _TimeZones = /** @class */ (function (_super) {
 var TimeZones = spInvokableFactory(_TimeZones);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/funcs.js
-
+;
 
 
 function getValueForUICultureBinder(propName) {
@@ -11347,7 +11473,7 @@ function getValueForUICultureBinder(propName) {
 }
 //# sourceMappingURL=funcs.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/web.js
-
+;
 
 
 
@@ -11356,7 +11482,7 @@ _Web.prototype.titleResource = getValueForUICultureBinder("titleResource");
 _Web.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/user-custom-actions/types.js
-
+;
 
 
 
@@ -11451,31 +11577,31 @@ var UserCustomActionScope;
 })(UserCustomActionScope || (UserCustomActionScope = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/user-custom-actions.js
-
+;
 
 _UserCustomAction.prototype.titleResource = getValueForUICultureBinder("titleResource");
 _UserCustomAction.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
 //# sourceMappingURL=user-custom-actions.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/list.js
-
+;
 
 _List.prototype.titleResource = getValueForUICultureBinder("titleResource");
 _List.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/field.js
-
+;
 
 _Field.prototype.titleResource = getValueForUICultureBinder("titleResource");
 _Field.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
 //# sourceMappingURL=field.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/content-type.js
-
+;
 
 _ContentType.prototype.titleResource = getValueForUICultureBinder("titleResource");
 _ContentType.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
 //# sourceMappingURL=content-type.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/index.js
-
+;
 
 
 
@@ -11483,7 +11609,7 @@ _ContentType.prototype.descriptionResource = getValueForUICultureBinder("descrip
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/related-items/types.js
-
+;
 
 
 
@@ -11591,7 +11717,7 @@ var RelatedItemManager = function (url) { return new _RelatedItemManager(extract
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/search/query.js
-
+;
 
 
 
@@ -11894,7 +12020,7 @@ var SearchResults = /** @class */ (function () {
 
 //# sourceMappingURL=query.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/search/suggest.js
-
+;
 
 
 
@@ -12020,7 +12146,7 @@ var SearchBuiltInSourceId = /** @class */ (function () {
 
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/search/index.js
-
+;
 
 
 
@@ -12038,7 +12164,7 @@ SPRest.prototype.searchSuggest = function (query) {
 };
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-users/types.js
-
+;
 
 
 
@@ -12162,7 +12288,7 @@ var _SiteUser = /** @class */ (function (_super) {
 var SiteUser = spInvokableFactory(_SiteUser);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-groups/types.js
-
+;
 
 
 
@@ -12293,7 +12419,7 @@ var _SiteGroup = /** @class */ (function (_super) {
 var SiteGroup = spInvokableFactory(_SiteGroup);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/security/types.js
-
+;
 
 
 
@@ -12696,7 +12822,7 @@ var PermissionKind;
 })(PermissionKind || (PermissionKind = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/security/funcs.js
-
+;
 
 
 
@@ -12840,7 +12966,7 @@ function hasPermissions(value, perm) {
 /* tslint:enable */
 //# sourceMappingURL=funcs.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/security/item.js
-
+;
 
 
 
@@ -12856,7 +12982,7 @@ _Item.prototype.currentUserHasPermissions = currentUserHasPermissions;
 _Item.prototype.hasPermissions = hasPermissions;
 //# sourceMappingURL=item.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/security/list.js
-
+;
 
 
 
@@ -12872,7 +12998,7 @@ _List.prototype.currentUserHasPermissions = currentUserHasPermissions;
 _List.prototype.hasPermissions = hasPermissions;
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/security/web.js
-
+;
 
 
 
@@ -12889,7 +13015,7 @@ _Web.prototype.currentUserHasPermissions = currentUserHasPermissions;
 _Web.prototype.hasPermissions = hasPermissions;
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/security/index.js
-
+;
 
 
 
@@ -13010,7 +13136,7 @@ var RoleType;
 })(RoleType || (RoleType = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/funcs.js
-
+;
 
 
 
@@ -13248,7 +13374,7 @@ function getRoleValue(role, group) {
 }
 //# sourceMappingURL=funcs.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/file.js
-
+;
 
 
 _File.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
@@ -13265,7 +13391,7 @@ _File.prototype.deleteSharingLinkByKind = deleteLinkByKind;
 _File.prototype.unshareLink = unshareLink;
 //# sourceMappingURL=file.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/folder.js
-
+;
 
 
 _Folder.prototype.shareWith = function (loginNames, role, requireSignin, shareEverything, emailData) {
@@ -13403,7 +13529,7 @@ _Folder.prototype.unshareLink = function (kind, shareId) {
 };
 //# sourceMappingURL=folder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/item.js
-
+;
 
 
 _Item.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
@@ -13420,7 +13546,7 @@ _Item.prototype.deleteSharingLinkByKind = deleteLinkByKind;
 _Item.prototype.unshareLink = unshareLink;
 //# sourceMappingURL=item.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/web.js
-
+;
 
 
 
@@ -13498,14 +13624,14 @@ _Web.prototype.unshareObject = function (url) {
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/index.js
-
+;
 
 
 
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-designs/types.js
-
+;
 
 
 
@@ -13710,7 +13836,7 @@ var SiteDesignsCloneFactory = function (baseUrl, methodName) {
 };
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-designs/web.js
-
+;
 
 _Web.prototype.getSiteDesignRuns = function (siteDesignId) {
     return SiteDesigns(this, "").getSiteDesignRun(undefined, siteDesignId);
@@ -13723,7 +13849,7 @@ _Web.prototype.getSiteDesignRunStatus = function (runId) {
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-designs/index.js
-
+;
 
 
 
@@ -13736,7 +13862,7 @@ Reflect.defineProperty(SPRest.prototype, "siteDesigns", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-groups/web.js
-
+;
 
 
 
@@ -13768,11 +13894,11 @@ _Web.prototype.createDefaultAssociatedGroups = function (groupNameSeed, siteOwne
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-groups/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-scripts/types.js
-
+;
 
 
 
@@ -13915,14 +14041,14 @@ var SiteScriptActionOutcome;
 })(SiteScriptActionOutcome || (SiteScriptActionOutcome = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-scripts/web.js
-
+;
 
 _Web.prototype.getSiteScript = function (extractInfo) {
     return SiteScripts(this.toUrl(), "").getSiteScriptFromWeb(undefined, extractInfo);
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-scripts/list.js
-
+;
 
 
 
@@ -13948,7 +14074,7 @@ _List.prototype.getSiteScript = function () {
 };
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-scripts/index.js
-
+;
 
 
 
@@ -13962,7 +14088,7 @@ Reflect.defineProperty(SPRest.prototype, "siteScripts", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-users/web.js
-
+;
 
 
 
@@ -13991,11 +14117,11 @@ _Web.prototype.getUserById = function (id) {
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/site-users/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/social/types.js
-
+;
 
 
 
@@ -14319,7 +14445,7 @@ var SocialStatusCode;
 })(SocialStatusCode || (SocialStatusCode = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/social/index.js
-
+;
 
 
 Reflect.defineProperty(SPRest.prototype, "social", {
@@ -14331,7 +14457,7 @@ Reflect.defineProperty(SPRest.prototype, "social", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/objectToSPKeyValueCollection.js
-
+;
 
 /**
  * Creates an object representing a SharePoint Collection(SP.KeyValue)
@@ -14349,7 +14475,7 @@ function objectToSPKeyValueCollection(obj) {
 }
 //# sourceMappingURL=objectToSPKeyValueCollection.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sputilities/types.js
-
+;
 
 
 
@@ -14469,7 +14595,7 @@ var Utilities = spInvokableFactory(_Utilities);
 var UtilitiesCloneFactory = function (baseUrl, path) { return Utilities(baseUrl, path); };
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sputilities/index.js
-
+;
 
 
 Reflect.defineProperty(SPRest.prototype, "utility", {
@@ -14481,7 +14607,7 @@ Reflect.defineProperty(SPRest.prototype, "utility", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/subscriptions/types.js
-
+;
 
 
 
@@ -14594,17 +14720,17 @@ var _Subscription = /** @class */ (function (_super) {
 var Subscription = spInvokableFactory(_Subscription);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/subscriptions/list.js
-
+;
 
 
 addProp(_List, "subscriptions", Subscriptions);
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/subscriptions/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/taxonomy/types.js
-
+;
 
 
 
@@ -14853,7 +14979,7 @@ var _Relation = /** @class */ (function (_super) {
 var Relation = spInvokableFactory(_Relation);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/taxonomy/index.js
-
+;
 
 
 Reflect.defineProperty(SPRest.prototype, "termStore", {
@@ -14865,31 +14991,31 @@ Reflect.defineProperty(SPRest.prototype, "termStore", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/user-custom-actions/list.js
-
+;
 
 
 addProp(_List, "userCustomActions", UserCustomActions);
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/user-custom-actions/web.js
-
+;
 
 
 addProp(_Web, "userCustomActions", UserCustomActions);
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/user-custom-actions/site.js
-
+;
 
 
 addProp(_Site, "userCustomActions", UserCustomActions);
 //# sourceMappingURL=site.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/user-custom-actions/index.js
-
+;
 
 
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/views/types.js
-
+;
 
 
 
@@ -15075,7 +15201,7 @@ var ViewScope;
 })(ViewScope || (ViewScope = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/views/list.js
-
+;
 
 
 addProp(_List, "views", Views);
@@ -15085,11 +15211,11 @@ _List.prototype.getView = function (viewId) {
 };
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/views/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/webparts/types.js
-
+;
 
 
 
@@ -15208,7 +15334,7 @@ var WebPartsPersonalizationScope;
 })(WebPartsPersonalizationScope || (WebPartsPersonalizationScope = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/webparts/file.js
-
+;
 
 _File.prototype.getLimitedWebPartManager = function (scope) {
     if (scope === void 0) { scope = WebPartsPersonalizationScope.Shared; }
@@ -15216,7 +15342,7 @@ _File.prototype.getLimitedWebPartManager = function (scope) {
 };
 //# sourceMappingURL=file.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/webparts/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/types.js
@@ -15353,7 +15479,7 @@ function stripInvalidFileFolderChars(input, replacer, onPremise) {
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/presets/all.js
-
+;
 
 
 

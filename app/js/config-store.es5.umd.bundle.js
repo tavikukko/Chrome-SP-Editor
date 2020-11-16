@@ -20,7 +20,7 @@ return /******/ (() => { // webpackBootstrap
 /* harmony export */   "d": () => /* binding */ mergeMaps
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(499);
-
+;
 /**
  * Used to calculate the object properties, with polyfill if needed
  */
@@ -126,7 +126,7 @@ function mergeMaps(target) {
 /* harmony export */ });
 /* unused harmony exports setup, RuntimeConfigImpl */
 /* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(911);
-
+;
 function setup(config) {
     RuntimeConfig.assign(config);
 }
@@ -234,7 +234,7 @@ var RuntimeConfig = _runtimeConfig;
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(138);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(499);
 /* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(294);
-
+;
 
 
 function mergeHeaders(target, source) {
@@ -635,7 +635,7 @@ var safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __webpa
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(138);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(499);
 /* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(534);
-
+;
 
 
 /**
@@ -1146,7 +1146,7 @@ __webpack_require__.d(__webpack_exports__, {
 // EXTERNAL MODULE: ./node_modules/@pnp/common/index.js
 var common = __webpack_require__(621);
 // CONCATENATED MODULE: ./node_modules/@pnp/config-store/configuration.js
-
+;
 /**
  * Class used to manage the current application settings
  *
@@ -1237,7 +1237,7 @@ var Settings = /** @class */ (function () {
 
 //# sourceMappingURL=configuration.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/config-store/providers/cachingConfigurationProvider.js
-
+;
 /**
  * A caching provider which can wrap other non-caching providers
  *
@@ -1526,7 +1526,7 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 }
 
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
-
+;
 var Batch = /** @class */ (function () {
     function Batch(_batchId) {
         if (_batchId === void 0) { _batchId = (0,common.getGUID)(); }
@@ -1630,7 +1630,7 @@ var Batch = /** @class */ (function () {
 
 //# sourceMappingURL=batch.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
-
+;
 var CachingOptions = /** @class */ (function () {
     function CachingOptions(key, storeName, expiration) {
         if (storeName === void 0) { storeName = common/* RuntimeConfig.defaultCachingStore */.c4.defaultCachingStore; }
@@ -1923,7 +1923,7 @@ function tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
 }
 
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
-
+;
 
 var _enableExtensions = false;
 var globalExtensions = [];
@@ -2056,7 +2056,7 @@ function extensionOrDefault(op, or, target) {
 }
 //# sourceMappingURL=invokable-extensions.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
-
+;
 
 
 var invokableBinder = function (invoker) { return function (constructor) {
@@ -2126,7 +2126,7 @@ var invokableFactory = invokableBinder(function (options) {
 });
 //# sourceMappingURL=invokable-binder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
-
+;
 
 var ODataParser = /** @class */ (function () {
     function ODataParser() {
@@ -2280,7 +2280,7 @@ var HttpRequestError = /** @class */ (function (_super) {
 
 //# sourceMappingURL=parsers.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/queryable.js
-
+;
 
 
 function cloneQueryableData(source) {
@@ -2756,7 +2756,7 @@ var FunctionListener = /** @class */ (function () {
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline.js
-
+;
 
 
 
@@ -2971,7 +2971,7 @@ function getDefaultPipeline() {
 }
 //# sourceMappingURL=pipeline.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline-binder.js
-
+;
 
 
 
@@ -3011,7 +3011,7 @@ function pipelineBinder(pipes) {
 var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
-
+;
 function body(o, previous) {
     return Object.assign({ body: (0,common.jsS)(o) }, previous);
 }
@@ -3039,7 +3039,7 @@ function metadata(type) {
 }
 //# sourceMappingURL=metadata.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/splibconfig.js
-
+;
 var emptyGuid = "00000000-0000-0000-0000-000000000000";
 function setup(config) {
     common/* RuntimeConfig.assign */.c4.assign(config);
@@ -3091,7 +3091,7 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
 var SPRuntimeConfig = new SPRuntimeConfigImpl();
 //# sourceMappingURL=splibconfig.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/extractweburl.js
-
+;
 function extractWebUrl(candidateUrl) {
     if ((0,common.stringIsNullOrEmpty)(candidateUrl)) {
         return "";
@@ -3108,7 +3108,7 @@ function extractWebUrl(candidateUrl) {
 }
 //# sourceMappingURL=extractweburl.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/telemetry.js
-
+;
 
 
 /**
@@ -3158,7 +3158,7 @@ tag.isTagged = function (o) {
 };
 //# sourceMappingURL=telemetry.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sphttpclient.js
-
+;
 
 
 
@@ -3192,7 +3192,7 @@ var sphttpclient_SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.11:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.12:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -3337,7 +3337,7 @@ function getDigestFactory(client) {
 }
 //# sourceMappingURL=sphttpclient.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/toabsoluteurl.js
-
+;
 
 
 /**
@@ -3383,7 +3383,7 @@ function toAbsoluteUrl(candidateUrl) {
 }
 //# sourceMappingURL=toabsoluteurl.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/operations.js
-
+;
 
 
 
@@ -3444,7 +3444,7 @@ var spPostDeleteETag = function (o, options, eTag) {
 };
 //# sourceMappingURL=operations.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sharepointqueryable.js
-
+;
 
 
 
@@ -3714,7 +3714,7 @@ function deleteableWithETag(t) {
 /**
  * Class Decorators
  */
-
+;
 /**
  * Decorator used to specify the default path for SharePointQueryable objects
  *
@@ -3740,7 +3740,7 @@ function defaultPath(path) {
 // redirect to graph api
 //# sourceMappingURL=decorators.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/odata.js
-
+;
 
 
 
@@ -3832,7 +3832,7 @@ function spODataEntityArray(factory) {
 }
 //# sourceMappingURL=odata.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/batch.js
-
+;
 
 
 
@@ -3978,7 +3978,7 @@ var SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.11:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.12:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -4054,7 +4054,7 @@ var SPBatch = /** @class */ (function (_super) {
 
 //# sourceMappingURL=batch.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/rest.js
-
+;
 /**
  * Root of the SharePoint REST module
  */
@@ -4103,7 +4103,7 @@ var SPRest = /** @class */ (function () {
 var sp = new SPRest();
 //# sourceMappingURL=rest.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/escapeQueryStrValue.js
-
+;
 
 function escapeQueryStrValue(value) {
     if ((0,common.stringIsNullOrEmpty)(value)) {
@@ -4124,7 +4124,7 @@ function escapeQueryStrValue(value) {
 }
 //# sourceMappingURL=escapeQueryStrValue.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/types.js
-
+;
 
 
 
@@ -4446,7 +4446,7 @@ var _Site = /** @class */ (function (_super) {
 var Site = spInvokableFactory(_Site);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/index.js
-
+;
 
 
 Reflect.defineProperty(SPRest.prototype, "site", {
@@ -4458,7 +4458,7 @@ Reflect.defineProperty(SPRest.prototype, "site", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/webs/types.js
-
+;
 
 
 
@@ -4763,7 +4763,7 @@ function toResourcePath(url) {
 }
 //# sourceMappingURL=toResourcePath.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/types.js
-
+;
 
 
 
@@ -5079,20 +5079,23 @@ var _List = /** @class */ (function (_super) {
      * Returns the data for the specified query view
      *
      * @param parameters The parameters to be used to render list data as JSON string.
-     * @param overrideParameters The parameters that are used to override and extend the regular SPRenderListDataParameters.
-     * @param queryParams Allows setting of query parameters
+     * @param overrideParams The parameters that are used to override and extend the regular SPRenderListDataParameters.
+     * @param query Allows setting of query parameters
      */
-    _List.prototype.renderListDataAsStream = function (parameters, overrideParameters, queryParams) {
-        if (overrideParameters === void 0) { overrideParameters = null; }
-        if (queryParams === void 0) { queryParams = new Map(); }
+    _List.prototype.renderListDataAsStream = function (parameters, overrideParams, query) {
+        if (overrideParams === void 0) { overrideParams = null; }
+        if (query === void 0) { query = new Map(); }
         if ((0,common.hOP)(parameters, "RenderOptions") && (0,common.isArray)(parameters.RenderOptions)) {
             parameters.RenderOptions = parameters.RenderOptions.reduce(function (v, c) { return v + c; });
         }
         var bodyOptions = { parameters: (0,common.assign)(metadata("SP.RenderListDataParameters"), parameters) };
-        if ((0,common.objectDefinedNotNull)(overrideParameters)) {
-            bodyOptions = (0,common.assign)(bodyOptions, { overrideParameters: (0,common.assign)(metadata("SP.RenderListDataOverrideParameters"), overrideParameters) });
+        if ((0,common.objectDefinedNotNull)(overrideParams)) {
+            bodyOptions = (0,common.assign)(bodyOptions, { overrideParameters: (0,common.assign)(metadata("SP.RenderListDataOverrideParameters"), overrideParams) });
         }
         var clone = this.clone(List, "RenderListDataAsStream", true, true);
+        if (query && query.size > 0) {
+            query.forEach(function (v, k) { return clone.query.set(k, v); });
+        }
         return spPost(clone, body(bodyOptions));
     };
     /**
@@ -5177,6 +5180,35 @@ var _List = /** @class */ (function (_super) {
             });
         });
     };
+    /**
+     * Gets the parent information for this item's list and web
+     */
+    _List.prototype.getParentInfos = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var urlInfo;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.select("Id", "RootFolder/UniqueId", "RootFolder/ServerRelativeUrl", "RootFolder/ServerRelativePath", "ParentWeb/Id", "ParentWeb/Url", "ParentWeb/ServerRelativeUrl", "ParentWeb/ServerRelativePath").expand("RootFolder", "ParentWeb")()];
+                    case 1:
+                        urlInfo = _a.sent();
+                        return [2 /*return*/, {
+                                List: {
+                                    Id: urlInfo.Id,
+                                    RootFolderServerRelativePath: urlInfo.RootFolder.ServerRelativePath,
+                                    RootFolderServerRelativeUrl: urlInfo.RootFolder.ServerRelativeUrl,
+                                    RootFolderUniqueId: urlInfo.RootFolder.UniqueId,
+                                },
+                                ParentWeb: {
+                                    Id: urlInfo.ParentWeb.Id,
+                                    ServerRelativePath: urlInfo.ParentWeb.ServerRelativePath,
+                                    ServerRelativeUrl: urlInfo.ParentWeb.ServerRelativeUrl,
+                                    Url: urlInfo.ParentWeb.Url,
+                                },
+                            }];
+                }
+            });
+        });
+    };
     __decorate([
         tag("l.update")
     ], _List.prototype, "update", null);
@@ -5248,7 +5280,7 @@ var ControlMode;
 })(ControlMode || (ControlMode = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/lists/web.js
-
+;
 
 
 
@@ -5277,7 +5309,7 @@ _Web.prototype.getCatalog = function (type) {
 };
 //# sourceMappingURL=web.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/items/types.js
-
+;
 
 
 
@@ -5615,6 +5647,38 @@ var _Item = /** @class */ (function (_super) {
         return spPost(this.clone(Item, "validateupdatelistitem"), body({ formValues: formValues, bNewDocumentUpdate: bNewDocumentUpdate }));
     };
     /**
+     * Gets the parent information for this item's list and web
+     */
+    _Item.prototype.getParentInfos = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var urlInfo;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.select("Id", "ParentList/Id", "ParentList/RootFolder/UniqueId", "ParentList/RootFolder/ServerRelativeUrl", "ParentList/RootFolder/ServerRelativePath", "ParentList/ParentWeb/Id", "ParentList/ParentWeb/Url", "ParentList/ParentWeb/ServerRelativeUrl", "ParentList/ParentWeb/ServerRelativePath").expand("ParentList", "ParentList/RootFolder", "ParentList/ParentWeb")()];
+                    case 1:
+                        urlInfo = _a.sent();
+                        return [2 /*return*/, {
+                                Item: {
+                                    Id: urlInfo.Id,
+                                },
+                                ParentList: {
+                                    Id: urlInfo.ParentList.Id,
+                                    RootFolderServerRelativePath: urlInfo.ParentList.RootFolder.ServerRelativePath,
+                                    RootFolderServerRelativeUrl: urlInfo.ParentList.RootFolder.ServerRelativeUrl,
+                                    RootFolderUniqueId: urlInfo.ParentList.RootFolder.UniqueId,
+                                },
+                                ParentWeb: {
+                                    Id: urlInfo.ParentList.ParentWeb.Id,
+                                    ServerRelativePath: urlInfo.ParentList.ParentWeb.ServerRelativePath,
+                                    ServerRelativeUrl: urlInfo.ParentList.ParentWeb.ServerRelativeUrl,
+                                    Url: urlInfo.ParentList.ParentWeb.Url,
+                                },
+                            }];
+                }
+            });
+        });
+    };
+    /**
      * Ensures we have the proper list item entity type name, either from the value provided or from the list
      *
      * @param candidatelistItemEntityTypeFullName The potential type name
@@ -5750,13 +5814,13 @@ var ItemUpdatedParser = /** @class */ (function (_super) {
 }(ODataParser));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/sp/items/list.js
-
+;
 
 
 addProp(_List, "items", Items);
 //# sourceMappingURL=list.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/config-store/providers/spListConfigurationProvider.js
-
+;
 
 
 /**

@@ -1,4 +1,4 @@
-/*! msal v1.4.2 2020-10-20 */
+/*! msal v1.4.4 2020-11-11 */
 'use strict';
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -682,13 +682,63 @@ exports.FramePrefix = {
  * MSAL JS Library Version
  */
 function libraryVersion() {
-    return "1.4.2";
+    return "1.4.4";
 }
 exports.libraryVersion = libraryVersion;
 
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @hidden
+ */
+var StringUtils = /** @class */ (function () {
+    function StringUtils() {
+    }
+    /**
+     * Check if a string is empty
+     *
+     * @param str
+     */
+    StringUtils.isEmpty = function (str) {
+        return (typeof str === "undefined" || !str || 0 === str.length);
+    };
+    /**
+     * Check if a string's value is a valid JSON object
+     *
+     * @param str
+     */
+    StringUtils.validateAndParseJsonCacheKey = function (str) {
+        try {
+            var parsedKey = JSON.parse(str);
+            /**
+             * There are edge cases in which JSON.parse will successfully parse a non-valid JSON object
+             * (e.g. JSON.parse will parse an escaped string into an unescaped string), so adding a type check
+             * of the parsed value is necessary in order to be certain that the string represents a valid JSON object.
+             *
+             */
+            return (parsedKey && typeof parsedKey === "object") ? parsedKey : null;
+        }
+        catch (error) {
+            return null;
+        }
+    };
+    return StringUtils;
+}());
+exports.StringUtils = StringUtils;
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -854,36 +904,6 @@ exports.CryptoUtils = CryptoUtils;
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @hidden
- */
-var StringUtils = /** @class */ (function () {
-    function StringUtils() {
-    }
-    /**
-     * Check if a string is empty
-     *
-     * @param str
-     */
-    StringUtils.isEmpty = function (str) {
-        return (typeof str === "undefined" || !str || 0 === str.length);
-    };
-    return StringUtils;
-}());
-exports.StringUtils = StringUtils;
-
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -896,8 +916,8 @@ exports.StringUtils = StringUtils;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Constants_1 = __webpack_require__(1);
 var ScopeSet_1 = __webpack_require__(7);
-var StringUtils_1 = __webpack_require__(3);
-var CryptoUtils_1 = __webpack_require__(2);
+var StringUtils_1 = __webpack_require__(2);
+var CryptoUtils_1 = __webpack_require__(3);
 /**
  * @hidden
  */
@@ -1325,18 +1345,8 @@ exports.ClientConfigurationError = ClientConfigurationError;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = __webpack_require__(0);
 var AuthError_1 = __webpack_require__(8);
-var StringUtils_1 = __webpack_require__(3);
-var Constants_1 = __webpack_require__(1);
+var StringUtils_1 = __webpack_require__(2);
 exports.ClientAuthErrorMessage = {
-    multipleMatchingTokens: {
-        code: "multiple_matching_tokens",
-        desc: "The cache contains multiple tokens satisfying the requirements. " +
-            "Call AcquireToken again providing more requirements like authority."
-    },
-    multipleMatchingIdTokens: {
-        code: "multiple_matching_id_tokens",
-        desc: "The cache contains multiple ID tokens satisfying the request."
-    },
     multipleCacheAuthorities: {
         code: "multiple_authorities",
         desc: "Multiple authorities found in the cache. Pass authority in the API overload."
@@ -1439,18 +1449,6 @@ var ClientAuthError = /** @class */ (function (_super) {
             errorMessage += " Details: " + errDetail;
         }
         return new ClientAuthError(exports.ClientAuthErrorMessage.endpointResolutionError.code, errorMessage);
-    };
-    ClientAuthError.createMultipleMatchingTokensInCacheError = function (tokenType, scopes) {
-        var errorType;
-        var errorDescriptionExtension = "";
-        if (tokenType === Constants_1.ServerHashParamKeys.ACCESS_TOKEN) {
-            errorType = exports.ClientAuthErrorMessage.multipleMatchingTokens;
-            errorDescriptionExtension = "Cache error for scope " + scopes.toString() + ": ";
-        }
-        else {
-            errorType = exports.ClientAuthErrorMessage.multipleMatchingIdTokens;
-        }
-        return new ClientAuthError(errorType.code, "" + errorDescriptionExtension + errorType.desc + ".");
     };
     ClientAuthError.createMultipleAuthoritiesInCacheError = function (scope) {
         return new ClientAuthError(exports.ClientAuthErrorMessage.multipleCacheAuthorities.code, "Cache error for scope " + scope + ": " + exports.ClientAuthErrorMessage.multipleCacheAuthorities.desc + ".");
@@ -2092,7 +2090,7 @@ exports.TENANT_PLACEHOLDER = "<tenant>";
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var TelemetryConstants_1 = __webpack_require__(11);
-var CryptoUtils_1 = __webpack_require__(2);
+var CryptoUtils_1 = __webpack_require__(3);
 var UrlUtils_1 = __webpack_require__(4);
 var Authority_1 = __webpack_require__(9);
 exports.scrubTenantFromUri = function (uri) {
@@ -2155,7 +2153,7 @@ exports.startBrowserPerformanceMeasurement = function (startMark) {
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var StringUtils_1 = __webpack_require__(3);
+var StringUtils_1 = __webpack_require__(2);
 var Constants_1 = __webpack_require__(1);
 var LogLevel;
 (function (LogLevel) {
@@ -2316,7 +2314,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = __webpack_require__(0);
 var TelemetryConstants_1 = __webpack_require__(11);
 var TelemetryUtils_1 = __webpack_require__(12);
-var CryptoUtils_1 = __webpack_require__(2);
+var CryptoUtils_1 = __webpack_require__(3);
 var TelemetryEvent = /** @class */ (function () {
     function TelemetryEvent(eventName, correlationId, eventLabel) {
         var _a;
@@ -2415,7 +2413,7 @@ var IdToken_1 = __webpack_require__(33);
 var AuthCache_1 = __webpack_require__(34);
 var Account_1 = __webpack_require__(22);
 var ScopeSet_1 = __webpack_require__(7);
-var StringUtils_1 = __webpack_require__(3);
+var StringUtils_1 = __webpack_require__(2);
 var WindowUtils_1 = __webpack_require__(23);
 var TokenUtils_1 = __webpack_require__(20);
 var TimeUtils_1 = __webpack_require__(10);
@@ -2433,7 +2431,7 @@ var AuthResponse_1 = __webpack_require__(26);
 var TelemetryManager_1 = tslib_1.__importDefault(__webpack_require__(39));
 var ApiEvent_1 = __webpack_require__(27);
 var Constants_1 = __webpack_require__(1);
-var CryptoUtils_1 = __webpack_require__(2);
+var CryptoUtils_1 = __webpack_require__(3);
 var TrustedAuthority_1 = __webpack_require__(19);
 var AuthCacheUtils_1 = __webpack_require__(42);
 // default authority
@@ -3328,15 +3326,15 @@ var UserAgentApplication = /** @class */ (function () {
     };
     /**
      * @hidden
-     * Clear all access tokens in the cache.
+     * Clear all access tokens and ID tokens in the cache.
      * @ignore
      */
     UserAgentApplication.prototype.clearCache = function () {
         this.logger.verbose("Clearing cache");
         window.renewStates = [];
-        var accessTokenItems = this.cacheStorage.getAllAccessTokens(Constants_1.Constants.clientId, Constants_1.Constants.homeAccountIdentifier);
-        for (var i = 0; i < accessTokenItems.length; i++) {
-            this.cacheStorage.removeItem(JSON.stringify(accessTokenItems[i].key));
+        var tokenCacheItems = this.cacheStorage.getAllTokens(Constants_1.Constants.clientId, Constants_1.Constants.homeAccountIdentifier);
+        for (var i = 0; i < tokenCacheItems.length; i++) {
+            this.cacheStorage.removeItem(JSON.stringify(tokenCacheItems[i].key));
         }
         this.cacheStorage.resetCacheItems();
         this.cacheStorage.clearMsalCookie();
@@ -3596,6 +3594,7 @@ var UserAgentApplication = /** @class */ (function () {
      * @param tokenType
      */
     UserAgentApplication.prototype.getTokenCacheItemByAuthority = function (authority, tokenCacheItems, requestScopes, tokenType) {
+        var _this = this;
         var filteredAuthorityItems;
         if (UrlUtils_1.UrlUtils.isCommonAuthority(authority) || UrlUtils_1.UrlUtils.isOrganizationsAuthority(authority)) {
             filteredAuthorityItems = AuthCacheUtils_1.AuthCacheUtils.filterTokenCacheItemsByDomain(tokenCacheItems, UrlUtils_1.UrlUtils.GetUrlComponents(authority).HostNameAndPort);
@@ -3607,7 +3606,11 @@ var UserAgentApplication = /** @class */ (function () {
             return filteredAuthorityItems[0];
         }
         else if (filteredAuthorityItems.length > 1) {
-            throw ClientAuthError_1.ClientAuthError.createMultipleMatchingTokensInCacheError(tokenType, requestScopes);
+            this.logger.warning("Multiple matching tokens found. Cleaning cache and requesting a new token.");
+            filteredAuthorityItems.forEach(function (accessTokenCacheItem) {
+                _this.cacheStorage.removeItem(JSON.stringify(accessTokenCacheItem.key));
+            });
+            return null;
         }
         else {
             this.logger.verbose("No matching tokens of type " + tokenType + " found");
@@ -4535,9 +4538,9 @@ exports.UserAgentApplication = UserAgentApplication;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var CryptoUtils_1 = __webpack_require__(2);
+var CryptoUtils_1 = __webpack_require__(3);
 var Constants_1 = __webpack_require__(1);
-var StringUtils_1 = __webpack_require__(3);
+var StringUtils_1 = __webpack_require__(2);
 var ScopeSet_1 = __webpack_require__(7);
 /**
  * Nonce: OIDC Nonce definition: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
@@ -4977,8 +4980,8 @@ exports.TrustedAuthority = TrustedAuthority;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var CryptoUtils_1 = __webpack_require__(2);
-var StringUtils_1 = __webpack_require__(3);
+var CryptoUtils_1 = __webpack_require__(3);
+var StringUtils_1 = __webpack_require__(2);
 var TimeUtils_1 = __webpack_require__(10);
 /**
  * @hidden
@@ -5062,8 +5065,8 @@ var tslib_1 = __webpack_require__(0);
 var Constants_1 = __webpack_require__(1);
 var ClientConfigurationError_1 = __webpack_require__(5);
 var ScopeSet_1 = __webpack_require__(7);
-var StringUtils_1 = __webpack_require__(3);
-var CryptoUtils_1 = __webpack_require__(2);
+var StringUtils_1 = __webpack_require__(2);
+var CryptoUtils_1 = __webpack_require__(3);
 var TimeUtils_1 = __webpack_require__(10);
 var ClientAuthError_1 = __webpack_require__(6);
 /**
@@ -5249,8 +5252,8 @@ exports.RequestUtils = RequestUtils;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var CryptoUtils_1 = __webpack_require__(2);
-var StringUtils_1 = __webpack_require__(3);
+var CryptoUtils_1 = __webpack_require__(3);
+var StringUtils_1 = __webpack_require__(2);
 /**
  * accountIdentifier       combination of idToken.uid and idToken.utid
  * homeAccountIdentifier   combination of clientInfo.uid and clientInfo.utid
@@ -5632,7 +5635,8 @@ var WindowUtils = /** @class */ (function () {
      * Removes url fragment from browser url
      */
     WindowUtils.clearUrlFragment = function () {
-        if ("replaceState" in history) {
+        // Office.js sets history.replaceState to null
+        if (typeof history.replaceState === "function") {
             // Full removes "#" from url
             history.replaceState(null, null, "" + window.location.pathname + window.location.search);
         }
@@ -5996,7 +6000,7 @@ var AuthenticationParameters_1 = __webpack_require__(43);
 exports.AuthenticationParameters = AuthenticationParameters_1.AuthenticationParameters;
 var AuthResponse_1 = __webpack_require__(26);
 exports.AuthResponse = AuthResponse_1.AuthResponse;
-var CryptoUtils_1 = __webpack_require__(2);
+var CryptoUtils_1 = __webpack_require__(3);
 exports.CryptoUtils = CryptoUtils_1.CryptoUtils;
 var UrlUtils_1 = __webpack_require__(4);
 exports.UrlUtils = UrlUtils_1.UrlUtils;
@@ -6026,7 +6030,7 @@ exports.InteractionRequiredAuthError = InteractionRequiredAuthError_1.Interactio
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var CryptoUtils_1 = __webpack_require__(2);
+var CryptoUtils_1 = __webpack_require__(3);
 var UrlUtils_1 = __webpack_require__(4);
 /**
  * @hidden
@@ -6080,9 +6084,9 @@ exports.AccessTokenValue = AccessTokenValue;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var CryptoUtils_1 = __webpack_require__(2);
+var CryptoUtils_1 = __webpack_require__(3);
 var ClientAuthError_1 = __webpack_require__(6);
-var StringUtils_1 = __webpack_require__(3);
+var StringUtils_1 = __webpack_require__(2);
 /**
  * @hidden
  */
@@ -6176,7 +6180,7 @@ exports.ClientInfo = ClientInfo;
 Object.defineProperty(exports, "__esModule", { value: true });
 var ClientAuthError_1 = __webpack_require__(6);
 var TokenUtils_1 = __webpack_require__(20);
-var StringUtils_1 = __webpack_require__(3);
+var StringUtils_1 = __webpack_require__(2);
 /**
  * @hidden
  */
@@ -6260,8 +6264,8 @@ var tslib_1 = __webpack_require__(0);
 var Constants_1 = __webpack_require__(1);
 var AccessTokenCacheItem_1 = __webpack_require__(35);
 var BrowserStorage_1 = __webpack_require__(36);
-var ClientAuthError_1 = __webpack_require__(6);
 var RequestUtils_1 = __webpack_require__(21);
+var StringUtils_1 = __webpack_require__(2);
 /**
  * @hidden
  */
@@ -6332,17 +6336,26 @@ var AuthCache = /** @class */ (function (_super) {
      * @param tokenType
      */
     AuthCache.prototype.matchKeyForType = function (key, clientId, homeAccountIdentifier, tokenType) {
-        var accountMatch = key.match(clientId) && key.match(homeAccountIdentifier);
+        // All valid token cache item keys are valid JSON objects, ignore keys that aren't
+        var parsedKey = StringUtils_1.StringUtils.validateAndParseJsonCacheKey(key);
+        if (!parsedKey) {
+            return null;
+        }
+        // Does the cache item match the request account
+        var accountMatches = key.match(clientId) && key.match(homeAccountIdentifier);
+        // Does the cache item match the requested token type
+        var tokenTypeMatches = false;
         switch (tokenType) {
             case Constants_1.ServerHashParamKeys.ACCESS_TOKEN:
                 // Cache item is an access token if scopes are included in the cache item key
-                return !!(accountMatch && key.match(Constants_1.Constants.scopes));
+                tokenTypeMatches = !!key.match(Constants_1.Constants.scopes);
+                break;
             case Constants_1.ServerHashParamKeys.ID_TOKEN:
-                // Cache item is an ID token if scopes are NOT included in the cache item key
-                return !!(accountMatch && !key.match(Constants_1.Constants.scopes));
-            default:
-                return false;
+                // Cache may be an ID token if scopes are NOT included in the cache item key
+                tokenTypeMatches = !key.match(Constants_1.Constants.scopes);
+                break;
         }
+        return (accountMatches && tokenTypeMatches) ? parsedKey : null;
     };
     /**
      * add value to storage
@@ -6444,17 +6457,17 @@ var AuthCache = /** @class */ (function (_super) {
     AuthCache.prototype.getAllTokensByType = function (clientId, homeAccountIdentifier, tokenType) {
         var _this = this;
         var results = Object.keys(window[this.cacheLocation]).reduce(function (tokens, key) {
-            var keyMatches = _this.matchKeyForType(key, clientId, homeAccountIdentifier, tokenType);
-            if (keyMatches) {
+            var matchedTokenKey = _this.matchKeyForType(key, clientId, homeAccountIdentifier, tokenType);
+            if (matchedTokenKey) {
                 var value = _this.getItem(key);
                 if (value) {
                     try {
-                        var parseAtKey = JSON.parse(key);
-                        var newAccessTokenCacheItem = new AccessTokenCacheItem_1.AccessTokenCacheItem(parseAtKey, JSON.parse(value));
+                        var newAccessTokenCacheItem = new AccessTokenCacheItem_1.AccessTokenCacheItem(matchedTokenKey, JSON.parse(value));
                         return tokens.concat([newAccessTokenCacheItem]);
                     }
-                    catch (e) {
-                        throw ClientAuthError_1.ClientAuthError.createCacheParseError(key);
+                    catch (err) {
+                        // Skip cache items with non-valid JSON values
+                        return tokens;
                     }
                 }
             }
@@ -6476,6 +6489,16 @@ var AuthCache = /** @class */ (function (_super) {
      */
     AuthCache.prototype.getAllIdTokens = function (clientId, homeAccountIdentifier) {
         return this.getAllTokensByType(clientId, homeAccountIdentifier, Constants_1.ServerHashParamKeys.ID_TOKEN);
+    };
+    /**
+     * Get all access and ID tokens in the cache
+     * @param clientId
+     * @param homeAccountIdentifier
+     */
+    AuthCache.prototype.getAllTokens = function (clientId, homeAccountIdentifier) {
+        var accessTokens = this.getAllAccessTokens(clientId, homeAccountIdentifier);
+        var idTokens = this.getAllIdTokens(clientId, homeAccountIdentifier);
+        return accessTokens.concat(idTokens);
     };
     /**
      * Return if the token renewal is still in progress
@@ -6755,7 +6778,7 @@ var tslib_1 = __webpack_require__(0);
  * @hidden
  */
 var Authority_1 = __webpack_require__(9);
-var StringUtils_1 = __webpack_require__(3);
+var StringUtils_1 = __webpack_require__(2);
 var ClientConfigurationError_1 = __webpack_require__(5);
 var AuthorityFactory = /** @class */ (function () {
     function AuthorityFactory() {
@@ -7159,9 +7182,8 @@ var AuthCacheUtils = /** @class */ (function () {
         return tokenCacheItems.filter(function (cacheItem) {
             var cachedScopes = cacheItem.key.scopes.split(" ");
             var searchScopes = ScopeSet_1.ScopeSet.removeDefaultScopes(requestScopes);
-            var defaultScopesOnlyMatchToken = (searchScopes.length === 0 && ScopeSet_1.ScopeSet.containsScope(cachedScopes, requestScopes));
-            var searchScopesMatchToken = ScopeSet_1.ScopeSet.containsScope(cachedScopes, searchScopes);
-            return (defaultScopesOnlyMatchToken || searchScopesMatchToken);
+            // If requestScopes contain only default scopes search for default scopes otherwise search for everything but default scopes
+            return searchScopes.length === 0 ? ScopeSet_1.ScopeSet.containsScope(cachedScopes, requestScopes) : ScopeSet_1.ScopeSet.containsScope(cachedScopes, searchScopes);
         });
     };
     AuthCacheUtils.filterTokenCacheItemsByAuthority = function (tokenCacheItems, authority) {

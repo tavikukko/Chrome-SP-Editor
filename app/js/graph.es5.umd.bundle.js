@@ -20,7 +20,7 @@ return /******/ (() => { // webpackBootstrap
 /* harmony export */   "d": () => /* binding */ mergeMaps
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(499);
-
+;
 /**
  * Used to calculate the object properties, with polyfill if needed
  */
@@ -124,7 +124,7 @@ function mergeMaps(target) {
 /* harmony export */ });
 /* unused harmony exports setup, RuntimeConfigImpl */
 /* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(911);
-
+;
 function setup(config) {
     RuntimeConfig.assign(config);
 }
@@ -232,7 +232,7 @@ var RuntimeConfig = _runtimeConfig;
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(138);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(499);
 /* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(294);
-
+;
 
 
 function mergeHeaders(target, source) {
@@ -633,7 +633,7 @@ var safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __webpa
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(138);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(499);
 /* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(534);
-
+;
 
 
 /**
@@ -1449,7 +1449,7 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 // EXTERNAL MODULE: ./node_modules/@pnp/common/index.js
 var common = __webpack_require__(621);
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
-
+;
 var Batch = /** @class */ (function () {
     function Batch(_batchId) {
         if (_batchId === void 0) { _batchId = (0,common.getGUID)(); }
@@ -1553,7 +1553,7 @@ var Batch = /** @class */ (function () {
 
 //# sourceMappingURL=batch.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
-
+;
 var CachingOptions = /** @class */ (function () {
     function CachingOptions(key, storeName, expiration) {
         if (storeName === void 0) { storeName = common/* RuntimeConfig.defaultCachingStore */.c4.defaultCachingStore; }
@@ -1846,7 +1846,7 @@ function tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
 }
 
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
-
+;
 
 var _enableExtensions = false;
 var globalExtensions = [];
@@ -1979,7 +1979,7 @@ function extensionOrDefault(op, or, target) {
 }
 //# sourceMappingURL=invokable-extensions.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
-
+;
 
 
 var invokableBinder = function (invoker) { return function (constructor) {
@@ -2049,7 +2049,7 @@ var invokableFactory = invokableBinder(function (options) {
 });
 //# sourceMappingURL=invokable-binder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
-
+;
 
 var ODataParser = /** @class */ (function () {
     function ODataParser() {
@@ -2203,7 +2203,7 @@ var HttpRequestError = /** @class */ (function (_super) {
 
 //# sourceMappingURL=parsers.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/queryable.js
-
+;
 
 
 function cloneQueryableData(source) {
@@ -2679,7 +2679,7 @@ var FunctionListener = /** @class */ (function () {
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline.js
-
+;
 
 
 
@@ -2894,7 +2894,7 @@ function getDefaultPipeline() {
 }
 //# sourceMappingURL=pipeline.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline-binder.js
-
+;
 
 
 
@@ -2934,7 +2934,7 @@ function pipelineBinder(pipes) {
 var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
-
+;
 function body(o, previous) {
     return Object.assign({ body: (0,common.jsS)(o) }, previous);
 }
@@ -2976,7 +2976,7 @@ var GraphEndpoints = /** @class */ (function () {
 
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/graphlibconfig.js
-
+;
 function setup(config) {
     common/* RuntimeConfig.assign */.c4.assign(config);
 }
@@ -3027,7 +3027,7 @@ var GraphRuntimeConfigImpl = /** @class */ (function () {
 var GraphRuntimeConfig = new GraphRuntimeConfigImpl();
 //# sourceMappingURL=graphlibconfig.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/graphhttpclient.js
-
+;
 
 var GraphHttpClient = /** @class */ (function () {
     function GraphHttpClient() {
@@ -3045,7 +3045,7 @@ var GraphHttpClient = /** @class */ (function () {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/2.0.11");
+            headers.append("SdkVersion", "PnPCoreJS/2.0.12");
         }
         var opts = (0,common.assign)(options, { headers: headers });
         return this.fetchRaw(url, opts);
@@ -3114,7 +3114,7 @@ var GraphHttpClient = /** @class */ (function () {
 
 //# sourceMappingURL=graphhttpclient.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/utils/toabsoluteurl.js
-
+;
 
 
 /**
@@ -3162,7 +3162,7 @@ function toAbsoluteUrl(candidateUrl) {
 }
 //# sourceMappingURL=toabsoluteurl.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/operations.js
-
+;
 
 
 
@@ -3197,7 +3197,7 @@ var graphPatch = function (o, options) { return send(graphClientBinder("PATCH"))
 var graphPut = function (o, options) { return send(graphClientBinder("PUT"))(o, options); };
 //# sourceMappingURL=operations.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/graphqueryable.js
-
+;
 
 
 
@@ -3295,15 +3295,6 @@ var _GraphQueryable = /** @class */ (function (_super) {
         return this;
     };
     /**
-     * Gets a parent for this instance as specified
-     *
-     * @param factory The contructor for the class to create
-     */
-    _GraphQueryable.prototype.getParent = function (factory, baseUrl, path) {
-        if (baseUrl === void 0) { baseUrl = this.parentUrl; }
-        return new factory(baseUrl, path);
-    };
-    /**
      * Clones this queryable into a new queryable instance of T
      * @param factory Constructor used to create the new instance
      * @param additionalPath Any additional path to include in the clone
@@ -3314,6 +3305,15 @@ var _GraphQueryable = /** @class */ (function (_super) {
         if (includeBatch === void 0) { includeBatch = true; }
         if (includeQuery === void 0) { includeQuery = false; }
         return _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch, includeQuery: includeQuery });
+    };
+    /**
+     * Gets a parent for this instance as specified
+     *
+     * @param factory The contructor for the class to create
+     */
+    _GraphQueryable.prototype.getParent = function (factory, baseUrl, path) {
+        if (baseUrl === void 0) { baseUrl = this.parentUrl; }
+        return new factory(baseUrl, path);
     };
     return _GraphQueryable;
 }(Queryable));
@@ -3421,7 +3421,7 @@ var _GraphQueryableInstance = /** @class */ (function (_super) {
 var GraphQueryableInstance = graphInvokableFactory(_GraphQueryableInstance);
 //# sourceMappingURL=graphqueryable.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/decorators.js
-
+;
 
 
 /**
@@ -3554,7 +3554,7 @@ function getById(factory) {
 }
 //# sourceMappingURL=decorators.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/conversations/types.js
-
+;
 
 
 
@@ -3734,7 +3734,7 @@ function type(n, a) {
 }
 //# sourceMappingURL=type.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/attachments/types.js
-
+;
 
 
 
@@ -3782,17 +3782,17 @@ var _Attachments = /** @class */ (function (_super) {
 var Attachments = graphInvokableFactory(_Attachments);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/attachments/conversations.js
-
+;
 
 
 addProp(_Post, "attachments", Attachments);
 //# sourceMappingURL=conversations.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/attachments/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/directory-objects/types.js
-
+;
 
 
 
@@ -3890,7 +3890,7 @@ var DirectoryObjectTypes;
 })(DirectoryObjectTypes || (DirectoryObjectTypes = {}));
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/groups/types.js
-
+;
 
 
 
@@ -4029,7 +4029,7 @@ var _Groups = /** @class */ (function (_super) {
 var Groups = graphInvokableFactory(_Groups);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/funcs.js
-
+;
 /**
  * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range,
  * from the user's default calendar, or from some other calendar of the user's
@@ -4039,14 +4039,14 @@ var Groups = graphInvokableFactory(_Groups);
  * @param end end time
  */
 function calendarView(start, end) {
-    var query = GraphQueryableCollection(this, "calendarView");
+    var query = this.clone(GraphQueryableCollection, "calendarView");
     query.query.set("startDateTime", encodeURIComponent(start));
     query.query.set("endDateTime", encodeURIComponent(end));
     return query;
 }
 //# sourceMappingURL=funcs.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/types.js
-
+;
 
 
 
@@ -4144,14 +4144,14 @@ var _Events = /** @class */ (function (_super) {
 var Events = graphInvokableFactory(_Events);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/groups.js
-
+;
 
 
 addProp(_Group, "calendar", Calendar, "calendar");
 addProp(_Group, "events", Events);
 //# sourceMappingURL=groups.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/users/types.js
-
+;
 
 
 
@@ -4215,7 +4215,7 @@ var _People = /** @class */ (function (_super) {
 var People = graphInvokableFactory(_People);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/users.js
-
+;
 
 
 
@@ -4225,12 +4225,12 @@ addProp(_User, "events", Events);
 _User.prototype.calendarView = calendarView;
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/index.js
-
+;
 
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/types.js
-
+;
 
 
 
@@ -4377,18 +4377,18 @@ var _ContactFolders = /** @class */ (function (_super) {
 var ContactFolders = graphInvokableFactory(_ContactFolders);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/users.js
-
+;
 
 
 addProp(_User, "contacts", Contacts);
 addProp(_User, "contactFolders", ContactFolders);
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/conversations/groups.js
-
+;
 
 
 addProp(_Group, "conversations", Conversations);
@@ -4396,11 +4396,11 @@ addProp(_Group, "acceptedSenders", Senders, "acceptedsenders");
 addProp(_Group, "rejectedSenders", Senders, "rejectedsenders");
 //# sourceMappingURL=groups.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/conversations/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/batch.js
-
+;
 
 
 
@@ -4588,7 +4588,7 @@ var GraphBatch = /** @class */ (function (_super) {
 
 //# sourceMappingURL=batch.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/rest.js
-
+;
 
 
 
@@ -4616,7 +4616,7 @@ var GraphRest = /** @class */ (function (_super) {
 var graph = new GraphRest("v1.0");
 //# sourceMappingURL=rest.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/directory-objects/index.js
-
+;
 
 
 Reflect.defineProperty(GraphRest.prototype, "directoryObjects", {
@@ -4628,7 +4628,7 @@ Reflect.defineProperty(GraphRest.prototype, "directoryObjects", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/groups/index.js
-
+;
 
 
 Reflect.defineProperty(GraphRest.prototype, "groups", {
@@ -4640,7 +4640,7 @@ Reflect.defineProperty(GraphRest.prototype, "groups", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/insights/types.js
-
+;
 
 
 /**
@@ -4804,17 +4804,17 @@ var _Resource = /** @class */ (function (_super) {
 var Resource = graphInvokableFactory(_Resource);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/insights/users.js
-
+;
 
 
 addProp(_User, "insights", Insights);
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/insights/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/invitations/types.js
-
+;
 
 
 
@@ -4860,7 +4860,7 @@ var _Invitations = /** @class */ (function (_super) {
 var Invitations = graphInvokableFactory(_Invitations);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/invitations/index.js
-
+;
 
 
 Reflect.defineProperty(GraphRest.prototype, "invitations", {
@@ -4872,7 +4872,7 @@ Reflect.defineProperty(GraphRest.prototype, "invitations", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/members/types.js
-
+;
 
 
 
@@ -4923,18 +4923,18 @@ var _Members = /** @class */ (function (_super) {
 var Members = graphInvokableFactory(_Members);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/members/groups.js
-
+;
 
 
 addProp(_Group, "owners", Members, "owners");
 addProp(_Group, "members", Members);
 //# sourceMappingURL=groups.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/members/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/messages/types.js
-
+;
 
 
 /**
@@ -5013,7 +5013,7 @@ var _MailboxSettings = /** @class */ (function (_super) {
 var MailboxSettings = graphInvokableFactory(_MailboxSettings);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/messages/users.js
-
+;
 
 
 
@@ -5025,11 +5025,11 @@ _User.prototype.sendMail = function (message) {
 };
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/messages/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/onedrive/types.js
-
+;
 
 
 
@@ -5053,7 +5053,7 @@ var _Drive = /** @class */ (function (_super) {
     });
     Object.defineProperty(_Drive.prototype, "list", {
         get: function () {
-            return GraphQueryableInstance(this, "list");
+            return this.clone(GraphQueryableInstance, "list");
         },
         enumerable: false,
         configurable: true
@@ -5122,7 +5122,7 @@ var _Root = /** @class */ (function (_super) {
     };
     Object.defineProperty(_Root.prototype, "thumbnails", {
         get: function () {
-            return GraphQueryableCollection(this, "thumbnails");
+            return this.clone(GraphQueryableCollection, "thumbnails");
         },
         enumerable: false,
         configurable: true
@@ -5152,14 +5152,14 @@ var _DriveItem = /** @class */ (function (_super) {
     });
     Object.defineProperty(_DriveItem.prototype, "thumbnails", {
         get: function () {
-            return GraphQueryableCollection(this, "thumbnails");
+            return this.clone(GraphQueryableCollection, "thumbnails");
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(_DriveItem.prototype, "versions", {
         get: function () {
-            return GraphQueryableCollection(this, "versions");
+            return this.clone(GraphQueryableCollection, "versions");
         },
         enumerable: false,
         configurable: true
@@ -5221,18 +5221,18 @@ var _DriveItems = /** @class */ (function (_super) {
 var DriveItems = graphInvokableFactory(_DriveItems);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/onedrive/users.js
-
+;
 
 
 addProp(_User, "drive", Drive);
 addProp(_User, "drives", Drives);
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/onedrive/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/onenote/types.js
-
+;
 
 
 
@@ -5261,7 +5261,7 @@ var _OneNote = /** @class */ (function (_super) {
     });
     Object.defineProperty(_OneNote.prototype, "pages", {
         get: function () {
-            return GraphQueryableCollection(this, "pages");
+            return this.clone(GraphQueryableCollection, "pages");
         },
         enumerable: false,
         configurable: true
@@ -5383,17 +5383,17 @@ var _Sections = /** @class */ (function (_super) {
 var Sections = graphInvokableFactory(_Sections);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/onenote/users.js
-
+;
 
 
 addProp(_User, "onenote", OneNote);
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/onenote/index.js
-
+;
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/types.js
-
+;
 
 
 
@@ -5432,24 +5432,24 @@ var _Photo = /** @class */ (function (_super) {
 var Photo = graphInvokableFactory(_Photo);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/groups.js
-
+;
 
 
 addProp(_Group, "photo", Photo);
 //# sourceMappingURL=groups.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/users.js
-
+;
 
 
 addProp(_User, "photo", Photo);
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/index.js
-
+;
 
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/types.js
-
+;
 
 
 
@@ -5742,19 +5742,19 @@ var _Buckets = /** @class */ (function (_super) {
 var Buckets = graphInvokableFactory(_Buckets);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/groups.js
-
+;
 
 
 addProp(_Group, "plans", Plans, "planner/plans");
 //# sourceMappingURL=groups.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/users.js
-
+;
 
 
 addProp(_User, "tasks", Tasks, "planner/tasks");
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/index.js
-
+;
 
 
 
@@ -5768,7 +5768,7 @@ Reflect.defineProperty(GraphRest.prototype, "planner", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/subscriptions/types.js
-
+;
 
 
 
@@ -5842,7 +5842,7 @@ var _Subscriptions = /** @class */ (function (_super) {
 var Subscriptions = graphInvokableFactory(_Subscriptions);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/subscriptions/index.js
-
+;
 
 
 Reflect.defineProperty(GraphRest.prototype, "subscriptions", {
@@ -5854,7 +5854,7 @@ Reflect.defineProperty(GraphRest.prototype, "subscriptions", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/teams/types.js
-
+;
 
 
 
@@ -6064,13 +6064,13 @@ var _Tabs = /** @class */ (function (_super) {
 var Tabs = graphInvokableFactory(_Tabs);
 //# sourceMappingURL=types.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/teams/users.js
-
+;
 
 
 addProp(_User, "joinedTeams", Teams, "joinedTeams");
 //# sourceMappingURL=users.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/teams/index.js
-
+;
 
 
 
@@ -6104,7 +6104,7 @@ Reflect.defineProperty(GraphRest.prototype, "teams", {
 });
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/users/index.js
-
+;
 
 
 Reflect.defineProperty(GraphRest.prototype, "me", {
@@ -6130,7 +6130,7 @@ Reflect.defineProperty(GraphRest.prototype, "users", {
 
 //# sourceMappingURL=index.js.map
 // CONCATENATED MODULE: ./node_modules/@pnp/graph/presets/all.js
-
+;
 
 
 

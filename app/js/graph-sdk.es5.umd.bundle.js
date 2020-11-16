@@ -276,7 +276,7 @@ var RequestMethod;
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 /**
  * @module BatchRequestContent
  */
@@ -836,7 +836,7 @@ class MiddlewareControl {
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 /**
  * @constant
  * To generate the UUID
@@ -1012,7 +1012,7 @@ class AuthenticationHandlerOptions {
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 /**
  * @enum
  * @property {number} NONE - The hexadecimal flag value for nothing enabled
@@ -1090,7 +1090,7 @@ class TelemetryHandlerOptions {
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 
 
 
@@ -1167,7 +1167,7 @@ AuthenticationHandler.AUTHORIZATION_HEADER = "Authorization";
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 /**
  * @class
  * @implements Middleware
@@ -1297,7 +1297,7 @@ RetryHandlerOptions.DEFAULT_SHOULD_RETRY = () => true;
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 
 
 
@@ -1501,7 +1501,7 @@ RetryHandler.RETRY_AFTER_HEADER = "Retry-After";
 /**
  * @module Version
  */
-const PACKAGE_VERSION = "2.1.0";
+const PACKAGE_VERSION = "2.1.1";
 //# sourceMappingURL=Version.js.map
 // CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/TelemetryHandler.js
 /**
@@ -1510,7 +1510,7 @@ const PACKAGE_VERSION = "2.1.0";
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 
 
 
@@ -1649,7 +1649,7 @@ RedirectHandlerOptions.DEFAULT_SHOULD_RETRY = () => true;
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 
 
 
@@ -1871,7 +1871,7 @@ RedirectHandler.MANUAL_REDIRECT = "manual";
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 
 
 
@@ -1946,7 +1946,7 @@ var ChaosStrategy;
 /**
  * @module ChaosHandlerOptions
  */
-
+;
 /**
  * Class representing ChaosHandlerOptions
  * @class
@@ -2071,7 +2071,7 @@ const httpStatusCode = {
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 
 
 
@@ -2356,7 +2356,7 @@ class Range {
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 
 /**
  * @class
@@ -2631,7 +2631,7 @@ const getValidRangeSize = (rangeSize = DEFAULT_FILE_SIZE) => {
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 
 
 /**
@@ -2790,7 +2790,7 @@ OneDriveLargeFileUploadTask.DEFAULT_UPLOAD_PATH = "/";
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 /**
  * @class
  * Class for PageIterator
@@ -2954,7 +2954,7 @@ const GRAPH_BASE_URL = "https://graph.microsoft.com/";
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 /**
  * @class
  * Class representing CustomAuthenticationProvider
@@ -3020,6 +3020,8 @@ class GraphError extends Error {
      */
     constructor(statusCode = -1, message, baseError) {
         super(message || (baseError && baseError.message));
+        // https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#extending-built-ins-like-error-array-and-map-may-no-longer-work
+        Object.setPrototypeOf(this, GraphError.prototype);
         this.statusCode = statusCode;
         this.code = null;
         this.requestId = null;
@@ -3036,7 +3038,7 @@ class GraphError extends Error {
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 /**
  * @module GraphErrorHandler
  */
@@ -3227,7 +3229,7 @@ var ResponseType;
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 
 /**
  * @enum
@@ -3429,7 +3431,7 @@ class GraphResponseHandler {
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 
 
 
@@ -4165,7 +4167,7 @@ class GraphRequest {
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 /**
  * @class
  * Class representing HTTPClient
@@ -4253,7 +4255,7 @@ class HTTPClient {
 /**
  * @module HTTPClientFactory
  */
-
+;
 
 
 
@@ -4359,7 +4361,7 @@ const validatePolyFilling = () => {
 /**
  * @module Client
  */
-
+;
 
 
 
@@ -4463,7 +4465,7 @@ class Client {
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-
+;
 /**
  * @class
  * Class representing ImplicitMSALAuthenticationProvider
