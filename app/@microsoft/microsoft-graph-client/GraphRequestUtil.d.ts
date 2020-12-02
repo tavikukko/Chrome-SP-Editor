@@ -5,9 +5,6 @@
  * -------------------------------------------------------------------------------------------
  */
 /**
- * @module GraphRequestUtil
- */
-/**
  * To hold list of OData query params
  */
 export declare const oDataQueryNames: string[];
@@ -30,3 +27,9 @@ export declare const urlJoin: (urlSegments: string[]) => string;
  * If the data received is in JSON format, `serializeContent` converts the JSON to string.
  */
 export declare const serializeContent: (content: any) => any;
+/**
+ * Checks if the url is one of the service root endpoints for Microsoft Graph and Graph Explorer.
+ * @param {string} url - The url to be verified
+ * @returns {boolean} - Returns true if the url is a Graph URL
+ */
+export declare const isGraphURL: (url: string) => boolean;

@@ -3265,6 +3265,7 @@ var runSearch = function runSearch() {
 
 var runSearchAllProps = function runSearchAllProps() {
  var content = arguments[1];
+ var SourceId = arguments[2]; 
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];
@@ -3285,6 +3286,10 @@ var runSearchAllProps = function runSearchAllProps() {
         Refiners: "managedproperties(filter=600/0/*)",
       };
 
+      if (SourceId && SourceId.length > 0) {
+        opts.SourceId = SourceId;
+      }
+
       const r1 = await $pnp.sp.search(opts)
 
       const entries = r1.RawSearchResults.PrimaryQueryResult.RefinementResults.Refiners.results[0].Entries.results
@@ -3296,9 +3301,9 @@ var runSearchAllProps = function runSearchAllProps() {
         value !== 'ClassificationConfidence'
       );
 
-      const r = await $pnp.sp.search({
-        Querytext: `WorkId:${content}`, RowLimit: 1, SelectProperties: filteredProps
-      })
+      opts.SelectProperties = filteredProps;
+
+      const r = await $pnp.sp.search(opts)
 
       var result = {
         ElapsedTime: r.ElapsedTime,

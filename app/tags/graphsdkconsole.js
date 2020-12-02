@@ -80,7 +80,7 @@ import {
   ImplicitMSALAuthenticationProvider,
   Client,
   ClientOptions,
-} from '@microsoft/microsoft-graph-client/browser'
+} from '@microsoft/microsoft-graph-client'
 
 // wrapping the code inside self-excecuting async function
 // enables you to use await expression

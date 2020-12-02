@@ -320,7 +320,7 @@ riot.tag("search", `
       if (obj && obj.value) {
 
         var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + runSearchAllProps;
-        script += " exescript(runSearchAllProps, '" + obj.value + "');";
+        script += " exescript(runSearchAllProps, '" + obj.value + "', '" + this.refs.sourceid.value + "');";
         chrome.devtools.inspectedWindow.eval(script);
 
         this.searching = true;

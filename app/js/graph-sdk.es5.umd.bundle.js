@@ -46,7 +46,7 @@ __webpack_require__.d(__webpack_exports__, {
   "TelemetryHandlerOptions": () => /* reexport */ TelemetryHandlerOptions
 });
 
-// CONCATENATED MODULE: ./node_modules/tslib/tslib.es6.js
+;// CONCATENATED MODULE: ./node_modules/tslib/tslib.es6.js
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -244,7 +244,7 @@ function __importDefault(mod) {
     return (mod && mod.__esModule) ? mod : { default: mod };
 }
 
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/RequestMethod.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/RequestMethod.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -269,14 +269,14 @@ var RequestMethod;
     RequestMethod["DELETE"] = "DELETE";
 })(RequestMethod || (RequestMethod = {}));
 //# sourceMappingURL=RequestMethod.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/content/BatchRequestContent.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/content/BatchRequestContent.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 /**
  * @module BatchRequestContent
  */
@@ -685,7 +685,7 @@ class BatchRequestContent {
  */
 BatchRequestContent.requestLimit = 20;
 //# sourceMappingURL=BatchRequestContent.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/content/BatchResponseContent.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/content/BatchResponseContent.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -775,7 +775,7 @@ class BatchResponseContent {
     }
 }
 //# sourceMappingURL=BatchResponseContent.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/MiddlewareControl.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/MiddlewareControl.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -829,14 +829,14 @@ class MiddlewareControl {
     }
 }
 //# sourceMappingURL=MiddlewareControl.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/MiddlewareUtil.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/MiddlewareUtil.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 /**
  * @constant
  * To generate the UUID
@@ -978,7 +978,7 @@ const cloneRequestWithNewUrl = (newUrl, request) => __awaiter(undefined, void 0,
     return new Request(newUrl, { method, headers, body, referrer, referrerPolicy, mode, credentials, cache, redirect, integrity, keepalive, signal });
 });
 //# sourceMappingURL=MiddlewareUtil.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/AuthenticationHandlerOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/AuthenticationHandlerOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1005,14 +1005,14 @@ class AuthenticationHandlerOptions {
     }
 }
 //# sourceMappingURL=AuthenticationHandlerOptions.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/TelemetryHandlerOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/TelemetryHandlerOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 /**
  * @enum
  * @property {number} NONE - The hexadecimal flag value for nothing enabled
@@ -1083,14 +1083,14 @@ class TelemetryHandlerOptions {
     }
 }
 //# sourceMappingURL=TelemetryHandlerOptions.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/AuthenticationHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/AuthenticationHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 
 
 
@@ -1160,14 +1160,14 @@ class AuthenticationHandler {
  */
 AuthenticationHandler.AUTHORIZATION_HEADER = "Authorization";
 //# sourceMappingURL=AuthenticationHandler.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/HTTPMessageHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/HTTPMessageHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 /**
  * @class
  * @implements Middleware
@@ -1194,7 +1194,7 @@ class HTTPMessageHandler {
     }
 }
 //# sourceMappingURL=HTTPMessageHandler.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/RetryHandlerOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/RetryHandlerOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1290,14 +1290,14 @@ RetryHandlerOptions.MAX_MAX_RETRIES = 10;
  */
 RetryHandlerOptions.DEFAULT_SHOULD_RETRY = () => true;
 //# sourceMappingURL=RetryHandlerOptions.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/RetryHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/RetryHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 
 
 
@@ -1489,7 +1489,121 @@ RetryHandler.RETRY_ATTEMPT_HEADER = "Retry-Attempt";
  */
 RetryHandler.RETRY_AFTER_HEADER = "Retry-After";
 //# sourceMappingURL=RetryHandler.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Version.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Constants.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+/**
+ * @module Constants
+ */
+/**
+ * @constant
+ * A Default API endpoint version for a request
+ */
+const GRAPH_API_VERSION = "v1.0";
+/**
+ * @constant
+ * A Default base url for a request
+ */
+const GRAPH_BASE_URL = "https://graph.microsoft.com/";
+/**
+ * To hold list of the service root endpoints for Microsoft Graph and Graph Explorer for each national cloud.
+ * Set(iterable:Object) is not supported in Internet Explorer. The consumer is recommended to use a suitable polyfill.
+ */
+const GRAPH_URLS = new Set(["graph.microsoft.com", "graph.microsoft.us", "dod-graph.microsoft.us", "graph.microsoft.de", "microsoftgraph.chinacloudapi.cn"]);
+//# sourceMappingURL=Constants.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphRequestUtil.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+/**
+ * @module GraphRequestUtil
+ */
+
+/**
+ * To hold list of OData query params
+ */
+const oDataQueryNames = ["$select", "$expand", "$orderby", "$filter", "$top", "$skip", "$skipToken", "$count"];
+/**
+ * To construct the URL by appending the segments with "/"
+ * @param {string[]} urlSegments - The array of strings
+ * @returns The constructed URL string
+ */
+const urlJoin = (urlSegments) => {
+    const removePostSlash = (s) => s.replace(/\/+$/, "");
+    const removePreSlash = (s) => s.replace(/^\/+/, "");
+    const joiner = (pre, cur) => [removePostSlash(pre), removePreSlash(cur)].join("/");
+    const parts = Array.prototype.slice.call(urlSegments);
+    return parts.reduce(joiner);
+};
+/**
+ * Serializes the content
+ * @param {any} content - The content value that needs to be serialized
+ * @returns The serialized content
+ *
+ * Note:
+ * This conversion is required due to the following reasons:
+ * Body parameter of Request method of isomorphic-fetch only accepts Blob, ArrayBuffer, FormData, TypedArrays string.
+ * Node.js platform does not support Blob, FormData. Javascript File object inherits from Blob so it is also not supported in node. Therefore content of type Blob, File, FormData will only come from browsers.
+ * Parallel to ArrayBuffer in javascript, node provides Buffer interface. Node's Buffer is able to send the arbitrary binary data to the server successfully for both Browser and Node platform. Whereas sending binary data via ArrayBuffer or TypedArrays was only possible using Browser. To support both Node and Browser, `serializeContent` converts TypedArrays or ArrayBuffer to `Node Buffer`.
+ * If the data received is in JSON format, `serializeContent` converts the JSON to string.
+ */
+const serializeContent = (content) => {
+    const className = content && content.constructor && content.constructor.name;
+    if (className === "Buffer" || className === "Blob" || className === "File" || className === "FormData" || typeof content === "string") {
+        return content;
+    }
+    if (className === "ArrayBuffer") {
+        content = Buffer.from(content);
+    }
+    else if (className === "Int8Array" || className === "Int16Array" || className === "Int32Array" || className === "Uint8Array" || className === "Uint16Array" || className === "Uint32Array" || className === "Uint8ClampedArray" || className === "Float32Array" || className === "Float64Array" || className === "DataView") {
+        content = Buffer.from(content.buffer);
+    }
+    else {
+        try {
+            content = JSON.stringify(content);
+        }
+        catch (error) {
+            throw new Error("Unable to stringify the content");
+        }
+    }
+    return content;
+};
+/**
+ * Checks if the url is one of the service root endpoints for Microsoft Graph and Graph Explorer.
+ * @param {string} url - The url to be verified
+ * @returns {boolean} - Returns true if the url is a Graph URL
+ */
+const isGraphURL = (url) => {
+    // Valid Graph URL pattern - https://graph.microsoft.com/{version}/{resource}?{query-parameters}
+    // Valid Graph URL example - https://graph.microsoft.com/v1.0/
+    url = url.toLowerCase();
+    if (url.indexOf("https://") !== -1) {
+        url = url.replace("https://", "");
+        // Find where the host ends
+        const startofPortNoPos = url.indexOf(":");
+        const endOfHostStrPos = url.indexOf("/");
+        let hostName = "";
+        if (endOfHostStrPos !== -1) {
+            if (startofPortNoPos !== -1 && startofPortNoPos < endOfHostStrPos) {
+                hostName = url.substring(0, startofPortNoPos);
+                return GRAPH_URLS.has(hostName);
+            }
+            // Parse out the host
+            hostName = url.substring(0, endOfHostStrPos);
+            return GRAPH_URLS.has(hostName);
+        }
+    }
+    return false;
+};
+//# sourceMappingURL=GraphRequestUtil.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Version.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1501,16 +1615,20 @@ RetryHandler.RETRY_AFTER_HEADER = "Retry-After";
 /**
  * @module Version
  */
-const PACKAGE_VERSION = "2.1.1";
+const PACKAGE_VERSION = "2.2.1";
 //# sourceMappingURL=Version.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/TelemetryHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/TelemetryHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
+/**
+ * @module TelemetryHandler
+ */
+
 
 
 
@@ -1531,21 +1649,31 @@ class TelemetryHandler {
     execute(context) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let clientRequestId = getRequestHeader(context.request, context.options, TelemetryHandler.CLIENT_REQUEST_ID_HEADER);
-                if (clientRequestId === null) {
-                    clientRequestId = generateUUID();
-                    setRequestHeader(context.request, context.options, TelemetryHandler.CLIENT_REQUEST_ID_HEADER, clientRequestId);
+                const url = typeof context.request === "string" ? context.request : context.request.url;
+                if (isGraphURL(url)) {
+                    // Add telemetry only if the request url is a Graph URL.
+                    // Errors are reported as in issue #265 if headers are present when redirecting to a non Graph URL
+                    let clientRequestId = getRequestHeader(context.request, context.options, TelemetryHandler.CLIENT_REQUEST_ID_HEADER);
+                    if (!clientRequestId) {
+                        clientRequestId = generateUUID();
+                        setRequestHeader(context.request, context.options, TelemetryHandler.CLIENT_REQUEST_ID_HEADER, clientRequestId);
+                    }
+                    let sdkVersionValue = `${TelemetryHandler.PRODUCT_NAME}/${PACKAGE_VERSION}`;
+                    let options;
+                    if (context.middlewareControl instanceof MiddlewareControl) {
+                        options = context.middlewareControl.getMiddlewareOptions(TelemetryHandlerOptions);
+                    }
+                    if (options) {
+                        const featureUsage = options.getFeatureUsage();
+                        sdkVersionValue += ` (${TelemetryHandler.FEATURE_USAGE_STRING}=${featureUsage})`;
+                    }
+                    appendRequestHeader(context.request, context.options, TelemetryHandler.SDK_VERSION_HEADER, sdkVersionValue);
                 }
-                let sdkVersionValue = `${TelemetryHandler.PRODUCT_NAME}/${PACKAGE_VERSION}`;
-                let options;
-                if (context.middlewareControl instanceof MiddlewareControl) {
-                    options = context.middlewareControl.getMiddlewareOptions(TelemetryHandlerOptions);
+                else {
+                    // Remove telemetry headers if present during redirection.
+                    delete context.options.headers[TelemetryHandler.CLIENT_REQUEST_ID_HEADER];
+                    delete context.options.headers[TelemetryHandler.SDK_VERSION_HEADER];
                 }
-                if (typeof options !== "undefined") {
-                    const featureUsage = options.getFeatureUsage();
-                    sdkVersionValue += ` (${TelemetryHandler.FEATURE_USAGE_STRING}=${featureUsage})`;
-                }
-                appendRequestHeader(context.request, context.options, TelemetryHandler.SDK_VERSION_HEADER, sdkVersionValue);
                 return yield this.nextMiddleware.execute(context);
             }
             catch (error) {
@@ -1588,7 +1716,7 @@ TelemetryHandler.PRODUCT_NAME = "graph-js";
  */
 TelemetryHandler.FEATURE_USAGE_STRING = "featureUsage";
 //# sourceMappingURL=TelemetryHandler.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/RedirectHandlerOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/RedirectHandlerOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1642,14 +1770,14 @@ RedirectHandlerOptions.MAX_MAX_REDIRECTS = 20;
  */
 RedirectHandlerOptions.DEFAULT_SHOULD_RETRY = () => true;
 //# sourceMappingURL=RedirectHandlerOptions.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/RedirectHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/RedirectHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 
 
 
@@ -1781,7 +1909,7 @@ class RedirectHandler {
                     else {
                         const redirectUrl = this.getLocationHeader(response);
                         if (!this.isRelativeURL(redirectUrl) && this.shouldDropAuthorizationHeader(response.url, redirectUrl)) {
-                            setRequestHeader(context.request, context.options, RedirectHandler.AUTHORIZATION_HEADER, undefined);
+                            delete context.options.headers[RedirectHandler.AUTHORIZATION_HEADER];
                         }
                         yield this.updateRequestUrl(redirectUrl, context);
                     }
@@ -1864,14 +1992,14 @@ RedirectHandler.AUTHORIZATION_HEADER = "Authorization";
  */
 RedirectHandler.MANUAL_REDIRECT = "manual";
 //# sourceMappingURL=RedirectHandler.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/MiddlewareFactory.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/MiddlewareFactory.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 
 
 
@@ -1916,7 +2044,7 @@ class MiddlewareFactory {
     }
 }
 //# sourceMappingURL=MiddlewareFactory.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/ChaosStrategy.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/ChaosStrategy.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1936,7 +2064,7 @@ var ChaosStrategy;
     ChaosStrategy[ChaosStrategy["RANDOM"] = 1] = "RANDOM";
 })(ChaosStrategy || (ChaosStrategy = {}));
 //# sourceMappingURL=ChaosStrategy.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/ChaosHandlerOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/ChaosHandlerOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1946,7 +2074,7 @@ var ChaosStrategy;
 /**
  * @module ChaosHandlerOptions
  */
-;
+
 /**
  * Class representing ChaosHandlerOptions
  * @class
@@ -1977,7 +2105,7 @@ class ChaosHandlerOptions {
     }
 }
 //# sourceMappingURL=ChaosHandlerOptions.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/ChaosHandlerData.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/ChaosHandlerData.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -2064,14 +2192,14 @@ const httpStatusCode = {
     511: "Network Authentication Required",
 };
 //# sourceMappingURL=ChaosHandlerData.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/ChaosHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/ChaosHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 
 
 
@@ -2320,7 +2448,7 @@ class ChaosHandler {
     }
 }
 //# sourceMappingURL=ChaosHandler.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Range.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Range.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -2349,14 +2477,14 @@ class Range {
     }
 }
 //# sourceMappingURL=Range.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/LargeFileUploadTask.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/LargeFileUploadTask.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 
 /**
  * @class
@@ -2580,7 +2708,7 @@ class LargeFileUploadTask {
     }
 }
 //# sourceMappingURL=LargeFileUploadTask.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/OneDriveLargeFileUploadTaskUtil.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/OneDriveLargeFileUploadTaskUtil.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -2624,14 +2752,14 @@ const getValidRangeSize = (rangeSize = DEFAULT_FILE_SIZE) => {
     return roundTo320KB(rangeSize);
 };
 //# sourceMappingURL=OneDriveLargeFileUploadTaskUtil.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/OneDriveLargeFileUploadTask.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/OneDriveLargeFileUploadTask.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 
 
 /**
@@ -2783,14 +2911,14 @@ class OneDriveLargeFileUploadTask extends LargeFileUploadTask {
  */
 OneDriveLargeFileUploadTask.DEFAULT_UPLOAD_PATH = "/";
 //# sourceMappingURL=OneDriveLargeFileUploadTask.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/PageIterator.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/PageIterator.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 /**
  * @class
  * Class for PageIterator
@@ -2926,35 +3054,14 @@ class PageIterator {
     }
 }
 //# sourceMappingURL=PageIterator.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Constants.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/CustomAuthenticationProvider.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-/**
- * @module Constants
- */
-/**
- * @constant
- * A Default API endpoint version for a request
- */
-const GRAPH_API_VERSION = "v1.0";
-/**
- * @constant
- * A Default base url for a request
- */
-const GRAPH_BASE_URL = "https://graph.microsoft.com/";
-//# sourceMappingURL=Constants.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/CustomAuthenticationProvider.js
-/**
- * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
- * See License in the project root for license information.
- * -------------------------------------------------------------------------------------------
- */
-;
+
 /**
  * @class
  * Class representing CustomAuthenticationProvider
@@ -2993,7 +3100,7 @@ class CustomAuthenticationProvider {
     }
 }
 //# sourceMappingURL=CustomAuthenticationProvider.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphError.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphError.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -3031,14 +3138,14 @@ class GraphError extends Error {
     }
 }
 //# sourceMappingURL=GraphError.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphErrorHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphErrorHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 /**
  * @module GraphErrorHandler
  */
@@ -3134,67 +3241,7 @@ class GraphErrorHandler {
     }
 }
 //# sourceMappingURL=GraphErrorHandler.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphRequestUtil.js
-/**
- * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
- * See License in the project root for license information.
- * -------------------------------------------------------------------------------------------
- */
-/**
- * @module GraphRequestUtil
- */
-/**
- * To hold list of OData query params
- */
-const oDataQueryNames = ["$select", "$expand", "$orderby", "$filter", "$top", "$skip", "$skipToken", "$count"];
-/**
- * To construct the URL by appending the segments with "/"
- * @param {string[]} urlSegments - The array of strings
- * @returns The constructed URL string
- */
-const urlJoin = (urlSegments) => {
-    const removePostSlash = (s) => s.replace(/\/+$/, "");
-    const removePreSlash = (s) => s.replace(/^\/+/, "");
-    const joiner = (pre, cur) => [removePostSlash(pre), removePreSlash(cur)].join("/");
-    const parts = Array.prototype.slice.call(urlSegments);
-    return parts.reduce(joiner);
-};
-/**
- * Serializes the content
- * @param {any} content - The content value that needs to be serialized
- * @returns The serialized content
- *
- * Note:
- * This conversion is required due to the following reasons:
- * Body parameter of Request method of isomorphic-fetch only accepts Blob, ArrayBuffer, FormData, TypedArrays string.
- * Node.js platform does not support Blob, FormData. Javascript File object inherits from Blob so it is also not supported in node. Therefore content of type Blob, File, FormData will only come from browsers.
- * Parallel to ArrayBuffer in javascript, node provides Buffer interface. Node's Buffer is able to send the arbitrary binary data to the server successfully for both Browser and Node platform. Whereas sending binary data via ArrayBuffer or TypedArrays was only possible using Browser. To support both Node and Browser, `serializeContent` converts TypedArrays or ArrayBuffer to `Node Buffer`.
- * If the data received is in JSON format, `serializeContent` converts the JSON to string.
- */
-const serializeContent = (content) => {
-    const className = content && content.constructor && content.constructor.name;
-    if (className === "Buffer" || className === "Blob" || className === "File" || className === "FormData" || typeof content === "string") {
-        return content;
-    }
-    if (className === "ArrayBuffer") {
-        content = Buffer.from(content);
-    }
-    else if (className === "Int8Array" || className === "Int16Array" || className === "Int32Array" || className === "Uint8Array" || className === "Uint16Array" || className === "Uint32Array" || className === "Uint8ClampedArray" || className === "Float32Array" || className === "Float64Array" || className === "DataView") {
-        content = Buffer.from(content.buffer);
-    }
-    else {
-        try {
-            content = JSON.stringify(content);
-        }
-        catch (error) {
-            throw new Error("Unable to stringify the content");
-        }
-    }
-    return content;
-};
-//# sourceMappingURL=GraphRequestUtil.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/ResponseType.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/ResponseType.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -3222,14 +3269,14 @@ var ResponseType;
     ResponseType["TEXT"] = "text";
 })(ResponseType || (ResponseType = {}));
 //# sourceMappingURL=ResponseType.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphResponseHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphResponseHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 
 /**
  * @enum
@@ -3424,14 +3471,14 @@ class GraphResponseHandler {
     }
 }
 //# sourceMappingURL=GraphResponseHandler.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphRequest.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphRequest.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 
 
 
@@ -4160,14 +4207,14 @@ class GraphRequest {
     }
 }
 //# sourceMappingURL=GraphRequest.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/HTTPClient.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/HTTPClient.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 /**
  * @class
  * Class representing HTTPClient
@@ -4245,7 +4292,7 @@ class HTTPClient {
     }
 }
 //# sourceMappingURL=HTTPClient.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/HTTPClientFactory.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/HTTPClientFactory.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -4255,7 +4302,7 @@ class HTTPClient {
 /**
  * @module HTTPClientFactory
  */
-;
+
 
 
 
@@ -4319,7 +4366,7 @@ class HTTPClientFactory {
     }
 }
 //# sourceMappingURL=HTTPClientFactory.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/ValidatePolyFilling.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/ValidatePolyFilling.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -4351,7 +4398,7 @@ const validatePolyFilling = () => {
     return true;
 };
 //# sourceMappingURL=ValidatePolyFilling.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Client.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Client.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -4361,7 +4408,7 @@ const validatePolyFilling = () => {
 /**
  * @module Client
  */
-;
+
 
 
 
@@ -4458,14 +4505,14 @@ class Client {
     }
 }
 //# sourceMappingURL=Client.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/browser/ImplicitMSALAuthenticationProvider.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/browser/ImplicitMSALAuthenticationProvider.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-;
+
 /**
  * @class
  * Class representing ImplicitMSALAuthenticationProvider
@@ -4547,7 +4594,7 @@ class ImplicitMSALAuthenticationProvider {
     }
 }
 //# sourceMappingURL=ImplicitMSALAuthenticationProvider.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/MSALAuthenticationProviderOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/MSALAuthenticationProviderOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -4572,7 +4619,7 @@ class MSALAuthenticationProviderOptions {
     }
 }
 //# sourceMappingURL=MSALAuthenticationProviderOptions.js.map
-// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/browser/index.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/browser/index.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -4603,7 +4650,7 @@ class MSALAuthenticationProviderOptions {
 
 
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./pnpjs-sources/index-graph-sdk.ts
+;// CONCATENATED MODULE: ./pnpjs-sources/index-graph-sdk.ts
 
 
 

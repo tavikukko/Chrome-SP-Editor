@@ -4,9 +4,6 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-/**
- * @module TelemetryHandler
- */
 import { Context } from "../IContext";
 import { Middleware } from "./IMiddleware";
 /**

@@ -20,7 +20,7 @@ return /******/ (() => { // webpackBootstrap
 /* harmony export */   "d": () => /* binding */ mergeMaps
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(499);
-;
+
 /**
  * Used to calculate the object properties, with polyfill if needed
  */
@@ -124,7 +124,7 @@ function mergeMaps(target) {
 /* harmony export */ });
 /* unused harmony exports setup, RuntimeConfigImpl */
 /* harmony import */ var _collections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(911);
-;
+
 function setup(config) {
     RuntimeConfig.assign(config);
 }
@@ -232,7 +232,7 @@ var RuntimeConfig = _runtimeConfig;
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(138);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(499);
 /* harmony import */ var _safe_global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(294);
-;
+
 
 
 function mergeHeaders(target, source) {
@@ -633,7 +633,7 @@ var safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __webpa
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(138);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(499);
 /* harmony import */ var _libconfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(534);
-;
+
 
 
 /**
@@ -1143,8 +1143,8 @@ __webpack_require__.d(__webpack_exports__, {
 
 // EXTERNAL MODULE: ./node_modules/@pnp/common/index.js
 var common = __webpack_require__(621);
-// CONCATENATED MODULE: ./node_modules/@pnp/sp-addinhelpers/sprequestexecutorclient.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp-addinhelpers/sprequestexecutorclient.js
+
 /**
  * Makes requests using the SP.RequestExecutor library.
  */
@@ -1217,7 +1217,7 @@ var SPRequestExecutorClient = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=sprequestexecutorclient.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp-addinhelpers/node_modules/tslib/tslib.es6.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp-addinhelpers/node_modules/tslib/tslib.es6.js
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -1446,7 +1446,7 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
     return value;
 }
 
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/node_modules/tslib/tslib.es6.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/node_modules/tslib/tslib.es6.js
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -1675,8 +1675,8 @@ function tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
     return value;
 }
 
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
+
 var Batch = /** @class */ (function () {
     function Batch(_batchId) {
         if (_batchId === void 0) { _batchId = (0,common.getGUID)(); }
@@ -1779,8 +1779,8 @@ var Batch = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=batch.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
+
 var CachingOptions = /** @class */ (function () {
     function CachingOptions(key, storeName, expiration) {
         if (storeName === void 0) { storeName = common/* RuntimeConfig.defaultCachingStore */.c4.defaultCachingStore; }
@@ -1824,7 +1824,7 @@ var CachingParserWrapper = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=caching.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/node_modules/tslib/tslib.es6.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/node_modules/tslib/tslib.es6.js
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -2053,8 +2053,8 @@ function tslib_tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
     return value;
 }
 
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
+
 
 var _enableExtensions = false;
 var globalExtensions = [];
@@ -2186,8 +2186,8 @@ function extensionOrDefault(op, or, target) {
     return or.apply(void 0, tslib_tslib_es6_spread([target], rest));
 }
 //# sourceMappingURL=invokable-extensions.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
+
 
 
 var invokableBinder = function (invoker) { return function (constructor) {
@@ -2256,8 +2256,8 @@ var invokableFactory = invokableBinder(function (options) {
     return this.defaultAction(options);
 });
 //# sourceMappingURL=invokable-binder.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
+
 
 var ODataParser = /** @class */ (function () {
     function ODataParser() {
@@ -2410,8 +2410,8 @@ var HttpRequestError = /** @class */ (function (_super) {
 }(Error));
 
 //# sourceMappingURL=parsers.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/queryable.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/queryable.js
+
 
 
 function cloneQueryableData(source) {
@@ -2664,7 +2664,7 @@ var Queryable = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=queryable.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
 /**
  * Class used to subscribe ILogListener and log messages throughout an application
  *
@@ -2807,7 +2807,7 @@ var LogLevel;
     LogLevel[LogLevel["Off"] = 99] = "Off";
 })(LogLevel || (LogLevel = {}));
 //# sourceMappingURL=logger.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
 /**
  * Implementation of LogListener which logs to the console
  *
@@ -2882,12 +2882,12 @@ var FunctionListener = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=listeners.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
 
 
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline.js
+
 
 
 
@@ -3101,8 +3101,8 @@ function getDefaultPipeline() {
     ].slice(0);
 }
 //# sourceMappingURL=pipeline.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline-binder.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/pipeline-binder.js
+
 
 
 
@@ -3141,8 +3141,8 @@ function pipelineBinder(pipes) {
 }
 var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
+
 function body(o, previous) {
     return Object.assign({ body: (0,common.jsS)(o) }, previous);
 }
@@ -3150,7 +3150,7 @@ function request_builders_headers(o, previous) {
     return Object.assign({ headers: o }, previous);
 }
 //# sourceMappingURL=request-builders.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/odata/index.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/index.js
 
 
 
@@ -3162,15 +3162,15 @@ function request_builders_headers(o, previous) {
 
 
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/metadata.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/metadata.js
 function metadata_metadata(type) {
     return {
         "__metadata": { "type": type },
     };
 }
 //# sourceMappingURL=metadata.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/splibconfig.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/splibconfig.js
+
 var emptyGuid = "00000000-0000-0000-0000-000000000000";
 function setup(config) {
     common/* RuntimeConfig.assign */.c4.assign(config);
@@ -3221,8 +3221,8 @@ var SPRuntimeConfigImpl = /** @class */ (function () {
 
 var SPRuntimeConfig = new SPRuntimeConfigImpl();
 //# sourceMappingURL=splibconfig.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/extractweburl.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/extractweburl.js
+
 function extractWebUrl(candidateUrl) {
     if ((0,common.stringIsNullOrEmpty)(candidateUrl)) {
         return "";
@@ -3238,8 +3238,8 @@ function extractWebUrl(candidateUrl) {
     return candidateUrl;
 }
 //# sourceMappingURL=extractweburl.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/telemetry.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/telemetry.js
+
 
 
 /**
@@ -3288,8 +3288,8 @@ telemetry_tag.isTagged = function (o) {
     return o.data.options.headers && o.data.options.headers["X-PnPjs-Tracking"];
 };
 //# sourceMappingURL=telemetry.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/sphttpclient.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sphttpclient.js
+
 
 
 
@@ -3467,8 +3467,8 @@ function getDigestFactory(client) {
     }); };
 }
 //# sourceMappingURL=sphttpclient.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/toabsoluteurl.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/toabsoluteurl.js
+
 
 
 /**
@@ -3513,8 +3513,8 @@ function toAbsoluteUrl(candidateUrl) {
     });
 }
 //# sourceMappingURL=toabsoluteurl.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/operations.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/operations.js
+
 
 
 
@@ -3574,8 +3574,8 @@ var operations_spPostDeleteETag = function (o, options, eTag) {
     return spPost(o, opts);
 };
 //# sourceMappingURL=operations.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/sharepointqueryable.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sharepointqueryable.js
+
 
 
 
@@ -3841,8 +3841,8 @@ function deleteableWithETag(t) {
     };
 }
 //# sourceMappingURL=sharepointqueryable.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/batch.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/batch.js
+
 
 
 
@@ -4063,37 +4063,8 @@ var SPBatch = /** @class */ (function (_super) {
 }(Batch));
 
 //# sourceMappingURL=batch.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/decorators.js
-/**
- * Class Decorators
- */
-;
-/**
- * Decorator used to specify the default path for SharePointQueryable objects
- *
- * @param path
- */
-function defaultPath(path) {
-    return function (target) {
-        return /** @class */ (function (_super) {
-            tslib_es6_extends(class_1, _super);
-            function class_1() {
-                var args = [];
-                for (var _i = 0; _i < arguments.length; _i++) {
-                    args[_i] = arguments[_i];
-                }
-                return _super.call(this, args[0], args.length > 1 && args[1] !== undefined ? args[1] : path) || this;
-            }
-            return class_1;
-        }(target));
-    };
-}
-// TODO::?
-// performance tracking method decorator
-// redirect to graph api
-//# sourceMappingURL=decorators.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/rest.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/rest.js
+
 /**
  * Root of the SharePoint REST module
  */
@@ -4141,7 +4112,7 @@ var SPRest = /** @class */ (function () {
 
 var sp = new SPRest();
 //# sourceMappingURL=rest.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/types.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/types.js
 // reference: https://msdn.microsoft.com/en-us/library/office/dn600183.aspx
 /**
  * Specifies the type of a principal.
@@ -4223,8 +4194,8 @@ var PageType;
     PageType[PageType["PAGE_MAXITEMS"] = 11] = "PAGE_MAXITEMS";
 })(PageType || (PageType = {}));
 //# sourceMappingURL=types.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/objectToSPKeyValueCollection.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/objectToSPKeyValueCollection.js
+
 
 /**
  * Creates an object representing a SharePoint Collection(SP.KeyValue)
@@ -4241,7 +4212,7 @@ function objectToSPKeyValueCollection(obj) {
     });
 }
 //# sourceMappingURL=objectToSPKeyValueCollection.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/index.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/index.js
 
 
 
@@ -4254,8 +4225,37 @@ function objectToSPKeyValueCollection(obj) {
 
 
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/odata.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/decorators.js
+/**
+ * Class Decorators
+ */
+
+/**
+ * Decorator used to specify the default path for SharePointQueryable objects
+ *
+ * @param path
+ */
+function defaultPath(path) {
+    return function (target) {
+        return /** @class */ (function (_super) {
+            tslib_es6_extends(class_1, _super);
+            function class_1() {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                return _super.call(this, args[0], args.length > 1 && args[1] !== undefined ? args[1] : path) || this;
+            }
+            return class_1;
+        }(target));
+    };
+}
+// TODO::?
+// performance tracking method decorator
+// redirect to graph api
+//# sourceMappingURL=decorators.js.map
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/odata.js
+
 
 
 
@@ -4346,8 +4346,8 @@ function spODataEntityArray(factory) {
     return new SPODataEntityArrayParserImpl(factory);
 }
 //# sourceMappingURL=odata.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/escapeQueryStrValue.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/utils/escapeQueryStrValue.js
+
 
 function escapeQueryStrValue(value) {
     if ((0,common.stringIsNullOrEmpty)(value)) {
@@ -4367,8 +4367,8 @@ function escapeQueryStrValue(value) {
     }
 }
 //# sourceMappingURL=escapeQueryStrValue.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/types.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/types.js
+
 
 
 
@@ -4689,8 +4689,8 @@ var _Site = /** @class */ (function (_super) {
 
 var Site = spInvokableFactory(_Site);
 //# sourceMappingURL=types.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/index.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sites/index.js
+
 
 
 Reflect.defineProperty(SPRest.prototype, "site", {
@@ -4701,8 +4701,8 @@ Reflect.defineProperty(SPRest.prototype, "site", {
     },
 });
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/webs/types.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/webs/types.js
+
 
 
 
@@ -4998,8 +4998,8 @@ var _Web = /** @class */ (function (_super) {
 
 var Web = spInvokableFactory(_Web);
 //# sourceMappingURL=types.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp/webs/index.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/webs/index.js
+
 
 
 Reflect.defineProperty(SPRest.prototype, "web", {
@@ -5013,8 +5013,8 @@ SPRest.prototype.createBatch = function () {
     return this.web.createBatch();
 };
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp-addinhelpers/sprestaddin.js
-;
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp-addinhelpers/sprestaddin.js
+
 
 
 
@@ -5067,11 +5067,11 @@ var SPRestAddIn = /** @class */ (function (_super) {
 
 var sprestaddin_sp = new SPRestAddIn();
 //# sourceMappingURL=sprestaddin.js.map
-// CONCATENATED MODULE: ./node_modules/@pnp/sp-addinhelpers/index.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp-addinhelpers/index.js
 
 
 //# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./pnpjs-sources/index-sp-addinhelpers.ts
+;// CONCATENATED MODULE: ./pnpjs-sources/index-sp-addinhelpers.ts
 
 
 
