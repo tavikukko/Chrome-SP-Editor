@@ -1249,6 +1249,7 @@ __webpack_require__.d(__webpack_exports__, {
   "TermSet": () => /* reexport */ TermSet,
   "TermSets": () => /* reexport */ TermSets,
   "TermStore": () => /* reexport */ TermStore,
+  "Terms": () => /* reexport */ Terms,
   "TimeZone": () => /* reexport */ TimeZone,
   "TimeZones": () => /* reexport */ TimeZones,
   "UrlFieldFormatType": () => /* reexport */ UrlFieldFormatType,
@@ -3235,7 +3236,7 @@ var SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.0.12:" + methodName;
+                            clientTag = "PnPCoreJS:2.0.13:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -4021,7 +4022,7 @@ var SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.12:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.0.13:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -5900,13 +5901,13 @@ var _Files = /** @class */ (function (_super) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
         if (chunkSize === void 0) { chunkSize = 10485760; }
         return __awaiter(this, void 0, void 0, function () {
-            var info, file;
+            var response, file;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + escapeQueryStrValue(url) + "')", false))];
                     case 1:
-                        info = _a.sent();
-                        file = File("_api/web/getFileByServerRelativeUrl('" + info.ServerRelativeUrl + "')");
+                        response = _a.sent();
+                        file = File(odataUrlFrom(response));
                         return [4 /*yield*/, file.setContentChunked(content, progress, chunkSize)];
                     case 2: return [2 /*return*/, _a.sent()];
                 }
@@ -14755,7 +14756,7 @@ var _TermStore = /** @class */ (function (_super) {
     });
     Object.defineProperty(_TermStore.prototype, "sets", {
         /**
-         * Gets the term sets associated with this tenant
+         * Gets the term groups associated with this tenant
          */
         get: function () {
             return tag.configure(TermSets(this), "txts.sets");
@@ -14834,10 +14835,17 @@ var _TermSet = /** @class */ (function (_super) {
     function _TermSet() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Object.defineProperty(_TermSet.prototype, "terms", {
+        /**
+         * Gets all the terms in this set
+         */
+        get: function () {
+            return Terms(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(_TermSet.prototype, "parentGroup", {
-        // public get terms(): ITerms {
-        //     return Terms(this);
-        // }
         get: function () {
             return tag.configure(TermGroup(this, "parentGroup"), "txts.parentGroup");
         },
@@ -14861,23 +14869,85 @@ var _TermSet = /** @class */ (function (_super) {
     _TermSet.prototype.getTermById = function (id) {
         return tag.configure(this.clone(Term, "terms/" + id), "txts.getTermById");
     };
+    /**
+     * Gets all the terms in this termset in an ordered tree using the appropriate sort ordering
+     * ** This is an expensive operation and you should strongly consider caching the results **
+     */
+    _TermSet.prototype.getAllChildrenAsOrderedTree = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var setInfo, tree, ensureOrder, visitor;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.select("*", "customSortOrder")()];
+                    case 1:
+                        setInfo = _a.sent();
+                        tree = [];
+                        ensureOrder = function (terms, sorts, setSorts) {
+                            // handle custom sort order
+                            var ordering = null;
+                            if (sorts === null && setSorts.length > 0) {
+                                ordering = __spread(setSorts);
+                            }
+                            else {
+                                var index = sorts.findIndex(function (v) { return v.setId === setInfo.id; });
+                                if (index >= 0) {
+                                    ordering = __spread(sorts[index].order);
+                                }
+                            }
+                            if (ordering !== null) {
+                                var orderedChildren_1 = [];
+                                ordering.forEach(function (o) {
+                                    var found = terms.find(function (ch) { return o === ch.id; });
+                                    if (found) {
+                                        orderedChildren_1.push(found);
+                                    }
+                                });
+                                return orderedChildren_1;
+                            }
+                            return terms;
+                        };
+                        visitor = function (source, parent) { return __awaiter(_this, void 0, void 0, function () {
+                            var children, i, child, orderedTerm;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, source.children.select("*", "customSortOrder")()];
+                                    case 1:
+                                        children = _a.sent();
+                                        i = 0;
+                                        _a.label = 2;
+                                    case 2:
+                                        if (!(i < children.length)) return [3 /*break*/, 6];
+                                        child = children[i];
+                                        orderedTerm = __assign({ children: [], defaultLabel: child.labels.find(function (l) { return l.isDefault; }).name }, child);
+                                        if (!(child.childrenCount > 0)) return [3 /*break*/, 4];
+                                        return [4 /*yield*/, visitor(this.getTermById(children[i].id), orderedTerm.children)];
+                                    case 3:
+                                        _a.sent();
+                                        orderedTerm.children = ensureOrder(orderedTerm.children, child.customSortOrder);
+                                        _a.label = 4;
+                                    case 4:
+                                        parent.push(orderedTerm);
+                                        _a.label = 5;
+                                    case 5:
+                                        i++;
+                                        return [3 /*break*/, 2];
+                                    case 6: return [2 /*return*/];
+                                }
+                            });
+                        }); };
+                        return [4 /*yield*/, visitor(this, tree)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, ensureOrder(tree, null, setInfo.customSortOrder)];
+                }
+            });
+        });
+    };
     return _TermSet;
 }(_SharePointQueryableInstance));
 
 var TermSet = spInvokableFactory(_TermSet);
-// @defaultPath("terms")
-// export class _Terms extends _SharePointQueryableCollection<ITermInfo[]> {
-//     /**
-//      * Gets a term group by id
-//      *
-//      * @param id Id of the term group to access
-//      */
-//     public getById(id: string): ITerm {
-//         return Term(this, id);
-//     }
-// }
-// export interface ITerms extends _Terms { }
-// export const Terms = spInvokableFactory<ITerms>(_Terms);
 var _Children = /** @class */ (function (_super) {
     __extends(_Children, _super);
     function _Children() {
@@ -14890,6 +14960,26 @@ var _Children = /** @class */ (function (_super) {
 }(_SharePointQueryableCollection));
 
 var Children = spInvokableFactory(_Children);
+var _Terms = /** @class */ (function (_super) {
+    __extends(_Terms, _super);
+    function _Terms() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Gets a term group by id
+     *
+     * @param id Id of the term group to access
+     */
+    _Terms.prototype.getById = function (id) {
+        return Term(this, id);
+    };
+    _Terms = __decorate([
+        defaultPath("terms")
+    ], _Terms);
+    return _Terms;
+}(_SharePointQueryableCollection));
+
+var Terms = spInvokableFactory(_Terms);
 var _Term = /** @class */ (function (_super) {
     __extends(_Term, _super);
     function _Term() {

@@ -2,7 +2,7 @@ import { _SharePointQueryableInstance, ISharePointQueryableInstance, _SharePoint
 import { ITypedHash } from "@pnp/common";
 import { IListItemFormUpdateValue } from "../lists/types";
 import { IList } from "../lists";
-import { IResourcePath } from '../utils/toResourcePath';
+import { IResourcePath } from "../utils/toResourcePath";
 /**
  * Describes a collection of Item objects
  *

@@ -1,32 +1,26 @@
 {
-  "_args": [
-    [
-      "monaco-editor@0.21.2",
-      "/Users/tomitavela/development/personal/Chrome-SP-Editor"
-    ]
-  ],
-  "_development": true,
-  "_from": "monaco-editor@0.21.2",
+  "_from": "monaco-editor@^0.21.2",
   "_id": "monaco-editor@0.21.2",
   "_inBundle": false,
   "_integrity": "sha512-jS51RLuzMaoJpYbu7F6TPuWpnWTLD4kjRW0+AZzcryvbxrTwhNy1KC9yboyKpgMTahpUbDUsuQULoo0GV1EPqg==",
   "_location": "/monaco-editor",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "monaco-editor@0.21.2",
+    "raw": "monaco-editor@^0.21.2",
     "name": "monaco-editor",
     "escapedName": "monaco-editor",
-    "rawSpec": "0.21.2",
+    "rawSpec": "^0.21.2",
     "saveSpec": null,
-    "fetchSpec": "0.21.2"
+    "fetchSpec": "^0.21.2"
   },
   "_requiredBy": [
     "#DEV:/"
   ],
   "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.21.2.tgz",
-  "_spec": "0.21.2",
+  "_shasum": "37054e63e480d51a2dd17d609dcfb192304d5605",
+  "_spec": "monaco-editor@^0.21.2",
   "_where": "/Users/tomitavela/development/personal/Chrome-SP-Editor",
   "author": {
     "name": "Microsoft Corporation"
@@ -34,6 +28,8 @@
   "bugs": {
     "url": "https://github.com/Microsoft/monaco-editor/issues"
   },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "A browser based code editor",
   "devDependencies": {
     "@types/chai": "^4.2.12",

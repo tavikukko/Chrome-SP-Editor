@@ -9,7 +9,7 @@ export declare class _TermStore extends _SharePointQueryableInstance<ITermStoreI
      */
     get groups(): ITermGroups;
     /**
-     * Gets the term sets associated with this tenant
+     * Gets the term groups associated with this tenant
      */
     get sets(): ITermSets;
 }
@@ -48,10 +48,19 @@ export interface ITermSets extends _TermSets {
 }
 export declare const TermSets: import("../sharepointqueryable").ISPInvokableFactory<ITermSets>;
 export declare class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
+    /**
+     * Gets all the terms in this set
+     */
+    get terms(): ITerms;
     get parentGroup(): ITermGroup;
     get children(): IChildren;
     get relations(): IRelations;
     getTermById(id: string): ITerm;
+    /**
+     * Gets all the terms in this termset in an ordered tree using the appropriate sort ordering
+     * ** This is an expensive operation and you should strongly consider caching the results **
+     */
+    getAllChildrenAsOrderedTree(): Promise<IOrderedTermInfo[]>;
 }
 export interface ITermSet extends _TermSet {
 }
@@ -61,6 +70,17 @@ export declare class _Children extends _SharePointQueryableCollection<ITermInfo[
 export interface IChildren extends _Children {
 }
 export declare const Children: import("../sharepointqueryable").ISPInvokableFactory<IChildren>;
+export declare class _Terms extends _SharePointQueryableCollection<ITermInfo[]> {
+    /**
+     * Gets a term group by id
+     *
+     * @param id Id of the term group to access
+     */
+    getById(id: string): ITerm;
+}
+export interface ITerms extends _Terms {
+}
+export declare const Terms: import("../sharepointqueryable").ISPInvokableFactory<ITerms>;
 export declare class _Term extends _SharePointQueryableInstance<ITermInfo> {
     get parent(): ITerm;
     get children(): IChildren;
@@ -105,8 +125,6 @@ export interface ITermGroupInfo {
     lastModifiedDateTime: string;
     type: string;
     scope: "global" | "system" | "siteCollection";
-    managers?: ITaxonomyUserInfo[];
-    contributors?: ITaxonomyUserInfo[];
 }
 export interface ITermSetInfo {
     id: string;
@@ -116,9 +134,16 @@ export interface ITermSetInfo {
     }[];
     description: string;
     createdDateTime: string;
-    properties: ITaxonomyProperty[];
+    customSortOrder: string[];
+    properties?: ITaxonomyProperty[];
+    childrenCount: number;
+    groupId: string;
+    isOpen: boolean;
+    isAvailableForTagging: boolean;
+    contact: string;
 }
 export interface ITermInfo {
+    childrenCount: number;
     id: string;
     labels: {
         name: string;
@@ -126,12 +151,28 @@ export interface ITermInfo {
         languageTag: string;
     }[];
     createdDateTime: string;
+    customSortOrder: ITermSortOrderInfo[];
     lastModifiedDateTime: string;
     descriptions: {
         description: string;
         languageTag: string;
     }[];
     properties: ITaxonomyProperty[];
+    localProperties: ITaxonomyProperty[];
+    isDeprecated: boolean;
+    isAvailableForTagging: {
+        setId: string;
+        isAvailable: boolean;
+    }[];
+    topicRequested: boolean;
+}
+export interface ITermSortOrderInfo {
+    setId: string;
+    order: string[];
+}
+export interface IOrderedTermInfo extends ITermInfo {
+    children: IOrderedTermInfo[];
+    defaultLabel: string;
 }
 export interface IRelationInfo {
     id: string;

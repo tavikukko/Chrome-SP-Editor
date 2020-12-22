@@ -9,7 +9,9 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 
 ## Version history
 
-- 5.6.2 updates
+- 5.6.4 updates
+    * Updated PnPjs to 2.0.13
+- 5.6.3 updates
     * Updated Graph SDK Client to 2.2.1
     * fixed issue in search, now get all managed properties for user objects, thanks [@kasperbolarsen](https://github.com/kasperbolarsen)
 - 5.6.2 updates

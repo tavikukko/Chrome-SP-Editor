@@ -3045,7 +3045,7 @@ var GraphHttpClient = /** @class */ (function () {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/2.0.12");
+            headers.append("SdkVersion", "PnPCoreJS/2.0.13");
         }
         var opts = (0,common.assign)(options, { headers: headers });
         return this.fetchRaw(url, opts);
@@ -5902,18 +5902,42 @@ var _Team = /** @class */ (function (_super) {
         if (description === void 0) { description = ""; }
         if (partsToClone === void 0) { partsToClone = "apps,tabs,settings,channels,members"; }
         if (visibility === void 0) { visibility = "private"; }
-        var postBody = {
-            description: description ? description : "",
-            displayName: name,
-            mailNickname: name,
-            partsToClone: partsToClone,
-            visibility: visibility,
-        };
-        // TODO:: we need to get the Location header from the response and return an operation
-        // instance that folks can query to see if/when this is complete
-        // it could just have a single method getResult (or whatever) that returns a promise that
-        // resolves when the operation is successful or rejects when it is not
-        return graphPost(this.clone(Team, "clone"), body(postBody));
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, creator, data, result, location_1, locationArray;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = {
+                            description: description ? description : "",
+                            displayName: name,
+                            mailNickname: name,
+                            partsToClone: partsToClone,
+                            visibility: visibility,
+                        };
+                        creator = Team(this, "clone").usingParser({
+                            parse: function (r) {
+                                return Promise.resolve(r.headers);
+                            },
+                        });
+                        return [4 /*yield*/, graphPost(creator, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        result = { teamId: "", operationId: "" };
+                        if (data.has("location")) {
+                            location_1 = data.get("location");
+                            locationArray = location_1.split("/");
+                            if (locationArray.length === 3) {
+                                result.teamId = locationArray[1].substring(locationArray[1].indexOf("'") + 1, locationArray[1].lastIndexOf("'"));
+                                result.operationId = locationArray[2].substring(locationArray[2].indexOf("'") + 1, locationArray[2].lastIndexOf("'"));
+                            }
+                        }
+                        return [2 /*return*/, result];
+                }
+            });
+        });
+    };
+    _Team.prototype.getOperationById = function (id) {
+        return GraphQueryableInstance(this, "operations/" + id)();
     };
     _Team = __decorate([
         defaultPath("team"),
@@ -5931,6 +5955,34 @@ var _Teams = /** @class */ (function (_super) {
     function _Teams() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    _Teams.prototype.create = function (team) {
+        return __awaiter(this, void 0, void 0, function () {
+            var creator, data, result, location_2, locationArray;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        creator = Teams(this, null).usingParser({
+                            parse: function (r) {
+                                return Promise.resolve(r.headers);
+                            },
+                        });
+                        return [4 /*yield*/, graphPost(creator, body(team))];
+                    case 1:
+                        data = _a.sent();
+                        result = { teamId: "", operationId: "" };
+                        if (data.has("location")) {
+                            location_2 = data.get("location");
+                            locationArray = location_2.split("/");
+                            if (locationArray.length === 3) {
+                                result.teamId = locationArray[1].substring(locationArray[1].indexOf("'") + 1, locationArray[1].lastIndexOf("'"));
+                                result.operationId = locationArray[2].substring(locationArray[2].indexOf("'") + 1, locationArray[2].lastIndexOf("'"));
+                            }
+                        }
+                        return [2 /*return*/, result];
+                }
+            });
+        });
+    };
     _Teams = __decorate([
         defaultPath("teams"),
         getById(Team)
@@ -6028,7 +6080,7 @@ var _Tabs = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
-     * Adds a tab to the cahnnel
+     * Adds a tab to the channel
      * @param name The name of the new Tab
      * @param appUrl The url to an app ex: https://graph.microsoft.com/beta/appCatalogs/teamsApps/12345678-9abc-def0-123456789a
      * @param tabsConfiguration visit https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/teamstab_add for reference
