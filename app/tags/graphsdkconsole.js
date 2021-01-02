@@ -93,7 +93,6 @@ import {
   const msalConfig: Configuration = {
     auth: {
       clientId: "20d34c96-396e-4bf0-a008-472ef10a5099", // SP Editor azure ad multitenant app
-      redirectUri: "chrome-extension://ecblfcmjnbbgaojblcpmjoamegpbodhd/app/panel.html",
     },
     cache: {
       cacheLocation: 'sessionStorage',
@@ -103,7 +102,6 @@ import {
   // scopes needed in your graph query
   const graphScopes = [
     "user.read",
-    "mail.send"
   ];
 
   const msalApplication = new UserAgentApplication(msalConfig);

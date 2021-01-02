@@ -231,7 +231,7 @@ riot.tag("spquicklinks", `
           headers: {
             'Accept': 'application/json;odata=nometadata',
             'Content-Type': 'application/json',
-            'X-ClientService-ClientTag': 'SPEditor'
+            'X-ClientService-ClientTag': 'SPEDITOR'
           }
         })
           .then(response => response.json())
@@ -246,6 +246,7 @@ riot.tag("spquicklinks", `
         headers: {
           accept: 'application/json;odata=nometadata',
           'content-type': 'application/json;odata=nometadata',
+          'X-ClientService-ClientTag': 'SPEDITOR'
         }
       })
       this.plo = await ploR.json();

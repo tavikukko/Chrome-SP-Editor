@@ -9,6 +9,8 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 
 ## Version history
 
+- 5.6.5 bug fix
+    * fixed bug related to cache
 - 5.6.4 updates
     * Updated PnPjs to 2.0.13
 - 5.6.3 updates

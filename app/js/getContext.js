@@ -29,6 +29,7 @@
       headers: {
         accept: 'application/json;odata=nometadata',
         'content-type': 'application/json;odata=nometadata',
+        'X-ClientService-ClientTag': 'SPEDITOR'
       }
     })
 
@@ -41,6 +42,7 @@
         'IF-MATCH': '*',
         'X-RequestDigest': ctx.FormDigestValue,
         'content-type': 'application/json;odata=nometadata',
+        'X-ClientService-ClientTag': 'SPEDITOR'
       },
       body: JSON.stringify({
         PageLayoutType: layout
@@ -58,6 +60,7 @@
         headers: {
             accept: 'application/json;odata=nometadata',
             'content-type': 'application/json;odata=nometadata',
+            'X-ClientService-ClientTag': 'SPEDITOR'
         }
     })
 
@@ -70,6 +73,7 @@
             'IF-MATCH': '*',
             'X-RequestDigest': ctx.FormDigestValue,
             'content-type': 'application/json;odata=verbose',
+            'X-ClientService-ClientTag': 'SPEDITOR'
         },
         body: JSON.stringify(
             {

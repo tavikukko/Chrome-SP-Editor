@@ -39,7 +39,8 @@ chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(function 
           sp: {
             headers: {
               "Accept": "application/json; odata=verbose",
-
+              "Cache-Control": "no-cache",
+              "X-ClientService-ClientTag": "SPEDITOR"
             }
           }
         });
