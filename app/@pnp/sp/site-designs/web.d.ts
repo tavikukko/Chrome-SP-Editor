@@ -1,4 +1,4 @@
-import { ISiteDesignRun, ISiteDesignTask, ISiteScriptActionStatus } from "./types";
+import { ISiteDesignRun, ISiteDesignTask, ISiteScriptActionStatus } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         getSiteDesignRuns(siteDesignId?: string): Promise<ISiteDesignRun[]>;

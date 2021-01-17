@@ -1,3 +1,3 @@
-import "./users";
-export { INotebook, INotebookAddResult, INotebooks, IOneNote, ISection, ISectionAddResult, ISections, Notebook, Notebooks, OneNote, Section, Sections, } from "./types";
+import "./users.js";
+export { INotebook, INotebookAddResult, INotebooks, IOneNote, ISection, ISectionAddResult, ISections, Notebook, Notebooks, OneNote, Section, Sections, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

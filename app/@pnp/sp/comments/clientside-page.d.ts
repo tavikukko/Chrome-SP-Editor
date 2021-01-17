@@ -1,5 +1,5 @@
-import { ICommentInfo, IComment, ILikedByInformation } from "./types";
-import { IItemUpdateResult } from "../items";
+import { ICommentInfo, IComment, ILikedByInformation } from "./types.js";
+import { IItemUpdateResult } from "../items/index.js";
 declare module "../clientside-pages/types" {
     interface _ClientsidePage {
         addComment(info: string | ICommentInfo): Promise<IComment & ICommentInfo>;

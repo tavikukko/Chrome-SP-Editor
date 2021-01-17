@@ -1,7 +1,9 @@
-import { IRequestClient, IFetchOptions } from "@pnp/common";
+import { IRequestClient, IFetchOptions, IHttpClientImpl, Runtime } from "@pnp/common";
 export declare class GraphHttpClient implements IRequestClient {
+    protected _runtime: Runtime;
     private _impl;
-    constructor();
+    constructor(runtime: Runtime);
+    constructor(impl: IHttpClientImpl, runtime?: Runtime);
     fetch(url: string, options?: IFetchOptions): Promise<Response>;
     fetchRaw(url: string, options?: IFetchOptions): Promise<Response>;
     get(url: string, options?: IFetchOptions): Promise<Response>;

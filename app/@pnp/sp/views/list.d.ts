@@ -1,4 +1,4 @@
-import { IViews, IView } from "./types";
+import { IViews, IView } from "./types.js";
 declare module "../lists/types" {
     interface _List {
         readonly views: IViews;

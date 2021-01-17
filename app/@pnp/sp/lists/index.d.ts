@@ -1,3 +1,3 @@
-import "./web";
-export { List, IList, Lists, ILists, IListAddResult, IListUpdateResult, IListEnsureResult, ControlMode, ICamlQuery, IChangeLogItemQuery, IListFormData, IListItemCollectionPosition, IListItemFormUpdateValue, IRenderListData, RenderListDataOptions, IRenderListDataParameters, IListInfo, IListParentInfos, IRenderListDataAsStreamResult, } from "./types";
+import "./web.js";
+export { List, IList, Lists, ILists, IListAddResult, IListUpdateResult, IListEnsureResult, ControlMode, ICamlQuery, IChangeLogItemQuery, IListFormData, IListItemCollectionPosition, IListItemFormUpdateValue, IRenderListData, RenderListDataOptions, IRenderListDataParameters, IListInfo, IListParentInfos, IRenderListDataAsStreamResult, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

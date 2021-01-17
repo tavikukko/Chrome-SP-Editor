@@ -1,4 +1,4 @@
-import { IRegionalSettings, IUserResources } from "./types";
+import { IRegionalSettings, IUserResources } from "./types.js";
 declare module "../webs/types" {
     interface _Web extends IUserResources {
         regionalSettings: IRegionalSettings;

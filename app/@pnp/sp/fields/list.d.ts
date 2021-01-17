@@ -1,4 +1,4 @@
-import { IFields } from "./types";
+import { IFields } from "./types.js";
 declare module "../lists/types" {
     interface _List {
         readonly fields: IFields;

@@ -1,6 +1,6 @@
-import { ICalendar, IEvents, ICalendars } from "./types";
-import { ICalendarViewInfo } from "./funcs";
-import { IGraphQueryableCollection } from "../graphqueryable";
+import { ICalendar, IEvents, ICalendars } from "./types.js";
+import { ICalendarViewInfo } from "./funcs.js";
+import { IGraphQueryableCollection } from "../graphqueryable.js";
 declare module "../users/types" {
     interface _User {
         readonly calendar: ICalendar;

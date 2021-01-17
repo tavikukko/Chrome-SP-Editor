@@ -1,5 +1,5 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable";
-import { ISiteUsers } from "../site-users/types";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable.js";
+import { ISiteUsers } from "../site-users/types.js";
 import { ITypedHash } from "@pnp/common";
 export declare class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]> {
     /**
@@ -35,7 +35,7 @@ export declare class _SiteGroups extends _SharePointQueryableCollection<ISiteGro
 }
 export interface ISiteGroups extends _SiteGroups {
 }
-export declare const SiteGroups: import("../sharepointqueryable").ISPInvokableFactory<ISiteGroups>;
+export declare const SiteGroups: import("../sharepointqueryable.js").ISPInvokableFactory<ISiteGroups>;
 export declare class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupInfo> {
     /**
      * Gets the users for this group
@@ -56,7 +56,7 @@ export declare class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupI
 }
 export interface ISiteGroup extends _SiteGroup {
 }
-export declare const SiteGroup: import("../sharepointqueryable").ISPInvokableFactory<ISiteGroup>;
+export declare const SiteGroup: import("../sharepointqueryable.js").ISPInvokableFactory<ISiteGroup>;
 /**
  * Result from updating a group
  *

@@ -1,6 +1,6 @@
-import { IWeb } from "./types";
-import { SPBatch } from "../batch";
-export { IWeb, IWebs, Web, IWebAddResult, IWebUpdateResult, Webs, IWebInfo, IStorageEntity, IWebInfosData, } from "./types";
+import { IWeb } from "./types.js";
+import { SPBatch } from "../batch.js";
+export { IWeb, IWebs, Web, IWebAddResult, IWebUpdateResult, Webs, IWebInfo, IStorageEntity, IWebInfosData, } from "./types.js";
 declare module "../rest" {
     interface SPRest {
         /**

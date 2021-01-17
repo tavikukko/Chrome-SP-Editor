@@ -1,4 +1,4 @@
-import { IFile } from "./types";
+import { IFile } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         getFileByServerRelativeUrl(fileRelativeUrl: string): IFile;

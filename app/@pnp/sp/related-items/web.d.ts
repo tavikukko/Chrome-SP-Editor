@@ -1,4 +1,4 @@
-import { IRelatedItemManager } from "./types";
+import { IRelatedItemManager } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         relatedItems: IRelatedItemManager;

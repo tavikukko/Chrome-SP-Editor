@@ -1,7 +1,7 @@
-import "./web";
-import "./user-custom-actions";
-import "./list";
-import "./field";
-import "./content-type";
-export { IRegionalSettings, ITimeZone, ITimeZones, RegionalSettings, TimeZone, TimeZones, IInstalledLanguageInfo, IRegionalSettingsInfo, ITimeZoneInfo, IUserResources, } from "./types";
+import "./web.js";
+import "./user-custom-actions.js";
+import "./list.js";
+import "./field.js";
+import "./content-type.js";
+export { IRegionalSettings, ITimeZone, ITimeZones, RegionalSettings, TimeZone, TimeZones, IInstalledLanguageInfo, IRegionalSettingsInfo, ITimeZoneInfo, IUserResources, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

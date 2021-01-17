@@ -1,8 +1,8 @@
-import { IFetchOptions, IConfigOptions, IRequestClient } from "@pnp/common";
-import { ICachingOptions } from "./caching";
-import { Batch } from "./batch";
-import { PipelineMethod } from "./pipeline";
-import { IODataParser } from "./parsers";
+import { IFetchOptions, IConfigOptions, IRequestClient, ITypedHash, Runtime } from "@pnp/common";
+import { ICachingOptions } from "./caching.js";
+import { Batch } from "./batch.js";
+import { PipelineMethod } from "./pipeline.js";
+import { IODataParser } from "./parsers.js";
 export declare function cloneQueryableData(source: Partial<IQueryableData>): Partial<IQueryableData>;
 export interface IQueryableData<DefaultActionType = any> {
     batch: Batch | null;
@@ -36,105 +36,112 @@ export interface IQueryable<DefaultActionType> {
     usingParser(parser: IODataParser<any>): this;
     withPipeline(pipeline: PipelineMethod<DefaultActionType>[]): this;
     defaultAction(options?: IFetchOptions): Promise<DefaultActionType>;
+    getRuntime(): Runtime;
+    setRuntime(runtime: Runtime): this;
+    setRuntime(cloneGlobal: boolean, additionalConfig?: ITypedHash<any>): this;
 }
 export declare abstract class Queryable<DefaultActionType = any> implements IQueryable<DefaultActionType> {
     private _data;
+    private _runtime;
     constructor(dataSeed?: Partial<IQueryableData<DefaultActionType>>);
     get data(): Partial<IQueryableData<DefaultActionType>>;
     set data(value: Partial<IQueryableData<DefaultActionType>>);
+    getRuntime(): Runtime;
+    setRuntime(runtime: Runtime): this;
+    setRuntime(cloneGlobal: boolean, additionalConfig?: ITypedHash<any>): this;
     /**
-     * Gets the full url with query information
-     *
-     */
+   * Gets the full url with query information
+   *
+   */
     abstract toUrlAndQuery(): string;
     /**
-     * The default action for this
-     */
+   * The default action for this
+   */
     abstract defaultAction(options?: IFetchOptions): Promise<DefaultActionType>;
     /**
-    * Gets the current url
-    *
-    */
+  * Gets the current url
+  *
+  */
     toUrl(): string;
     /**
-     * Directly concatenates the supplied string to the current url, not normalizing "/" chars
-     *
-     * @param pathPart The string to concatenate to the url
-     */
+   * Directly concatenates the supplied string to the current url, not normalizing "/" chars
+   *
+   * @param pathPart The string to concatenate to the url
+   */
     concat(pathPart: string): this;
     /**
-     * Provides access to the query builder for this url
-     *
-     */
+   * Provides access to the query builder for this url
+   *
+   */
     get query(): Map<string, string>;
     /**
-     * Sets custom options for current object and all derived objects accessible via chaining
-     *
-     * @param options custom options
-     */
+   * Sets custom options for current object and all derived objects accessible via chaining
+   *
+   * @param options custom options
+   */
     configure(options: IConfigOptions): this;
     /**
-     * Configures this instance from the configure options of the supplied instance
-     *
-     * @param o Instance from which options should be taken
-     */
+   * Configures this instance from the configure options of the supplied instance
+   *
+   * @param o Instance from which options should be taken
+   */
     configureFrom(o: IQueryable<any>): this;
     /**
-     * Enables caching for this request
-     *
-     * @param options Defines the options used when caching this request
-     */
-    usingCaching(options?: ICachingOptions): this;
+   * Enables caching for this request
+   *
+   * @param options Defines the options used when caching this request
+   */
+    usingCaching(options?: string | ICachingOptions): this;
     usingParser(parser: IODataParser<any>): this;
     /**
-     * Allows you to set a request specific processing pipeline
-     *
-     * @param pipeline The set of methods, in order, to execute a given request
-     */
+   * Allows you to set a request specific processing pipeline
+   *
+   * @param pipeline The set of methods, in order, to execute a given request
+   */
     withPipeline(pipeline: PipelineMethod<DefaultActionType>[]): this;
     /**
-     * Appends the given string and normalizes "/" chars
-     *
-     * @param pathPart The string to append
-     */
+   * Appends the given string and normalizes "/" chars
+   *
+   * @param pathPart The string to append
+   */
     append(pathPart: string): void;
     /**
-     * Adds this query to the supplied batch
-     *
-     * @example
-     * ```
-     *
-     * let b = pnp.sp.createBatch();
-     * pnp.sp.web.inBatch(b).get().then(...);
-     * b.execute().then(...)
-     * ```
-     */
+   * Adds this query to the supplied batch
+   *
+   * @example
+   * ```
+   *
+   * let b = pnp.sp.createBatch();
+   * pnp.sp.web.inBatch(b).get().then(...);
+   * b.execute().then(...)
+   * ```
+   */
     inBatch(batch: Batch): this;
     /**
-     * Blocks a batch call from occuring, MUST be cleared by calling the returned function
-    */
+   * Blocks a batch call from occuring, MUST be cleared by calling the returned function
+  */
     addBatchDependency(): () => void;
     /**
-     * Indicates if the current query has a batch associated
-     *
-     */
+   * Indicates if the current query has a batch associated
+   *
+   */
     protected get hasBatch(): boolean;
     /**
-     * The batch currently associated with this query or null
-     *
-     */
+   * The batch currently associated with this query or null
+   *
+   */
     protected get batch(): Batch | null;
     /**
-     * Gets the parent url used when creating this instance
-     *
-     */
+   * Gets the parent url used when creating this instance
+   *
+   */
     protected get parentUrl(): string;
     /**
-     * Clones this instance's data to target
-     *
-     * @param target Instance to which data is written
-     * @param settings [Optional] Settings controlling how clone is applied
-     */
+   * Clones this instance's data to target
+   *
+   * @param target Instance to which data is written
+   * @param settings [Optional] Settings controlling how clone is applied
+   */
     protected cloneTo<T extends IQueryable<any>>(target: T, settings?: {
         includeBatch?: boolean;
         includeQuery?: boolean;

@@ -1,7 +1,7 @@
 import { ITeamCreateResult, ITeam, ITeams } from "./types";
 import { Team as ITeamType } from "@microsoft/microsoft-graph-types";
 import "./users";
-export { Channel, Channels, IChannel, IChannelCreateResult, IChannels, ITab, ITabCreateResult, ITabUpdateResult, ITabs, ITeam, ITeamCreateResult, ITeamCreateResultAsync, ITeamUpdateResult, ITeams, Tab, Tabs, Team, Teams, } from "./types";
+export { Channel, Channels, IChannel, IChannelCreateResult, IChannels, ITab, ITabCreateResult, ITabUpdateResult, ITabs, ITeam, ITeamCreateResult, ITeamCreateResultAsync, ITeamUpdateResult, ITeams, Tab, Tabs, Team, Teams, } from "./types.js";
 declare module "../groups/types" {
     interface _Group {
         readonly team: ITeam;

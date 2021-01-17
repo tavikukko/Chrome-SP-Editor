@@ -1,4 +1,4 @@
-import { IPlans } from "./types";
+import { IPlans } from "./types.js";
 declare module "../groups/types" {
     interface _Group {
         readonly plans: IPlans;

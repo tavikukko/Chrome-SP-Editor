@@ -1,4 +1,4 @@
-import { ITypedHash } from "./collections";
+import { ITypedHash } from "./collections.js";
 /**
  * Gets a callback function which will maintain context across async calls.
  * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)

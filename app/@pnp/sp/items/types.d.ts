@@ -1,8 +1,8 @@
-import { _SharePointQueryableInstance, ISharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, ISharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable.js";
 import { ITypedHash } from "@pnp/common";
-import { IListItemFormUpdateValue } from "../lists/types";
-import { IList } from "../lists";
-import { IResourcePath } from "../utils/toResourcePath";
+import { IListItemFormUpdateValue } from "../lists/types.js";
+import { IList } from "../lists/index.js";
+import { IResourcePath } from "../utils/toResourcePath.js";
 /**
  * Describes a collection of Item objects
  *
@@ -55,7 +55,7 @@ export declare class _Items extends _SharePointQueryableCollection {
 }
 export interface IItems extends _Items {
 }
-export declare const Items: import("../sharepointqueryable").ISPInvokableFactory<IItems>;
+export declare const Items: import("../sharepointqueryable.js").ISPInvokableFactory<IItems>;
 /**
  * Descrines a single Item instance
  *
@@ -93,7 +93,7 @@ export declare class _Item extends _SharePointQueryableInstance {
     get versions(): IItemVersions;
     get list(): IList;
     /**
-     * Updates this list intance with the supplied properties
+     * Updates this list instance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
@@ -137,7 +137,7 @@ export declare class _Item extends _SharePointQueryableInstance {
 }
 export interface IItem extends _Item, IDeleteableWithETag {
 }
-export declare const Item: import("../sharepointqueryable").ISPInvokableFactory<IItem>;
+export declare const Item: import("../sharepointqueryable.js").ISPInvokableFactory<IItem>;
 /**
  * Describes a collection of Version objects
  *
@@ -152,7 +152,7 @@ export declare class _ItemVersions extends _SharePointQueryableCollection {
 }
 export interface IItemVersions extends _ItemVersions {
 }
-export declare const ItemVersions: import("../sharepointqueryable").ISPInvokableFactory<IItemVersions>;
+export declare const ItemVersions: import("../sharepointqueryable.js").ISPInvokableFactory<IItemVersions>;
 /**
  * Describes a single Version instance
  *
@@ -162,7 +162,7 @@ export declare class _ItemVersion extends _SharePointQueryableInstance {
 }
 export interface IItemVersion extends _ItemVersion, IDeleteableWithETag {
 }
-export declare const ItemVersion: import("../sharepointqueryable").ISPInvokableFactory<IItemVersion>;
+export declare const ItemVersion: import("../sharepointqueryable.js").ISPInvokableFactory<IItemVersion>;
 /**
  * Provides paging functionality for list items
  */

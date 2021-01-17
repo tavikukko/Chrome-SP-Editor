@@ -1,4 +1,4 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable.js";
 export declare class _Features extends _SharePointQueryableCollection<IFeatureInfo[]> {
     /**
      * Adds (activates) the specified feature
@@ -23,7 +23,7 @@ export declare class _Features extends _SharePointQueryableCollection<IFeatureIn
 }
 export interface IFeatures extends _Features {
 }
-export declare const Features: import("../sharepointqueryable").ISPInvokableFactory<IFeatures>;
+export declare const Features: import("../sharepointqueryable.js").ISPInvokableFactory<IFeatures>;
 export declare class _Feature extends _SharePointQueryableInstance<IFeatureInfo> {
     /**
      * Removes (deactivates) the feature
@@ -34,7 +34,7 @@ export declare class _Feature extends _SharePointQueryableInstance<IFeatureInfo>
 }
 export interface IFeature extends _Feature {
 }
-export declare const Feature: import("../sharepointqueryable").ISPInvokableFactory<IFeature>;
+export declare const Feature: import("../sharepointqueryable.js").ISPInvokableFactory<IFeature>;
 /**
  * Result from adding (activating) a feature to the collection
  */

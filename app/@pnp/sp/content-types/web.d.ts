@@ -1,4 +1,4 @@
-import { IContentTypes } from "./types";
+import { IContentTypes } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         readonly contentTypes: IContentTypes;

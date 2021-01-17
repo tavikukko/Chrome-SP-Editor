@@ -1,4 +1,4 @@
-import { IRoleDefinitions, ISecurableMethods } from "./types";
+import { IRoleDefinitions, ISecurableMethods } from "./types.js";
 declare module "../webs/types" {
     interface _Web extends ISecurableMethods {
         roleDefinitions: IRoleDefinitions;

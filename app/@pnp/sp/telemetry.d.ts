@@ -1,4 +1,4 @@
-import { ISharePointQueryable } from "./sharepointqueryable";
+import { ISharePointQueryable } from "./sharepointqueryable.js";
 /**
  * Includes this method name in the X-ClientService-ClientTag used to record pnpjs usage
  *

@@ -1,4 +1,4 @@
-import { IGraphQueryable } from "./graphqueryable";
+import { IGraphQueryable } from "./graphqueryable.js";
 /**
  * Decorator used to specify the default path for Queryable objects
  *

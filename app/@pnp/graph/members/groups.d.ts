@@ -1,4 +1,4 @@
-import { IMembers } from "./types";
+import { IMembers } from "./types.js";
 declare module "../groups/types" {
     interface _Group {
         readonly owners: IMembers;

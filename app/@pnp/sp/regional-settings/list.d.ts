@@ -1,4 +1,4 @@
-import { IUserResources } from "./types";
+import { IUserResources } from "./types.js";
 declare module "../lists/types" {
     interface _List extends IUserResources {
     }

@@ -1,4 +1,4 @@
-import { IFolders, IFolder } from "./types";
+import { IFolders, IFolder } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         readonly folders: IFolders;

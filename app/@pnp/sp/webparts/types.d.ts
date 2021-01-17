@@ -1,4 +1,4 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryableInstance, _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryableInstance, _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
 export declare class _LimitedWebPartManager extends _SharePointQueryable implements ILimitedWebPartManager {
     get scope(): ISharePointQueryable;
     get webparts(): IWebPartDefinitions;
@@ -44,7 +44,7 @@ export declare class _WebPartDefinitions extends _SharePointQueryableCollection 
 }
 export interface IWebPartDefinitions extends _WebPartDefinitions {
 }
-export declare const WebPartDefinitions: import("../sharepointqueryable").ISPInvokableFactory<IWebPartDefinitions>;
+export declare const WebPartDefinitions: import("../sharepointqueryable.js").ISPInvokableFactory<IWebPartDefinitions>;
 export declare class _WebPartDefinition extends _SharePointQueryableInstance {
     /**
     * Gets the webpart information associated with this definition
@@ -76,7 +76,7 @@ export declare class _WebPartDefinition extends _SharePointQueryableInstance {
 }
 export interface IWebPartDefinition extends _WebPartDefinition {
 }
-export declare const WebPartDefinition: import("../sharepointqueryable").ISPInvokableFactory<IWebPartDefinition>;
+export declare const WebPartDefinition: import("../sharepointqueryable.js").ISPInvokableFactory<IWebPartDefinition>;
 export declare enum WebPartsPersonalizationScope {
     User = 0,
     Shared = 1

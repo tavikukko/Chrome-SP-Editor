@@ -1,4 +1,4 @@
-import { IDrive, IDrives } from "./types";
+import { IDrive, IDrives } from "./types.js";
 declare module "../users/types" {
     interface _User {
         readonly drive: IDrive;

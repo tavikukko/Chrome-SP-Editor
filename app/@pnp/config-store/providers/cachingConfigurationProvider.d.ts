@@ -1,4 +1,4 @@
-import { IConfigurationProvider } from "../configuration";
+import { IConfigurationProvider } from "../configuration.js";
 import { ITypedHash, IPnPClientStore } from "@pnp/common";
 /**
  * A caching provider which can wrap other non-caching providers

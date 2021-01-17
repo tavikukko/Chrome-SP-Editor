@@ -1,4 +1,4 @@
-import { ISharingEmailData, ISharingResult, SharingRole, ISharedFuncs } from "./types";
+import { ISharingEmailData, ISharingResult, SharingRole, ISharedFuncs } from "./types.js";
 declare module "../files/types" {
     interface _File extends ISharedFuncs {
         shareWith(loginNames: string | string[], role?: SharingRole, requireSignin?: boolean, emailData?: ISharingEmailData): Promise<ISharingResult>;

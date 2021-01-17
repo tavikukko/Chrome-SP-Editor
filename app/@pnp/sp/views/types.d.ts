@@ -1,6 +1,14 @@
 import { ITypedHash } from "@pnp/common";
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable.js";
 export declare class _Views extends _SharePointQueryableCollection<IViewInfo[]> {
+    /**
+     * Adds a new view to the collection
+     *
+     * @param title The new views's title
+     * @param personalView True if this is a personal view, otherwise false, default = false
+     * @param additionalSettings Will be passed as part of the view creation body
+     */
+    add(title: string, personalView?: boolean, additionalSettings?: ITypedHash<any>): Promise<IViewAddResult>;
     /**
      * Gets a view by guid id
      *
@@ -13,20 +21,12 @@ export declare class _Views extends _SharePointQueryableCollection<IViewInfo[]> 
      * @param title The case-sensitive title of the view
      */
     getByTitle(title: string): IView;
-    /**
-     * Adds a new view to the collection
-     *
-     * @param title The new views's title
-     * @param personalView True if this is a personal view, otherwise false, default = false
-     * @param additionalSettings Will be passed as part of the view creation body
-     */
-    add(title: string, personalView?: boolean, additionalSettings?: ITypedHash<any>): Promise<IViewAddResult>;
 }
 export interface IViews extends _Views {
 }
-export declare const Views: import("../sharepointqueryable").ISPInvokableFactory<IViews>;
+export declare const Views: import("../sharepointqueryable.js").ISPInvokableFactory<IViews>;
 export declare class _View extends _SharePointQueryableInstance<IViewInfo> {
-    delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>) => Promise<void>;
+    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
     get fields(): IViewFields;
     /**
      * Updates this view intance with the supplied properties
@@ -48,7 +48,7 @@ export declare class _View extends _SharePointQueryableInstance<IViewInfo> {
 }
 export interface IView extends _View, IDeleteable {
 }
-export declare const View: import("../sharepointqueryable").ISPInvokableFactory<IView>;
+export declare const View: import("../sharepointqueryable.js").ISPInvokableFactory<IView>;
 export declare class _ViewFields extends _SharePointQueryableCollection<{
     SchemaXml: string;
 }> {
@@ -82,7 +82,7 @@ export declare class _ViewFields extends _SharePointQueryableCollection<{
 }
 export interface IViewFields extends _ViewFields {
 }
-export declare const ViewFields: import("../sharepointqueryable").ISPInvokableFactory<IViewFields>;
+export declare const ViewFields: import("../sharepointqueryable.js").ISPInvokableFactory<IViewFields>;
 export interface IViewAddResult {
     view: IView;
     data: IViewInfo;

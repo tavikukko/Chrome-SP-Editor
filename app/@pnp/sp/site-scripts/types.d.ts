@@ -1,4 +1,4 @@
-import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable";
+import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable.js";
 export declare class _SiteScripts extends _SharePointQueryable {
     constructor(baseUrl: string | ISharePointQueryable, methodName?: string);
     execute<T>(props: any): Promise<T>;

@@ -1,5 +1,5 @@
-import { ITypedHash } from "./collections";
-import { ISPFXContext } from "./spfxcontextinterface";
+import { ITypedHash } from "./collections.js";
+import { ISPFXContext } from "./spfxcontextinterface.js";
 export interface ILibraryConfiguration {
     /**
      * Allows caching to be global disabled, default: false
@@ -30,23 +30,26 @@ export interface ILibraryConfiguration {
      */
     ie11?: boolean;
 }
-export declare function setup(config: ILibraryConfiguration): void;
-export declare class RuntimeConfigImpl {
+export declare function setup<T = ILibraryConfiguration>(config: T, runtime?: Runtime): void;
+export declare function onRuntimeCreate(hook: (runtime: Runtime) => void): void;
+export declare class Runtime {
     private _v;
-    constructor(_v?: Map<string, any>);
+    constructor(_v?: Map<string | number | symbol, any>);
     /**
      *
-     * @param config The set of properties to add to the globa configuration instance
+     * @param config The set of properties to add to this runtime instance
      */
-    assign(config: ITypedHash<any>): void;
-    get(key: string): any;
-    get defaultCachingStore(): "session" | "local";
-    get defaultCachingTimeoutSeconds(): number;
-    get globalCacheDisable(): boolean;
-    get enableCacheExpiration(): boolean;
-    get cacheExpirationIntervalMilliseconds(): number;
-    get spfxContext(): ISPFXContext;
-    get ie11(): boolean;
+    assign<T = ITypedHash<any>>(config: T): void;
+    /**
+     * Gets a runtime value using T to define the available keys, and R to define the type returned by that key
+     *
+     * @param key
+     */
+    get<T = ILibraryConfiguration, R = any>(key: keyof T): R;
+    /**
+     * Exports the internal Map representing this runtime
+     */
+    export(): Map<string | number | symbol, any>;
 }
-export declare let RuntimeConfig: RuntimeConfigImpl;
+export declare const DefaultRuntime: Runtime;
 //# sourceMappingURL=libconfig.d.ts.map

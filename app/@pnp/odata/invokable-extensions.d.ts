@@ -1,9 +1,9 @@
 import { ITypedHash } from "@pnp/common";
 export declare type ValidProxyMethods = "apply" | "get" | "has" | "set";
-export declare type ExtensionDelegateType<T extends object> = {
+export declare type ExtensionDelegateType<T extends Record<string, unknown>> = {
     (op: string, target: T, ...rest: any[]): void;
 };
-export declare type ExtensionType<T extends object = {}> = Pick<ProxyHandler<T>, ValidProxyMethods> | ExtensionDelegateType<T> | ITypedHash<any>;
+export declare type ExtensionType<T extends Record<string, unknown> = {}> = Pick<ProxyHandler<T>, ValidProxyMethods> | ExtensionDelegateType<T> | ITypedHash<any>;
 /**
  * Creates global extensions across all invokable objects
  *

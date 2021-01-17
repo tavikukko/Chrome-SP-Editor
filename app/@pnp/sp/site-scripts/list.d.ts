@@ -1,4 +1,4 @@
-import "../folders/list";
+import "../folders/list.js";
 declare module "../lists/types" {
     interface _List {
         getSiteScript(): Promise<string>;

@@ -1,4 +1,4 @@
-import { IInsights } from "./types";
+import { IInsights } from "./types.js";
 declare module "../users/types" {
     interface _User {
         readonly insights: IInsights;

@@ -1,4 +1,4 @@
-import { ITasks } from "./types";
+import { ITasks } from "./types.js";
 declare module "../users/types" {
     interface _User {
         readonly tasks: ITasks;

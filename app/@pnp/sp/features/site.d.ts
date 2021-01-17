@@ -1,4 +1,4 @@
-import { IFeatures } from "./types";
+import { IFeatures } from "./types.js";
 declare module "../sites/types" {
     interface _Site {
         readonly features: IFeatures;

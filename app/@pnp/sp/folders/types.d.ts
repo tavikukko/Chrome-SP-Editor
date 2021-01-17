@@ -1,7 +1,7 @@
 import { ITypedHash } from "@pnp/common";
-import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePointQueryableCollection, ISharePointQueryableInstance, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable";
-import { IItem } from "../items/types";
-import { IResourcePath } from "../utils/toResourcePath";
+import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePointQueryableCollection, ISharePointQueryableInstance, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable.js";
+import { IItem } from "../items/types.js";
+import { IResourcePath } from "../utils/toResourcePath.js";
 export declare class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
     /**
      * Gets a folder by it's name
@@ -25,7 +25,7 @@ export declare class _Folders extends _SharePointQueryableCollection<IFolderInfo
 }
 export interface IFolders extends _Folders {
 }
-export declare const Folders: import("../sharepointqueryable").ISPInvokableFactory<IFolders>;
+export declare const Folders: import("../sharepointqueryable.js").ISPInvokableFactory<IFolders>;
 export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
     delete: (this: ISharePointQueryable<any>, eTag?: string) => Promise<void>;
     /**
@@ -127,7 +127,7 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 }
 export interface IFolder extends _Folder, IDeleteableWithETag {
 }
-export declare const Folder: import("../sharepointqueryable").ISPInvokableFactory<IFolder>;
+export declare const Folder: import("../sharepointqueryable.js").ISPInvokableFactory<IFolder>;
 /**
  * Describes result of adding a folder
  */

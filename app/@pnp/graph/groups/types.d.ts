@@ -1,8 +1,8 @@
 import { ITypedHash } from "@pnp/common";
 import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection } from "../graphqueryable";
-import { IDeleteable, IUpdateable, IGetById } from "../decorators";
-import { _DirectoryObject } from "../directory-objects/types";
+import { _GraphQueryableCollection } from "../graphqueryable.js";
+import { IDeleteable, IUpdateable, IGetById } from "../decorators.js";
+import { _DirectoryObject } from "../directory-objects/types.js";
 export declare enum GroupType {
     /**
      * Office 365 (aka unified group)
@@ -53,7 +53,7 @@ export declare class _Group extends _DirectoryObject<IGroupType> {
 }
 export interface IGroup extends _Group, IDeleteable, IUpdateable {
 }
-export declare const Group: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IGroup;
+export declare const Group: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IGroup & import("../../odata/invokable-binder.js").IInvokable<any>;
 /**
  * Describes a collection of Field objects
  *
@@ -71,7 +71,7 @@ export declare class _Groups extends _GraphQueryableCollection<IGroupType[]> {
 }
 export interface IGroups extends _Groups, IGetById<IGroup> {
 }
-export declare const Groups: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IGroups;
+export declare const Groups: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IGroups & import("../../odata/invokable-binder.js").IInvokable<any>;
 /**
  * IGroupAddResult
  */

@@ -5,50 +5,50 @@
 export declare class Logger {
     private static _instance;
     /**
-     * Gets or sets the active log level to apply for log filtering
-     */
+   * Gets or sets the active log level to apply for log filtering
+   */
     static get activeLogLevel(): LogLevel;
     static set activeLogLevel(value: LogLevel);
     private static get instance();
     /**
-     * Adds ILogListener instances to the set of subscribed listeners
-     *
-     * @param listeners One or more listeners to subscribe to this log
-     */
+   * Adds ILogListener instances to the set of subscribed listeners
+   *
+   * @param listeners One or more listeners to subscribe to this log
+   */
     static subscribe(...listeners: ILogListener[]): void;
     /**
-     * Clears the subscribers collection, returning the collection before modification
-     */
+   * Clears the subscribers collection, returning the collection before modification
+   */
     static clearSubscribers(): ILogListener[];
     /**
-     * Gets the current subscriber count
-     */
+   * Gets the current subscriber count
+   */
     static get count(): number;
     /**
-     * Writes the supplied string to the subscribed listeners
-     *
-     * @param message The message to write
-     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
-     */
+   * Writes the supplied string to the subscribed listeners
+   *
+   * @param message The message to write
+   * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
+   */
     static write(message: string, level?: LogLevel): void;
     /**
-     * Writes the supplied string to the subscribed listeners
-     *
-     * @param json The json object to stringify and write
-     * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
-     */
+   * Writes the supplied string to the subscribed listeners
+   *
+   * @param json The json object to stringify and write
+   * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
+   */
     static writeJSON(json: any, level?: LogLevel): void;
     /**
-     * Logs the supplied entry to the subscribed listeners
-     *
-     * @param entry The message to log
-     */
+   * Logs the supplied entry to the subscribed listeners
+   *
+   * @param entry The message to log
+   */
     static log(entry: ILogEntry): void;
     /**
-     * Logs an error object to the subscribed listeners
-     *
-     * @param err The error object
-     */
+   * Logs an error object to the subscribed listeners
+   *
+   * @param err The error object
+   */
     static error(err: Error): void;
 }
 /**
@@ -67,16 +67,16 @@ export declare const enum LogLevel {
  */
 export interface ILogEntry {
     /**
-     * The main message to be logged
-     */
+   * The main message to be logged
+   */
     message: string;
     /**
-     * The level of information this message represents
-     */
+   * The level of information this message represents
+   */
     level: LogLevel;
     /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     */
+   * Any associated data that a given logging listener may choose to log or ignore
+   */
     data?: any;
 }
 /**
@@ -85,10 +85,10 @@ export interface ILogEntry {
  */
 export interface ILogListener {
     /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
+   * Any associated data that a given logging listener may choose to log or ignore
+   *
+   * @param entry The information to be logged
+   */
     log(entry: ILogEntry): void;
 }
 //# sourceMappingURL=logger.d.ts.map

@@ -1,6 +1,6 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable";
-import { ISerializableNavigationNode } from "../navigation/types";
-import { ISite } from "../sites/types";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable.js";
+import { ISerializableNavigationNode } from "../navigation/types.js";
+import { ISite } from "../sites/types.js";
 export declare class _HubSites extends _SharePointQueryableCollection<IHubSiteInfo[]> {
     /**
      * Gets a Hub Site from the collection by id
@@ -11,7 +11,7 @@ export declare class _HubSites extends _SharePointQueryableCollection<IHubSiteIn
 }
 export interface IHubSites extends _HubSites {
 }
-export declare const HubSites: import("../sharepointqueryable").ISPInvokableFactory<IHubSites>;
+export declare const HubSites: import("../sharepointqueryable.js").ISPInvokableFactory<IHubSites>;
 export declare class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
     /**
      * Gets the ISite instance associated with this hubsite
@@ -20,7 +20,7 @@ export declare class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo>
 }
 export interface IHubSite extends _HubSite {
 }
-export declare const HubSite: import("../sharepointqueryable").ISPInvokableFactory<IHubSite>;
+export declare const HubSite: import("../sharepointqueryable.js").ISPInvokableFactory<IHubSite>;
 export interface IHubSiteInfo {
     ID: string;
     Title: string;

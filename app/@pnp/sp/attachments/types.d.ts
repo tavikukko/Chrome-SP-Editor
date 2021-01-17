@@ -1,4 +1,4 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteableWithETag } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteableWithETag } from "../sharepointqueryable.js";
 export declare class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo[]> {
     /**
     * Gets a Attachment File by filename
@@ -34,9 +34,9 @@ export declare class _Attachments extends _SharePointQueryableCollection<IAttach
 }
 export interface IAttachments extends _Attachments {
 }
-export declare const Attachments: import("../sharepointqueryable").ISPInvokableFactory<IAttachments>;
+export declare const Attachments: import("../sharepointqueryable.js").ISPInvokableFactory<IAttachments>;
 export declare class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> {
-    delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>, eTag?: string) => Promise<void>;
     /**
      * Gets the contents of the file as text
      *
@@ -71,7 +71,7 @@ export declare class _Attachment extends _SharePointQueryableInstance<IAttachmen
 }
 export interface IAttachment extends _Attachment, IDeleteableWithETag {
 }
-export declare const Attachment: import("../sharepointqueryable").ISPInvokableFactory<IAttachment>;
+export declare const Attachment: import("../sharepointqueryable.js").ISPInvokableFactory<IAttachment>;
 export interface IAttachmentAddResult {
     file: IAttachment;
     data: IAttachmentFileInfo;

@@ -1,4 +1,4 @@
-import { IFields } from "./types";
+import { IFields } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         readonly fields: IFields;
@@ -10,8 +10,8 @@ declare module "../webs/types" {
          */
         readonly fields: IFields;
         /**
-         * This web's collection of available fields
-         */
+     * This web's collection of available fields
+     */
         readonly availablefields: IFields;
     }
 }

@@ -1,3 +1,3 @@
-import "./list";
-export { IView, IViewFields, IViews, View, ViewFields, Views, IViewAddResult, IViewUpdateResult, IViewInfo, ViewScope, } from "./types";
+import "./list.js";
+export { IView, IViewFields, IViews, View, ViewFields, Views, IViewAddResult, IViewUpdateResult, IViewInfo, ViewScope, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

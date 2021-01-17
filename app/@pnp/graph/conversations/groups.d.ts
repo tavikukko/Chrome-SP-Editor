@@ -1,4 +1,4 @@
-import { IConversations, ISenders } from "./types";
+import { IConversations, ISenders } from "./types.js";
 declare module "../groups/types" {
     interface _Group {
         readonly conversations: IConversations;

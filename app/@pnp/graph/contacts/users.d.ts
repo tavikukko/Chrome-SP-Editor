@@ -1,4 +1,4 @@
-import { IContacts, IContactFolders } from "./types";
+import { IContacts, IContactFolders } from "./types.js";
 declare module "../users/types" {
     interface _User {
         readonly contacts: IContacts;

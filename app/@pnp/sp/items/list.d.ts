@@ -1,4 +1,4 @@
-import { IItems } from "./types";
+import { IItems } from "./types.js";
 declare module "../lists/types" {
     interface _List {
         readonly items: IItems;

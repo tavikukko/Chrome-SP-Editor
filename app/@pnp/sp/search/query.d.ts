@@ -1,6 +1,6 @@
-import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable.js";
 import { IConfigOptions } from "@pnp/common";
-import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types";
+import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
 /**
  * Creates a new instance of the SearchQueryBuilder
  *
@@ -33,7 +33,7 @@ export declare class _Search extends _SharePointQueryableInstance {
 export interface ISearch {
     (queryInit: SearchQueryInit): Promise<SearchResults>;
 }
-export declare const Search: (baseUrl: string | ISharePointQueryable, options?: IConfigOptions) => ISearch;
+export declare const Search: (baseUrl: string | ISharePointQueryable, options?: IConfigOptions, runtime?: import("../../common/libconfig.js").Runtime) => ISearch;
 export declare class SearchResults {
     private _url;
     private _query;

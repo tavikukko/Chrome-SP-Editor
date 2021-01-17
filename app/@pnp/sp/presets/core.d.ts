@@ -1,12 +1,12 @@
-import { SPRest } from "../rest";
-import "../items";
-import "../lists";
-import "../sites";
-import "../webs";
-export * from "../items";
-export * from "../lists";
-export * from "../sites";
-export * from "../webs";
-export * from "../index";
+import { SPRest } from "../rest.js";
+import "../items/index.js";
+import "../lists/index.js";
+import "../sites/index.js";
+import "../webs/index.js";
+export * from "../items/index.js";
+export * from "../lists/index.js";
+export * from "../sites/index.js";
+export * from "../webs/index.js";
+export * from "../index.js";
 export declare const sp: SPRest;
 //# sourceMappingURL=core.d.ts.map

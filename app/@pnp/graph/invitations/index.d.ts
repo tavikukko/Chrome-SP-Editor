@@ -1,5 +1,5 @@
-import { IInvitations } from "./types";
-export { IInvitationAddResult, IInvitations, Invitations, } from "./types";
+import { IInvitations } from "./types.js";
+export { IInvitationAddResult, IInvitations, Invitations, } from "./types.js";
 declare module "../rest" {
     interface GraphRest {
         readonly invitations: IInvitations;

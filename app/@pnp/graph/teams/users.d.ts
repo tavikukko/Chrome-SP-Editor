@@ -1,4 +1,4 @@
-import { ITeams } from "./types";
+import { ITeams } from "./types.js";
 declare module "../users/types" {
     interface _User {
         readonly joinedTeams: ITeams;

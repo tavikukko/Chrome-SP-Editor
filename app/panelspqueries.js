@@ -1447,8 +1447,8 @@ var getSubscriptions = function getSubscriptions() {
       var weblists = [];
       lists.forEach(function (list) {
         weblists.push({ listTitle: list.Title, listId: list.Id });
-        if (list.Subscriptions.results.length > 0) {
-          list.Subscriptions.results.forEach(function (subscription) {
+        if (list.Subscriptions.length > 0) {
+          list.Subscriptions.forEach(function (subscription) {
             webHookSubscriptions.push({
               listTitle: list.Title,
               listId: list.Id,
@@ -1845,13 +1845,13 @@ var getFolders = function getFolders() {
       $pnp.sp.web.expand("Webs, Folders, RootFolder/Files")
         .select("Id, Webs/Id, Webs/Title, Webs/ServerRelativeUrl, Folders/Name, Folders/ServerRelativeUrl, RootFolder/Files/ServerRelativeUrl, RootFolder/Files/Name, RootFolder/Files/CustomizedPageStatus").get().then(r => {
           var joined = [];
-          r.Folders.results.forEach(function (folder) {
+          r.Folders.forEach(function (folder) {
             joined.push({ webId: r.Id, label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
           });
-          r.RootFolder.Files.results.forEach(function (file) {
+          r.RootFolder.Files.forEach(function (file) {
             joined.push({ webId: r.Id, label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
           });
-          r.Webs.results.forEach(function (web) {
+          r.Webs.forEach(function (web) {
             joined.push({ webId: web.Id, label: web.Title, ServerRelativeUrl: web.ServerRelativeUrl, web: true, expanded: false });
           });
           window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
@@ -1870,13 +1870,13 @@ var getFolders = function getFolders() {
           .select("Webs/Id, Webs/Title, Webs/ServerRelativeUrl, Folders/Name, Folders/ServerRelativeUrl, RootFolder/Files/Name, RootFolder/Files/ServerRelativeUrl, RootFolder/Files/CustomizedPageStatus").get().then(r => {
 
             var joined = [];
-            r.Folders.results.forEach(function (folder) {
+            r.Folders.forEach(function (folder) {
               joined.push({ webId: w.data.Id, label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
             });
-            r.RootFolder.Files.results.forEach(function (file) {
+            r.RootFolder.Files.forEach(function (file) {
               joined.push({ webId: w.data.Id, label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
             });
-            r.Webs.results.forEach(function (web) {
+            r.Webs.forEach(function (web) {
               joined.push({ webId: web.Id, label: web.Title, ServerRelativeUrl: web.ServerRelativeUrl, web: true, expanded: false });
             });
             window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
@@ -1896,10 +1896,10 @@ var getFolders = function getFolders() {
 
         w.web.getFolderByServerRelativeUrl(requestor).expand("Folders, Files").get().then(r => {
           var joined = [];
-          r.Folders.results.forEach(function (folder) {
+          r.Folders.forEach(function (folder) {
             joined.push({ webId: w.data.Id, label: folder.Name, ServerRelativeUrl: folder.ServerRelativeUrl, folder: true, expanded: false });
           });
-          r.Files.results.forEach(function (file) {
+          r.Files.forEach(function (file) {
             joined.push({ webId: w.data.Id, label: file.Name, ServerRelativeUrl: file.ServerRelativeUrl, CustomizedPageStatus: file.CustomizedPageStatus });
           });
           window.postMessage(JSON.stringify({ function: requestor, success: true, result: joined, source: 'chrome-sp-editor' }), '*');
@@ -3320,7 +3320,7 @@ var runSearchAllProps = function runSearchAllProps() {
 
       const r1 = await $pnp.sp.search(opts)
 
-      const entries = r1.RawSearchResults.PrimaryQueryResult.RefinementResults.Refiners.results[0].Entries.results
+      const entries = r1.RawSearchResults.PrimaryQueryResult.RefinementResults.Refiners[0].Entries
       const allProps = entries.map(entry => entry.RefinementName);
 
       const filteredProps = allProps.filter(value =>
@@ -3383,7 +3383,7 @@ var runSearchAllPropsCurPage = function runSearchAllPropsCurPage() {
 
        const r1 = await $pnp.sp.search(opts)
        if (r1.RowCount > 0) {
-         const entries = r1.RawSearchResults.PrimaryQueryResult.RefinementResults.Refiners.results[0].Entries.results
+         const entries = r1.RawSearchResults.PrimaryQueryResult.RefinementResults.Refiners[0].Entries
          const allProps = entries.map(entry => entry.RefinementName);
 
          const filteredProps = allProps.filter(value =>

@@ -1,4 +1,4 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, _SharePointQueryable, IDeleteable } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection, _SharePointQueryable, IDeleteable } from "../sharepointqueryable.js";
 /**
  * Represents a collection of navigation nodes
  *
@@ -28,13 +28,13 @@ export declare class _NavigationNodes extends _SharePointQueryableCollection<INa
 }
 export interface INavigationNodes extends _NavigationNodes {
 }
-export declare const NavigationNodes: import("../sharepointqueryable").ISPInvokableFactory<INavigationNodes>;
+export declare const NavigationNodes: import("../sharepointqueryable.js").ISPInvokableFactory<INavigationNodes>;
 /**
  * Represents an instance of a navigation node
  *
  */
 export declare class _NavigationNode extends _SharePointQueryableInstance<INavNodeInfo> {
-    delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>) => Promise<void>;
+    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
     /**
      * Represents the child nodes of this node
      */
@@ -48,7 +48,7 @@ export declare class _NavigationNode extends _SharePointQueryableInstance<INavNo
 }
 export interface INavigationNode extends _NavigationNode, IDeleteable {
 }
-export declare const NavigationNode: import("../sharepointqueryable").ISPInvokableFactory<INavigationNode>;
+export declare const NavigationNode: import("../sharepointqueryable.js").ISPInvokableFactory<INavigationNode>;
 export interface INavNodeUpdateResult {
     data: any;
     node: INavigationNode;
@@ -73,7 +73,7 @@ export interface INavigation {
     readonly quicklaunch: INavigationNodes;
     readonly topNavigationBar: INavigationNodes;
 }
-export declare const Navigation: import("../sharepointqueryable").ISPInvokableFactory<INavigation>;
+export declare const Navigation: import("../sharepointqueryable.js").ISPInvokableFactory<INavigation>;
 /**
  * Represents the top level navigation service
  */

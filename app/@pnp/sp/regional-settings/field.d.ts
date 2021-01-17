@@ -1,4 +1,4 @@
-import { IUserResources } from "./types";
+import { IUserResources } from "./types.js";
 declare module "../fields/types" {
     interface _Field extends IUserResources {
     }

@@ -1,5 +1,5 @@
-import { _SharePointQueryableInstance, ISharePointQueryableCollection, ISharePointQueryable } from "../sharepointqueryable";
-import { PrincipalType, PrincipalSource } from "../types";
+import { _SharePointQueryableInstance, ISharePointQueryableCollection, ISharePointQueryable } from "../sharepointqueryable.js";
+import { PrincipalType, PrincipalSource } from "../types.js";
 export declare class _Profiles extends _SharePointQueryableInstance {
     private clientPeoplePickerQuery;
     private profileLoader;
@@ -152,7 +152,7 @@ export declare class _Profiles extends _SharePointQueryableInstance {
 }
 export interface IProfiles extends _Profiles {
 }
-export declare const Profiles: import("../sharepointqueryable").ISPInvokableFactory<IProfiles>;
+export declare const Profiles: import("../sharepointqueryable.js").ISPInvokableFactory<IProfiles>;
 /**
  * Client people picker query parameters
  */

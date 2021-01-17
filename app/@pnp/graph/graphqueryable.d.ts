@@ -1,14 +1,14 @@
 import { IFetchOptions } from "@pnp/common";
-import { Queryable, IInvokable } from "@pnp/odata";
+import { Queryable, IInvokable, IRequestContext } from "@pnp/odata";
 export interface IGraphQueryableConstructor<T> {
     new (baseUrl: string | IGraphQueryable, path?: string): T;
 }
-export declare const graphInvokableFactory: <R>(f: any) => (baseUrl: string | IGraphQueryable, path?: string) => R;
+export declare const graphInvokableFactory: <R>(f: any) => (baseUrl: string | IGraphQueryable, path?: string) => R & IInvokable<any>;
 /**
  * Queryable Base Class
  *
  */
-export declare class _GraphQueryable<GetType = any> extends Queryable<GetType> implements IGraphQueryable<GetType> {
+export declare class _GraphQueryable<GetType = any> extends Queryable<GetType> {
     /**
      * Creates a new instance of the Queryable class
      *
@@ -52,18 +52,17 @@ export declare class _GraphQueryable<GetType = any> extends Queryable<GetType> i
      */
     protected getParent<T extends _GraphQueryable>(factory: IGraphQueryableConstructor<T>, baseUrl?: string | IGraphQueryable, path?: string): T;
 }
-export interface IGraphQueryable<GetType = any> extends _GraphQueryable<GetType>, IInvokable<GetType> {
+export interface IGraphQueryable<GetType = any> extends _GraphQueryable<GetType> {
 }
-export interface _SharePointQueryable<GetType = any> extends IInvokable<GetType> {
+export interface _GraphQueryable<GetType = any> {
+    <T = GetType>(options?: Partial<IRequestContext<T>>): Promise<T>;
 }
-export interface _GraphQueryable<GetType = any> extends IInvokable<GetType> {
-}
-export declare const GraphQueryable: (baseUrl: string | IGraphQueryable, path?: string) => IGraphQueryable<any>;
+export declare const GraphQueryable: (baseUrl: string | IGraphQueryable, path?: string) => IGraphQueryable<any> & IInvokable<any>;
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export declare class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<GetType> implements IGraphQueryableCollection<GetType> {
+export declare class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<GetType> {
     /**
      *
      * @param filter The string representing the filter query
@@ -131,10 +130,8 @@ export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, 
      */
     skipToken(token: string): this;
 }
-export interface _GraphQueryableCollection extends IInvokable {
-}
-export declare const GraphQueryableCollection: (baseUrl: string | IGraphQueryable, path?: string) => IGraphQueryableCollection<any[]>;
-export declare class _GraphQueryableSearchableCollection extends _GraphQueryableCollection implements IGraphQueryableSearchableCollection {
+export declare const GraphQueryableCollection: (baseUrl: string | IGraphQueryable, path?: string) => IGraphQueryableCollection<any[]> & IInvokable<any>;
+export declare class _GraphQueryableSearchableCollection extends _GraphQueryableCollection {
     /**
      * 	To request second and subsequent pages of Graph data
      */
@@ -143,9 +140,7 @@ export declare class _GraphQueryableSearchableCollection extends _GraphQueryable
 export interface IGraphQueryableSearchableCollection<GetType = any> extends IInvokable, IGraphQueryable<GetType> {
     search(query: string): this;
 }
-export interface _GraphQueryableSearchableCollection extends IInvokable {
-}
-export declare const GraphQueryableSearchableCollection: (baseUrl: string | IGraphQueryable, path?: string) => IGraphQueryableSearchableCollection<any>;
+export declare const GraphQueryableSearchableCollection: (baseUrl: string | IGraphQueryable, path?: string) => IGraphQueryableSearchableCollection<any> & IInvokable<any>;
 /**
  * Represents an instance that can be selected
  *
@@ -154,7 +149,5 @@ export declare class _GraphQueryableInstance<GetType = any> extends _GraphQuerya
 }
 export interface IGraphQueryableInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> {
 }
-export interface _GraphQueryableInstance extends IInvokable {
-}
-export declare const GraphQueryableInstance: (baseUrl: string | IGraphQueryable, path?: string) => IGraphQueryableInstance<any>;
+export declare const GraphQueryableInstance: (baseUrl: string | IGraphQueryable, path?: string) => IGraphQueryableInstance<any> & IInvokable<any>;
 //# sourceMappingURL=graphqueryable.d.ts.map

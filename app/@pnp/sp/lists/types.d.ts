@@ -1,12 +1,12 @@
-import { ISharePointQueryableCollection, _SharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable";
-import { IChangeQuery } from "../types";
-import { IBasePermissions } from "../security/types";
-import { IFieldInfo } from "../fields/types";
-import { IFormInfo } from "../forms/types";
-import { IFolderInfo } from "../folders/types";
-import { IViewInfo } from "../views/types";
-import { IUserCustomActionInfo } from "../user-custom-actions/types";
-import { IResourcePath } from "../utils/toResourcePath";
+import { ISharePointQueryableCollection, _SharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable.js";
+import { IChangeQuery } from "../types.js";
+import { IBasePermissions } from "../security/types.js";
+import { IFieldInfo } from "../fields/types.js";
+import { IFormInfo } from "../forms/types.js";
+import { IFolderInfo } from "../folders/types.js";
+import { IViewInfo } from "../views/types.js";
+import { IUserCustomActionInfo } from "../user-custom-actions/types.js";
+import { IResourcePath } from "../utils/toResourcePath.js";
 export declare class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
     /**
      * Gets a list from the collection by guid id
@@ -51,7 +51,7 @@ export declare class _Lists extends _SharePointQueryableCollection<IListInfo[]> 
 }
 export interface ILists extends _Lists {
 }
-export declare const Lists: import("../sharepointqueryable").ISPInvokableFactory<ILists>;
+export declare const Lists: import("../sharepointqueryable.js").ISPInvokableFactory<ILists>;
 export declare class _List extends _SharePointQueryableInstance<IListInfo> {
     delete: (this: ISharePointQueryable<any>, eTag?: string) => Promise<void>;
     /**
@@ -155,7 +155,7 @@ export declare class _List extends _SharePointQueryableInstance<IListInfo> {
 }
 export interface IList extends _List, IDeleteableWithETag {
 }
-export declare const List: import("../sharepointqueryable").ISPInvokableFactory<IList>;
+export declare const List: import("../sharepointqueryable.js").ISPInvokableFactory<IList>;
 /**
  * Represents the output of the add method
  */

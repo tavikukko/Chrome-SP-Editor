@@ -1,3 +1,3 @@
-import "./group";
-export { ISites, Sites, ISite, Site, } from "./types";
+import "./group.js";
+export { ISites, Sites, ISite, Site, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

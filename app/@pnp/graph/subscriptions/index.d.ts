@@ -1,5 +1,5 @@
-import { ISubscriptions } from "./types";
-export { ISubscription, ISubAddResult, ISubscriptions, Subscription, Subscriptions, } from "./types";
+import { ISubscriptions } from "./types.js";
+export { ISubscription, ISubAddResult, ISubscriptions, Subscription, Subscriptions, } from "./types.js";
 declare module "../rest" {
     interface GraphRest {
         readonly subscriptions: ISubscriptions;

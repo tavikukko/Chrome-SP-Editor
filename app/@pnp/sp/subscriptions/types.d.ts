@@ -1,4 +1,4 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable.js";
 export declare class _Subscriptions extends _SharePointQueryableCollection {
     /**
     * Returns all the webhook subscriptions or the specified webhook subscription
@@ -17,7 +17,7 @@ export declare class _Subscriptions extends _SharePointQueryableCollection {
 }
 export interface ISubscriptions extends _Subscriptions {
 }
-export declare const Subscriptions: import("../sharepointqueryable").ISPInvokableFactory<ISubscriptions>;
+export declare const Subscriptions: import("../sharepointqueryable.js").ISPInvokableFactory<ISubscriptions>;
 export declare class _Subscription extends _SharePointQueryableInstance {
     /**
      * Renews this webhook subscription
@@ -35,7 +35,7 @@ export declare class _Subscription extends _SharePointQueryableInstance {
 }
 export interface ISubscription extends _Subscription {
 }
-export declare const Subscription: import("../sharepointqueryable").ISPInvokableFactory<ISubscription>;
+export declare const Subscription: import("../sharepointqueryable.js").ISPInvokableFactory<ISubscription>;
 /**
  * Result from adding a new subscription
  *

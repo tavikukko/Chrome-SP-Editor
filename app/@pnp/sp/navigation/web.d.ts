@@ -1,4 +1,4 @@
-import { INavigation } from "./types";
+import { INavigation } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         navigation: INavigation;

@@ -1,4 +1,4 @@
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
+import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
 export declare class _RelatedItemManager extends _SharePointQueryable implements IRelatedItemManager {
     getRelatedItems(sourceListName: string, sourceItemId: number): Promise<IRelatedItem[]>;
     getPageOneRelatedItems(sourceListName: string, sourceItemId: number): Promise<IRelatedItem[]>;

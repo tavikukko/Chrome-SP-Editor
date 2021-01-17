@@ -2,7 +2,7 @@ import { Logger } from "@pnp/logging";
 import { PnPClientStorage, dateAdd, combine, getCtxCallback, getRandomString, getGUID, isFunc, objectDefinedNotNull, isArray, assign, isUrlAbsolute, stringIsNullOrEmpty, sanitizeGuid } from "@pnp/common";
 import { Settings } from "@pnp/config-store";
 import { SPRestAddIn } from "@pnp/sp-addinhelpers";
-import { PnPConfiguration } from "./pnplibconfig";
+import { PnPConfiguration } from "./pnplibconfig.js";
 import "@pnp/sp/presets/all";
 import "@pnp/graph/presets/all";
 /**
@@ -12,8 +12,8 @@ export * from "@pnp/common";
 export * from "@pnp/logging";
 export * from "@pnp/config-store";
 export * from "@pnp/odata";
-export * from "./sp-ns";
-export * from "./graph-ns";
+export * from "./sp-ns.js";
+export * from "./graph-ns.js";
 /**
  * Utility methods
  */
@@ -38,7 +38,7 @@ export declare const sp: SPRestAddIn;
 /**
  * Provides access to the SharePoint REST interface
  */
-export declare const graph: import("../graph").GraphRest;
+export declare const graph: import("../graph/rest.js").GraphRest;
 /**
  * Provides access to local and session storage
  */
@@ -63,7 +63,7 @@ declare const Def: {
     /**
      * Provides access to the Graph REST interface
      */
-    graph: import("../graph").GraphRest;
+    graph: import("../graph/rest.js").GraphRest;
     /**
      * Global logging instance to which subscribers can be registered and messages written
      */

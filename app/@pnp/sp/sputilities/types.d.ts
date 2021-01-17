@@ -1,9 +1,9 @@
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
+import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
 import { ITypedHash } from "@pnp/common";
-import { SPBatch } from "../batch";
-import { ICachingOptions } from "@pnp/odata";
-import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types";
-import { IFile } from "../files/types";
+import { SPBatch } from "../batch.js";
+import { ICachingOptions, IQueryable } from "@pnp/odata";
+import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
+import { IFile } from "../files/types.js";
 export declare class _Utilities extends _SharePointQueryable implements IUtilities {
     constructor(baseUrl: string | ISharePointQueryable, methodName: string);
     excute<T>(props: any): Promise<T>;
@@ -74,7 +74,7 @@ export interface IUtilities {
      */
     createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult>;
 }
-export declare const Utilities: import("../sharepointqueryable").ISPInvokableFactory<IUtilities>;
+export declare const Utilities: import("../sharepointqueryable.js").ISPInvokableFactory<IUtilities & Pick<IQueryable<any>, "configure" | "setRuntime" | "getRuntime">>;
 export interface ICreateWikiPageResult {
     /**
      * The returned Wiki page represented by raw data.

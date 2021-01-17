@@ -1,4 +1,4 @@
-import { IFeatures } from "./types";
+import { IFeatures } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         readonly features: IFeatures;

@@ -1,4 +1,4 @@
-import { IUserResources } from "./types";
+import { IUserResources } from "./types.js";
 declare module "../content-types/types" {
     interface _ContentType extends IUserResources {
     }

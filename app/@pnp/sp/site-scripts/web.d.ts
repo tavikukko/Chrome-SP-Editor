@@ -1,4 +1,4 @@
-import { ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from "./types";
+import { ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         getSiteScript(extractInfo?: ISiteScriptSerializationInfo): Promise<ISiteScriptSerializationResult>;

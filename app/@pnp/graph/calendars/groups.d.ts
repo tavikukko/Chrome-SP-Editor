@@ -1,4 +1,4 @@
-import { ICalendar, IEvents } from "./types";
+import { ICalendar, IEvents } from "./types.js";
 declare module "../groups/types" {
     interface _Group {
         readonly calendar: ICalendar;

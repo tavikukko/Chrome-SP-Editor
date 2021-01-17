@@ -1,4 +1,4 @@
-import { IOneNote } from "./types";
+import { IOneNote } from "./types.js";
 declare module "../users/types" {
     interface _User {
         readonly onenote: IOneNote;

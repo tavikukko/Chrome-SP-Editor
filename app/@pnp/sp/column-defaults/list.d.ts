@@ -1,4 +1,4 @@
-import { IFieldDefault } from "./types";
+import { IFieldDefault } from "./types.js";
 declare module "../lists/types" {
     interface _List {
         getDefaultColumnValues(): Promise<IFieldDefault[]>;

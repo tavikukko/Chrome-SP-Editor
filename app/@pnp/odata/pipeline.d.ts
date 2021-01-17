@@ -1,5 +1,5 @@
 import { IRequestClient } from "@pnp/common";
-import { IQueryableData } from "./queryable";
+import { IQueryableData } from "./queryable.js";
 /**
  * Defines the context for a given request to be processed in the pipeline
  */

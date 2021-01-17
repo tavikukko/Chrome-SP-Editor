@@ -1,11 +1,11 @@
 import { IQueryable } from "@pnp/odata";
 import { ITypedHash } from "@pnp/common";
-import { IFile } from "../files/types";
-import { IItem } from "../items/types";
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable";
-import { IWeb } from "../webs/types";
-import "../files/web";
-import "../comments/item";
+import { IFile } from "../files/types.js";
+import { IItem } from "../items/types.js";
+import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
+import { IWeb } from "../webs/types.js";
+import "../files/web.js";
+import "../comments/item.js";
 /**
  * Page promotion state
  */
@@ -34,7 +34,7 @@ export declare type CanvasColumnFactor = 0 | 2 | 4 | 6 | 8 | 12;
 /**
  * Represents the data and methods associated with client side "modern" pages
  */
-export declare class _ClientsidePage extends _SharePointQueryable implements IClientsidePage {
+export declare class _ClientsidePage extends _SharePointQueryable {
     protected json?: Partial<IPageData>;
     sections: CanvasSection[];
     commentsDisabled: boolean;

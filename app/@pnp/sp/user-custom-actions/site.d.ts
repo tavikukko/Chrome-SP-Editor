@@ -1,4 +1,4 @@
-import { IUserCustomActions } from "./types";
+import { IUserCustomActions } from "./types.js";
 declare module "../sites/types" {
     interface _Site {
         readonly userCustomActions: IUserCustomActions;

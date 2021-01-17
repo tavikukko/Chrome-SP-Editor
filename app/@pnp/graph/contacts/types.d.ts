@@ -1,7 +1,7 @@
-import { _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable";
+import { _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable.js";
 import { ITypedHash } from "@pnp/common";
 import { Contact as IContactType, ContactFolder as IContactFolderType, EmailAddress as IEmailAddressType } from "@microsoft/microsoft-graph-types";
-import { IUpdateable, IDeleteable, IGetById } from "../decorators";
+import { IUpdateable, IDeleteable, IGetById } from "../decorators.js";
 /**
  * Contact
  */
@@ -9,7 +9,7 @@ export declare class _Contact extends _GraphQueryableInstance<IContactType> {
 }
 export interface IContact extends _Contact, IUpdateable<IContactType>, IDeleteable {
 }
-export declare const Contact: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IContact;
+export declare const Contact: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IContact & import("../../odata/invokable-binder.js").IInvokable<any>;
 /**
  * Contacts
  */
@@ -27,7 +27,7 @@ export declare class _Contacts extends _GraphQueryableCollection<IContactType[]>
 }
 export interface IContacts extends _Contacts, IGetById<IContact> {
 }
-export declare const Contacts: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IContacts;
+export declare const Contacts: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IContacts & import("../../odata/invokable-binder.js").IInvokable<any>;
 /**
  * Contact Folder
  */
@@ -43,7 +43,7 @@ export declare class _ContactFolder extends _GraphQueryableInstance<IContactFold
 }
 export interface IContactFolder extends _ContactFolder, IUpdateable, IDeleteable {
 }
-export declare const ContactFolder: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IContactFolder;
+export declare const ContactFolder: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IContactFolder & import("../../odata/invokable-binder.js").IInvokable<any>;
 /**
  * Contact Folders
  */
@@ -58,7 +58,7 @@ export declare class _ContactFolders extends _GraphQueryableCollection<IContactF
 }
 export interface IContactFolders extends _ContactFolders, IGetById<IContactFolder> {
 }
-export declare const ContactFolders: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IContactFolders;
+export declare const ContactFolders: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IContactFolders & import("../../odata/invokable-binder.js").IInvokable<any>;
 /**
  * IContactFolderAddResult
  */

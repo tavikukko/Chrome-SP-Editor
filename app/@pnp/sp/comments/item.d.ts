@@ -1,4 +1,4 @@
-import { IComments, ILikeData, ILikedByInformation } from "./types";
+import { IComments, ILikeData, ILikedByInformation } from "./types.js";
 declare module "../items/types" {
     interface _Item {
         readonly comments: IComments;
@@ -14,15 +14,15 @@ declare module "../items/types" {
          */
         getLikedBy(): Promise<ILikeData[]>;
         /**
-         * Likes this item as the current user
+         * Likes this client-side page as the current user
          */
         like(): Promise<void>;
         /**
-         * Unlikes this item as the current user
+         * Unlikes this client-side page as the current user
          */
         unlike(): Promise<void>;
         /**
-         * Get the like by information for a modern site page
+         * Unlikes this item as the current user
          */
         getLikedByInformation(): Promise<ILikedByInformation>;
     }

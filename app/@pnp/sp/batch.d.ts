@@ -1,10 +1,12 @@
 import { Batch } from "@pnp/odata";
+import { Runtime } from "@pnp/common";
 /**
  * Manages a batch of OData operations
  */
 export declare class SPBatch extends Batch {
-    private baseUrl;
-    constructor(baseUrl: string);
+    private url;
+    private runtime;
+    constructor(url: string, runtime?: Runtime);
     /**
      * Parses the response from a batch request into an array of Response instances
      *

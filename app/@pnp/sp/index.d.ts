@@ -1,13 +1,13 @@
-export { ISharePointQueryable, ISharePointQueryableCollection, ISharePointQueryableInstance, SharePointQueryableInstance, SharePointQueryableCollection, ISharePointQueryableConstructor, SharePointQueryable, spInvokableFactory, ISPInvokableFactory, } from "./sharepointqueryable";
-export { SPBatch, } from "./batch";
-export * from "./decorators";
-export * from "./operations";
-export { ISPConfiguration, ISPConfigurationPart, } from "./splibconfig";
-export { SPHttpClient, } from "./sphttpclient";
-export { SPRest, sp, } from "./rest";
-export * from "./types";
-export { toAbsoluteUrl, } from "./utils/toabsoluteurl";
-export { extractWebUrl, } from "./utils/extractweburl";
-export { ISPKeyValueCollection, objectToSPKeyValueCollection, } from "./utils/objectToSPKeyValueCollection";
-export { stripInvalidFileFolderChars, containsInvalidFileFolderChars, } from "./utils/file-names";
+export { ISharePointQueryable, ISharePointQueryableCollection, ISharePointQueryableInstance, SharePointQueryableInstance, SharePointQueryableCollection, ISharePointQueryableConstructor, SharePointQueryable, spInvokableFactory, ISPInvokableFactory, } from "./sharepointqueryable.js";
+export { SPBatch, } from "./batch.js";
+export * from "./decorators.js";
+export * from "./operations.js";
+export { ISPConfiguration, ISPConfigurationPart, } from "./splibconfig.js";
+export { SPHttpClient, } from "./sphttpclient.js";
+export { SPRest, sp, } from "./rest.js";
+export * from "./types.js";
+export { toAbsoluteUrl, } from "./utils/toabsoluteurl.js";
+export { extractWebUrl, } from "./utils/extractweburl.js";
+export { ISPKeyValueCollection, objectToSPKeyValueCollection, } from "./utils/objectToSPKeyValueCollection.js";
+export { stripInvalidFileFolderChars, containsInvalidFileFolderChars, } from "./utils/file-names.js";
 //# sourceMappingURL=index.d.ts.map

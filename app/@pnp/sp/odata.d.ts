@@ -1,4 +1,4 @@
-import { ISPInvokableFactory } from "./sharepointqueryable";
+import { ISPInvokableFactory } from "./sharepointqueryable.js";
 import { ODataParser } from "@pnp/odata";
 export declare function odataUrlFrom(candidate: any): string;
 export declare function spODataEntity<T, DataType = any>(factory: ISPInvokableFactory<T>): ODataParser<T & DataType>;

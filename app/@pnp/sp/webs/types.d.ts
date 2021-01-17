@@ -1,8 +1,8 @@
 import { ITypedHash } from "@pnp/common";
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryableCollection, ISharePointQueryableInstance, IDeleteable } from "../sharepointqueryable";
-import { IChangeQuery } from "../types";
-import { SPBatch } from "../batch";
-import { IOpenWebByIdResult } from "../sites";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryableCollection, ISharePointQueryableInstance, IDeleteable } from "../sharepointqueryable.js";
+import { IChangeQuery } from "../types.js";
+import { SPBatch } from "../batch.js";
+import { IOpenWebByIdResult } from "../sites/index.js";
 export declare class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {
     /**
      * Adds a new web to the collection
@@ -18,30 +18,18 @@ export declare class _Webs extends _SharePointQueryableCollection<IWebInfo[]> {
 }
 export interface IWebs extends _Webs {
 }
-export declare const Webs: import("../sharepointqueryable").ISPInvokableFactory<IWebs>;
+export declare const Webs: import("../sharepointqueryable.js").ISPInvokableFactory<IWebs>;
 /**
  * Describes a web
  *
  */
 export declare class _Web extends _SharePointQueryableInstance<IWebInfo> {
-    delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>) => Promise<void>;
+    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
     /**
      * Gets this web's subwebs
      *
      */
     get webs(): IWebs;
-    /**
-     * Gets this web's parent web and data
-     *
-     */
-    getParentWeb(): Promise<IOpenWebByIdResult>;
-    /**
-    * Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
-    *
-    * @param nWebTemplateFilter Specifies the site definition (default = -1)
-    * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
-    */
-    getSubwebsFilteredForCurrentUser(nWebTemplateFilter?: number, nConfigurationFilter?: number): IWebs;
     /**
      * Allows access to the web's all properties collection
      */
@@ -52,10 +40,10 @@ export declare class _Web extends _SharePointQueryableInstance<IWebInfo> {
      */
     get webinfos(): ISharePointQueryableCollection<IWebInfosData[]>;
     /**
-     * Creates a new batch for requests within the context of this web
+     * Gets this web's parent web and data
      *
      */
-    createBatch(): SPBatch;
+    getParentWeb(): Promise<IOpenWebByIdResult>;
     /**
      * Updates this web instance with the supplied properties
      *
@@ -78,17 +66,10 @@ export declare class _Web extends _SharePointQueryableInstance<IWebInfo> {
      */
     applyWebTemplate(template: string): Promise<void>;
     /**
-     * Returns a collection of site templates available for the site
-     *
-     * @param language The locale id of the site templates to retrieve (default = 1033 [English, US])
-     * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
-     */
-    availableWebTemplates(language?: number, includeCrossLanugage?: boolean): ISharePointQueryableCollection;
-    /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
-     *
-     * @param query The change query
-     */
+         * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+         *
+         * @param query The change query
+         */
     getChanges(query: IChangeQuery): Promise<any>;
     /**
      * Returns the name of the image file for the icon that is used to represent the specified file
@@ -119,10 +100,29 @@ export declare class _Web extends _SharePointQueryableInstance<IWebInfo> {
      * @param key Id of storage entity to be removed
      */
     removeStorageEntity(key: string): Promise<void>;
+    /**
+    * Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
+    *
+    * @param nWebTemplateFilter Specifies the site definition (default = -1)
+    * @param nConfigurationFilter A 16-bit integer that specifies the identifier of a configuration (default = -1)
+    */
+    getSubwebsFilteredForCurrentUser(nWebTemplateFilter?: number, nConfigurationFilter?: number): ISharePointQueryableCollection<IWebInfosData[]>;
+    /**
+     * Creates a new batch for requests within the context of this web
+     *
+     */
+    createBatch(): SPBatch;
+    /**
+     * Returns a collection of site templates available for the site
+     *
+     * @param language The locale id of the site templates to retrieve (default = 1033 [English, US])
+     * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
+     */
+    availableWebTemplates(language?: number, includeCrossLanugage?: boolean): ISharePointQueryableCollection;
 }
 export interface IWeb extends _Web, IDeleteable {
 }
-export declare const Web: import("../sharepointqueryable").ISPInvokableFactory<IWeb>;
+export declare const Web: import("../sharepointqueryable.js").ISPInvokableFactory<IWeb>;
 /**
  * Result from adding a web
  *

@@ -1,3 +1,3 @@
-import "./file";
-export { ILimitedWebPartManager, WebPartsPersonalizationScope, WebPartDefinitions, WebPartDefinition, LimitedWebPartManager, IWebPartDefinitions, IWebPartDefinition, } from "./types";
+import "./file.js";
+export { ILimitedWebPartManager, WebPartsPersonalizationScope, WebPartDefinitions, WebPartDefinition, LimitedWebPartManager, IWebPartDefinitions, IWebPartDefinition, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

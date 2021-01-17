@@ -1,4 +1,4 @@
-import { IFolder } from "./types";
+import { IFolder } from "./types.js";
 declare module "../items/types" {
     interface _Item {
         readonly folder: IFolder;

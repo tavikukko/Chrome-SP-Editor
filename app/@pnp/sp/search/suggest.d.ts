@@ -1,4 +1,4 @@
-import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable.js";
 import { IConfigOptions } from "@pnp/common";
 export declare class _Suggest extends _SharePointQueryableInstance {
     execute(query: ISuggestQuery): Promise<ISuggestResult>;
@@ -7,12 +7,11 @@ export declare class _Suggest extends _SharePointQueryableInstance {
 export interface ISuggest {
     (query: ISuggestQuery): Promise<ISuggestResult>;
 }
-export declare const Suggest: (baseUrl: string | ISharePointQueryable, options?: IConfigOptions) => ISuggest;
+export declare const Suggest: (baseUrl: string | ISharePointQueryable, options?: IConfigOptions, runtime?: import("../../common/libconfig.js").Runtime) => ISuggest;
 /**
  * Defines a query execute against the search/suggest endpoint (see https://msdn.microsoft.com/en-us/library/office/dn194079.aspx)
  */
 export interface ISuggestQuery {
-    [key: string]: string | number | boolean;
     /**
      * A string that contains the text for the search query.
      */
@@ -61,6 +60,7 @@ export interface ISuggestQuery {
      * query suggestions should match the full query word.
      */
     prefixMatch?: boolean;
+    [key: string]: string | number | boolean;
 }
 export interface ISuggestResult {
     readonly PeopleNames: string[];

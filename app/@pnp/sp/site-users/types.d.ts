@@ -1,7 +1,7 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable";
-import { ISiteGroups } from "../site-groups/types";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable.js";
+import { ISiteGroups } from "../site-groups/types.js";
 import { ITypedHash } from "@pnp/common";
-import { PrincipalType } from "../types";
+import { PrincipalType } from "../types.js";
 export declare class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> {
     /**
      * Gets a user from the collection by id
@@ -43,13 +43,13 @@ export declare class _SiteUsers extends _SharePointQueryableCollection<ISiteUser
 }
 export interface ISiteUsers extends _SiteUsers {
 }
-export declare const SiteUsers: import("../sharepointqueryable").ISPInvokableFactory<ISiteUsers>;
+export declare const SiteUsers: import("../sharepointqueryable.js").ISPInvokableFactory<ISiteUsers>;
 /**
  * Describes a single user
  *
  */
 export declare class _SiteUser extends _SharePointQueryableInstance<ISiteUserInfo> {
-    delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>) => Promise<void>;
+    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
     /**
      * Gets the groups for this user
      *
@@ -64,7 +64,7 @@ export declare class _SiteUser extends _SharePointQueryableInstance<ISiteUserInf
 }
 export interface ISiteUser extends _SiteUser, IDeleteable {
 }
-export declare const SiteUser: import("../sharepointqueryable").ISPInvokableFactory<ISiteUser>;
+export declare const SiteUser: import("../sharepointqueryable.js").ISPInvokableFactory<ISiteUser>;
 export interface ISiteUserInfo extends ISiteUserProps {
     Expiration: string;
     IsEmailAuthenticationGuestUser: boolean;

@@ -1,3 +1,3 @@
-import "./users";
-export { IMailFolder, IMessage, IMailFolders, IMailboxSettings, IMessages, MailFolder, MailFolders, MailboxSettings, Message, Messages, } from "./types";
+import "./users.js";
+export { IMailFolder, IMessage, IMailFolders, IMailboxSettings, IMessages, MailFolder, MailFolders, MailboxSettings, Message, Messages, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

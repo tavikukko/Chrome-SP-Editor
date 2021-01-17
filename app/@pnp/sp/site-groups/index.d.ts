@@ -1,3 +1,3 @@
-import "./web";
-export { ISiteGroup, IGroupAddResult, IGroupUpdateResult, ISiteGroups, SiteGroup, SiteGroups, ISiteGroupInfo, } from "./types";
+import "./web.js";
+export { ISiteGroup, IGroupAddResult, IGroupUpdateResult, ISiteGroups, SiteGroup, SiteGroups, ISiteGroupInfo, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

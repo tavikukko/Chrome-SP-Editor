@@ -1,5 +1,5 @@
-import { ISharingEmailData, ISharingResult, SharingRole } from "./types";
-import { RoleType } from "./types";
+import { ISharingEmailData, ISharingResult, SharingRole } from "./types.js";
+import { RoleType } from "./types.js";
 /**
  * Extend _Web
  */

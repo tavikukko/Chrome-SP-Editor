@@ -1,4 +1,4 @@
-import { WebPartsPersonalizationScope, ILimitedWebPartManager } from "./types";
+import { WebPartsPersonalizationScope, ILimitedWebPartManager } from "./types.js";
 declare module "../files/types" {
     interface _File {
         getLimitedWebPartManager(scope?: WebPartsPersonalizationScope): ILimitedWebPartManager;

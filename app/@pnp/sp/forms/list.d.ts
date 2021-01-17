@@ -1,4 +1,4 @@
-import { IForms } from "./types";
+import { IForms } from "./types.js";
 declare module "../lists/types" {
     interface _List {
         readonly forms: IForms;

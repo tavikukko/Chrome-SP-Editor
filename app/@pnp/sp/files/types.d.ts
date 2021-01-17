@@ -1,5 +1,5 @@
-import { _SharePointQueryableInstance, ISharePointQueryableInstance, _SharePointQueryableCollection, IDeleteableWithETag } from "../sharepointqueryable";
-import { IItem } from "../items";
+import { _SharePointQueryableInstance, ISharePointQueryableInstance, _SharePointQueryableCollection, IDeleteableWithETag } from "../sharepointqueryable.js";
+import { IItem } from "../items/index.js";
 /**
  * Describes a collection of File objects
  *
@@ -50,13 +50,13 @@ export declare class _Files extends _SharePointQueryableCollection<IFileInfo[]> 
 }
 export interface IFiles extends _Files {
 }
-export declare const Files: import("../sharepointqueryable").ISPInvokableFactory<IFiles>;
+export declare const Files: import("../sharepointqueryable.js").ISPInvokableFactory<IFiles>;
 /**
  * Describes a single File instance
  *
  */
 export declare class _File extends _SharePointQueryableInstance<IFileInfo> {
-    delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>, eTag?: string) => Promise<void>;
     /**
      * Gets a value that specifies the list item field values for the list item corresponding to the file.
      *
@@ -246,7 +246,7 @@ export declare class _File extends _SharePointQueryableInstance<IFileInfo> {
 }
 export interface IFile extends _File, IDeleteableWithETag {
 }
-export declare const File: import("../sharepointqueryable").ISPInvokableFactory<IFile>;
+export declare const File: import("../sharepointqueryable.js").ISPInvokableFactory<IFile>;
 /**
  * Describes a collection of Version objects
  *
@@ -296,17 +296,17 @@ export declare class _Versions extends _SharePointQueryableCollection {
 }
 export interface IVersions extends _Versions {
 }
-export declare const Versions: import("../sharepointqueryable").ISPInvokableFactory<IVersions>;
+export declare const Versions: import("../sharepointqueryable.js").ISPInvokableFactory<IVersions>;
 /**
  * Describes a single Version instance
  *
  */
 export declare class _Version extends _SharePointQueryableInstance {
-    delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>, eTag?: string) => Promise<void>;
 }
 export interface IVersion extends _Version, IDeleteableWithETag {
 }
-export declare const Version: import("../sharepointqueryable").ISPInvokableFactory<IVersion>;
+export declare const Version: import("../sharepointqueryable.js").ISPInvokableFactory<IVersion>;
 /**
  * Types for document check in.
  * Minor = 0

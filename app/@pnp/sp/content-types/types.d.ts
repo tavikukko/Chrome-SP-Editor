@@ -1,5 +1,5 @@
 import { ITypedHash } from "@pnp/common";
-import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable.js";
 export declare class _ContentTypes extends _SharePointQueryableCollection<IContentTypeInfo[]> {
     /**
      * Adds an existing contenttype to a content type collection
@@ -26,9 +26,9 @@ export declare class _ContentTypes extends _SharePointQueryableCollection<IConte
 }
 export interface IContentTypes extends _ContentTypes {
 }
-export declare const ContentTypes: import("../sharepointqueryable").ISPInvokableFactory<IContentTypes>;
+export declare const ContentTypes: import("../sharepointqueryable.js").ISPInvokableFactory<IContentTypes>;
 export declare class _ContentType extends _SharePointQueryableInstance<IContentTypeInfo> {
-    delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>) => Promise<void>;
+    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
     /**
      * Gets the column (also known as field) references in the content type.
      */
@@ -48,7 +48,7 @@ export declare class _ContentType extends _SharePointQueryableInstance<IContentT
 }
 export interface IContentType extends _ContentType, IDeleteable {
 }
-export declare const ContentType: import("../sharepointqueryable").ISPInvokableFactory<IContentType>;
+export declare const ContentType: import("../sharepointqueryable.js").ISPInvokableFactory<IContentType>;
 /**
  * Represents the output of adding a content type
  */
@@ -92,12 +92,12 @@ export declare class _FieldLinks extends _SharePointQueryableCollection<IFieldLi
 }
 export interface IFieldLinks extends _FieldLinks {
 }
-export declare const FieldLinks: import("../sharepointqueryable").ISPInvokableFactory<IFieldLinks>;
+export declare const FieldLinks: import("../sharepointqueryable.js").ISPInvokableFactory<IFieldLinks>;
 export declare class _FieldLink extends _SharePointQueryableInstance<IFieldLinkInfo> {
 }
 export interface IFieldLink extends _FieldLink {
 }
-export declare const FieldLink: import("../sharepointqueryable").ISPInvokableFactory<IFieldLink>;
+export declare const FieldLink: import("../sharepointqueryable.js").ISPInvokableFactory<IFieldLink>;
 export interface IFieldLinkInfo {
     FieldInternalName: string | null;
     Hidden: boolean;

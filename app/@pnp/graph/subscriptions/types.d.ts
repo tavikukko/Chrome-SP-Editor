@@ -1,6 +1,6 @@
-import { _GraphQueryableInstance, _GraphQueryableCollection } from "../graphqueryable";
+import { _GraphQueryableInstance, _GraphQueryableCollection } from "../graphqueryable.js";
 import { Subscription as ISubscriptionType } from "@microsoft/microsoft-graph-types";
-import { IDeleteable, IUpdateable, IGetById } from "../decorators";
+import { IDeleteable, IUpdateable, IGetById } from "../decorators.js";
 /**
  * Subscription
  */
@@ -8,7 +8,7 @@ export declare class _Subscription extends _GraphQueryableInstance<ISubscription
 }
 export interface ISubscription extends _Subscription, IDeleteable, IUpdateable<ISubscriptionType> {
 }
-export declare const Subscription: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => ISubscription;
+export declare const Subscription: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ISubscription & import("../../odata/invokable-binder.js").IInvokable<any>;
 /**
  * Subscriptions
  */
@@ -27,7 +27,7 @@ export declare class _Subscriptions extends _GraphQueryableCollection<ISubscript
 }
 export interface ISubscriptions extends _Subscriptions, IGetById<ISubscription> {
 }
-export declare const Subscriptions: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => ISubscriptions;
+export declare const Subscriptions: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ISubscriptions & import("../../odata/invokable-binder.js").IInvokable<any>;
 /**
  * ISubAddResult
  */

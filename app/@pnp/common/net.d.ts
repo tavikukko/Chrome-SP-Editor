@@ -1,4 +1,4 @@
-import { ISPFXContext } from "./spfxcontextinterface";
+import { ISPFXContext } from "./spfxcontextinterface.js";
 export interface IConfigOptions {
     headers?: string[][] | {
         [key: string]: string;
@@ -40,22 +40,23 @@ export declare class FetchClient implements IHttpClientImpl {
  * Makes requests using the fetch API adding the supplied token to the Authorization header
  */
 export declare class BearerTokenFetchClient extends FetchClient {
-    private _token;
-    constructor(_token: string | null);
-    get token(): string;
-    set token(token: string);
+    token: string | null;
+    constructor(token: string | null);
     fetch(url: string, options?: IFetchOptions): Promise<Response>;
 }
-/**
- * Client wrapping the aadTokenProvider available from SPFx >= 1.6
- */
-export declare class SPFxAdalClient extends BearerTokenFetchClient {
-    private context;
+export interface ILambdaTokenFactoryParams {
     /**
-     *
-     * @param context provide the appropriate SPFx Context object
+     * Url to which the request for which we are requesting a token will be sent
      */
-    constructor(context: ISPFXContext);
+    url: string;
+    /**
+     * Any options supplied for the request
+     */
+    options: IFetchOptions;
+}
+export declare class LambdaFetchClient extends BearerTokenFetchClient {
+    private tokenFactory;
+    constructor(tokenFactory: (parms: ILambdaTokenFactoryParams) => Promise<string>);
     /**
      * Executes a fetch request using the supplied url and options
      *
@@ -63,6 +64,17 @@ export declare class SPFxAdalClient extends BearerTokenFetchClient {
      * @param options Any options
      */
     fetch(url: string, options: IFetchOptions): Promise<Response>;
+}
+/**
+ * Client wrapping the aadTokenProvider available from SPFx >= 1.6
+ */
+export declare class SPFxAdalClient extends LambdaFetchClient {
+    private context;
+    /**
+     *
+     * @param context provide the appropriate SPFx Context object
+     */
+    constructor(context: ISPFXContext);
     /**
      * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
      *

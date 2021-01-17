@@ -1,4 +1,4 @@
-import { IMessages, IMailboxSettings, IMailFolders, IMessage } from "./types";
+import { IMessages, IMailboxSettings, IMailFolders, IMessage } from "./types.js";
 declare module "../users/types" {
     interface _User {
         readonly messages: IMessages;

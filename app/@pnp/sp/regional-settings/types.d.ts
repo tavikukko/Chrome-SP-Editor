@@ -1,4 +1,4 @@
-import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePointQueryableCollection } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePointQueryableCollection } from "../sharepointqueryable.js";
 export declare class _RegionalSettings extends _SharePointQueryableInstance<IRegionalSettingsInfo> {
     /**
      * Gets the collection of languages used in a server farm.
@@ -22,7 +22,7 @@ export declare class _RegionalSettings extends _SharePointQueryableInstance<IReg
 }
 export interface IRegionalSettings extends _RegionalSettings {
 }
-export declare const RegionalSettings: import("../sharepointqueryable").ISPInvokableFactory<IRegionalSettings>;
+export declare const RegionalSettings: import("../sharepointqueryable.js").ISPInvokableFactory<IRegionalSettings>;
 export declare class _TimeZone extends _SharePointQueryableInstance<ITimeZoneInfo> {
     /**
      * Gets an Local Time by UTC Time
@@ -39,7 +39,7 @@ export declare class _TimeZone extends _SharePointQueryableInstance<ITimeZoneInf
 }
 export interface ITimeZone extends _TimeZone {
 }
-export declare const TimeZone: import("../sharepointqueryable").ISPInvokableFactory<ITimeZone>;
+export declare const TimeZone: import("../sharepointqueryable.js").ISPInvokableFactory<ITimeZone>;
 export declare class _TimeZones extends _SharePointQueryableCollection<ITimeZoneInfo[]> {
     /**
      * Gets an TimeZone by id (see: https://msdn.microsoft.com/en-us/library/office/jj247008.aspx)
@@ -50,7 +50,7 @@ export declare class _TimeZones extends _SharePointQueryableCollection<ITimeZone
 }
 export interface ITimeZones extends _TimeZones {
 }
-export declare const TimeZones: import("../sharepointqueryable").ISPInvokableFactory<ITimeZones>;
+export declare const TimeZones: import("../sharepointqueryable.js").ISPInvokableFactory<ITimeZones>;
 /**
  * This is the data for Regional Settings
  */

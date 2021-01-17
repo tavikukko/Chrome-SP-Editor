@@ -1,27 +1,39 @@
-import { _SharePointQueryableInstance } from "../sharepointqueryable";
-import { IWeb } from "../webs/types";
-import { SPBatch } from "../batch";
-import { IChangeQuery } from "../types";
+import { _SharePointQueryableInstance } from "../sharepointqueryable.js";
+import { IWeb } from "../webs/types.js";
+import { SPBatch } from "../batch.js";
+import { IChangeQuery } from "../types.js";
 export declare class _Site extends _SharePointQueryableInstance {
     /**
-    * Gets the root web of the site collection
-    *
-    */
+     * Gets the root web of the site collection
+     *
+     */
     get rootWeb(): IWeb;
+    /**
+     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+     *
+     * @param query The change query
+     */
+    getChanges(query: IChangeQuery): Promise<any>;
+    /**
+     * Opens a web by id (using POST)
+     *
+     * @param webId The GUID id of the web to open
+     */
+    openWebById(webId: string): Promise<IOpenWebByIdResult>;
     /**
      * Gets a Web instance representing the root web of the site collection
      * correctly setup for chaining within the library
      */
     getRootWeb(): Promise<IWeb>;
     /**
-    * Gets the context information for this site collection
-    */
+     * Gets the context information for this site collection
+     */
     getContextInfo(): Promise<IContextInfo>;
     createBatch(): SPBatch;
     /**
-    * Deletes the current site
-    *
-    */
+     * Deletes the current site
+     *
+     */
     delete(): Promise<void>;
     /**
      * Gets the document libraries on a site. Static method. (SharePoint Online only)
@@ -35,18 +47,6 @@ export declare class _Site extends _SharePointQueryableInstance {
      * @param absolutePageUrl The absolute url of the page
      */
     getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string>;
-    /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
-     *
-     * @param query The change query
-     */
-    getChanges(query: IChangeQuery): Promise<any>;
-    /**
-    * Opens a web by id (using POST)
-    *
-    * @param webId The GUID id of the web to open
-    */
-    openWebById(webId: string): Promise<IOpenWebByIdResult>;
     /**
      * Creates a Modern communication site.
      *
@@ -72,22 +72,22 @@ export declare class _Site extends _SharePointQueryableInstance {
      */
     exists(url: string): Promise<boolean>;
     /**
-    * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
-    *
-    * @param displayName The title or display name of the Modern team site to be created
-    * @param alias Alias of the underlying Office 365 Group
-    * @param isPublic Defines whether the Office 365 Group will be public (default), or private.
-    * @param lcid The language to use for the site. If not specified will default to English (1033).
-    * @param description The description of the site to be created.
-    * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
-    * @param owners The Owners of the site to be created
-    */
+     * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
+     *
+     * @param displayName The title or display name of the Modern team site to be created
+     * @param alias Alias of the underlying Office 365 Group
+     * @param isPublic Defines whether the Office 365 Group will be public (default), or private.
+     * @param lcid The language to use for the site. If not specified will default to English (1033).
+     * @param description The description of the site to be created.
+     * @param classification The Site classification to use. For instance 'Contoso Classified'. See https://www.youtube.com/watch?v=E-8Z2ggHcS0 for more information
+     * @param owners The Owners of the site to be created
+     */
     createModernTeamSite(displayName: string, alias: string, isPublic?: boolean, lcid?: number, description?: string, classification?: string, owners?: string[], hubSiteId?: string, siteDesignId?: string): Promise<ISiteCreationResponse>;
     createModernTeamSiteFromProps(props: ICreateTeamSiteProps): Promise<ISiteCreationResponse>;
 }
 export interface ISite extends _Site {
 }
-export declare const Site: import("../sharepointqueryable").ISPInvokableFactory<ISite>;
+export declare const Site: import("../sharepointqueryable.js").ISPInvokableFactory<ISite>;
 /**
  * The result of opening a web by id: contains the data returned as well as a chainable web instance
  */

@@ -1,5 +1,5 @@
-import { IODataParser } from "./parsers";
-import { IPnPClientStore, PnPClientStorage } from "@pnp/common";
+import { IODataParser } from "./parsers.js";
+import { IPnPClientStore } from "@pnp/common";
 export interface ICachingOptions {
     expiration?: Date;
     storeName?: "session" | "local";
@@ -7,9 +7,8 @@ export interface ICachingOptions {
 }
 export declare class CachingOptions implements ICachingOptions {
     key: string;
-    storeName: "session" | "local";
-    expiration: Date;
-    protected static storage: PnPClientStorage;
+    storeName?: "session" | "local";
+    expiration?: Date;
     constructor(key: string, storeName?: "session" | "local", expiration?: Date);
     get store(): IPnPClientStore;
 }

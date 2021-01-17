@@ -1,4 +1,4 @@
-import { _GraphQueryableInstance } from "../graphqueryable";
+import { _GraphQueryableInstance } from "../graphqueryable.js";
 import { Photo as IPhotoType } from "@microsoft/microsoft-graph-types";
 export declare class _Photo extends _GraphQueryableInstance<IPhotoType> {
     /**
@@ -18,5 +18,5 @@ export declare class _Photo extends _GraphQueryableInstance<IPhotoType> {
 }
 export interface IPhoto extends _Photo {
 }
-export declare const Photo: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IPhoto;
+export declare const Photo: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPhoto & import("../../odata/invokable-binder.js").IInvokable<any>;
 //# sourceMappingURL=types.d.ts.map

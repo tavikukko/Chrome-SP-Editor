@@ -1,5 +1,5 @@
-import { ISiteGroups, ISiteGroup } from "./types";
-import "../security/web";
+import { ISiteGroups, ISiteGroup } from "./types.js";
+import "../security/web.js";
 declare module "../webs/types" {
     interface _Web {
         readonly siteGroups: ISiteGroups;

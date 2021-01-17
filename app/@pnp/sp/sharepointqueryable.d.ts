@@ -1,10 +1,10 @@
 import { IFetchOptions } from "@pnp/common";
-import { Queryable, IInvokable } from "@pnp/odata";
-import { SPBatch } from "./batch";
+import { Queryable, IInvokable, IRequestContext } from "@pnp/odata";
+import { SPBatch } from "./batch.js";
 export interface ISharePointQueryableConstructor<T extends ISharePointQueryable = ISharePointQueryable> {
     new (baseUrl: string | ISharePointQueryable, path?: string): T;
 }
-export declare type ISPInvokableFactory<R = any> = (baseUrl: string | ISharePointQueryable, path?: string) => R;
+export declare type ISPInvokableFactory<R extends any> = (baseUrl: string | ISharePointQueryable, path?: string) => R & IInvokable;
 export declare const spInvokableFactory: <R>(f: any) => ISPInvokableFactory<R>;
 /**
  * SharePointQueryable Base Class
@@ -58,9 +58,10 @@ export declare class _SharePointQueryable<GetType = any> extends Queryable<GetTy
      */
     protected getParent<T extends ISharePointQueryable>(factory: ISPInvokableFactory<any>, baseUrl?: string | ISharePointQueryable, path?: string, batch?: SPBatch): T;
 }
-export interface ISharePointQueryable<GetType = any> extends _SharePointQueryable<GetType>, IInvokable<GetType> {
+export interface ISharePointQueryable<GetType = any> extends _SharePointQueryable<GetType> {
 }
-export interface _SharePointQueryable<GetType = any> extends IInvokable<GetType> {
+export interface _SharePointQueryable<GetType = any> {
+    <T = GetType>(options?: Partial<IRequestContext<T>>): Promise<T>;
 }
 export declare const SharePointQueryable: ISPInvokableFactory<ISharePointQueryable<any>>;
 /**
@@ -94,9 +95,7 @@ export declare class _SharePointQueryableCollection<GetType = any[]> extends _Sh
      */
     top(top: number): this;
 }
-export interface _SharePointQueryableCollection<GetType = any[]> extends IInvokable<GetType> {
-}
-export interface ISharePointQueryableCollection<GetType = any[]> extends _SharePointQueryableCollection<GetType>, IInvokable<GetType> {
+export interface ISharePointQueryableCollection<GetType = any[]> extends _SharePointQueryableCollection<GetType> {
 }
 export declare const SharePointQueryableCollection: ISPInvokableFactory<ISharePointQueryableCollection<any[]>>;
 /**
@@ -112,9 +111,7 @@ export declare class _SharePointQueryableInstance<GetType = any> extends _ShareP
      */
     protected _update<Return, Props = any>(type: string, mapper: (data: any, props: Props) => Return): (props: Props) => Promise<Return>;
 }
-export interface ISharePointQueryableInstance<GetType = any> extends _SharePointQueryableInstance<GetType>, IInvokable<GetType> {
-}
-export interface _SharePointQueryableInstance<GetType = any> extends IInvokable<GetType> {
+export interface ISharePointQueryableInstance<GetType = any> extends _SharePointQueryableInstance<GetType> {
 }
 export declare const SharePointQueryableInstance: ISPInvokableFactory<ISharePointQueryableInstance<any>>;
 /**

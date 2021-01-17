@@ -1,4 +1,4 @@
-import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types";
+import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types.js";
 /**
 * Gets the effective permissions for the user supplied
 *

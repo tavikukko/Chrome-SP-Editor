@@ -1,4 +1,4 @@
-import { IClientsidePageComponent, IClientsidePage, ClientsidePageLayoutType, PromotedState } from "./types";
+import { IClientsidePageComponent, IClientsidePage, ClientsidePageLayoutType, PromotedState } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         getClientsideWebParts(): Promise<IClientsidePageComponent[]>;

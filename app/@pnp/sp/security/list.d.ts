@@ -1,4 +1,4 @@
-import { ISecurableMethods } from "./types";
+import { ISecurableMethods } from "./types.js";
 declare module "../lists/types" {
     interface _List extends ISecurableMethods {
     }

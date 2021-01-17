@@ -1,5 +1,5 @@
-import "../lists/web";
-import { IFieldDefault, IFieldDefaultProps } from "./types";
+import "../lists/web.js";
+import { IFieldDefault, IFieldDefaultProps } from "./types.js";
 declare module "../folders/types" {
     interface _Folder {
         getDefaultColumnValues(): Promise<IFieldDefault[]>;

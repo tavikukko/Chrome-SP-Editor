@@ -1,4 +1,4 @@
-import "./list";
-import "./folder";
-export { IFieldDefault, IFieldDefaultProps, AllowedDefaultColumnValues, } from "./types";
+import "./list.js";
+import "./folder.js";
+export { IFieldDefault, IFieldDefaultProps, AllowedDefaultColumnValues, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

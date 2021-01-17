@@ -1,5 +1,5 @@
-import { ILists, IList } from "./types";
-import { ISharePointQueryableCollection } from "../sharepointqueryable";
+import { ILists, IList } from "./types.js";
+import { ISharePointQueryableCollection } from "../sharepointqueryable.js";
 declare module "../webs/types" {
     interface _Web {
         readonly lists: ILists;

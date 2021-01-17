@@ -1,4 +1,4 @@
-import { IContentTypes } from "./types";
+import { IContentTypes } from "./types.js";
 declare module "../lists/types" {
     interface _List {
         readonly contentTypes: IContentTypes;

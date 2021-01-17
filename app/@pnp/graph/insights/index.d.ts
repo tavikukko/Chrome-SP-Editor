@@ -1,3 +1,3 @@
-import "./users";
-export { IInsights, ISharedInsight, ISharedInsights, ITrendingInsight, ITrendingInsights, IUsedInsight, IUsedInsights, Insights, SharedInsight, SharedInsights, TrendingInsight, TrendingInsights, UsedInsight, UsedInsights, IResource, Resource, } from "./types";
+import "./users.js";
+export { IInsights, ISharedInsight, ISharedInsights, ITrendingInsight, ITrendingInsights, IUsedInsight, IUsedInsights, Insights, SharedInsight, SharedInsights, TrendingInsight, TrendingInsights, UsedInsight, UsedInsights, IResource, Resource, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

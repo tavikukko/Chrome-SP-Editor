@@ -1,5 +1,5 @@
-import { IProfiles } from "./types";
-export { IProfiles, Profiles, IClientPeoplePickerQueryParameters, IFollowedContent, IHashTag, IHashTagCollection, IPeoplePickerEntity, IPeoplePickerEntityData, IPeoplePickerQuerySettings, IUserProfile, UrlZone, } from "./types";
+import { IProfiles } from "./types.js";
+export { IProfiles, Profiles, IClientPeoplePickerQueryParameters, IFollowedContent, IHashTag, IHashTagCollection, IPeoplePickerEntity, IPeoplePickerEntityData, IPeoplePickerQuerySettings, IUserProfile, UrlZone, } from "./types.js";
 declare module "../rest" {
     interface SPRest {
         readonly profiles: IProfiles;

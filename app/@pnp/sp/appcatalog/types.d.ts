@@ -1,6 +1,6 @@
 import { ISharePointQueryable, _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable";
-import { IFile } from "../files/types";
-import "../items";
+import { IFile } from "../files/types.js";
+import "../items/index.js";
 export declare class _AppCatalog extends _SharePointQueryableCollection {
     constructor(baseUrl: string | ISharePointQueryable, path?: string);
     /**

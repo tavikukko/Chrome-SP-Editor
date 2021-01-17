@@ -1,4 +1,4 @@
-import { IHubSiteWebData } from "./types";
+import { IHubSiteWebData } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         hubSiteData(forceRefresh?: boolean): Promise<Partial<IHubSiteWebData>>;

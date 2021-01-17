@@ -1,6 +1,6 @@
 import { User as IMemberType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable";
-import { IGetById } from "../decorators";
+import { _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable.js";
+import { IGetById } from "../decorators.js";
 /**
  * Member
  */
@@ -12,7 +12,7 @@ export declare class _Member extends _GraphQueryableInstance<IMemberType> {
 }
 export interface IMember extends _Member {
 }
-export declare const Member: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IMember;
+export declare const Member: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IMember & import("../../odata/invokable-binder.js").IInvokable<any>;
 /**
  * Members
  */
@@ -28,5 +28,5 @@ export declare class _Members extends _GraphQueryableCollection<IMemberType[]> {
 }
 export interface IMembers extends _Members, IGetById<IMember> {
 }
-export declare const Members: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IMembers;
+export declare const Members: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IMembers & import("../../odata/invokable-binder.js").IInvokable<any>;
 //# sourceMappingURL=types.d.ts.map

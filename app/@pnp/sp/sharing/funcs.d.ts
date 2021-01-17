@@ -1,4 +1,4 @@
-import { ShareableQueryable, ISharingResult, SharingRole, IShareObjectOptions, SharingLinkKind, IShareLinkResponse, ISharingInformationRequest, ISharingRecipient, ISharingEntityPermission, ISharingInformation, IObjectSharingSettings, ISharingEmailData } from "./types";
+import { ShareableQueryable, ISharingResult, SharingRole, IShareObjectOptions, SharingLinkKind, IShareLinkResponse, ISharingInformationRequest, ISharingRecipient, ISharingEntityPermission, ISharingInformation, IObjectSharingSettings, ISharingEmailData } from "./types.js";
 /**
  * Shares an object based on the supplied options
  *

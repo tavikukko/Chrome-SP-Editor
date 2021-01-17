@@ -1,4 +1,4 @@
-import { ISubscriptions } from "./types";
+import { ISubscriptions } from "./types.js";
 declare module "../lists/types" {
     interface _List {
         readonly subscriptions: ISubscriptions;

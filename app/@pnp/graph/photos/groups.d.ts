@@ -1,4 +1,4 @@
-import { IPhoto } from "./types";
+import { IPhoto } from "./types.js";
 declare module "../groups/types" {
     interface _Group {
         readonly photo: IPhoto;

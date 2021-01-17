@@ -1,4 +1,4 @@
-import { ISiteUsers, ISiteUser, IWebEnsureUserResult } from "./types";
+import { ISiteUsers, ISiteUser, IWebEnsureUserResult } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         readonly siteUsers: ISiteUsers;

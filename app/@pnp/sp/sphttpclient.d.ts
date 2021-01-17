@@ -1,8 +1,10 @@
-import { IFetchOptions, IRequestClient, IHttpClientImpl } from "@pnp/common";
+import { IFetchOptions, IRequestClient, IHttpClientImpl, Runtime } from "@pnp/common";
 export declare class SPHttpClient implements IRequestClient {
+    protected _runtime: Runtime;
     protected _impl: IHttpClientImpl;
     protected _digestCache: IGetDigest;
-    constructor(_impl?: IHttpClientImpl);
+    constructor(runtime: Runtime);
+    constructor(impl: IHttpClientImpl, runtime?: Runtime);
     fetch(url: string, options?: IFetchOptions): Promise<Response>;
     fetchRaw(url: string, options?: IFetchOptions): Promise<Response>;
     get(url: string, options?: IFetchOptions): Promise<Response>;

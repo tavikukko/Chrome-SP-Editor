@@ -1,4 +1,4 @@
-import { IAppCatalog } from "./types";
+import { IAppCatalog } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
         getAppCatalog(url?: string | _Web): IAppCatalog;

@@ -1,6 +1,6 @@
 import { Attachment as IAttachmentType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable";
-import { IGetById } from "../decorators";
+import { _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable.js";
+import { IGetById } from "../decorators.js";
 /**
  * Attachment
  */
@@ -8,7 +8,7 @@ export declare class _Attachment extends _GraphQueryableInstance<IAttachmentType
 }
 export interface IAttachment extends _Attachment {
 }
-export declare const Attachment: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IAttachment;
+export declare const Attachment: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IAttachment & import("../../odata/invokable-binder.js").IInvokable<any>;
 /**
  * Attachments
  */
@@ -23,5 +23,5 @@ export declare class _Attachments extends _GraphQueryableCollection<IAttachmentT
 }
 export interface IAttachments extends _Attachments, IGetById<IAttachment> {
 }
-export declare const Attachments: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IAttachments;
+export declare const Attachments: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IAttachments & import("../../odata/invokable-binder.js").IInvokable<any>;
 //# sourceMappingURL=types.d.ts.map

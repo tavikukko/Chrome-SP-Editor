@@ -1,6 +1,6 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable";
+import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable.js";
 import { ITypedHash } from "@pnp/common";
-import { IBasePermissions } from "../security";
+import { IBasePermissions } from "../security/index.js";
 export declare class _UserCustomActions extends _SharePointQueryableCollection<IUserCustomActionInfo[]> {
     /**
      * Returns the user custom action with the specified id
@@ -21,9 +21,9 @@ export declare class _UserCustomActions extends _SharePointQueryableCollection<I
 }
 export interface IUserCustomActions extends _UserCustomActions {
 }
-export declare const UserCustomActions: import("../sharepointqueryable").ISPInvokableFactory<IUserCustomActions>;
+export declare const UserCustomActions: import("../sharepointqueryable.js").ISPInvokableFactory<IUserCustomActions>;
 export declare class _UserCustomAction extends _SharePointQueryableInstance<IUserCustomActionInfo> {
-    delete: (this: import("../sharepointqueryable").ISharePointQueryable<any>) => Promise<void>;
+    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
     /**
     * Updates this user custom action with the supplied properties
     *
@@ -33,7 +33,7 @@ export declare class _UserCustomAction extends _SharePointQueryableInstance<IUse
 }
 export interface IUserCustomAction extends _UserCustomAction, IDeleteable {
 }
-export declare const UserCustomAction: import("../sharepointqueryable").ISPInvokableFactory<IUserCustomAction>;
+export declare const UserCustomAction: import("../sharepointqueryable.js").ISPInvokableFactory<IUserCustomAction>;
 /**
  * Result from adding a user custom action
  */

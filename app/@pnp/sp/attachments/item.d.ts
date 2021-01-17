@@ -1,4 +1,4 @@
-import { IAttachments } from "./types";
+import { IAttachments } from "./types.js";
 declare module "../items/types" {
     interface _Item {
         readonly attachmentFiles: IAttachments;
