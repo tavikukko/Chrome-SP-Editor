@@ -20,9 +20,9 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "CachingConfigurationProvider": () => /* reexport */ CachingConfigurationProvider,
-  "SPListConfigurationProvider": () => /* reexport */ SPListConfigurationProvider,
-  "Settings": () => /* reexport */ Settings
+  "CachingConfigurationProvider": () => (/* reexport */ CachingConfigurationProvider),
+  "SPListConfigurationProvider": () => (/* reexport */ SPListConfigurationProvider),
+  "Settings": () => (/* reexport */ Settings)
 });
 
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/util.js
@@ -2680,12 +2680,12 @@ class SPHttpClient {
         this._digestCache = getDigestFactory(this);
     }
     fetch(url, options = {}) {
-        var _a, _b;
+        var _a;
         return tslib_tslib_es6_awaiter(this, void 0, void 0, function* () {
             let opts = util_assign(options, { cache: "no-cache", credentials: "same-origin" }, true);
             const headers = new Headers();
             // first we add the global headers so they can be overwritten by any passed in locally to this call
-            mergeHeaders(headers, (_b = (_a = this._runtime.get("sp")) === null || _a === void 0 ? void 0 : _a.sp) === null || _b === void 0 ? void 0 : _b.headers);
+            mergeHeaders(headers, (_a = this._runtime.get("sp")) === null || _a === void 0 ? void 0 : _a.headers);
             // second we add the local options so we can overwrite the globals
             mergeHeaders(headers, options.headers);
             // lastly we apply any default headers we need that may not exist
@@ -2697,7 +2697,7 @@ class SPHttpClient {
             }
             if (!headers.has("X-ClientService-ClientTag")) {
                 const methodName = tag.getClientTag(headers);
-                let clientTag = `PnPCoreJS:2.1.0:${methodName}`;
+                let clientTag = `PnPCoreJS:2.1.1:${methodName}`;
                 if (clientTag.length > 32) {
                     clientTag = clientTag.substr(0, 32);
                 }
@@ -3426,7 +3426,7 @@ class SPBatch extends Batch {
                     headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                 }
                 if (!headers.has("X-ClientService-ClientTag")) {
-                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.1.0:batch");
+                    headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.1.1:batch");
                 }
                 // write headers into batch body
                 headers.forEach((value, name) => {
@@ -5024,7 +5024,7 @@ class SPListConfigurationProvider {
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */

@@ -20,10 +20,10 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "ConsoleListener": () => /* reexport */ ConsoleListener,
-  "FunctionListener": () => /* reexport */ FunctionListener,
-  "LogLevel": () => /* reexport */ LogLevel,
-  "Logger": () => /* reexport */ Logger
+  "ConsoleListener": () => (/* reexport */ ConsoleListener),
+  "FunctionListener": () => (/* reexport */ FunctionListener),
+  "LogLevel": () => (/* reexport */ LogLevel),
+  "Logger": () => (/* reexport */ Logger)
 });
 
 ;// CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
@@ -258,7 +258,7 @@ class FunctionListener {
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */

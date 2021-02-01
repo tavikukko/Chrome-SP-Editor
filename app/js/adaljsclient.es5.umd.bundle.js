@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "AdalClient": () => /* reexport */ AdalClient
+  "AdalClient": () => (/* reexport */ AdalClient)
 });
 
 ;// CONCATENATED MODULE: ./node_modules/@pnp/adaljsclient/node_modules/tslib/tslib.es6.js
@@ -1360,7 +1360,7 @@ AdalClient._authContext = null;
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */

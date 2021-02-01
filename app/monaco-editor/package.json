@@ -1,32 +1,26 @@
 {
-  "_args": [
-    [
-      "monaco-editor@0.21.2",
-      "/Users/tomitavela/development/personal/Chrome-SP-Editor"
-    ]
-  ],
-  "_development": true,
-  "_from": "monaco-editor@0.21.2",
-  "_id": "monaco-editor@0.21.2",
+  "_from": "monaco-editor@^0.22.3",
+  "_id": "monaco-editor@0.22.3",
   "_inBundle": false,
-  "_integrity": "sha512-jS51RLuzMaoJpYbu7F6TPuWpnWTLD4kjRW0+AZzcryvbxrTwhNy1KC9yboyKpgMTahpUbDUsuQULoo0GV1EPqg==",
+  "_integrity": "sha512-RM559z2CJbczZ3k2b+ouacMINkAYWwRit4/vs0g2X/lkYefDiu0k2GmgWjAuiIpQi+AqASPOKvXNmYc8KUSvVQ==",
   "_location": "/monaco-editor",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "monaco-editor@0.21.2",
+    "raw": "monaco-editor@^0.22.3",
     "name": "monaco-editor",
     "escapedName": "monaco-editor",
-    "rawSpec": "0.21.2",
+    "rawSpec": "^0.22.3",
     "saveSpec": null,
-    "fetchSpec": "0.21.2"
+    "fetchSpec": "^0.22.3"
   },
   "_requiredBy": [
     "#DEV:/"
   ],
-  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.21.2.tgz",
-  "_spec": "0.21.2",
+  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.22.3.tgz",
+  "_shasum": "69b42451d3116c6c08d9b8e052007ff891fd85d7",
+  "_spec": "monaco-editor@^0.22.3",
   "_where": "/Users/tomitavela/development/personal/Chrome-SP-Editor",
   "author": {
     "name": "Microsoft Corporation"
@@ -34,33 +28,25 @@
   "bugs": {
     "url": "https://github.com/Microsoft/monaco-editor/issues"
   },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "A browser based code editor",
   "devDependencies": {
-    "@types/chai": "^4.2.12",
-    "@types/mocha": "^8.0.3",
-    "chai": "^4.2.0",
     "clean-css": "^4.2.3",
-    "css-loader": "^4.3.0",
     "event-stream": "4.0.1",
-    "file-loader": "^6.1.0",
     "gulp": "^4.0.2",
     "gulp-typedoc": "^2.2.5",
-    "mocha": "^8.1.3",
-    "monaco-css": "3.1.1",
-    "monaco-editor-core": "0.21.2",
-    "monaco-html": "3.1.1",
-    "monaco-json": "3.2.1",
-    "monaco-languages": "2.1.1",
-    "monaco-typescript": "4.1.1",
-    "playwright": "1.3.0",
+    "monaco-css": "3.2.0",
+    "monaco-editor-core": "0.22.3",
+    "monaco-html": "3.2.0",
+    "monaco-json": "3.3.0",
+    "monaco-languages": "2.2.0",
+    "monaco-typescript": "4.2.0",
     "rimraf": "^3.0.2",
-    "style-loader": "^1.2.1",
     "typedoc": "^0.19.1",
-    "typescript": "^4.0.3",
+    "typescript": "4.1.3",
     "uncss": "^0.17.3",
-    "vinyl": "^2.2.0",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12",
+    "vinyl": "^2.2.1",
     "yaserver": "^0.3.0"
   },
   "homepage": "https://github.com/Microsoft/monaco-editor#readme",
@@ -73,15 +59,11 @@
     "url": "git+https://github.com/Microsoft/monaco-editor.git"
   },
   "scripts": {
-    "build-test": "tsc -b ./ci/tsconfig.json --preserveWatchOutput",
     "build-website": "gulp build-website",
-    "bundle": "webpack --config ci/webpack.config.js --display-error-details --bail",
-    "ciserver": "gulp ciserver",
     "release": "gulp release",
     "simpleserver": "gulp simpleserver",
-    "test": "mocha \"out-ci/*.test.js\" --headless",
     "website": "gulp website"
   },
   "typings": "./esm/vs/editor/editor.api.d.ts",
-  "version": "0.21.2"
+  "version": "0.22.3"
 }

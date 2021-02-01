@@ -332,15 +332,15 @@ import { taxonomy } from "@pnp/sp-taxonomy"
                 var splitIndex = this.locations('/', path)
                 if (lib.startsWith('./')) {
                   var lib1 = path.substring(0, splitIndex[splitIndex.length - 1] + 1) + lib.substring(2)
-                  exportTexts.push(lib1)
+                  exportTexts.push(lib1.replace('.js', ''))
                 } else if (lib.startsWith('../../')) {
                   var lib2 = path.substring(0, splitIndex[splitIndex.length - 3] + 1) + lib.substring(6)
-                  exportTexts.push(lib2)
+                  exportTexts.push(lib2.replace('.js', ''))
                 } else if (lib.startsWith('../')) {
                   var lib3 = path.substring(0, splitIndex[splitIndex.length - 2] + 1) + lib.substring(3)
-                  exportTexts.push(lib3)
+                  exportTexts.push(lib3.replace('.js', ''))
                 } else {
-                  exportTexts.push(lib)
+                  exportTexts.push(lib.replace('.js', ''))
                 }
               })
               return this.resolveFiles(exportTexts);

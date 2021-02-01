@@ -20,37 +20,37 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "BearerTokenFetchClient": () => /* reexport */ BearerTokenFetchClient,
-  "DefaultRuntime": () => /* reexport */ DefaultRuntime,
-  "FetchClient": () => /* reexport */ FetchClient,
-  "LambdaFetchClient": () => /* reexport */ LambdaFetchClient,
-  "PnPClientStorage": () => /* reexport */ PnPClientStorage,
-  "PnPClientStorageWrapper": () => /* reexport */ PnPClientStorageWrapper,
-  "Runtime": () => /* reexport */ Runtime,
-  "SPFxAdalClient": () => /* reexport */ SPFxAdalClient,
-  "assign": () => /* reexport */ util_assign,
-  "combine": () => /* reexport */ combine,
-  "dateAdd": () => /* reexport */ dateAdd,
-  "getADALResource": () => /* reexport */ getADALResource,
-  "getCtxCallback": () => /* reexport */ getCtxCallback,
-  "getGUID": () => /* reexport */ getGUID,
-  "getHashCode": () => /* reexport */ getHashCode,
-  "getRandomString": () => /* reexport */ getRandomString,
-  "hOP": () => /* reexport */ hOP,
-  "isArray": () => /* reexport */ isArray,
-  "isFunc": () => /* reexport */ isFunc,
-  "isUrlAbsolute": () => /* reexport */ isUrlAbsolute,
-  "jsS": () => /* reexport */ jsS,
-  "mergeHeaders": () => /* reexport */ mergeHeaders,
-  "mergeMaps": () => /* reexport */ mergeMaps,
-  "mergeOptions": () => /* reexport */ mergeOptions,
-  "objectDefinedNotNull": () => /* reexport */ objectDefinedNotNull,
-  "objectToMap": () => /* reexport */ objectToMap,
-  "onRuntimeCreate": () => /* reexport */ onRuntimeCreate,
-  "safeGlobal": () => /* reexport */ safeGlobal,
-  "sanitizeGuid": () => /* reexport */ sanitizeGuid,
-  "setup": () => /* reexport */ setup,
-  "stringIsNullOrEmpty": () => /* reexport */ stringIsNullOrEmpty
+  "BearerTokenFetchClient": () => (/* reexport */ BearerTokenFetchClient),
+  "DefaultRuntime": () => (/* reexport */ DefaultRuntime),
+  "FetchClient": () => (/* reexport */ FetchClient),
+  "LambdaFetchClient": () => (/* reexport */ LambdaFetchClient),
+  "PnPClientStorage": () => (/* reexport */ PnPClientStorage),
+  "PnPClientStorageWrapper": () => (/* reexport */ PnPClientStorageWrapper),
+  "Runtime": () => (/* reexport */ Runtime),
+  "SPFxAdalClient": () => (/* reexport */ SPFxAdalClient),
+  "assign": () => (/* reexport */ util_assign),
+  "combine": () => (/* reexport */ combine),
+  "dateAdd": () => (/* reexport */ dateAdd),
+  "getADALResource": () => (/* reexport */ getADALResource),
+  "getCtxCallback": () => (/* reexport */ getCtxCallback),
+  "getGUID": () => (/* reexport */ getGUID),
+  "getHashCode": () => (/* reexport */ getHashCode),
+  "getRandomString": () => (/* reexport */ getRandomString),
+  "hOP": () => (/* reexport */ hOP),
+  "isArray": () => (/* reexport */ isArray),
+  "isFunc": () => (/* reexport */ isFunc),
+  "isUrlAbsolute": () => (/* reexport */ isUrlAbsolute),
+  "jsS": () => (/* reexport */ jsS),
+  "mergeHeaders": () => (/* reexport */ mergeHeaders),
+  "mergeMaps": () => (/* reexport */ mergeMaps),
+  "mergeOptions": () => (/* reexport */ mergeOptions),
+  "objectDefinedNotNull": () => (/* reexport */ objectDefinedNotNull),
+  "objectToMap": () => (/* reexport */ objectToMap),
+  "onRuntimeCreate": () => (/* reexport */ onRuntimeCreate),
+  "safeGlobal": () => (/* reexport */ safeGlobal),
+  "sanitizeGuid": () => (/* reexport */ sanitizeGuid),
+  "setup": () => (/* reexport */ setup),
+  "stringIsNullOrEmpty": () => (/* reexport */ stringIsNullOrEmpty)
 });
 
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/util.js
@@ -995,7 +995,7 @@ class PnPClientStorage {
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
