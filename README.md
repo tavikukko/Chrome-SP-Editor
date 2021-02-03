@@ -9,6 +9,8 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 
 ## Version history
 
+- 5.6.8 bug fix
+    * Saving file using sources tab was not working, thanks [@Gennady-G](https://github.com/Gennady-G) for spotting it
 - 5.6.7 updates
     * Updated PnPjs to 2.1.1
     * Updated monaco-editor to 0.22.3
