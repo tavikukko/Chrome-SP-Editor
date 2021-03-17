@@ -53,7 +53,7 @@ export declare class _Group extends _DirectoryObject<IGroupType> {
 }
 export interface IGroup extends _Group, IDeleteable, IUpdateable {
 }
-export declare const Group: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IGroup & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Group: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IGroup & import("@pnp/odata").IInvokable<any>;
 /**
  * Describes a collection of Field objects
  *
@@ -71,7 +71,7 @@ export declare class _Groups extends _GraphQueryableCollection<IGroupType[]> {
 }
 export interface IGroups extends _Groups, IGetById<IGroup> {
 }
-export declare const Groups: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IGroups & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Groups: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IGroups & import("@pnp/odata").IInvokable<any>;
 /**
  * IGroupAddResult
  */

@@ -10,11 +10,52 @@
 })(self, function() {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
-
-/***/ 611:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -63,7 +104,11 @@ __webpack_require__.d(__webpack_exports__, {
  * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-function getCtxCallback(context, method, ...params) {
+function getCtxCallback(context, method) {
+    var params = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        params[_i - 2] = arguments[_i];
+    }
     return function () {
         method.apply(context, params);
     };
@@ -78,7 +123,7 @@ function getCtxCallback(context, method, ...params) {
  * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
  */
 function dateAdd(date, interval, units) {
-    let ret = new Date(date.toString()); // don't change original date
+    var ret = new Date(date.toString()); // don't change original date
     switch (interval.toLowerCase()) {
         case "year":
             ret.setFullYear(ret.getFullYear() + units);
@@ -115,10 +160,14 @@ function dateAdd(date, interval, units) {
  *
  * @param paths 0 to n path parts to combine
  */
-function combine(...paths) {
+function combine() {
+    var paths = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        paths[_i] = arguments[_i];
+    }
     return paths
-        .filter(path => !stringIsNullOrEmpty(path))
-        .map(path => path.replace(/^[\\|/]/, "").replace(/[\\|/]$/, ""))
+        .filter(function (path) { return !stringIsNullOrEmpty(path); })
+        .map(function (path) { return path.replace(/^[\\|/]/, "").replace(/[\\|/]$/, ""); })
         .join("/")
         .replace(/\\/g, "/");
 }
@@ -130,8 +179,8 @@ function combine(...paths) {
  * @param chars The length of the random string to generate
  */
 function getRandomString(chars) {
-    const text = new Array(chars);
-    for (let i = 0; i < chars; i++) {
+    var text = new Array(chars);
+    for (var i = 0; i < chars; i++) {
         text[i] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(Math.floor(Math.random() * 62));
     }
     return text.join("");
@@ -143,9 +192,9 @@ function getRandomString(chars) {
  */
 /* eslint-disable no-bitwise */
 function getGUID() {
-    let d = Date.now();
+    var d = Date.now();
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-        const r = (d + Math.random() * 16) % 16 | 0;
+        var r = (d + Math.random() * 16) % 16 | 0;
         d = Math.floor(d / 16);
         return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
     });
@@ -181,17 +230,19 @@ function isArray(array) {
  * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
  *
  */
-function util_assign(target, source, noOverwrite = false, filter = () => true) {
+function util_assign(target, source, noOverwrite, filter) {
+    if (noOverwrite === void 0) { noOverwrite = false; }
+    if (filter === void 0) { filter = function () { return true; }; }
     if (!objectDefinedNotNull(source)) {
         return target;
     }
     // ensure we don't overwrite things we don't want overwritten
-    const check = noOverwrite ? (o, i) => !(i in o) : () => true;
+    var check = noOverwrite ? function (o, i) { return !(i in o); } : function () { return true; };
     // final filter we will use
-    const f = (v) => check(target, v) && filter(v);
+    var f = function (v) { return check(target, v) && filter(v); };
     return Object.getOwnPropertyNames(source)
         .filter(f)
-        .reduce((t, v) => {
+        .reduce(function (t, v) {
         t[v] = source[v];
         return t;
     }, target);
@@ -221,7 +272,7 @@ function sanitizeGuid(guid) {
     if (stringIsNullOrEmpty(guid)) {
         return guid;
     }
-    const matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
+    var matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
     return matches === null ? guid : matches[1];
 }
 /**
@@ -248,12 +299,12 @@ function hOP(o, p) {
  */
 /* eslint-disable no-bitwise */
 function getHashCode(s) {
-    let hash = 0;
+    var hash = 0;
     if (s.length === 0) {
         return hash;
     }
-    for (let i = 0; i < s.length; i++) {
-        const chr = s.charCodeAt(i);
+    for (var i = 0; i < s.length; i++) {
+        var chr = s.charCodeAt(i);
         hash = ((hash << 5) - hash) + chr;
         hash |= 0; // Convert to 32bit integer
     }
@@ -266,7 +317,7 @@ function getHashCode(s) {
 /**
  * Used to calculate the object properties, with polyfill if needed
  */
-const objectEntries = isFunc(Object.entries) ? Object.entries : (o) => Object.keys(o).map((k) => [k, o[k]]);
+var objectEntries = isFunc(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
 /**
  * Converts the supplied object to a map
  *
@@ -284,9 +335,13 @@ function objectToMap(o) {
  * @param target map into which the other maps are merged
  * @param maps One or more maps to merge into the target
  */
-function mergeMaps(target, ...maps) {
-    for (let i = 0; i < maps.length; i++) {
-        maps[i].forEach((v, k) => {
+function mergeMaps(target) {
+    var maps = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        maps[_i - 1] = arguments[_i];
+    }
+    for (var i = 0; i < maps.length; i++) {
+        maps[i].forEach(function (v, k) {
             // let's not run the spfx context through Object.assign :)
             if ((typeof k === "string" && k !== "spfxContext") && Object.prototype.toString.call(v) === "[object Object]") {
                 // we only handle one level of deep object merging
@@ -300,79 +355,6 @@ function mergeMaps(target, ...maps) {
     return target;
 }
 //# sourceMappingURL=collections.js.map
-;// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
-
-function setup(config, runtime = DefaultRuntime) {
-    runtime.assign(config);
-}
-// lable mapping for known config values
-const s = [
-    "defaultCachingStore",
-    "defaultCachingTimeoutSeconds",
-    "globalCacheDisable",
-    "enableCacheExpiration",
-    "cacheExpirationIntervalMilliseconds",
-    "spfxContext",
-    "ie11",
-];
-const runtimeCreateHooks = [];
-function onRuntimeCreate(hook) {
-    if (runtimeCreateHooks.indexOf(hook) < 0) {
-        // apply hook logic to default runtime
-        hook(DefaultRuntime);
-        runtimeCreateHooks.push(hook);
-    }
-}
-class Runtime {
-    constructor(_v = new Map()) {
-        this._v = _v;
-        const defaulter = (key, def) => {
-            if (!this._v.has(key)) {
-                this._v.set(key, def);
-            }
-        };
-        // setup defaults
-        defaulter(s[0], "session");
-        defaulter(s[1], 60);
-        defaulter(s[2], false);
-        defaulter(s[3], false);
-        defaulter(s[4], 750);
-        defaulter(s[5], null);
-        defaulter(s[6], false);
-        runtimeCreateHooks.forEach(hook => hook(this));
-    }
-    /**
-     *
-     * @param config The set of properties to add to this runtime instance
-     */
-    assign(config) {
-        this._v = mergeMaps(this._v, objectToMap(config));
-    }
-    /**
-     * Gets a runtime value using T to define the available keys, and R to define the type returned by that key
-     *
-     * @param key
-     */
-    get(key) {
-        return this._v.get(key);
-    }
-    /**
-     * Exports the internal Map representing this runtime
-     */
-    export() {
-        const expt = new Map();
-        for (const [key, value] of this._v) {
-            if (key !== "__isDefault__") {
-                expt.set(key, value);
-            }
-        }
-        return expt;
-    }
-}
-// default runtime used globally
-const _runtime = new Runtime(new Map([["__isDefault__", true]]));
-const DefaultRuntime = _runtime;
-//# sourceMappingURL=libconfig.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/node_modules/tslib/tslib.es6.js
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -612,9 +594,99 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
     return value;
 }
 
+;// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
+
+
+function setup(config, runtime) {
+    if (runtime === void 0) { runtime = DefaultRuntime; }
+    runtime.assign(config);
+}
+// lable mapping for known config values
+var s = [
+    "defaultCachingStore",
+    "defaultCachingTimeoutSeconds",
+    "globalCacheDisable",
+    "enableCacheExpiration",
+    "cacheExpirationIntervalMilliseconds",
+    "spfxContext",
+    "ie11",
+];
+var runtimeCreateHooks = [];
+function onRuntimeCreate(hook) {
+    if (runtimeCreateHooks.indexOf(hook) < 0) {
+        // apply hook logic to default runtime
+        hook(DefaultRuntime);
+        runtimeCreateHooks.push(hook);
+    }
+}
+var Runtime = /** @class */ (function () {
+    function Runtime(_v) {
+        var _this = this;
+        if (_v === void 0) { _v = new Map(); }
+        this._v = _v;
+        var defaulter = function (key, def) {
+            if (!_this._v.has(key)) {
+                _this._v.set(key, def);
+            }
+        };
+        // setup defaults
+        defaulter(s[0], "session");
+        defaulter(s[1], 60);
+        defaulter(s[2], false);
+        defaulter(s[3], false);
+        defaulter(s[4], 750);
+        defaulter(s[5], null);
+        defaulter(s[6], false);
+        runtimeCreateHooks.forEach(function (hook) { return hook(_this); });
+    }
+    /**
+     *
+     * @param config The set of properties to add to this runtime instance
+     */
+    Runtime.prototype.assign = function (config) {
+        this._v = mergeMaps(this._v, objectToMap(config));
+    };
+    /**
+     * Gets a runtime value using T to define the available keys, and R to define the type returned by that key
+     *
+     * @param key
+     */
+    Runtime.prototype.get = function (key) {
+        return this._v.get(key);
+    };
+    /**
+     * Exports the internal Map representing this runtime
+     */
+    Runtime.prototype.export = function () {
+        var e_1, _a;
+        var expt = new Map();
+        try {
+            for (var _b = __values(this._v), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var _d = __read(_c.value, 2), key = _d[0], value = _d[1];
+                if (key !== "__isDefault__") {
+                    expt.set(key, value);
+                }
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+        return expt;
+    };
+    return Runtime;
+}());
+
+// default runtime used globally
+var _runtime = new Runtime(new Map([["__isDefault__", true]]));
+var DefaultRuntime = _runtime;
+//# sourceMappingURL=libconfig.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/safe-global.js
 // export either window or global
-const safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __webpack_require__.g;
+var safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __webpack_require__.g;
 //# sourceMappingURL=safe-global.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/net.js
 
@@ -622,15 +694,15 @@ const safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __web
 
 function mergeHeaders(target, source) {
     if (objectDefinedNotNull(source)) {
-        const temp = new Request("", { headers: source });
-        temp.headers.forEach((value, name) => {
+        var temp = new Request("", { headers: source });
+        temp.headers.forEach(function (value, name) {
             target.append(name, value);
         });
     }
 }
 function mergeOptions(target, source) {
     if (objectDefinedNotNull(source)) {
-        const headers = util_assign(target.headers || {}, source.headers);
+        var headers = util_assign(target.headers || {}, source.headers);
         target = util_assign(target, source);
         target.headers = headers;
     }
@@ -641,37 +713,48 @@ function mergeOptions(target, source) {
   * @param url The url to parse
  */
 function getADALResource(url) {
-    const u = new URL(url);
-    return `${u.protocol}//${u.hostname}`;
+    var u = new URL(url);
+    return u.protocol + "//" + u.hostname;
 }
 /**
  * Makes requests using the global/window fetch API
  */
-class FetchClient {
-    fetch(url, options) {
-        return safeGlobal.fetch(url, options);
+var FetchClient = /** @class */ (function () {
+    function FetchClient() {
     }
-}
+    FetchClient.prototype.fetch = function (url, options) {
+        return safeGlobal.fetch(url, options);
+    };
+    return FetchClient;
+}());
+
 /**
  * Makes requests using the fetch API adding the supplied token to the Authorization header
  */
-class BearerTokenFetchClient extends FetchClient {
-    constructor(token) {
-        super();
-        this.token = token;
+var BearerTokenFetchClient = /** @class */ (function (_super) {
+    __extends(BearerTokenFetchClient, _super);
+    function BearerTokenFetchClient(token) {
+        var _this = _super.call(this) || this;
+        _this.token = token;
+        return _this;
     }
-    fetch(url, options = {}) {
-        const headers = new Headers();
+    BearerTokenFetchClient.prototype.fetch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var headers = new Headers();
         mergeHeaders(headers, options.headers);
-        headers.set("Authorization", `Bearer ${this.token}`);
+        headers.set("Authorization", "Bearer " + this.token);
         options.headers = headers;
-        return super.fetch(url, options);
-    }
-}
-class LambdaFetchClient extends BearerTokenFetchClient {
-    constructor(tokenFactory) {
-        super(null);
-        this.tokenFactory = tokenFactory;
+        return _super.prototype.fetch.call(this, url, options);
+    };
+    return BearerTokenFetchClient;
+}(FetchClient));
+
+var LambdaFetchClient = /** @class */ (function (_super) {
+    __extends(LambdaFetchClient, _super);
+    function LambdaFetchClient(tokenFactory) {
+        var _this = _super.call(this, null) || this;
+        _this.tokenFactory = tokenFactory;
+        return _this;
     }
     /**
      * Executes a fetch request using the supplied url and options
@@ -679,43 +762,69 @@ class LambdaFetchClient extends BearerTokenFetchClient {
      * @param url Absolute url of the request
      * @param options Any options
      */
-    fetch(url, options) {
-        const _super = Object.create(null, {
-            fetch: { get: () => super.fetch }
+    LambdaFetchClient.prototype.fetch = function (url, options) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.tokenFactory({ url: url, options: options })];
+                    case 1:
+                        _a.token = _b.sent();
+                        return [2 /*return*/, _super.prototype.fetch.call(this, url, options)];
+                }
+            });
         });
-        return __awaiter(this, void 0, void 0, function* () {
-            this.token = yield this.tokenFactory({ url, options });
-            return _super.fetch.call(this, url, options);
-        });
-    }
-}
+    };
+    return LambdaFetchClient;
+}(BearerTokenFetchClient));
+
 /**
  * Client wrapping the aadTokenProvider available from SPFx >= 1.6
  */
-class SPFxAdalClient extends LambdaFetchClient {
+var SPFxAdalClient = /** @class */ (function (_super) {
+    __extends(SPFxAdalClient, _super);
     /**
      *
      * @param context provide the appropriate SPFx Context object
      */
-    constructor(context) {
-        super((params) => __awaiter(this, void 0, void 0, function* () {
-            const provider = yield context.aadTokenProviderFactory.getTokenProvider();
-            return provider.getToken(getADALResource(params.url));
-        }));
-        this.context = context;
+    function SPFxAdalClient(context) {
+        var _this = _super.call(this, function (params) { return __awaiter(_this, void 0, void 0, function () {
+            var provider;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, context.aadTokenProviderFactory.getTokenProvider()];
+                    case 1:
+                        provider = _a.sent();
+                        return [2 /*return*/, provider.getToken(getADALResource(params.url))];
+                }
+            });
+        }); }) || this;
+        _this.context = context;
+        return _this;
     }
     /**
      * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
      *
      * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
      */
-    getToken(resource) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const provider = yield this.context.aadTokenProviderFactory.getTokenProvider();
-            return provider.getToken(resource);
+    SPFxAdalClient.prototype.getToken = function (resource) {
+        return __awaiter(this, void 0, void 0, function () {
+            var provider;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
+                    case 1:
+                        provider = _a.sent();
+                        return [2 /*return*/, provider.getToken(resource)];
+                }
+            });
         });
-    }
-}
+    };
+    return SPFxAdalClient;
+}(LambdaFetchClient));
+
 //# sourceMappingURL=net.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/storage.js
 
@@ -725,13 +834,14 @@ class SPFxAdalClient extends LambdaFetchClient {
  * A wrapper class to provide a consistent interface to browser based storage
  *
  */
-class PnPClientStorageWrapper {
+var PnPClientStorageWrapper = /** @class */ (function () {
     /**
      * Creates a new instance of the PnPClientStorageWrapper class
      *
      * @constructor
      */
-    constructor(store, defaultTimeoutMinutes = -1) {
+    function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
+        if (defaultTimeoutMinutes === void 0) { defaultTimeoutMinutes = -1; }
         this.store = store;
         this.defaultTimeoutMinutes = defaultTimeoutMinutes;
         this.enabled = this.test();
@@ -741,23 +851,23 @@ class PnPClientStorageWrapper {
             this.cacheExpirationHandler();
         }
     }
-    static bind(store) {
+    PnPClientStorageWrapper.bind = function (store) {
         return new PnPClientStorageWrapper(typeof (store) === "undefined" ? new MemoryStorage() : store);
-    }
+    };
     /**
      * Get a value from storage, or null if that value does not exist
      *
      * @param key The key whose value we want to retrieve
      */
-    get(key) {
+    PnPClientStorageWrapper.prototype.get = function (key) {
         if (!this.enabled) {
             return null;
         }
-        const o = this.store.getItem(key);
+        var o = this.store.getItem(key);
         if (!objectDefinedNotNull(o)) {
             return null;
         }
-        const persistable = JSON.parse(o);
+        var persistable = JSON.parse(o);
         if (new Date(persistable.expiration) <= new Date()) {
             this.delete(key);
             return null;
@@ -765,7 +875,7 @@ class PnPClientStorageWrapper {
         else {
             return persistable.value;
         }
-    }
+    };
     /**
      * Adds a value to the underlying storage
      *
@@ -773,21 +883,21 @@ class PnPClientStorageWrapper {
      * @param o The value to store
      * @param expire Optional, if provided the expiration of the item, otherwise the default is used
      */
-    put(key, o, expire) {
+    PnPClientStorageWrapper.prototype.put = function (key, o, expire) {
         if (this.enabled) {
             this.store.setItem(key, this.createPersistable(o, expire));
         }
-    }
+    };
     /**
      * Deletes a value from the underlying storage
      *
      * @param key The key of the pair we want to remove from storage
      */
-    delete(key) {
+    PnPClientStorageWrapper.prototype.delete = function (key) {
         if (this.enabled) {
             this.store.removeItem(key);
         }
-    }
+    };
     /**
      * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
      *
@@ -795,44 +905,65 @@ class PnPClientStorageWrapper {
      * @param getter A function which will upon execution provide the desired value
      * @param expire Optional, if provided the expiration of the item, otherwise the default is used
      */
-    getOrPut(key, getter, expire) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.enabled) {
-                return getter();
-            }
-            let o = this.get(key);
-            if (o === null) {
-                o = yield getter();
-                this.put(key, o, expire);
-            }
-            return o;
+    PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
+        return __awaiter(this, void 0, void 0, function () {
+            var o;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.enabled) {
+                            return [2 /*return*/, getter()];
+                        }
+                        o = this.get(key);
+                        if (!(o === null)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, getter()];
+                    case 1:
+                        o = _a.sent();
+                        this.put(key, o, expire);
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, o];
+                }
+            });
         });
-    }
+    };
     /**
      * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
      */
-    deleteExpired() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.enabled) {
-                return;
-            }
-            for (let i = 0; i < this.store.length; i++) {
-                const key = this.store.key(i);
-                if (key !== null) {
-                    // test the stored item to see if we stored it
-                    if (/["|']?pnp["|']? ?: ?1/i.test(this.store.getItem(key))) {
+    PnPClientStorageWrapper.prototype.deleteExpired = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var i, key;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.enabled) {
+                            return [2 /*return*/];
+                        }
+                        i = 0;
+                        _a.label = 1;
+                    case 1:
+                        if (!(i < this.store.length)) return [3 /*break*/, 4];
+                        key = this.store.key(i);
+                        if (!(key !== null)) return [3 /*break*/, 3];
+                        if (!/["|']?pnp["|']? ?: ?1/i.test(this.store.getItem(key))) return [3 /*break*/, 3];
                         // get those items as get will delete from cache if they are expired
-                        yield this.get(key);
-                    }
+                        return [4 /*yield*/, this.get(key)];
+                    case 2:
+                        // get those items as get will delete from cache if they are expired
+                        _a.sent();
+                        _a.label = 3;
+                    case 3:
+                        i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/];
                 }
-            }
+            });
         });
-    }
+    };
     /**
      * Used to determine if the wrapped storage is available currently
      */
-    test() {
-        const str = "t";
+    PnPClientStorageWrapper.prototype.test = function () {
+        var str = "t";
         try {
             this.store.setItem(str, str);
             this.store.removeItem(str);
@@ -841,92 +972,113 @@ class PnPClientStorageWrapper {
         catch (e) {
             return false;
         }
-    }
+    };
     /**
      * Creates the persistable to store
      */
-    createPersistable(o, expire) {
+    PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
         if (expire === undefined) {
             // ensure we are by default inline with the global library setting
-            let defaultTimeout = DefaultRuntime.get("defaultCachingTimeoutSeconds");
+            var defaultTimeout = DefaultRuntime.get("defaultCachingTimeoutSeconds");
             if (this.defaultTimeoutMinutes > 0) {
                 defaultTimeout = this.defaultTimeoutMinutes * 60;
             }
             expire = dateAdd(new Date(), "second", defaultTimeout);
         }
         return jsS({ pnp: 1, expiration: expire, value: o });
-    }
+    };
     /**
      * Deletes expired items added by this library in this.store and sets a timeout to call itself
      */
-    cacheExpirationHandler() {
+    PnPClientStorageWrapper.prototype.cacheExpirationHandler = function () {
+        var _this = this;
         if (!this.enabled) {
             return;
         }
-        this.deleteExpired().then(() => {
+        this.deleteExpired().then(function () {
             // call ourself in the future
-            setTimeout(getCtxCallback(this, this.cacheExpirationHandler), DefaultRuntime.get("cacheExpirationIntervalMilliseconds"));
+            setTimeout(getCtxCallback(_this, _this.cacheExpirationHandler), DefaultRuntime.get("cacheExpirationIntervalMilliseconds"));
         }).catch(console.error);
-    }
-}
+    };
+    return PnPClientStorageWrapper;
+}());
+
 /**
  * A thin implementation of in-memory storage for use in nodejs
  */
-class MemoryStorage {
-    constructor(_store = new Map()) {
+var MemoryStorage = /** @class */ (function () {
+    function MemoryStorage(_store) {
+        if (_store === void 0) { _store = new Map(); }
         this._store = _store;
     }
-    get length() {
-        return this._store.size;
-    }
-    clear() {
+    Object.defineProperty(MemoryStorage.prototype, "length", {
+        get: function () {
+            return this._store.size;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    MemoryStorage.prototype.clear = function () {
         this._store.clear();
-    }
-    getItem(key) {
+    };
+    MemoryStorage.prototype.getItem = function (key) {
         return this._store.get(key);
-    }
-    key(index) {
+    };
+    MemoryStorage.prototype.key = function (index) {
         return Array.from(this._store)[index][0];
-    }
-    removeItem(key) {
+    };
+    MemoryStorage.prototype.removeItem = function (key) {
         this._store.delete(key);
-    }
-    setItem(key, data) {
+    };
+    MemoryStorage.prototype.setItem = function (key, data) {
         this._store.set(key, data);
-    }
-}
+    };
+    return MemoryStorage;
+}());
 /**
  * A class that will establish wrappers for both local and session storage
  */
-class PnPClientStorage {
+var PnPClientStorage = /** @class */ (function () {
     /**
      * Creates a new instance of the PnPClientStorage class
      *
      * @constructor
      */
-    constructor(_local = null, _session = null) {
+    function PnPClientStorage(_local, _session) {
+        if (_local === void 0) { _local = null; }
+        if (_session === void 0) { _session = null; }
         this._local = _local;
         this._session = _session;
     }
-    /**
-     * Provides access to the local storage of the browser
-     */
-    get local() {
-        if (this._local === null) {
-            this._local = new PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
-        }
-        return this._local;
-    }
-    /**
-     * Provides access to the session storage of the browser
-     */
-    get session() {
-        if (this._session === null) {
-            this._session = new PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
-        }
-        return this._session;
-    }
-}
+    Object.defineProperty(PnPClientStorage.prototype, "local", {
+        /**
+         * Provides access to the local storage of the browser
+         */
+        get: function () {
+            if (this._local === null) {
+                this._local = new PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
+            }
+            return this._local;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PnPClientStorage.prototype, "session", {
+        /**
+         * Provides access to the session storage of the browser
+         */
+        get: function () {
+            if (this._session === null) {
+                this._session = new PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
+            }
+            return this._session;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return PnPClientStorage;
+}());
+
 //# sourceMappingURL=storage.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/index.js
 
@@ -940,80 +1092,7 @@ class PnPClientStorage {
 ;// CONCATENATED MODULE: ./pnpjs-sources/index-common.ts
 
 
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(611);
+/******/ 	return __webpack_exports__;
 /******/ })()
 ;
 });

@@ -7,7 +7,7 @@ export declare class _Suggest extends _SharePointQueryableInstance {
 export interface ISuggest {
     (query: ISuggestQuery): Promise<ISuggestResult>;
 }
-export declare const Suggest: (baseUrl: string | ISharePointQueryable, options?: IConfigOptions, runtime?: import("../../common/libconfig.js").Runtime) => ISuggest;
+export declare const Suggest: (baseUrl: string | ISharePointQueryable, options?: IConfigOptions, runtime?: import("@pnp/common").Runtime) => ISuggest;
 /**
  * Defines a query execute against the search/suggest endpoint (see https://msdn.microsoft.com/en-us/library/office/dn194079.aspx)
  */

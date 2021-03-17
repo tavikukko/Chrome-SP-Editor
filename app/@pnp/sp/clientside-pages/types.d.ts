@@ -117,14 +117,21 @@ export declare class _ClientsidePage extends _SharePointQueryable {
      */
     findControl<T extends ColumnControl<any> = ColumnControl<any>>(predicate: (c: ColumnControl<any>) => boolean): T;
     /**
-     * Creates a copy of this page
+     * Creates a new page with all of the content copied from this page
      *
      * @param web The web where we will create the copy
      * @param pageName The file name of the new page
      * @param title The title of the new page
-     * @param publish If true the page will be published
+     * @param publish If true the page will be published (Default: true)
      */
     copy(web: IWeb, pageName: string, title: string, publish?: boolean, promotedState?: PromotedState): Promise<IClientsidePage>;
+    /**
+     * Copies the content from this page to the supplied page instance NOTE: fully overwriting any previous content!!
+     *
+     * @param page Page whose content we replace with this page's content
+     * @param publish If true the page will be published after the copy, if false it will be saved but left unpublished (Default: true)
+     */
+    copyTo(page: IClientsidePage, publish?: boolean): Promise<IClientsidePage>;
     /**
      * Sets the modern page banner image
      *

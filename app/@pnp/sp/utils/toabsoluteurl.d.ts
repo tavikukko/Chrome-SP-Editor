@@ -4,5 +4,5 @@
  * @param candidateUrl The url to make absolute
  *
  */
-export declare function toAbsoluteUrl(candidateUrl: string, runtime?: import("../../common/libconfig.js").Runtime): Promise<string>;
+export declare function toAbsoluteUrl(candidateUrl: string, runtime?: import("@pnp/common").Runtime): Promise<string>;
 //# sourceMappingURL=toabsoluteurl.d.ts.map

@@ -327,12 +327,24 @@ export interface IFileAddResult {
 }
 /**
  * File move opertions
- * Overwrite = 1
- * AllowBrokenThickets = 8
  */
 export declare enum MoveOperations {
+    /**
+     * Produce an error if a file with the same name exists in the destination
+     */
+    None = 0,
+    /**
+     * Overwrite a file with the same name if it exists. Value is 1.
+     */
     Overwrite = 1,
-    AllowBrokenThickets = 8
+    /**
+     * Complete the move operation even if supporting files are separated from the file. Value is 8.
+     */
+    AllowBrokenThickets = 8,
+    /**
+     * Boolean specifying whether to retain the source of the move's editor and modified by datetime.
+     */
+    RetainEditorAndModifiedOnMove = 2048
 }
 export declare enum TemplateFileType {
     StandardPage = 0,

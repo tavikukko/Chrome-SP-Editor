@@ -11,7 +11,7 @@ export declare class _Calendar extends _GraphQueryableInstance<ICalendarType> {
 }
 export interface ICalendar extends _Calendar {
 }
-export declare const Calendar: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ICalendar & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Calendar: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ICalendar & import("@pnp/odata").IInvokable<any>;
 /**
  * Calendars
  */
@@ -19,7 +19,7 @@ export declare class _Calendars extends _GraphQueryableCollection<ICalendarType[
 }
 export interface ICalendars extends _Calendars, IGetById<ICalendar> {
 }
-export declare const Calendars: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ICalendars & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Calendars: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ICalendars & import("@pnp/odata").IInvokable<any>;
 /**
  * Event
  */
@@ -27,7 +27,7 @@ export declare class _Event extends _GraphQueryableInstance<IEventType> {
 }
 export interface IEvent extends _Event, IDeleteable, IUpdateable {
 }
-export declare const Event: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IEvent & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Event: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IEvent & import("@pnp/odata").IInvokable<any>;
 /**
  * Events
  */
@@ -41,7 +41,7 @@ export declare class _Events extends _GraphQueryableCollection<IEventType[]> {
 }
 export interface IEvents extends _Events, IGetById<IEvent> {
 }
-export declare const Events: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IEvents & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Events: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IEvents & import("@pnp/odata").IInvokable<any>;
 /**
  * EventAddResult
  */

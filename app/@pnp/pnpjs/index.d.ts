@@ -38,7 +38,7 @@ export declare const sp: SPRestAddIn;
 /**
  * Provides access to the SharePoint REST interface
  */
-export declare const graph: import("../graph/rest.js").GraphRest;
+export declare const graph: import("@pnp/graph").GraphRest;
 /**
  * Provides access to local and session storage
  */
@@ -63,7 +63,7 @@ declare const Def: {
     /**
      * Provides access to the Graph REST interface
      */
-    graph: import("../graph/rest.js").GraphRest;
+    graph: import("@pnp/graph").GraphRest;
     /**
      * Global logging instance to which subscribers can be registered and messages written
      */

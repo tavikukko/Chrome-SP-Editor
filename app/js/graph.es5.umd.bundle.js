@@ -10,11 +10,52 @@
 })(self, function() {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
-
-/***/ 154:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -358,7 +399,11 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
  * @param params Optional, additional arguments to supply to the wrapped method when it is invoked
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-function getCtxCallback(context, method, ...params) {
+function getCtxCallback(context, method) {
+    var params = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        params[_i - 2] = arguments[_i];
+    }
     return function () {
         method.apply(context, params);
     };
@@ -373,7 +418,7 @@ function getCtxCallback(context, method, ...params) {
  * http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
  */
 function dateAdd(date, interval, units) {
-    let ret = new Date(date.toString()); // don't change original date
+    var ret = new Date(date.toString()); // don't change original date
     switch (interval.toLowerCase()) {
         case "year":
             ret.setFullYear(ret.getFullYear() + units);
@@ -410,10 +455,14 @@ function dateAdd(date, interval, units) {
  *
  * @param paths 0 to n path parts to combine
  */
-function combine(...paths) {
+function combine() {
+    var paths = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        paths[_i] = arguments[_i];
+    }
     return paths
-        .filter(path => !stringIsNullOrEmpty(path))
-        .map(path => path.replace(/^[\\|/]/, "").replace(/[\\|/]$/, ""))
+        .filter(function (path) { return !stringIsNullOrEmpty(path); })
+        .map(function (path) { return path.replace(/^[\\|/]/, "").replace(/[\\|/]$/, ""); })
         .join("/")
         .replace(/\\/g, "/");
 }
@@ -425,8 +474,8 @@ function combine(...paths) {
  * @param chars The length of the random string to generate
  */
 function getRandomString(chars) {
-    const text = new Array(chars);
-    for (let i = 0; i < chars; i++) {
+    var text = new Array(chars);
+    for (var i = 0; i < chars; i++) {
         text[i] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(Math.floor(Math.random() * 62));
     }
     return text.join("");
@@ -438,9 +487,9 @@ function getRandomString(chars) {
  */
 /* eslint-disable no-bitwise */
 function util_getGUID() {
-    let d = Date.now();
+    var d = Date.now();
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-        const r = (d + Math.random() * 16) % 16 | 0;
+        var r = (d + Math.random() * 16) % 16 | 0;
         d = Math.floor(d / 16);
         return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
     });
@@ -476,17 +525,19 @@ function isArray(array) {
  * @param filter If provided allows additional filtering on what properties are copied (propName: string) => boolean
  *
  */
-function util_assign(target, source, noOverwrite = false, filter = () => true) {
+function util_assign(target, source, noOverwrite, filter) {
+    if (noOverwrite === void 0) { noOverwrite = false; }
+    if (filter === void 0) { filter = function () { return true; }; }
     if (!objectDefinedNotNull(source)) {
         return target;
     }
     // ensure we don't overwrite things we don't want overwritten
-    const check = noOverwrite ? (o, i) => !(i in o) : () => true;
+    var check = noOverwrite ? function (o, i) { return !(i in o); } : function () { return true; };
     // final filter we will use
-    const f = (v) => check(target, v) && filter(v);
+    var f = function (v) { return check(target, v) && filter(v); };
     return Object.getOwnPropertyNames(source)
         .filter(f)
-        .reduce((t, v) => {
+        .reduce(function (t, v) {
         t[v] = source[v];
         return t;
     }, target);
@@ -516,7 +567,7 @@ function sanitizeGuid(guid) {
     if (stringIsNullOrEmpty(guid)) {
         return guid;
     }
-    const matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
+    var matches = /([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})/i.exec(guid);
     return matches === null ? guid : matches[1];
 }
 /**
@@ -543,12 +594,12 @@ function hOP(o, p) {
  */
 /* eslint-disable no-bitwise */
 function getHashCode(s) {
-    let hash = 0;
+    var hash = 0;
     if (s.length === 0) {
         return hash;
     }
-    for (let i = 0; i < s.length; i++) {
-        const chr = s.charCodeAt(i);
+    for (var i = 0; i < s.length; i++) {
+        var chr = s.charCodeAt(i);
         hash = ((hash << 5) - hash) + chr;
         hash |= 0; // Convert to 32bit integer
     }
@@ -561,7 +612,7 @@ function getHashCode(s) {
 /**
  * Used to calculate the object properties, with polyfill if needed
  */
-const objectEntries = isFunc(Object.entries) ? Object.entries : (o) => Object.keys(o).map((k) => [k, o[k]]);
+var objectEntries = isFunc(Object.entries) ? Object.entries : function (o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }); };
 /**
  * Converts the supplied object to a map
  *
@@ -579,9 +630,13 @@ function objectToMap(o) {
  * @param target map into which the other maps are merged
  * @param maps One or more maps to merge into the target
  */
-function mergeMaps(target, ...maps) {
-    for (let i = 0; i < maps.length; i++) {
-        maps[i].forEach((v, k) => {
+function mergeMaps(target) {
+    var maps = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        maps[_i - 1] = arguments[_i];
+    }
+    for (var i = 0; i < maps.length; i++) {
+        maps[i].forEach(function (v, k) {
             // let's not run the spfx context through Object.assign :)
             if ((typeof k === "string" && k !== "spfxContext") && Object.prototype.toString.call(v) === "[object Object]") {
                 // we only handle one level of deep object merging
@@ -595,79 +650,6 @@ function mergeMaps(target, ...maps) {
     return target;
 }
 //# sourceMappingURL=collections.js.map
-;// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
-
-function setup(config, runtime = DefaultRuntime) {
-    runtime.assign(config);
-}
-// lable mapping for known config values
-const s = [
-    "defaultCachingStore",
-    "defaultCachingTimeoutSeconds",
-    "globalCacheDisable",
-    "enableCacheExpiration",
-    "cacheExpirationIntervalMilliseconds",
-    "spfxContext",
-    "ie11",
-];
-const runtimeCreateHooks = [];
-function onRuntimeCreate(hook) {
-    if (runtimeCreateHooks.indexOf(hook) < 0) {
-        // apply hook logic to default runtime
-        hook(DefaultRuntime);
-        runtimeCreateHooks.push(hook);
-    }
-}
-class Runtime {
-    constructor(_v = new Map()) {
-        this._v = _v;
-        const defaulter = (key, def) => {
-            if (!this._v.has(key)) {
-                this._v.set(key, def);
-            }
-        };
-        // setup defaults
-        defaulter(s[0], "session");
-        defaulter(s[1], 60);
-        defaulter(s[2], false);
-        defaulter(s[3], false);
-        defaulter(s[4], 750);
-        defaulter(s[5], null);
-        defaulter(s[6], false);
-        runtimeCreateHooks.forEach(hook => hook(this));
-    }
-    /**
-     *
-     * @param config The set of properties to add to this runtime instance
-     */
-    assign(config) {
-        this._v = mergeMaps(this._v, objectToMap(config));
-    }
-    /**
-     * Gets a runtime value using T to define the available keys, and R to define the type returned by that key
-     *
-     * @param key
-     */
-    get(key) {
-        return this._v.get(key);
-    }
-    /**
-     * Exports the internal Map representing this runtime
-     */
-    export() {
-        const expt = new Map();
-        for (const [key, value] of this._v) {
-            if (key !== "__isDefault__") {
-                expt.set(key, value);
-            }
-        }
-        return expt;
-    }
-}
-// default runtime used globally
-const _runtime = new Runtime(new Map([["__isDefault__", true]]));
-const DefaultRuntime = _runtime;
-//# sourceMappingURL=libconfig.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/node_modules/tslib/tslib.es6.js
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -907,9 +889,99 @@ function tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
     return value;
 }
 
+;// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
+
+
+function setup(config, runtime) {
+    if (runtime === void 0) { runtime = DefaultRuntime; }
+    runtime.assign(config);
+}
+// lable mapping for known config values
+var s = [
+    "defaultCachingStore",
+    "defaultCachingTimeoutSeconds",
+    "globalCacheDisable",
+    "enableCacheExpiration",
+    "cacheExpirationIntervalMilliseconds",
+    "spfxContext",
+    "ie11",
+];
+var runtimeCreateHooks = [];
+function onRuntimeCreate(hook) {
+    if (runtimeCreateHooks.indexOf(hook) < 0) {
+        // apply hook logic to default runtime
+        hook(DefaultRuntime);
+        runtimeCreateHooks.push(hook);
+    }
+}
+var Runtime = /** @class */ (function () {
+    function Runtime(_v) {
+        var _this = this;
+        if (_v === void 0) { _v = new Map(); }
+        this._v = _v;
+        var defaulter = function (key, def) {
+            if (!_this._v.has(key)) {
+                _this._v.set(key, def);
+            }
+        };
+        // setup defaults
+        defaulter(s[0], "session");
+        defaulter(s[1], 60);
+        defaulter(s[2], false);
+        defaulter(s[3], false);
+        defaulter(s[4], 750);
+        defaulter(s[5], null);
+        defaulter(s[6], false);
+        runtimeCreateHooks.forEach(function (hook) { return hook(_this); });
+    }
+    /**
+     *
+     * @param config The set of properties to add to this runtime instance
+     */
+    Runtime.prototype.assign = function (config) {
+        this._v = mergeMaps(this._v, objectToMap(config));
+    };
+    /**
+     * Gets a runtime value using T to define the available keys, and R to define the type returned by that key
+     *
+     * @param key
+     */
+    Runtime.prototype.get = function (key) {
+        return this._v.get(key);
+    };
+    /**
+     * Exports the internal Map representing this runtime
+     */
+    Runtime.prototype.export = function () {
+        var e_1, _a;
+        var expt = new Map();
+        try {
+            for (var _b = tslib_es6_values(this._v), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var _d = tslib_es6_read(_c.value, 2), key = _d[0], value = _d[1];
+                if (key !== "__isDefault__") {
+                    expt.set(key, value);
+                }
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+        return expt;
+    };
+    return Runtime;
+}());
+
+// default runtime used globally
+var _runtime = new Runtime(new Map([["__isDefault__", true]]));
+var DefaultRuntime = _runtime;
+//# sourceMappingURL=libconfig.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/safe-global.js
 // export either window or global
-const safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __webpack_require__.g;
+var safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __webpack_require__.g;
 //# sourceMappingURL=safe-global.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/net.js
 
@@ -917,15 +989,15 @@ const safeGlobal = typeof __webpack_require__.g === "undefined" ? window : __web
 
 function mergeHeaders(target, source) {
     if (objectDefinedNotNull(source)) {
-        const temp = new Request("", { headers: source });
-        temp.headers.forEach((value, name) => {
+        var temp = new Request("", { headers: source });
+        temp.headers.forEach(function (value, name) {
             target.append(name, value);
         });
     }
 }
 function mergeOptions(target, source) {
     if (objectDefinedNotNull(source)) {
-        const headers = util_assign(target.headers || {}, source.headers);
+        var headers = util_assign(target.headers || {}, source.headers);
         target = util_assign(target, source);
         target.headers = headers;
     }
@@ -936,37 +1008,48 @@ function mergeOptions(target, source) {
   * @param url The url to parse
  */
 function getADALResource(url) {
-    const u = new URL(url);
-    return `${u.protocol}//${u.hostname}`;
+    var u = new URL(url);
+    return u.protocol + "//" + u.hostname;
 }
 /**
  * Makes requests using the global/window fetch API
  */
-class FetchClient {
-    fetch(url, options) {
-        return safeGlobal.fetch(url, options);
+var FetchClient = /** @class */ (function () {
+    function FetchClient() {
     }
-}
+    FetchClient.prototype.fetch = function (url, options) {
+        return safeGlobal.fetch(url, options);
+    };
+    return FetchClient;
+}());
+
 /**
  * Makes requests using the fetch API adding the supplied token to the Authorization header
  */
-class BearerTokenFetchClient extends FetchClient {
-    constructor(token) {
-        super();
-        this.token = token;
+var BearerTokenFetchClient = /** @class */ (function (_super) {
+    tslib_es6_extends(BearerTokenFetchClient, _super);
+    function BearerTokenFetchClient(token) {
+        var _this = _super.call(this) || this;
+        _this.token = token;
+        return _this;
     }
-    fetch(url, options = {}) {
-        const headers = new Headers();
+    BearerTokenFetchClient.prototype.fetch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var headers = new Headers();
         mergeHeaders(headers, options.headers);
-        headers.set("Authorization", `Bearer ${this.token}`);
+        headers.set("Authorization", "Bearer " + this.token);
         options.headers = headers;
-        return super.fetch(url, options);
-    }
-}
-class LambdaFetchClient extends BearerTokenFetchClient {
-    constructor(tokenFactory) {
-        super(null);
-        this.tokenFactory = tokenFactory;
+        return _super.prototype.fetch.call(this, url, options);
+    };
+    return BearerTokenFetchClient;
+}(FetchClient));
+
+var LambdaFetchClient = /** @class */ (function (_super) {
+    tslib_es6_extends(LambdaFetchClient, _super);
+    function LambdaFetchClient(tokenFactory) {
+        var _this = _super.call(this, null) || this;
+        _this.tokenFactory = tokenFactory;
+        return _this;
     }
     /**
      * Executes a fetch request using the supplied url and options
@@ -974,43 +1057,69 @@ class LambdaFetchClient extends BearerTokenFetchClient {
      * @param url Absolute url of the request
      * @param options Any options
      */
-    fetch(url, options) {
-        const _super = Object.create(null, {
-            fetch: { get: () => super.fetch }
+    LambdaFetchClient.prototype.fetch = function (url, options) {
+        return tslib_es6_awaiter(this, void 0, void 0, function () {
+            var _a;
+            return tslib_es6_generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.tokenFactory({ url: url, options: options })];
+                    case 1:
+                        _a.token = _b.sent();
+                        return [2 /*return*/, _super.prototype.fetch.call(this, url, options)];
+                }
+            });
         });
-        return tslib_es6_awaiter(this, void 0, void 0, function* () {
-            this.token = yield this.tokenFactory({ url, options });
-            return _super.fetch.call(this, url, options);
-        });
-    }
-}
+    };
+    return LambdaFetchClient;
+}(BearerTokenFetchClient));
+
 /**
  * Client wrapping the aadTokenProvider available from SPFx >= 1.6
  */
-class SPFxAdalClient extends LambdaFetchClient {
+var SPFxAdalClient = /** @class */ (function (_super) {
+    tslib_es6_extends(SPFxAdalClient, _super);
     /**
      *
      * @param context provide the appropriate SPFx Context object
      */
-    constructor(context) {
-        super((params) => tslib_es6_awaiter(this, void 0, void 0, function* () {
-            const provider = yield context.aadTokenProviderFactory.getTokenProvider();
-            return provider.getToken(getADALResource(params.url));
-        }));
-        this.context = context;
+    function SPFxAdalClient(context) {
+        var _this = _super.call(this, function (params) { return tslib_es6_awaiter(_this, void 0, void 0, function () {
+            var provider;
+            return tslib_es6_generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, context.aadTokenProviderFactory.getTokenProvider()];
+                    case 1:
+                        provider = _a.sent();
+                        return [2 /*return*/, provider.getToken(getADALResource(params.url))];
+                }
+            });
+        }); }) || this;
+        _this.context = context;
+        return _this;
     }
     /**
      * Gets an AAD token for the provided resource using the SPFx AADTokenProvider
      *
      * @param resource Resource for which a token is to be requested (ex: https://graph.microsoft.com)
      */
-    getToken(resource) {
-        return tslib_es6_awaiter(this, void 0, void 0, function* () {
-            const provider = yield this.context.aadTokenProviderFactory.getTokenProvider();
-            return provider.getToken(resource);
+    SPFxAdalClient.prototype.getToken = function (resource) {
+        return tslib_es6_awaiter(this, void 0, void 0, function () {
+            var provider;
+            return tslib_es6_generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.context.aadTokenProviderFactory.getTokenProvider()];
+                    case 1:
+                        provider = _a.sent();
+                        return [2 /*return*/, provider.getToken(resource)];
+                }
+            });
         });
-    }
-}
+    };
+    return SPFxAdalClient;
+}(LambdaFetchClient));
+
 //# sourceMappingURL=net.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/storage.js
 
@@ -1020,13 +1129,14 @@ class SPFxAdalClient extends LambdaFetchClient {
  * A wrapper class to provide a consistent interface to browser based storage
  *
  */
-class PnPClientStorageWrapper {
+var PnPClientStorageWrapper = /** @class */ (function () {
     /**
      * Creates a new instance of the PnPClientStorageWrapper class
      *
      * @constructor
      */
-    constructor(store, defaultTimeoutMinutes = -1) {
+    function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
+        if (defaultTimeoutMinutes === void 0) { defaultTimeoutMinutes = -1; }
         this.store = store;
         this.defaultTimeoutMinutes = defaultTimeoutMinutes;
         this.enabled = this.test();
@@ -1036,23 +1146,23 @@ class PnPClientStorageWrapper {
             this.cacheExpirationHandler();
         }
     }
-    static bind(store) {
+    PnPClientStorageWrapper.bind = function (store) {
         return new PnPClientStorageWrapper(typeof (store) === "undefined" ? new MemoryStorage() : store);
-    }
+    };
     /**
      * Get a value from storage, or null if that value does not exist
      *
      * @param key The key whose value we want to retrieve
      */
-    get(key) {
+    PnPClientStorageWrapper.prototype.get = function (key) {
         if (!this.enabled) {
             return null;
         }
-        const o = this.store.getItem(key);
+        var o = this.store.getItem(key);
         if (!objectDefinedNotNull(o)) {
             return null;
         }
-        const persistable = JSON.parse(o);
+        var persistable = JSON.parse(o);
         if (new Date(persistable.expiration) <= new Date()) {
             this.delete(key);
             return null;
@@ -1060,7 +1170,7 @@ class PnPClientStorageWrapper {
         else {
             return persistable.value;
         }
-    }
+    };
     /**
      * Adds a value to the underlying storage
      *
@@ -1068,21 +1178,21 @@ class PnPClientStorageWrapper {
      * @param o The value to store
      * @param expire Optional, if provided the expiration of the item, otherwise the default is used
      */
-    put(key, o, expire) {
+    PnPClientStorageWrapper.prototype.put = function (key, o, expire) {
         if (this.enabled) {
             this.store.setItem(key, this.createPersistable(o, expire));
         }
-    }
+    };
     /**
      * Deletes a value from the underlying storage
      *
      * @param key The key of the pair we want to remove from storage
      */
-    delete(key) {
+    PnPClientStorageWrapper.prototype.delete = function (key) {
         if (this.enabled) {
             this.store.removeItem(key);
         }
-    }
+    };
     /**
      * Gets an item from the underlying storage, or adds it if it does not exist using the supplied getter function
      *
@@ -1090,44 +1200,65 @@ class PnPClientStorageWrapper {
      * @param getter A function which will upon execution provide the desired value
      * @param expire Optional, if provided the expiration of the item, otherwise the default is used
      */
-    getOrPut(key, getter, expire) {
-        return tslib_es6_awaiter(this, void 0, void 0, function* () {
-            if (!this.enabled) {
-                return getter();
-            }
-            let o = this.get(key);
-            if (o === null) {
-                o = yield getter();
-                this.put(key, o, expire);
-            }
-            return o;
+    PnPClientStorageWrapper.prototype.getOrPut = function (key, getter, expire) {
+        return tslib_es6_awaiter(this, void 0, void 0, function () {
+            var o;
+            return tslib_es6_generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.enabled) {
+                            return [2 /*return*/, getter()];
+                        }
+                        o = this.get(key);
+                        if (!(o === null)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, getter()];
+                    case 1:
+                        o = _a.sent();
+                        this.put(key, o, expire);
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, o];
+                }
+            });
         });
-    }
+    };
     /**
      * Deletes any expired items placed in the store by the pnp library, leaves other items untouched
      */
-    deleteExpired() {
-        return tslib_es6_awaiter(this, void 0, void 0, function* () {
-            if (!this.enabled) {
-                return;
-            }
-            for (let i = 0; i < this.store.length; i++) {
-                const key = this.store.key(i);
-                if (key !== null) {
-                    // test the stored item to see if we stored it
-                    if (/["|']?pnp["|']? ?: ?1/i.test(this.store.getItem(key))) {
+    PnPClientStorageWrapper.prototype.deleteExpired = function () {
+        return tslib_es6_awaiter(this, void 0, void 0, function () {
+            var i, key;
+            return tslib_es6_generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.enabled) {
+                            return [2 /*return*/];
+                        }
+                        i = 0;
+                        _a.label = 1;
+                    case 1:
+                        if (!(i < this.store.length)) return [3 /*break*/, 4];
+                        key = this.store.key(i);
+                        if (!(key !== null)) return [3 /*break*/, 3];
+                        if (!/["|']?pnp["|']? ?: ?1/i.test(this.store.getItem(key))) return [3 /*break*/, 3];
                         // get those items as get will delete from cache if they are expired
-                        yield this.get(key);
-                    }
+                        return [4 /*yield*/, this.get(key)];
+                    case 2:
+                        // get those items as get will delete from cache if they are expired
+                        _a.sent();
+                        _a.label = 3;
+                    case 3:
+                        i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/];
                 }
-            }
+            });
         });
-    }
+    };
     /**
      * Used to determine if the wrapped storage is available currently
      */
-    test() {
-        const str = "t";
+    PnPClientStorageWrapper.prototype.test = function () {
+        var str = "t";
         try {
             this.store.setItem(str, str);
             this.store.removeItem(str);
@@ -1136,92 +1267,113 @@ class PnPClientStorageWrapper {
         catch (e) {
             return false;
         }
-    }
+    };
     /**
      * Creates the persistable to store
      */
-    createPersistable(o, expire) {
+    PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
         if (expire === undefined) {
             // ensure we are by default inline with the global library setting
-            let defaultTimeout = DefaultRuntime.get("defaultCachingTimeoutSeconds");
+            var defaultTimeout = DefaultRuntime.get("defaultCachingTimeoutSeconds");
             if (this.defaultTimeoutMinutes > 0) {
                 defaultTimeout = this.defaultTimeoutMinutes * 60;
             }
             expire = dateAdd(new Date(), "second", defaultTimeout);
         }
         return jsS({ pnp: 1, expiration: expire, value: o });
-    }
+    };
     /**
      * Deletes expired items added by this library in this.store and sets a timeout to call itself
      */
-    cacheExpirationHandler() {
+    PnPClientStorageWrapper.prototype.cacheExpirationHandler = function () {
+        var _this = this;
         if (!this.enabled) {
             return;
         }
-        this.deleteExpired().then(() => {
+        this.deleteExpired().then(function () {
             // call ourself in the future
-            setTimeout(getCtxCallback(this, this.cacheExpirationHandler), DefaultRuntime.get("cacheExpirationIntervalMilliseconds"));
+            setTimeout(getCtxCallback(_this, _this.cacheExpirationHandler), DefaultRuntime.get("cacheExpirationIntervalMilliseconds"));
         }).catch(console.error);
-    }
-}
+    };
+    return PnPClientStorageWrapper;
+}());
+
 /**
  * A thin implementation of in-memory storage for use in nodejs
  */
-class MemoryStorage {
-    constructor(_store = new Map()) {
+var MemoryStorage = /** @class */ (function () {
+    function MemoryStorage(_store) {
+        if (_store === void 0) { _store = new Map(); }
         this._store = _store;
     }
-    get length() {
-        return this._store.size;
-    }
-    clear() {
+    Object.defineProperty(MemoryStorage.prototype, "length", {
+        get: function () {
+            return this._store.size;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    MemoryStorage.prototype.clear = function () {
         this._store.clear();
-    }
-    getItem(key) {
+    };
+    MemoryStorage.prototype.getItem = function (key) {
         return this._store.get(key);
-    }
-    key(index) {
+    };
+    MemoryStorage.prototype.key = function (index) {
         return Array.from(this._store)[index][0];
-    }
-    removeItem(key) {
+    };
+    MemoryStorage.prototype.removeItem = function (key) {
         this._store.delete(key);
-    }
-    setItem(key, data) {
+    };
+    MemoryStorage.prototype.setItem = function (key, data) {
         this._store.set(key, data);
-    }
-}
+    };
+    return MemoryStorage;
+}());
 /**
  * A class that will establish wrappers for both local and session storage
  */
-class PnPClientStorage {
+var PnPClientStorage = /** @class */ (function () {
     /**
      * Creates a new instance of the PnPClientStorage class
      *
      * @constructor
      */
-    constructor(_local = null, _session = null) {
+    function PnPClientStorage(_local, _session) {
+        if (_local === void 0) { _local = null; }
+        if (_session === void 0) { _session = null; }
         this._local = _local;
         this._session = _session;
     }
-    /**
-     * Provides access to the local storage of the browser
-     */
-    get local() {
-        if (this._local === null) {
-            this._local = new PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
-        }
-        return this._local;
-    }
-    /**
-     * Provides access to the session storage of the browser
-     */
-    get session() {
-        if (this._session === null) {
-            this._session = new PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
-        }
-        return this._session;
-    }
-}
+    Object.defineProperty(PnPClientStorage.prototype, "local", {
+        /**
+         * Provides access to the local storage of the browser
+         */
+        get: function () {
+            if (this._local === null) {
+                this._local = new PnPClientStorageWrapper(typeof (localStorage) === "undefined" ? new MemoryStorage() : localStorage);
+            }
+            return this._local;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PnPClientStorage.prototype, "session", {
+        /**
+         * Provides access to the session storage of the browser
+         */
+        get: function () {
+            if (this._session === null) {
+                this._session = new PnPClientStorageWrapper(typeof (sessionStorage) === "undefined" ? new MemoryStorage() : sessionStorage);
+            }
+            return this._session;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return PnPClientStorage;
+}());
+
 //# sourceMappingURL=storage.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/index.js
 
@@ -1234,44 +1386,53 @@ class PnPClientStorage {
 //# sourceMappingURL=index.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/odata/batch.js
 
-class Batch {
-    constructor(_batchId = util_getGUID()) {
+var Batch = /** @class */ (function () {
+    function Batch(_batchId) {
+        if (_batchId === void 0) { _batchId = util_getGUID(); }
         this._batchId = _batchId;
         this._reqs = [];
         this._deps = [];
         this._rDeps = [];
         this._index = -1;
     }
-    get batchId() {
-        return this._batchId;
-    }
-    /**
-     * The requests contained in this batch
-     */
-    get requests() {
-        // we sort these each time this is accessed
-        return this._reqs.sort((info1, info2) => info1.index - info2.index);
-    }
+    Object.defineProperty(Batch.prototype, "batchId", {
+        get: function () {
+            return this._batchId;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Batch.prototype, "requests", {
+        /**
+         * The requests contained in this batch
+         */
+        get: function () {
+            // we sort these each time this is accessed
+            return this._reqs.sort(function (info1, info2) { return info1.index - info2.index; });
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
      * Not meant for use directly
      *
      * @param batchee The IQueryable for this batch to track in order
      */
-    track(batchee) {
+    Batch.prototype.track = function (batchee) {
         batchee.data.batch = this;
         // we need to track the order requests are added to the batch to ensure we always
         // operate on them in order
         if (typeof batchee.data.batchIndex === "undefined" || batchee.data.batchIndex < 0) {
             batchee.data.batchIndex = ++this._index;
         }
-    }
+    };
     /**
      * Adds the given request context to the batch for execution
      *
      * @param context Details of the request to batch
      */
-    add(context) {
-        const info = {
+    Batch.prototype.add = function (context) {
+        var info = {
             id: context.requestId,
             index: context.batchIndex,
             method: context.method.toUpperCase(),
@@ -1282,81 +1443,93 @@ class Batch {
             url: context.url,
         };
         // we create a new promise that will be resolved within the batch
-        const p = new Promise((resolve, reject) => {
+        var p = new Promise(function (resolve, reject) {
             info.resolve = resolve;
             info.reject = reject;
         });
         this._reqs.push(info);
         return p;
-    }
+    };
     /**
      * Adds a dependency insuring that some set of actions will occur before a batch is processed.
      * MUST be cleared using the returned resolve delegate to allow batches to run
      */
-    addDependency() {
-        let resolver = () => void (0);
-        this._deps.push(new Promise((resolve) => {
+    Batch.prototype.addDependency = function () {
+        var resolver = function () { return void (0); };
+        this._deps.push(new Promise(function (resolve) {
             resolver = resolve;
         }));
         return resolver;
-    }
+    };
     /**
      * The batch's execute method will not resolve util any promises added here resolve
      *
      * @param p The dependent promise
      */
-    addResolveBatchDependency(p) {
+    Batch.prototype.addResolveBatchDependency = function (p) {
         this._rDeps.push(p);
-    }
+    };
     /**
      * Execute the current batch and resolve the associated promises
      *
      * @returns A promise which will be resolved once all of the batch's child promises have resolved
      */
-    execute() {
+    Batch.prototype.execute = function () {
+        var _this = this;
         // we need to check the dependencies twice due to how different engines handle things.
         // We can get a second set of promises added during the first set resolving
         return Promise.all(this._deps)
-            .then(() => Promise.all(this._deps))
-            .then(() => this.executeImpl())
-            .then(() => Promise.all(this._rDeps))
-            .then(() => void (0));
-    }
-}
+            .then(function () { return Promise.all(_this._deps); })
+            .then(function () { return _this.executeImpl(); })
+            .then(function () { return Promise.all(_this._rDeps); })
+            .then(function () { return void (0); });
+    };
+    return Batch;
+}());
+
 //# sourceMappingURL=batch.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/odata/caching.js
 
-const storage = new PnPClientStorage();
-class CachingOptions {
-    constructor(key, storeName, expiration) {
+var storage = new PnPClientStorage();
+var CachingOptions = /** @class */ (function () {
+    function CachingOptions(key, storeName, expiration) {
         this.key = key;
         this.storeName = storeName;
         this.expiration = expiration;
     }
-    get store() {
-        if (this.storeName === "local") {
-            return storage.local;
-        }
-        else {
-            return storage.session;
-        }
-    }
-}
-class CachingParserWrapper {
-    constructor(parser, cacheOptions) {
+    Object.defineProperty(CachingOptions.prototype, "store", {
+        get: function () {
+            if (this.storeName === "local") {
+                return storage.local;
+            }
+            else {
+                return storage.session;
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return CachingOptions;
+}());
+
+var CachingParserWrapper = /** @class */ (function () {
+    function CachingParserWrapper(parser, cacheOptions) {
         this.parser = parser;
         this.cacheOptions = cacheOptions;
     }
-    parse(response) {
-        return this.parser.parse(response).then(r => this.cacheData(r));
-    }
-    cacheData(data) {
+    CachingParserWrapper.prototype.parse = function (response) {
+        var _this = this;
+        return this.parser.parse(response).then(function (r) { return _this.cacheData(r); });
+    };
+    CachingParserWrapper.prototype.cacheData = function (data) {
         if (this.cacheOptions.store !== null) {
             this.cacheOptions.store.put(this.cacheOptions.key, data, this.cacheOptions.expiration);
         }
         return data;
-    }
-}
+    };
+    return CachingParserWrapper;
+}());
+
 //# sourceMappingURL=caching.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/odata/add-prop.js
 /**
@@ -1377,172 +1550,6 @@ function addProp(target, name, factory, path) {
     });
 }
 //# sourceMappingURL=add-prop.js.map
-;// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
-
-let _enableExtensions = false;
-const globalExtensions = [];
-const factoryExtensions = new Map();
-const ObjExtensionsSym = Symbol.for("43f7a601");
-/**
- * Creates global extensions across all invokable objects
- *
- * @param e The global extensions to apply
- */
-const extendGlobal = (e) => {
-    _enableExtensions = true;
-    extendCol(globalExtensions, e);
-};
-/**
- * Applies the supplied extensions to a single instance
- *
- * @param target Object to which extensions are applied
- * @param extensions Extensions to apply
- */
-// eslint-disable-next-line @typescript-eslint/ban-types
-const extendObj = (target, extensions) => {
-    _enableExtensions = true;
-    if (!Reflect.has(target, ObjExtensionsSym)) {
-        Reflect.set(target, ObjExtensionsSym, []);
-    }
-    extendCol(Reflect.get(target, ObjExtensionsSym), extensions);
-    return target;
-};
-/**
- * Allows applying extensions to all instances created from the supplied factory
- *
- * @param factory The Invokable Factory method to extend
- * @param extensions Extensions to apply
- */
-const extendFactory = (factory, extensions) => {
-    _enableExtensions = true;
-    // factoryExtensions
-    const proto = Reflect.getPrototypeOf(factory);
-    if (!Reflect.has(proto, ObjExtensionsSym)) {
-        Reflect.defineProperty(proto, ObjExtensionsSym, {
-            value: getGUID(),
-        });
-    }
-    const key = proto[ObjExtensionsSym];
-    if (!factoryExtensions.has(key)) {
-        factoryExtensions.set(key, []);
-    }
-    extendCol(factoryExtensions.get(key), extensions);
-};
-function extendCol(a, e) {
-    if (Array.isArray(e)) {
-        a.push(...e);
-    }
-    else {
-        a.push(e);
-    }
-}
-/**
- * Clears all global extensions
- */
-const clearGlobalExtensions = () => {
-    globalExtensions.length = 0;
-};
-/**
- * Disables all extensions
- */
-const disableExtensions = () => {
-    _enableExtensions = false;
-};
-/**
- * Enables all extensions
- */
-const enableExtensions = () => {
-    _enableExtensions = true;
-};
-/**
- * Applies a set of extension previously applied to a factory using extendFactory to an object created from that factory
- *
- * @param factory
- * @param args
- */
-// eslint-disable-next-line @typescript-eslint/ban-types
-const applyFactoryExtensions = (factory, args) => {
-    let o = factory(args);
-    const proto = Reflect.getPrototypeOf(factory);
-    if (Reflect.has(proto, ObjExtensionsSym)) {
-        const extensions = factoryExtensions.get(Reflect.get(proto, ObjExtensionsSym));
-        o = extendObj(o, extensions);
-    }
-    return o;
-};
-function extensionOrDefault(op, or, target, ...rest) {
-    if (_enableExtensions) {
-        const extensions = [];
-        // we need to first invoke extensions tied to only this object
-        if (Reflect.has(target, ObjExtensionsSym)) {
-            extensions.push(...Reflect.get(target, ObjExtensionsSym));
-        }
-        // second we need to process any global extensions
-        extensions.push(...globalExtensions);
-        for (let i = 0; i < extensions.length; i++) {
-            const extension = extensions[i];
-            let result = undefined;
-            if (isFunc(extension)) {
-                // this extension is a function which we call
-                result = extension(op, target, ...rest);
-            }
-            else if (op === "get" && Reflect.has(extension, rest[0])) {
-                // this extension is a named extension meaning we are overriding a specific method/property
-                result = Reflect.get(extension, rest[0], target);
-            }
-            else if (Reflect.has(extension, op)) {
-                // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
-                result = Reflect.get(extension, op)(target, ...rest);
-            }
-            if (typeof result !== "undefined") {
-                // if a extension returned a result, we return that
-                // this means that this extension overrides any other extensions and no more are executed
-                // first extension in the list to return "wins"
-                return result;
-            }
-        }
-    }
-    return or(target, ...rest);
-}
-//# sourceMappingURL=invokable-extensions.js.map
-;// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
-
-
-const invokableBinder = (invoker) => (constructor) => {
-    return (...args) => {
-        const factory = (as) => {
-            const r = Object.assign(function (...ags) {
-                return invoker.call(r, ...ags);
-            }, new constructor(...as));
-            Reflect.setPrototypeOf(r, constructor.prototype);
-            return r;
-        };
-        // ie11 setting is always global
-        if (DefaultRuntime.get("ie11") || false) {
-            return factory(args);
-        }
-        else {
-            return new Proxy(applyFactoryExtensions(factory, args), {
-                apply: (target, _thisArg, argArray) => {
-                    return extensionOrDefault("apply", (...a) => Reflect.apply(a[0], a[1], a[2]), target, _thisArg, argArray);
-                },
-                get: (target, p, receiver) => {
-                    return extensionOrDefault("get", (...a) => Reflect.get(a[0], a[1], a[2]), target, p, receiver);
-                },
-                has: (target, p) => {
-                    return extensionOrDefault("has", (...a) => Reflect.has(a[0], a[1]), target, p);
-                },
-                set: (target, p, value, receiver) => {
-                    return extensionOrDefault("set", (...a) => Reflect.set(a[0], a[1], a[2], a[3]), target, p, value, receiver);
-                },
-            });
-        }
-    };
-};
-const invokableFactory = invokableBinder(function (options) {
-    return this.defaultAction(options);
-});
-//# sourceMappingURL=invokable-binder.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/odata/node_modules/tslib/tslib.es6.js
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -1782,29 +1789,237 @@ function tslib_tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
     return value;
 }
 
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
+
+
+var _enableExtensions = false;
+var globalExtensions = [];
+var factoryExtensions = new Map();
+var ObjExtensionsSym = Symbol.for("43f7a601");
+/**
+ * Creates global extensions across all invokable objects
+ *
+ * @param e The global extensions to apply
+ */
+var extendGlobal = function (e) {
+    _enableExtensions = true;
+    extendCol(globalExtensions, e);
+};
+/**
+ * Applies the supplied extensions to a single instance
+ *
+ * @param target Object to which extensions are applied
+ * @param extensions Extensions to apply
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+var extendObj = function (target, extensions) {
+    _enableExtensions = true;
+    if (!Reflect.has(target, ObjExtensionsSym)) {
+        Reflect.set(target, ObjExtensionsSym, []);
+    }
+    extendCol(Reflect.get(target, ObjExtensionsSym), extensions);
+    return target;
+};
+/**
+ * Allows applying extensions to all instances created from the supplied factory
+ *
+ * @param factory The Invokable Factory method to extend
+ * @param extensions Extensions to apply
+ */
+var extendFactory = function (factory, extensions) {
+    _enableExtensions = true;
+    // factoryExtensions
+    var proto = Reflect.getPrototypeOf(factory);
+    if (!Reflect.has(proto, ObjExtensionsSym)) {
+        Reflect.defineProperty(proto, ObjExtensionsSym, {
+            value: getGUID(),
+        });
+    }
+    var key = proto[ObjExtensionsSym];
+    if (!factoryExtensions.has(key)) {
+        factoryExtensions.set(key, []);
+    }
+    extendCol(factoryExtensions.get(key), extensions);
+};
+function extendCol(a, e) {
+    if (Array.isArray(e)) {
+        a.push.apply(a, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(e)));
+    }
+    else {
+        a.push(e);
+    }
+}
+/**
+ * Clears all global extensions
+ */
+var clearGlobalExtensions = function () {
+    globalExtensions.length = 0;
+};
+/**
+ * Disables all extensions
+ */
+var disableExtensions = function () {
+    _enableExtensions = false;
+};
+/**
+ * Enables all extensions
+ */
+var enableExtensions = function () {
+    _enableExtensions = true;
+};
+/**
+ * Applies a set of extension previously applied to a factory using extendFactory to an object created from that factory
+ *
+ * @param factory
+ * @param args
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+var applyFactoryExtensions = function (factory, args) {
+    var o = factory(args);
+    var proto = Reflect.getPrototypeOf(factory);
+    if (Reflect.has(proto, ObjExtensionsSym)) {
+        var extensions = factoryExtensions.get(Reflect.get(proto, ObjExtensionsSym));
+        o = extendObj(o, extensions);
+    }
+    return o;
+};
+function extensionOrDefault(op, or, target) {
+    var rest = [];
+    for (var _i = 3; _i < arguments.length; _i++) {
+        rest[_i - 3] = arguments[_i];
+    }
+    if (_enableExtensions) {
+        var extensions = [];
+        // we need to first invoke extensions tied to only this object
+        if (Reflect.has(target, ObjExtensionsSym)) {
+            extensions.push.apply(extensions, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(Reflect.get(target, ObjExtensionsSym))));
+        }
+        // second we need to process any global extensions
+        extensions.push.apply(extensions, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(globalExtensions)));
+        for (var i = 0; i < extensions.length; i++) {
+            var extension = extensions[i];
+            var result = undefined;
+            if (isFunc(extension)) {
+                // this extension is a function which we call
+                result = extension.apply(void 0, tslib_tslib_es6_spreadArray([op, target], tslib_tslib_es6_read(rest)));
+            }
+            else if (op === "get" && Reflect.has(extension, rest[0])) {
+                // this extension is a named extension meaning we are overriding a specific method/property
+                result = Reflect.get(extension, rest[0], target);
+            }
+            else if (Reflect.has(extension, op)) {
+                // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
+                result = Reflect.get(extension, op).apply(void 0, tslib_tslib_es6_spreadArray([target], tslib_tslib_es6_read(rest)));
+            }
+            if (typeof result !== "undefined") {
+                // if a extension returned a result, we return that
+                // this means that this extension overrides any other extensions and no more are executed
+                // first extension in the list to return "wins"
+                return result;
+            }
+        }
+    }
+    return or.apply(void 0, tslib_tslib_es6_spreadArray([target], tslib_tslib_es6_read(rest)));
+}
+//# sourceMappingURL=invokable-extensions.js.map
+;// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
+
+
+
+var invokableBinder = function (invoker) { return function (constructor) {
+    return function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        var factory = function (as) {
+            var r = Object.assign(function () {
+                var ags = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    ags[_i] = arguments[_i];
+                }
+                return invoker.call.apply(invoker, tslib_tslib_es6_spreadArray([r], tslib_tslib_es6_read(ags)));
+            }, new (constructor.bind.apply(constructor, tslib_tslib_es6_spreadArray([void 0], tslib_tslib_es6_read(as))))());
+            Reflect.setPrototypeOf(r, constructor.prototype);
+            return r;
+        };
+        // ie11 setting is always global
+        if (DefaultRuntime.get("ie11") || false) {
+            return factory(args);
+        }
+        else {
+            return new Proxy(applyFactoryExtensions(factory, args), {
+                apply: function (target, _thisArg, argArray) {
+                    return extensionOrDefault("apply", function () {
+                        var a = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            a[_i] = arguments[_i];
+                        }
+                        return Reflect.apply(a[0], a[1], a[2]);
+                    }, target, _thisArg, argArray);
+                },
+                get: function (target, p, receiver) {
+                    return extensionOrDefault("get", function () {
+                        var a = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            a[_i] = arguments[_i];
+                        }
+                        return Reflect.get(a[0], a[1], a[2]);
+                    }, target, p, receiver);
+                },
+                has: function (target, p) {
+                    return extensionOrDefault("has", function () {
+                        var a = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            a[_i] = arguments[_i];
+                        }
+                        return Reflect.has(a[0], a[1]);
+                    }, target, p);
+                },
+                set: function (target, p, value, receiver) {
+                    return extensionOrDefault("set", function () {
+                        var a = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            a[_i] = arguments[_i];
+                        }
+                        return Reflect.set(a[0], a[1], a[2], a[3]);
+                    }, target, p, value, receiver);
+                },
+            });
+        }
+    };
+}; };
+var invokableFactory = invokableBinder(function (options) {
+    return this.defaultAction(options);
+});
+//# sourceMappingURL=invokable-binder.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/odata/parsers.js
 
 
-class ODataParser {
-    parse(r) {
-        return new Promise((resolve, reject) => {
-            if (this.handleError(r, reject)) {
-                this.parseImpl(r, resolve, reject);
+var ODataParser = /** @class */ (function () {
+    function ODataParser() {
+    }
+    ODataParser.prototype.parse = function (r) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            if (_this.handleError(r, reject)) {
+                _this.parseImpl(r, resolve, reject);
             }
         });
-    }
-    parseImpl(r, resolve, reject) {
+    };
+    ODataParser.prototype.parseImpl = function (r, resolve, reject) {
+        var _this = this;
         if ((r.headers.has("Content-Length") && parseFloat(r.headers.get("Content-Length")) === 0) || r.status === 204) {
             resolve({});
         }
         else {
             // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
             r.text()
-                .then(txt => txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {})
-                .then(json => resolve(this.parseODataJSON(json)))
-                .catch(e => reject(e));
+                .then(function (txt) { return txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {}; })
+                .then(function (json) { return resolve(_this.parseODataJSON(json)); })
+                .catch(function (e) { return reject(e); });
         }
-    }
+    };
     /**
      * Handles a response with ok === false by parsing the body and creating a ProcessHttpClientResponseException
      * which is passed to the reject delegate. This method returns true if there is no error, otherwise false
@@ -1812,19 +2027,19 @@ class ODataParser {
      * @param r Current response object
      * @param reject reject delegate for the surrounding promise
      */
-    handleError(r, reject) {
+    ODataParser.prototype.handleError = function (r, reject) {
         if (!r.ok) {
             HttpRequestError.init(r).then(reject);
         }
         return r.ok;
-    }
+    };
     /**
      * Normalizes the json response by removing the various nested levels
      *
      * @param json json object to parse
      */
-    parseODataJSON(json) {
-        let result = json;
+    ODataParser.prototype.parseODataJSON = function (json) {
+        var result = json;
         if (hOP(json, "d")) {
             if (hOP(json.d, "results")) {
                 result = json.d.results;
@@ -1837,73 +2052,117 @@ class ODataParser {
             result = json.value;
         }
         return result;
+    };
+    return ODataParser;
+}());
+
+var TextParser = /** @class */ (function (_super) {
+    tslib_tslib_es6_extends(TextParser, _super);
+    function TextParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-}
-class TextParser extends (/* unused pure expression or super */ null && (ODataParser)) {
-    parseImpl(r, resolve) {
+    TextParser.prototype.parseImpl = function (r, resolve) {
         r.text().then(resolve);
+    };
+    return TextParser;
+}(ODataParser));
+
+var BlobParser = /** @class */ (function (_super) {
+    tslib_tslib_es6_extends(BlobParser, _super);
+    function BlobParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-}
-class BlobParser extends ODataParser {
-    parseImpl(r, resolve) {
+    BlobParser.prototype.parseImpl = function (r, resolve) {
         r.blob().then(resolve);
+    };
+    return BlobParser;
+}(ODataParser));
+
+var JSONParser = /** @class */ (function (_super) {
+    tslib_tslib_es6_extends(JSONParser, _super);
+    function JSONParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-}
-class JSONParser extends (/* unused pure expression or super */ null && (ODataParser)) {
-    parseImpl(r, resolve) {
+    JSONParser.prototype.parseImpl = function (r, resolve) {
         r.json().then(resolve);
+    };
+    return JSONParser;
+}(ODataParser));
+
+var BufferParser = /** @class */ (function (_super) {
+    tslib_tslib_es6_extends(BufferParser, _super);
+    function BufferParser() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-}
-class BufferParser extends ODataParser {
-    parseImpl(r, resolve) {
+    BufferParser.prototype.parseImpl = function (r, resolve) {
         if (isFunc(r.arrayBuffer)) {
             r.arrayBuffer().then(resolve);
         }
         else {
             r.buffer().then(resolve);
         }
+    };
+    return BufferParser;
+}(ODataParser));
+
+var LambdaParser = /** @class */ (function (_super) {
+    tslib_tslib_es6_extends(LambdaParser, _super);
+    function LambdaParser(parser) {
+        var _this = _super.call(this) || this;
+        _this.parser = parser;
+        return _this;
     }
-}
-class LambdaParser extends ODataParser {
-    constructor(parser) {
-        super();
-        this.parser = parser;
-    }
-    parseImpl(r, resolve) {
+    LambdaParser.prototype.parseImpl = function (r, resolve) {
         this.parser(r).then(resolve);
+    };
+    return LambdaParser;
+}(ODataParser));
+
+var HttpRequestError = /** @class */ (function (_super) {
+    tslib_tslib_es6_extends(HttpRequestError, _super);
+    function HttpRequestError(message, response, status, statusText) {
+        if (status === void 0) { status = response.status; }
+        if (statusText === void 0) { statusText = response.statusText; }
+        var _this = _super.call(this, message) || this;
+        _this.response = response;
+        _this.status = status;
+        _this.statusText = statusText;
+        _this.isHttpRequestError = true;
+        return _this;
     }
-}
-class HttpRequestError extends Error {
-    constructor(message, response, status = response.status, statusText = response.statusText) {
-        super(message);
-        this.response = response;
-        this.status = status;
-        this.statusText = statusText;
-        this.isHttpRequestError = true;
-    }
-    static init(r) {
-        return tslib_tslib_es6_awaiter(this, void 0, void 0, function* () {
-            const t = yield r.clone().text();
-            return new HttpRequestError(`Error making HttpClient request in queryable [${r.status}] ${r.statusText} ::> ${t}`, r.clone());
+    HttpRequestError.init = function (r) {
+        return tslib_tslib_es6_awaiter(this, void 0, void 0, function () {
+            var t;
+            return tslib_tslib_es6_generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, r.clone().text()];
+                    case 1:
+                        t = _a.sent();
+                        return [2 /*return*/, new HttpRequestError("Error making HttpClient request in queryable [" + r.status + "] " + r.statusText + " ::> " + t, r.clone())];
+                }
+            });
         });
-    }
-}
+    };
+    return HttpRequestError;
+}(Error));
+
 //# sourceMappingURL=parsers.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/odata/queryable.js
 
 
+
 function cloneQueryableData(source) {
-    let body;
+    var body;
     // this handles bodies that cannot be JSON encoded (Blob, etc)
     // Note however, even bodies that can be serialized will not be cloned.
     if (source.options && source.options.body) {
         body = source.options.body;
         source.options.body = "-";
     }
-    const s = JSON.stringify(source, (key, value) => {
+    var s = JSON.stringify(source, function (key, value) {
         switch (key) {
             case "query":
-                return JSON.stringify([...value]);
+                return JSON.stringify(tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(value)));
             case "batch":
             case "batchDependency":
             case "cachingOptions":
@@ -1914,7 +2173,7 @@ function cloneQueryableData(source) {
                 return value;
         }
     }, 0);
-    const parsed = JSON.parse(s, (key, value) => {
+    var parsed = JSON.parse(s, function (key, value) {
         switch (key) {
             case "query":
                 return new Map(JSON.parse(value));
@@ -1934,8 +2193,9 @@ function cloneQueryableData(source) {
     }
     return parsed;
 }
-class Queryable {
-    constructor(dataSeed = {}) {
+var Queryable = /** @class */ (function () {
+    function Queryable(dataSeed) {
+        if (dataSeed === void 0) { dataSeed = {}; }
         this._data = Object.assign({}, {
             cloneParentWasCaching: false,
             options: {},
@@ -1947,20 +2207,28 @@ class Queryable {
         }, cloneQueryableData(dataSeed));
         this._runtime = null;
     }
-    get data() {
-        return this._data;
-    }
-    set data(value) {
-        this._data = Object.assign({}, this.data, cloneQueryableData(value));
-    }
-    getRuntime() {
+    Object.defineProperty(Queryable.prototype, "data", {
+        get: function () {
+            return this._data;
+        },
+        set: function (value) {
+            this._data = Object.assign({}, this.data, cloneQueryableData(value));
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Queryable.prototype.getRuntime = function () {
         if (this._runtime === null) {
             return DefaultRuntime;
         }
         return this._runtime;
-    }
-    setRuntime(...args) {
+    };
+    Queryable.prototype.setRuntime = function () {
         // need to wait for ts update in spfx: [runtime: Runtime] | [cloneGlobal: boolean, additionalConfig?: ITypedHash<any>]
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
         if (args[0] instanceof Runtime) {
             this._runtime = args[0];
         }
@@ -1971,59 +2239,63 @@ class Queryable {
             }
         }
         return this;
-    }
+    };
     /**
   * Gets the current url
   *
   */
-    toUrl() {
+    Queryable.prototype.toUrl = function () {
         return this.data.url;
-    }
+    };
     /**
    * Directly concatenates the supplied string to the current url, not normalizing "/" chars
    *
    * @param pathPart The string to concatenate to the url
    */
-    concat(pathPart) {
+    Queryable.prototype.concat = function (pathPart) {
         this.data.url += pathPart;
         return this;
-    }
-    /**
-   * Provides access to the query builder for this url
-   *
-   */
-    get query() {
-        return this.data.query;
-    }
+    };
+    Object.defineProperty(Queryable.prototype, "query", {
+        /**
+       * Provides access to the query builder for this url
+       *
+       */
+        get: function () {
+            return this.data.query;
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
    * Sets custom options for current object and all derived objects accessible via chaining
    *
    * @param options custom options
    */
-    configure(options) {
+    Queryable.prototype.configure = function (options) {
         mergeOptions(this.data.options, options);
         return this;
-    }
+    };
     /**
    * Configures this instance from the configure options of the supplied instance
    *
    * @param o Instance from which options should be taken
    */
-    configureFrom(o) {
+    Queryable.prototype.configureFrom = function (o) {
         mergeOptions(this.data.options, o.data.options);
-        const sourceRuntime = o.getRuntime();
+        var sourceRuntime = o.getRuntime();
         if (!sourceRuntime.get("__isDefault__")) {
             this.setRuntime(sourceRuntime);
         }
         return this;
-    }
+    };
     /**
    * Enables caching for this request
    *
    * @param options Defines the options used when caching this request
    */
-    usingCaching(options) {
-        const runtime = this.getRuntime();
+    Queryable.prototype.usingCaching = function (options) {
+        var runtime = this.getRuntime();
         if (!runtime.get("globalCacheDisable")) {
             this.data.useCaching = true;
             // handle getting just the key
@@ -2034,35 +2306,35 @@ class Queryable {
                 options = { key: options };
             }
             // this uses our local options if they are defined as defaults
-            const defaultOpts = {
+            var defaultOpts = {
                 expiration: dateAdd(new Date(), "second", runtime.get("defaultCachingTimeoutSeconds")),
                 storeName: runtime.get("defaultCachingStore"),
             };
             this.data.cachingOptions = util_assign(defaultOpts, options);
         }
         return this;
-    }
-    usingParser(parser) {
+    };
+    Queryable.prototype.usingParser = function (parser) {
         this.data.parser = parser;
         return this;
-    }
+    };
     /**
    * Allows you to set a request specific processing pipeline
    *
    * @param pipeline The set of methods, in order, to execute a given request
    */
-    withPipeline(pipeline) {
+    Queryable.prototype.withPipeline = function (pipeline) {
         this.data.pipes = pipeline.slice(0);
         return this;
-    }
+    };
     /**
    * Appends the given string and normalizes "/" chars
    *
    * @param pathPart The string to append
    */
-    append(pathPart) {
+    Queryable.prototype.append = function (pathPart) {
         this.data.url = combine(this.data.url, pathPart);
-    }
+    };
     /**
    * Adds this query to the supplied batch
    *
@@ -2074,7 +2346,7 @@ class Queryable {
    * b.execute().then(...)
    * ```
    */
-    inBatch(batch) {
+    Queryable.prototype.inBatch = function (batch) {
         if (this.hasBatch) {
             throw Error("This query is already part of a batch.");
         }
@@ -2082,44 +2354,57 @@ class Queryable {
             batch.track(this);
         }
         return this;
-    }
+    };
     /**
    * Blocks a batch call from occuring, MUST be cleared by calling the returned function
   */
-    addBatchDependency() {
+    Queryable.prototype.addBatchDependency = function () {
         if (objectDefinedNotNull(this.data.batch)) {
             return this.data.batch.addDependency();
         }
-        return () => null;
-    }
-    /**
-   * Indicates if the current query has a batch associated
-   *
-   */
-    get hasBatch() {
-        return objectDefinedNotNull(this.data.batch);
-    }
-    /**
-   * The batch currently associated with this query or null
-   *
-   */
-    get batch() {
-        return this.hasBatch ? this.data.batch : null;
-    }
-    /**
-   * Gets the parent url used when creating this instance
-   *
-   */
-    get parentUrl() {
-        return this.data.parentUrl;
-    }
+        return function () { return null; };
+    };
+    Object.defineProperty(Queryable.prototype, "hasBatch", {
+        /**
+       * Indicates if the current query has a batch associated
+       *
+       */
+        get: function () {
+            return objectDefinedNotNull(this.data.batch);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Queryable.prototype, "batch", {
+        /**
+       * The batch currently associated with this query or null
+       *
+       */
+        get: function () {
+            return this.hasBatch ? this.data.batch : null;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Queryable.prototype, "parentUrl", {
+        /**
+       * Gets the parent url used when creating this instance
+       *
+       */
+        get: function () {
+            return this.data.parentUrl;
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
    * Clones this instance's data to target
    *
    * @param target Instance to which data is written
    * @param settings [Optional] Settings controlling how clone is applied
    */
-    cloneTo(target, settings = {}) {
+    Queryable.prototype.cloneTo = function (target, settings) {
+        if (settings === void 0) { settings = {}; }
         // default values for settings
         settings = util_assign({
             includeBatch: true,
@@ -2135,117 +2420,149 @@ class Queryable {
             target.inBatch(this.batch);
         }
         if (settings.includeQuery && this.query.size > 0) {
-            this.query.forEach((v, k) => target.query.set(k, v));
+            this.query.forEach(function (v, k) { return target.query.set(k, v); });
         }
         if (this.data.useCaching) {
             target.data.cloneParentWasCaching = true;
             target.data.cloneParentCacheOptions = this.data.cachingOptions;
         }
         return target;
-    }
-}
+    };
+    return Queryable;
+}());
+
 //# sourceMappingURL=queryable.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
 /**
  * Class used to subscribe ILogListener and log messages throughout an application
  *
  */
-class Logger {
-    /**
-   * Gets or sets the active log level to apply for log filtering
-   */
-    static get activeLogLevel() {
-        return Logger.instance.activeLogLevel;
+var Logger = /** @class */ (function () {
+    function Logger() {
     }
-    static set activeLogLevel(value) {
-        Logger.instance.activeLogLevel = value;
-    }
-    static get instance() {
-        if (Logger._instance === undefined || Logger._instance === null) {
-            Logger._instance = new LoggerImpl();
-        }
-        return Logger._instance;
-    }
+    Object.defineProperty(Logger, "activeLogLevel", {
+        /**
+       * Gets or sets the active log level to apply for log filtering
+       */
+        get: function () {
+            return Logger.instance.activeLogLevel;
+        },
+        set: function (value) {
+            Logger.instance.activeLogLevel = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Logger, "instance", {
+        get: function () {
+            if (Logger._instance === undefined || Logger._instance === null) {
+                Logger._instance = new LoggerImpl();
+            }
+            return Logger._instance;
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
    * Adds ILogListener instances to the set of subscribed listeners
    *
    * @param listeners One or more listeners to subscribe to this log
    */
-    static subscribe(...listeners) {
-        listeners.forEach(listener => Logger.instance.subscribe(listener));
-    }
+    Logger.subscribe = function () {
+        var listeners = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            listeners[_i] = arguments[_i];
+        }
+        listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
+    };
     /**
    * Clears the subscribers collection, returning the collection before modification
    */
-    static clearSubscribers() {
+    Logger.clearSubscribers = function () {
         return Logger.instance.clearSubscribers();
-    }
-    /**
-   * Gets the current subscriber count
-   */
-    static get count() {
-        return Logger.instance.count;
-    }
+    };
+    Object.defineProperty(Logger, "count", {
+        /**
+       * Gets the current subscriber count
+       */
+        get: function () {
+            return Logger.instance.count;
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
    * Writes the supplied string to the subscribed listeners
    *
    * @param message The message to write
    * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
    */
-    static write(message, level = 1 /* Info */) {
+    Logger.write = function (message, level) {
+        if (level === void 0) { level = 1 /* Info */; }
         Logger.instance.log({ level: level, message: message });
-    }
+    };
     /**
    * Writes the supplied string to the subscribed listeners
    *
    * @param json The json object to stringify and write
    * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
    */
-    static writeJSON(json, level = 1 /* Info */) {
+    Logger.writeJSON = function (json, level) {
+        if (level === void 0) { level = 1 /* Info */; }
         this.write(JSON.stringify(json), level);
-    }
+    };
     /**
    * Logs the supplied entry to the subscribed listeners
    *
    * @param entry The message to log
    */
-    static log(entry) {
+    Logger.log = function (entry) {
         Logger.instance.log(entry);
-    }
+    };
     /**
    * Logs an error object to the subscribed listeners
    *
    * @param err The error object
    */
-    static error(err) {
+    Logger.error = function (err) {
         Logger.instance.log({ data: err, level: 3 /* Error */, message: err.message });
-    }
-}
-class LoggerImpl {
-    constructor(activeLogLevel = 2 /* Warning */, subscribers = []) {
+    };
+    return Logger;
+}());
+
+var LoggerImpl = /** @class */ (function () {
+    function LoggerImpl(activeLogLevel, subscribers) {
+        if (activeLogLevel === void 0) { activeLogLevel = 2 /* Warning */; }
+        if (subscribers === void 0) { subscribers = []; }
         this.activeLogLevel = activeLogLevel;
         this.subscribers = subscribers;
     }
-    subscribe(listener) {
+    LoggerImpl.prototype.subscribe = function (listener) {
         this.subscribers.push(listener);
-    }
-    clearSubscribers() {
-        const s = this.subscribers.slice(0);
+    };
+    LoggerImpl.prototype.clearSubscribers = function () {
+        var s = this.subscribers.slice(0);
         this.subscribers.length = 0;
         return s;
-    }
-    get count() {
-        return this.subscribers.length;
-    }
-    write(message, level = 1 /* Info */) {
+    };
+    Object.defineProperty(LoggerImpl.prototype, "count", {
+        get: function () {
+            return this.subscribers.length;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    LoggerImpl.prototype.write = function (message, level) {
+        if (level === void 0) { level = 1 /* Info */; }
         this.log({ level: level, message: message });
-    }
-    log(entry) {
+    };
+    LoggerImpl.prototype.log = function (entry) {
         if (entry !== undefined && this.activeLogLevel <= entry.level) {
-            this.subscribers.map(subscriber => subscriber.log(entry));
+            this.subscribers.map(function (subscriber) { return subscriber.log(entry); });
         }
-    }
-}
+    };
+    return LoggerImpl;
+}());
 /**
  * A set of logging levels
  */
@@ -2258,6 +2575,81 @@ var LogLevel;
     LogLevel[LogLevel["Off"] = 99] = "Off";
 })(LogLevel || (LogLevel = {}));
 //# sourceMappingURL=logger.js.map
+;// CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
+/**
+ * Implementation of LogListener which logs to the console
+ *
+ */
+var ConsoleListener = /** @class */ (function () {
+    function ConsoleListener() {
+    }
+    /**
+     * Any associated data that a given logging listener may choose to log or ignore
+     *
+     * @param entry The information to be logged
+     */
+    ConsoleListener.prototype.log = function (entry) {
+        var msg = this.format(entry);
+        switch (entry.level) {
+            case 0 /* Verbose */:
+            case 1 /* Info */:
+                console.log(msg);
+                break;
+            case 2 /* Warning */:
+                console.warn(msg);
+                break;
+            case 3 /* Error */:
+                console.error(msg);
+                break;
+        }
+    };
+    /**
+     * Formats the message
+     *
+     * @param entry The information to format into a string
+     */
+    ConsoleListener.prototype.format = function (entry) {
+        var msg = [];
+        msg.push("Message: " + entry.message);
+        if (entry.data !== undefined) {
+            try {
+                msg.push(" Data: " + JSON.stringify(entry.data));
+            }
+            catch (e) {
+                msg.push(" Data: Error in stringify of supplied data " + e);
+            }
+        }
+        return msg.join("");
+    };
+    return ConsoleListener;
+}());
+
+/**
+ * Implementation of LogListener which logs to the supplied function
+ *
+ */
+var FunctionListener = /** @class */ (function () {
+    /**
+     * Creates a new instance of the FunctionListener class
+     *
+     * @constructor
+     * @param  method The method to which any logging data will be passed
+     */
+    function FunctionListener(method) {
+        this.method = method;
+    }
+    /**
+     * Any associated data that a given logging listener may choose to log or ignore
+     *
+     * @param entry The information to be logged
+     */
+    FunctionListener.prototype.log = function (entry) {
+        this.method(entry);
+    };
+    return FunctionListener;
+}());
+
+//# sourceMappingURL=listeners.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
 
 
@@ -2276,7 +2668,7 @@ function returnResult(context) {
     Logger.log({
         data: Logger.activeLogLevel === 0 /* Verbose */ ? context.result : {},
         level: 1 /* Info */,
-        message: `[${context.requestId}] (${(new Date()).getTime()}) Returning result from pipeline. Set logging to verbose to see data.`,
+        message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Returning result from pipeline. Set logging to verbose to see data.",
     });
     return Promise.resolve(context.result);
 }
@@ -2284,7 +2676,7 @@ function returnResult(context) {
  * Sets the result on the context
  */
 function setResult(context, value) {
-    return new Promise((resolve) => {
+    return new Promise(function (resolve) {
         context.result = value;
         context.hasResult = true;
         resolve(context);
@@ -2305,10 +2697,10 @@ function next(c) {
  */
 function pipe(context) {
     if (context.pipes.length < 1) {
-        Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Request pipeline contains no methods!`, 3 /* Error */);
+        Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Request pipeline contains no methods!", 3 /* Error */);
         throw Error("Request pipeline contains no methods!");
     }
-    const promise = next(context).then(ctx => returnResult(ctx)).catch((e) => {
+    var promise = next(context).then(function (ctx) { return returnResult(ctx); }).catch(function (e) {
         Logger.error(e);
         throw e;
     });
@@ -2321,60 +2713,67 @@ function pipe(context) {
 /**
  * decorator factory applied to methods in the pipeline to control behavior
  */
-function requestPipelineMethod(alwaysRun = false) {
-    return (target, propertyKey, descriptor) => {
-        const method = descriptor.value;
-        descriptor.value = function (...args) {
+function requestPipelineMethod(alwaysRun) {
+    if (alwaysRun === void 0) { alwaysRun = false; }
+    return function (target, propertyKey, descriptor) {
+        var method = descriptor.value;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
             // if we have a result already in the pipeline, pass it along and don't call the tagged method
             if (!alwaysRun && args.length > 0 && hOP(args[0], "hasResult") && args[0].hasResult) {
-                Logger.write(`[${args[0].requestId}] (${(new Date()).getTime()}) Skipping request pipeline method ${propertyKey}, existing result in pipeline.`, 0 /* Verbose */);
+                Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Skipping request pipeline method " + propertyKey + ", existing result in pipeline.", 0 /* Verbose */);
                 return Promise.resolve(args[0]);
             }
             // apply the tagged method
-            Logger.write(`[${args[0].requestId}] (${(new Date()).getTime()}) Calling request pipeline method ${propertyKey}.`, 0 /* Verbose */);
+            Logger.write("[" + args[0].requestId + "] (" + (new Date()).getTime() + ") Calling request pipeline method " + propertyKey + ".", 0 /* Verbose */);
             // then chain the next method in the context's pipeline - allows for dynamic pipeline
-            return method.apply(target, args).then((ctx) => next(ctx));
+            return method.apply(target, args).then(function (ctx) { return next(ctx); });
         };
     };
 }
 /**
  * Contains the methods used within the request pipeline
  */
-class PipelineMethods {
+var PipelineMethods = /** @class */ (function () {
+    function PipelineMethods() {
+    }
     /**
      * Logs the start of the request
      */
-    static logStart(context) {
-        return new Promise(resolve => {
+    PipelineMethods.logStart = function (context) {
+        return new Promise(function (resolve) {
             Logger.log({
                 data: Logger.activeLogLevel === 1 /* Info */ ? {} : context,
                 level: 1 /* Info */,
-                message: `[${context.requestId}] (${(new Date()).getTime()}) Beginning ${context.method} request (${context.url})`,
+                message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Beginning " + context.method + " request (" + context.url + ")",
             });
             resolve(context);
         });
-    }
+    };
     /**
      * Handles caching of the request
      */
-    static caching(context) {
-        return new Promise(resolve => {
+    PipelineMethods.caching = function (context) {
+        return new Promise(function (resolve) {
             // handle caching, if applicable
             if (context.useCaching) {
-                Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Caching is enabled for request, checking cache...`, 1 /* Info */);
-                let cacheOptions = new CachingOptions(context.url.toLowerCase());
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Caching is enabled for request, checking cache...", 1 /* Info */);
+                var cacheOptions = new CachingOptions(context.url.toLowerCase());
                 if (context.cachingOptions !== undefined) {
                     cacheOptions = util_assign(cacheOptions, context.cachingOptions);
                 }
                 // we may not have a valid store
                 if (cacheOptions.store !== null) {
                     // check if we have the data in cache and if so resolve the promise and return
-                    let data = cacheOptions.store.get(cacheOptions.key);
+                    var data = cacheOptions.store.get(cacheOptions.key);
                     if (data !== null) {
                         Logger.log({
                             data: Logger.activeLogLevel === 1 /* Info */ ? {} : data,
                             level: 1 /* Info */,
-                            message: `[${context.requestId}] (${(new Date()).getTime()}) Value returned from cache.`,
+                            message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Value returned from cache.",
                         });
                         // ensure we clear any held batch dependency we are resolving from the cache
                         if (isFunc(context.batchDependency)) {
@@ -2384,81 +2783,83 @@ class PipelineMethods {
                         if (hOP(context.parser, "hydrate")) {
                             data = context.parser.hydrate(data);
                         }
-                        return setResult(context, data).then(ctx => resolve(ctx));
+                        return setResult(context, data).then(function (ctx) { return resolve(ctx); });
                     }
                 }
-                Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Value not found in cache.`, 1 /* Info */);
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Value not found in cache.", 1 /* Info */);
                 // if we don't then wrap the supplied parser in the caching parser wrapper
                 // and send things on their way
                 context.parser = new CachingParserWrapper(context.parser, cacheOptions);
             }
             return resolve(context);
         });
-    }
+    };
     /**
      * Sends the request
      */
-    static send(context) {
-        return new Promise((resolve, reject) => {
+    PipelineMethods.send = function (context) {
+        return new Promise(function (resolve, reject) {
             // send or batch the request
             if (context.isBatched) {
-                const p = context.batch.add(context);
+                var p = context.batch.add(context);
                 // we release the dependency here to ensure the batch does not execute until the request is added to the batch
                 if (isFunc(context.batchDependency)) {
                     context.batchDependency();
                 }
-                Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Batching request in batch ${context.batch.batchId}.`, 1 /* Info */);
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Batching request in batch " + context.batch.batchId + ".", 1 /* Info */);
                 // we set the result as the promise which will be resolved by the batch's execution
                 resolve(setResult(context, p));
             }
             else {
-                Logger.write(`[${context.requestId}] (${(new Date()).getTime()}) Sending request.`, 1 /* Info */);
+                Logger.write("[" + context.requestId + "] (" + (new Date()).getTime() + ") Sending request.", 1 /* Info */);
                 // we are not part of a batch, so proceed as normal
-                const client = context.clientFactory();
-                const opts = util_assign(context.options || {}, { method: context.method });
+                var client = context.clientFactory();
+                var opts = util_assign(context.options || {}, { method: context.method });
                 client.fetch(context.url, opts)
-                    .then(response => context.parser.parse(response))
-                    .then(result => setResult(context, result))
-                    .then(ctx => resolve(ctx))
-                    .catch(e => reject(e));
+                    .then(function (response) { return context.parser.parse(response); })
+                    .then(function (result) { return setResult(context, result); })
+                    .then(function (ctx) { return resolve(ctx); })
+                    .catch(function (e) { return reject(e); });
             }
         });
-    }
+    };
     /**
      * Logs the end of the request
      */
-    static logEnd(context) {
-        return new Promise(resolve => {
+    PipelineMethods.logEnd = function (context) {
+        return new Promise(function (resolve) {
             if (context.isBatched) {
                 Logger.log({
                     data: Logger.activeLogLevel === 1 /* Info */ ? {} : context,
                     level: 1 /* Info */,
-                    message: `[${context.requestId}] (${(new Date()).getTime()}) ${context.method} request will complete in batch ${context.batch.batchId}.`,
+                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") " + context.method + " request will complete in batch " + context.batch.batchId + ".",
                 });
             }
             else {
                 Logger.log({
                     data: Logger.activeLogLevel === 1 /* Info */ ? {} : context,
                     level: 1 /* Info */,
-                    message: `[${context.requestId}] (${(new Date()).getTime()}) Completing ${context.method} request.`,
+                    message: "[" + context.requestId + "] (" + (new Date()).getTime() + ") Completing " + context.method + " request.",
                 });
             }
             resolve(context);
         });
-    }
-}
-tslib_tslib_es6_decorate([
-    requestPipelineMethod(true)
-], PipelineMethods, "logStart", null);
-tslib_tslib_es6_decorate([
-    requestPipelineMethod()
-], PipelineMethods, "caching", null);
-tslib_tslib_es6_decorate([
-    requestPipelineMethod()
-], PipelineMethods, "send", null);
-tslib_tslib_es6_decorate([
-    requestPipelineMethod(true)
-], PipelineMethods, "logEnd", null);
+    };
+    tslib_tslib_es6_decorate([
+        requestPipelineMethod(true)
+    ], PipelineMethods, "logStart", null);
+    tslib_tslib_es6_decorate([
+        requestPipelineMethod()
+    ], PipelineMethods, "caching", null);
+    tslib_tslib_es6_decorate([
+        requestPipelineMethod()
+    ], PipelineMethods, "send", null);
+    tslib_tslib_es6_decorate([
+        requestPipelineMethod(true)
+    ], PipelineMethods, "logEnd", null);
+    return PipelineMethods;
+}());
+
 function getDefaultPipeline() {
     return [
         PipelineMethods.logStart,
@@ -2487,12 +2888,12 @@ function pipelineBinder(pipes) {
                     batchDependency: null,
                     batchIndex: -1,
                     cachingOptions: null,
-                    clientFactory,
+                    clientFactory: clientFactory,
                     cloneParentCacheOptions: null,
                     cloneParentWasCaching: false,
                     hasResult: false,
                     isBatched: objectDefinedNotNull(o.batch),
-                    method,
+                    method: method,
                     options: null,
                     parentUrl: "",
                     parser: new ODataParser(),
@@ -2506,7 +2907,7 @@ function pipelineBinder(pipes) {
         };
     };
 }
-const defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
+var defaultPipelineBinder = pipelineBinder(getDefaultPipeline());
 //# sourceMappingURL=pipeline-binder.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/odata/request-builders.js
 
@@ -2531,39 +2932,46 @@ function headers(o, previous) {
 
 //# sourceMappingURL=index.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/types.js
-class GraphEndpoints {
+var GraphEndpoints = /** @class */ (function () {
+    function GraphEndpoints() {
+    }
     /**
      *
      * @param url The url to set the endpoint
      */
-    static ensure(url, endpoint) {
-        const all = [GraphEndpoints.Beta, GraphEndpoints.V1];
-        let regex = new RegExp(endpoint, "i");
-        const replaces = all.filter(s => !regex.test(s)).map(s => s.replace(".", "\\."));
-        regex = new RegExp(`/?(${replaces.join("|")})/?`, "ig");
-        return url.replace(regex, `/${endpoint}/`);
-    }
-}
-GraphEndpoints.Beta = "beta";
-GraphEndpoints.V1 = "v1.0";
+    GraphEndpoints.ensure = function (url, endpoint) {
+        var all = [GraphEndpoints.Beta, GraphEndpoints.V1];
+        var regex = new RegExp(endpoint, "i");
+        var replaces = all.filter(function (s) { return !regex.test(s); }).map(function (s) { return s.replace(".", "\\."); });
+        regex = new RegExp("/?(" + replaces.join("|") + ")/?", "ig");
+        return url.replace(regex, "/" + endpoint + "/");
+    };
+    GraphEndpoints.Beta = "beta";
+    GraphEndpoints.V1 = "v1.0";
+    return GraphEndpoints;
+}());
+
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/graphhttpclient.js
 
-class GraphHttpClient {
-    constructor(...args) {
+var GraphHttpClient = /** @class */ (function () {
+    function GraphHttpClient() {
         // constructor(...args: [runtime: Runtime] | [impl: IHttpClientImpl, runtime?: Runtime]) {
-        if (args[0] instanceof Runtime) {
-            this._runtime = args[0];
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
         }
-        else {
-            this._runtime = args.length > 1 && args[1] instanceof Runtime ? args[1] : DefaultRuntime;
-            this._impl = args[0];
+        this._runtime = args.length > 0 && args[0] instanceof Runtime ? args[0] : DefaultRuntime;
+        this._impl = args.length > 1 && objectDefinedNotNull(args[1]) ?
+            args[1] : this._runtime.get("graph").fetchClientFactory() || null;
+        if (this._impl === null) {
+            throw Error("Could not generate fetchClientFactory in SPHttpClient.");
         }
-        this._impl = this._runtime.get("graph").fetchClientFactory();
     }
-    fetch(url, options = {}) {
+    GraphHttpClient.prototype.fetch = function (url, options) {
         var _a;
-        const headers = new Headers();
+        if (options === void 0) { options = {}; }
+        var headers = new Headers();
         // first we add the global headers so they can be overwritten by any passed in locally to this call
         mergeHeaders(headers, (_a = this._runtime.get("graph")) === null || _a === void 0 ? void 0 : _a.headers);
         // second we add the local options so we can overwrite the globals
@@ -2573,18 +2981,20 @@ class GraphHttpClient {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/2.1.1");
+            headers.append("SdkVersion", "PnPCoreJS/2.3.0");
         }
-        const opts = util_assign(options, { headers: headers });
+        var opts = util_assign(options, { headers: headers });
         return this.fetchRaw(url, opts);
-    }
-    fetchRaw(url, options = {}) {
+    };
+    GraphHttpClient.prototype.fetchRaw = function (url, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
         // here we need to normalize the headers
-        const rawHeaders = new Headers();
+        var rawHeaders = new Headers();
         mergeHeaders(rawHeaders, options.headers);
         options = util_assign(options, { headers: rawHeaders });
-        const retry = (ctx) => {
-            this._impl.fetch(url, options).then((response) => ctx.resolve(response)).catch((response) => {
+        var retry = function (ctx) {
+            _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
                 // Check if request was throttled - http status code 429
                 // Check if request failed due to server unavailable - http status code 503
                 // Check if request failed due to gateway timeout - http status code 504
@@ -2592,7 +3002,7 @@ class GraphHttpClient {
                     ctx.reject(response);
                 }
                 // grab our current delay
-                const delay = ctx.delay;
+                var delay = ctx.delay;
                 // Increment our counters.
                 ctx.delay *= 2;
                 ctx.attempts++;
@@ -2601,37 +3011,43 @@ class GraphHttpClient {
                     ctx.reject(response);
                 }
                 // Set our retry timeout for {delay} milliseconds.
-                setTimeout(getCtxCallback(this, retry, ctx), delay);
+                setTimeout(getCtxCallback(_this, retry, ctx), delay);
             });
         };
-        return new Promise((resolve, reject) => {
-            const retryContext = {
+        return new Promise(function (resolve, reject) {
+            var retryContext = {
                 attempts: 0,
                 delay: 100,
                 reject: reject,
                 resolve: resolve,
                 retryCount: 7,
             };
-            retry.call(this, retryContext);
+            retry.call(_this, retryContext);
         });
-    }
-    get(url, options = {}) {
-        const opts = util_assign(options, { method: "GET" });
+    };
+    GraphHttpClient.prototype.get = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_assign(options, { method: "GET" });
         return this.fetch(url, opts);
-    }
-    post(url, options = {}) {
-        const opts = util_assign(options, { method: "POST" });
+    };
+    GraphHttpClient.prototype.post = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_assign(options, { method: "POST" });
         return this.fetch(url, opts);
-    }
-    patch(url, options = {}) {
-        const opts = util_assign(options, { method: "PATCH" });
+    };
+    GraphHttpClient.prototype.patch = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_assign(options, { method: "PATCH" });
         return this.fetch(url, opts);
-    }
-    delete(url, options = {}) {
-        const opts = util_assign(options, { method: "DELETE" });
+    };
+    GraphHttpClient.prototype.delete = function (url, options) {
+        if (options === void 0) { options = {}; }
+        var opts = util_assign(options, { method: "DELETE" });
         return this.fetch(url, opts);
-    }
-}
+    };
+    return GraphHttpClient;
+}());
+
 //# sourceMappingURL=graphhttpclient.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/utils/toabsoluteurl.js
 
@@ -2642,33 +3058,44 @@ class GraphHttpClient {
  * @param candidateUrl The url to make absolute
  *
  */
-function toAbsoluteUrl(candidateUrl, runtime = DefaultRuntime) {
+function toAbsoluteUrl(candidateUrl, runtime) {
     var _a, _b, _c;
-    return __awaiter(this, void 0, void 0, function* () {
-        if (isUrlAbsolute(candidateUrl)) {
-            // if we are already absolute, then just return the url
-            return candidateUrl;
-        }
-        let baseUrl = (_a = runtime.get("graph")) === null || _a === void 0 ? void 0 : _a.baseUrl;
-        if (!stringIsNullOrEmpty(baseUrl)) {
-            // base url specified either with baseUrl of spfxContext config property
-            return combine(baseUrl, candidateUrl);
-        }
-        const spFxContext = runtime.get("spfxContext");
-        if (objectDefinedNotNull(spFxContext)) {
-            try {
-                // this may let us read the url from the graph context
-                const client = yield spFxContext.msGraphClientFactory.getClient();
-                baseUrl = (_c = (_b = client) === null || _b === void 0 ? void 0 : _b.constructor) === null || _c === void 0 ? void 0 : _c._graphBaseUrl;
-                if (!stringIsNullOrEmpty(baseUrl)) {
-                    return combine(baseUrl, candidateUrl);
-                }
-                // eslint-disable-next-line no-empty
+    if (runtime === void 0) { runtime = DefaultRuntime; }
+    return __awaiter(this, void 0, void 0, function () {
+        var baseUrl, spFxContext, client, e_1;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    if (isUrlAbsolute(candidateUrl)) {
+                        // if we are already absolute, then just return the url
+                        return [2 /*return*/, candidateUrl];
+                    }
+                    baseUrl = (_a = runtime.get("graph")) === null || _a === void 0 ? void 0 : _a.baseUrl;
+                    if (!stringIsNullOrEmpty(baseUrl)) {
+                        // base url specified either with baseUrl of spfxContext config property
+                        return [2 /*return*/, combine(baseUrl, candidateUrl)];
+                    }
+                    spFxContext = runtime.get("spfxContext");
+                    if (!objectDefinedNotNull(spFxContext)) return [3 /*break*/, 4];
+                    _d.label = 1;
+                case 1:
+                    _d.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, spFxContext.msGraphClientFactory.getClient()];
+                case 2:
+                    client = _d.sent();
+                    baseUrl = (_c = (_b = client) === null || _b === void 0 ? void 0 : _b.constructor) === null || _c === void 0 ? void 0 : _c._graphBaseUrl;
+                    if (!stringIsNullOrEmpty(baseUrl)) {
+                        return [2 /*return*/, combine(baseUrl, candidateUrl)];
+                    }
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_1 = _d.sent();
+                    return [3 /*break*/, 4];
+                case 4: 
+                // try one last time with the default
+                return [2 /*return*/, combine("https://graph.microsoft.com", candidateUrl)];
             }
-            catch (e) { }
-        }
-        // try one last time with the default
-        return combine("https://graph.microsoft.com", candidateUrl);
+        });
     });
 }
 //# sourceMappingURL=toabsoluteurl.js.map
@@ -2679,48 +3106,57 @@ function toAbsoluteUrl(candidateUrl, runtime = DefaultRuntime) {
 
 
 function registerCustomRequestClientFactory(requestClientFactory) {
-    httpClientFactory = isFunc(requestClientFactory) ? () => requestClientFactory : defaultFactory;
+    httpClientFactory = isFunc(requestClientFactory) ? function () { return requestClientFactory; } : defaultFactory;
 }
-const defaultFactory = (runtime) => () => new GraphHttpClient(runtime);
-let httpClientFactory = defaultFactory;
-const send = (method) => {
+var defaultFactory = function (runtime) { return function () { return new GraphHttpClient(runtime); }; };
+var httpClientFactory = defaultFactory;
+var send = function (method) {
     return function (o, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // use the current runtime
-            const runtime = o.getRuntime();
-            const operation = defaultPipelineBinder(httpClientFactory(runtime))(method);
-            const data = cloneQueryableData(o.data);
-            const batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : () => {
-                return;
-            };
-            const url = yield toAbsoluteUrl(o.toUrlAndQuery(), runtime);
-            mergeOptions(data.options, options);
-            return operation(Object.assign({}, data, {
-                batchDependency,
-                url,
-            }));
+        return __awaiter(this, void 0, void 0, function () {
+            var runtime, operation, data, batchDependency, url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        runtime = o.getRuntime();
+                        operation = defaultPipelineBinder(httpClientFactory(runtime))(method);
+                        data = cloneQueryableData(o.data);
+                        batchDependency = objectDefinedNotNull(data.batch) ? data.batch.addDependency() : function () {
+                            return;
+                        };
+                        return [4 /*yield*/, toAbsoluteUrl(o.toUrlAndQuery(), runtime)];
+                    case 1:
+                        url = _a.sent();
+                        mergeOptions(data.options, options);
+                        return [2 /*return*/, operation(Object.assign({}, data, {
+                                batchDependency: batchDependency,
+                                url: url,
+                            }))];
+                }
+            });
         });
     };
 };
-const graphGet = (o, options) => send("GET")(o, options);
-const graphPost = (o, options) => send("POST")(o, options);
-const graphDelete = (o, options) => send("DELETE")(o, options);
-const graphPatch = (o, options) => send("PATCH")(o, options);
-const graphPut = (o, options) => send("PUT")(o, options);
+var graphGet = function (o, options) { return send("GET")(o, options); };
+var graphPost = function (o, options) { return send("POST")(o, options); };
+var graphDelete = function (o, options) { return send("DELETE")(o, options); };
+var graphPatch = function (o, options) { return send("PATCH")(o, options); };
+var graphPut = function (o, options) { return send("PUT")(o, options); };
 //# sourceMappingURL=operations.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/graphqueryable.js
 
 
 
 
-const graphInvokableFactory = (f) => {
+
+var graphInvokableFactory = function (f) {
     return invokableFactory(f);
 };
 /**
  * Queryable Base Class
  *
  */
-class _GraphQueryable extends Queryable {
+var _GraphQueryable = /** @class */ (function (_super) {
+    __extends(_GraphQueryable, _super);
     /**
      * Creates a new instance of the Queryable class
      *
@@ -2728,10 +3164,11 @@ class _GraphQueryable extends Queryable {
      * @param baseUrl A string or Queryable that should form the base part of the url
      *
      */
-    constructor(baseUrl, path) {
-        let url = "";
-        let parentUrl = "";
-        const query = new Map();
+    function _GraphQueryable(baseUrl, path) {
+        var _this = this;
+        var url = "";
+        var parentUrl = "";
+        var query = new Map();
         if (typeof baseUrl === "string") {
             parentUrl = baseUrl;
             url = combine(parentUrl, path);
@@ -2740,60 +3177,69 @@ class _GraphQueryable extends Queryable {
             parentUrl = baseUrl.toUrl();
             url = combine(parentUrl, path);
         }
-        super({
-            parentUrl,
-            query,
-            url,
-        });
+        _this = _super.call(this, {
+            parentUrl: parentUrl,
+            query: query,
+            url: url,
+        }) || this;
         // post init actions
         if (typeof baseUrl !== "string") {
-            this.configureFrom(baseUrl);
+            _this.configureFrom(baseUrl);
         }
+        return _this;
     }
     /**
      * Choose which fields to return
      *
      * @param selects One or more fields to return
      */
-    select(...selects) {
+    _GraphQueryable.prototype.select = function () {
+        var selects = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            selects[_i] = arguments[_i];
+        }
         if (selects.length > 0) {
             this.query.set("$select", selects.map(encodeURIComponent).join(","));
         }
         return this;
-    }
+    };
     /**
      * Expands fields such as lookups to get additional data
      *
      * @param expands The Fields for which to expand the values
      */
-    expand(...expands) {
+    _GraphQueryable.prototype.expand = function () {
+        var expands = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            expands[_i] = arguments[_i];
+        }
         if (expands.length > 0) {
             this.query.set("$expand", expands.map(encodeURIComponent).join(","));
         }
         return this;
-    }
-    defaultAction(options) {
+    };
+    _GraphQueryable.prototype.defaultAction = function (options) {
         return graphGet(this, options);
-    }
-    get(options) {
+    };
+    _GraphQueryable.prototype.get = function (options) {
         return graphGet(this, options);
-    }
+    };
     /**
      * Gets the full url with query information
      *
      */
-    toUrlAndQuery() {
-        let url = this.toUrl();
+    _GraphQueryable.prototype.toUrlAndQuery = function () {
+        var url = this.toUrl();
         if (this.query.size > 0) {
-            const char = url.indexOf("?") > -1 ? "&" : "?";
-            url += `${char}${Array.from(this.query).map((v) => v[0] + "=" + v[1]).join("&")}`;
+            var char = url.indexOf("?") > -1 ? "&" : "?";
+            url += "" + char + Array.from(this.query).map(function (v) { return v[0] + "=" + v[1]; }).join("&");
         }
         return url;
-    }
-    setEndpoint(endpoint) {
+    };
+    _GraphQueryable.prototype.setEndpoint = function (endpoint) {
         this.data.url = GraphEndpoints.ensure(this.data.url, endpoint);
         return this;
-    }
+    };
     /**
      * Clones this queryable into a new queryable instance of T
      * @param factory Constructor used to create the new instance
@@ -2801,98 +3247,142 @@ class _GraphQueryable extends Queryable {
      * @param includeBatch If true this instance's batch will be added to the cloned instance
      * @param includeQuery If true all of the query values will be copied to the cloned instance
      */
-    clone(factory, additionalPath, includeBatch = true, includeQuery = false) {
-        return super.cloneTo(factory(this, additionalPath), { includeBatch, includeQuery });
-    }
+    _GraphQueryable.prototype.clone = function (factory, additionalPath, includeBatch, includeQuery) {
+        if (includeBatch === void 0) { includeBatch = true; }
+        if (includeQuery === void 0) { includeQuery = false; }
+        return _super.prototype.cloneTo.call(this, factory(this, additionalPath), { includeBatch: includeBatch, includeQuery: includeQuery });
+    };
     /**
      * Gets a parent for this instance as specified
      *
      * @param factory The contructor for the class to create
      */
-    getParent(factory, baseUrl = this.parentUrl, path) {
+    _GraphQueryable.prototype.getParent = function (factory, baseUrl, path) {
+        if (baseUrl === void 0) { baseUrl = this.parentUrl; }
         return new factory(baseUrl, path);
-    }
-}
-const GraphQueryable = graphInvokableFactory(_GraphQueryable);
+    };
+    /**
+     * Gets the current base url of this object (https://graph.microsoft.com/v1.0 or https://graph.microsoft.com/beta)
+     */
+    _GraphQueryable.prototype.getUrlBase = function () {
+        var url = this.toUrl();
+        var index = url.indexOf("v1.0/");
+        if (index > -1) {
+            return url.substring(0, index + 5);
+        }
+        index = url.indexOf("beta/");
+        if (index > -1) {
+            return url.substring(0, index + 5);
+        }
+        return url;
+    };
+    return _GraphQueryable;
+}(Queryable));
+
+var GraphQueryable = graphInvokableFactory(_GraphQueryable);
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-class _GraphQueryableCollection extends _GraphQueryable {
+var _GraphQueryableCollection = /** @class */ (function (_super) {
+    __extends(_GraphQueryableCollection, _super);
+    function _GraphQueryableCollection() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      *
      * @param filter The string representing the filter query
      */
-    filter(filter) {
+    _GraphQueryableCollection.prototype.filter = function (filter) {
         this.query.set("$filter", filter);
         return this;
-    }
+    };
     /**
      * Orders based on the supplied fields
      *
      * @param orderby The name of the field on which to sort
      * @param ascending If false DESC is appended, otherwise ASC (default)
      */
-    orderBy(orderBy, ascending = true) {
-        const o = "$orderby";
-        const query = this.query.has(o) ? this.query.get(o).split(",") : [];
-        query.push(`${encodeURIComponent(orderBy)} ${ascending ? "asc" : "desc"}`);
+    _GraphQueryableCollection.prototype.orderBy = function (orderBy, ascending) {
+        if (ascending === void 0) { ascending = true; }
+        var o = "$orderby";
+        var query = this.query.has(o) ? this.query.get(o).split(",") : [];
+        query.push(encodeURIComponent(orderBy) + " " + (ascending ? "asc" : "desc"));
         this.query.set(o, query.join(","));
         return this;
-    }
+    };
     /**
      * Limits the query to only return the specified number of items
      *
      * @param top The query row limit
      */
-    top(top) {
+    _GraphQueryableCollection.prototype.top = function (top) {
         this.query.set("$top", top.toString());
         return this;
-    }
+    };
     /**
      * Skips a set number of items in the return set
      *
      * @param num Number of items to skip
      */
-    skip(num) {
+    _GraphQueryableCollection.prototype.skip = function (num) {
         this.query.set("$skip", num.toString());
         return this;
-    }
+    };
     /**
      * 	To request second and subsequent pages of Graph data
      */
-    skipToken(token) {
+    _GraphQueryableCollection.prototype.skipToken = function (token) {
         this.query.set("$skiptoken", token);
         return this;
+    };
+    Object.defineProperty(_GraphQueryableCollection.prototype, "count", {
+        /**
+         * 	Retrieves the total count of matching resources
+         */
+        get: function () {
+            this.query.set("$count", "true");
+            return this;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return _GraphQueryableCollection;
+}(_GraphQueryable));
+
+var GraphQueryableCollection = graphInvokableFactory(_GraphQueryableCollection);
+var _GraphQueryableSearchableCollection = /** @class */ (function (_super) {
+    __extends(_GraphQueryableSearchableCollection, _super);
+    function _GraphQueryableSearchableCollection() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    /**
-     * 	Retrieves the total count of matching resources
-     */
-    get count() {
-        this.query.set("$count", "true");
-        return this;
-    }
-}
-const GraphQueryableCollection = graphInvokableFactory(_GraphQueryableCollection);
-class _GraphQueryableSearchableCollection extends _GraphQueryableCollection {
     /**
      * 	To request second and subsequent pages of Graph data
      */
-    search(query) {
+    _GraphQueryableSearchableCollection.prototype.search = function (query) {
         this.query.set("$search", query);
         return this;
-    }
-}
-const GraphQueryableSearchableCollection = graphInvokableFactory(_GraphQueryableSearchableCollection);
+    };
+    return _GraphQueryableSearchableCollection;
+}(_GraphQueryableCollection));
+
+var GraphQueryableSearchableCollection = graphInvokableFactory(_GraphQueryableSearchableCollection);
 /**
  * Represents an instance that can be selected
  *
  */
-class _GraphQueryableInstance extends _GraphQueryable {
-}
-const GraphQueryableInstance = graphInvokableFactory(_GraphQueryableInstance);
+var _GraphQueryableInstance = /** @class */ (function (_super) {
+    __extends(_GraphQueryableInstance, _super);
+    function _GraphQueryableInstance() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return _GraphQueryableInstance;
+}(_GraphQueryable));
+
+var GraphQueryableInstance = graphInvokableFactory(_GraphQueryableInstance);
 //# sourceMappingURL=graphqueryable.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/decorators.js
+
 
 
 /**
@@ -2903,11 +3393,17 @@ const GraphQueryableInstance = graphInvokableFactory(_GraphQueryableInstance);
 function defaultPath(path) {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function (target) {
-        return class extends target {
-            constructor(...args) {
-                super(args[0], args.length > 1 && args[1] !== undefined ? args[1] : path);
+        return /** @class */ (function (_super) {
+            __extends(class_1, _super);
+            function class_1() {
+                var args = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    args[_i] = arguments[_i];
+                }
+                return _super.call(this, args[0], args.length > 1 && args[1] !== undefined ? args[1] : path) || this;
             }
-        };
+            return class_1;
+        }(target));
     };
 }
 /**
@@ -2916,11 +3412,16 @@ function defaultPath(path) {
 function deleteable() {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function (target) {
-        return class extends target {
-            delete() {
-                return graphDelete(this);
+        return /** @class */ (function (_super) {
+            __extends(class_2, _super);
+            function class_2() {
+                return _super !== null && _super.apply(this, arguments) || this;
             }
-        };
+            class_2.prototype.delete = function () {
+                return graphDelete(this);
+            };
+            return class_2;
+        }(target));
     };
 }
 /**
@@ -2929,13 +3430,19 @@ function deleteable() {
 function deleteableWithETag() {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function (target) {
-        return class extends target {
-            delete(eTag = "*") {
+        return /** @class */ (function (_super) {
+            __extends(class_3, _super);
+            function class_3() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            class_3.prototype.delete = function (eTag) {
+                if (eTag === void 0) { eTag = "*"; }
                 return graphDelete(this, headers({
                     "If-Match": eTag,
                 }));
-            }
-        };
+            };
+            return class_3;
+        }(target));
     };
 }
 /**
@@ -2944,11 +3451,16 @@ function deleteableWithETag() {
 function updateable() {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function (target) {
-        return class extends target {
-            update(props) {
-                return graphPatch(this, body(props));
+        return /** @class */ (function (_super) {
+            __extends(class_4, _super);
+            function class_4() {
+                return _super !== null && _super.apply(this, arguments) || this;
             }
-        };
+            class_4.prototype.update = function (props) {
+                return graphPatch(this, body(props));
+            };
+            return class_4;
+        }(target));
     };
 }
 /**
@@ -2957,13 +3469,19 @@ function updateable() {
 function updateableWithETag() {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function (target) {
-        return class extends target {
-            update(props, eTag = "*") {
+        return /** @class */ (function (_super) {
+            __extends(class_5, _super);
+            function class_5() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            class_5.prototype.update = function (props, eTag) {
+                if (eTag === void 0) { eTag = "*"; }
                 return graphPatch(this, body(props, headers({
                     "If-Match": eTag,
                 })));
-            }
-        };
+            };
+            return class_5;
+        }(target));
     };
 }
 /**
@@ -2972,11 +3490,16 @@ function updateableWithETag() {
 function addable() {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function (target) {
-        return class extends target {
-            add(props) {
-                return graphPost(this, body(props));
+        return /** @class */ (function (_super) {
+            __extends(class_6, _super);
+            function class_6() {
+                return _super !== null && _super.apply(this, arguments) || this;
             }
-        };
+            class_6.prototype.add = function (props) {
+                return graphPost(this, body(props));
+            };
+            return class_6;
+        }(target));
     };
 }
 /**
@@ -2985,11 +3508,16 @@ function addable() {
 function getById(factory) {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function (target) {
-        return class extends target {
-            getById(id) {
-                return factory(this, id);
+        return /** @class */ (function (_super) {
+            __extends(class_7, _super);
+            function class_7() {
+                return _super !== null && _super.apply(this, arguments) || this;
             }
-        };
+            class_7.prototype.getById = function (id) {
+                return factory(this, id);
+            };
+            return class_7;
+        }(target));
     };
 }
 //# sourceMappingURL=decorators.js.map
@@ -3002,127 +3530,171 @@ function getById(factory) {
 /**
  * Conversation
  */
-let _Conversation = class _Conversation extends _GraphQueryableInstance {
-    /**
-     * Get all the threads in a group conversation.
-     */
-    get threads() {
-        return Threads(this);
+var _Conversation = /** @class */ (function (_super) {
+    __extends(_Conversation, _super);
+    function _Conversation() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-};
-_Conversation = __decorate([
-    updateable(),
-    deleteable()
-], _Conversation);
+    Object.defineProperty(_Conversation.prototype, "threads", {
+        /**
+         * Get all the threads in a group conversation.
+         */
+        get: function () {
+            return Threads(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Conversation = __decorate([
+        updateable(),
+        deleteable()
+    ], _Conversation);
+    return _Conversation;
+}(_GraphQueryableInstance));
 
-const Conversation = graphInvokableFactory(_Conversation);
+var Conversation = graphInvokableFactory(_Conversation);
 /**
  * Conversations
  */
-let _Conversations = class _Conversations extends _GraphQueryableCollection {
-};
-_Conversations = __decorate([
-    defaultPath("conversations"),
-    addable(),
-    getById(Conversation)
-], _Conversations);
+var _Conversations = /** @class */ (function (_super) {
+    __extends(_Conversations, _super);
+    function _Conversations() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Conversations = __decorate([
+        defaultPath("conversations"),
+        addable(),
+        getById(Conversation)
+    ], _Conversations);
+    return _Conversations;
+}(_GraphQueryableCollection));
 
-const Conversations = graphInvokableFactory(_Conversations);
+var Conversations = graphInvokableFactory(_Conversations);
 /**
  * Thread
  */
-let _Thread = class _Thread extends _GraphQueryableInstance {
-    /**
-     * Get all the threads in a group conversation.
-     */
-    get posts() {
-        return Posts(this);
+var _Thread = /** @class */ (function (_super) {
+    __extends(_Thread, _super);
+    function _Thread() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    Object.defineProperty(_Thread.prototype, "posts", {
+        /**
+         * Get all the threads in a group conversation.
+         */
+        get: function () {
+            return Posts(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
      * Reply to a thread in a group conversation and add a new post to it
      *
      * @param post Contents of the post
      */
-    reply(post) {
+    _Thread.prototype.reply = function (post) {
         return graphPost(this.clone(Thread, "reply"), body(post));
-    }
-};
-_Thread = __decorate([
-    deleteable()
-], _Thread);
+    };
+    _Thread = __decorate([
+        deleteable()
+    ], _Thread);
+    return _Thread;
+}(_GraphQueryableInstance));
 
-const Thread = graphInvokableFactory(_Thread);
+var Thread = graphInvokableFactory(_Thread);
 /**
  * Threads
  */
-let _Threads = class _Threads extends _GraphQueryableCollection {
-};
-_Threads = __decorate([
-    defaultPath("threads"),
-    addable(),
-    getById(Thread)
-], _Threads);
+var _Threads = /** @class */ (function (_super) {
+    __extends(_Threads, _super);
+    function _Threads() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Threads = __decorate([
+        defaultPath("threads"),
+        addable(),
+        getById(Thread)
+    ], _Threads);
+    return _Threads;
+}(_GraphQueryableCollection));
 
-const Threads = graphInvokableFactory(_Threads);
+var Threads = graphInvokableFactory(_Threads);
 /**
  * Post
  */
-let _Post = class _Post extends _GraphQueryableInstance {
+var _Post = /** @class */ (function (_super) {
+    __extends(_Post, _super);
+    function _Post() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Forward a post to a recipient
      */
-    forward(info) {
+    _Post.prototype.forward = function (info) {
         return graphPost(this.clone(Post, "forward"), body(info));
-    }
+    };
     /**
      * Reply to a thread in a group conversation and add a new post to it
      *
      * @param post Contents of the post
      */
-    reply(post) {
+    _Post.prototype.reply = function (post) {
         return graphPost(this.clone(Post, "reply"), body(post));
-    }
-};
-_Post = __decorate([
-    deleteable()
-], _Post);
+    };
+    _Post = __decorate([
+        deleteable()
+    ], _Post);
+    return _Post;
+}(_GraphQueryableInstance));
 
-const Post = graphInvokableFactory(_Post);
+var Post = graphInvokableFactory(_Post);
 /**
  * Posts
  */
-let _Posts = class _Posts extends _GraphQueryableCollection {
-};
-_Posts = __decorate([
-    defaultPath("posts"),
-    addable(),
-    getById(Post)
-], _Posts);
+var _Posts = /** @class */ (function (_super) {
+    __extends(_Posts, _super);
+    function _Posts() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Posts = __decorate([
+        defaultPath("posts"),
+        addable(),
+        getById(Post)
+    ], _Posts);
+    return _Posts;
+}(_GraphQueryableCollection));
 
-const Posts = graphInvokableFactory(_Posts);
+var Posts = graphInvokableFactory(_Posts);
 /**
  * Senders
  */
-class _Senders extends _GraphQueryableCollection {
+var _Senders = /** @class */ (function (_super) {
+    __extends(_Senders, _super);
+    function _Senders() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Add a new user or group to this senders collection
      * @param id The full @odata.id value to add (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
      */
-    add(id) {
+    _Senders.prototype.add = function (id) {
         return graphPost(this.clone(Senders, "$ref"), body({ "@odata.id": id }));
-    }
+    };
     /**
      * Removes the entity from the collection
      *
      * @param id The full @odata.id value to remove (ex: https://graph.microsoft.com/v1.0/users/user@contoso.com)
      */
-    remove(id) {
-        const remover = this.clone(Senders, "$ref");
+    _Senders.prototype.remove = function (id) {
+        var remover = this.clone(Senders, "$ref");
         remover.query.set("$id", id);
         return graphDelete(remover);
-    }
-}
-const Senders = graphInvokableFactory(_Senders);
+    };
+    return _Senders;
+}(_GraphQueryableCollection));
+
+var Senders = graphInvokableFactory(_Senders);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/utils/type.js
 function type(n, a) {
@@ -3139,32 +3711,43 @@ function type(n, a) {
 /**
  * Attachment
  */
-class _Attachment extends _GraphQueryableInstance {
-}
-const Attachment = graphInvokableFactory(_Attachment);
+var _Attachment = /** @class */ (function (_super) {
+    __extends(_Attachment, _super);
+    function _Attachment() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return _Attachment;
+}(_GraphQueryableInstance));
+
+var Attachment = graphInvokableFactory(_Attachment);
 /**
  * Attachments
  */
-let _Attachments = class _Attachments extends _GraphQueryableCollection {
+var _Attachments = /** @class */ (function (_super) {
+    __extends(_Attachments, _super);
+    function _Attachments() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Add attachment to this collection
      *
      * @param name Name given to the attachment file
      * @param bytes File content
      */
-    addFile(name, bytes) {
+    _Attachments.prototype.addFile = function (name, bytes) {
         return graphPost(this, body(type("#microsoft.graph.fileAttachment", {
             contentBytes: bytes,
-            name,
+            name: name,
         })));
-    }
-};
-_Attachments = __decorate([
-    defaultPath("attachments"),
-    getById(Attachment)
-], _Attachments);
+    };
+    _Attachments = __decorate([
+        defaultPath("attachments"),
+        getById(Attachment)
+    ], _Attachments);
+    return _Attachments;
+}(_GraphQueryableCollection));
 
-const Attachments = graphInvokableFactory(_Attachments);
+var Attachments = graphInvokableFactory(_Attachments);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/attachments/conversations.js
 
@@ -3185,42 +3768,53 @@ addProp(_Post, "attachments", Attachments);
 /**
  * Represents a Directory Object entity
  */
-let _DirectoryObject = class _DirectoryObject extends _GraphQueryableInstance {
+var _DirectoryObject = /** @class */ (function (_super) {
+    __extends(_DirectoryObject, _super);
+    function _DirectoryObject() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
    * Returns all the groups and directory roles that the specified Directory Object is a member of. The check is transitive
    *
    * @param securityEnabledOnly
    */
-    getMemberObjects(securityEnabledOnly = false) {
-        return graphPost(this.clone(DirectoryObject, "getMemberObjects"), body({ securityEnabledOnly }));
-    }
+    _DirectoryObject.prototype.getMemberObjects = function (securityEnabledOnly) {
+        if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
+        return graphPost(this.clone(DirectoryObject, "getMemberObjects"), body({ securityEnabledOnly: securityEnabledOnly }));
+    };
     /**
    * Returns all the groups that the specified Directory Object is a member of. The check is transitive
    *
    * @param securityEnabledOnly
    */
-    getMemberGroups(securityEnabledOnly = false) {
-        return graphPost(this.clone(DirectoryObject, "getMemberGroups"), body({ securityEnabledOnly }));
-    }
+    _DirectoryObject.prototype.getMemberGroups = function (securityEnabledOnly) {
+        if (securityEnabledOnly === void 0) { securityEnabledOnly = false; }
+        return graphPost(this.clone(DirectoryObject, "getMemberGroups"), body({ securityEnabledOnly: securityEnabledOnly }));
+    };
     /**
    * Check for membership in a specified list of groups, and returns from that list those groups of which the specified user, group, or directory object is a member.
    * This function is transitive.
    * @param groupIds A collection that contains the object IDs of the groups in which to check membership. Up to 20 groups may be specified.
    */
-    checkMemberGroups(groupIds) {
-        return graphPost(this.clone(DirectoryObject, "checkMemberGroups"), body({ groupIds }));
-    }
-};
-_DirectoryObject = __decorate([
-    deleteable()
-], _DirectoryObject);
+    _DirectoryObject.prototype.checkMemberGroups = function (groupIds) {
+        return graphPost(this.clone(DirectoryObject, "checkMemberGroups"), body({ groupIds: groupIds }));
+    };
+    _DirectoryObject = __decorate([
+        deleteable()
+    ], _DirectoryObject);
+    return _DirectoryObject;
+}(_GraphQueryableInstance));
 
-const DirectoryObject = graphInvokableFactory(_DirectoryObject);
+var DirectoryObject = graphInvokableFactory(_DirectoryObject);
 /**
  * Describes a collection of Directory Objects
  *
  */
-let _DirectoryObjects = class _DirectoryObjects extends _GraphQueryableCollection {
+var _DirectoryObjects = /** @class */ (function (_super) {
+    __extends(_DirectoryObjects, _super);
+    function _DirectoryObjects() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
   * Returns the directory objects specified in a list of ids. NOTE: The directory objects returned are the full objects containing all their properties.
   * The $select query option is not available for this operation.
@@ -3228,16 +3822,18 @@ let _DirectoryObjects = class _DirectoryObjects extends _GraphQueryableCollectio
   * @param ids A collection of ids for which to return objects. You can specify up to 1000 ids.
   * @param type A collection of resource types that specifies the set of resource collections to search. Default is directoryObject.
   */
-    getByIds(ids, type = DirectoryObjectTypes.directoryObject) {
-        return graphPost(this.clone(DirectoryObjects, "getByIds"), body({ ids, type }));
-    }
-};
-_DirectoryObjects = __decorate([
-    defaultPath("directoryObjects"),
-    getById(DirectoryObject)
-], _DirectoryObjects);
+    _DirectoryObjects.prototype.getByIds = function (ids, type) {
+        if (type === void 0) { type = DirectoryObjectTypes.directoryObject; }
+        return graphPost(this.clone(DirectoryObjects, "getByIds"), body({ ids: ids, type: type }));
+    };
+    _DirectoryObjects = __decorate([
+        defaultPath("directoryObjects"),
+        getById(DirectoryObject)
+    ], _DirectoryObjects);
+    return _DirectoryObjects;
+}(_GraphQueryableCollection));
 
-const DirectoryObjects = graphInvokableFactory(_DirectoryObjects);
+var DirectoryObjects = graphInvokableFactory(_DirectoryObjects);
 /**
  * DirectoryObjectTypes
  */
@@ -3287,63 +3883,72 @@ var GroupType;
 /**
  * Represents a group entity
  */
-let _Group = class _Group extends _DirectoryObject {
+var _Group = /** @class */ (function (_super) {
+    __extends(_Group, _super);
+    function _Group() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
      */
-    addFavorite() {
+    _Group.prototype.addFavorite = function () {
         return graphPost(this.clone(Group, "addFavorite"));
-    }
+    };
     /**
      * Remove the group from the list of the current user's favorite groups. Supported for only Office 365 groups
      */
-    removeFavorite() {
+    _Group.prototype.removeFavorite = function () {
         return graphPost(this.clone(Group, "removeFavorite"));
-    }
+    };
     /**
      * Reset the unseenCount of all the posts that the current user has not seen since their last visit
      */
-    resetUnseenCount() {
+    _Group.prototype.resetUnseenCount = function () {
         return graphPost(this.clone(Group, "resetUnseenCount"));
-    }
+    };
     /**
      * Calling this method will enable the current user to receive email notifications for this group,
      * about new posts, events, and files in that group. Supported for only Office 365 groups
      */
-    subscribeByMail() {
+    _Group.prototype.subscribeByMail = function () {
         return graphPost(this.clone(Group, "subscribeByMail"));
-    }
+    };
     /**
      * Calling this method will prevent the current user from receiving email notifications for this group
      * about new posts, events, and files in that group. Supported for only Office 365 groups
      */
-    unsubscribeByMail() {
+    _Group.prototype.unsubscribeByMail = function () {
         return graphPost(this.clone(Group, "unsubscribeByMail"));
-    }
+    };
     /**
      * Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group
      *
      * @param start Start date and time of the time range
      * @param end End date and time of the time range
      */
-    getCalendarView(start, end) {
-        const view = this.clone(Group, "calendarView");
+    _Group.prototype.getCalendarView = function (start, end) {
+        var view = this.clone(Group, "calendarView");
         view.query.set("startDateTime", start.toISOString());
         view.query.set("endDateTime", end.toISOString());
         return view();
-    }
-};
-_Group = __decorate([
-    deleteable(),
-    updateable()
-], _Group);
+    };
+    _Group = __decorate([
+        deleteable(),
+        updateable()
+    ], _Group);
+    return _Group;
+}(_DirectoryObject));
 
-const Group = graphInvokableFactory(_Group);
+var Group = graphInvokableFactory(_Group);
 /**
  * Describes a collection of Field objects
  *
  */
-let _Groups = class _Groups extends _GraphQueryableCollection {
+var _Groups = /** @class */ (function (_super) {
+    __extends(_Groups, _super);
+    function _Groups() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Create a new group as specified in the request body.
      *
@@ -3352,34 +3957,44 @@ let _Groups = class _Groups extends _GraphQueryableCollection {
      * @param groupType Type of group being created
      * @param additionalProperties A plain object collection of additional properties you want to set on the new group
      */
-    add(name, mailNickname, groupType, additionalProperties = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let postBody = util_assign({
-                displayName: name,
-                mailEnabled: groupType === GroupType.Office365,
-                mailNickname: mailNickname,
-                securityEnabled: groupType !== GroupType.Office365,
-            }, additionalProperties);
-            // include a group type if required
-            if (groupType !== GroupType.Security) {
-                postBody = util_assign(postBody, {
-                    groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
-                });
-            }
-            const data = yield graphPost(this, body(postBody));
-            return {
-                data,
-                group: this.getById(data.id),
-            };
+    _Groups.prototype.add = function (name, mailNickname, groupType, additionalProperties) {
+        if (additionalProperties === void 0) { additionalProperties = {}; }
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = util_assign({
+                            displayName: name,
+                            mailEnabled: groupType === GroupType.Office365,
+                            mailNickname: mailNickname,
+                            securityEnabled: groupType !== GroupType.Office365,
+                        }, additionalProperties);
+                        // include a group type if required
+                        if (groupType !== GroupType.Security) {
+                            postBody = util_assign(postBody, {
+                                groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
+                            });
+                        }
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                group: this.getById(data.id),
+                            }];
+                }
+            });
         });
-    }
-};
-_Groups = __decorate([
-    defaultPath("groups"),
-    getById(Group)
-], _Groups);
+    };
+    _Groups = __decorate([
+        defaultPath("groups"),
+        getById(Group)
+    ], _Groups);
+    return _Groups;
+}(_GraphQueryableCollection));
 
-const Groups = graphInvokableFactory(_Groups);
+var Groups = graphInvokableFactory(_Groups);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/funcs.js
 
@@ -3392,7 +4007,7 @@ const Groups = graphInvokableFactory(_Groups);
  * @param end end time
  */
 function calendarView(start, end) {
-    const query = this.clone(GraphQueryableCollection, "calendarView");
+    var query = this.clone(GraphQueryableCollection, "calendarView");
     query.query.set("startDateTime", encodeURIComponent(start));
     query.query.set("endDateTime", encodeURIComponent(end));
     return query;
@@ -3408,63 +4023,93 @@ function calendarView(start, end) {
 /**
  * Calendar
  */
-class _Calendar extends _GraphQueryableInstance {
-    constructor() {
-        super(...arguments);
-        this.calendarView = calendarView;
+var _Calendar = /** @class */ (function (_super) {
+    __extends(_Calendar, _super);
+    function _Calendar() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.calendarView = calendarView;
+        return _this;
     }
-    get events() {
-        return Events(this);
-    }
-}
-const Calendar = graphInvokableFactory(_Calendar);
+    Object.defineProperty(_Calendar.prototype, "events", {
+        get: function () {
+            return Events(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return _Calendar;
+}(_GraphQueryableInstance));
+
+var Calendar = graphInvokableFactory(_Calendar);
 /**
  * Calendars
  */
-let _Calendars = class _Calendars extends _GraphQueryableCollection {
-};
-_Calendars = __decorate([
-    defaultPath("calendars"),
-    getById(Calendar)
-], _Calendars);
+var _Calendars = /** @class */ (function (_super) {
+    __extends(_Calendars, _super);
+    function _Calendars() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Calendars = __decorate([
+        defaultPath("calendars"),
+        getById(Calendar)
+    ], _Calendars);
+    return _Calendars;
+}(_GraphQueryableCollection));
 
-const Calendars = graphInvokableFactory(_Calendars);
+var Calendars = graphInvokableFactory(_Calendars);
 /**
  * Event
  */
-let _Event = class _Event extends _GraphQueryableInstance {
-};
-_Event = __decorate([
-    deleteable(),
-    updateable()
-], _Event);
+var _Event = /** @class */ (function (_super) {
+    __extends(_Event, _super);
+    function _Event() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Event = __decorate([
+        deleteable(),
+        updateable()
+    ], _Event);
+    return _Event;
+}(_GraphQueryableInstance));
 
-const Event = graphInvokableFactory(_Event);
+var Event = graphInvokableFactory(_Event);
 /**
  * Events
  */
-let _Events = class _Events extends _GraphQueryableCollection {
+var _Events = /** @class */ (function (_super) {
+    __extends(_Events, _super);
+    function _Events() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Adds a new event to the collection
      *
      * @param properties The set of properties used to create the event
      */
-    add(properties) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const data = yield graphPost(this, body(properties));
-            return {
-                data,
-                event: this.getById(data.id),
-            };
+    _Events.prototype.add = function (properties) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, graphPost(this, body(properties))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                event: this.getById(data.id),
+                            }];
+                }
+            });
         });
-    }
-};
-_Events = __decorate([
-    defaultPath("events"),
-    getById(Event)
-], _Events);
+    };
+    _Events = __decorate([
+        defaultPath("events"),
+        getById(Event)
+    ], _Events);
+    return _Events;
+}(_GraphQueryableCollection));
 
-const Events = graphInvokableFactory(_Events);
+var Events = graphInvokableFactory(_Events);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/groups.js
 
@@ -3478,41 +4123,84 @@ addProp(_Group, "events", Events);
 
 
 
-let _User = class _User extends _DirectoryObject {
-    /**
-    * The groups and directory roles associated with the user
-    */
-    get memberOf() {
-        return DirectoryObjects(this, "memberOf");
+var _User = /** @class */ (function (_super) {
+    __extends(_User, _super);
+    function _User() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    /**
-     * Retrieve a collection of person objects ordered by their relevance to the user
-     */
-    get people() {
-        return People(this);
+    Object.defineProperty(_User.prototype, "memberOf", {
+        /**
+        * The groups and directory roles associated with the user
+        */
+        get: function () {
+            return DirectoryObjects(this, "memberOf");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_User.prototype, "people", {
+        /**
+         * Retrieve a collection of person objects ordered by their relevance to the user
+         */
+        get: function () {
+            return People(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_User.prototype, "directReports", {
+        /**
+        * People that have direct reports to the user
+        */
+        get: function () {
+            return People(this, "directReports");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_User.prototype, "manager", {
+        /**
+        * The manager associated with this user
+        */
+        get: function () {
+            return User(this, "manager");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _User = __decorate([
+        updateable(),
+        deleteable()
+    ], _User);
+    return _User;
+}(_DirectoryObject));
+
+var User = graphInvokableFactory(_User);
+var _Users = /** @class */ (function (_super) {
+    __extends(_Users, _super);
+    function _Users() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-};
-_User = __decorate([
-    updateable(),
-    deleteable()
-], _User);
+    _Users = __decorate([
+        defaultPath("users"),
+        getById(User)
+    ], _Users);
+    return _Users;
+}(_GraphQueryableCollection));
 
-const User = graphInvokableFactory(_User);
-let _Users = class _Users extends _GraphQueryableCollection {
-};
-_Users = __decorate([
-    defaultPath("users"),
-    getById(User)
-], _Users);
+var Users = graphInvokableFactory(_Users);
+var _People = /** @class */ (function (_super) {
+    __extends(_People, _super);
+    function _People() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _People = __decorate([
+        defaultPath("people")
+    ], _People);
+    return _People;
+}(_GraphQueryableCollection));
 
-const Users = graphInvokableFactory(_Users);
-let _People = class _People extends _GraphQueryableCollection {
-};
-_People = __decorate([
-    defaultPath("people")
-], _People);
-
-const People = graphInvokableFactory(_People);
+var People = graphInvokableFactory(_People);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/calendars/users.js
 
@@ -3539,18 +4227,27 @@ _User.prototype.calendarView = calendarView;
 /**
  * Contact
  */
-let _Contact = class _Contact extends _GraphQueryableInstance {
-};
-_Contact = __decorate([
-    updateable(),
-    deleteable()
-], _Contact);
+var _Contact = /** @class */ (function (_super) {
+    __extends(_Contact, _super);
+    function _Contact() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Contact = __decorate([
+        updateable(),
+        deleteable()
+    ], _Contact);
+    return _Contact;
+}(_GraphQueryableInstance));
 
-const Contact = graphInvokableFactory(_Contact);
+var Contact = graphInvokableFactory(_Contact);
 /**
  * Contacts
  */
-let _Contacts = class _Contacts extends _GraphQueryableCollection {
+var _Contacts = /** @class */ (function (_super) {
+    __extends(_Contacts, _super);
+    function _Contacts() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
     * Create a new Contact for the user.
     *
@@ -3560,76 +4257,112 @@ let _Contacts = class _Contacts extends _GraphQueryableCollection {
     * @param businessPhones The contact's business phone numbers.
     * @param additionalProperties A plain object collection of additional properties you want to set on the new contact
     */
-    add(givenName, surName, emailAddresses, businessPhones, additionalProperties = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const postBody = util_assign({ businessPhones, emailAddresses, givenName, surName }, additionalProperties);
-            const data = yield graphPost(this, body(postBody));
-            return {
-                contact: this.getById(data.id),
-                data,
-            };
+    _Contacts.prototype.add = function (givenName, surName, emailAddresses, businessPhones, additionalProperties) {
+        if (additionalProperties === void 0) { additionalProperties = {}; }
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = util_assign({ businessPhones: businessPhones, emailAddresses: emailAddresses, givenName: givenName, surName: surName }, additionalProperties);
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                contact: this.getById(data.id),
+                                data: data,
+                            }];
+                }
+            });
         });
-    }
-};
-_Contacts = __decorate([
-    defaultPath("contacts"),
-    getById(Contact)
-], _Contacts);
+    };
+    _Contacts = __decorate([
+        defaultPath("contacts"),
+        getById(Contact)
+    ], _Contacts);
+    return _Contacts;
+}(_GraphQueryableCollection));
 
-const Contacts = graphInvokableFactory(_Contacts);
+var Contacts = graphInvokableFactory(_Contacts);
 /**
  * Contact Folder
  */
-let _ContactFolder = class _ContactFolder extends _GraphQueryableInstance {
-    /**
-     * Gets the contacts in this contact folder
-     */
-    get contacts() {
-        return Contacts(this);
+var _ContactFolder = /** @class */ (function (_super) {
+    __extends(_ContactFolder, _super);
+    function _ContactFolder() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    /**
-    * Gets the contacts in this contact folder
-    */
-    get childFolders() {
-        return ContactFolders(this, "childFolders");
-    }
-};
-_ContactFolder = __decorate([
-    deleteable(),
-    updateable()
-], _ContactFolder);
+    Object.defineProperty(_ContactFolder.prototype, "contacts", {
+        /**
+         * Gets the contacts in this contact folder
+         */
+        get: function () {
+            return Contacts(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_ContactFolder.prototype, "childFolders", {
+        /**
+        * Gets the contacts in this contact folder
+        */
+        get: function () {
+            return ContactFolders(this, "childFolders");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _ContactFolder = __decorate([
+        deleteable(),
+        updateable()
+    ], _ContactFolder);
+    return _ContactFolder;
+}(_GraphQueryableInstance));
 
-const ContactFolder = graphInvokableFactory(_ContactFolder);
+var ContactFolder = graphInvokableFactory(_ContactFolder);
 /**
  * Contact Folders
  */
-let _ContactFolders = class _ContactFolders extends _GraphQueryableCollection {
+var _ContactFolders = /** @class */ (function (_super) {
+    __extends(_ContactFolders, _super);
+    function _ContactFolders() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Create a new Contact Folder for the user.
      *
      * @param displayName The folder's display name.
      * @param parentFolderId The ID of the folder's parent folder.
      */
-    add(displayName, parentFolderId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const postBody = {
-                displayName: displayName,
-                parentFolderId: parentFolderId,
-            };
-            const data = yield graphPost(this, body(postBody));
-            return {
-                contactFolder: this.getById(data.id),
-                data,
-            };
+    _ContactFolders.prototype.add = function (displayName, parentFolderId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = {
+                            displayName: displayName,
+                            parentFolderId: parentFolderId,
+                        };
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                contactFolder: this.getById(data.id),
+                                data: data,
+                            }];
+                }
+            });
         });
-    }
-};
-_ContactFolders = __decorate([
-    defaultPath("contactFolders"),
-    getById(ContactFolder)
-], _ContactFolders);
+    };
+    _ContactFolders = __decorate([
+        defaultPath("contactFolders"),
+        getById(ContactFolder)
+    ], _ContactFolders);
+    return _ContactFolders;
+}(_GraphQueryableCollection));
 
-const ContactFolders = graphInvokableFactory(_ContactFolders);
+var ContactFolders = graphInvokableFactory(_ContactFolders);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/contacts/users.js
 
@@ -3656,21 +4389,22 @@ addProp(_Group, "rejectedSenders", Senders, "rejectedsenders");
 //# sourceMappingURL=index.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/graphlibconfig.js
 
-onRuntimeCreate((runtime) => {
-    const existing = runtime.get("graph");
-    const graphPart = Object.assign({}, {
-        fetchClientFactory: () => {
+onRuntimeCreate(function (runtime) {
+    var existing = runtime.get("graph");
+    var graphPart = Object.assign({}, {
+        fetchClientFactory: function () {
             // we keep a ref to the runtime within which we are assigned
-            const context = runtime.get("spfxContext");
+            var context = runtime.get("spfxContext");
             if (objectDefinedNotNull(context)) {
                 return new SPFxAdalClient(context);
             }
-            throw Error("There is no Graph Client available, either set one using configuraiton or provide a valid SPFx Context.");
+            throw Error("There is no Graph Client available, either set one using configuration or provide a valid SPFx Context.");
         },
     }, existing);
     runtime.assign({ graph: graphPart });
 });
-function graphlibconfig_setup(config, runtime = DefaultRuntime) {
+function graphlibconfig_setup(config, runtime) {
+    if (runtime === void 0) { runtime = DefaultRuntime; }
     runtime.assign(config);
 }
 //# sourceMappingURL=graphlibconfig.js.map
@@ -3681,69 +4415,99 @@ function graphlibconfig_setup(config, runtime = DefaultRuntime) {
 
 
 
-class GraphBatch extends Batch {
-    constructor(batchUrl = "v1.0/$batch", maxRequests = 20, runtime = DefaultRuntime) {
-        super();
-        this.batchUrl = batchUrl;
-        this.maxRequests = maxRequests;
-        this.runtime = runtime;
+var GraphBatch = /** @class */ (function (_super) {
+    __extends(GraphBatch, _super);
+    function GraphBatch(batchUrl, maxRequests, runtime) {
+        if (batchUrl === void 0) { batchUrl = "v1.0/$batch"; }
+        if (maxRequests === void 0) { maxRequests = 20; }
+        if (runtime === void 0) { runtime = DefaultRuntime; }
+        var _this = _super.call(this) || this;
+        _this.batchUrl = batchUrl;
+        _this.maxRequests = maxRequests;
+        _this.runtime = runtime;
+        return _this;
     }
-    setRuntime(runtime) {
+    GraphBatch.prototype.setRuntime = function (runtime) {
         this.runtime = runtime;
         return this;
-    }
-    executeImpl() {
-        return __awaiter(this, void 0, void 0, function* () {
-            Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Executing batch with ${this.requests.length} requests.`, 1 /* Info */);
-            if (this.requests.length < 1) {
-                Logger.write("Resolving empty batch.", 1 /* Info */);
-                return Promise.resolve();
-            }
-            const client = new GraphHttpClient(this.runtime);
-            // create a working copy of our requests
-            const requests = this.requests.slice();
-            // this is the root of our promise chain
-            while (requests.length > 0) {
-                const requestsChunk = requests.splice(0, this.maxRequests);
-                const batchRequest = {
-                    requests: this.formatRequests(requestsChunk),
-                };
-                const batchOptions = {
-                    body: jsS(batchRequest),
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                    },
-                    method: "POST",
-                };
-                Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Sending batch request.`, 1 /* Info */);
-                const queryUrl = yield toAbsoluteUrl(this.batchUrl, this.runtime);
-                yield client.fetch(queryUrl, batchOptions)
-                    .then(r => r.json())
-                    .then((j) => this.parseResponse(requestsChunk, j))
-                    .then((parsedResponse) => {
-                    Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched requests.`, 1 /* Info */);
-                    parsedResponse.responses.reduce((chain, response, index) => {
-                        const request = requestsChunk[index];
-                        Logger.write(`[${this.batchId}] (${(new Date()).getTime()}) Resolving batched request ${request.method} ${request.url}.`, 0 /* Verbose */);
-                        return chain.then(() => request.parser.parse(response).then(request.resolve).catch(request.reject));
-                    }, Promise.resolve());
-                }).catch(e => {
-                    throw e;
-                });
-            }
+    };
+    GraphBatch.prototype.executeImpl = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var client, requests, _loop_1, this_1;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        Logger.write("[" + this.batchId + "] (" + (new Date()).getTime() + ") Executing batch with " + this.requests.length + " requests.", 1 /* Info */);
+                        if (this.requests.length < 1) {
+                            Logger.write("Resolving empty batch.", 1 /* Info */);
+                            return [2 /*return*/, Promise.resolve()];
+                        }
+                        client = new GraphHttpClient(this.runtime);
+                        requests = this.requests.slice();
+                        _loop_1 = function () {
+                            var requestsChunk, batchRequest, batchOptions, queryUrl;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        requestsChunk = requests.splice(0, this_1.maxRequests);
+                                        batchRequest = {
+                                            requests: this_1.formatRequests(requestsChunk),
+                                        };
+                                        batchOptions = {
+                                            body: jsS(batchRequest),
+                                            headers: {
+                                                "Accept": "application/json",
+                                                "Content-Type": "application/json",
+                                            },
+                                            method: "POST",
+                                        };
+                                        Logger.write("[" + this_1.batchId + "] (" + (new Date()).getTime() + ") Sending batch request.", 1 /* Info */);
+                                        return [4 /*yield*/, toAbsoluteUrl(this_1.batchUrl, this_1.runtime)];
+                                    case 1:
+                                        queryUrl = _b.sent();
+                                        return [4 /*yield*/, client.fetch(queryUrl, batchOptions)
+                                                .then(function (r) { return r.json(); })
+                                                .then(function (j) { return _this.parseResponse(requestsChunk, j); })
+                                                .then(function (parsedResponse) {
+                                                Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched requests.", 1 /* Info */);
+                                                parsedResponse.responses.reduce(function (chain, response, index) {
+                                                    var request = requestsChunk[index];
+                                                    Logger.write("[" + _this.batchId + "] (" + (new Date()).getTime() + ") Resolving batched request " + request.method + " " + request.url + ".", 0 /* Verbose */);
+                                                    return chain.then(function () { return request.parser.parse(response).then(request.resolve).catch(request.reject); });
+                                                }, Promise.resolve());
+                                            }).catch(function (e) {
+                                                throw e;
+                                            })];
+                                    case 2:
+                                        _b.sent();
+                                        return [2 /*return*/];
+                                }
+                            });
+                        };
+                        this_1 = this;
+                        _a.label = 1;
+                    case 1:
+                        if (!(requests.length > 0)) return [3 /*break*/, 3];
+                        return [5 /*yield**/, _loop_1()];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 1];
+                    case 3: return [2 /*return*/];
+                }
+            });
         });
-    }
+    };
     /**
      * Urls come to the batch absolute, but the processor expects relative
      * @param url Url to ensure is relative
      */
-    makeUrlRelative(url) {
+    GraphBatch.prototype.makeUrlRelative = function (url) {
         if (!isUrlAbsolute(url)) {
             // already not absolute, just give it back
             return url;
         }
-        let index = url.indexOf("/v1.0/");
+        var index = url.indexOf("/v1.0/");
         if (index < 0) {
             index = url.indexOf("/beta/");
             if (index > -1) {
@@ -3757,18 +4521,19 @@ class GraphBatch extends Batch {
         }
         // no idea
         return url;
-    }
-    formatRequests(requests) {
-        return requests.map((reqInfo, index) => {
+    };
+    GraphBatch.prototype.formatRequests = function (requests) {
+        var _this = this;
+        return requests.map(function (reqInfo, index) {
             var _a;
-            let requestFragment = {
-                id: `${++index}`,
+            var requestFragment = {
+                id: "" + ++index,
                 method: reqInfo.method,
-                url: this.makeUrlRelative(reqInfo.url),
+                url: _this.makeUrlRelative(reqInfo.url),
             };
-            let headers = {};
+            var headers = {};
             // merge runtime headers
-            headers = util_assign(headers, (_a = this.runtime.get("graph")) === null || _a === void 0 ? void 0 : _a.headers);
+            headers = util_assign(headers, (_a = _this.runtime.get("graph")) === null || _a === void 0 ? void 0 : _a.headers);
             if (reqInfo.options !== undefined) {
                 // merge per request headers
                 if (reqInfo.options.headers !== undefined && reqInfo.options.headers !== null) {
@@ -3791,19 +4556,19 @@ class GraphBatch extends Batch {
             });
             return requestFragment;
         });
-    }
-    parseResponse(requests, graphResponse) {
-        return new Promise((resolve, reject) => {
+    };
+    GraphBatch.prototype.parseResponse = function (requests, graphResponse) {
+        return new Promise(function (resolve, reject) {
             // we need to see if we have an error and report that
             if (hOP(graphResponse, "error")) {
-                return reject(Error(`Error Porcessing Batch: (${graphResponse.error.code}) ${graphResponse.error.message}`));
+                return reject(Error("Error Porcessing Batch: (" + graphResponse.error.code + ") " + graphResponse.error.message));
             }
-            const parsedResponses = new Array(requests.length).fill(null);
-            for (let i = 0; i < graphResponse.responses.length; ++i) {
-                const response = graphResponse.responses[i];
+            var parsedResponses = new Array(requests.length).fill(null);
+            for (var i = 0; i < graphResponse.responses.length; ++i) {
+                var response = graphResponse.responses[i];
                 // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
                 // the array of requests and make it easier to map them by index
-                const responseId = parseInt(response.id, 10) - 1;
+                var responseId = parseInt(response.id, 10) - 1;
                 if (response.status === 204) {
                     parsedResponses[responseId] = new Response();
                 }
@@ -3816,30 +4581,35 @@ class GraphBatch extends Batch {
                 responses: parsedResponses,
             });
         });
-    }
-}
+    };
+    return GraphBatch;
+}(Batch));
+
 //# sourceMappingURL=batch.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/rest.js
 
 
 
 
-class GraphRest {
+var GraphRest = /** @class */ (function () {
     /**
      * Creates a new instance of the SPRest class
      *
      * @param options Additional options
      * @param baseUrl A string that should form the base part of the url
      */
-    constructor(_options = {}, _baseUrl = "v1.0", _runtime = DefaultRuntime) {
+    function GraphRest(_options, _baseUrl, _runtime) {
+        if (_options === void 0) { _options = {}; }
+        if (_baseUrl === void 0) { _baseUrl = "v1.0"; }
+        if (_runtime === void 0) { _runtime = DefaultRuntime; }
         this._options = _options;
         this._baseUrl = _baseUrl;
         this._runtime = _runtime;
     }
-    createBatch() {
+    GraphRest.prototype.createBatch = function () {
         return new GraphBatch().setRuntime(this._runtime);
-    }
-    setup(config) {
+    };
+    GraphRest.prototype.setup = function (config) {
         if (config.pageContext) {
             graphlibconfig_setup({
                 spfxContext: config,
@@ -3848,27 +4618,32 @@ class GraphRest {
         else {
             graphlibconfig_setup(config, this._runtime);
         }
-    }
-    createIsolated(init) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // merge our defaults
-            init = Object.assign({
-                baseUrl: "v1.0",
-                cloneGlobal: true,
-                config: {},
-                options: {},
-            }, init || {});
-            const { baseUrl, cloneGlobal, options, config } = init;
-            const runtime = cloneGlobal ? new Runtime(DefaultRuntime.export()) : new Runtime();
-            runtime.assign(config);
-            return new GraphRest(options, baseUrl, runtime);
+    };
+    GraphRest.prototype.createIsolated = function (init) {
+        return __awaiter(this, void 0, void 0, function () {
+            var baseUrl, cloneGlobal, options, config, runtime;
+            return __generator(this, function (_a) {
+                // merge our defaults
+                init = Object.assign({
+                    baseUrl: "v1.0",
+                    cloneGlobal: true,
+                    config: {},
+                    options: {},
+                }, init || {});
+                baseUrl = init.baseUrl, cloneGlobal = init.cloneGlobal, options = init.options, config = init.config;
+                runtime = cloneGlobal ? new Runtime(DefaultRuntime.export()) : new Runtime();
+                runtime.assign(config);
+                return [2 /*return*/, new GraphRest(options, baseUrl, runtime)];
+            });
         });
-    }
-    childConfigHook(callback) {
+    };
+    GraphRest.prototype.childConfigHook = function (callback) {
         return callback({ options: this._options, baseUrl: this._baseUrl, runtime: this._runtime });
-    }
-}
-const graph = new GraphRest();
+    };
+    return GraphRest;
+}());
+
+var graph = new GraphRest();
 //# sourceMappingURL=rest.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/directory-objects/index.js
 
@@ -3878,7 +4653,8 @@ Reflect.defineProperty(GraphRest.prototype, "directoryObjects", {
     configurable: true,
     enumerable: true,
     get: function () {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return this.childConfigHook(function (_a) {
+            var options = _a.options, baseUrl = _a.baseUrl, runtime = _a.runtime;
             return DirectoryObjects(baseUrl).configure(options).setRuntime(runtime);
         });
     },
@@ -3892,7 +4668,8 @@ Reflect.defineProperty(GraphRest.prototype, "groups", {
     configurable: true,
     enumerable: true,
     get: function () {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return this.childConfigHook(function (_a) {
+            var options = _a.options, baseUrl = _a.baseUrl, runtime = _a.runtime;
             return Groups(baseUrl).configure(options).setRuntime(runtime);
         });
     },
@@ -3905,95 +4682,162 @@ Reflect.defineProperty(GraphRest.prototype, "groups", {
 /**
  * Represents a insights entity
  */
-let _Insights = class _Insights extends _GraphQueryableInstance {
-    get trending() {
-        return TrendingInsights(this);
+var _Insights = /** @class */ (function (_super) {
+    __extends(_Insights, _super);
+    function _Insights() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    get used() {
-        return UsedInsights(this);
-    }
-    get shared() {
-        return SharedInsights(this);
-    }
-};
-_Insights = __decorate([
-    defaultPath("insights")
-], _Insights);
+    Object.defineProperty(_Insights.prototype, "trending", {
+        get: function () {
+            return TrendingInsights(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_Insights.prototype, "used", {
+        get: function () {
+            return UsedInsights(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_Insights.prototype, "shared", {
+        get: function () {
+            return SharedInsights(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Insights = __decorate([
+        defaultPath("insights")
+    ], _Insights);
+    return _Insights;
+}(_GraphQueryableInstance));
 
-const Insights = graphInvokableFactory(_Insights);
+var Insights = graphInvokableFactory(_Insights);
 /**
  * Describes a Trending Insight instance
  */
-class _TrendingInsight extends _GraphQueryableInstance {
-    get resource() {
-        return Resource(this);
+var _TrendingInsight = /** @class */ (function (_super) {
+    __extends(_TrendingInsight, _super);
+    function _TrendingInsight() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-}
-const TrendingInsight = graphInvokableFactory(_TrendingInsight);
+    Object.defineProperty(_TrendingInsight.prototype, "resource", {
+        get: function () {
+            return Resource(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return _TrendingInsight;
+}(_GraphQueryableInstance));
+
+var TrendingInsight = graphInvokableFactory(_TrendingInsight);
 /**
  * Describes a collection of Trending Insight objects
  *
  */
-let _TrendingInsights = class _TrendingInsights extends _GraphQueryableCollection {
-};
-_TrendingInsights = __decorate([
-    defaultPath("trending"),
-    getById(TrendingInsight)
-], _TrendingInsights);
+var _TrendingInsights = /** @class */ (function (_super) {
+    __extends(_TrendingInsights, _super);
+    function _TrendingInsights() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _TrendingInsights = __decorate([
+        defaultPath("trending"),
+        getById(TrendingInsight)
+    ], _TrendingInsights);
+    return _TrendingInsights;
+}(_GraphQueryableCollection));
 
-const TrendingInsights = graphInvokableFactory(_TrendingInsights);
+var TrendingInsights = graphInvokableFactory(_TrendingInsights);
 /**
  * Describes a Used Insight instance
  */
-class _UsedInsight extends _GraphQueryableInstance {
-    get resource() {
-        return Resource(this);
+var _UsedInsight = /** @class */ (function (_super) {
+    __extends(_UsedInsight, _super);
+    function _UsedInsight() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-}
-const UsedInsight = graphInvokableFactory(_UsedInsight);
+    Object.defineProperty(_UsedInsight.prototype, "resource", {
+        get: function () {
+            return Resource(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return _UsedInsight;
+}(_GraphQueryableInstance));
+
+var UsedInsight = graphInvokableFactory(_UsedInsight);
 /**
  * Describes a collection of Used Insight objects
  *
  */
-let _UsedInsights = class _UsedInsights extends _GraphQueryableCollection {
-};
-_UsedInsights = __decorate([
-    defaultPath("used"),
-    getById(UsedInsight)
-], _UsedInsights);
+var _UsedInsights = /** @class */ (function (_super) {
+    __extends(_UsedInsights, _super);
+    function _UsedInsights() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _UsedInsights = __decorate([
+        defaultPath("used"),
+        getById(UsedInsight)
+    ], _UsedInsights);
+    return _UsedInsights;
+}(_GraphQueryableCollection));
 
-const UsedInsights = graphInvokableFactory(_UsedInsights);
+var UsedInsights = graphInvokableFactory(_UsedInsights);
 /**
  * Describes a Shared Insight instance
  */
-class _SharedInsight extends _GraphQueryableInstance {
-    get resource() {
-        return Resource(this);
+var _SharedInsight = /** @class */ (function (_super) {
+    __extends(_SharedInsight, _super);
+    function _SharedInsight() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-}
-const SharedInsight = graphInvokableFactory(_SharedInsight);
+    Object.defineProperty(_SharedInsight.prototype, "resource", {
+        get: function () {
+            return Resource(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return _SharedInsight;
+}(_GraphQueryableInstance));
+
+var SharedInsight = graphInvokableFactory(_SharedInsight);
 /**
  * Describes a collection of Shared Insight objects
  *
  */
-let _SharedInsights = class _SharedInsights extends _GraphQueryableCollection {
-};
-_SharedInsights = __decorate([
-    defaultPath("shared"),
-    getById(SharedInsight)
-], _SharedInsights);
+var _SharedInsights = /** @class */ (function (_super) {
+    __extends(_SharedInsights, _super);
+    function _SharedInsights() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _SharedInsights = __decorate([
+        defaultPath("shared"),
+        getById(SharedInsight)
+    ], _SharedInsights);
+    return _SharedInsights;
+}(_GraphQueryableCollection));
 
-const SharedInsights = graphInvokableFactory(_SharedInsights);
+var SharedInsights = graphInvokableFactory(_SharedInsights);
 /**
  * Describes a Resource Entity instance
  */
-let _Resource = class _Resource extends _GraphQueryableInstance {
-};
-_Resource = __decorate([
-    defaultPath("resource")
-], _Resource);
+var _Resource = /** @class */ (function (_super) {
+    __extends(_Resource, _super);
+    function _Resource() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Resource = __decorate([
+        defaultPath("resource")
+    ], _Resource);
+    return _Resource;
+}(_GraphQueryableInstance));
 
-const Resource = graphInvokableFactory(_Resource);
+var Resource = graphInvokableFactory(_Resource);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/insights/users.js
 
@@ -4015,7 +4859,11 @@ addProp(_User, "insights", Insights);
 /**
  * Invitations
  */
-let _Invitations = class _Invitations extends _GraphQueryableCollection {
+var _Invitations = /** @class */ (function (_super) {
+    __extends(_Invitations, _super);
+    function _Invitations() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Create a new Invitation via invitation manager.
      *
@@ -4023,19 +4871,29 @@ let _Invitations = class _Invitations extends _GraphQueryableCollection {
      * @param inviteRedirectUrl The URL user should be redirected to once the invitation is redeemed.
      * @param additionalProperties A plain object collection of additional properties you want to set in the invitation
      */
-    create(invitedUserEmailAddress, inviteRedirectUrl, additionalProperties = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const postBody = util_assign({ inviteRedirectUrl, invitedUserEmailAddress }, additionalProperties);
-            const data = yield graphPost(this, body(postBody));
-            return { data };
+    _Invitations.prototype.create = function (invitedUserEmailAddress, inviteRedirectUrl, additionalProperties) {
+        if (additionalProperties === void 0) { additionalProperties = {}; }
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = util_assign({ inviteRedirectUrl: inviteRedirectUrl, invitedUserEmailAddress: invitedUserEmailAddress }, additionalProperties);
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, { data: data }];
+                }
+            });
         });
-    }
-};
-_Invitations = __decorate([
-    defaultPath("invitations")
-], _Invitations);
+    };
+    _Invitations = __decorate([
+        defaultPath("invitations")
+    ], _Invitations);
+    return _Invitations;
+}(_GraphQueryableCollection));
 
-const Invitations = graphInvokableFactory(_Invitations);
+var Invitations = graphInvokableFactory(_Invitations);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/invitations/index.js
 
@@ -4045,7 +4903,8 @@ Reflect.defineProperty(GraphRest.prototype, "invitations", {
     configurable: true,
     enumerable: true,
     get: function () {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return this.childConfigHook(function (_a) {
+            var options = _a.options, baseUrl = _a.baseUrl, runtime = _a.runtime;
             return Invitations(baseUrl).configure(options).setRuntime(runtime);
         });
     },
@@ -4060,19 +4919,29 @@ Reflect.defineProperty(GraphRest.prototype, "invitations", {
 /**
  * Member
  */
-class _Member extends _GraphQueryableInstance {
+var _Member = /** @class */ (function (_super) {
+    __extends(_Member, _super);
+    function _Member() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Removes this Member
      */
-    remove() {
+    _Member.prototype.remove = function () {
         return graphDelete(this.clone(Member, "$ref"));
-    }
-}
-const Member = graphInvokableFactory(_Member);
+    };
+    return _Member;
+}(_GraphQueryableInstance));
+
+var Member = graphInvokableFactory(_Member);
 /**
  * Members
  */
-let _Members = class _Members extends _GraphQueryableCollection {
+var _Members = /** @class */ (function (_super) {
+    __extends(_Members, _super);
+    function _Members() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through
      * the members navigation property. You can add users or other groups.
@@ -4080,16 +4949,17 @@ let _Members = class _Members extends _GraphQueryableCollection {
      *
      * @param id Full @odata.id of the directoryObject, user, or group object you want to add (ex: `https://graph.microsoft.com/v1.0/directoryObjects/${id}`)
      */
-    add(id) {
+    _Members.prototype.add = function (id) {
         return graphPost(this.clone(Members, "$ref"), body({ "@odata.id": id }));
-    }
-};
-_Members = __decorate([
-    defaultPath("members"),
-    getById(Member)
-], _Members);
+    };
+    _Members = __decorate([
+        defaultPath("members"),
+        getById(Member)
+    ], _Members);
+    return _Members;
+}(_GraphQueryableCollection));
 
-const Members = graphInvokableFactory(_Members);
+var Members = graphInvokableFactory(_Members);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/members/groups.js
 
@@ -4109,50 +4979,77 @@ addProp(_Group, "members", Members);
 /**
  * Message
  */
-class _Message extends _GraphQueryableInstance {
-}
-const Message = graphInvokableFactory(_Message);
+var _Message = /** @class */ (function (_super) {
+    __extends(_Message, _super);
+    function _Message() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return _Message;
+}(_GraphQueryableInstance));
+
+var Message = graphInvokableFactory(_Message);
 /**
  * Messages
  */
-let _Messages = class _Messages extends _GraphQueryableCollection {
-};
-_Messages = __decorate([
-    defaultPath("messages"),
-    getById(Message),
-    addable()
-], _Messages);
+var _Messages = /** @class */ (function (_super) {
+    __extends(_Messages, _super);
+    function _Messages() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Messages = __decorate([
+        defaultPath("messages"),
+        getById(Message),
+        addable()
+    ], _Messages);
+    return _Messages;
+}(_GraphQueryableCollection));
 
-const Messages = graphInvokableFactory(_Messages);
+var Messages = graphInvokableFactory(_Messages);
 /**
  * MailFolder
  */
-class _MailFolder extends _GraphQueryableInstance {
-}
-const MailFolder = graphInvokableFactory(_MailFolder);
+var _MailFolder = /** @class */ (function (_super) {
+    __extends(_MailFolder, _super);
+    function _MailFolder() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return _MailFolder;
+}(_GraphQueryableInstance));
+
+var MailFolder = graphInvokableFactory(_MailFolder);
 /**
  * MailFolders
  */
-let _MailFolders = class _MailFolders extends _GraphQueryableCollection {
-};
-_MailFolders = __decorate([
-    defaultPath("mailFolders"),
-    getById(MailFolder),
-    addable()
-], _MailFolders);
+var _MailFolders = /** @class */ (function (_super) {
+    __extends(_MailFolders, _super);
+    function _MailFolders() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _MailFolders = __decorate([
+        defaultPath("mailFolders"),
+        getById(MailFolder),
+        addable()
+    ], _MailFolders);
+    return _MailFolders;
+}(_GraphQueryableCollection));
 
-const MailFolders = graphInvokableFactory(_MailFolders);
+var MailFolders = graphInvokableFactory(_MailFolders);
 /**
  * MailboxSettings
  */
-let _MailboxSettings = class _MailboxSettings extends _GraphQueryableInstance {
-};
-_MailboxSettings = __decorate([
-    defaultPath("mailboxSettings"),
-    updateable()
-], _MailboxSettings);
+var _MailboxSettings = /** @class */ (function (_super) {
+    __extends(_MailboxSettings, _super);
+    function _MailboxSettings() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _MailboxSettings = __decorate([
+        defaultPath("mailboxSettings"),
+        updateable()
+    ], _MailboxSettings);
+    return _MailboxSettings;
+}(_GraphQueryableInstance));
 
-const MailboxSettings = graphInvokableFactory(_MailboxSettings);
+var MailboxSettings = graphInvokableFactory(_MailboxSettings);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/messages/users.js
 
@@ -4181,116 +5078,188 @@ _User.prototype.sendMail = function (message) {
  * Describes a Drive instance
  *
  */
-let _Drive = class _Drive extends _GraphQueryableInstance {
-    get root() {
-        return Root(this);
+var _Drive = /** @class */ (function (_super) {
+    __extends(_Drive, _super);
+    function _Drive() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    get list() {
-        return this.clone(GraphQueryableInstance, "list");
-    }
-    get recent() {
-        return DriveItems(this, "recent");
-    }
-    get sharedWithMe() {
-        return DriveItems(this, "sharedWithMe");
-    }
-    getItemById(id) {
+    Object.defineProperty(_Drive.prototype, "root", {
+        get: function () {
+            return Root(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_Drive.prototype, "list", {
+        get: function () {
+            return this.clone(GraphQueryableInstance, "list");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_Drive.prototype, "recent", {
+        get: function () {
+            return DriveItems(this, "recent");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_Drive.prototype, "sharedWithMe", {
+        get: function () {
+            return DriveItems(this, "sharedWithMe");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Drive.prototype.getItemById = function (id) {
         return DriveItem(this, combine("items", id));
-    }
-};
-_Drive = __decorate([
-    defaultPath("drive")
-], _Drive);
+    };
+    _Drive = __decorate([
+        defaultPath("drive")
+    ], _Drive);
+    return _Drive;
+}(_GraphQueryableInstance));
 
-const Drive = graphInvokableFactory(_Drive);
+var Drive = graphInvokableFactory(_Drive);
 /**
  * Describes a collection of Drive objects
  *
  */
-let _Drives = class _Drives extends _GraphQueryableCollection {
-};
-_Drives = __decorate([
-    defaultPath("drives"),
-    getById(Drive)
-], _Drives);
+var _Drives = /** @class */ (function (_super) {
+    __extends(_Drives, _super);
+    function _Drives() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Drives.prototype.getById = function (id) {
+        return Drive(this.getUrlBase(), "drives/" + id);
+    };
+    _Drives = __decorate([
+        defaultPath("drives")
+    ], _Drives);
+    return _Drives;
+}(_GraphQueryableCollection));
 
-const Drives = graphInvokableFactory(_Drives);
+var Drives = graphInvokableFactory(_Drives);
 /**
  * Describes a Root instance
  *
  */
-let _Root = class _Root extends _GraphQueryableInstance {
-    get children() {
-        return DriveItems(this, "children");
+var _Root = /** @class */ (function (_super) {
+    __extends(_Root, _super);
+    function _Root() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    search(query) {
-        const searcher = this.clone(Root);
-        searcher.query.set("search", `'${query}'`);
+    Object.defineProperty(_Root.prototype, "children", {
+        get: function () {
+            return DriveItems(this, "children");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Root.prototype.search = function (query) {
+        var searcher = this.clone(Root);
+        searcher.query.set("search", "'" + query + "'");
         return searcher();
-    }
-    get thumbnails() {
-        return this.clone(GraphQueryableCollection, "thumbnails");
-    }
-};
-_Root = __decorate([
-    defaultPath("root")
-], _Root);
+    };
+    Object.defineProperty(_Root.prototype, "thumbnails", {
+        get: function () {
+            return this.clone(GraphQueryableCollection, "thumbnails");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Root = __decorate([
+        defaultPath("root")
+    ], _Root);
+    return _Root;
+}(_GraphQueryableInstance));
 
-const Root = graphInvokableFactory(_Root);
+var Root = graphInvokableFactory(_Root);
 /**
  * Describes a Drive Item instance
  *
  */
-let _DriveItem = class _DriveItem extends _GraphQueryableInstance {
-    get children() {
-        return DriveItems(this, "children");
+var _DriveItem = /** @class */ (function (_super) {
+    __extends(_DriveItem, _super);
+    function _DriveItem() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    get thumbnails() {
-        return this.clone(GraphQueryableCollection, "thumbnails");
-    }
-    get versions() {
-        return this.clone(GraphQueryableCollection, "versions");
-    }
-    move(parentReference, name) {
-        return graphPatch(this, body(util_assign(parentReference, { name })));
-    }
-    getContent() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const info = yield this.get();
-            const r = yield safeGlobal.fetch(info["@microsoft.graph.downloadUrl"], {
-                headers: {
-                    "accept": "application/json",
-                },
-                method: "GET",
-                responseType: "arraybuffer",
+    Object.defineProperty(_DriveItem.prototype, "children", {
+        get: function () {
+            return DriveItems(this, "children");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_DriveItem.prototype, "thumbnails", {
+        get: function () {
+            return this.clone(GraphQueryableCollection, "thumbnails");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_DriveItem.prototype, "versions", {
+        get: function () {
+            return this.clone(GraphQueryableCollection, "versions");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _DriveItem.prototype.move = function (parentReference, name) {
+        return graphPatch(this, body(util_assign(parentReference, { name: name })));
+    };
+    _DriveItem.prototype.getContent = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var info, r, p;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.get()];
+                    case 1:
+                        info = _a.sent();
+                        return [4 /*yield*/, safeGlobal.fetch(info["@microsoft.graph.downloadUrl"], {
+                                headers: {
+                                    "accept": "application/json",
+                                },
+                                method: "GET",
+                                responseType: "arraybuffer",
+                            })];
+                    case 2:
+                        r = _a.sent();
+                        p = new BlobParser();
+                        return [2 /*return*/, p.parse(r)];
+                }
             });
-            const p = new BlobParser();
-            return p.parse(r);
         });
-    }
-    setContent(content) {
+    };
+    _DriveItem.prototype.setContent = function (content) {
         return graphPut(this.clone(DriveItem, "content"), {
             body: content,
         });
-    }
-};
-_DriveItem = __decorate([
-    deleteable(),
-    updateable()
-], _DriveItem);
+    };
+    _DriveItem = __decorate([
+        deleteable(),
+        updateable()
+    ], _DriveItem);
+    return _DriveItem;
+}(_GraphQueryableInstance));
 
-const DriveItem = graphInvokableFactory(_DriveItem);
+var DriveItem = graphInvokableFactory(_DriveItem);
 /**
  * Describes a collection of Drive Item objects
  *
  */
-let _DriveItems = class _DriveItems extends _GraphQueryableCollection {
-};
-_DriveItems = __decorate([
-    getById(DriveItem)
-], _DriveItems);
+var _DriveItems = /** @class */ (function (_super) {
+    __extends(_DriveItems, _super);
+    function _DriveItems() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _DriveItems = __decorate([
+        getById(DriveItem)
+    ], _DriveItems);
+    return _DriveItems;
+}(_GraphQueryableCollection));
 
-const DriveItems = graphInvokableFactory(_DriveItems);
+var DriveItems = graphInvokableFactory(_DriveItems);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/onedrive/users.js
 
@@ -4312,90 +5281,147 @@ addProp(_User, "drives", Drives);
 /**
  * Represents a onenote entity
  */
-let _OneNote = class _OneNote extends _GraphQueryableInstance {
-    get notebooks() {
-        return Notebooks(this);
+var _OneNote = /** @class */ (function (_super) {
+    __extends(_OneNote, _super);
+    function _OneNote() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    get sections() {
-        return Sections(this);
-    }
-    get pages() {
-        return this.clone(GraphQueryableCollection, "pages");
-    }
-};
-_OneNote = __decorate([
-    defaultPath("onenote")
-], _OneNote);
+    Object.defineProperty(_OneNote.prototype, "notebooks", {
+        get: function () {
+            return Notebooks(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_OneNote.prototype, "sections", {
+        get: function () {
+            return Sections(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_OneNote.prototype, "pages", {
+        get: function () {
+            return this.clone(GraphQueryableCollection, "pages");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _OneNote = __decorate([
+        defaultPath("onenote")
+    ], _OneNote);
+    return _OneNote;
+}(_GraphQueryableInstance));
 
-const OneNote = graphInvokableFactory(_OneNote);
+var OneNote = graphInvokableFactory(_OneNote);
 /**
  * Describes a notebook instance
  *
  */
-class _Notebook extends _GraphQueryableInstance {
-    get sections() {
-        return Sections(this);
+var _Notebook = /** @class */ (function (_super) {
+    __extends(_Notebook, _super);
+    function _Notebook() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-}
-const Notebook = graphInvokableFactory(_Notebook);
+    Object.defineProperty(_Notebook.prototype, "sections", {
+        get: function () {
+            return Sections(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return _Notebook;
+}(_GraphQueryableInstance));
+
+var Notebook = graphInvokableFactory(_Notebook);
 /**
  * Describes a collection of Notebook objects
  *
  */
-let _Notebooks = class _Notebooks extends _GraphQueryableCollection {
+var _Notebooks = /** @class */ (function (_super) {
+    __extends(_Notebooks, _super);
+    function _Notebooks() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Create a new notebook as specified in the request body.
      *
      * @param displayName Notebook display name
      */
-    add(displayName) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const data = yield graphPost(this, body({ displayName }));
-            return {
-                data,
-                notebook: this.getById(data.id),
-            };
+    _Notebooks.prototype.add = function (displayName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, graphPost(this, body({ displayName: displayName }))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                notebook: this.getById(data.id),
+                            }];
+                }
+            });
         });
-    }
-};
-_Notebooks = __decorate([
-    defaultPath("notebooks"),
-    getById(Notebook)
-], _Notebooks);
+    };
+    _Notebooks = __decorate([
+        defaultPath("notebooks"),
+        getById(Notebook)
+    ], _Notebooks);
+    return _Notebooks;
+}(_GraphQueryableCollection));
 
-const Notebooks = graphInvokableFactory(_Notebooks);
+var Notebooks = graphInvokableFactory(_Notebooks);
 /**
  * Describes a sections instance
  */
-class _Section extends _GraphQueryableInstance {
-}
-const Section = graphInvokableFactory(_Section);
+var _Section = /** @class */ (function (_super) {
+    __extends(_Section, _super);
+    function _Section() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return _Section;
+}(_GraphQueryableInstance));
+
+var Section = graphInvokableFactory(_Section);
 /**
  * Describes a collection of Sections objects
  *
  */
-let _Sections = class _Sections extends _GraphQueryableCollection {
+var _Sections = /** @class */ (function (_super) {
+    __extends(_Sections, _super);
+    function _Sections() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Adds a new section
      *
      * @param displayName New section display name
      */
-    add(displayName) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const data = yield graphPost(this, body({ displayName }));
-            return {
-                data,
-                section: this.getById(data.id),
-            };
+    _Sections.prototype.add = function (displayName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, graphPost(this, body({ displayName: displayName }))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                section: this.getById(data.id),
+                            }];
+                }
+            });
         });
-    }
-};
-_Sections = __decorate([
-    defaultPath("sections"),
-    getById(Section)
-], _Sections);
+    };
+    _Sections = __decorate([
+        defaultPath("sections"),
+        getById(Section)
+    ], _Sections);
+    return _Sections;
+}(_GraphQueryableCollection));
 
-const Sections = graphInvokableFactory(_Sections);
+var Sections = graphInvokableFactory(_Sections);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/onenote/users.js
 
@@ -4413,33 +5439,38 @@ addProp(_User, "onenote", OneNote);
 
 
 
-let _Photo = class _Photo extends _GraphQueryableInstance {
+var _Photo = /** @class */ (function (_super) {
+    __extends(_Photo, _super);
+    function _Photo() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Gets the image bytes as a blob (browser)
      */
-    getBlob() {
+    _Photo.prototype.getBlob = function () {
         return this.clone(Photo, "$value", false).usingParser(new BlobParser())();
-    }
+    };
     /**
      * Gets the image file bytes as a Buffer (node.js)
      */
-    getBuffer() {
+    _Photo.prototype.getBuffer = function () {
         return this.clone(Photo, "$value", false).usingParser(new BufferParser())();
-    }
+    };
     /**
      * Sets the file bytes
      *
      * @param content Image file contents, max 4 MB
      */
-    setContent(content) {
+    _Photo.prototype.setContent = function (content) {
         return graphPatch(this.clone(Photo, "$value", false), { body: content });
-    }
-};
-_Photo = __decorate([
-    defaultPath("photo")
-], _Photo);
+    };
+    _Photo = __decorate([
+        defaultPath("photo")
+    ], _Photo);
+    return _Photo;
+}(_GraphQueryableInstance));
 
-const Photo = graphInvokableFactory(_Photo);
+var Photo = graphInvokableFactory(_Photo);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/photos/groups.js
 
@@ -4469,108 +5500,177 @@ addProp(_User, "photo", Photo);
 /**
  * Planner
  */
-let _Planner = class _Planner extends _GraphQueryableInstance {
-    // Should Only be able to get by id, or else error occur
-    get plans() {
-        return Plans(this);
+var _Planner = /** @class */ (function (_super) {
+    __extends(_Planner, _super);
+    function _Planner() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    // Should Only be able to get by id, or else error occur
-    get tasks() {
-        return Tasks(this);
-    }
-    // Should Only be able to get by id, or else error occur
-    get buckets() {
-        return Buckets(this);
-    }
-};
-_Planner = __decorate([
-    defaultPath("planner")
-], _Planner);
+    Object.defineProperty(_Planner.prototype, "plans", {
+        // Should Only be able to get by id, or else error occur
+        get: function () {
+            return Plans(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_Planner.prototype, "tasks", {
+        // Should Only be able to get by id, or else error occur
+        get: function () {
+            return Tasks(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_Planner.prototype, "buckets", {
+        // Should Only be able to get by id, or else error occur
+        get: function () {
+            return Buckets(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Planner = __decorate([
+        defaultPath("planner")
+    ], _Planner);
+    return _Planner;
+}(_GraphQueryableInstance));
 
-const Planner = graphInvokableFactory(_Planner);
+var Planner = graphInvokableFactory(_Planner);
 /**
  * Details
  */
-let _PlanDetails = class _PlanDetails extends _GraphQueryableInstance {
-};
-_PlanDetails = __decorate([
-    defaultPath("details"),
-    updateableWithETag()
-], _PlanDetails);
+var _PlanDetails = /** @class */ (function (_super) {
+    __extends(_PlanDetails, _super);
+    function _PlanDetails() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _PlanDetails = __decorate([
+        defaultPath("details"),
+        updateableWithETag()
+    ], _PlanDetails);
+    return _PlanDetails;
+}(_GraphQueryableInstance));
 
-const PlanDetails = graphInvokableFactory(_PlanDetails);
+var PlanDetails = graphInvokableFactory(_PlanDetails);
 /**
  * Plan
  */
-let _Plan = class _Plan extends _GraphQueryableInstance {
-    get tasks() {
-        return Tasks(this);
+var _Plan = /** @class */ (function (_super) {
+    __extends(_Plan, _super);
+    function _Plan() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    get buckets() {
-        return Buckets(this);
-    }
-    get details() {
-        return PlanDetails(this);
-    }
-};
-_Plan = __decorate([
-    updateableWithETag(),
-    deleteableWithETag()
-], _Plan);
+    Object.defineProperty(_Plan.prototype, "tasks", {
+        get: function () {
+            return Tasks(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_Plan.prototype, "buckets", {
+        get: function () {
+            return Buckets(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(_Plan.prototype, "details", {
+        get: function () {
+            return PlanDetails(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Plan = __decorate([
+        updateableWithETag(),
+        deleteableWithETag()
+    ], _Plan);
+    return _Plan;
+}(_GraphQueryableInstance));
 
-const Plan = graphInvokableFactory(_Plan);
-let _Plans = class _Plans extends _GraphQueryableCollection {
+var Plan = graphInvokableFactory(_Plan);
+var _Plans = /** @class */ (function (_super) {
+    __extends(_Plans, _super);
+    function _Plans() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Create a new Planner Plan.
      *
      * @param owner Id of Group object.
      * @param title The Title of the Plan.
      */
-    add(owner, title) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const data = yield graphPost(this, body({ owner, title }));
-            return {
-                data,
-                plan: this.getById(data.id),
-            };
+    _Plans.prototype.add = function (owner, title) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, graphPost(this, body({ owner: owner, title: title }))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                plan: this.getById(data.id),
+                            }];
+                }
+            });
         });
-    }
-};
-_Plans = __decorate([
-    defaultPath("plans"),
-    getById(Plan)
-], _Plans);
+    };
+    _Plans = __decorate([
+        defaultPath("plans"),
+        getById(Plan)
+    ], _Plans);
+    return _Plans;
+}(_GraphQueryableCollection));
 
-const Plans = graphInvokableFactory(_Plans);
+var Plans = graphInvokableFactory(_Plans);
 /**
  * Details
  */
-let _TaskDetails = class _TaskDetails extends _GraphQueryableInstance {
-};
-_TaskDetails = __decorate([
-    defaultPath("details"),
-    updateableWithETag()
-], _TaskDetails);
+var _TaskDetails = /** @class */ (function (_super) {
+    __extends(_TaskDetails, _super);
+    function _TaskDetails() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _TaskDetails = __decorate([
+        defaultPath("details"),
+        updateableWithETag()
+    ], _TaskDetails);
+    return _TaskDetails;
+}(_GraphQueryableInstance));
 
-const TaskDetails = graphInvokableFactory(_TaskDetails);
+var TaskDetails = graphInvokableFactory(_TaskDetails);
 /**
  * Task
  */
-let _Task = class _Task extends _GraphQueryableInstance {
-    get details() {
-        return TaskDetails(this);
+var _Task = /** @class */ (function (_super) {
+    __extends(_Task, _super);
+    function _Task() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-};
-_Task = __decorate([
-    updateableWithETag(),
-    deleteableWithETag()
-], _Task);
+    Object.defineProperty(_Task.prototype, "details", {
+        get: function () {
+            return TaskDetails(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Task = __decorate([
+        updateableWithETag(),
+        deleteableWithETag()
+    ], _Task);
+    return _Task;
+}(_GraphQueryableInstance));
 
-const Task = graphInvokableFactory(_Task);
+var Task = graphInvokableFactory(_Task);
 /**
  * Tasks
  */
-let _Tasks = class _Tasks extends _GraphQueryableCollection {
+var _Tasks = /** @class */ (function (_super) {
+    __extends(_Tasks, _super);
+    function _Tasks() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Create a new Planner Task.
      *
@@ -4579,49 +5679,71 @@ let _Tasks = class _Tasks extends _GraphQueryableCollection {
      * @param assignments Assign the task
      * @param bucketId Id of Bucket
      */
-    add(planId, title, assignments, bucketId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let postBody = util_assign({
-                planId,
-                title,
-            }, assignments);
-            if (bucketId) {
-                postBody = util_assign(postBody, {
-                    bucketId: bucketId,
-                });
-            }
-            const data = yield graphPost(this, body(postBody));
-            return {
-                data,
-                task: this.getById(data.id),
-            };
+    _Tasks.prototype.add = function (planId, title, assignments, bucketId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = util_assign({
+                            planId: planId,
+                            title: title,
+                        }, assignments);
+                        if (bucketId) {
+                            postBody = util_assign(postBody, {
+                                bucketId: bucketId,
+                            });
+                        }
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                task: this.getById(data.id),
+                            }];
+                }
+            });
         });
-    }
-};
-_Tasks = __decorate([
-    defaultPath("tasks"),
-    getById(Task)
-], _Tasks);
+    };
+    _Tasks = __decorate([
+        defaultPath("tasks"),
+        getById(Task)
+    ], _Tasks);
+    return _Tasks;
+}(_GraphQueryableCollection));
 
-const Tasks = graphInvokableFactory(_Tasks);
+var Tasks = graphInvokableFactory(_Tasks);
 /**
  * Bucket
  */
-let _Bucket = class _Bucket extends _GraphQueryableInstance {
-    get tasks() {
-        return Tasks(this);
+var _Bucket = /** @class */ (function (_super) {
+    __extends(_Bucket, _super);
+    function _Bucket() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-};
-_Bucket = __decorate([
-    updateableWithETag(),
-    deleteableWithETag()
-], _Bucket);
+    Object.defineProperty(_Bucket.prototype, "tasks", {
+        get: function () {
+            return Tasks(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    _Bucket = __decorate([
+        updateableWithETag(),
+        deleteableWithETag()
+    ], _Bucket);
+    return _Bucket;
+}(_GraphQueryableInstance));
 
-const Bucket = graphInvokableFactory(_Bucket);
+var Bucket = graphInvokableFactory(_Bucket);
 /**
  * Buckets
  */
-let _Buckets = class _Buckets extends _GraphQueryableCollection {
+var _Buckets = /** @class */ (function (_super) {
+    __extends(_Buckets, _super);
+    function _Buckets() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Create a new Bucket.
      *
@@ -4629,27 +5751,36 @@ let _Buckets = class _Buckets extends _GraphQueryableCollection {
      * @param planId The Id of the Plan.
      * @param oderHint Hint used to order items of this type in a list view.
      */
-    add(name, planId, orderHint) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const postBody = {
-                name: name,
-                orderHint: orderHint ? orderHint : "",
-                planId: planId,
-            };
-            const data = yield graphPost(this, body(postBody));
-            return {
-                bucket: this.getById(data.id),
-                data,
-            };
+    _Buckets.prototype.add = function (name, planId, orderHint) {
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = {
+                            name: name,
+                            orderHint: orderHint ? orderHint : "",
+                            planId: planId,
+                        };
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                bucket: this.getById(data.id),
+                                data: data,
+                            }];
+                }
+            });
         });
-    }
-};
-_Buckets = __decorate([
-    defaultPath("buckets"),
-    getById(Bucket)
-], _Buckets);
+    };
+    _Buckets = __decorate([
+        defaultPath("buckets"),
+        getById(Bucket)
+    ], _Buckets);
+    return _Buckets;
+}(_GraphQueryableCollection));
 
-const Buckets = graphInvokableFactory(_Buckets);
+var Buckets = graphInvokableFactory(_Buckets);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/planner/groups.js
 
@@ -4673,7 +5804,8 @@ Reflect.defineProperty(GraphRest.prototype, "planner", {
     configurable: true,
     enumerable: true,
     get: function () {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return this.childConfigHook(function (_a) {
+            var options = _a.options, baseUrl = _a.baseUrl, runtime = _a.runtime;
             return Planner(baseUrl).configure(options).setRuntime(runtime);
         });
     },
@@ -4688,26 +5820,38 @@ Reflect.defineProperty(GraphRest.prototype, "planner", {
 /**
  * Search
  */
-let _Search = class _Search extends _GraphQueryableInstance {
-    executeQuery(request) {
-        return graphPost(Search(this, "query"), body(request));
+var _Search = /** @class */ (function (_super) {
+    __extends(_Search, _super);
+    function _Search() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-};
-_Search = __decorate([
-    defaultPath("search")
-], _Search);
+    _Search.prototype.executeQuery = function (request) {
+        return graphPost(Search(this, "query"), body(request));
+    };
+    _Search = __decorate([
+        defaultPath("search")
+    ], _Search);
+    return _Search;
+}(_GraphQueryableInstance));
 
-const Search = graphInvokableFactory(_Search);
+var Search = graphInvokableFactory(_Search);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/search/index.js
 
 
 
 
-GraphRest.prototype.query = function (...requests) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
-            return Search(baseUrl).configure(options).setRuntime(runtime).executeQuery({ requests });
+GraphRest.prototype.query = function () {
+    var requests = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        requests[_i] = arguments[_i];
+    }
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2 /*return*/, this.childConfigHook(function (_a) {
+                    var options = _a.options, baseUrl = _a.baseUrl, runtime = _a.runtime;
+                    return Search(baseUrl).configure(options).setRuntime(runtime).executeQuery({ requests: requests });
+                })];
         });
     });
 };
@@ -4722,18 +5866,27 @@ GraphRest.prototype.query = function (...requests) {
 /**
  * Subscription
  */
-let _Subscription = class _Subscription extends _GraphQueryableInstance {
-};
-_Subscription = __decorate([
-    deleteable(),
-    updateable()
-], _Subscription);
+var _Subscription = /** @class */ (function (_super) {
+    __extends(_Subscription, _super);
+    function _Subscription() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Subscription = __decorate([
+        deleteable(),
+        updateable()
+    ], _Subscription);
+    return _Subscription;
+}(_GraphQueryableInstance));
 
-const Subscription = graphInvokableFactory(_Subscription);
+var Subscription = graphInvokableFactory(_Subscription);
 /**
  * Subscriptions
  */
-let _Subscriptions = class _Subscriptions extends _GraphQueryableCollection {
+var _Subscriptions = /** @class */ (function (_super) {
+    __extends(_Subscriptions, _super);
+    function _Subscriptions() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Create a new Subscription.
      *
@@ -4744,28 +5897,38 @@ let _Subscriptions = class _Subscriptions extends _GraphQueryableCollection {
      * @param props A plain object collection of additional properties you want to set on the new subscription
      *
      */
-    add(changeType, notificationUrl, resource, expirationDateTime, props = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const postBody = util_assign({
-                changeType,
-                expirationDateTime,
-                notificationUrl,
-                resource,
-            }, props);
-            const data = yield graphPost(this, body(postBody));
-            return {
-                data,
-                subscription: this.getById(data.id),
-            };
+    _Subscriptions.prototype.add = function (changeType, notificationUrl, resource, expirationDateTime, props) {
+        if (props === void 0) { props = {}; }
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = util_assign({
+                            changeType: changeType,
+                            expirationDateTime: expirationDateTime,
+                            notificationUrl: notificationUrl,
+                            resource: resource,
+                        }, props);
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                subscription: this.getById(data.id),
+                            }];
+                }
+            });
         });
-    }
-};
-_Subscriptions = __decorate([
-    defaultPath("subscriptions"),
-    getById(Subscription)
-], _Subscriptions);
+    };
+    _Subscriptions = __decorate([
+        defaultPath("subscriptions"),
+        getById(Subscription)
+    ], _Subscriptions);
+    return _Subscriptions;
+}(_GraphQueryableCollection));
 
-const Subscriptions = graphInvokableFactory(_Subscriptions);
+var Subscriptions = graphInvokableFactory(_Subscriptions);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/subscriptions/index.js
 
@@ -4775,7 +5938,8 @@ Reflect.defineProperty(GraphRest.prototype, "subscriptions", {
     configurable: true,
     enumerable: true,
     get: function () {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return this.childConfigHook(function (_a) {
+            var options = _a.options, baseUrl = _a.baseUrl, runtime = _a.runtime;
             return Subscriptions(baseUrl).configure(options).setRuntime(runtime);
         });
     },
@@ -4792,24 +5956,33 @@ Reflect.defineProperty(GraphRest.prototype, "subscriptions", {
 /**
  * Represents a Microsoft Team
  */
-let _Team = class _Team extends _GraphQueryableInstance {
-    get channels() {
-        return Channels(this);
+var _Team = /** @class */ (function (_super) {
+    __extends(_Team, _super);
+    function _Team() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    Object.defineProperty(_Team.prototype, "channels", {
+        get: function () {
+            return Channels(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
      * Archives this Team
      *
      * @param shouldSetSpoSiteReadOnlyForMembers Should members have Read-only in associated Team Site
      */
-    archive(shouldSetSpoSiteReadOnlyForMembers = false) {
-        return graphPost(this.clone(Team, "archive"), body({ shouldSetSpoSiteReadOnlyForMembers }));
-    }
+    _Team.prototype.archive = function (shouldSetSpoSiteReadOnlyForMembers) {
+        if (shouldSetSpoSiteReadOnlyForMembers === void 0) { shouldSetSpoSiteReadOnlyForMembers = false; }
+        return graphPost(this.clone(Team, "archive"), body({ shouldSetSpoSiteReadOnlyForMembers: shouldSetSpoSiteReadOnlyForMembers }));
+    };
     /**
     * Unarchives this Team
     */
-    unarchive() {
+    _Team.prototype.unarchive = function () {
         return graphPost(this.clone(Team, "unarchive"));
-    }
+    };
     /**
      * Clones this Team
      * @param name The name of the new Group
@@ -4817,154 +5990,216 @@ let _Team = class _Team extends _GraphQueryableInstance {
      * @param partsToClone Parts to clone ex: apps,tabs,settings,channels,members
      * @param visibility Set visibility to public or private
      */
-    cloneTeam(name, description = "", partsToClone = "apps,tabs,settings,channels,members", visibility = "private") {
-        return __awaiter(this, void 0, void 0, function* () {
-            const postBody = {
-                description: description ? description : "",
-                displayName: name,
-                mailNickname: name,
-                partsToClone,
-                visibility,
-            };
-            const parser = new LambdaParser((r) => Promise.resolve(r.headers));
-            const creator = Teams(this, "clone").usingParser(parser);
-            // const creator = Team(this, "clone").usingParser({
-            //     parse(r: Response) {
-            //         return (r.headers.has("location")) ? Promise.resolve(r.headers) : Promise.resolve(r);
-            //     },
-            // });
-            const data = yield graphPost(creator, body(postBody));
-            const result = { teamId: "", operationId: "" };
-            if (data.has("location")) {
-                const location = data.get("location");
-                const locationArray = location.split("/");
-                if (locationArray.length === 3) {
-                    result.teamId = locationArray[1].substring(locationArray[1].indexOf("'") + 1, locationArray[1].lastIndexOf("'"));
-                    result.operationId = locationArray[2].substring(locationArray[2].indexOf("'") + 1, locationArray[2].lastIndexOf("'"));
+    _Team.prototype.cloneTeam = function (name, description, partsToClone, visibility) {
+        if (description === void 0) { description = ""; }
+        if (partsToClone === void 0) { partsToClone = "apps,tabs,settings,channels,members"; }
+        if (visibility === void 0) { visibility = "private"; }
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, parser, creator, data, result, location_1, locationArray;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = {
+                            description: description ? description : "",
+                            displayName: name,
+                            mailNickname: name,
+                            partsToClone: partsToClone,
+                            visibility: visibility,
+                        };
+                        parser = new LambdaParser(function (r) { return Promise.resolve(r.headers); });
+                        creator = Teams(this, "clone").usingParser(parser);
+                        return [4 /*yield*/, graphPost(creator, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        result = { teamId: "", operationId: "" };
+                        if (data.has("location")) {
+                            location_1 = data.get("location");
+                            locationArray = location_1.split("/");
+                            if (locationArray.length === 3) {
+                                result.teamId = locationArray[1].substring(locationArray[1].indexOf("'") + 1, locationArray[1].lastIndexOf("'"));
+                                result.operationId = locationArray[2].substring(locationArray[2].indexOf("'") + 1, locationArray[2].lastIndexOf("'"));
+                            }
+                        }
+                        return [2 /*return*/, result];
                 }
-            }
-            return result;
+            });
         });
-    }
-    getOperationById(id) {
-        return GraphQueryableInstance(this, `operations/${id}`)();
-    }
-};
-_Team = __decorate([
-    defaultPath("team"),
-    updateable()
-], _Team);
+    };
+    _Team.prototype.getOperationById = function (id) {
+        return GraphQueryableInstance(this, "operations/" + id)();
+    };
+    _Team = __decorate([
+        defaultPath("team"),
+        updateable()
+    ], _Team);
+    return _Team;
+}(_GraphQueryableInstance));
 
-const Team = graphInvokableFactory(_Team);
+var Team = graphInvokableFactory(_Team);
 /**
  * Teams
  */
-let _Teams = class _Teams extends _GraphQueryableCollection {
-    create(team) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const parser = new LambdaParser((r) => Promise.resolve(r.headers));
-            const creator = Teams(this, null).usingParser(parser);
-            const data = yield graphPost(creator, body(team));
-            const result = { teamId: "", operationId: "" };
-            if (data.has("location")) {
-                const location = data.get("location");
-                const locationArray = location.split("/");
-                if (locationArray.length === 3) {
-                    result.teamId = locationArray[1].substring(locationArray[1].indexOf("'") + 1, locationArray[1].lastIndexOf("'"));
-                    result.operationId = locationArray[2].substring(locationArray[2].indexOf("'") + 1, locationArray[2].lastIndexOf("'"));
-                }
-            }
-            return result;
-        });
+var _Teams = /** @class */ (function (_super) {
+    __extends(_Teams, _super);
+    function _Teams() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-};
-_Teams = __decorate([
-    defaultPath("teams"),
-    getById(Team)
-], _Teams);
+    _Teams.prototype.create = function (team) {
+        return __awaiter(this, void 0, void 0, function () {
+            var parser, creator, data, result, location_2, locationArray;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        parser = new LambdaParser(function (r) { return Promise.resolve(r.headers); });
+                        creator = Teams(this, null).usingParser(parser);
+                        return [4 /*yield*/, graphPost(creator, body(team))];
+                    case 1:
+                        data = _a.sent();
+                        result = { teamId: "", operationId: "" };
+                        if (data.has("location")) {
+                            location_2 = data.get("location");
+                            locationArray = location_2.split("/");
+                            if (locationArray.length === 3) {
+                                result.teamId = locationArray[1].substring(locationArray[1].indexOf("'") + 1, locationArray[1].lastIndexOf("'"));
+                                result.operationId = locationArray[2].substring(locationArray[2].indexOf("'") + 1, locationArray[2].lastIndexOf("'"));
+                            }
+                        }
+                        return [2 /*return*/, result];
+                }
+            });
+        });
+    };
+    _Teams = __decorate([
+        defaultPath("teams"),
+        getById(Team)
+    ], _Teams);
+    return _Teams;
+}(_GraphQueryableCollection));
 
-const Teams = graphInvokableFactory(_Teams);
+var Teams = graphInvokableFactory(_Teams);
 /**
  * Channel
  */
-class _Channel extends _GraphQueryableInstance {
-    get tabs() {
-        return Tabs(this);
+var _Channel = /** @class */ (function (_super) {
+    __extends(_Channel, _super);
+    function _Channel() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-}
-const Channel = graphInvokableFactory(_Channel);
+    Object.defineProperty(_Channel.prototype, "tabs", {
+        get: function () {
+            return Tabs(this);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return _Channel;
+}(_GraphQueryableInstance));
+
+var Channel = graphInvokableFactory(_Channel);
 /**
  * Channels
  */
-let _Channels = class _Channels extends _GraphQueryableCollection {
+var _Channels = /** @class */ (function (_super) {
+    __extends(_Channels, _super);
+    function _Channels() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Creates a new Channel in the Team
      * @param displayName The display name of the new channel
      * @param description Optional description of the channel
      *
      */
-    add(displayName, description = "") {
-        return __awaiter(this, void 0, void 0, function* () {
-            const postBody = {
-                description,
-                displayName,
-            };
-            const data = yield graphPost(this, body(postBody));
-            return {
-                channel: this.getById(data.id),
-                data,
-            };
+    _Channels.prototype.add = function (displayName, description) {
+        if (description === void 0) { description = ""; }
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = {
+                            description: description,
+                            displayName: displayName,
+                        };
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                channel: this.getById(data.id),
+                                data: data,
+                            }];
+                }
+            });
         });
-    }
-};
-_Channels = __decorate([
-    defaultPath("channels"),
-    getById(Channel)
-], _Channels);
+    };
+    _Channels = __decorate([
+        defaultPath("channels"),
+        getById(Channel)
+    ], _Channels);
+    return _Channels;
+}(_GraphQueryableCollection));
 
-const Channels = graphInvokableFactory(_Channels);
+var Channels = graphInvokableFactory(_Channels);
 /**
  * Tab
  */
-let _Tab = class _Tab extends _GraphQueryableInstance {
-};
-_Tab = __decorate([
-    defaultPath("tab"),
-    updateable(),
-    deleteable()
-], _Tab);
+var _Tab = /** @class */ (function (_super) {
+    __extends(_Tab, _super);
+    function _Tab() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    _Tab = __decorate([
+        defaultPath("tab"),
+        updateable(),
+        deleteable()
+    ], _Tab);
+    return _Tab;
+}(_GraphQueryableInstance));
 
-const Tab = graphInvokableFactory(_Tab);
+var Tab = graphInvokableFactory(_Tab);
 /**
  * Tabs
  */
-let _Tabs = class _Tabs extends _GraphQueryableCollection {
+var _Tabs = /** @class */ (function (_super) {
+    __extends(_Tabs, _super);
+    function _Tabs() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     /**
      * Adds a tab to the channel
      * @param name The name of the new Tab
      * @param appUrl The url to an app ex: https://graph.microsoft.com/beta/appCatalogs/teamsApps/12345678-9abc-def0-123456789a
      * @param tabsConfiguration visit https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/teamstab_add for reference
      */
-    add(name, appUrl, properties) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const postBody = util_assign({
-                displayName: name,
-                "teamsApp@odata.bind": appUrl,
-            }, properties);
-            const data = yield graphPost(this, body(postBody));
-            return {
-                data,
-                tab: this.getById(data.id),
-            };
+    _Tabs.prototype.add = function (name, appUrl, properties) {
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = util_assign({
+                            displayName: name,
+                            "teamsApp@odata.bind": appUrl,
+                        }, properties);
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                tab: this.getById(data.id),
+                            }];
+                }
+            });
         });
-    }
-};
-_Tabs = __decorate([
-    defaultPath("tabs"),
-    getById(Tab)
-], _Tabs);
+    };
+    _Tabs = __decorate([
+        defaultPath("tabs"),
+        getById(Tab)
+    ], _Tabs);
+    return _Tabs;
+}(_GraphQueryableCollection));
 
-const Tabs = graphInvokableFactory(_Tabs);
+var Tabs = graphInvokableFactory(_Tabs);
 //# sourceMappingURL=types.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/graph/teams/users.js
 
@@ -4983,19 +6218,27 @@ addProp(_User, "joinedTeams", Teams, "joinedTeams");
 
 addProp(_Group, "team", Team);
 _Group.prototype.createTeam = function (props) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const data = yield graphPut(this.clone(Group, "team"), body(props));
-        return {
-            data,
-            team: this.team,
-        };
+    return __awaiter(this, void 0, void 0, function () {
+        var data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, graphPut(this.clone(Group, "team"), body(props))];
+                case 1:
+                    data = _a.sent();
+                    return [2 /*return*/, {
+                            data: data,
+                            team: this.team,
+                        }];
+            }
+        });
     });
 };
 Reflect.defineProperty(GraphRest.prototype, "teams", {
     configurable: true,
     enumerable: true,
     get: function () {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return this.childConfigHook(function (_a) {
+            var options = _a.options, baseUrl = _a.baseUrl, runtime = _a.runtime;
             return Teams(baseUrl).configure(options).setRuntime(runtime);
         });
     },
@@ -5009,7 +6252,8 @@ Reflect.defineProperty(GraphRest.prototype, "me", {
     configurable: true,
     enumerable: true,
     get: function () {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return this.childConfigHook(function (_a) {
+            var options = _a.options, baseUrl = _a.baseUrl, runtime = _a.runtime;
             return User(baseUrl, "me").configure(options).setRuntime(runtime);
         });
     },
@@ -5018,7 +6262,8 @@ Reflect.defineProperty(GraphRest.prototype, "users", {
     configurable: true,
     enumerable: true,
     get: function () {
-        return this.childConfigHook(({ options, baseUrl, runtime }) => {
+        return this.childConfigHook(function (_a) {
+            var options = _a.options, baseUrl = _a.baseUrl, runtime = _a.runtime;
             return Users(baseUrl).configure(options).setRuntime(runtime);
         });
     },
@@ -5075,80 +6320,7 @@ Reflect.defineProperty(GraphRest.prototype, "users", {
 ;// CONCATENATED MODULE: ./pnpjs-sources/index-graph.ts
 
 
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(154);
+/******/ 	return __webpack_exports__;
 /******/ })()
 ;
 });

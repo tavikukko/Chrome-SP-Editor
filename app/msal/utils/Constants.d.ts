@@ -133,7 +133,3 @@ export declare const FramePrefix: {
     ID_TOKEN_FRAME: string;
     TOKEN_FRAME: string;
 };
-/**
- * MSAL JS Library Version
- */
-export declare function libraryVersion(): string;

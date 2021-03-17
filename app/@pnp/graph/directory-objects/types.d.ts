@@ -26,7 +26,7 @@ export declare class _DirectoryObject<GetType = IDirectoryObjectType> extends _G
 }
 export interface IDirectoryObject extends _DirectoryObject, IDeleteable {
 }
-export declare const DirectoryObject: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDirectoryObject & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const DirectoryObject: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDirectoryObject & import("@pnp/odata").IInvokable<any>;
 /**
  * Describes a collection of Directory Objects
  *
@@ -43,7 +43,7 @@ export declare class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends
 }
 export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObjectType> {
 }
-export declare const DirectoryObjects: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDirectoryObjects & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const DirectoryObjects: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDirectoryObjects & import("@pnp/odata").IInvokable<any>;
 /**
  * DirectoryObjectTypes
  */

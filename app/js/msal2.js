@@ -1,4 +1,4 @@
-/*! msal v1.4.4 2020-11-11 */
+/*! msal v1.4.8 2021-03-16 */
 'use strict';
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -9,98 +9,14 @@
 		exports["Msal"] = factory();
 	else
 		root["Msal"] = factory();
-})(window, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 28);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+})(self, function() {
+return /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
 
-"use strict";
+/***/ 795:
+/***/ ((__unused_webpack_module, exports) => {
+
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -117,7 +33,7 @@ See the Apache Version 2.0 License for specific language governing permissions
 and limitations under the License.
 ***************************************************************************** */
 /* global Reflect, Promise */
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 var extendStatics = function (d, b) {
     extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -395,1146 +311,516 @@ exports.__importDefault = __importDefault;
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 630:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var CryptoUtils_1 = __webpack_require__(453);
+var StringUtils_1 = __webpack_require__(454);
 /**
- * @hidden
- * Constants
+ * accountIdentifier       combination of idToken.uid and idToken.utid
+ * homeAccountIdentifier   combination of clientInfo.uid and clientInfo.utid
+ * userName                idToken.preferred_username
+ * name                    idToken.name
+ * idToken                 idToken
+ * sid                     idToken.sid - session identifier
+ * environment             idtoken.issuer (the authority that issues the token)
  */
-var Constants = /** @class */ (function () {
-    function Constants() {
-    }
-    Object.defineProperty(Constants, "libraryName", {
-        get: function () { return "Msal.js"; } // used in telemetry sdkName
-        ,
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "claims", {
-        get: function () { return "claims"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "clientId", {
-        get: function () { return "clientId"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "adalIdToken", {
-        get: function () { return "adal.idtoken"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "cachePrefix", {
-        get: function () { return "msal"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "scopes", {
-        get: function () { return "scopes"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "no_account", {
-        get: function () { return "NO_ACCOUNT"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "upn", {
-        get: function () { return "upn"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "domain_hint", {
-        get: function () { return "domain_hint"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "prompt_select_account", {
-        get: function () { return "&prompt=select_account"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "prompt_none", {
-        get: function () { return "&prompt=none"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "prompt", {
-        get: function () { return "prompt"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "response_mode_fragment", {
-        get: function () { return "&response_mode=fragment"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "resourceDelimiter", {
-        get: function () { return "|"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "cacheDelimiter", {
-        get: function () { return "."; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "popUpWidth", {
-        get: function () { return this._popUpWidth; },
-        set: function (width) {
-            this._popUpWidth = width;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "popUpHeight", {
-        get: function () { return this._popUpHeight; },
-        set: function (height) {
-            this._popUpHeight = height;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "login", {
-        get: function () { return "LOGIN"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "renewToken", {
-        get: function () { return "RENEW_TOKEN"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "unknown", {
-        get: function () { return "UNKNOWN"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "ADFS", {
-        get: function () { return "adfs"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "homeAccountIdentifier", {
-        get: function () { return "homeAccountIdentifier"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "common", {
-        get: function () { return "common"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "openidScope", {
-        get: function () { return "openid"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "profileScope", {
-        get: function () { return "profile"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "oidcScopes", {
-        get: function () { return [this.openidScope, this.profileScope]; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "interactionTypeRedirect", {
-        get: function () { return "redirectInteraction"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "interactionTypePopup", {
-        get: function () { return "popupInteraction"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "interactionTypeSilent", {
-        get: function () { return "silentInteraction"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "inProgress", {
-        get: function () { return "inProgress"; },
-        enumerable: true,
-        configurable: true
-    });
-    Constants._popUpWidth = 483;
-    Constants._popUpHeight = 600;
-    return Constants;
-}());
-exports.Constants = Constants;
-/**
- * Keys in the hashParams
- */
-var ServerHashParamKeys;
-(function (ServerHashParamKeys) {
-    ServerHashParamKeys["SCOPE"] = "scope";
-    ServerHashParamKeys["STATE"] = "state";
-    ServerHashParamKeys["ERROR"] = "error";
-    ServerHashParamKeys["ERROR_DESCRIPTION"] = "error_description";
-    ServerHashParamKeys["ACCESS_TOKEN"] = "access_token";
-    ServerHashParamKeys["ID_TOKEN"] = "id_token";
-    ServerHashParamKeys["EXPIRES_IN"] = "expires_in";
-    ServerHashParamKeys["SESSION_STATE"] = "session_state";
-    ServerHashParamKeys["CLIENT_INFO"] = "client_info";
-})(ServerHashParamKeys = exports.ServerHashParamKeys || (exports.ServerHashParamKeys = {}));
-/**
- * @hidden
- * @ignore
- * response_type from OpenIDConnect
- * References: https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html & https://tools.ietf.org/html/rfc6749#section-4.2.1
- *
- */
-exports.ResponseTypes = {
-    id_token: "id_token",
-    token: "token",
-    id_token_token: "id_token token"
-};
-/**
- * @hidden
- * CacheKeys for MSAL
- */
-var TemporaryCacheKeys;
-(function (TemporaryCacheKeys) {
-    TemporaryCacheKeys["AUTHORITY"] = "authority";
-    TemporaryCacheKeys["ACQUIRE_TOKEN_ACCOUNT"] = "acquireTokenAccount";
-    TemporaryCacheKeys["SESSION_STATE"] = "session.state";
-    TemporaryCacheKeys["STATE_LOGIN"] = "state.login";
-    TemporaryCacheKeys["STATE_ACQ_TOKEN"] = "state.acquireToken";
-    TemporaryCacheKeys["STATE_RENEW"] = "state.renew";
-    TemporaryCacheKeys["NONCE_IDTOKEN"] = "nonce.idtoken";
-    TemporaryCacheKeys["LOGIN_REQUEST"] = "login.request";
-    TemporaryCacheKeys["RENEW_STATUS"] = "token.renew.status";
-    TemporaryCacheKeys["URL_HASH"] = "urlHash";
-    TemporaryCacheKeys["INTERACTION_STATUS"] = "interaction_status";
-    TemporaryCacheKeys["REDIRECT_REQUEST"] = "redirect_request";
-})(TemporaryCacheKeys = exports.TemporaryCacheKeys || (exports.TemporaryCacheKeys = {}));
-var PersistentCacheKeys;
-(function (PersistentCacheKeys) {
-    PersistentCacheKeys["IDTOKEN"] = "idtoken";
-    PersistentCacheKeys["CLIENT_INFO"] = "client.info";
-})(PersistentCacheKeys = exports.PersistentCacheKeys || (exports.PersistentCacheKeys = {}));
-var ErrorCacheKeys;
-(function (ErrorCacheKeys) {
-    ErrorCacheKeys["LOGIN_ERROR"] = "login.error";
-    ErrorCacheKeys["ERROR"] = "error";
-    ErrorCacheKeys["ERROR_DESC"] = "error.description";
-})(ErrorCacheKeys = exports.ErrorCacheKeys || (exports.ErrorCacheKeys = {}));
-exports.DEFAULT_AUTHORITY = "https://login.microsoftonline.com/common/";
-exports.AAD_INSTANCE_DISCOVERY_ENDPOINT = exports.DEFAULT_AUTHORITY + "/discovery/instance?api-version=1.1&authorization_endpoint=";
-exports.WELL_KNOWN_SUFFIX = ".well-known/openid-configuration";
-/**
- * @hidden
- * SSO Types - generated to populate hints
- */
-var SSOTypes;
-(function (SSOTypes) {
-    SSOTypes["ACCOUNT"] = "account";
-    SSOTypes["SID"] = "sid";
-    SSOTypes["LOGIN_HINT"] = "login_hint";
-    SSOTypes["ORGANIZATIONS"] = "organizations";
-    SSOTypes["ID_TOKEN"] = "id_token";
-    SSOTypes["ACCOUNT_ID"] = "accountIdentifier";
-    SSOTypes["HOMEACCOUNT_ID"] = "homeAccountIdentifier";
-})(SSOTypes = exports.SSOTypes || (exports.SSOTypes = {}));
-/**
- * @hidden
- */
-exports.BlacklistedEQParams = [
-    SSOTypes.SID,
-    SSOTypes.LOGIN_HINT
-];
-exports.NetworkRequestType = {
-    GET: "GET",
-    POST: "POST"
-};
-/**
- * we considered making this "enum" in the request instead of string, however it looks like the allowed list of
- * prompt values kept changing over past couple of years. There are some undocumented prompt values for some
- * internal partners too, hence the choice of generic "string" type instead of the "enum"
- * @hidden
- */
-exports.PromptState = {
-    LOGIN: "login",
-    SELECT_ACCOUNT: "select_account",
-    CONSENT: "consent",
-    NONE: "none"
-};
-/**
- * Frame name prefixes for the hidden iframe created in silent frames
- */
-exports.FramePrefix = {
-    ID_TOKEN_FRAME: "msalIdTokenFrame",
-    TOKEN_FRAME: "msalRenewFrame"
-};
-/**
- * MSAL JS Library Version
- */
-function libraryVersion() {
-    return "1.4.4";
-}
-exports.libraryVersion = libraryVersion;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @hidden
- */
-var StringUtils = /** @class */ (function () {
-    function StringUtils() {
+var Account = /** @class */ (function () {
+    /**
+     * Creates an Account Object
+     * @praram accountIdentifier
+     * @param homeAccountIdentifier
+     * @param userName
+     * @param name
+     * @param idToken
+     * @param sid
+     * @param environment
+     */
+    function Account(accountIdentifier, homeAccountIdentifier, userName, name, idTokenClaims, sid, environment) {
+        this.accountIdentifier = accountIdentifier;
+        this.homeAccountIdentifier = homeAccountIdentifier;
+        this.userName = userName;
+        this.name = name;
+        // will be deprecated soon
+        this.idToken = idTokenClaims;
+        this.idTokenClaims = idTokenClaims;
+        this.sid = sid;
+        this.environment = environment;
     }
     /**
-     * Check if a string is empty
+     * @hidden
+     * @param idToken
+     * @param clientInfo
+     */
+    Account.createAccount = function (idToken, clientInfo) {
+        // create accountIdentifier
+        var accountIdentifier = idToken.objectId || idToken.subject;
+        // create homeAccountIdentifier
+        var uid = clientInfo ? clientInfo.uid : "";
+        var utid = clientInfo ? clientInfo.utid : "";
+        var homeAccountIdentifier;
+        if (!StringUtils_1.StringUtils.isEmpty(uid)) {
+            homeAccountIdentifier = StringUtils_1.StringUtils.isEmpty(utid) ? CryptoUtils_1.CryptoUtils.base64Encode(uid) : CryptoUtils_1.CryptoUtils.base64Encode(uid) + "." + CryptoUtils_1.CryptoUtils.base64Encode(utid);
+        }
+        return new Account(accountIdentifier, homeAccountIdentifier, idToken.preferredName, idToken.name, idToken.claims, idToken.sid, idToken.issuer);
+    };
+    /**
+     * Utils function to compare two Account objects - used to check if the same user account is logged in
      *
-     * @param str
+     * @param a1: Account object
+     * @param a2: Account object
      */
-    StringUtils.isEmpty = function (str) {
-        return (typeof str === "undefined" || !str || 0 === str.length);
-    };
-    /**
-     * Check if a string's value is a valid JSON object
-     *
-     * @param str
-     */
-    StringUtils.validateAndParseJsonCacheKey = function (str) {
-        try {
-            var parsedKey = JSON.parse(str);
-            /**
-             * There are edge cases in which JSON.parse will successfully parse a non-valid JSON object
-             * (e.g. JSON.parse will parse an escaped string into an unescaped string), so adding a type check
-             * of the parsed value is necessary in order to be certain that the string represents a valid JSON object.
-             *
-             */
-            return (parsedKey && typeof parsedKey === "object") ? parsedKey : null;
-        }
-        catch (error) {
-            return null;
-        }
-    };
-    return StringUtils;
-}());
-exports.StringUtils = StringUtils;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @hidden
- */
-var CryptoUtils = /** @class */ (function () {
-    function CryptoUtils() {
-    }
-    /**
-     * Creates a new random GUID
-     * @returns string (GUID)
-     */
-    CryptoUtils.createNewGuid = function () {
-        /*
-         * RFC4122: The version 4 UUID is meant for generating UUIDs from truly-random or
-         * pseudo-random numbers.
-         * The algorithm is as follows:
-         *     Set the two most significant bits (bits 6 and 7) of the
-         *        clock_seq_hi_and_reserved to zero and one, respectively.
-         *     Set the four most significant bits (bits 12 through 15) of the
-         *        time_hi_and_version field to the 4-bit version number from
-         *        Section 4.1.3. Version4
-         *     Set all the other bits to randomly (or pseudo-randomly) chosen
-         *     values.
-         * UUID                   = time-low "-" time-mid "-"time-high-and-version "-"clock-seq-reserved and low(2hexOctet)"-" node
-         * time-low               = 4hexOctet
-         * time-mid               = 2hexOctet
-         * time-high-and-version  = 2hexOctet
-         * clock-seq-and-reserved = hexOctet:
-         * clock-seq-low          = hexOctet
-         * node                   = 6hexOctet
-         * Format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
-         * y could be 1000, 1001, 1010, 1011 since most significant two bits needs to be 10
-         * y values are 8, 9, A, B
-         */
-        var cryptoObj = window.crypto; // for IE 11
-        if (cryptoObj && cryptoObj.getRandomValues) {
-            var buffer = new Uint8Array(16);
-            cryptoObj.getRandomValues(buffer);
-            // buffer[6] and buffer[7] represents the time_hi_and_version field. We will set the four most significant bits (4 through 7) of buffer[6] to represent decimal number 4 (UUID version number).
-            buffer[6] |= 0x40; // buffer[6] | 01000000 will set the 6 bit to 1.
-            buffer[6] &= 0x4f; // buffer[6] & 01001111 will set the 4, 5, and 7 bit to 0 such that bits 4-7 == 0100 = "4".
-            // buffer[8] represents the clock_seq_hi_and_reserved field. We will set the two most significant bits (6 and 7) of the clock_seq_hi_and_reserved to zero and one, respectively.
-            buffer[8] |= 0x80; // buffer[8] | 10000000 will set the 7 bit to 1.
-            buffer[8] &= 0xbf; // buffer[8] & 10111111 will set the 6 bit to 0.
-            return CryptoUtils.decimalToHex(buffer[0]) + CryptoUtils.decimalToHex(buffer[1])
-                + CryptoUtils.decimalToHex(buffer[2]) + CryptoUtils.decimalToHex(buffer[3])
-                + "-" + CryptoUtils.decimalToHex(buffer[4]) + CryptoUtils.decimalToHex(buffer[5])
-                + "-" + CryptoUtils.decimalToHex(buffer[6]) + CryptoUtils.decimalToHex(buffer[7])
-                + "-" + CryptoUtils.decimalToHex(buffer[8]) + CryptoUtils.decimalToHex(buffer[9])
-                + "-" + CryptoUtils.decimalToHex(buffer[10]) + CryptoUtils.decimalToHex(buffer[11])
-                + CryptoUtils.decimalToHex(buffer[12]) + CryptoUtils.decimalToHex(buffer[13])
-                + CryptoUtils.decimalToHex(buffer[14]) + CryptoUtils.decimalToHex(buffer[15]);
-        }
-        else {
-            var guidHolder = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
-            var hex = "0123456789abcdef";
-            var r = 0;
-            var guidResponse = "";
-            for (var i = 0; i < 36; i++) {
-                if (guidHolder[i] !== "-" && guidHolder[i] !== "4") {
-                    // each x and y needs to be random
-                    r = Math.random() * 16 | 0;
-                }
-                if (guidHolder[i] === "x") {
-                    guidResponse += hex[r];
-                }
-                else if (guidHolder[i] === "y") {
-                    // clock-seq-and-reserved first hex is filtered and remaining hex values are random
-                    r &= 0x3; // bit and with 0011 to set pos 2 to zero ?0??
-                    r |= 0x8; // set pos 3 to 1 as 1???
-                    guidResponse += hex[r];
-                }
-                else {
-                    guidResponse += guidHolder[i];
-                }
-            }
-            return guidResponse;
-        }
-    };
-    /**
-     * verifies if a string is  GUID
-     * @param guid
-     */
-    CryptoUtils.isGuid = function (guid) {
-        var regexGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-        return regexGuid.test(guid);
-    };
-    /**
-     * Decimal to Hex
-     *
-     * @param num
-     */
-    CryptoUtils.decimalToHex = function (num) {
-        var hex = num.toString(16);
-        while (hex.length < 2) {
-            hex = "0" + hex;
-        }
-        return hex;
-    };
-    // See: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Solution_4_%E2%80%93_escaping_the_string_before_encoding_it
-    /**
-     * encoding string to base64 - platform specific check
-     *
-     * @param input
-     */
-    CryptoUtils.base64Encode = function (input) {
-        return btoa(encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
-            return String.fromCharCode(Number("0x" + p1));
-        }));
-    };
-    /**
-     * Decodes a base64 encoded string.
-     *
-     * @param input
-     */
-    CryptoUtils.base64Decode = function (input) {
-        var encodedString = input.replace(/-/g, "+").replace(/_/g, "/");
-        switch (encodedString.length % 4) {
-            case 0:
-                break;
-            case 2:
-                encodedString += "==";
-                break;
-            case 3:
-                encodedString += "=";
-                break;
-            default:
-                throw new Error("Invalid base64 string");
-        }
-        return decodeURIComponent(atob(encodedString).split("").map(function (c) {
-            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(""));
-    };
-    /**
-     * deserialize a string
-     *
-     * @param query
-     */
-    CryptoUtils.deserialize = function (query) {
-        var match; // Regex for replacing addition symbol with a space
-        var pl = /\+/g;
-        var search = /([^&=]+)=([^&]*)/g;
-        var decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); };
-        var obj = {};
-        match = search.exec(query);
-        while (match) {
-            obj[decode(match[1])] = decode(match[2]);
-            match = search.exec(query);
-        }
-        return obj;
-    };
-    return CryptoUtils;
-}());
-exports.CryptoUtils = CryptoUtils;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Constants_1 = __webpack_require__(1);
-var ScopeSet_1 = __webpack_require__(7);
-var StringUtils_1 = __webpack_require__(2);
-var CryptoUtils_1 = __webpack_require__(3);
-/**
- * @hidden
- */
-var UrlUtils = /** @class */ (function () {
-    function UrlUtils() {
-    }
-    /**
-     * generates the URL with QueryString Parameters
-     * @param scopes
-     */
-    UrlUtils.createNavigateUrl = function (serverRequestParams) {
-        var str = this.createNavigationUrlString(serverRequestParams);
-        var authEndpoint = serverRequestParams.authorityInstance.AuthorizationEndpoint;
-        // if the endpoint already has queryparams, lets add to it, otherwise add the first one
-        if (authEndpoint.indexOf("?") < 0) {
-            authEndpoint += "?";
-        }
-        else {
-            authEndpoint += "&";
-        }
-        var requestUrl = "" + authEndpoint + str.join("&");
-        return requestUrl;
-    };
-    /**
-     * Generate the array of all QueryStringParams to be sent to the server
-     * @param scopes
-     */
-    UrlUtils.createNavigationUrlString = function (serverRequestParams) {
-        var scopes = ScopeSet_1.ScopeSet.appendDefaultScopes(serverRequestParams.scopes);
-        var str = [];
-        str.push("response_type=" + serverRequestParams.responseType);
-        str.push("scope=" + encodeURIComponent(ScopeSet_1.ScopeSet.parseScope(scopes)));
-        str.push("client_id=" + encodeURIComponent(serverRequestParams.clientId));
-        str.push("redirect_uri=" + encodeURIComponent(serverRequestParams.redirectUri));
-        str.push("state=" + encodeURIComponent(serverRequestParams.state));
-        str.push("nonce=" + encodeURIComponent(serverRequestParams.nonce));
-        str.push("client_info=1");
-        str.push("x-client-SKU=" + serverRequestParams.xClientSku);
-        str.push("x-client-Ver=" + serverRequestParams.xClientVer);
-        if (serverRequestParams.promptValue) {
-            str.push("prompt=" + encodeURIComponent(serverRequestParams.promptValue));
-        }
-        if (serverRequestParams.claimsValue) {
-            str.push("claims=" + encodeURIComponent(serverRequestParams.claimsValue));
-        }
-        if (serverRequestParams.queryParameters) {
-            str.push(serverRequestParams.queryParameters);
-        }
-        if (serverRequestParams.extraQueryParameters) {
-            str.push(serverRequestParams.extraQueryParameters);
-        }
-        str.push("client-request-id=" + encodeURIComponent(serverRequestParams.correlationId));
-        return str;
-    };
-    /**
-     * Returns current window URL as redirect uri
-     */
-    UrlUtils.getCurrentUrl = function () {
-        return window.location.href.split("?")[0].split("#")[0];
-    };
-    /**
-     * Returns given URL with query string removed
-     */
-    UrlUtils.removeHashFromUrl = function (url) {
-        return url.split("#")[0];
-    };
-    /**
-     * Given a url like https://a:b/common/d?e=f#g, and a tenantId, returns https://a:b/tenantId/d
-     * @param href The url
-     * @param tenantId The tenant id to replace
-     */
-    UrlUtils.replaceTenantPath = function (url, tenantId) {
-        var lowerCaseUrl = url.toLowerCase();
-        var urlObject = this.GetUrlComponents(lowerCaseUrl);
-        var pathArray = urlObject.PathSegments;
-        if (tenantId && (pathArray.length !== 0 && (pathArray[0] === Constants_1.Constants.common || pathArray[0] === Constants_1.SSOTypes.ORGANIZATIONS))) {
-            pathArray[0] = tenantId;
-        }
-        return this.constructAuthorityUriFromObject(urlObject, pathArray);
-    };
-    UrlUtils.constructAuthorityUriFromObject = function (urlObject, pathArray) {
-        return this.CanonicalizeUri(urlObject.Protocol + "//" + urlObject.HostNameAndPort + "/" + pathArray.join("/"));
-    };
-    /**
-     * Checks if an authority is common (ex. https://a:b/common/)
-     * @param url The url
-     * @returns true if authority is common and false otherwise
-     */
-    UrlUtils.isCommonAuthority = function (url) {
-        var authority = this.CanonicalizeUri(url);
-        var pathArray = this.GetUrlComponents(authority).PathSegments;
-        return (pathArray.length !== 0 && pathArray[0] === Constants_1.Constants.common);
-    };
-    /**
-     * Checks if an authority is for organizations (ex. https://a:b/organizations/)
-     * @param url The url
-     * @returns true if authority is for  and false otherwise
-     */
-    UrlUtils.isOrganizationsAuthority = function (url) {
-        var authority = this.CanonicalizeUri(url);
-        var pathArray = this.GetUrlComponents(authority).PathSegments;
-        return (pathArray.length !== 0 && pathArray[0] === Constants_1.SSOTypes.ORGANIZATIONS);
-    };
-    /**
-     * Parses out the components from a url string.
-     * @returns An object with the various components. Please cache this value insted of calling this multiple times on the same url.
-     */
-    UrlUtils.GetUrlComponents = function (url) {
-        if (!url) {
-            throw "Url required";
-        }
-        // https://gist.github.com/curtisz/11139b2cfcaef4a261e0
-        var regEx = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
-        var match = url.match(regEx);
-        if (!match || match.length < 6) {
-            throw "Valid url required";
-        }
-        var urlComponents = {
-            Protocol: match[1],
-            HostNameAndPort: match[4],
-            AbsolutePath: match[5]
-        };
-        var pathSegments = urlComponents.AbsolutePath.split("/");
-        pathSegments = pathSegments.filter(function (val) { return val && val.length > 0; }); // remove empty elements
-        urlComponents.PathSegments = pathSegments;
-        if (match[6]) {
-            urlComponents.Search = match[6];
-        }
-        if (match[8]) {
-            urlComponents.Hash = match[8];
-        }
-        return urlComponents;
-    };
-    /**
-     * Given a url or path, append a trailing slash if one doesnt exist
-     *
-     * @param url
-     */
-    UrlUtils.CanonicalizeUri = function (url) {
-        if (url) {
-            url = url.toLowerCase();
-        }
-        if (url && !UrlUtils.endsWith(url, "/")) {
-            url += "/";
-        }
-        return url;
-    };
-    /**
-     * Checks to see if the url ends with the suffix
-     * Required because we are compiling for es5 instead of es6
-     * @param url
-     * @param str
-     */
-    // TODO: Rename this, not clear what it is supposed to do
-    UrlUtils.endsWith = function (url, suffix) {
-        if (!url || !suffix) {
+    Account.compareAccounts = function (a1, a2) {
+        if (!a1 || !a2) {
             return false;
         }
-        return url.indexOf(suffix, url.length - suffix.length) !== -1;
-    };
-    /**
-     * Utils function to remove the login_hint and domain_hint from the i/p extraQueryParameters
-     * @param url
-     * @param name
-     */
-    UrlUtils.urlRemoveQueryStringParameter = function (url, name) {
-        if (StringUtils_1.StringUtils.isEmpty(url)) {
-            return url;
+        if (a1.homeAccountIdentifier && a2.homeAccountIdentifier) {
+            if (a1.homeAccountIdentifier === a2.homeAccountIdentifier) {
+                return true;
+            }
         }
-        var regex = new RegExp("(\\&" + name + "=)[^\&]+");
-        url = url.replace(regex, "");
-        // name=value&
-        regex = new RegExp("(" + name + "=)[^\&]+&");
-        url = url.replace(regex, "");
-        // name=value
-        regex = new RegExp("(" + name + "=)[^\&]+");
-        url = url.replace(regex, "");
-        return url;
+        return false;
     };
-    /**
-     * @hidden
-     * @ignore
-     *
-     * Returns the anchor part(#) of the URL
-     */
-    UrlUtils.getHashFromUrl = function (urlStringOrFragment) {
-        var hashIndex1 = urlStringOrFragment.indexOf("#");
-        var hashIndex2 = urlStringOrFragment.indexOf("#/");
-        if (hashIndex2 > -1) {
-            return urlStringOrFragment.substring(hashIndex2 + 2);
-        }
-        else if (hashIndex1 > -1) {
-            return urlStringOrFragment.substring(hashIndex1 + 1);
-        }
-        return urlStringOrFragment;
-    };
-    /**
-     * @hidden
-     * Check if the url contains a hash with known properties
-     * @ignore
-     */
-    UrlUtils.urlContainsHash = function (urlString) {
-        var parameters = UrlUtils.deserializeHash(urlString);
-        return (parameters.hasOwnProperty(Constants_1.ServerHashParamKeys.ERROR_DESCRIPTION) ||
-            parameters.hasOwnProperty(Constants_1.ServerHashParamKeys.ERROR) ||
-            parameters.hasOwnProperty(Constants_1.ServerHashParamKeys.ACCESS_TOKEN) ||
-            parameters.hasOwnProperty(Constants_1.ServerHashParamKeys.ID_TOKEN));
-    };
-    /**
-     * @hidden
-     * Returns deserialized portion of URL hash
-     * @ignore
-     */
-    UrlUtils.deserializeHash = function (urlFragment) {
-        var hash = UrlUtils.getHashFromUrl(urlFragment);
-        return CryptoUtils_1.CryptoUtils.deserialize(hash);
-    };
-    /**
-     * @ignore
-     * @param {string} URI
-     * @returns {string} host from the URI
-     *
-     * extract URI from the host
-     */
-    UrlUtils.getHostFromUri = function (uri) {
-        // remove http:// or https:// from uri
-        var extractedUri = String(uri).replace(/^(https?:)\/\//, "");
-        extractedUri = extractedUri.split("/")[0];
-        return extractedUri;
-    };
-    return UrlUtils;
+    return Account;
 }());
-exports.UrlUtils = UrlUtils;
+exports.Account = Account;
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 681:
+/***/ ((__unused_webpack_module, exports) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var ClientAuthError_1 = __webpack_require__(6);
-exports.ClientConfigurationErrorMessage = {
-    configurationNotSet: {
-        code: "no_config_set",
-        desc: "Configuration has not been set. Please call the UserAgentApplication constructor with a valid Configuration object."
-    },
-    storageNotSupported: {
-        code: "storage_not_supported",
-        desc: "The value for the cacheLocation is not supported."
-    },
-    noRedirectCallbacksSet: {
-        code: "no_redirect_callbacks",
-        desc: "No redirect callbacks have been set. Please call handleRedirectCallback() with the appropriate function arguments before continuing. " +
-            "More information is available here: https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/MSAL-basics."
-    },
-    invalidCallbackObject: {
-        code: "invalid_callback_object",
-        desc: "The object passed for the callback was invalid. " +
-            "More information is available here: https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/MSAL-basics."
-    },
-    scopesRequired: {
-        code: "scopes_required",
-        desc: "Scopes are required to obtain an access token."
-    },
-    emptyScopes: {
-        code: "empty_input_scopes_error",
-        desc: "Scopes cannot be passed as empty array."
-    },
-    nonArrayScopes: {
-        code: "nonarray_input_scopes_error",
-        desc: "Scopes cannot be passed as non-array."
-    },
-    invalidPrompt: {
-        code: "invalid_prompt_value",
-        desc: "Supported prompt values are 'login', 'select_account', 'consent' and 'none'",
-    },
-    invalidAuthorityType: {
-        code: "invalid_authority_type",
-        desc: "The given authority is not a valid type of authority supported by MSAL. Please see here for valid authorities: <insert URL here>."
-    },
-    authorityUriInsecure: {
-        code: "authority_uri_insecure",
-        desc: "Authority URIs must use https."
-    },
-    authorityUriInvalidPath: {
-        code: "authority_uri_invalid_path",
-        desc: "Given authority URI is invalid."
-    },
-    unsupportedAuthorityValidation: {
-        code: "unsupported_authority_validation",
-        desc: "The authority validation is not supported for this authority type."
-    },
-    untrustedAuthority: {
-        code: "untrusted_authority",
-        desc: "The provided authority is not a trusted authority. Please include this authority in the knownAuthorities config parameter or set validateAuthority=false."
-    },
-    b2cAuthorityUriInvalidPath: {
-        code: "b2c_authority_uri_invalid_path",
-        desc: "The given URI for the B2C authority is invalid."
-    },
-    b2cKnownAuthoritiesNotSet: {
-        code: "b2c_known_authorities_not_set",
-        desc: "Must set known authorities when validateAuthority is set to True and using B2C"
-    },
-    claimsRequestParsingError: {
-        code: "claims_request_parsing_error",
-        desc: "Could not parse the given claims request object."
-    },
-    emptyRequestError: {
-        code: "empty_request_error",
-        desc: "Request object is required."
-    },
-    invalidCorrelationIdError: {
-        code: "invalid_guid_sent_as_correlationId",
-        desc: "Please set the correlationId as a valid guid"
-    },
-    telemetryConfigError: {
-        code: "telemetry_config_error",
-        desc: "Telemetry config is not configured with required values"
-    },
-    ssoSilentError: {
-        code: "sso_silent_error",
-        desc: "request must contain either sid or login_hint"
-    },
-    invalidAuthorityMetadataError: {
-        code: "authority_metadata_error",
-        desc: "Invalid authorityMetadata. Must be a JSON object containing authorization_endpoint, end_session_endpoint, and issuer fields."
-    }
-};
-/**
- * Error thrown when there is an error in configuration of the .js library.
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function buildResponseStateOnly(state) {
+    return {
+        uniqueId: "",
+        tenantId: "",
+        tokenType: "",
+        idToken: null,
+        idTokenClaims: null,
+        accessToken: "",
+        scopes: null,
+        expiresOn: null,
+        account: null,
+        accountState: state,
+        fromCache: false
+    };
+}
+exports.buildResponseStateOnly = buildResponseStateOnly;
+
+
+/***/ }),
+
+/***/ 733:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
  */
-var ClientConfigurationError = /** @class */ (function (_super) {
-    tslib_1.__extends(ClientConfigurationError, _super);
-    function ClientConfigurationError(errorCode, errorMessage) {
-        var _this = _super.call(this, errorCode, errorMessage) || this;
-        _this.name = "ClientConfigurationError";
-        Object.setPrototypeOf(_this, ClientConfigurationError.prototype);
-        return _this;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var ClientConfigurationError_1 = __webpack_require__(550);
+function validateClaimsRequest(request) {
+    if (!request.claimsRequest) {
+        return;
     }
-    ClientConfigurationError.createNoSetConfigurationError = function () {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.configurationNotSet.code, "" + exports.ClientConfigurationErrorMessage.configurationNotSet.desc);
-    };
-    ClientConfigurationError.createStorageNotSupportedError = function (givenCacheLocation) {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.storageNotSupported.code, exports.ClientConfigurationErrorMessage.storageNotSupported.desc + " Given location: " + givenCacheLocation);
-    };
-    ClientConfigurationError.createRedirectCallbacksNotSetError = function () {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.noRedirectCallbacksSet.code, exports.ClientConfigurationErrorMessage.noRedirectCallbacksSet.desc);
-    };
-    ClientConfigurationError.createInvalidCallbackObjectError = function (callbackObject) {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.invalidCallbackObject.code, exports.ClientConfigurationErrorMessage.invalidCallbackObject.desc + " Given value for callback function: " + callbackObject);
-    };
-    ClientConfigurationError.createEmptyScopesArrayError = function (scopesValue) {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.emptyScopes.code, exports.ClientConfigurationErrorMessage.emptyScopes.desc + " Given value: " + scopesValue + ".");
-    };
-    ClientConfigurationError.createScopesNonArrayError = function (scopesValue) {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.nonArrayScopes.code, exports.ClientConfigurationErrorMessage.nonArrayScopes.desc + " Given value: " + scopesValue + ".");
-    };
-    ClientConfigurationError.createScopesRequiredError = function (scopesValue) {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.scopesRequired.code, exports.ClientConfigurationErrorMessage.scopesRequired.desc + " Given value: " + scopesValue);
-    };
-    ClientConfigurationError.createInvalidPromptError = function (promptValue) {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.invalidPrompt.code, exports.ClientConfigurationErrorMessage.invalidPrompt.desc + " Given value: " + promptValue);
-    };
-    ClientConfigurationError.createClaimsRequestParsingError = function (claimsRequestParseError) {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.claimsRequestParsingError.code, exports.ClientConfigurationErrorMessage.claimsRequestParsingError.desc + " Given value: " + claimsRequestParseError);
-    };
-    ClientConfigurationError.createEmptyRequestError = function () {
-        var _a = exports.ClientConfigurationErrorMessage.emptyRequestError, code = _a.code, desc = _a.desc;
-        return new ClientConfigurationError(code, desc);
-    };
-    ClientConfigurationError.createInvalidCorrelationIdError = function () {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.invalidCorrelationIdError.code, exports.ClientConfigurationErrorMessage.invalidCorrelationIdError.desc);
-    };
-    ClientConfigurationError.createKnownAuthoritiesNotSetError = function () {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.b2cKnownAuthoritiesNotSet.code, exports.ClientConfigurationErrorMessage.b2cKnownAuthoritiesNotSet.desc);
-    };
-    ClientConfigurationError.createInvalidAuthorityTypeError = function () {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.invalidAuthorityType.code, exports.ClientConfigurationErrorMessage.invalidAuthorityType.desc);
-    };
-    ClientConfigurationError.createUntrustedAuthorityError = function (host) {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.untrustedAuthority.code, exports.ClientConfigurationErrorMessage.untrustedAuthority.desc + " Provided Authority: " + host);
-    };
-    ClientConfigurationError.createTelemetryConfigError = function (config) {
-        var _a = exports.ClientConfigurationErrorMessage.telemetryConfigError, code = _a.code, desc = _a.desc;
-        var requiredKeys = {
-            applicationName: "string",
-            applicationVersion: "string",
-            telemetryEmitter: "function"
+    try {
+        JSON.parse(request.claimsRequest);
+    }
+    catch (e) {
+        throw ClientConfigurationError_1.ClientConfigurationError.createClaimsRequestParsingError(e);
+    }
+    // TODO: More validation will be added when the server team tells us how they have actually implemented claims
+}
+exports.validateClaimsRequest = validateClaimsRequest;
+
+
+/***/ }),
+
+/***/ 271:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var CryptoUtils_1 = __webpack_require__(453);
+var ClientAuthError_1 = __webpack_require__(356);
+var StringUtils_1 = __webpack_require__(454);
+/**
+ * @hidden
+ */
+var ClientInfo = /** @class */ (function () {
+    function ClientInfo(rawClientInfo, authority) {
+        if (!rawClientInfo || StringUtils_1.StringUtils.isEmpty(rawClientInfo)) {
+            this.uid = "";
+            this.utid = "";
+            return;
+        }
+        try {
+            var decodedClientInfo = CryptoUtils_1.CryptoUtils.base64Decode(rawClientInfo);
+            var clientInfo = JSON.parse(decodedClientInfo);
+            if (clientInfo) {
+                if (clientInfo.hasOwnProperty("uid")) {
+                    this.uid = authority ? ClientInfo.stripPolicyFromUid(clientInfo.uid, authority) : clientInfo.uid;
+                }
+                if (clientInfo.hasOwnProperty("utid")) {
+                    this.utid = clientInfo.utid;
+                }
+            }
+        }
+        catch (e) {
+            throw ClientAuthError_1.ClientAuthError.createClientInfoDecodingError(e);
+        }
+    }
+    Object.defineProperty(ClientInfo.prototype, "uid", {
+        get: function () {
+            return this._uid ? this._uid : "";
+        },
+        set: function (uid) {
+            this._uid = uid;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClientInfo.prototype, "utid", {
+        get: function () {
+            return this._utid ? this._utid : "";
+        },
+        set: function (utid) {
+            this._utid = utid;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClientInfo.createClientInfoFromIdToken = function (idToken, authority) {
+        var clientInfo = {
+            uid: idToken.subject,
+            utid: ""
         };
-        var missingKeys = Object.keys(requiredKeys)
-            .reduce(function (keys, key) {
-            return config[key] ? keys : keys.concat([key + " (" + requiredKeys[key] + ")"]);
-        }, []);
-        return new ClientConfigurationError(code, desc + " mising values: " + missingKeys.join(","));
+        return new ClientInfo(CryptoUtils_1.CryptoUtils.base64Encode(JSON.stringify(clientInfo)), authority);
     };
-    ClientConfigurationError.createSsoSilentError = function () {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.ssoSilentError.code, exports.ClientConfigurationErrorMessage.ssoSilentError.desc);
+    ClientInfo.stripPolicyFromUid = function (uid, authority) {
+        var uidSegments = uid.split("-");
+        // Reverse the url segments so the last one is more easily accessible
+        var urlSegments = authority.split("/").reverse();
+        var policy = "";
+        if (!StringUtils_1.StringUtils.isEmpty(urlSegments[0])) {
+            policy = urlSegments[0];
+        }
+        else if (urlSegments.length > 1) {
+            // If the original url had a trailing slash, urlSegments[0] would be "" so take the next element
+            policy = urlSegments[1];
+        }
+        if (uidSegments[uidSegments.length - 1] === policy) {
+            // If the last segment of uid matches the last segment of authority url, remove the last segment of uid
+            return uidSegments.slice(0, uidSegments.length - 1).join("-");
+        }
+        return uid;
     };
-    ClientConfigurationError.createInvalidAuthorityMetadataError = function () {
-        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.invalidAuthorityMetadataError.code, exports.ClientConfigurationErrorMessage.invalidAuthorityMetadataError.desc);
+    ClientInfo.prototype.encodeClientInfo = function () {
+        var clientInfo = JSON.stringify({ uid: this.uid, utid: this.utid });
+        return CryptoUtils_1.CryptoUtils.base64Encode(clientInfo);
     };
-    return ClientConfigurationError;
-}(ClientAuthError_1.ClientAuthError));
-exports.ClientConfigurationError = ClientConfigurationError;
+    return ClientInfo;
+}());
+exports.ClientInfo = ClientInfo;
 
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 875:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var AuthError_1 = __webpack_require__(8);
-var StringUtils_1 = __webpack_require__(2);
-exports.ClientAuthErrorMessage = {
-    multipleCacheAuthorities: {
-        code: "multiple_authorities",
-        desc: "Multiple authorities found in the cache. Pass authority in the API overload."
-    },
-    endpointResolutionError: {
-        code: "endpoints_resolution_error",
-        desc: "Error: could not resolve endpoints. Please check network and try again."
-    },
-    popUpWindowError: {
-        code: "popup_window_error",
-        desc: "Error opening popup window. This can happen if you are using IE or if popups are blocked in the browser."
-    },
-    tokenRenewalError: {
-        code: "token_renewal_error",
-        desc: "Token renewal operation failed due to timeout."
-    },
-    invalidIdToken: {
-        code: "invalid_id_token",
-        desc: "Invalid ID token format."
-    },
-    invalidStateError: {
-        code: "invalid_state_error",
-        desc: "Invalid state."
-    },
-    nonceMismatchError: {
-        code: "nonce_mismatch_error",
-        desc: "Nonce is not matching, Nonce received: "
-    },
-    loginProgressError: {
-        code: "login_progress_error",
-        desc: "Login_In_Progress: Error during login call - login is already in progress."
-    },
-    acquireTokenProgressError: {
-        code: "acquiretoken_progress_error",
-        desc: "AcquireToken_In_Progress: Error during login call - login is already in progress."
-    },
-    userCancelledError: {
-        code: "user_cancelled",
-        desc: "User cancelled the flow."
-    },
-    callbackError: {
-        code: "callback_error",
-        desc: "Error occurred in token received callback function."
-    },
-    userLoginRequiredError: {
-        code: "user_login_error",
-        desc: "User login is required. For silent calls, request must contain either sid or login_hint"
-    },
-    userDoesNotExistError: {
-        code: "user_non_existent",
-        desc: "User object does not exist. Please call a login API."
-    },
-    clientInfoDecodingError: {
-        code: "client_info_decoding_error",
-        desc: "The client info could not be parsed/decoded correctly. Please review the trace to determine the root cause."
-    },
-    clientInfoNotPopulatedError: {
-        code: "client_info_not_populated_error",
-        desc: "The service did not populate client_info in the response, Please verify with the service team"
-    },
-    nullOrEmptyIdToken: {
-        code: "null_or_empty_id_token",
-        desc: "The idToken is null or empty. Please review the trace to determine the root cause."
-    },
-    idTokenNotParsed: {
-        code: "id_token_parsing_error",
-        desc: "ID token cannot be parsed. Please review stack trace to determine root cause."
-    },
-    tokenEncodingError: {
-        code: "token_encoding_error",
-        desc: "The token to be decoded is not encoded correctly."
-    },
-    invalidInteractionType: {
-        code: "invalid_interaction_type",
-        desc: "The interaction type passed to the handler was incorrect or unknown"
-    },
-    cacheParseError: {
-        code: "cannot_parse_cache",
-        desc: "The cached token key is not a valid JSON and cannot be parsed"
-    },
-    blockTokenRequestsInHiddenIframe: {
-        code: "block_token_requests",
-        desc: "Token calls are blocked in hidden iframes"
-    }
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var Logger_1 = __webpack_require__(89);
+var UrlUtils_1 = __webpack_require__(741);
+/**
+ * Defaults for the Configuration Options
+ */
+var FRAME_TIMEOUT = 6000;
+var OFFSET = 300;
+var NAVIGATE_FRAME_WAIT = 500;
+var DEFAULT_AUTH_OPTIONS = {
+    clientId: "",
+    authority: null,
+    validateAuthority: true,
+    authorityMetadata: "",
+    knownAuthorities: [],
+    redirectUri: function () { return UrlUtils_1.UrlUtils.getCurrentUrl(); },
+    postLogoutRedirectUri: function () { return UrlUtils_1.UrlUtils.getCurrentUrl(); },
+    navigateToLoginRequestUrl: true
+};
+var DEFAULT_CACHE_OPTIONS = {
+    cacheLocation: "sessionStorage",
+    storeAuthStateInCookie: false
+};
+var DEFAULT_SYSTEM_OPTIONS = {
+    logger: new Logger_1.Logger(null),
+    loadFrameTimeout: FRAME_TIMEOUT,
+    tokenRenewalOffsetSeconds: OFFSET,
+    navigateFrameWait: NAVIGATE_FRAME_WAIT
+};
+var DEFAULT_FRAMEWORK_OPTIONS = {
+    isAngular: false,
+    unprotectedResources: new Array(),
+    protectedResourceMap: new Map()
 };
 /**
- * Error thrown when there is an error in the client code running on the browser.
+ * MSAL function that sets the default options when not explicitly configured from app developer
+ *
+ * @param TAuthOptions
+ * @param TCacheOptions
+ * @param TSystemOptions
+ * @param TFrameworkOptions
+ * @param TAuthorityDataOptions
+ *
+ * @returns TConfiguration object
  */
-var ClientAuthError = /** @class */ (function (_super) {
-    tslib_1.__extends(ClientAuthError, _super);
-    function ClientAuthError(errorCode, errorMessage) {
-        var _this = _super.call(this, errorCode, errorMessage) || this;
-        _this.name = "ClientAuthError";
-        Object.setPrototypeOf(_this, ClientAuthError.prototype);
-        return _this;
-    }
-    ClientAuthError.createEndpointResolutionError = function (errDetail) {
-        var errorMessage = exports.ClientAuthErrorMessage.endpointResolutionError.desc;
-        if (errDetail && !StringUtils_1.StringUtils.isEmpty(errDetail)) {
-            errorMessage += " Details: " + errDetail;
-        }
-        return new ClientAuthError(exports.ClientAuthErrorMessage.endpointResolutionError.code, errorMessage);
+function buildConfiguration(_a) {
+    var auth = _a.auth, _b = _a.cache, cache = _b === void 0 ? {} : _b, _c = _a.system, system = _c === void 0 ? {} : _c, _d = _a.framework, framework = _d === void 0 ? {} : _d;
+    var overlayedConfig = {
+        auth: tslib_1.__assign({}, DEFAULT_AUTH_OPTIONS, auth),
+        cache: tslib_1.__assign({}, DEFAULT_CACHE_OPTIONS, cache),
+        system: tslib_1.__assign({}, DEFAULT_SYSTEM_OPTIONS, system),
+        framework: tslib_1.__assign({}, DEFAULT_FRAMEWORK_OPTIONS, framework)
     };
-    ClientAuthError.createMultipleAuthoritiesInCacheError = function (scope) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.multipleCacheAuthorities.code, "Cache error for scope " + scope + ": " + exports.ClientAuthErrorMessage.multipleCacheAuthorities.desc + ".");
-    };
-    ClientAuthError.createPopupWindowError = function (errDetail) {
-        var errorMessage = exports.ClientAuthErrorMessage.popUpWindowError.desc;
-        if (errDetail && !StringUtils_1.StringUtils.isEmpty(errDetail)) {
-            errorMessage += " Details: " + errDetail;
-        }
-        return new ClientAuthError(exports.ClientAuthErrorMessage.popUpWindowError.code, errorMessage);
-    };
-    ClientAuthError.createTokenRenewalTimeoutError = function () {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.tokenRenewalError.code, exports.ClientAuthErrorMessage.tokenRenewalError.desc);
-    };
-    ClientAuthError.createInvalidIdTokenError = function (idToken) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.invalidIdToken.code, exports.ClientAuthErrorMessage.invalidIdToken.desc + " Given token: " + idToken);
-    };
-    // TODO: Is this not a security flaw to send the user the state expected??
-    ClientAuthError.createInvalidStateError = function (invalidState, actualState) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.invalidStateError.code, exports.ClientAuthErrorMessage.invalidStateError.desc + " " + invalidState + ", state expected : " + actualState + ".");
-    };
-    // TODO: Is this not a security flaw to send the user the Nonce expected??
-    ClientAuthError.createNonceMismatchError = function (invalidNonce, actualNonce) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.nonceMismatchError.code, exports.ClientAuthErrorMessage.nonceMismatchError.desc + " " + invalidNonce + ", nonce expected : " + actualNonce + ".");
-    };
-    ClientAuthError.createLoginInProgressError = function () {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.loginProgressError.code, exports.ClientAuthErrorMessage.loginProgressError.desc);
-    };
-    ClientAuthError.createAcquireTokenInProgressError = function () {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.acquireTokenProgressError.code, exports.ClientAuthErrorMessage.acquireTokenProgressError.desc);
-    };
-    ClientAuthError.createUserCancelledError = function () {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.userCancelledError.code, exports.ClientAuthErrorMessage.userCancelledError.desc);
-    };
-    ClientAuthError.createErrorInCallbackFunction = function (errorDesc) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.callbackError.code, exports.ClientAuthErrorMessage.callbackError.desc + " " + errorDesc + ".");
-    };
-    ClientAuthError.createUserLoginRequiredError = function () {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.userLoginRequiredError.code, exports.ClientAuthErrorMessage.userLoginRequiredError.desc);
-    };
-    ClientAuthError.createUserDoesNotExistError = function () {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.userDoesNotExistError.code, exports.ClientAuthErrorMessage.userDoesNotExistError.desc);
-    };
-    ClientAuthError.createClientInfoDecodingError = function (caughtError) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.clientInfoDecodingError.code, exports.ClientAuthErrorMessage.clientInfoDecodingError.desc + " Failed with error: " + caughtError);
-    };
-    ClientAuthError.createClientInfoNotPopulatedError = function (caughtError) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.clientInfoNotPopulatedError.code, exports.ClientAuthErrorMessage.clientInfoNotPopulatedError.desc + " Failed with error: " + caughtError);
-    };
-    ClientAuthError.createIdTokenNullOrEmptyError = function (invalidRawTokenString) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.nullOrEmptyIdToken.code, exports.ClientAuthErrorMessage.nullOrEmptyIdToken.desc + " Raw ID Token Value: " + invalidRawTokenString);
-    };
-    ClientAuthError.createIdTokenParsingError = function (caughtParsingError) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.idTokenNotParsed.code, exports.ClientAuthErrorMessage.idTokenNotParsed.desc + " Failed with error: " + caughtParsingError);
-    };
-    ClientAuthError.createTokenEncodingError = function (incorrectlyEncodedToken) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.tokenEncodingError.code, exports.ClientAuthErrorMessage.tokenEncodingError.desc + " Attempted to decode: " + incorrectlyEncodedToken);
-    };
-    ClientAuthError.createInvalidInteractionTypeError = function () {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.invalidInteractionType.code, exports.ClientAuthErrorMessage.invalidInteractionType.desc);
-    };
-    ClientAuthError.createCacheParseError = function (key) {
-        var errorMessage = "invalid key: " + key + ", " + exports.ClientAuthErrorMessage.cacheParseError.desc;
-        return new ClientAuthError(exports.ClientAuthErrorMessage.cacheParseError.code, errorMessage);
-    };
-    ClientAuthError.createBlockTokenRequestsInHiddenIframeError = function () {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.blockTokenRequestsInHiddenIframe.code, exports.ClientAuthErrorMessage.blockTokenRequestsInHiddenIframe.desc);
-    };
-    return ClientAuthError;
-}(AuthError_1.AuthError));
-exports.ClientAuthError = ClientAuthError;
+    return overlayedConfig;
+}
+exports.buildConfiguration = buildConfiguration;
 
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 881:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var ClientConfigurationError_1 = __webpack_require__(5);
-var Constants_1 = __webpack_require__(1);
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var ClientAuthError_1 = __webpack_require__(356);
+var TokenUtils_1 = __webpack_require__(94);
+var StringUtils_1 = __webpack_require__(454);
+/**
+ * @hidden
+ */
+var IdToken = /** @class */ (function () {
+    /* tslint:disable:no-string-literal */
+    function IdToken(rawIdToken) {
+        if (StringUtils_1.StringUtils.isEmpty(rawIdToken)) {
+            throw ClientAuthError_1.ClientAuthError.createIdTokenNullOrEmptyError(rawIdToken);
+        }
+        try {
+            this.rawIdToken = rawIdToken;
+            this.claims = TokenUtils_1.TokenUtils.extractIdToken(rawIdToken);
+            if (this.claims) {
+                if (this.claims.hasOwnProperty("iss")) {
+                    this.issuer = this.claims["iss"];
+                }
+                if (this.claims.hasOwnProperty("oid")) {
+                    this.objectId = this.claims["oid"];
+                }
+                if (this.claims.hasOwnProperty("sub")) {
+                    this.subject = this.claims["sub"];
+                }
+                if (this.claims.hasOwnProperty("tid")) {
+                    this.tenantId = this.claims["tid"];
+                }
+                if (this.claims.hasOwnProperty("ver")) {
+                    this.version = this.claims["ver"];
+                }
+                if (this.claims.hasOwnProperty("preferred_username")) {
+                    this.preferredName = this.claims["preferred_username"];
+                }
+                else if (this.claims.hasOwnProperty("upn")) {
+                    this.preferredName = this.claims["upn"];
+                }
+                if (this.claims.hasOwnProperty("name")) {
+                    this.name = this.claims["name"];
+                }
+                if (this.claims.hasOwnProperty("nonce")) {
+                    this.nonce = this.claims["nonce"];
+                }
+                if (this.claims.hasOwnProperty("exp")) {
+                    this.expiration = this.claims["exp"];
+                }
+                if (this.claims.hasOwnProperty("home_oid")) {
+                    this.homeObjectId = this.claims["home_oid"];
+                }
+                if (this.claims.hasOwnProperty("sid")) {
+                    this.sid = this.claims["sid"];
+                }
+                if (this.claims.hasOwnProperty("cloud_instance_host_name")) {
+                    this.cloudInstance = this.claims["cloud_instance_host_name"];
+                }
+                /* tslint:enable:no-string-literal */
+            }
+        }
+        catch (e) {
+            /*
+             * TODO: This error here won't really every be thrown, since extractIdToken() returns null if the decodeJwt() fails.
+             * Need to add better error handling here to account for being unable to decode jwts.
+             */
+            throw ClientAuthError_1.ClientAuthError.createIdTokenParsingError(e);
+        }
+    }
+    return IdToken;
+}());
+exports.IdToken = IdToken;
+
+
+/***/ }),
+
+/***/ 89:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var StringUtils_1 = __webpack_require__(454);
+var packageMetadata_1 = __webpack_require__(700);
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["Error"] = 0] = "Error";
+    LogLevel[LogLevel["Warning"] = 1] = "Warning";
+    LogLevel[LogLevel["Info"] = 2] = "Info";
+    LogLevel[LogLevel["Verbose"] = 3] = "Verbose";
+})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
+var Logger = /** @class */ (function () {
+    function Logger(localCallback, options) {
+        if (options === void 0) { options = {}; }
+        /**
+         * @hidden
+         */
+        this.level = LogLevel.Info;
+        var _a = options.correlationId, correlationId = _a === void 0 ? "" : _a, _b = options.level, level = _b === void 0 ? LogLevel.Info : _b, _c = options.piiLoggingEnabled, piiLoggingEnabled = _c === void 0 ? false : _c;
+        this.localCallback = localCallback;
+        this.correlationId = correlationId;
+        this.level = level;
+        this.piiLoggingEnabled = piiLoggingEnabled;
+    }
+    /**
+     * @hidden
+     */
+    Logger.prototype.logMessage = function (logLevel, logMessage, containsPii) {
+        if ((logLevel > this.level) || (!this.piiLoggingEnabled && containsPii)) {
+            return;
+        }
+        var timestamp = new Date().toUTCString();
+        var log;
+        if (!StringUtils_1.StringUtils.isEmpty(this.correlationId)) {
+            log = timestamp + ":" + this.correlationId + "-" + packageMetadata_1.version + "-" + LogLevel[logLevel] + (containsPii ? "-pii" : "") + " " + logMessage;
+        }
+        else {
+            log = timestamp + ":" + packageMetadata_1.version + "-" + LogLevel[logLevel] + (containsPii ? "-pii" : "") + " " + logMessage;
+        }
+        this.executeCallback(logLevel, log, containsPii);
+    };
+    /**
+     * @hidden
+     */
+    Logger.prototype.executeCallback = function (level, message, containsPii) {
+        if (this.localCallback) {
+            this.localCallback(level, message, containsPii);
+        }
+    };
+    /**
+     * @hidden
+     */
+    Logger.prototype.error = function (message) {
+        this.logMessage(LogLevel.Error, message, false);
+    };
+    /**
+     * @hidden
+     */
+    Logger.prototype.errorPii = function (message) {
+        this.logMessage(LogLevel.Error, message, true);
+    };
+    /**
+     * @hidden
+     */
+    Logger.prototype.warning = function (message) {
+        this.logMessage(LogLevel.Warning, message, false);
+    };
+    /**
+     * @hidden
+     */
+    Logger.prototype.warningPii = function (message) {
+        this.logMessage(LogLevel.Warning, message, true);
+    };
+    /**
+     * @hidden
+     */
+    Logger.prototype.info = function (message) {
+        this.logMessage(LogLevel.Info, message, false);
+    };
+    /**
+     * @hidden
+     */
+    Logger.prototype.infoPii = function (message) {
+        this.logMessage(LogLevel.Info, message, true);
+    };
+    /**
+     * @hidden
+     */
+    Logger.prototype.verbose = function (message) {
+        this.logMessage(LogLevel.Verbose, message, false);
+    };
+    /**
+     * @hidden
+     */
+    Logger.prototype.verbosePii = function (message) {
+        this.logMessage(LogLevel.Verbose, message, true);
+    };
+    Logger.prototype.isPiiLoggingEnabled = function () {
+        return this.piiLoggingEnabled;
+    };
+    return Logger;
+}());
+exports.Logger = Logger;
+
+
+/***/ }),
+
+/***/ 55:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var ClientConfigurationError_1 = __webpack_require__(550);
+var Constants_1 = __webpack_require__(91);
 var ScopeSet = /** @class */ (function () {
     function ScopeSet() {
     }
@@ -1742,698 +1028,309 @@ exports.ScopeSet = ScopeSet;
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 436:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-exports.AuthErrorMessage = {
-    unexpectedError: {
-        code: "unexpected_error",
-        desc: "Unexpected error in authentication."
-    },
-    noWindowObjectError: {
-        code: "no_window_object",
-        desc: "No window object available. Details:"
-    }
-};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var CryptoUtils_1 = __webpack_require__(453);
+var Constants_1 = __webpack_require__(91);
+var StringUtils_1 = __webpack_require__(454);
+var ScopeSet_1 = __webpack_require__(55);
+var packageMetadata_1 = __webpack_require__(700);
 /**
- * General error class thrown by the MSAL.js library.
- */
-var AuthError = /** @class */ (function (_super) {
-    tslib_1.__extends(AuthError, _super);
-    function AuthError(errorCode, errorMessage) {
-        var _this = _super.call(this, errorMessage) || this;
-        Object.setPrototypeOf(_this, AuthError.prototype);
-        _this.errorCode = errorCode;
-        _this.errorMessage = errorMessage;
-        _this.name = "AuthError";
-        return _this;
-    }
-    AuthError.createUnexpectedError = function (errDesc) {
-        return new AuthError(exports.AuthErrorMessage.unexpectedError.code, exports.AuthErrorMessage.unexpectedError.desc + ": " + errDesc);
-    };
-    AuthError.createNoWindowObjectError = function (errDesc) {
-        return new AuthError(exports.AuthErrorMessage.noWindowObjectError.code, exports.AuthErrorMessage.noWindowObjectError.desc + " " + errDesc);
-    };
-    return AuthError;
-}(Error));
-exports.AuthError = AuthError;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var ClientConfigurationError_1 = __webpack_require__(5);
-var XHRClient_1 = __webpack_require__(18);
-var UrlUtils_1 = __webpack_require__(4);
-var TrustedAuthority_1 = __webpack_require__(19);
-var Constants_1 = __webpack_require__(1);
-/**
+ * Nonce: OIDC Nonce definition: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
+ * State: OAuth Spec: https://tools.ietf.org/html/rfc6749#section-10.12
  * @hidden
  */
-var AuthorityType;
-(function (AuthorityType) {
-    AuthorityType[AuthorityType["Default"] = 0] = "Default";
-    AuthorityType[AuthorityType["Adfs"] = 1] = "Adfs";
-})(AuthorityType = exports.AuthorityType || (exports.AuthorityType = {}));
-/**
- * @hidden
- */
-var Authority = /** @class */ (function () {
-    function Authority(authority, validateAuthority, authorityMetadata) {
-        this.IsValidationEnabled = validateAuthority;
-        this.CanonicalAuthority = authority;
-        this.validateAsUri();
-        this.tenantDiscoveryResponse = authorityMetadata;
+var ServerRequestParameters = /** @class */ (function () {
+    /**
+     * Constructor
+     * @param authority
+     * @param clientId
+     * @param scope
+     * @param responseType
+     * @param redirectUri
+     * @param state
+     */
+    function ServerRequestParameters(authority, clientId, responseType, redirectUri, scopes, state, correlationId) {
+        this.authorityInstance = authority;
+        this.clientId = clientId;
+        this.nonce = CryptoUtils_1.CryptoUtils.createNewGuid();
+        // set scope to clientId if null
+        this.scopes = scopes ? scopes.slice() : Constants_1.Constants.oidcScopes;
+        this.scopes = ScopeSet_1.ScopeSet.trimScopes(this.scopes);
+        // set state (already set at top level)
+        this.state = state;
+        // set correlationId
+        this.correlationId = correlationId;
+        // telemetry information
+        this.xClientSku = "MSAL.JS";
+        this.xClientVer = packageMetadata_1.version;
+        this.responseType = responseType;
+        this.redirectUri = redirectUri;
     }
-    Authority.isAdfs = function (authorityUrl) {
-        var components = UrlUtils_1.UrlUtils.GetUrlComponents(authorityUrl);
-        var pathSegments = components.PathSegments;
-        return (pathSegments.length && pathSegments[0].toLowerCase() === Constants_1.Constants.ADFS);
-    };
-    Object.defineProperty(Authority.prototype, "AuthorityType", {
+    Object.defineProperty(ServerRequestParameters.prototype, "authority", {
         get: function () {
-            return Authority.isAdfs(this.canonicalAuthority) ? AuthorityType.Adfs : AuthorityType.Default;
+            return this.authorityInstance ? this.authorityInstance.CanonicalAuthority : null;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Authority.prototype, "Tenant", {
-        get: function () {
-            return this.CanonicalAuthorityUrlComponents.PathSegments[0];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Authority.prototype, "AuthorizationEndpoint", {
-        get: function () {
-            this.validateResolved();
-            return this.tenantDiscoveryResponse.AuthorizationEndpoint.replace(/{tenant}|{tenantid}/g, this.Tenant);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Authority.prototype, "EndSessionEndpoint", {
-        get: function () {
-            this.validateResolved();
-            return this.tenantDiscoveryResponse.EndSessionEndpoint.replace(/{tenant}|{tenantid}/g, this.Tenant);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Authority.prototype, "SelfSignedJwtAudience", {
-        get: function () {
-            this.validateResolved();
-            return this.tenantDiscoveryResponse.Issuer.replace(/{tenant}|{tenantid}/g, this.Tenant);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Authority.prototype.validateResolved = function () {
-        if (!this.hasCachedMetadata()) {
-            throw "Please call ResolveEndpointsAsync first";
-        }
-    };
-    Object.defineProperty(Authority.prototype, "CanonicalAuthority", {
-        /**
-         * A URL that is the authority set by the developer
-         */
-        get: function () {
-            return this.canonicalAuthority;
-        },
-        set: function (url) {
-            this.canonicalAuthority = UrlUtils_1.UrlUtils.CanonicalizeUri(url);
-            this.canonicalAuthorityUrlComponents = null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Authority.prototype, "CanonicalAuthorityUrlComponents", {
-        get: function () {
-            if (!this.canonicalAuthorityUrlComponents) {
-                this.canonicalAuthorityUrlComponents = UrlUtils_1.UrlUtils.GetUrlComponents(this.CanonicalAuthority);
+    /**
+     * @hidden
+     * @ignore
+     *
+     * Utility to populate QueryParameters and ExtraQueryParameters to ServerRequestParamerers
+     * @param request
+     * @param serverAuthenticationRequest
+     */
+    ServerRequestParameters.prototype.populateQueryParams = function (account, request, adalIdTokenObject, silentCall) {
+        var queryParameters = {};
+        if (request) {
+            // add the prompt parameter to serverRequestParameters if passed
+            if (request.prompt) {
+                this.promptValue = request.prompt;
             }
-            return this.canonicalAuthorityUrlComponents;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Authority.prototype, "DefaultOpenIdConfigurationEndpoint", {
-        // http://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata
-        get: function () {
-            return (this.AuthorityType === AuthorityType.Adfs) ? "" + this.CanonicalAuthority + Constants_1.WELL_KNOWN_SUFFIX : this.CanonicalAuthority + "v2.0/" + Constants_1.WELL_KNOWN_SUFFIX;
-        },
-        enumerable: true,
-        configurable: true
-    });
+            // Add claims challenge to serverRequestParameters if passed
+            if (request.claimsRequest) {
+                this.claimsValue = request.claimsRequest;
+            }
+            // if the developer provides one of these, give preference to developer choice
+            if (ServerRequestParameters.isSSOParam(request)) {
+                queryParameters = this.constructUnifiedCacheQueryParameter(request, null);
+            }
+        }
+        if (adalIdTokenObject) {
+            queryParameters = this.constructUnifiedCacheQueryParameter(null, adalIdTokenObject);
+        }
+        /*
+         * adds sid/login_hint if not populated
+         * this.logger.verbose("Calling addHint parameters");
+         */
+        queryParameters = this.addHintParameters(account, queryParameters);
+        // sanity check for developer passed extraQueryParameters
+        var eQParams = request ? request.extraQueryParameters : null;
+        // Populate the extraQueryParameters to be sent to the server
+        this.queryParameters = ServerRequestParameters.generateQueryParametersString(queryParameters);
+        this.extraQueryParameters = ServerRequestParameters.generateQueryParametersString(eQParams, silentCall);
+    };
+    // #region QueryParam helpers
     /**
-     * Given a string, validate that it is of the form https://domain/path
+     * Constructs extraQueryParameters to be sent to the server for the AuthenticationParameters set by the developer
+     * in any login() or acquireToken() calls
+     * @param idTokenObject
+     * @param extraQueryParameters
+     * @param sid
+     * @param loginHint
      */
-    Authority.prototype.validateAsUri = function () {
-        var components;
-        try {
-            components = this.CanonicalAuthorityUrlComponents;
+    // TODO: check how this behaves when domain_hint only is sent in extraparameters and idToken has no upn.
+    ServerRequestParameters.prototype.constructUnifiedCacheQueryParameter = function (request, idTokenObject) {
+        // preference order: account > sid > login_hint
+        var ssoType;
+        var ssoData;
+        var serverReqParam = {};
+        // if account info is passed, account.sid > account.login_hint
+        if (request) {
+            if (request.account) {
+                var account = request.account;
+                if (account.sid) {
+                    ssoType = Constants_1.SSOTypes.SID;
+                    ssoData = account.sid;
+                }
+                else if (account.userName) {
+                    ssoType = Constants_1.SSOTypes.LOGIN_HINT;
+                    ssoData = account.userName;
+                }
+            }
+            // sid from request
+            else if (request.sid) {
+                ssoType = Constants_1.SSOTypes.SID;
+                ssoData = request.sid;
+            }
+            // loginHint from request
+            else if (request.loginHint) {
+                ssoType = Constants_1.SSOTypes.LOGIN_HINT;
+                ssoData = request.loginHint;
+            }
         }
-        catch (e) {
-            throw ClientConfigurationError_1.ClientConfigurationErrorMessage.invalidAuthorityType;
+        // adalIdToken retrieved from cache
+        else if (idTokenObject) {
+            if (idTokenObject.hasOwnProperty(Constants_1.Constants.upn)) {
+                ssoType = Constants_1.SSOTypes.ID_TOKEN;
+                ssoData = idTokenObject.upn;
+            }
         }
-        if (!components.Protocol || components.Protocol.toLowerCase() !== "https:") {
-            throw ClientConfigurationError_1.ClientConfigurationErrorMessage.authorityUriInsecure;
-        }
-        if (!components.PathSegments || components.PathSegments.length < 1) {
-            throw ClientConfigurationError_1.ClientConfigurationErrorMessage.authorityUriInvalidPath;
-        }
+        serverReqParam = this.addSSOParameter(ssoType, ssoData);
+        return serverReqParam;
     };
     /**
-     * Calls the OIDC endpoint and returns the response
+     * @hidden
+     *
+     * Adds login_hint to authorization URL which is used to pre-fill the username field of sign in page for the user if known ahead of time
+     * domain_hint if added skips the email based discovery process of the user - only supported for interactive calls in implicit_flow
+     * domain_req utid received as part of the clientInfo
+     * login_req uid received as part of clientInfo
+     * Also does a sanity check for extraQueryParameters passed by the user to ensure no repeat queryParameters
+     *
+     * @param {@link Account} account - Account for which the token is requested
+     * @param queryparams
+     * @param {@link ServerRequestParameters}
+     * @ignore
      */
-    Authority.prototype.DiscoverEndpoints = function (openIdConfigurationEndpoint, telemetryManager, correlationId) {
-        var client = new XHRClient_1.XhrClient();
-        var httpMethod = Constants_1.NetworkRequestType.GET;
-        var httpEvent = telemetryManager.createAndStartHttpEvent(correlationId, httpMethod, openIdConfigurationEndpoint, "openIdConfigurationEndpoint");
-        return client.sendRequestAsync(openIdConfigurationEndpoint, httpMethod, /* enableCaching: */ true)
-            .then(function (response) {
-            httpEvent.httpResponseStatus = response.statusCode;
-            telemetryManager.stopEvent(httpEvent);
-            return {
-                AuthorizationEndpoint: response.body.authorization_endpoint,
-                EndSessionEndpoint: response.body.end_session_endpoint,
-                Issuer: response.body.issuer
-            };
-        })
-            .catch(function (err) {
-            httpEvent.serverErrorCode = err;
-            telemetryManager.stopEvent(httpEvent);
-            throw err;
-        });
+    ServerRequestParameters.prototype.addHintParameters = function (account, qParams) {
+        /*
+         * This is a final check for all queryParams added so far; preference order: sid > login_hint
+         * sid cannot be passed along with login_hint or domain_hint, hence we check both are not populated yet in queryParameters
+         */
+        if (account && !qParams[Constants_1.SSOTypes.SID]) {
+            // sid - populate only if login_hint is not already populated and the account has sid
+            var populateSID = !qParams[Constants_1.SSOTypes.LOGIN_HINT] && account.sid && this.promptValue === Constants_1.PromptState.NONE;
+            if (populateSID) {
+                qParams = this.addSSOParameter(Constants_1.SSOTypes.SID, account.sid, qParams);
+            }
+            // login_hint - account.userName
+            else {
+                var populateLoginHint = !qParams[Constants_1.SSOTypes.LOGIN_HINT] && account.userName && !StringUtils_1.StringUtils.isEmpty(account.userName);
+                if (populateLoginHint) {
+                    qParams = this.addSSOParameter(Constants_1.SSOTypes.LOGIN_HINT, account.userName, qParams);
+                }
+            }
+        }
+        return qParams;
     };
     /**
-     * Returns a promise.
-     * Checks to see if the authority is in the cache
-     * Discover endpoints via openid-configuration
-     * If successful, caches the endpoint for later use in OIDC
+     * Add SID to extraQueryParameters
+     * @param sid
      */
-    Authority.prototype.resolveEndpointsAsync = function (telemetryManager, correlationId) {
-        return tslib_1.__awaiter(this, void 0, Promise, function () {
-            var host, openIdConfigurationEndpointResponse, _a;
-            return tslib_1.__generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        if (!this.IsValidationEnabled) return [3 /*break*/, 3];
-                        host = this.canonicalAuthorityUrlComponents.HostNameAndPort;
-                        if (!(TrustedAuthority_1.TrustedAuthority.getTrustedHostList().length === 0)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, TrustedAuthority_1.TrustedAuthority.setTrustedAuthoritiesFromNetwork(this.canonicalAuthority, telemetryManager, correlationId)];
-                    case 1:
-                        _b.sent();
-                        _b.label = 2;
-                    case 2:
-                        if (!TrustedAuthority_1.TrustedAuthority.IsInTrustedHostList(host)) {
-                            throw ClientConfigurationError_1.ClientConfigurationError.createUntrustedAuthorityError(host);
-                        }
-                        _b.label = 3;
-                    case 3:
-                        openIdConfigurationEndpointResponse = this.GetOpenIdConfigurationEndpoint();
-                        _a = this;
-                        return [4 /*yield*/, this.DiscoverEndpoints(openIdConfigurationEndpointResponse, telemetryManager, correlationId)];
-                    case 4:
-                        _a.tenantDiscoveryResponse = _b.sent();
-                        return [2 /*return*/, this.tenantDiscoveryResponse];
+    ServerRequestParameters.prototype.addSSOParameter = function (ssoType, ssoData, ssoParam) {
+        if (!ssoParam) {
+            ssoParam = {};
+        }
+        if (!ssoData) {
+            return ssoParam;
+        }
+        switch (ssoType) {
+            case Constants_1.SSOTypes.SID: {
+                ssoParam[Constants_1.SSOTypes.SID] = ssoData;
+                break;
+            }
+            case Constants_1.SSOTypes.ID_TOKEN: {
+                ssoParam[Constants_1.SSOTypes.LOGIN_HINT] = ssoData;
+                break;
+            }
+            case Constants_1.SSOTypes.LOGIN_HINT: {
+                ssoParam[Constants_1.SSOTypes.LOGIN_HINT] = ssoData;
+                break;
+            }
+        }
+        return ssoParam;
+    };
+    /**
+     * Utility to generate a QueryParameterString from a Key-Value mapping of extraQueryParameters passed
+     * @param extraQueryParameters
+     */
+    ServerRequestParameters.generateQueryParametersString = function (queryParameters, silentCall) {
+        var paramsString = null;
+        if (queryParameters) {
+            Object.keys(queryParameters).forEach(function (key) {
+                // sid cannot be passed along with login_hint or domain_hint
+                if (key === Constants_1.Constants.domain_hint && (silentCall || queryParameters[Constants_1.SSOTypes.SID])) {
+                    return;
+                }
+                if (!paramsString) {
+                    paramsString = key + "=" + encodeURIComponent(queryParameters[key]);
+                }
+                else {
+                    paramsString += "&" + key + "=" + encodeURIComponent(queryParameters[key]);
                 }
             });
-        });
+        }
+        return paramsString;
+    };
+    // #endregion
+    /**
+     * Check to see if there are SSO params set in the Request
+     * @param request
+     */
+    ServerRequestParameters.isSSOParam = function (request) {
+        return request && (request.account || request.sid || request.loginHint);
     };
     /**
-     * Checks if there is a cached tenant discovery response with required fields.
+     * Returns the correct response_type string attribute for an acquireToken request configuration
+     * @param accountsMatch boolean: Determines whether the account in the request matches the cached account
+     * @param scopes Array<string>: AuthenticationRequest scopes configuration
+     * @param loginScopesOnly boolean: True if the scopes array ONLY contains the clientId or any combination of OIDC scopes, without resource scopes
      */
-    Authority.prototype.hasCachedMetadata = function () {
-        return !!(this.tenantDiscoveryResponse &&
-            this.tenantDiscoveryResponse.AuthorizationEndpoint &&
-            this.tenantDiscoveryResponse.EndSessionEndpoint &&
-            this.tenantDiscoveryResponse.Issuer);
+    ServerRequestParameters.determineResponseType = function (accountsMatch, scopes) {
+        // Supports getting an id_token by sending in clientId as only scope or OIDC scopes as only scopes
+        if (ScopeSet_1.ScopeSet.onlyContainsOidcScopes(scopes)) {
+            return Constants_1.ResponseTypes.id_token;
+        }
+        // If accounts match, check if OIDC scopes are included, otherwise return id_token_token
+        return (accountsMatch) ? this.responseTypeForMatchingAccounts(scopes) : Constants_1.ResponseTypes.id_token_token;
     };
     /**
-     * Returns a promise which resolves to the OIDC endpoint
-     * Only responds with the endpoint
+     * Returns the correct response_type string attribute for an acquireToken request configuration that contains an
+     * account that matches the account in the MSAL cache.
+     * @param scopes Array<string>: AuthenticationRequest scopes configuration
      */
-    Authority.prototype.GetOpenIdConfigurationEndpoint = function () {
-        return this.DefaultOpenIdConfigurationEndpoint;
+    ServerRequestParameters.responseTypeForMatchingAccounts = function (scopes) {
+        // Opt-into also requesting an ID token by sending in 'openid', 'profile' or both along with resource scopes when login is not necessary.
+        return (ScopeSet_1.ScopeSet.containsAnyOidcScopes(scopes)) ? Constants_1.ResponseTypes.id_token_token : Constants_1.ResponseTypes.token;
     };
-    return Authority;
+    return ServerRequestParameters;
 }());
-exports.Authority = Authority;
+exports.ServerRequestParameters = ServerRequestParameters;
 
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 463:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @hidden
- */
-var TimeUtils = /** @class */ (function () {
-    function TimeUtils() {
-    }
-    /**
-     * Returns time in seconds for expiration based on string value passed in.
-     *
-     * @param expiresIn
-     */
-    TimeUtils.parseExpiresIn = function (expiresIn) {
-        // if AAD did not send "expires_in" property, use default expiration of 3599 seconds, for some reason AAD sends 3599 as "expires_in" value instead of 3600
-        if (!expiresIn) {
-            expiresIn = "3599";
-        }
-        return parseInt(expiresIn, 10);
-    };
-    /**
-     * Return the current time in Unix time (seconds). Date.getTime() returns in milliseconds.
-     */
-    TimeUtils.now = function () {
-        return Math.round(new Date().getTime() / 1000.0);
-    };
-    /**
-     * Returns the amount of time in milliseconds since the page loaded.
-     */
-    TimeUtils.relativeNowMs = function () {
-        return window.performance.now();
-    };
-    return TimeUtils;
-}());
-exports.TimeUtils = TimeUtils;
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EVENT_NAME_PREFIX = "msal.";
-exports.EVENT_NAME_KEY = "event_name";
-exports.START_TIME_KEY = "start_time";
-exports.ELAPSED_TIME_KEY = "elapsed_time";
-exports.TELEMETRY_BLOB_EVENT_NAMES = {
-    MsalCorrelationIdConstStrKey: "Microsoft.MSAL.correlation_id",
-    ApiTelemIdConstStrKey: "msal.api_telem_id",
-    ApiIdConstStrKey: "msal.api_id",
-    BrokerAppConstStrKey: "Microsoft_MSAL_broker_app",
-    CacheEventCountConstStrKey: "Microsoft_MSAL_cache_event_count",
-    HttpEventCountTelemetryBatchKey: "Microsoft_MSAL_http_event_count",
-    IdpConstStrKey: "Microsoft_MSAL_idp",
-    IsSilentTelemetryBatchKey: "",
-    IsSuccessfulConstStrKey: "Microsoft_MSAL_is_successful",
-    ResponseTimeConstStrKey: "Microsoft_MSAL_response_time",
-    TenantIdConstStrKey: "Microsoft_MSAL_tenant_id",
-    UiEventCountTelemetryBatchKey: "Microsoft_MSAL_ui_event_count"
-};
-// This is used to replace the real tenant in telemetry info
-exports.TENANT_PLACEHOLDER = "<tenant>";
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var TelemetryConstants_1 = __webpack_require__(11);
-var CryptoUtils_1 = __webpack_require__(3);
-var UrlUtils_1 = __webpack_require__(4);
-var Authority_1 = __webpack_require__(9);
-exports.scrubTenantFromUri = function (uri) {
-    var url = UrlUtils_1.UrlUtils.GetUrlComponents(uri);
-    // validate trusted host
-    if (Authority_1.Authority.isAdfs(uri)) {
-        /**
-         * returning what was passed because the library needs to work with uris that are non
-         * AAD trusted but passed by users such as B2C or others.
-         * HTTP Events for instance can take a url to the open id config endpoint
-         */
-        return uri;
-    }
-    var pathParams = url.PathSegments;
-    if (pathParams && pathParams.length >= 2) {
-        var tenantPosition = pathParams[1] === "tfp" ? 2 : 1;
-        if (tenantPosition < pathParams.length) {
-            pathParams[tenantPosition] = TelemetryConstants_1.TENANT_PLACEHOLDER;
-        }
-    }
-    return url.Protocol + "//" + url.HostNameAndPort + "/" + pathParams.join("/");
-};
-exports.hashPersonalIdentifier = function (valueToHash) {
-    /*
-     * TODO sha256 this
-     * Current test runner is being funny with node libs that are webpacked anyway
-     * need a different solution
-     */
-    return CryptoUtils_1.CryptoUtils.base64Encode(valueToHash);
-};
-exports.prependEventNamePrefix = function (suffix) { return "" + TelemetryConstants_1.EVENT_NAME_PREFIX + (suffix || ""); };
-exports.supportsBrowserPerformance = function () { return !!(typeof window !== "undefined" &&
-    "performance" in window &&
-    window.performance.mark &&
-    window.performance.measure); };
-exports.endBrowserPerformanceMeasurement = function (measureName, startMark, endMark) {
-    if (exports.supportsBrowserPerformance()) {
-        window.performance.mark(endMark);
-        window.performance.measure(measureName, startMark, endMark);
-        window.performance.clearMeasures(measureName);
-        window.performance.clearMarks(startMark);
-        window.performance.clearMarks(endMark);
-    }
-};
-exports.startBrowserPerformanceMeasurement = function (startMark) {
-    if (exports.supportsBrowserPerformance()) {
-        window.performance.mark(startMark);
-    }
-};
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var StringUtils_1 = __webpack_require__(2);
-var Constants_1 = __webpack_require__(1);
-var LogLevel;
-(function (LogLevel) {
-    LogLevel[LogLevel["Error"] = 0] = "Error";
-    LogLevel[LogLevel["Warning"] = 1] = "Warning";
-    LogLevel[LogLevel["Info"] = 2] = "Info";
-    LogLevel[LogLevel["Verbose"] = 3] = "Verbose";
-})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
-var Logger = /** @class */ (function () {
-    function Logger(localCallback, options) {
-        if (options === void 0) { options = {}; }
-        /**
-         * @hidden
-         */
-        this.level = LogLevel.Info;
-        var _a = options.correlationId, correlationId = _a === void 0 ? "" : _a, _b = options.level, level = _b === void 0 ? LogLevel.Info : _b, _c = options.piiLoggingEnabled, piiLoggingEnabled = _c === void 0 ? false : _c;
-        this.localCallback = localCallback;
-        this.correlationId = correlationId;
-        this.level = level;
-        this.piiLoggingEnabled = piiLoggingEnabled;
-    }
-    /**
-     * @hidden
-     */
-    Logger.prototype.logMessage = function (logLevel, logMessage, containsPii) {
-        if ((logLevel > this.level) || (!this.piiLoggingEnabled && containsPii)) {
-            return;
-        }
-        var timestamp = new Date().toUTCString();
-        var log;
-        if (!StringUtils_1.StringUtils.isEmpty(this.correlationId)) {
-            log = timestamp + ":" + this.correlationId + "-" + Constants_1.libraryVersion() + "-" + LogLevel[logLevel] + (containsPii ? "-pii" : "") + " " + logMessage;
-        }
-        else {
-            log = timestamp + ":" + Constants_1.libraryVersion() + "-" + LogLevel[logLevel] + (containsPii ? "-pii" : "") + " " + logMessage;
-        }
-        this.executeCallback(logLevel, log, containsPii);
-    };
-    /**
-     * @hidden
-     */
-    Logger.prototype.executeCallback = function (level, message, containsPii) {
-        if (this.localCallback) {
-            this.localCallback(level, message, containsPii);
-        }
-    };
-    /**
-     * @hidden
-     */
-    Logger.prototype.error = function (message) {
-        this.logMessage(LogLevel.Error, message, false);
-    };
-    /**
-     * @hidden
-     */
-    Logger.prototype.errorPii = function (message) {
-        this.logMessage(LogLevel.Error, message, true);
-    };
-    /**
-     * @hidden
-     */
-    Logger.prototype.warning = function (message) {
-        this.logMessage(LogLevel.Warning, message, false);
-    };
-    /**
-     * @hidden
-     */
-    Logger.prototype.warningPii = function (message) {
-        this.logMessage(LogLevel.Warning, message, true);
-    };
-    /**
-     * @hidden
-     */
-    Logger.prototype.info = function (message) {
-        this.logMessage(LogLevel.Info, message, false);
-    };
-    /**
-     * @hidden
-     */
-    Logger.prototype.infoPii = function (message) {
-        this.logMessage(LogLevel.Info, message, true);
-    };
-    /**
-     * @hidden
-     */
-    Logger.prototype.verbose = function (message) {
-        this.logMessage(LogLevel.Verbose, message, false);
-    };
-    /**
-     * @hidden
-     */
-    Logger.prototype.verbosePii = function (message) {
-        this.logMessage(LogLevel.Verbose, message, true);
-    };
-    Logger.prototype.isPiiLoggingEnabled = function () {
-        return this.piiLoggingEnabled;
-    };
-    return Logger;
-}());
-exports.Logger = Logger;
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var AuthError_1 = __webpack_require__(8);
-exports.ServerErrorMessage = {
-    serverUnavailable: {
-        code: "server_unavailable",
-        desc: "Server is temporarily unavailable."
-    },
-    unknownServerError: {
-        code: "unknown_server_error"
-    },
-};
-/**
- * Error thrown when there is an error with the server code, for example, unavailability.
- */
-var ServerError = /** @class */ (function (_super) {
-    tslib_1.__extends(ServerError, _super);
-    function ServerError(errorCode, errorMessage) {
-        var _this = _super.call(this, errorCode, errorMessage) || this;
-        _this.name = "ServerError";
-        Object.setPrototypeOf(_this, ServerError.prototype);
-        return _this;
-    }
-    ServerError.createServerUnavailableError = function () {
-        return new ServerError(exports.ServerErrorMessage.serverUnavailable.code, exports.ServerErrorMessage.serverUnavailable.desc);
-    };
-    ServerError.createUnknownServerError = function (errorDesc) {
-        return new ServerError(exports.ServerErrorMessage.unknownServerError.code, errorDesc);
-    };
-    return ServerError;
-}(AuthError_1.AuthError));
-exports.ServerError = ServerError;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var TelemetryConstants_1 = __webpack_require__(11);
-var TelemetryUtils_1 = __webpack_require__(12);
-var CryptoUtils_1 = __webpack_require__(3);
-var TelemetryEvent = /** @class */ (function () {
-    function TelemetryEvent(eventName, correlationId, eventLabel) {
-        var _a;
-        this.eventId = CryptoUtils_1.CryptoUtils.createNewGuid();
-        this.label = eventLabel;
-        this.event = (_a = {},
-            _a[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.EVENT_NAME_KEY)] = eventName,
-            _a[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.ELAPSED_TIME_KEY)] = -1,
-            _a["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.MsalCorrelationIdConstStrKey] = correlationId,
-            _a);
-    }
-    TelemetryEvent.prototype.setElapsedTime = function (time) {
-        this.event[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.ELAPSED_TIME_KEY)] = time;
-    };
-    TelemetryEvent.prototype.stop = function () {
-        // Set duration of event
-        this.setElapsedTime(+Date.now() - +this.startTimestamp);
-        TelemetryUtils_1.endBrowserPerformanceMeasurement(this.displayName, this.perfStartMark, this.perfEndMark);
-    };
-    TelemetryEvent.prototype.start = function () {
-        this.startTimestamp = Date.now();
-        this.event[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.START_TIME_KEY)] = this.startTimestamp;
-        TelemetryUtils_1.startBrowserPerformanceMeasurement(this.perfStartMark);
-    };
-    Object.defineProperty(TelemetryEvent.prototype, "telemetryCorrelationId", {
-        get: function () {
-            return this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.MsalCorrelationIdConstStrKey];
-        },
-        set: function (value) {
-            this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.MsalCorrelationIdConstStrKey] = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TelemetryEvent.prototype, "eventName", {
-        get: function () {
-            return this.event[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.EVENT_NAME_KEY)];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    TelemetryEvent.prototype.get = function () {
-        return tslib_1.__assign({}, this.event, { eventId: this.eventId });
-    };
-    Object.defineProperty(TelemetryEvent.prototype, "key", {
-        get: function () {
-            return this.telemetryCorrelationId + "_" + this.eventId + "-" + this.eventName;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TelemetryEvent.prototype, "displayName", {
-        get: function () {
-            return "Msal-" + this.label + "-" + this.telemetryCorrelationId;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TelemetryEvent.prototype, "perfStartMark", {
-        get: function () {
-            return "start-" + this.key;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TelemetryEvent.prototype, "perfEndMark", {
-        get: function () {
-            return "end-" + this.key;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return TelemetryEvent;
-}());
-exports.default = TelemetryEvent;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var AccessTokenKey_1 = __webpack_require__(30);
-var AccessTokenValue_1 = __webpack_require__(31);
-var ServerRequestParameters_1 = __webpack_require__(17);
-var Authority_1 = __webpack_require__(9);
-var ClientInfo_1 = __webpack_require__(32);
-var IdToken_1 = __webpack_require__(33);
-var AuthCache_1 = __webpack_require__(34);
-var Account_1 = __webpack_require__(22);
-var ScopeSet_1 = __webpack_require__(7);
-var StringUtils_1 = __webpack_require__(2);
-var WindowUtils_1 = __webpack_require__(23);
-var TokenUtils_1 = __webpack_require__(20);
-var TimeUtils_1 = __webpack_require__(10);
-var UrlUtils_1 = __webpack_require__(4);
-var RequestUtils_1 = __webpack_require__(21);
-var ResponseUtils_1 = __webpack_require__(37);
-var AuthorityFactory_1 = __webpack_require__(38);
-var Configuration_1 = __webpack_require__(24);
-var ClientConfigurationError_1 = __webpack_require__(5);
-var AuthError_1 = __webpack_require__(8);
-var ClientAuthError_1 = __webpack_require__(6);
-var ServerError_1 = __webpack_require__(14);
-var InteractionRequiredAuthError_1 = __webpack_require__(25);
-var AuthResponse_1 = __webpack_require__(26);
-var TelemetryManager_1 = tslib_1.__importDefault(__webpack_require__(39));
-var ApiEvent_1 = __webpack_require__(27);
-var Constants_1 = __webpack_require__(1);
-var CryptoUtils_1 = __webpack_require__(3);
-var TrustedAuthority_1 = __webpack_require__(19);
-var AuthCacheUtils_1 = __webpack_require__(42);
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var AccessTokenKey_1 = __webpack_require__(29);
+var AccessTokenValue_1 = __webpack_require__(192);
+var ServerRequestParameters_1 = __webpack_require__(436);
+var Authority_1 = __webpack_require__(660);
+var ClientInfo_1 = __webpack_require__(271);
+var IdToken_1 = __webpack_require__(881);
+var AuthCache_1 = __webpack_require__(226);
+var Account_1 = __webpack_require__(630);
+var ScopeSet_1 = __webpack_require__(55);
+var StringUtils_1 = __webpack_require__(454);
+var WindowUtils_1 = __webpack_require__(758);
+var TokenUtils_1 = __webpack_require__(94);
+var TimeUtils_1 = __webpack_require__(78);
+var UrlUtils_1 = __webpack_require__(741);
+var RequestUtils_1 = __webpack_require__(52);
+var ResponseUtils_1 = __webpack_require__(756);
+var AuthorityFactory_1 = __webpack_require__(951);
+var Configuration_1 = __webpack_require__(875);
+var ClientConfigurationError_1 = __webpack_require__(550);
+var AuthError_1 = __webpack_require__(986);
+var ClientAuthError_1 = __webpack_require__(356);
+var ServerError_1 = __webpack_require__(447);
+var InteractionRequiredAuthError_1 = __webpack_require__(961);
+var AuthResponse_1 = __webpack_require__(681);
+var TelemetryManager_1 = tslib_1.__importDefault(__webpack_require__(478));
+var ApiEvent_1 = __webpack_require__(663);
+var Constants_1 = __webpack_require__(91);
+var CryptoUtils_1 = __webpack_require__(453);
+var TrustedAuthority_1 = __webpack_require__(405);
+var AuthCacheUtils_1 = __webpack_require__(49);
 // default authority
 var DEFAULT_AUTHORITY = "https://login.microsoftonline.com/common";
 /**
@@ -4528,278 +3425,17 @@ exports.UserAgentApplication = UserAgentApplication;
 
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 767:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var CryptoUtils_1 = __webpack_require__(3);
-var Constants_1 = __webpack_require__(1);
-var StringUtils_1 = __webpack_require__(2);
-var ScopeSet_1 = __webpack_require__(7);
-/**
- * Nonce: OIDC Nonce definition: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
- * State: OAuth Spec: https://tools.ietf.org/html/rfc6749#section-10.12
- * @hidden
- */
-var ServerRequestParameters = /** @class */ (function () {
-    /**
-     * Constructor
-     * @param authority
-     * @param clientId
-     * @param scope
-     * @param responseType
-     * @param redirectUri
-     * @param state
-     */
-    function ServerRequestParameters(authority, clientId, responseType, redirectUri, scopes, state, correlationId) {
-        this.authorityInstance = authority;
-        this.clientId = clientId;
-        this.nonce = CryptoUtils_1.CryptoUtils.createNewGuid();
-        // set scope to clientId if null
-        this.scopes = scopes ? scopes.slice() : Constants_1.Constants.oidcScopes;
-        this.scopes = ScopeSet_1.ScopeSet.trimScopes(this.scopes);
-        // set state (already set at top level)
-        this.state = state;
-        // set correlationId
-        this.correlationId = correlationId;
-        // telemetry information
-        this.xClientSku = "MSAL.JS";
-        this.xClientVer = Constants_1.libraryVersion();
-        this.responseType = responseType;
-        this.redirectUri = redirectUri;
-    }
-    Object.defineProperty(ServerRequestParameters.prototype, "authority", {
-        get: function () {
-            return this.authorityInstance ? this.authorityInstance.CanonicalAuthority : null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @hidden
-     * @ignore
-     *
-     * Utility to populate QueryParameters and ExtraQueryParameters to ServerRequestParamerers
-     * @param request
-     * @param serverAuthenticationRequest
-     */
-    ServerRequestParameters.prototype.populateQueryParams = function (account, request, adalIdTokenObject, silentCall) {
-        var queryParameters = {};
-        if (request) {
-            // add the prompt parameter to serverRequestParameters if passed
-            if (request.prompt) {
-                this.promptValue = request.prompt;
-            }
-            // Add claims challenge to serverRequestParameters if passed
-            if (request.claimsRequest) {
-                this.claimsValue = request.claimsRequest;
-            }
-            // if the developer provides one of these, give preference to developer choice
-            if (ServerRequestParameters.isSSOParam(request)) {
-                queryParameters = this.constructUnifiedCacheQueryParameter(request, null);
-            }
-        }
-        if (adalIdTokenObject) {
-            queryParameters = this.constructUnifiedCacheQueryParameter(null, adalIdTokenObject);
-        }
-        /*
-         * adds sid/login_hint if not populated
-         * this.logger.verbose("Calling addHint parameters");
-         */
-        queryParameters = this.addHintParameters(account, queryParameters);
-        // sanity check for developer passed extraQueryParameters
-        var eQParams = request ? request.extraQueryParameters : null;
-        // Populate the extraQueryParameters to be sent to the server
-        this.queryParameters = ServerRequestParameters.generateQueryParametersString(queryParameters);
-        this.extraQueryParameters = ServerRequestParameters.generateQueryParametersString(eQParams, silentCall);
-    };
-    // #region QueryParam helpers
-    /**
-     * Constructs extraQueryParameters to be sent to the server for the AuthenticationParameters set by the developer
-     * in any login() or acquireToken() calls
-     * @param idTokenObject
-     * @param extraQueryParameters
-     * @param sid
-     * @param loginHint
-     */
-    // TODO: check how this behaves when domain_hint only is sent in extraparameters and idToken has no upn.
-    ServerRequestParameters.prototype.constructUnifiedCacheQueryParameter = function (request, idTokenObject) {
-        // preference order: account > sid > login_hint
-        var ssoType;
-        var ssoData;
-        var serverReqParam = {};
-        // if account info is passed, account.sid > account.login_hint
-        if (request) {
-            if (request.account) {
-                var account = request.account;
-                if (account.sid) {
-                    ssoType = Constants_1.SSOTypes.SID;
-                    ssoData = account.sid;
-                }
-                else if (account.userName) {
-                    ssoType = Constants_1.SSOTypes.LOGIN_HINT;
-                    ssoData = account.userName;
-                }
-            }
-            // sid from request
-            else if (request.sid) {
-                ssoType = Constants_1.SSOTypes.SID;
-                ssoData = request.sid;
-            }
-            // loginHint from request
-            else if (request.loginHint) {
-                ssoType = Constants_1.SSOTypes.LOGIN_HINT;
-                ssoData = request.loginHint;
-            }
-        }
-        // adalIdToken retrieved from cache
-        else if (idTokenObject) {
-            if (idTokenObject.hasOwnProperty(Constants_1.Constants.upn)) {
-                ssoType = Constants_1.SSOTypes.ID_TOKEN;
-                ssoData = idTokenObject.upn;
-            }
-        }
-        serverReqParam = this.addSSOParameter(ssoType, ssoData);
-        return serverReqParam;
-    };
-    /**
-     * @hidden
-     *
-     * Adds login_hint to authorization URL which is used to pre-fill the username field of sign in page for the user if known ahead of time
-     * domain_hint if added skips the email based discovery process of the user - only supported for interactive calls in implicit_flow
-     * domain_req utid received as part of the clientInfo
-     * login_req uid received as part of clientInfo
-     * Also does a sanity check for extraQueryParameters passed by the user to ensure no repeat queryParameters
-     *
-     * @param {@link Account} account - Account for which the token is requested
-     * @param queryparams
-     * @param {@link ServerRequestParameters}
-     * @ignore
-     */
-    ServerRequestParameters.prototype.addHintParameters = function (account, qParams) {
-        /*
-         * This is a final check for all queryParams added so far; preference order: sid > login_hint
-         * sid cannot be passed along with login_hint or domain_hint, hence we check both are not populated yet in queryParameters
-         */
-        if (account && !qParams[Constants_1.SSOTypes.SID]) {
-            // sid - populate only if login_hint is not already populated and the account has sid
-            var populateSID = !qParams[Constants_1.SSOTypes.LOGIN_HINT] && account.sid && this.promptValue === Constants_1.PromptState.NONE;
-            if (populateSID) {
-                qParams = this.addSSOParameter(Constants_1.SSOTypes.SID, account.sid, qParams);
-            }
-            // login_hint - account.userName
-            else {
-                var populateLoginHint = !qParams[Constants_1.SSOTypes.LOGIN_HINT] && account.userName && !StringUtils_1.StringUtils.isEmpty(account.userName);
-                if (populateLoginHint) {
-                    qParams = this.addSSOParameter(Constants_1.SSOTypes.LOGIN_HINT, account.userName, qParams);
-                }
-            }
-        }
-        return qParams;
-    };
-    /**
-     * Add SID to extraQueryParameters
-     * @param sid
-     */
-    ServerRequestParameters.prototype.addSSOParameter = function (ssoType, ssoData, ssoParam) {
-        if (!ssoParam) {
-            ssoParam = {};
-        }
-        if (!ssoData) {
-            return ssoParam;
-        }
-        switch (ssoType) {
-            case Constants_1.SSOTypes.SID: {
-                ssoParam[Constants_1.SSOTypes.SID] = ssoData;
-                break;
-            }
-            case Constants_1.SSOTypes.ID_TOKEN: {
-                ssoParam[Constants_1.SSOTypes.LOGIN_HINT] = ssoData;
-                break;
-            }
-            case Constants_1.SSOTypes.LOGIN_HINT: {
-                ssoParam[Constants_1.SSOTypes.LOGIN_HINT] = ssoData;
-                break;
-            }
-        }
-        return ssoParam;
-    };
-    /**
-     * Utility to generate a QueryParameterString from a Key-Value mapping of extraQueryParameters passed
-     * @param extraQueryParameters
-     */
-    ServerRequestParameters.generateQueryParametersString = function (queryParameters, silentCall) {
-        var paramsString = null;
-        if (queryParameters) {
-            Object.keys(queryParameters).forEach(function (key) {
-                // sid cannot be passed along with login_hint or domain_hint
-                if (key === Constants_1.Constants.domain_hint && (silentCall || queryParameters[Constants_1.SSOTypes.SID])) {
-                    return;
-                }
-                if (paramsString == null) {
-                    paramsString = key + "=" + encodeURIComponent(queryParameters[key]);
-                }
-                else {
-                    paramsString += "&" + key + "=" + encodeURIComponent(queryParameters[key]);
-                }
-            });
-        }
-        return paramsString;
-    };
-    // #endregion
-    /**
-     * Check to see if there are SSO params set in the Request
-     * @param request
-     */
-    ServerRequestParameters.isSSOParam = function (request) {
-        return request && (request.account || request.sid || request.loginHint);
-    };
-    /**
-     * Returns the correct response_type string attribute for an acquireToken request configuration
-     * @param accountsMatch boolean: Determines whether the account in the request matches the cached account
-     * @param scopes Array<string>: AuthenticationRequest scopes configuration
-     * @param loginScopesOnly boolean: True if the scopes array ONLY contains the clientId or any combination of OIDC scopes, without resource scopes
-     */
-    ServerRequestParameters.determineResponseType = function (accountsMatch, scopes) {
-        // Supports getting an id_token by sending in clientId as only scope or OIDC scopes as only scopes
-        if (ScopeSet_1.ScopeSet.onlyContainsOidcScopes(scopes)) {
-            return Constants_1.ResponseTypes.id_token;
-        }
-        // If accounts match, check if OIDC scopes are included, otherwise return id_token_token
-        return (accountsMatch) ? this.responseTypeForMatchingAccounts(scopes) : Constants_1.ResponseTypes.id_token_token;
-    };
-    /**
-     * Returns the correct response_type string attribute for an acquireToken request configuration that contains an
-     * account that matches the account in the MSAL cache.
-     * @param scopes Array<string>: AuthenticationRequest scopes configuration
-     */
-    ServerRequestParameters.responseTypeForMatchingAccounts = function (scopes) {
-        // Opt-into also requesting an ID token by sending in 'openid', 'profile' or both along with resource scopes when login is not necessary.
-        return (ScopeSet_1.ScopeSet.containsAnyOidcScopes(scopes)) ? Constants_1.ResponseTypes.id_token_token : Constants_1.ResponseTypes.token;
-    };
-    return ServerRequestParameters;
-}());
-exports.ServerRequestParameters = ServerRequestParameters;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Constants_1 = __webpack_require__(1);
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var Constants_1 = __webpack_require__(91);
 /**
  * XHR client for JSON endpoints
  * https://www.npmjs.com/package/async-promise
@@ -4868,20 +3504,308 @@ exports.XhrClient = XhrClient;
 
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 660:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var XHRClient_1 = __webpack_require__(18);
-var Constants_1 = __webpack_require__(1);
-var UrlUtils_1 = __webpack_require__(4);
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var ClientConfigurationError_1 = __webpack_require__(550);
+var XHRClient_1 = __webpack_require__(767);
+var UrlUtils_1 = __webpack_require__(741);
+var TrustedAuthority_1 = __webpack_require__(405);
+var Constants_1 = __webpack_require__(91);
+/**
+ * @hidden
+ */
+var AuthorityType;
+(function (AuthorityType) {
+    AuthorityType[AuthorityType["Default"] = 0] = "Default";
+    AuthorityType[AuthorityType["Adfs"] = 1] = "Adfs";
+})(AuthorityType = exports.AuthorityType || (exports.AuthorityType = {}));
+/**
+ * @hidden
+ */
+var Authority = /** @class */ (function () {
+    function Authority(authority, validateAuthority, authorityMetadata) {
+        this.IsValidationEnabled = validateAuthority;
+        this.CanonicalAuthority = authority;
+        this.validateAsUri();
+        this.tenantDiscoveryResponse = authorityMetadata;
+    }
+    Authority.isAdfs = function (authorityUrl) {
+        var components = UrlUtils_1.UrlUtils.GetUrlComponents(authorityUrl);
+        var pathSegments = components.PathSegments;
+        return (pathSegments.length && pathSegments[0].toLowerCase() === Constants_1.Constants.ADFS);
+    };
+    Object.defineProperty(Authority.prototype, "AuthorityType", {
+        get: function () {
+            return Authority.isAdfs(this.canonicalAuthority) ? AuthorityType.Adfs : AuthorityType.Default;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Authority.prototype, "Tenant", {
+        get: function () {
+            return this.CanonicalAuthorityUrlComponents.PathSegments[0];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Authority.prototype, "AuthorizationEndpoint", {
+        get: function () {
+            this.validateResolved();
+            return this.tenantDiscoveryResponse.AuthorizationEndpoint.replace(/{tenant}|{tenantid}/g, this.Tenant);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Authority.prototype, "EndSessionEndpoint", {
+        get: function () {
+            this.validateResolved();
+            return this.tenantDiscoveryResponse.EndSessionEndpoint.replace(/{tenant}|{tenantid}/g, this.Tenant);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Authority.prototype, "SelfSignedJwtAudience", {
+        get: function () {
+            this.validateResolved();
+            return this.tenantDiscoveryResponse.Issuer.replace(/{tenant}|{tenantid}/g, this.Tenant);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Authority.prototype.validateResolved = function () {
+        if (!this.hasCachedMetadata()) {
+            throw "Please call ResolveEndpointsAsync first";
+        }
+    };
+    Object.defineProperty(Authority.prototype, "CanonicalAuthority", {
+        /**
+         * A URL that is the authority set by the developer
+         */
+        get: function () {
+            return this.canonicalAuthority;
+        },
+        set: function (url) {
+            this.canonicalAuthority = UrlUtils_1.UrlUtils.CanonicalizeUri(url);
+            this.canonicalAuthorityUrlComponents = null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Authority.prototype, "CanonicalAuthorityUrlComponents", {
+        get: function () {
+            if (!this.canonicalAuthorityUrlComponents) {
+                this.canonicalAuthorityUrlComponents = UrlUtils_1.UrlUtils.GetUrlComponents(this.CanonicalAuthority);
+            }
+            return this.canonicalAuthorityUrlComponents;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Authority.prototype, "DefaultOpenIdConfigurationEndpoint", {
+        // http://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata
+        get: function () {
+            return (this.AuthorityType === AuthorityType.Adfs) ? "" + this.CanonicalAuthority + Constants_1.WELL_KNOWN_SUFFIX : this.CanonicalAuthority + "v2.0/" + Constants_1.WELL_KNOWN_SUFFIX;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Given a string, validate that it is of the form https://domain/path
+     */
+    Authority.prototype.validateAsUri = function () {
+        var components;
+        try {
+            components = this.CanonicalAuthorityUrlComponents;
+        }
+        catch (e) {
+            throw ClientConfigurationError_1.ClientConfigurationErrorMessage.invalidAuthorityType;
+        }
+        if (!components.Protocol || components.Protocol.toLowerCase() !== "https:") {
+            throw ClientConfigurationError_1.ClientConfigurationErrorMessage.authorityUriInsecure;
+        }
+        if (!components.PathSegments || components.PathSegments.length < 1) {
+            throw ClientConfigurationError_1.ClientConfigurationErrorMessage.authorityUriInvalidPath;
+        }
+    };
+    /**
+     * Calls the OIDC endpoint and returns the response
+     */
+    Authority.prototype.DiscoverEndpoints = function (openIdConfigurationEndpoint, telemetryManager, correlationId) {
+        var client = new XHRClient_1.XhrClient();
+        var httpMethod = Constants_1.NetworkRequestType.GET;
+        var httpEvent = telemetryManager.createAndStartHttpEvent(correlationId, httpMethod, openIdConfigurationEndpoint, "openIdConfigurationEndpoint");
+        return client.sendRequestAsync(openIdConfigurationEndpoint, httpMethod, /* enableCaching: */ true)
+            .then(function (response) {
+            httpEvent.httpResponseStatus = response.statusCode;
+            telemetryManager.stopEvent(httpEvent);
+            return {
+                AuthorizationEndpoint: response.body.authorization_endpoint,
+                EndSessionEndpoint: response.body.end_session_endpoint,
+                Issuer: response.body.issuer
+            };
+        })
+            .catch(function (err) {
+            httpEvent.serverErrorCode = err;
+            telemetryManager.stopEvent(httpEvent);
+            throw err;
+        });
+    };
+    /**
+     * Returns a promise.
+     * Checks to see if the authority is in the cache
+     * Discover endpoints via openid-configuration
+     * If successful, caches the endpoint for later use in OIDC
+     */
+    Authority.prototype.resolveEndpointsAsync = function (telemetryManager, correlationId) {
+        return tslib_1.__awaiter(this, void 0, Promise, function () {
+            var host, openIdConfigurationEndpointResponse, _a;
+            return tslib_1.__generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!this.IsValidationEnabled) return [3 /*break*/, 3];
+                        host = this.canonicalAuthorityUrlComponents.HostNameAndPort;
+                        if (!(TrustedAuthority_1.TrustedAuthority.getTrustedHostList().length === 0)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, TrustedAuthority_1.TrustedAuthority.setTrustedAuthoritiesFromNetwork(this.canonicalAuthority, telemetryManager, correlationId)];
+                    case 1:
+                        _b.sent();
+                        _b.label = 2;
+                    case 2:
+                        if (!TrustedAuthority_1.TrustedAuthority.IsInTrustedHostList(host)) {
+                            throw ClientConfigurationError_1.ClientConfigurationError.createUntrustedAuthorityError(host);
+                        }
+                        _b.label = 3;
+                    case 3:
+                        openIdConfigurationEndpointResponse = this.GetOpenIdConfigurationEndpoint();
+                        _a = this;
+                        return [4 /*yield*/, this.DiscoverEndpoints(openIdConfigurationEndpointResponse, telemetryManager, correlationId)];
+                    case 4:
+                        _a.tenantDiscoveryResponse = _b.sent();
+                        return [2 /*return*/, this.tenantDiscoveryResponse];
+                }
+            });
+        });
+    };
+    /**
+     * Checks if there is a cached tenant discovery response with required fields.
+     */
+    Authority.prototype.hasCachedMetadata = function () {
+        return !!(this.tenantDiscoveryResponse &&
+            this.tenantDiscoveryResponse.AuthorizationEndpoint &&
+            this.tenantDiscoveryResponse.EndSessionEndpoint &&
+            this.tenantDiscoveryResponse.Issuer);
+    };
+    /**
+     * Returns a promise which resolves to the OIDC endpoint
+     * Only responds with the endpoint
+     */
+    Authority.prototype.GetOpenIdConfigurationEndpoint = function () {
+        return this.DefaultOpenIdConfigurationEndpoint;
+    };
+    return Authority;
+}());
+exports.Authority = Authority;
+
+
+/***/ }),
+
+/***/ 951:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+/**
+ * @hidden
+ */
+var Authority_1 = __webpack_require__(660);
+var StringUtils_1 = __webpack_require__(454);
+var ClientConfigurationError_1 = __webpack_require__(550);
+var AuthorityFactory = /** @class */ (function () {
+    function AuthorityFactory() {
+    }
+    AuthorityFactory.saveMetadataFromNetwork = function (authorityInstance, telemetryManager, correlationId) {
+        return tslib_1.__awaiter(this, void 0, Promise, function () {
+            var metadata;
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, authorityInstance.resolveEndpointsAsync(telemetryManager, correlationId)];
+                    case 1:
+                        metadata = _a.sent();
+                        this.metadataMap.set(authorityInstance.CanonicalAuthority, metadata);
+                        return [2 /*return*/, metadata];
+                }
+            });
+        });
+    };
+    AuthorityFactory.getMetadata = function (authorityUrl) {
+        return this.metadataMap.get(authorityUrl);
+    };
+    AuthorityFactory.saveMetadataFromConfig = function (authorityUrl, authorityMetadataJson) {
+        try {
+            if (authorityMetadataJson) {
+                var parsedMetadata = JSON.parse(authorityMetadataJson);
+                if (!parsedMetadata.authorization_endpoint || !parsedMetadata.end_session_endpoint || !parsedMetadata.issuer) {
+                    throw ClientConfigurationError_1.ClientConfigurationError.createInvalidAuthorityMetadataError();
+                }
+                this.metadataMap.set(authorityUrl, {
+                    AuthorizationEndpoint: parsedMetadata.authorization_endpoint,
+                    EndSessionEndpoint: parsedMetadata.end_session_endpoint,
+                    Issuer: parsedMetadata.issuer
+                });
+            }
+        }
+        catch (e) {
+            throw ClientConfigurationError_1.ClientConfigurationError.createInvalidAuthorityMetadataError();
+        }
+    };
+    /**
+     * Create an authority object of the correct type based on the url
+     * Performs basic authority validation - checks to see if the authority is of a valid type (eg aad, b2c)
+     */
+    AuthorityFactory.CreateInstance = function (authorityUrl, validateAuthority, authorityMetadata) {
+        if (StringUtils_1.StringUtils.isEmpty(authorityUrl)) {
+            return null;
+        }
+        if (authorityMetadata) {
+            // todo: log statements
+            this.saveMetadataFromConfig(authorityUrl, authorityMetadata);
+        }
+        return new Authority_1.Authority(authorityUrl, validateAuthority, this.metadataMap.get(authorityUrl));
+    };
+    AuthorityFactory.metadataMap = new Map();
+    return AuthorityFactory;
+}());
+exports.AuthorityFactory = AuthorityFactory;
+
+
+/***/ }),
+
+/***/ 405:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var XHRClient_1 = __webpack_require__(767);
+var Constants_1 = __webpack_require__(91);
+var UrlUtils_1 = __webpack_require__(741);
 var TrustedAuthority = /** @class */ (function () {
     function TrustedAuthority() {
     }
@@ -4970,105 +3894,2284 @@ exports.TrustedAuthority = TrustedAuthority;
 
 
 /***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 644:
+/***/ ((__unused_webpack_module, exports) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var CryptoUtils_1 = __webpack_require__(3);
-var StringUtils_1 = __webpack_require__(2);
-var TimeUtils_1 = __webpack_require__(10);
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 /**
  * @hidden
  */
-var TokenUtils = /** @class */ (function () {
-    function TokenUtils() {
+var AccessTokenCacheItem = /** @class */ (function () {
+    function AccessTokenCacheItem(key, value) {
+        this.key = key;
+        this.value = value;
     }
-    /**
-     * decode a JWT
-     *
-     * @param jwtToken
-     */
-    TokenUtils.decodeJwt = function (jwtToken) {
-        if (StringUtils_1.StringUtils.isEmpty(jwtToken)) {
-            return null;
-        }
-        var idTokenPartsRegex = /^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/;
-        var matches = idTokenPartsRegex.exec(jwtToken);
-        if (!matches || matches.length < 4) {
-            // this._requestContext.logger.warn("The returned id_token is not parseable.");
-            return null;
-        }
-        var crackedToken = {
-            header: matches[1],
-            JWSPayload: matches[2],
-            JWSSig: matches[3]
-        };
-        return crackedToken;
-    };
-    /**
-     * Evaluates whether token cache item expiration is within expiration offset range
-     * @param tokenCacheItem
-     */
-    TokenUtils.validateExpirationIsWithinOffset = function (expiration, tokenRenewalOffsetSeconds) {
-        var offset = tokenRenewalOffsetSeconds || 300;
-        return expiration && (expiration > TimeUtils_1.TimeUtils.now() + offset);
-    };
-    /**
-     * Extract IdToken by decoding the RAWIdToken
-     *
-     * @param encodedIdToken
-     */
-    TokenUtils.extractIdToken = function (encodedIdToken) {
-        // id token will be decoded to get the username
-        var decodedToken = this.decodeJwt(encodedIdToken);
-        if (!decodedToken) {
-            return null;
-        }
-        try {
-            var base64IdToken = decodedToken.JWSPayload;
-            var base64Decoded = CryptoUtils_1.CryptoUtils.base64Decode(base64IdToken);
-            if (!base64Decoded) {
-                // this._requestContext.logger.info("The returned id_token could not be base64 url safe decoded.");
-                return null;
-            }
-            // ECMA script has JSON built-in support
-            return JSON.parse(base64Decoded);
-        }
-        catch (err) {
-            // this._requestContext.logger.error("The returned id_token could not be decoded" + err);
-        }
-        return null;
-    };
-    return TokenUtils;
+    return AccessTokenCacheItem;
 }());
-exports.TokenUtils = TokenUtils;
+exports.AccessTokenCacheItem = AccessTokenCacheItem;
 
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 29:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var Constants_1 = __webpack_require__(1);
-var ClientConfigurationError_1 = __webpack_require__(5);
-var ScopeSet_1 = __webpack_require__(7);
-var StringUtils_1 = __webpack_require__(2);
-var CryptoUtils_1 = __webpack_require__(3);
-var TimeUtils_1 = __webpack_require__(10);
-var ClientAuthError_1 = __webpack_require__(6);
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var CryptoUtils_1 = __webpack_require__(453);
+var UrlUtils_1 = __webpack_require__(741);
+/**
+ * @hidden
+ */
+var AccessTokenKey = /** @class */ (function () {
+    function AccessTokenKey(authority, clientId, scopes, uid, utid) {
+        this.authority = UrlUtils_1.UrlUtils.CanonicalizeUri(authority);
+        this.clientId = clientId;
+        this.scopes = scopes;
+        this.homeAccountIdentifier = CryptoUtils_1.CryptoUtils.base64Encode(uid) + "." + CryptoUtils_1.CryptoUtils.base64Encode(utid);
+    }
+    return AccessTokenKey;
+}());
+exports.AccessTokenKey = AccessTokenKey;
+
+
+/***/ }),
+
+/***/ 192:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * @hidden
+ */
+var AccessTokenValue = /** @class */ (function () {
+    function AccessTokenValue(accessToken, idToken, expiresIn, homeAccountIdentifier) {
+        this.accessToken = accessToken;
+        this.idToken = idToken;
+        this.expiresIn = expiresIn;
+        this.homeAccountIdentifier = homeAccountIdentifier;
+    }
+    return AccessTokenValue;
+}());
+exports.AccessTokenValue = AccessTokenValue;
+
+
+/***/ }),
+
+/***/ 226:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var Constants_1 = __webpack_require__(91);
+var AccessTokenCacheItem_1 = __webpack_require__(644);
+var BrowserStorage_1 = __webpack_require__(96);
+var RequestUtils_1 = __webpack_require__(52);
+var StringUtils_1 = __webpack_require__(454);
+var IdToken_1 = __webpack_require__(881);
+/**
+ * @hidden
+ */
+var AuthCache = /** @class */ (function (_super) {
+    tslib_1.__extends(AuthCache, _super);
+    function AuthCache(clientId, cacheLocation, storeAuthStateInCookie) {
+        var _this = _super.call(this, cacheLocation) || this;
+        _this.clientId = clientId;
+        // This is hardcoded to true for now. We may make this configurable in the future
+        _this.rollbackEnabled = true;
+        _this.migrateCacheEntries(storeAuthStateInCookie);
+        return _this;
+    }
+    /**
+     * Support roll back to old cache schema until the next major release: true by default now
+     * @param storeAuthStateInCookie
+     */
+    AuthCache.prototype.migrateCacheEntries = function (storeAuthStateInCookie) {
+        var _this = this;
+        var idTokenKey = Constants_1.Constants.cachePrefix + "." + Constants_1.PersistentCacheKeys.IDTOKEN;
+        var clientInfoKey = Constants_1.Constants.cachePrefix + "." + Constants_1.PersistentCacheKeys.CLIENT_INFO;
+        var errorKey = Constants_1.Constants.cachePrefix + "." + Constants_1.ErrorCacheKeys.ERROR;
+        var errorDescKey = Constants_1.Constants.cachePrefix + "." + Constants_1.ErrorCacheKeys.ERROR_DESC;
+        var idTokenValue = _super.prototype.getItem.call(this, idTokenKey);
+        var idToken;
+        if (idTokenValue) {
+            try {
+                idToken = new IdToken_1.IdToken(idTokenValue);
+            }
+            catch (e) {
+                return;
+            }
+        }
+        if (idToken && idToken.claims && idToken.claims.aud === this.clientId) {
+            var clientInfoValue = _super.prototype.getItem.call(this, clientInfoKey);
+            var errorValue = _super.prototype.getItem.call(this, errorKey);
+            var errorDescValue = _super.prototype.getItem.call(this, errorDescKey);
+            var values_1 = [idTokenValue, clientInfoValue, errorValue, errorDescValue];
+            var keysToMigrate = [Constants_1.PersistentCacheKeys.IDTOKEN, Constants_1.PersistentCacheKeys.CLIENT_INFO, Constants_1.ErrorCacheKeys.ERROR, Constants_1.ErrorCacheKeys.ERROR_DESC];
+            keysToMigrate.forEach(function (cacheKey, index) { return _this.duplicateCacheEntry(cacheKey, values_1[index], storeAuthStateInCookie); });
+        }
+    };
+    /**
+     * Utility function to help with roll back keys
+     * @param newKey
+     * @param value
+     * @param storeAuthStateInCookie
+     */
+    AuthCache.prototype.duplicateCacheEntry = function (newKey, value, storeAuthStateInCookie) {
+        if (value) {
+            this.setItem(newKey, value, storeAuthStateInCookie);
+        }
+    };
+    /**
+     * Prepend msal.<client-id> to each key; Skip for any JSON object as Key (defined schemas do not need the key appended: AccessToken Keys or the upcoming schema)
+     * @param key
+     * @param addInstanceId
+     */
+    AuthCache.prototype.generateCacheKey = function (key, addInstanceId) {
+        try {
+            // Defined schemas do not need the key appended
+            JSON.parse(key);
+            return key;
+        }
+        catch (e) {
+            if (key.indexOf("" + Constants_1.Constants.cachePrefix) === 0 || key.indexOf(Constants_1.Constants.adalIdToken) === 0) {
+                return key;
+            }
+            return addInstanceId ? Constants_1.Constants.cachePrefix + "." + this.clientId + "." + key : Constants_1.Constants.cachePrefix + "." + key;
+        }
+    };
+    /**
+     * Validates that the input cache key contains the account search terms (clientId and homeAccountIdentifier) and
+     * then whether or not it contains the "scopes", depending on the token type being searched for. With matching account
+     * search terms, Access Token search tries to match the "scopes" keyword, while Id Token search expects "scopes" to not be included.
+     * @param key
+     * @param clientId
+     * @param homeAccountIdentifier
+     * @param tokenType
+     */
+    AuthCache.prototype.matchKeyForType = function (key, clientId, homeAccountIdentifier, tokenType) {
+        // All valid token cache item keys are valid JSON objects, ignore keys that aren't
+        var parsedKey = StringUtils_1.StringUtils.validateAndParseJsonCacheKey(key);
+        if (!parsedKey) {
+            return null;
+        }
+        // Does the cache item match the request account
+        var accountMatches = key.match(clientId) && key.match(homeAccountIdentifier);
+        // Does the cache item match the requested token type
+        var tokenTypeMatches = false;
+        switch (tokenType) {
+            case Constants_1.ServerHashParamKeys.ACCESS_TOKEN:
+                // Cache item is an access token if scopes are included in the cache item key
+                tokenTypeMatches = !!key.match(Constants_1.Constants.scopes);
+                break;
+            case Constants_1.ServerHashParamKeys.ID_TOKEN:
+                // Cache may be an ID token if scopes are NOT included in the cache item key
+                tokenTypeMatches = !key.match(Constants_1.Constants.scopes);
+                break;
+        }
+        return (accountMatches && tokenTypeMatches) ? parsedKey : null;
+    };
+    /**
+     * add value to storage
+     * @param key
+     * @param value
+     * @param enableCookieStorage
+     */
+    AuthCache.prototype.setItem = function (key, value, enableCookieStorage) {
+        _super.prototype.setItem.call(this, this.generateCacheKey(key, true), value, enableCookieStorage);
+        // Values stored in cookies will have rollback disabled to minimize cookie length
+        if (this.rollbackEnabled && !enableCookieStorage) {
+            _super.prototype.setItem.call(this, this.generateCacheKey(key, false), value, enableCookieStorage);
+        }
+    };
+    /**
+     * get one item by key from storage
+     * @param key
+     * @param enableCookieStorage
+     */
+    AuthCache.prototype.getItem = function (key, enableCookieStorage) {
+        return _super.prototype.getItem.call(this, this.generateCacheKey(key, true), enableCookieStorage);
+    };
+    /**
+     * remove value from storage
+     * @param key
+     */
+    AuthCache.prototype.removeItem = function (key) {
+        _super.prototype.removeItem.call(this, this.generateCacheKey(key, true));
+        if (this.rollbackEnabled) {
+            _super.prototype.removeItem.call(this, this.generateCacheKey(key, false));
+        }
+    };
+    /**
+     * Reset the cache items
+     */
+    AuthCache.prototype.resetCacheItems = function () {
+        var storage = window[this.cacheLocation];
+        var key;
+        for (key in storage) {
+            // Check if key contains msal prefix; For now, we are clearing all cache items created by MSAL.js
+            if (storage.hasOwnProperty(key) && (key.indexOf(Constants_1.Constants.cachePrefix) !== -1)) {
+                _super.prototype.removeItem.call(this, key);
+                // TODO: Clear cache based on client id (clarify use cases where this is needed)
+            }
+        }
+    };
+    /**
+     * Reset all temporary cache items
+     */
+    AuthCache.prototype.resetTempCacheItems = function (state) {
+        var _this = this;
+        var stateId = state && RequestUtils_1.RequestUtils.parseLibraryState(state).id;
+        var isTokenRenewalInProgress = this.tokenRenewalInProgress(state);
+        var storage = window[this.cacheLocation];
+        // check state and remove associated cache
+        if (stateId && !isTokenRenewalInProgress) {
+            Object.keys(storage).forEach(function (key) {
+                if (key.indexOf(stateId) !== -1) {
+                    _this.removeItem(key);
+                    _super.prototype.clearItemCookie.call(_this, key);
+                }
+            });
+        }
+        // delete the interaction status cache
+        this.removeItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS);
+        this.removeItem(Constants_1.TemporaryCacheKeys.REDIRECT_REQUEST);
+    };
+    /**
+     * Set cookies for IE
+     * @param cName
+     * @param cValue
+     * @param expires
+     */
+    AuthCache.prototype.setItemCookie = function (cName, cValue, expires) {
+        _super.prototype.setItemCookie.call(this, this.generateCacheKey(cName, true), cValue, expires);
+        if (this.rollbackEnabled) {
+            _super.prototype.setItemCookie.call(this, this.generateCacheKey(cName, false), cValue, expires);
+        }
+    };
+    AuthCache.prototype.clearItemCookie = function (cName) {
+        _super.prototype.clearItemCookie.call(this, this.generateCacheKey(cName, true));
+        if (this.rollbackEnabled) {
+            _super.prototype.clearItemCookie.call(this, this.generateCacheKey(cName, false));
+        }
+    };
+    /**
+     * get one item by key from cookies
+     * @param cName
+     */
+    AuthCache.prototype.getItemCookie = function (cName) {
+        return _super.prototype.getItemCookie.call(this, this.generateCacheKey(cName, true));
+    };
+    /**
+     * Get all tokens of a certain type from the cache
+     * @param clientId
+     * @param homeAccountIdentifier
+     * @param tokenType
+     */
+    AuthCache.prototype.getAllTokensByType = function (clientId, homeAccountIdentifier, tokenType) {
+        var _this = this;
+        var results = Object.keys(window[this.cacheLocation]).reduce(function (tokens, key) {
+            var matchedTokenKey = _this.matchKeyForType(key, clientId, homeAccountIdentifier, tokenType);
+            if (matchedTokenKey) {
+                var value = _this.getItem(key);
+                if (value) {
+                    try {
+                        var newAccessTokenCacheItem = new AccessTokenCacheItem_1.AccessTokenCacheItem(matchedTokenKey, JSON.parse(value));
+                        return tokens.concat([newAccessTokenCacheItem]);
+                    }
+                    catch (err) {
+                        // Skip cache items with non-valid JSON values
+                        return tokens;
+                    }
+                }
+            }
+            return tokens;
+        }, []);
+        return results;
+    };
+    /**
+     * Get all access tokens in the cache
+     * @param clientId
+     * @param homeAccountIdentifier
+     */
+    AuthCache.prototype.getAllAccessTokens = function (clientId, homeAccountIdentifier) {
+        return this.getAllTokensByType(clientId, homeAccountIdentifier, Constants_1.ServerHashParamKeys.ACCESS_TOKEN);
+    };
+    /**
+     * Get all id tokens in the cache in the form of AccessTokenCacheItem objects so they are
+     * in a normalized format and can make use of the existing cached access token validation logic
+     */
+    AuthCache.prototype.getAllIdTokens = function (clientId, homeAccountIdentifier) {
+        return this.getAllTokensByType(clientId, homeAccountIdentifier, Constants_1.ServerHashParamKeys.ID_TOKEN);
+    };
+    /**
+     * Get all access and ID tokens in the cache
+     * @param clientId
+     * @param homeAccountIdentifier
+     */
+    AuthCache.prototype.getAllTokens = function (clientId, homeAccountIdentifier) {
+        var accessTokens = this.getAllAccessTokens(clientId, homeAccountIdentifier);
+        var idTokens = this.getAllIdTokens(clientId, homeAccountIdentifier);
+        return accessTokens.concat(idTokens);
+    };
+    /**
+     * Return if the token renewal is still in progress
+     *
+     * @param stateValue
+     */
+    AuthCache.prototype.tokenRenewalInProgress = function (stateValue) {
+        var renewStatus = this.getItem(AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.RENEW_STATUS, stateValue));
+        return !!(renewStatus && renewStatus === Constants_1.Constants.inProgress);
+    };
+    /**
+     * Clear all cookies
+     */
+    AuthCache.prototype.clearMsalCookie = function (state) {
+        var _this = this;
+        /*
+         * If state is truthy, remove values associated with that request.
+         * Otherwise, remove all MSAL cookies.
+         */
+        if (state) {
+            this.clearItemCookie(AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.NONCE_IDTOKEN, state));
+            this.clearItemCookie(AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.STATE_LOGIN, state));
+            this.clearItemCookie(AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.LOGIN_REQUEST, state));
+            this.clearItemCookie(AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.STATE_ACQ_TOKEN, state));
+        }
+        else {
+            var cookies = document.cookie.split(";");
+            cookies.forEach(function (cookieString) {
+                var cookieName = cookieString.trim().split("=")[0];
+                if (cookieName.indexOf(Constants_1.Constants.cachePrefix) > -1) {
+                    _super.prototype.clearItemCookie.call(_this, cookieName);
+                }
+            });
+        }
+    };
+    /**
+     * Create acquireTokenAccountKey to cache account object
+     * @param accountId
+     * @param state
+     */
+    AuthCache.generateAcquireTokenAccountKey = function (accountId, state) {
+        var stateId = RequestUtils_1.RequestUtils.parseLibraryState(state).id;
+        return "" + Constants_1.TemporaryCacheKeys.ACQUIRE_TOKEN_ACCOUNT + Constants_1.Constants.resourceDelimiter + accountId + Constants_1.Constants.resourceDelimiter + stateId;
+    };
+    /**
+     * Create authorityKey to cache authority
+     * @param state
+     */
+    AuthCache.generateAuthorityKey = function (state) {
+        return AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.AUTHORITY, state);
+    };
+    /**
+     * Generates the cache key for temporary cache items, using request state
+     * @param tempCacheKey Cache key prefix
+     * @param state Request state value
+     */
+    AuthCache.generateTemporaryCacheKey = function (tempCacheKey, state) {
+        // Use the state id (a guid), in the interest of shorter key names, which is important for cookies.
+        var stateId = RequestUtils_1.RequestUtils.parseLibraryState(state).id;
+        return "" + tempCacheKey + Constants_1.Constants.resourceDelimiter + stateId;
+    };
+    return AuthCache;
+}(BrowserStorage_1.BrowserStorage));
+exports.AuthCache = AuthCache;
+
+
+/***/ }),
+
+/***/ 96:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var ClientConfigurationError_1 = __webpack_require__(550);
+var AuthError_1 = __webpack_require__(986);
+/**
+ * @hidden
+ */
+var BrowserStorage = /** @class */ (function () {
+    function BrowserStorage(cacheLocation) {
+        if (!window) {
+            throw AuthError_1.AuthError.createNoWindowObjectError("Browser storage class could not find window object");
+        }
+        var storageSupported = typeof window[cacheLocation] !== "undefined" && window[cacheLocation] !== null;
+        if (!storageSupported) {
+            throw ClientConfigurationError_1.ClientConfigurationError.createStorageNotSupportedError(cacheLocation);
+        }
+        this.cacheLocation = cacheLocation;
+    }
+    /**
+     * add value to storage
+     * @param key
+     * @param value
+     * @param enableCookieStorage
+     */
+    BrowserStorage.prototype.setItem = function (key, value, enableCookieStorage) {
+        window[this.cacheLocation].setItem(key, value);
+        if (enableCookieStorage) {
+            this.setItemCookie(key, value);
+        }
+    };
+    /**
+     * get one item by key from storage
+     * @param key
+     * @param enableCookieStorage
+     */
+    BrowserStorage.prototype.getItem = function (key, enableCookieStorage) {
+        if (enableCookieStorage && this.getItemCookie(key)) {
+            return this.getItemCookie(key);
+        }
+        return window[this.cacheLocation].getItem(key);
+    };
+    /**
+     * remove value from storage
+     * @param key
+     */
+    BrowserStorage.prototype.removeItem = function (key) {
+        return window[this.cacheLocation].removeItem(key);
+    };
+    /**
+     * clear storage (remove all items from it)
+     */
+    BrowserStorage.prototype.clear = function () {
+        return window[this.cacheLocation].clear();
+    };
+    /**
+     * add value to cookies
+     * @param cName
+     * @param cValue
+     * @param expires
+     */
+    BrowserStorage.prototype.setItemCookie = function (cName, cValue, expires) {
+        var cookieStr = cName + "=" + cValue + ";path=/;";
+        if (expires) {
+            var expireTime = this.getCookieExpirationTime(expires);
+            cookieStr += "expires=" + expireTime + ";";
+        }
+        document.cookie = cookieStr;
+    };
+    /**
+     * get one item by key from cookies
+     * @param cName
+     */
+    BrowserStorage.prototype.getItemCookie = function (cName) {
+        var name = cName + "=";
+        var ca = document.cookie.split(";");
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === " ") {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    };
+    /**
+     * Clear an item in the cookies by key
+     * @param cName
+     */
+    BrowserStorage.prototype.clearItemCookie = function (cName) {
+        this.setItemCookie(cName, "", -1);
+    };
+    /**
+     * Get cookie expiration time
+     * @param cookieLifeDays
+     */
+    BrowserStorage.prototype.getCookieExpirationTime = function (cookieLifeDays) {
+        var today = new Date();
+        var expr = new Date(today.getTime() + cookieLifeDays * 24 * 60 * 60 * 1000);
+        return expr.toUTCString();
+    };
+    return BrowserStorage;
+}());
+exports.BrowserStorage = BrowserStorage;
+
+
+/***/ }),
+
+/***/ 986:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+exports.AuthErrorMessage = {
+    unexpectedError: {
+        code: "unexpected_error",
+        desc: "Unexpected error in authentication."
+    },
+    noWindowObjectError: {
+        code: "no_window_object",
+        desc: "No window object available. Details:"
+    }
+};
+/**
+ * General error class thrown by the MSAL.js library.
+ */
+var AuthError = /** @class */ (function (_super) {
+    tslib_1.__extends(AuthError, _super);
+    function AuthError(errorCode, errorMessage) {
+        var _this = _super.call(this, errorMessage) || this;
+        Object.setPrototypeOf(_this, AuthError.prototype);
+        _this.errorCode = errorCode;
+        _this.errorMessage = errorMessage;
+        _this.name = "AuthError";
+        return _this;
+    }
+    AuthError.createUnexpectedError = function (errDesc) {
+        return new AuthError(exports.AuthErrorMessage.unexpectedError.code, exports.AuthErrorMessage.unexpectedError.desc + ": " + errDesc);
+    };
+    AuthError.createNoWindowObjectError = function (errDesc) {
+        return new AuthError(exports.AuthErrorMessage.noWindowObjectError.code, exports.AuthErrorMessage.noWindowObjectError.desc + " " + errDesc);
+    };
+    return AuthError;
+}(Error));
+exports.AuthError = AuthError;
+
+
+/***/ }),
+
+/***/ 356:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var AuthError_1 = __webpack_require__(986);
+var StringUtils_1 = __webpack_require__(454);
+exports.ClientAuthErrorMessage = {
+    multipleCacheAuthorities: {
+        code: "multiple_authorities",
+        desc: "Multiple authorities found in the cache. Pass authority in the API overload."
+    },
+    endpointResolutionError: {
+        code: "endpoints_resolution_error",
+        desc: "Error: could not resolve endpoints. Please check network and try again."
+    },
+    popUpWindowError: {
+        code: "popup_window_error",
+        desc: "Error opening popup window. This can happen if you are using IE or if popups are blocked in the browser."
+    },
+    tokenRenewalError: {
+        code: "token_renewal_error",
+        desc: "Token renewal operation failed due to timeout."
+    },
+    invalidIdToken: {
+        code: "invalid_id_token",
+        desc: "Invalid ID token format."
+    },
+    invalidStateError: {
+        code: "invalid_state_error",
+        desc: "Invalid state."
+    },
+    nonceMismatchError: {
+        code: "nonce_mismatch_error",
+        desc: "Nonce is not matching, Nonce received: "
+    },
+    loginProgressError: {
+        code: "login_progress_error",
+        desc: "Login_In_Progress: Error during login call - login is already in progress."
+    },
+    acquireTokenProgressError: {
+        code: "acquiretoken_progress_error",
+        desc: "AcquireToken_In_Progress: Error during login call - login is already in progress."
+    },
+    userCancelledError: {
+        code: "user_cancelled",
+        desc: "User cancelled the flow."
+    },
+    callbackError: {
+        code: "callback_error",
+        desc: "Error occurred in token received callback function."
+    },
+    userLoginRequiredError: {
+        code: "user_login_error",
+        desc: "User login is required. For silent calls, request must contain either sid or login_hint"
+    },
+    userDoesNotExistError: {
+        code: "user_non_existent",
+        desc: "User object does not exist. Please call a login API."
+    },
+    clientInfoDecodingError: {
+        code: "client_info_decoding_error",
+        desc: "The client info could not be parsed/decoded correctly. Please review the trace to determine the root cause."
+    },
+    clientInfoNotPopulatedError: {
+        code: "client_info_not_populated_error",
+        desc: "The service did not populate client_info in the response, Please verify with the service team"
+    },
+    nullOrEmptyIdToken: {
+        code: "null_or_empty_id_token",
+        desc: "The idToken is null or empty. Please review the trace to determine the root cause."
+    },
+    idTokenNotParsed: {
+        code: "id_token_parsing_error",
+        desc: "ID token cannot be parsed. Please review stack trace to determine root cause."
+    },
+    tokenEncodingError: {
+        code: "token_encoding_error",
+        desc: "The token to be decoded is not encoded correctly."
+    },
+    invalidInteractionType: {
+        code: "invalid_interaction_type",
+        desc: "The interaction type passed to the handler was incorrect or unknown"
+    },
+    cacheParseError: {
+        code: "cannot_parse_cache",
+        desc: "The cached token key is not a valid JSON and cannot be parsed"
+    },
+    blockTokenRequestsInHiddenIframe: {
+        code: "block_token_requests",
+        desc: "Token calls are blocked in hidden iframes"
+    }
+};
+/**
+ * Error thrown when there is an error in the client code running on the browser.
+ */
+var ClientAuthError = /** @class */ (function (_super) {
+    tslib_1.__extends(ClientAuthError, _super);
+    function ClientAuthError(errorCode, errorMessage) {
+        var _this = _super.call(this, errorCode, errorMessage) || this;
+        _this.name = "ClientAuthError";
+        Object.setPrototypeOf(_this, ClientAuthError.prototype);
+        return _this;
+    }
+    ClientAuthError.createEndpointResolutionError = function (errDetail) {
+        var errorMessage = exports.ClientAuthErrorMessage.endpointResolutionError.desc;
+        if (errDetail && !StringUtils_1.StringUtils.isEmpty(errDetail)) {
+            errorMessage += " Details: " + errDetail;
+        }
+        return new ClientAuthError(exports.ClientAuthErrorMessage.endpointResolutionError.code, errorMessage);
+    };
+    ClientAuthError.createMultipleAuthoritiesInCacheError = function (scope) {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.multipleCacheAuthorities.code, "Cache error for scope " + scope + ": " + exports.ClientAuthErrorMessage.multipleCacheAuthorities.desc + ".");
+    };
+    ClientAuthError.createPopupWindowError = function (errDetail) {
+        var errorMessage = exports.ClientAuthErrorMessage.popUpWindowError.desc;
+        if (errDetail && !StringUtils_1.StringUtils.isEmpty(errDetail)) {
+            errorMessage += " Details: " + errDetail;
+        }
+        return new ClientAuthError(exports.ClientAuthErrorMessage.popUpWindowError.code, errorMessage);
+    };
+    ClientAuthError.createTokenRenewalTimeoutError = function () {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.tokenRenewalError.code, exports.ClientAuthErrorMessage.tokenRenewalError.desc);
+    };
+    ClientAuthError.createInvalidIdTokenError = function (idToken) {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.invalidIdToken.code, exports.ClientAuthErrorMessage.invalidIdToken.desc + " Given token: " + idToken);
+    };
+    // TODO: Is this not a security flaw to send the user the state expected??
+    ClientAuthError.createInvalidStateError = function (invalidState, actualState) {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.invalidStateError.code, exports.ClientAuthErrorMessage.invalidStateError.desc + " " + invalidState + ", state expected : " + actualState + ".");
+    };
+    // TODO: Is this not a security flaw to send the user the Nonce expected??
+    ClientAuthError.createNonceMismatchError = function (invalidNonce, actualNonce) {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.nonceMismatchError.code, exports.ClientAuthErrorMessage.nonceMismatchError.desc + " " + invalidNonce + ", nonce expected : " + actualNonce + ".");
+    };
+    ClientAuthError.createLoginInProgressError = function () {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.loginProgressError.code, exports.ClientAuthErrorMessage.loginProgressError.desc);
+    };
+    ClientAuthError.createAcquireTokenInProgressError = function () {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.acquireTokenProgressError.code, exports.ClientAuthErrorMessage.acquireTokenProgressError.desc);
+    };
+    ClientAuthError.createUserCancelledError = function () {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.userCancelledError.code, exports.ClientAuthErrorMessage.userCancelledError.desc);
+    };
+    ClientAuthError.createErrorInCallbackFunction = function (errorDesc) {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.callbackError.code, exports.ClientAuthErrorMessage.callbackError.desc + " " + errorDesc + ".");
+    };
+    ClientAuthError.createUserLoginRequiredError = function () {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.userLoginRequiredError.code, exports.ClientAuthErrorMessage.userLoginRequiredError.desc);
+    };
+    ClientAuthError.createUserDoesNotExistError = function () {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.userDoesNotExistError.code, exports.ClientAuthErrorMessage.userDoesNotExistError.desc);
+    };
+    ClientAuthError.createClientInfoDecodingError = function (caughtError) {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.clientInfoDecodingError.code, exports.ClientAuthErrorMessage.clientInfoDecodingError.desc + " Failed with error: " + caughtError);
+    };
+    ClientAuthError.createClientInfoNotPopulatedError = function (caughtError) {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.clientInfoNotPopulatedError.code, exports.ClientAuthErrorMessage.clientInfoNotPopulatedError.desc + " Failed with error: " + caughtError);
+    };
+    ClientAuthError.createIdTokenNullOrEmptyError = function (invalidRawTokenString) {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.nullOrEmptyIdToken.code, exports.ClientAuthErrorMessage.nullOrEmptyIdToken.desc + " Raw ID Token Value: " + invalidRawTokenString);
+    };
+    ClientAuthError.createIdTokenParsingError = function (caughtParsingError) {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.idTokenNotParsed.code, exports.ClientAuthErrorMessage.idTokenNotParsed.desc + " Failed with error: " + caughtParsingError);
+    };
+    ClientAuthError.createTokenEncodingError = function (incorrectlyEncodedToken) {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.tokenEncodingError.code, exports.ClientAuthErrorMessage.tokenEncodingError.desc + " Attempted to decode: " + incorrectlyEncodedToken);
+    };
+    ClientAuthError.createInvalidInteractionTypeError = function () {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.invalidInteractionType.code, exports.ClientAuthErrorMessage.invalidInteractionType.desc);
+    };
+    ClientAuthError.createCacheParseError = function (key) {
+        var errorMessage = "invalid key: " + key + ", " + exports.ClientAuthErrorMessage.cacheParseError.desc;
+        return new ClientAuthError(exports.ClientAuthErrorMessage.cacheParseError.code, errorMessage);
+    };
+    ClientAuthError.createBlockTokenRequestsInHiddenIframeError = function () {
+        return new ClientAuthError(exports.ClientAuthErrorMessage.blockTokenRequestsInHiddenIframe.code, exports.ClientAuthErrorMessage.blockTokenRequestsInHiddenIframe.desc);
+    };
+    return ClientAuthError;
+}(AuthError_1.AuthError));
+exports.ClientAuthError = ClientAuthError;
+
+
+/***/ }),
+
+/***/ 550:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var ClientAuthError_1 = __webpack_require__(356);
+exports.ClientConfigurationErrorMessage = {
+    configurationNotSet: {
+        code: "no_config_set",
+        desc: "Configuration has not been set. Please call the UserAgentApplication constructor with a valid Configuration object."
+    },
+    storageNotSupported: {
+        code: "storage_not_supported",
+        desc: "The value for the cacheLocation is not supported."
+    },
+    noRedirectCallbacksSet: {
+        code: "no_redirect_callbacks",
+        desc: "No redirect callbacks have been set. Please call handleRedirectCallback() with the appropriate function arguments before continuing. " +
+            "More information is available here: https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/MSAL-basics."
+    },
+    invalidCallbackObject: {
+        code: "invalid_callback_object",
+        desc: "The object passed for the callback was invalid. " +
+            "More information is available here: https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/MSAL-basics."
+    },
+    scopesRequired: {
+        code: "scopes_required",
+        desc: "Scopes are required to obtain an access token."
+    },
+    emptyScopes: {
+        code: "empty_input_scopes_error",
+        desc: "Scopes cannot be passed as empty array."
+    },
+    nonArrayScopes: {
+        code: "nonarray_input_scopes_error",
+        desc: "Scopes cannot be passed as non-array."
+    },
+    invalidPrompt: {
+        code: "invalid_prompt_value",
+        desc: "Supported prompt values are 'login', 'select_account', 'consent' and 'none'",
+    },
+    invalidAuthorityType: {
+        code: "invalid_authority_type",
+        desc: "The given authority is not a valid type of authority supported by MSAL. Please see here for valid authorities: <insert URL here>."
+    },
+    authorityUriInsecure: {
+        code: "authority_uri_insecure",
+        desc: "Authority URIs must use https."
+    },
+    authorityUriInvalidPath: {
+        code: "authority_uri_invalid_path",
+        desc: "Given authority URI is invalid."
+    },
+    unsupportedAuthorityValidation: {
+        code: "unsupported_authority_validation",
+        desc: "The authority validation is not supported for this authority type."
+    },
+    untrustedAuthority: {
+        code: "untrusted_authority",
+        desc: "The provided authority is not a trusted authority. Please include this authority in the knownAuthorities config parameter or set validateAuthority=false."
+    },
+    b2cAuthorityUriInvalidPath: {
+        code: "b2c_authority_uri_invalid_path",
+        desc: "The given URI for the B2C authority is invalid."
+    },
+    b2cKnownAuthoritiesNotSet: {
+        code: "b2c_known_authorities_not_set",
+        desc: "Must set known authorities when validateAuthority is set to True and using B2C"
+    },
+    claimsRequestParsingError: {
+        code: "claims_request_parsing_error",
+        desc: "Could not parse the given claims request object."
+    },
+    emptyRequestError: {
+        code: "empty_request_error",
+        desc: "Request object is required."
+    },
+    invalidCorrelationIdError: {
+        code: "invalid_guid_sent_as_correlationId",
+        desc: "Please set the correlationId as a valid guid"
+    },
+    telemetryConfigError: {
+        code: "telemetry_config_error",
+        desc: "Telemetry config is not configured with required values"
+    },
+    ssoSilentError: {
+        code: "sso_silent_error",
+        desc: "request must contain either sid or login_hint"
+    },
+    invalidAuthorityMetadataError: {
+        code: "authority_metadata_error",
+        desc: "Invalid authorityMetadata. Must be a JSON object containing authorization_endpoint, end_session_endpoint, and issuer fields."
+    }
+};
+/**
+ * Error thrown when there is an error in configuration of the .js library.
+ */
+var ClientConfigurationError = /** @class */ (function (_super) {
+    tslib_1.__extends(ClientConfigurationError, _super);
+    function ClientConfigurationError(errorCode, errorMessage) {
+        var _this = _super.call(this, errorCode, errorMessage) || this;
+        _this.name = "ClientConfigurationError";
+        Object.setPrototypeOf(_this, ClientConfigurationError.prototype);
+        return _this;
+    }
+    ClientConfigurationError.createNoSetConfigurationError = function () {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.configurationNotSet.code, "" + exports.ClientConfigurationErrorMessage.configurationNotSet.desc);
+    };
+    ClientConfigurationError.createStorageNotSupportedError = function (givenCacheLocation) {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.storageNotSupported.code, exports.ClientConfigurationErrorMessage.storageNotSupported.desc + " Given location: " + givenCacheLocation);
+    };
+    ClientConfigurationError.createRedirectCallbacksNotSetError = function () {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.noRedirectCallbacksSet.code, exports.ClientConfigurationErrorMessage.noRedirectCallbacksSet.desc);
+    };
+    ClientConfigurationError.createInvalidCallbackObjectError = function (callbackObject) {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.invalidCallbackObject.code, exports.ClientConfigurationErrorMessage.invalidCallbackObject.desc + " Given value for callback function: " + callbackObject);
+    };
+    ClientConfigurationError.createEmptyScopesArrayError = function (scopesValue) {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.emptyScopes.code, exports.ClientConfigurationErrorMessage.emptyScopes.desc + " Given value: " + scopesValue + ".");
+    };
+    ClientConfigurationError.createScopesNonArrayError = function (scopesValue) {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.nonArrayScopes.code, exports.ClientConfigurationErrorMessage.nonArrayScopes.desc + " Given value: " + scopesValue + ".");
+    };
+    ClientConfigurationError.createScopesRequiredError = function (scopesValue) {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.scopesRequired.code, exports.ClientConfigurationErrorMessage.scopesRequired.desc + " Given value: " + scopesValue);
+    };
+    ClientConfigurationError.createInvalidPromptError = function (promptValue) {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.invalidPrompt.code, exports.ClientConfigurationErrorMessage.invalidPrompt.desc + " Given value: " + promptValue);
+    };
+    ClientConfigurationError.createClaimsRequestParsingError = function (claimsRequestParseError) {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.claimsRequestParsingError.code, exports.ClientConfigurationErrorMessage.claimsRequestParsingError.desc + " Given value: " + claimsRequestParseError);
+    };
+    ClientConfigurationError.createEmptyRequestError = function () {
+        var _a = exports.ClientConfigurationErrorMessage.emptyRequestError, code = _a.code, desc = _a.desc;
+        return new ClientConfigurationError(code, desc);
+    };
+    ClientConfigurationError.createInvalidCorrelationIdError = function () {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.invalidCorrelationIdError.code, exports.ClientConfigurationErrorMessage.invalidCorrelationIdError.desc);
+    };
+    ClientConfigurationError.createKnownAuthoritiesNotSetError = function () {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.b2cKnownAuthoritiesNotSet.code, exports.ClientConfigurationErrorMessage.b2cKnownAuthoritiesNotSet.desc);
+    };
+    ClientConfigurationError.createInvalidAuthorityTypeError = function () {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.invalidAuthorityType.code, exports.ClientConfigurationErrorMessage.invalidAuthorityType.desc);
+    };
+    ClientConfigurationError.createUntrustedAuthorityError = function (host) {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.untrustedAuthority.code, exports.ClientConfigurationErrorMessage.untrustedAuthority.desc + " Provided Authority: " + host);
+    };
+    ClientConfigurationError.createTelemetryConfigError = function (config) {
+        var _a = exports.ClientConfigurationErrorMessage.telemetryConfigError, code = _a.code, desc = _a.desc;
+        var requiredKeys = {
+            applicationName: "string",
+            applicationVersion: "string",
+            telemetryEmitter: "function"
+        };
+        var missingKeys = Object.keys(requiredKeys)
+            .reduce(function (keys, key) {
+            return config[key] ? keys : keys.concat([key + " (" + requiredKeys[key] + ")"]);
+        }, []);
+        return new ClientConfigurationError(code, desc + " mising values: " + missingKeys.join(","));
+    };
+    ClientConfigurationError.createSsoSilentError = function () {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.ssoSilentError.code, exports.ClientConfigurationErrorMessage.ssoSilentError.desc);
+    };
+    ClientConfigurationError.createInvalidAuthorityMetadataError = function () {
+        return new ClientConfigurationError(exports.ClientConfigurationErrorMessage.invalidAuthorityMetadataError.code, exports.ClientConfigurationErrorMessage.invalidAuthorityMetadataError.desc);
+    };
+    return ClientConfigurationError;
+}(ClientAuthError_1.ClientAuthError));
+exports.ClientConfigurationError = ClientConfigurationError;
+
+
+/***/ }),
+
+/***/ 961:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var ServerError_1 = __webpack_require__(447);
+exports.InteractionRequiredAuthErrorMessage = {
+    interactionRequired: {
+        code: "interaction_required"
+    },
+    consentRequired: {
+        code: "consent_required"
+    },
+    loginRequired: {
+        code: "login_required"
+    },
+};
+/**
+ * Error thrown when the user is required to perform an interactive token request.
+ */
+var InteractionRequiredAuthError = /** @class */ (function (_super) {
+    tslib_1.__extends(InteractionRequiredAuthError, _super);
+    function InteractionRequiredAuthError(errorCode, errorMessage) {
+        var _this = _super.call(this, errorCode, errorMessage) || this;
+        _this.name = "InteractionRequiredAuthError";
+        Object.setPrototypeOf(_this, InteractionRequiredAuthError.prototype);
+        return _this;
+    }
+    InteractionRequiredAuthError.isInteractionRequiredError = function (errorString) {
+        var interactionRequiredCodes = [
+            exports.InteractionRequiredAuthErrorMessage.interactionRequired.code,
+            exports.InteractionRequiredAuthErrorMessage.consentRequired.code,
+            exports.InteractionRequiredAuthErrorMessage.loginRequired.code
+        ];
+        return errorString && interactionRequiredCodes.indexOf(errorString) > -1;
+    };
+    InteractionRequiredAuthError.createLoginRequiredAuthError = function (errorDesc) {
+        return new InteractionRequiredAuthError(exports.InteractionRequiredAuthErrorMessage.loginRequired.code, errorDesc);
+    };
+    InteractionRequiredAuthError.createInteractionRequiredAuthError = function (errorDesc) {
+        return new InteractionRequiredAuthError(exports.InteractionRequiredAuthErrorMessage.interactionRequired.code, errorDesc);
+    };
+    InteractionRequiredAuthError.createConsentRequiredAuthError = function (errorDesc) {
+        return new InteractionRequiredAuthError(exports.InteractionRequiredAuthErrorMessage.consentRequired.code, errorDesc);
+    };
+    return InteractionRequiredAuthError;
+}(ServerError_1.ServerError));
+exports.InteractionRequiredAuthError = InteractionRequiredAuthError;
+
+
+/***/ }),
+
+/***/ 447:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var AuthError_1 = __webpack_require__(986);
+exports.ServerErrorMessage = {
+    serverUnavailable: {
+        code: "server_unavailable",
+        desc: "Server is temporarily unavailable."
+    },
+    unknownServerError: {
+        code: "unknown_server_error"
+    },
+};
+/**
+ * Error thrown when there is an error with the server code, for example, unavailability.
+ */
+var ServerError = /** @class */ (function (_super) {
+    tslib_1.__extends(ServerError, _super);
+    function ServerError(errorCode, errorMessage) {
+        var _this = _super.call(this, errorCode, errorMessage) || this;
+        _this.name = "ServerError";
+        Object.setPrototypeOf(_this, ServerError.prototype);
+        return _this;
+    }
+    ServerError.createServerUnavailableError = function () {
+        return new ServerError(exports.ServerErrorMessage.serverUnavailable.code, exports.ServerErrorMessage.serverUnavailable.desc);
+    };
+    ServerError.createUnknownServerError = function (errorDesc) {
+        return new ServerError(exports.ServerErrorMessage.unknownServerError.code, errorDesc);
+    };
+    return ServerError;
+}(AuthError_1.AuthError));
+exports.ServerError = ServerError;
+
+
+/***/ }),
+
+/***/ 432:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * @packageDocumentation
+ * @module @azure/msal
+ */
+var UserAgentApplication_1 = __webpack_require__(463);
+exports.UserAgentApplication = UserAgentApplication_1.UserAgentApplication;
+exports.authResponseCallback = UserAgentApplication_1.authResponseCallback;
+exports.errorReceivedCallback = UserAgentApplication_1.errorReceivedCallback;
+exports.tokenReceivedCallback = UserAgentApplication_1.tokenReceivedCallback;
+var Logger_1 = __webpack_require__(89);
+exports.Logger = Logger_1.Logger;
+var Logger_2 = __webpack_require__(89);
+exports.LogLevel = Logger_2.LogLevel;
+var Account_1 = __webpack_require__(630);
+exports.Account = Account_1.Account;
+var Constants_1 = __webpack_require__(91);
+exports.Constants = Constants_1.Constants;
+exports.ServerHashParamKeys = Constants_1.ServerHashParamKeys;
+var Authority_1 = __webpack_require__(660);
+exports.Authority = Authority_1.Authority;
+var UserAgentApplication_2 = __webpack_require__(463);
+exports.CacheResult = UserAgentApplication_2.CacheResult;
+var Configuration_1 = __webpack_require__(875);
+exports.CacheLocation = Configuration_1.CacheLocation;
+exports.Configuration = Configuration_1.Configuration;
+var AuthenticationParameters_1 = __webpack_require__(733);
+exports.AuthenticationParameters = AuthenticationParameters_1.AuthenticationParameters;
+var AuthResponse_1 = __webpack_require__(681);
+exports.AuthResponse = AuthResponse_1.AuthResponse;
+var CryptoUtils_1 = __webpack_require__(453);
+exports.CryptoUtils = CryptoUtils_1.CryptoUtils;
+var UrlUtils_1 = __webpack_require__(741);
+exports.UrlUtils = UrlUtils_1.UrlUtils;
+var WindowUtils_1 = __webpack_require__(758);
+exports.WindowUtils = WindowUtils_1.WindowUtils;
+// Errors
+var AuthError_1 = __webpack_require__(986);
+exports.AuthError = AuthError_1.AuthError;
+var ClientAuthError_1 = __webpack_require__(356);
+exports.ClientAuthError = ClientAuthError_1.ClientAuthError;
+var ServerError_1 = __webpack_require__(447);
+exports.ServerError = ServerError_1.ServerError;
+var ClientConfigurationError_1 = __webpack_require__(550);
+exports.ClientConfigurationError = ClientConfigurationError_1.ClientConfigurationError;
+var InteractionRequiredAuthError_1 = __webpack_require__(961);
+exports.InteractionRequiredAuthError = InteractionRequiredAuthError_1.InteractionRequiredAuthError;
+
+
+/***/ }),
+
+/***/ 700:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/* eslint-disable header/header */
+exports.name = "msal";
+exports.version = "1.4.8";
+
+
+/***/ }),
+
+/***/ 663:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var TelemetryEvent_1 = tslib_1.__importDefault(__webpack_require__(336));
+var TelemetryConstants_1 = __webpack_require__(810);
+var TelemetryUtils_1 = __webpack_require__(847);
+exports.EVENT_KEYS = {
+    AUTHORITY: TelemetryUtils_1.prependEventNamePrefix("authority"),
+    AUTHORITY_TYPE: TelemetryUtils_1.prependEventNamePrefix("authority_type"),
+    PROMPT: TelemetryUtils_1.prependEventNamePrefix("ui_behavior"),
+    TENANT_ID: TelemetryUtils_1.prependEventNamePrefix("tenant_id"),
+    USER_ID: TelemetryUtils_1.prependEventNamePrefix("user_id"),
+    WAS_SUCESSFUL: TelemetryUtils_1.prependEventNamePrefix("was_successful"),
+    API_ERROR_CODE: TelemetryUtils_1.prependEventNamePrefix("api_error_code"),
+    LOGIN_HINT: TelemetryUtils_1.prependEventNamePrefix("login_hint")
+};
+var API_CODE;
+(function (API_CODE) {
+    API_CODE[API_CODE["AcquireTokenRedirect"] = 2001] = "AcquireTokenRedirect";
+    API_CODE[API_CODE["AcquireTokenSilent"] = 2002] = "AcquireTokenSilent";
+    API_CODE[API_CODE["AcquireTokenPopup"] = 2003] = "AcquireTokenPopup";
+    API_CODE[API_CODE["LoginRedirect"] = 2004] = "LoginRedirect";
+    API_CODE[API_CODE["LoginPopup"] = 2005] = "LoginPopup";
+    API_CODE[API_CODE["Logout"] = 2006] = "Logout";
+})(API_CODE = exports.API_CODE || (exports.API_CODE = {}));
+var API_EVENT_IDENTIFIER;
+(function (API_EVENT_IDENTIFIER) {
+    API_EVENT_IDENTIFIER["AcquireTokenRedirect"] = "AcquireTokenRedirect";
+    API_EVENT_IDENTIFIER["AcquireTokenSilent"] = "AcquireTokenSilent";
+    API_EVENT_IDENTIFIER["AcquireTokenPopup"] = "AcquireTokenPopup";
+    API_EVENT_IDENTIFIER["LoginRedirect"] = "LoginRedirect";
+    API_EVENT_IDENTIFIER["LoginPopup"] = "LoginPopup";
+    API_EVENT_IDENTIFIER["Logout"] = "Logout";
+})(API_EVENT_IDENTIFIER = exports.API_EVENT_IDENTIFIER || (exports.API_EVENT_IDENTIFIER = {}));
+var mapEventIdentiferToCode = (_a = {},
+    _a[API_EVENT_IDENTIFIER.AcquireTokenSilent] = API_CODE.AcquireTokenSilent,
+    _a[API_EVENT_IDENTIFIER.AcquireTokenPopup] = API_CODE.AcquireTokenPopup,
+    _a[API_EVENT_IDENTIFIER.AcquireTokenRedirect] = API_CODE.AcquireTokenRedirect,
+    _a[API_EVENT_IDENTIFIER.LoginPopup] = API_CODE.LoginPopup,
+    _a[API_EVENT_IDENTIFIER.LoginRedirect] = API_CODE.LoginRedirect,
+    _a[API_EVENT_IDENTIFIER.Logout] = API_CODE.Logout,
+    _a);
+var ApiEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(ApiEvent, _super);
+    function ApiEvent(correlationId, piiEnabled, apiEventIdentifier) {
+        var _this = _super.call(this, TelemetryUtils_1.prependEventNamePrefix("api_event"), correlationId, apiEventIdentifier) || this;
+        if (apiEventIdentifier) {
+            _this.apiCode = mapEventIdentiferToCode[apiEventIdentifier];
+            _this.apiEventIdentifier = apiEventIdentifier;
+        }
+        _this.piiEnabled = piiEnabled;
+        return _this;
+    }
+    Object.defineProperty(ApiEvent.prototype, "apiEventIdentifier", {
+        set: function (apiEventIdentifier) {
+            this.event[TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.ApiTelemIdConstStrKey] = apiEventIdentifier;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ApiEvent.prototype, "apiCode", {
+        set: function (apiCode) {
+            this.event[TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.ApiIdConstStrKey] = apiCode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ApiEvent.prototype, "authority", {
+        set: function (uri) {
+            this.event[exports.EVENT_KEYS.AUTHORITY] = TelemetryUtils_1.scrubTenantFromUri(uri).toLowerCase();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ApiEvent.prototype, "apiErrorCode", {
+        set: function (errorCode) {
+            this.event[exports.EVENT_KEYS.API_ERROR_CODE] = errorCode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ApiEvent.prototype, "tenantId", {
+        set: function (tenantId) {
+            this.event[exports.EVENT_KEYS.TENANT_ID] = this.piiEnabled && tenantId ?
+                TelemetryUtils_1.hashPersonalIdentifier(tenantId)
+                : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ApiEvent.prototype, "accountId", {
+        set: function (accountId) {
+            this.event[exports.EVENT_KEYS.USER_ID] = this.piiEnabled && accountId ?
+                TelemetryUtils_1.hashPersonalIdentifier(accountId)
+                : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ApiEvent.prototype, "wasSuccessful", {
+        get: function () {
+            return this.event[exports.EVENT_KEYS.WAS_SUCESSFUL] === true;
+        },
+        set: function (wasSuccessful) {
+            this.event[exports.EVENT_KEYS.WAS_SUCESSFUL] = wasSuccessful;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ApiEvent.prototype, "loginHint", {
+        set: function (loginHint) {
+            this.event[exports.EVENT_KEYS.LOGIN_HINT] = this.piiEnabled && loginHint ?
+                TelemetryUtils_1.hashPersonalIdentifier(loginHint)
+                : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ApiEvent.prototype, "authorityType", {
+        set: function (authorityType) {
+            this.event[exports.EVENT_KEYS.AUTHORITY_TYPE] = authorityType.toLowerCase();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ApiEvent.prototype, "promptType", {
+        set: function (promptType) {
+            this.event[exports.EVENT_KEYS.PROMPT] = promptType.toLowerCase();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ApiEvent;
+}(TelemetryEvent_1.default));
+exports.default = ApiEvent;
+
+
+/***/ }),
+
+/***/ 868:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var TelemetryConstants_1 = __webpack_require__(810);
+var TelemetryEvent_1 = tslib_1.__importDefault(__webpack_require__(336));
+var TelemetryUtils_1 = __webpack_require__(847);
+var DefaultEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(DefaultEvent, _super);
+    // TODO Platform Type
+    function DefaultEvent(platform, correlationId, clientId, eventCount) {
+        var _this = _super.call(this, TelemetryUtils_1.prependEventNamePrefix("default_event"), correlationId, "DefaultEvent") || this;
+        _this.event[TelemetryUtils_1.prependEventNamePrefix("client_id")] = clientId;
+        _this.event[TelemetryUtils_1.prependEventNamePrefix("sdk_plaform")] = platform.sdk;
+        _this.event[TelemetryUtils_1.prependEventNamePrefix("sdk_version")] = platform.sdkVersion;
+        _this.event[TelemetryUtils_1.prependEventNamePrefix("application_name")] = platform.applicationName;
+        _this.event[TelemetryUtils_1.prependEventNamePrefix("application_version")] = platform.applicationVersion;
+        _this.event[TelemetryUtils_1.prependEventNamePrefix("effective_connection_speed")] = platform.networkInformation && platform.networkInformation.connectionSpeed;
+        _this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.UiEventCountTelemetryBatchKey] = _this.getEventCount(TelemetryUtils_1.prependEventNamePrefix("ui_event"), eventCount);
+        _this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.HttpEventCountTelemetryBatchKey] = _this.getEventCount(TelemetryUtils_1.prependEventNamePrefix("http_event"), eventCount);
+        _this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.CacheEventCountConstStrKey] = _this.getEventCount(TelemetryUtils_1.prependEventNamePrefix("cache_event"), eventCount);
+        return _this;
+        // / Device id?
+    }
+    DefaultEvent.prototype.getEventCount = function (eventName, eventCount) {
+        if (!eventCount[eventName]) {
+            return 0;
+        }
+        return eventCount[eventName];
+    };
+    return DefaultEvent;
+}(TelemetryEvent_1.default));
+exports.default = DefaultEvent;
+
+
+/***/ }),
+
+/***/ 140:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var TelemetryEvent_1 = tslib_1.__importDefault(__webpack_require__(336));
+var TelemetryUtils_1 = __webpack_require__(847);
+var ServerRequestParameters_1 = __webpack_require__(436);
+exports.EVENT_KEYS = {
+    HTTP_PATH: TelemetryUtils_1.prependEventNamePrefix("http_path"),
+    USER_AGENT: TelemetryUtils_1.prependEventNamePrefix("user_agent"),
+    QUERY_PARAMETERS: TelemetryUtils_1.prependEventNamePrefix("query_parameters"),
+    API_VERSION: TelemetryUtils_1.prependEventNamePrefix("api_version"),
+    RESPONSE_CODE: TelemetryUtils_1.prependEventNamePrefix("response_code"),
+    O_AUTH_ERROR_CODE: TelemetryUtils_1.prependEventNamePrefix("oauth_error_code"),
+    HTTP_METHOD: TelemetryUtils_1.prependEventNamePrefix("http_method"),
+    REQUEST_ID_HEADER: TelemetryUtils_1.prependEventNamePrefix("request_id_header"),
+    SPE_INFO: TelemetryUtils_1.prependEventNamePrefix("spe_info"),
+    SERVER_ERROR_CODE: TelemetryUtils_1.prependEventNamePrefix("server_error_code"),
+    SERVER_SUB_ERROR_CODE: TelemetryUtils_1.prependEventNamePrefix("server_sub_error_code"),
+    URL: TelemetryUtils_1.prependEventNamePrefix("url")
+};
+var HttpEvent = /** @class */ (function (_super) {
+    tslib_1.__extends(HttpEvent, _super);
+    function HttpEvent(correlationId, eventLabel) {
+        return _super.call(this, TelemetryUtils_1.prependEventNamePrefix("http_event"), correlationId, eventLabel) || this;
+    }
+    Object.defineProperty(HttpEvent.prototype, "url", {
+        set: function (url) {
+            var scrubbedUri = TelemetryUtils_1.scrubTenantFromUri(url);
+            this.event[exports.EVENT_KEYS.URL] = scrubbedUri && scrubbedUri.toLowerCase();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "httpPath", {
+        set: function (httpPath) {
+            this.event[exports.EVENT_KEYS.HTTP_PATH] = TelemetryUtils_1.scrubTenantFromUri(httpPath).toLowerCase();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "userAgent", {
+        set: function (userAgent) {
+            this.event[exports.EVENT_KEYS.USER_AGENT] = userAgent;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "queryParams", {
+        set: function (queryParams) {
+            this.event[exports.EVENT_KEYS.QUERY_PARAMETERS] = ServerRequestParameters_1.ServerRequestParameters.generateQueryParametersString(queryParams);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "apiVersion", {
+        set: function (apiVersion) {
+            this.event[exports.EVENT_KEYS.API_VERSION] = apiVersion.toLowerCase();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "httpResponseStatus", {
+        set: function (statusCode) {
+            this.event[exports.EVENT_KEYS.RESPONSE_CODE] = statusCode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "oAuthErrorCode", {
+        set: function (errorCode) {
+            this.event[exports.EVENT_KEYS.O_AUTH_ERROR_CODE] = errorCode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "httpMethod", {
+        set: function (httpMethod) {
+            this.event[exports.EVENT_KEYS.HTTP_METHOD] = httpMethod;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "requestIdHeader", {
+        set: function (requestIdHeader) {
+            this.event[exports.EVENT_KEYS.REQUEST_ID_HEADER] = requestIdHeader;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "speInfo", {
+        /**
+         * Indicates whether the request was executed on a ring serving SPE traffic.
+         * An empty string indicates this occurred on an outer ring, and the string "I"
+         * indicates the request occurred on the inner ring
+         */
+        set: function (speInfo) {
+            this.event[exports.EVENT_KEYS.SPE_INFO] = speInfo;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "serverErrorCode", {
+        set: function (errorCode) {
+            this.event[exports.EVENT_KEYS.SERVER_ERROR_CODE] = errorCode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(HttpEvent.prototype, "serverSubErrorCode", {
+        set: function (subErrorCode) {
+            this.event[exports.EVENT_KEYS.SERVER_SUB_ERROR_CODE] = subErrorCode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return HttpEvent;
+}(TelemetryEvent_1.default));
+exports.default = HttpEvent;
+
+
+/***/ }),
+
+/***/ 810:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.EVENT_NAME_PREFIX = "msal.";
+exports.EVENT_NAME_KEY = "event_name";
+exports.START_TIME_KEY = "start_time";
+exports.ELAPSED_TIME_KEY = "elapsed_time";
+exports.TELEMETRY_BLOB_EVENT_NAMES = {
+    MsalCorrelationIdConstStrKey: "Microsoft.MSAL.correlation_id",
+    ApiTelemIdConstStrKey: "msal.api_telem_id",
+    ApiIdConstStrKey: "msal.api_id",
+    BrokerAppConstStrKey: "Microsoft_MSAL_broker_app",
+    CacheEventCountConstStrKey: "Microsoft_MSAL_cache_event_count",
+    HttpEventCountTelemetryBatchKey: "Microsoft_MSAL_http_event_count",
+    IdpConstStrKey: "Microsoft_MSAL_idp",
+    IsSilentTelemetryBatchKey: "",
+    IsSuccessfulConstStrKey: "Microsoft_MSAL_is_successful",
+    ResponseTimeConstStrKey: "Microsoft_MSAL_response_time",
+    TenantIdConstStrKey: "Microsoft_MSAL_tenant_id",
+    UiEventCountTelemetryBatchKey: "Microsoft_MSAL_ui_event_count"
+};
+// This is used to replace the real tenant in telemetry info
+exports.TENANT_PLACEHOLDER = "<tenant>";
+
+
+/***/ }),
+
+/***/ 336:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var TelemetryConstants_1 = __webpack_require__(810);
+var TelemetryUtils_1 = __webpack_require__(847);
+var CryptoUtils_1 = __webpack_require__(453);
+var TelemetryEvent = /** @class */ (function () {
+    function TelemetryEvent(eventName, correlationId, eventLabel) {
+        var _a;
+        this.eventId = CryptoUtils_1.CryptoUtils.createNewGuid();
+        this.label = eventLabel;
+        this.event = (_a = {},
+            _a[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.EVENT_NAME_KEY)] = eventName,
+            _a[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.ELAPSED_TIME_KEY)] = -1,
+            _a["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.MsalCorrelationIdConstStrKey] = correlationId,
+            _a);
+    }
+    TelemetryEvent.prototype.setElapsedTime = function (time) {
+        this.event[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.ELAPSED_TIME_KEY)] = time;
+    };
+    TelemetryEvent.prototype.stop = function () {
+        // Set duration of event
+        this.setElapsedTime(+Date.now() - +this.startTimestamp);
+        TelemetryUtils_1.endBrowserPerformanceMeasurement(this.displayName, this.perfStartMark, this.perfEndMark);
+    };
+    TelemetryEvent.prototype.start = function () {
+        this.startTimestamp = Date.now();
+        this.event[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.START_TIME_KEY)] = this.startTimestamp;
+        TelemetryUtils_1.startBrowserPerformanceMeasurement(this.perfStartMark);
+    };
+    Object.defineProperty(TelemetryEvent.prototype, "telemetryCorrelationId", {
+        get: function () {
+            return this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.MsalCorrelationIdConstStrKey];
+        },
+        set: function (value) {
+            this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.MsalCorrelationIdConstStrKey] = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TelemetryEvent.prototype, "eventName", {
+        get: function () {
+            return this.event[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.EVENT_NAME_KEY)];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TelemetryEvent.prototype.get = function () {
+        return tslib_1.__assign({}, this.event, { eventId: this.eventId });
+    };
+    Object.defineProperty(TelemetryEvent.prototype, "key", {
+        get: function () {
+            return this.telemetryCorrelationId + "_" + this.eventId + "-" + this.eventName;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TelemetryEvent.prototype, "displayName", {
+        get: function () {
+            return "Msal-" + this.label + "-" + this.telemetryCorrelationId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TelemetryEvent.prototype, "perfStartMark", {
+        get: function () {
+            return "start-" + this.key;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TelemetryEvent.prototype, "perfEndMark", {
+        get: function () {
+            return "end-" + this.key;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return TelemetryEvent;
+}());
+exports.default = TelemetryEvent;
+
+
+/***/ }),
+
+/***/ 478:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var DefaultEvent_1 = tslib_1.__importDefault(__webpack_require__(868));
+var Constants_1 = __webpack_require__(91);
+var ApiEvent_1 = tslib_1.__importDefault(__webpack_require__(663));
+var HttpEvent_1 = tslib_1.__importDefault(__webpack_require__(140));
+var packageMetadata_1 = __webpack_require__(700);
+var TelemetryManager = /** @class */ (function () {
+    function TelemetryManager(config, telemetryEmitter, logger) {
+        // correlation Id to list of events
+        this.completedEvents = {};
+        // event key to event
+        this.inProgressEvents = {};
+        // correlation id to map of eventname to count
+        this.eventCountByCorrelationId = {};
+        // Implement after API EVENT
+        this.onlySendFailureTelemetry = false;
+        // TODO THROW if bad options
+        this.telemetryPlatform = tslib_1.__assign({ sdk: Constants_1.Constants.libraryName, sdkVersion: packageMetadata_1.version, networkInformation: {
+                // @ts-ignore
+                connectionSpeed: typeof navigator !== "undefined" && navigator.connection && navigator.connection.effectiveType
+            } }, config.platform);
+        this.clientId = config.clientId;
+        this.onlySendFailureTelemetry = config.onlySendFailureTelemetry;
+        /*
+         * TODO, when i get to wiring this through, think about what it means if
+         * a developer does not implement telem at all, we still instrument, but telemetryEmitter can be
+         * optional?
+         */
+        this.telemetryEmitter = telemetryEmitter;
+        this.logger = logger;
+    }
+    TelemetryManager.getTelemetrymanagerStub = function (clientId, logger) {
+        var applicationName = "UnSetStub";
+        var applicationVersion = "0.0";
+        var telemetryEmitter = function () { };
+        var telemetryPlatform = {
+            applicationName: applicationName,
+            applicationVersion: applicationVersion
+        };
+        var telemetryManagerConfig = {
+            platform: telemetryPlatform,
+            clientId: clientId
+        };
+        return new this(telemetryManagerConfig, telemetryEmitter, logger);
+    };
+    TelemetryManager.prototype.startEvent = function (event) {
+        this.logger.verbose("Telemetry Event started: " + event.key);
+        if (!this.telemetryEmitter) {
+            return;
+        }
+        event.start();
+        this.inProgressEvents[event.key] = event;
+    };
+    TelemetryManager.prototype.stopEvent = function (event) {
+        this.logger.verbose("Telemetry Event stopped: " + event.key);
+        if (!this.telemetryEmitter || !this.inProgressEvents[event.key]) {
+            return;
+        }
+        event.stop();
+        this.incrementEventCount(event);
+        var completedEvents = this.completedEvents[event.telemetryCorrelationId];
+        this.completedEvents[event.telemetryCorrelationId] = (completedEvents || []).concat([event]);
+        delete this.inProgressEvents[event.key];
+    };
+    TelemetryManager.prototype.flush = function (correlationId) {
+        var _this = this;
+        this.logger.verbose("Flushing telemetry events: " + correlationId);
+        // If there is only unfinished events should this still return them?
+        if (!this.telemetryEmitter || !this.completedEvents[correlationId]) {
+            return;
+        }
+        var orphanedEvents = this.getOrphanedEvents(correlationId);
+        orphanedEvents.forEach(function (event) { return _this.incrementEventCount(event); });
+        var eventsToFlush = this.completedEvents[correlationId].concat(orphanedEvents);
+        delete this.completedEvents[correlationId];
+        var eventCountsToFlush = this.eventCountByCorrelationId[correlationId];
+        delete this.eventCountByCorrelationId[correlationId];
+        // TODO add funcitonality for onlyFlushFailures after implementing api event? ??
+        if (!eventsToFlush || !eventsToFlush.length) {
+            return;
+        }
+        var defaultEvent = new DefaultEvent_1.default(this.telemetryPlatform, correlationId, this.clientId, eventCountsToFlush);
+        var eventsWithDefaultEvent = eventsToFlush.concat([defaultEvent]);
+        this.telemetryEmitter(eventsWithDefaultEvent.map(function (e) { return e.get(); }));
+    };
+    TelemetryManager.prototype.createAndStartApiEvent = function (correlationId, apiEventIdentifier) {
+        var apiEvent = new ApiEvent_1.default(correlationId, this.logger.isPiiLoggingEnabled(), apiEventIdentifier);
+        this.startEvent(apiEvent);
+        return apiEvent;
+    };
+    TelemetryManager.prototype.stopAndFlushApiEvent = function (correlationId, apiEvent, wasSuccessful, errorCode) {
+        apiEvent.wasSuccessful = wasSuccessful;
+        if (errorCode) {
+            apiEvent.apiErrorCode = errorCode;
+        }
+        this.stopEvent(apiEvent);
+        this.flush(correlationId);
+    };
+    TelemetryManager.prototype.createAndStartHttpEvent = function (correlation, httpMethod, url, eventLabel) {
+        var httpEvent = new HttpEvent_1.default(correlation, eventLabel);
+        httpEvent.url = url;
+        httpEvent.httpMethod = httpMethod;
+        this.startEvent(httpEvent);
+        return httpEvent;
+    };
+    TelemetryManager.prototype.incrementEventCount = function (event) {
+        var _a;
+        /*
+         * TODO, name cache event different?
+         * if type is cache event, change name
+         */
+        var eventName = event.eventName;
+        var eventCount = this.eventCountByCorrelationId[event.telemetryCorrelationId];
+        if (!eventCount) {
+            this.eventCountByCorrelationId[event.telemetryCorrelationId] = (_a = {},
+                _a[eventName] = 1,
+                _a);
+        }
+        else {
+            eventCount[eventName] = eventCount[eventName] ? eventCount[eventName] + 1 : 1;
+        }
+    };
+    TelemetryManager.prototype.getOrphanedEvents = function (correlationId) {
+        var _this = this;
+        return Object.keys(this.inProgressEvents)
+            .reduce(function (memo, eventKey) {
+            if (eventKey.indexOf(correlationId) !== -1) {
+                var event = _this.inProgressEvents[eventKey];
+                delete _this.inProgressEvents[eventKey];
+                return memo.concat([event]);
+            }
+            return memo;
+        }, []);
+    };
+    return TelemetryManager;
+}());
+exports.default = TelemetryManager;
+
+
+/***/ }),
+
+/***/ 847:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var TelemetryConstants_1 = __webpack_require__(810);
+var CryptoUtils_1 = __webpack_require__(453);
+var UrlUtils_1 = __webpack_require__(741);
+var Authority_1 = __webpack_require__(660);
+exports.scrubTenantFromUri = function (uri) {
+    var url = UrlUtils_1.UrlUtils.GetUrlComponents(uri);
+    // validate trusted host
+    if (Authority_1.Authority.isAdfs(uri)) {
+        /**
+         * returning what was passed because the library needs to work with uris that are non
+         * AAD trusted but passed by users such as B2C or others.
+         * HTTP Events for instance can take a url to the open id config endpoint
+         */
+        return uri;
+    }
+    var pathParams = url.PathSegments;
+    if (pathParams && pathParams.length >= 2) {
+        var tenantPosition = pathParams[1] === "tfp" ? 2 : 1;
+        if (tenantPosition < pathParams.length) {
+            pathParams[tenantPosition] = TelemetryConstants_1.TENANT_PLACEHOLDER;
+        }
+    }
+    return url.Protocol + "//" + url.HostNameAndPort + "/" + pathParams.join("/");
+};
+exports.hashPersonalIdentifier = function (valueToHash) {
+    /*
+     * TODO sha256 this
+     * Current test runner is being funny with node libs that are webpacked anyway
+     * need a different solution
+     */
+    return CryptoUtils_1.CryptoUtils.base64Encode(valueToHash);
+};
+exports.prependEventNamePrefix = function (suffix) { return "" + TelemetryConstants_1.EVENT_NAME_PREFIX + (suffix || ""); };
+exports.supportsBrowserPerformance = function () { return !!(typeof window !== "undefined" &&
+    "performance" in window &&
+    window.performance.mark &&
+    window.performance.measure); };
+exports.endBrowserPerformanceMeasurement = function (measureName, startMark, endMark) {
+    if (exports.supportsBrowserPerformance()) {
+        window.performance.mark(endMark);
+        window.performance.measure(measureName, startMark, endMark);
+        window.performance.clearMeasures(measureName);
+        window.performance.clearMarks(startMark);
+        window.performance.clearMarks(endMark);
+    }
+};
+exports.startBrowserPerformanceMeasurement = function (startMark) {
+    if (exports.supportsBrowserPerformance()) {
+        window.performance.mark(startMark);
+    }
+};
+
+
+/***/ }),
+
+/***/ 49:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var ScopeSet_1 = __webpack_require__(55);
+var UrlUtils_1 = __webpack_require__(741);
+/**
+ * @hidden
+ */
+var AuthCacheUtils = /** @class */ (function () {
+    function AuthCacheUtils() {
+    }
+    AuthCacheUtils.filterTokenCacheItemsByScope = function (tokenCacheItems, requestScopes) {
+        return tokenCacheItems.filter(function (cacheItem) {
+            var cachedScopes = cacheItem.key.scopes.split(" ");
+            var searchScopes = ScopeSet_1.ScopeSet.removeDefaultScopes(requestScopes);
+            // If requestScopes contain only default scopes search for default scopes otherwise search for everything but default scopes
+            return searchScopes.length === 0 ? ScopeSet_1.ScopeSet.containsScope(cachedScopes, requestScopes) : ScopeSet_1.ScopeSet.containsScope(cachedScopes, searchScopes);
+        });
+    };
+    AuthCacheUtils.filterTokenCacheItemsByAuthority = function (tokenCacheItems, authority) {
+        return tokenCacheItems.filter(function (cacheItem) { return UrlUtils_1.UrlUtils.CanonicalizeUri(cacheItem.key.authority) === authority; });
+    };
+    AuthCacheUtils.filterTokenCacheItemsByDomain = function (tokenCacheItems, requestDomain) {
+        return tokenCacheItems.filter(function (cacheItem) {
+            var cacheItemDomain = UrlUtils_1.UrlUtils.GetUrlComponents(cacheItem.key.authority).HostNameAndPort;
+            return cacheItemDomain === requestDomain;
+        });
+    };
+    return AuthCacheUtils;
+}());
+exports.AuthCacheUtils = AuthCacheUtils;
+
+
+/***/ }),
+
+/***/ 91:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * @hidden
+ * Constants
+ */
+var Constants = /** @class */ (function () {
+    function Constants() {
+    }
+    Object.defineProperty(Constants, "libraryName", {
+        get: function () { return "Msal.js"; } // used in telemetry sdkName
+        ,
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "claims", {
+        get: function () { return "claims"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "clientId", {
+        get: function () { return "clientId"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "adalIdToken", {
+        get: function () { return "adal.idtoken"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "cachePrefix", {
+        get: function () { return "msal"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "scopes", {
+        get: function () { return "scopes"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "no_account", {
+        get: function () { return "NO_ACCOUNT"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "upn", {
+        get: function () { return "upn"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "domain_hint", {
+        get: function () { return "domain_hint"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "prompt_select_account", {
+        get: function () { return "&prompt=select_account"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "prompt_none", {
+        get: function () { return "&prompt=none"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "prompt", {
+        get: function () { return "prompt"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "response_mode_fragment", {
+        get: function () { return "&response_mode=fragment"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "resourceDelimiter", {
+        get: function () { return "|"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "cacheDelimiter", {
+        get: function () { return "."; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "popUpWidth", {
+        get: function () { return this._popUpWidth; },
+        set: function (width) {
+            this._popUpWidth = width;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "popUpHeight", {
+        get: function () { return this._popUpHeight; },
+        set: function (height) {
+            this._popUpHeight = height;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "login", {
+        get: function () { return "LOGIN"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "renewToken", {
+        get: function () { return "RENEW_TOKEN"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "unknown", {
+        get: function () { return "UNKNOWN"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "ADFS", {
+        get: function () { return "adfs"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "homeAccountIdentifier", {
+        get: function () { return "homeAccountIdentifier"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "common", {
+        get: function () { return "common"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "openidScope", {
+        get: function () { return "openid"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "profileScope", {
+        get: function () { return "profile"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "oidcScopes", {
+        get: function () { return [this.openidScope, this.profileScope]; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "interactionTypeRedirect", {
+        get: function () { return "redirectInteraction"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "interactionTypePopup", {
+        get: function () { return "popupInteraction"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "interactionTypeSilent", {
+        get: function () { return "silentInteraction"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Constants, "inProgress", {
+        get: function () { return "inProgress"; },
+        enumerable: true,
+        configurable: true
+    });
+    Constants._popUpWidth = 483;
+    Constants._popUpHeight = 600;
+    return Constants;
+}());
+exports.Constants = Constants;
+/**
+ * Keys in the hashParams
+ */
+var ServerHashParamKeys;
+(function (ServerHashParamKeys) {
+    ServerHashParamKeys["SCOPE"] = "scope";
+    ServerHashParamKeys["STATE"] = "state";
+    ServerHashParamKeys["ERROR"] = "error";
+    ServerHashParamKeys["ERROR_DESCRIPTION"] = "error_description";
+    ServerHashParamKeys["ACCESS_TOKEN"] = "access_token";
+    ServerHashParamKeys["ID_TOKEN"] = "id_token";
+    ServerHashParamKeys["EXPIRES_IN"] = "expires_in";
+    ServerHashParamKeys["SESSION_STATE"] = "session_state";
+    ServerHashParamKeys["CLIENT_INFO"] = "client_info";
+})(ServerHashParamKeys = exports.ServerHashParamKeys || (exports.ServerHashParamKeys = {}));
+/**
+ * @hidden
+ * @ignore
+ * response_type from OpenIDConnect
+ * References: https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html & https://tools.ietf.org/html/rfc6749#section-4.2.1
+ *
+ */
+exports.ResponseTypes = {
+    id_token: "id_token",
+    token: "token",
+    id_token_token: "id_token token"
+};
+/**
+ * @hidden
+ * CacheKeys for MSAL
+ */
+var TemporaryCacheKeys;
+(function (TemporaryCacheKeys) {
+    TemporaryCacheKeys["AUTHORITY"] = "authority";
+    TemporaryCacheKeys["ACQUIRE_TOKEN_ACCOUNT"] = "acquireTokenAccount";
+    TemporaryCacheKeys["SESSION_STATE"] = "session.state";
+    TemporaryCacheKeys["STATE_LOGIN"] = "state.login";
+    TemporaryCacheKeys["STATE_ACQ_TOKEN"] = "state.acquireToken";
+    TemporaryCacheKeys["STATE_RENEW"] = "state.renew";
+    TemporaryCacheKeys["NONCE_IDTOKEN"] = "nonce.idtoken";
+    TemporaryCacheKeys["LOGIN_REQUEST"] = "login.request";
+    TemporaryCacheKeys["RENEW_STATUS"] = "token.renew.status";
+    TemporaryCacheKeys["URL_HASH"] = "urlHash";
+    TemporaryCacheKeys["INTERACTION_STATUS"] = "interaction_status";
+    TemporaryCacheKeys["REDIRECT_REQUEST"] = "redirect_request";
+})(TemporaryCacheKeys = exports.TemporaryCacheKeys || (exports.TemporaryCacheKeys = {}));
+var PersistentCacheKeys;
+(function (PersistentCacheKeys) {
+    PersistentCacheKeys["IDTOKEN"] = "idtoken";
+    PersistentCacheKeys["CLIENT_INFO"] = "client.info";
+})(PersistentCacheKeys = exports.PersistentCacheKeys || (exports.PersistentCacheKeys = {}));
+var ErrorCacheKeys;
+(function (ErrorCacheKeys) {
+    ErrorCacheKeys["LOGIN_ERROR"] = "login.error";
+    ErrorCacheKeys["ERROR"] = "error";
+    ErrorCacheKeys["ERROR_DESC"] = "error.description";
+})(ErrorCacheKeys = exports.ErrorCacheKeys || (exports.ErrorCacheKeys = {}));
+exports.DEFAULT_AUTHORITY = "https://login.microsoftonline.com/common/";
+exports.AAD_INSTANCE_DISCOVERY_ENDPOINT = exports.DEFAULT_AUTHORITY + "/discovery/instance?api-version=1.1&authorization_endpoint=";
+exports.WELL_KNOWN_SUFFIX = ".well-known/openid-configuration";
+/**
+ * @hidden
+ * SSO Types - generated to populate hints
+ */
+var SSOTypes;
+(function (SSOTypes) {
+    SSOTypes["ACCOUNT"] = "account";
+    SSOTypes["SID"] = "sid";
+    SSOTypes["LOGIN_HINT"] = "login_hint";
+    SSOTypes["ORGANIZATIONS"] = "organizations";
+    SSOTypes["ID_TOKEN"] = "id_token";
+    SSOTypes["ACCOUNT_ID"] = "accountIdentifier";
+    SSOTypes["HOMEACCOUNT_ID"] = "homeAccountIdentifier";
+})(SSOTypes = exports.SSOTypes || (exports.SSOTypes = {}));
+/**
+ * @hidden
+ */
+exports.BlacklistedEQParams = [
+    SSOTypes.SID,
+    SSOTypes.LOGIN_HINT
+];
+exports.NetworkRequestType = {
+    GET: "GET",
+    POST: "POST"
+};
+/**
+ * we considered making this "enum" in the request instead of string, however it looks like the allowed list of
+ * prompt values kept changing over past couple of years. There are some undocumented prompt values for some
+ * internal partners too, hence the choice of generic "string" type instead of the "enum"
+ * @hidden
+ */
+exports.PromptState = {
+    LOGIN: "login",
+    SELECT_ACCOUNT: "select_account",
+    CONSENT: "consent",
+    NONE: "none"
+};
+/**
+ * Frame name prefixes for the hidden iframe created in silent frames
+ */
+exports.FramePrefix = {
+    ID_TOKEN_FRAME: "msalIdTokenFrame",
+    TOKEN_FRAME: "msalRenewFrame"
+};
+
+
+/***/ }),
+
+/***/ 453:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * @hidden
+ */
+var CryptoUtils = /** @class */ (function () {
+    function CryptoUtils() {
+    }
+    /**
+     * Creates a new random GUID
+     * @returns string (GUID)
+     */
+    CryptoUtils.createNewGuid = function () {
+        /*
+         * RFC4122: The version 4 UUID is meant for generating UUIDs from truly-random or
+         * pseudo-random numbers.
+         * The algorithm is as follows:
+         *     Set the two most significant bits (bits 6 and 7) of the
+         *        clock_seq_hi_and_reserved to zero and one, respectively.
+         *     Set the four most significant bits (bits 12 through 15) of the
+         *        time_hi_and_version field to the 4-bit version number from
+         *        Section 4.1.3. Version4
+         *     Set all the other bits to randomly (or pseudo-randomly) chosen
+         *     values.
+         * UUID                   = time-low "-" time-mid "-"time-high-and-version "-"clock-seq-reserved and low(2hexOctet)"-" node
+         * time-low               = 4hexOctet
+         * time-mid               = 2hexOctet
+         * time-high-and-version  = 2hexOctet
+         * clock-seq-and-reserved = hexOctet:
+         * clock-seq-low          = hexOctet
+         * node                   = 6hexOctet
+         * Format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+         * y could be 1000, 1001, 1010, 1011 since most significant two bits needs to be 10
+         * y values are 8, 9, A, B
+         */
+        var cryptoObj = window.crypto; // for IE 11
+        if (cryptoObj && cryptoObj.getRandomValues) {
+            var buffer = new Uint8Array(16);
+            cryptoObj.getRandomValues(buffer);
+            // buffer[6] and buffer[7] represents the time_hi_and_version field. We will set the four most significant bits (4 through 7) of buffer[6] to represent decimal number 4 (UUID version number).
+            buffer[6] |= 0x40; // buffer[6] | 01000000 will set the 6 bit to 1.
+            buffer[6] &= 0x4f; // buffer[6] & 01001111 will set the 4, 5, and 7 bit to 0 such that bits 4-7 == 0100 = "4".
+            // buffer[8] represents the clock_seq_hi_and_reserved field. We will set the two most significant bits (6 and 7) of the clock_seq_hi_and_reserved to zero and one, respectively.
+            buffer[8] |= 0x80; // buffer[8] | 10000000 will set the 7 bit to 1.
+            buffer[8] &= 0xbf; // buffer[8] & 10111111 will set the 6 bit to 0.
+            return CryptoUtils.decimalToHex(buffer[0]) + CryptoUtils.decimalToHex(buffer[1])
+                + CryptoUtils.decimalToHex(buffer[2]) + CryptoUtils.decimalToHex(buffer[3])
+                + "-" + CryptoUtils.decimalToHex(buffer[4]) + CryptoUtils.decimalToHex(buffer[5])
+                + "-" + CryptoUtils.decimalToHex(buffer[6]) + CryptoUtils.decimalToHex(buffer[7])
+                + "-" + CryptoUtils.decimalToHex(buffer[8]) + CryptoUtils.decimalToHex(buffer[9])
+                + "-" + CryptoUtils.decimalToHex(buffer[10]) + CryptoUtils.decimalToHex(buffer[11])
+                + CryptoUtils.decimalToHex(buffer[12]) + CryptoUtils.decimalToHex(buffer[13])
+                + CryptoUtils.decimalToHex(buffer[14]) + CryptoUtils.decimalToHex(buffer[15]);
+        }
+        else {
+            var guidHolder = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
+            var hex = "0123456789abcdef";
+            var r = 0;
+            var guidResponse = "";
+            for (var i = 0; i < 36; i++) {
+                if (guidHolder[i] !== "-" && guidHolder[i] !== "4") {
+                    // each x and y needs to be random
+                    r = Math.random() * 16 | 0;
+                }
+                if (guidHolder[i] === "x") {
+                    guidResponse += hex[r];
+                }
+                else if (guidHolder[i] === "y") {
+                    // clock-seq-and-reserved first hex is filtered and remaining hex values are random
+                    r &= 0x3; // bit and with 0011 to set pos 2 to zero ?0??
+                    r |= 0x8; // set pos 3 to 1 as 1???
+                    guidResponse += hex[r];
+                }
+                else {
+                    guidResponse += guidHolder[i];
+                }
+            }
+            return guidResponse;
+        }
+    };
+    /**
+     * verifies if a string is  GUID
+     * @param guid
+     */
+    CryptoUtils.isGuid = function (guid) {
+        var regexGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        return regexGuid.test(guid);
+    };
+    /**
+     * Decimal to Hex
+     *
+     * @param num
+     */
+    CryptoUtils.decimalToHex = function (num) {
+        var hex = num.toString(16);
+        while (hex.length < 2) {
+            hex = "0" + hex;
+        }
+        return hex;
+    };
+    // See: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Solution_4_%E2%80%93_escaping_the_string_before_encoding_it
+    /**
+     * encoding string to base64 - platform specific check
+     *
+     * @param input
+     */
+    CryptoUtils.base64Encode = function (input) {
+        return btoa(encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
+            return String.fromCharCode(Number("0x" + p1));
+        }));
+    };
+    /**
+     * Decodes a base64 encoded string.
+     *
+     * @param input
+     */
+    CryptoUtils.base64Decode = function (input) {
+        var encodedString = input.replace(/-/g, "+").replace(/_/g, "/");
+        switch (encodedString.length % 4) {
+            case 0:
+                break;
+            case 2:
+                encodedString += "==";
+                break;
+            case 3:
+                encodedString += "=";
+                break;
+            default:
+                throw new Error("Invalid base64 string");
+        }
+        return decodeURIComponent(atob(encodedString).split("").map(function (c) {
+            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(""));
+    };
+    /**
+     * deserialize a string
+     *
+     * @param query
+     */
+    CryptoUtils.deserialize = function (query) {
+        var match; // Regex for replacing addition symbol with a space
+        var pl = /\+/g;
+        var search = /([^&=]+)=([^&]*)/g;
+        var decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); };
+        var obj = {};
+        match = search.exec(query);
+        while (match) {
+            obj[decode(match[1])] = decode(match[2]);
+            match = search.exec(query);
+        }
+        return obj;
+    };
+    return CryptoUtils;
+}());
+exports.CryptoUtils = CryptoUtils;
+
+
+/***/ }),
+
+/***/ 52:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var Constants_1 = __webpack_require__(91);
+var ClientConfigurationError_1 = __webpack_require__(550);
+var ScopeSet_1 = __webpack_require__(55);
+var StringUtils_1 = __webpack_require__(454);
+var CryptoUtils_1 = __webpack_require__(453);
+var TimeUtils_1 = __webpack_require__(78);
+var ClientAuthError_1 = __webpack_require__(356);
 /**
  * @hidden
  */
@@ -5242,103 +6345,504 @@ exports.RequestUtils = RequestUtils;
 
 
 /***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 756:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var CryptoUtils_1 = __webpack_require__(3);
-var StringUtils_1 = __webpack_require__(2);
-/**
- * accountIdentifier       combination of idToken.uid and idToken.utid
- * homeAccountIdentifier   combination of clientInfo.uid and clientInfo.utid
- * userName                idToken.preferred_username
- * name                    idToken.name
- * idToken                 idToken
- * sid                     idToken.sid - session identifier
- * environment             idtoken.issuer (the authority that issues the token)
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var tslib_1 = __webpack_require__(795);
+var Constants_1 = __webpack_require__(91);
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
  */
-var Account = /** @class */ (function () {
-    /**
-     * Creates an Account Object
-     * @praram accountIdentifier
-     * @param homeAccountIdentifier
-     * @param userName
-     * @param name
-     * @param idToken
-     * @param sid
-     * @param environment
-     */
-    function Account(accountIdentifier, homeAccountIdentifier, userName, name, idTokenClaims, sid, environment) {
-        this.accountIdentifier = accountIdentifier;
-        this.homeAccountIdentifier = homeAccountIdentifier;
-        this.userName = userName;
-        this.name = name;
-        // will be deprecated soon
-        this.idToken = idTokenClaims;
-        this.idTokenClaims = idTokenClaims;
-        this.sid = sid;
-        this.environment = environment;
+/**
+ * @hidden
+ */
+var ResponseUtils = /** @class */ (function () {
+    function ResponseUtils() {
     }
-    /**
-     * @hidden
-     * @param idToken
-     * @param clientInfo
-     */
-    Account.createAccount = function (idToken, clientInfo) {
-        // create accountIdentifier
-        var accountIdentifier = idToken.objectId || idToken.subject;
-        // create homeAccountIdentifier
-        var uid = clientInfo ? clientInfo.uid : "";
-        var utid = clientInfo ? clientInfo.utid : "";
-        var homeAccountIdentifier;
-        if (!StringUtils_1.StringUtils.isEmpty(uid)) {
-            homeAccountIdentifier = StringUtils_1.StringUtils.isEmpty(utid) ? CryptoUtils_1.CryptoUtils.base64Encode(uid) : CryptoUtils_1.CryptoUtils.base64Encode(uid) + "." + CryptoUtils_1.CryptoUtils.base64Encode(utid);
+    ResponseUtils.setResponseIdToken = function (originalResponse, idTokenObj) {
+        if (!originalResponse) {
+            return null;
         }
-        return new Account(accountIdentifier, homeAccountIdentifier, idToken.preferredName, idToken.name, idToken.claims, idToken.sid, idToken.issuer);
+        else if (!idTokenObj) {
+            return originalResponse;
+        }
+        var exp = Number(idTokenObj.expiration);
+        if (exp && !originalResponse.expiresOn) {
+            originalResponse.expiresOn = new Date(exp * 1000);
+        }
+        return tslib_1.__assign({}, originalResponse, { idToken: idTokenObj, idTokenClaims: idTokenObj.claims, uniqueId: idTokenObj.objectId || idTokenObj.subject, tenantId: idTokenObj.tenantId });
     };
-    /**
-     * Utils function to compare two Account objects - used to check if the same user account is logged in
-     *
-     * @param a1: Account object
-     * @param a2: Account object
-     */
-    Account.compareAccounts = function (a1, a2) {
-        if (!a1 || !a2) {
-            return false;
+    ResponseUtils.buildAuthResponse = function (idToken, authResponse, serverAuthenticationRequest, account, scopes, accountState) {
+        switch (serverAuthenticationRequest.responseType) {
+            case Constants_1.ResponseTypes.id_token:
+                authResponse = tslib_1.__assign({}, authResponse, { tokenType: Constants_1.ServerHashParamKeys.ID_TOKEN, account: account, scopes: scopes, accountState: accountState });
+                authResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
+                return (authResponse.idToken) ? authResponse : null;
+            case Constants_1.ResponseTypes.id_token_token:
+                authResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
+                return (authResponse && authResponse.accessToken && authResponse.idToken) ? authResponse : null;
+            case Constants_1.ResponseTypes.token:
+                authResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
+                return authResponse;
+            default:
+                return null;
         }
-        if (a1.homeAccountIdentifier && a2.homeAccountIdentifier) {
-            if (a1.homeAccountIdentifier === a2.homeAccountIdentifier) {
-                return true;
-            }
-        }
-        return false;
     };
-    return Account;
+    return ResponseUtils;
 }());
-exports.Account = Account;
+exports.ResponseUtils = ResponseUtils;
 
 
 /***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ 454:
+/***/ ((__unused_webpack_module, exports) => {
+
 
 /*
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var ClientAuthError_1 = __webpack_require__(6);
-var UrlUtils_1 = __webpack_require__(4);
-var Constants_1 = __webpack_require__(1);
-var TimeUtils_1 = __webpack_require__(10);
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * @hidden
+ */
+var StringUtils = /** @class */ (function () {
+    function StringUtils() {
+    }
+    /**
+     * Check if a string is empty
+     *
+     * @param str
+     */
+    StringUtils.isEmpty = function (str) {
+        return (typeof str === "undefined" || !str || 0 === str.length);
+    };
+    /**
+     * Check if a string's value is a valid JSON object
+     *
+     * @param str
+     */
+    StringUtils.validateAndParseJsonCacheKey = function (str) {
+        try {
+            var parsedKey = JSON.parse(str);
+            /**
+             * There are edge cases in which JSON.parse will successfully parse a non-valid JSON object
+             * (e.g. JSON.parse will parse an escaped string into an unescaped string), so adding a type check
+             * of the parsed value is necessary in order to be certain that the string represents a valid JSON object.
+             *
+             */
+            return (parsedKey && typeof parsedKey === "object") ? parsedKey : null;
+        }
+        catch (error) {
+            return null;
+        }
+    };
+    return StringUtils;
+}());
+exports.StringUtils = StringUtils;
+
+
+/***/ }),
+
+/***/ 78:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * @hidden
+ */
+var TimeUtils = /** @class */ (function () {
+    function TimeUtils() {
+    }
+    /**
+     * Returns time in seconds for expiration based on string value passed in.
+     *
+     * @param expiresIn
+     */
+    TimeUtils.parseExpiresIn = function (expiresIn) {
+        // if AAD did not send "expires_in" property, use default expiration of 3599 seconds, for some reason AAD sends 3599 as "expires_in" value instead of 3600
+        if (!expiresIn) {
+            expiresIn = "3599";
+        }
+        return parseInt(expiresIn, 10);
+    };
+    /**
+     * Return the current time in Unix time (seconds). Date.getTime() returns in milliseconds.
+     */
+    TimeUtils.now = function () {
+        return Math.round(new Date().getTime() / 1000.0);
+    };
+    /**
+     * Returns the amount of time in milliseconds since the page loaded.
+     */
+    TimeUtils.relativeNowMs = function () {
+        return window.performance.now();
+    };
+    return TimeUtils;
+}());
+exports.TimeUtils = TimeUtils;
+
+
+/***/ }),
+
+/***/ 94:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var CryptoUtils_1 = __webpack_require__(453);
+var StringUtils_1 = __webpack_require__(454);
+var TimeUtils_1 = __webpack_require__(78);
+/**
+ * @hidden
+ */
+var TokenUtils = /** @class */ (function () {
+    function TokenUtils() {
+    }
+    /**
+     * decode a JWT
+     *
+     * @param jwtToken
+     */
+    TokenUtils.decodeJwt = function (jwtToken) {
+        if (StringUtils_1.StringUtils.isEmpty(jwtToken)) {
+            return null;
+        }
+        var idTokenPartsRegex = /^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/;
+        var matches = idTokenPartsRegex.exec(jwtToken);
+        if (!matches || matches.length < 4) {
+            // this._requestContext.logger.warn("The returned id_token is not parseable.");
+            return null;
+        }
+        var crackedToken = {
+            header: matches[1],
+            JWSPayload: matches[2],
+            JWSSig: matches[3]
+        };
+        return crackedToken;
+    };
+    /**
+     * Evaluates whether token cache item expiration is within expiration offset range
+     * @param tokenCacheItem
+     */
+    TokenUtils.validateExpirationIsWithinOffset = function (expiration, tokenRenewalOffsetSeconds) {
+        var offset = tokenRenewalOffsetSeconds || 300;
+        return expiration && (expiration > TimeUtils_1.TimeUtils.now() + offset);
+    };
+    /**
+     * Extract IdToken by decoding the RAWIdToken
+     *
+     * @param encodedIdToken
+     */
+    TokenUtils.extractIdToken = function (encodedIdToken) {
+        // id token will be decoded to get the username
+        var decodedToken = this.decodeJwt(encodedIdToken);
+        if (!decodedToken) {
+            return null;
+        }
+        try {
+            var base64IdToken = decodedToken.JWSPayload;
+            var base64Decoded = CryptoUtils_1.CryptoUtils.base64Decode(base64IdToken);
+            if (!base64Decoded) {
+                // this._requestContext.logger.info("The returned id_token could not be base64 url safe decoded.");
+                return null;
+            }
+            // ECMA script has JSON built-in support
+            return JSON.parse(base64Decoded);
+        }
+        catch (err) {
+            // this._requestContext.logger.error("The returned id_token could not be decoded" + err);
+        }
+        return null;
+    };
+    return TokenUtils;
+}());
+exports.TokenUtils = TokenUtils;
+
+
+/***/ }),
+
+/***/ 741:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var Constants_1 = __webpack_require__(91);
+var ScopeSet_1 = __webpack_require__(55);
+var StringUtils_1 = __webpack_require__(454);
+var CryptoUtils_1 = __webpack_require__(453);
+/**
+ * @hidden
+ */
+var UrlUtils = /** @class */ (function () {
+    function UrlUtils() {
+    }
+    /**
+     * generates the URL with QueryString Parameters
+     * @param scopes
+     */
+    UrlUtils.createNavigateUrl = function (serverRequestParams) {
+        var str = this.createNavigationUrlString(serverRequestParams);
+        var authEndpoint = serverRequestParams.authorityInstance.AuthorizationEndpoint;
+        // if the endpoint already has queryparams, lets add to it, otherwise add the first one
+        if (authEndpoint.indexOf("?") < 0) {
+            authEndpoint += "?";
+        }
+        else {
+            authEndpoint += "&";
+        }
+        var requestUrl = "" + authEndpoint + str.join("&");
+        return requestUrl;
+    };
+    /**
+     * Generate the array of all QueryStringParams to be sent to the server
+     * @param scopes
+     */
+    UrlUtils.createNavigationUrlString = function (serverRequestParams) {
+        var scopes = ScopeSet_1.ScopeSet.appendDefaultScopes(serverRequestParams.scopes);
+        var str = [];
+        str.push("response_type=" + serverRequestParams.responseType);
+        str.push("scope=" + encodeURIComponent(ScopeSet_1.ScopeSet.parseScope(scopes)));
+        str.push("client_id=" + encodeURIComponent(serverRequestParams.clientId));
+        str.push("redirect_uri=" + encodeURIComponent(serverRequestParams.redirectUri));
+        str.push("state=" + encodeURIComponent(serverRequestParams.state));
+        str.push("nonce=" + encodeURIComponent(serverRequestParams.nonce));
+        str.push("client_info=1");
+        str.push("x-client-SKU=" + serverRequestParams.xClientSku);
+        str.push("x-client-Ver=" + serverRequestParams.xClientVer);
+        if (serverRequestParams.promptValue) {
+            str.push("prompt=" + encodeURIComponent(serverRequestParams.promptValue));
+        }
+        if (serverRequestParams.claimsValue) {
+            str.push("claims=" + encodeURIComponent(serverRequestParams.claimsValue));
+        }
+        if (serverRequestParams.queryParameters) {
+            str.push(serverRequestParams.queryParameters);
+        }
+        if (serverRequestParams.extraQueryParameters) {
+            str.push(serverRequestParams.extraQueryParameters);
+        }
+        str.push("client-request-id=" + encodeURIComponent(serverRequestParams.correlationId));
+        return str;
+    };
+    /**
+     * Returns current window URL as redirect uri
+     */
+    UrlUtils.getCurrentUrl = function () {
+        return window.location.href.split("?")[0].split("#")[0];
+    };
+    /**
+     * Returns given URL with query string removed
+     */
+    UrlUtils.removeHashFromUrl = function (url) {
+        return url.split("#")[0];
+    };
+    /**
+     * Given a url like https://a:b/common/d?e=f#g, and a tenantId, returns https://a:b/tenantId/d
+     * @param href The url
+     * @param tenantId The tenant id to replace
+     */
+    UrlUtils.replaceTenantPath = function (url, tenantId) {
+        var lowerCaseUrl = url.toLowerCase();
+        var urlObject = this.GetUrlComponents(lowerCaseUrl);
+        var pathArray = urlObject.PathSegments;
+        if (tenantId && (pathArray.length !== 0 && (pathArray[0] === Constants_1.Constants.common || pathArray[0] === Constants_1.SSOTypes.ORGANIZATIONS))) {
+            pathArray[0] = tenantId;
+        }
+        return this.constructAuthorityUriFromObject(urlObject, pathArray);
+    };
+    UrlUtils.constructAuthorityUriFromObject = function (urlObject, pathArray) {
+        return this.CanonicalizeUri(urlObject.Protocol + "//" + urlObject.HostNameAndPort + "/" + pathArray.join("/"));
+    };
+    /**
+     * Checks if an authority is common (ex. https://a:b/common/)
+     * @param url The url
+     * @returns true if authority is common and false otherwise
+     */
+    UrlUtils.isCommonAuthority = function (url) {
+        var authority = this.CanonicalizeUri(url);
+        var pathArray = this.GetUrlComponents(authority).PathSegments;
+        return (pathArray.length !== 0 && pathArray[0] === Constants_1.Constants.common);
+    };
+    /**
+     * Checks if an authority is for organizations (ex. https://a:b/organizations/)
+     * @param url The url
+     * @returns true if authority is for  and false otherwise
+     */
+    UrlUtils.isOrganizationsAuthority = function (url) {
+        var authority = this.CanonicalizeUri(url);
+        var pathArray = this.GetUrlComponents(authority).PathSegments;
+        return (pathArray.length !== 0 && pathArray[0] === Constants_1.SSOTypes.ORGANIZATIONS);
+    };
+    /**
+     * Parses out the components from a url string.
+     * @returns An object with the various components. Please cache this value insted of calling this multiple times on the same url.
+     */
+    UrlUtils.GetUrlComponents = function (url) {
+        if (!url) {
+            throw "Url required";
+        }
+        // https://gist.github.com/curtisz/11139b2cfcaef4a261e0
+        var regEx = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
+        var match = url.match(regEx);
+        if (!match || match.length < 6) {
+            throw "Valid url required";
+        }
+        var urlComponents = {
+            Protocol: match[1],
+            HostNameAndPort: match[4],
+            AbsolutePath: match[5]
+        };
+        var pathSegments = urlComponents.AbsolutePath.split("/");
+        pathSegments = pathSegments.filter(function (val) { return val && val.length > 0; }); // remove empty elements
+        urlComponents.PathSegments = pathSegments;
+        if (match[6]) {
+            urlComponents.Search = match[6];
+        }
+        if (match[8]) {
+            urlComponents.Hash = match[8];
+        }
+        return urlComponents;
+    };
+    /**
+     * Given a url or path, append a trailing slash if one doesnt exist
+     *
+     * @param url
+     */
+    UrlUtils.CanonicalizeUri = function (url) {
+        if (url) {
+            url = url.toLowerCase();
+        }
+        if (url && !UrlUtils.endsWith(url, "/")) {
+            url += "/";
+        }
+        return url;
+    };
+    /**
+     * Checks to see if the url ends with the suffix
+     * Required because we are compiling for es5 instead of es6
+     * @param url
+     * @param str
+     */
+    // TODO: Rename this, not clear what it is supposed to do
+    UrlUtils.endsWith = function (url, suffix) {
+        if (!url || !suffix) {
+            return false;
+        }
+        return url.indexOf(suffix, url.length - suffix.length) !== -1;
+    };
+    /**
+     * Utils function to remove the login_hint and domain_hint from the i/p extraQueryParameters
+     * @param url
+     * @param name
+     */
+    UrlUtils.urlRemoveQueryStringParameter = function (url, name) {
+        if (StringUtils_1.StringUtils.isEmpty(url)) {
+            return url;
+        }
+        var regex = new RegExp("(\\&" + name + "=)[^\&]+");
+        url = url.replace(regex, "");
+        // name=value&
+        regex = new RegExp("(" + name + "=)[^\&]+&");
+        url = url.replace(regex, "");
+        // name=value
+        regex = new RegExp("(" + name + "=)[^\&]+");
+        url = url.replace(regex, "");
+        return url;
+    };
+    /**
+     * @hidden
+     * @ignore
+     *
+     * Returns the anchor part(#) of the URL
+     */
+    UrlUtils.getHashFromUrl = function (urlStringOrFragment) {
+        var hashIndex1 = urlStringOrFragment.indexOf("#");
+        var hashIndex2 = urlStringOrFragment.indexOf("#/");
+        if (hashIndex2 > -1) {
+            return urlStringOrFragment.substring(hashIndex2 + 2);
+        }
+        else if (hashIndex1 > -1) {
+            return urlStringOrFragment.substring(hashIndex1 + 1);
+        }
+        return urlStringOrFragment;
+    };
+    /**
+     * @hidden
+     * Check if the url contains a hash with known properties
+     * @ignore
+     */
+    UrlUtils.urlContainsHash = function (urlString) {
+        var parameters = UrlUtils.deserializeHash(urlString);
+        return (parameters.hasOwnProperty(Constants_1.ServerHashParamKeys.ERROR_DESCRIPTION) ||
+            parameters.hasOwnProperty(Constants_1.ServerHashParamKeys.ERROR) ||
+            parameters.hasOwnProperty(Constants_1.ServerHashParamKeys.ACCESS_TOKEN) ||
+            parameters.hasOwnProperty(Constants_1.ServerHashParamKeys.ID_TOKEN));
+    };
+    /**
+     * @hidden
+     * Returns deserialized portion of URL hash
+     * @ignore
+     */
+    UrlUtils.deserializeHash = function (urlFragment) {
+        var hash = UrlUtils.getHashFromUrl(urlFragment);
+        return CryptoUtils_1.CryptoUtils.deserialize(hash);
+    };
+    /**
+     * @ignore
+     * @param {string} URI
+     * @returns {string} host from the URI
+     *
+     * extract URI from the host
+     */
+    UrlUtils.getHostFromUri = function (uri) {
+        // remove http:// or https:// from uri
+        var extractedUri = String(uri).replace(/^(https?:)\/\//, "");
+        extractedUri = extractedUri.split("/")[0];
+        return extractedUri;
+    };
+    return UrlUtils;
+}());
+exports.UrlUtils = UrlUtils;
+
+
+/***/ }),
+
+/***/ 758:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var ClientAuthError_1 = __webpack_require__(356);
+var UrlUtils_1 = __webpack_require__(741);
+var Constants_1 = __webpack_require__(91);
+var TimeUtils_1 = __webpack_require__(78);
 var WindowUtils = /** @class */ (function () {
     function WindowUtils() {
     }
@@ -5655,1579 +7159,39 @@ var WindowUtils = /** @class */ (function () {
 exports.WindowUtils = WindowUtils;
 
 
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var Logger_1 = __webpack_require__(13);
-var UrlUtils_1 = __webpack_require__(4);
-/**
- * Defaults for the Configuration Options
- */
-var FRAME_TIMEOUT = 6000;
-var OFFSET = 300;
-var NAVIGATE_FRAME_WAIT = 500;
-var DEFAULT_AUTH_OPTIONS = {
-    clientId: "",
-    authority: null,
-    validateAuthority: true,
-    authorityMetadata: "",
-    knownAuthorities: [],
-    redirectUri: function () { return UrlUtils_1.UrlUtils.getCurrentUrl(); },
-    postLogoutRedirectUri: function () { return UrlUtils_1.UrlUtils.getCurrentUrl(); },
-    navigateToLoginRequestUrl: true
-};
-var DEFAULT_CACHE_OPTIONS = {
-    cacheLocation: "sessionStorage",
-    storeAuthStateInCookie: false
-};
-var DEFAULT_SYSTEM_OPTIONS = {
-    logger: new Logger_1.Logger(null),
-    loadFrameTimeout: FRAME_TIMEOUT,
-    tokenRenewalOffsetSeconds: OFFSET,
-    navigateFrameWait: NAVIGATE_FRAME_WAIT
-};
-var DEFAULT_FRAMEWORK_OPTIONS = {
-    isAngular: false,
-    unprotectedResources: new Array(),
-    protectedResourceMap: new Map()
-};
-/**
- * MSAL function that sets the default options when not explicitly configured from app developer
- *
- * @param TAuthOptions
- * @param TCacheOptions
- * @param TSystemOptions
- * @param TFrameworkOptions
- * @param TAuthorityDataOptions
- *
- * @returns TConfiguration object
- */
-function buildConfiguration(_a) {
-    var auth = _a.auth, _b = _a.cache, cache = _b === void 0 ? {} : _b, _c = _a.system, system = _c === void 0 ? {} : _c, _d = _a.framework, framework = _d === void 0 ? {} : _d;
-    var overlayedConfig = {
-        auth: tslib_1.__assign({}, DEFAULT_AUTH_OPTIONS, auth),
-        cache: tslib_1.__assign({}, DEFAULT_CACHE_OPTIONS, cache),
-        system: tslib_1.__assign({}, DEFAULT_SYSTEM_OPTIONS, system),
-        framework: tslib_1.__assign({}, DEFAULT_FRAMEWORK_OPTIONS, framework)
-    };
-    return overlayedConfig;
-}
-exports.buildConfiguration = buildConfiguration;
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var ServerError_1 = __webpack_require__(14);
-exports.InteractionRequiredAuthErrorMessage = {
-    interactionRequired: {
-        code: "interaction_required"
-    },
-    consentRequired: {
-        code: "consent_required"
-    },
-    loginRequired: {
-        code: "login_required"
-    },
-};
-/**
- * Error thrown when the user is required to perform an interactive token request.
- */
-var InteractionRequiredAuthError = /** @class */ (function (_super) {
-    tslib_1.__extends(InteractionRequiredAuthError, _super);
-    function InteractionRequiredAuthError(errorCode, errorMessage) {
-        var _this = _super.call(this, errorCode, errorMessage) || this;
-        _this.name = "InteractionRequiredAuthError";
-        Object.setPrototypeOf(_this, InteractionRequiredAuthError.prototype);
-        return _this;
-    }
-    InteractionRequiredAuthError.isInteractionRequiredError = function (errorString) {
-        var interactionRequiredCodes = [
-            exports.InteractionRequiredAuthErrorMessage.interactionRequired.code,
-            exports.InteractionRequiredAuthErrorMessage.consentRequired.code,
-            exports.InteractionRequiredAuthErrorMessage.loginRequired.code
-        ];
-        return errorString && interactionRequiredCodes.indexOf(errorString) > -1;
-    };
-    InteractionRequiredAuthError.createLoginRequiredAuthError = function (errorDesc) {
-        return new InteractionRequiredAuthError(exports.InteractionRequiredAuthErrorMessage.loginRequired.code, errorDesc);
-    };
-    InteractionRequiredAuthError.createInteractionRequiredAuthError = function (errorDesc) {
-        return new InteractionRequiredAuthError(exports.InteractionRequiredAuthErrorMessage.interactionRequired.code, errorDesc);
-    };
-    InteractionRequiredAuthError.createConsentRequiredAuthError = function (errorDesc) {
-        return new InteractionRequiredAuthError(exports.InteractionRequiredAuthErrorMessage.consentRequired.code, errorDesc);
-    };
-    return InteractionRequiredAuthError;
-}(ServerError_1.ServerError));
-exports.InteractionRequiredAuthError = InteractionRequiredAuthError;
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-function buildResponseStateOnly(state) {
-    return {
-        uniqueId: "",
-        tenantId: "",
-        tokenType: "",
-        idToken: null,
-        idTokenClaims: null,
-        accessToken: "",
-        scopes: null,
-        expiresOn: null,
-        account: null,
-        accountState: state,
-        fromCache: false
-    };
-}
-exports.buildResponseStateOnly = buildResponseStateOnly;
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-var _a;
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var TelemetryEvent_1 = tslib_1.__importDefault(__webpack_require__(15));
-var TelemetryConstants_1 = __webpack_require__(11);
-var TelemetryUtils_1 = __webpack_require__(12);
-exports.EVENT_KEYS = {
-    AUTHORITY: TelemetryUtils_1.prependEventNamePrefix("authority"),
-    AUTHORITY_TYPE: TelemetryUtils_1.prependEventNamePrefix("authority_type"),
-    PROMPT: TelemetryUtils_1.prependEventNamePrefix("ui_behavior"),
-    TENANT_ID: TelemetryUtils_1.prependEventNamePrefix("tenant_id"),
-    USER_ID: TelemetryUtils_1.prependEventNamePrefix("user_id"),
-    WAS_SUCESSFUL: TelemetryUtils_1.prependEventNamePrefix("was_successful"),
-    API_ERROR_CODE: TelemetryUtils_1.prependEventNamePrefix("api_error_code"),
-    LOGIN_HINT: TelemetryUtils_1.prependEventNamePrefix("login_hint")
-};
-var API_CODE;
-(function (API_CODE) {
-    API_CODE[API_CODE["AcquireTokenRedirect"] = 2001] = "AcquireTokenRedirect";
-    API_CODE[API_CODE["AcquireTokenSilent"] = 2002] = "AcquireTokenSilent";
-    API_CODE[API_CODE["AcquireTokenPopup"] = 2003] = "AcquireTokenPopup";
-    API_CODE[API_CODE["LoginRedirect"] = 2004] = "LoginRedirect";
-    API_CODE[API_CODE["LoginPopup"] = 2005] = "LoginPopup";
-    API_CODE[API_CODE["Logout"] = 2006] = "Logout";
-})(API_CODE = exports.API_CODE || (exports.API_CODE = {}));
-var API_EVENT_IDENTIFIER;
-(function (API_EVENT_IDENTIFIER) {
-    API_EVENT_IDENTIFIER["AcquireTokenRedirect"] = "AcquireTokenRedirect";
-    API_EVENT_IDENTIFIER["AcquireTokenSilent"] = "AcquireTokenSilent";
-    API_EVENT_IDENTIFIER["AcquireTokenPopup"] = "AcquireTokenPopup";
-    API_EVENT_IDENTIFIER["LoginRedirect"] = "LoginRedirect";
-    API_EVENT_IDENTIFIER["LoginPopup"] = "LoginPopup";
-    API_EVENT_IDENTIFIER["Logout"] = "Logout";
-})(API_EVENT_IDENTIFIER = exports.API_EVENT_IDENTIFIER || (exports.API_EVENT_IDENTIFIER = {}));
-var mapEventIdentiferToCode = (_a = {},
-    _a[API_EVENT_IDENTIFIER.AcquireTokenSilent] = API_CODE.AcquireTokenSilent,
-    _a[API_EVENT_IDENTIFIER.AcquireTokenPopup] = API_CODE.AcquireTokenPopup,
-    _a[API_EVENT_IDENTIFIER.AcquireTokenRedirect] = API_CODE.AcquireTokenRedirect,
-    _a[API_EVENT_IDENTIFIER.LoginPopup] = API_CODE.LoginPopup,
-    _a[API_EVENT_IDENTIFIER.LoginRedirect] = API_CODE.LoginRedirect,
-    _a[API_EVENT_IDENTIFIER.Logout] = API_CODE.Logout,
-    _a);
-var ApiEvent = /** @class */ (function (_super) {
-    tslib_1.__extends(ApiEvent, _super);
-    function ApiEvent(correlationId, piiEnabled, apiEventIdentifier) {
-        var _this = _super.call(this, TelemetryUtils_1.prependEventNamePrefix("api_event"), correlationId, apiEventIdentifier) || this;
-        if (apiEventIdentifier) {
-            _this.apiCode = mapEventIdentiferToCode[apiEventIdentifier];
-            _this.apiEventIdentifier = apiEventIdentifier;
-        }
-        _this.piiEnabled = piiEnabled;
-        return _this;
-    }
-    Object.defineProperty(ApiEvent.prototype, "apiEventIdentifier", {
-        set: function (apiEventIdentifier) {
-            this.event[TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.ApiTelemIdConstStrKey] = apiEventIdentifier;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ApiEvent.prototype, "apiCode", {
-        set: function (apiCode) {
-            this.event[TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.ApiIdConstStrKey] = apiCode;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ApiEvent.prototype, "authority", {
-        set: function (uri) {
-            this.event[exports.EVENT_KEYS.AUTHORITY] = TelemetryUtils_1.scrubTenantFromUri(uri).toLowerCase();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ApiEvent.prototype, "apiErrorCode", {
-        set: function (errorCode) {
-            this.event[exports.EVENT_KEYS.API_ERROR_CODE] = errorCode;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ApiEvent.prototype, "tenantId", {
-        set: function (tenantId) {
-            this.event[exports.EVENT_KEYS.TENANT_ID] = this.piiEnabled && tenantId ?
-                TelemetryUtils_1.hashPersonalIdentifier(tenantId)
-                : null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ApiEvent.prototype, "accountId", {
-        set: function (accountId) {
-            this.event[exports.EVENT_KEYS.USER_ID] = this.piiEnabled && accountId ?
-                TelemetryUtils_1.hashPersonalIdentifier(accountId)
-                : null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ApiEvent.prototype, "wasSuccessful", {
-        get: function () {
-            return this.event[exports.EVENT_KEYS.WAS_SUCESSFUL] === true;
-        },
-        set: function (wasSuccessful) {
-            this.event[exports.EVENT_KEYS.WAS_SUCESSFUL] = wasSuccessful;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ApiEvent.prototype, "loginHint", {
-        set: function (loginHint) {
-            this.event[exports.EVENT_KEYS.LOGIN_HINT] = this.piiEnabled && loginHint ?
-                TelemetryUtils_1.hashPersonalIdentifier(loginHint)
-                : null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ApiEvent.prototype, "authorityType", {
-        set: function (authorityType) {
-            this.event[exports.EVENT_KEYS.AUTHORITY_TYPE] = authorityType.toLowerCase();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ApiEvent.prototype, "promptType", {
-        set: function (promptType) {
-            this.event[exports.EVENT_KEYS.PROMPT] = promptType.toLowerCase();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return ApiEvent;
-}(TelemetryEvent_1.default));
-exports.default = ApiEvent;
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(29);
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var UserAgentApplication_1 = __webpack_require__(16);
-exports.UserAgentApplication = UserAgentApplication_1.UserAgentApplication;
-exports.authResponseCallback = UserAgentApplication_1.authResponseCallback;
-exports.errorReceivedCallback = UserAgentApplication_1.errorReceivedCallback;
-exports.tokenReceivedCallback = UserAgentApplication_1.tokenReceivedCallback;
-var Logger_1 = __webpack_require__(13);
-exports.Logger = Logger_1.Logger;
-var Logger_2 = __webpack_require__(13);
-exports.LogLevel = Logger_2.LogLevel;
-var Account_1 = __webpack_require__(22);
-exports.Account = Account_1.Account;
-var Constants_1 = __webpack_require__(1);
-exports.Constants = Constants_1.Constants;
-exports.ServerHashParamKeys = Constants_1.ServerHashParamKeys;
-var Authority_1 = __webpack_require__(9);
-exports.Authority = Authority_1.Authority;
-var UserAgentApplication_2 = __webpack_require__(16);
-exports.CacheResult = UserAgentApplication_2.CacheResult;
-var Configuration_1 = __webpack_require__(24);
-exports.CacheLocation = Configuration_1.CacheLocation;
-exports.Configuration = Configuration_1.Configuration;
-var AuthenticationParameters_1 = __webpack_require__(43);
-exports.AuthenticationParameters = AuthenticationParameters_1.AuthenticationParameters;
-var AuthResponse_1 = __webpack_require__(26);
-exports.AuthResponse = AuthResponse_1.AuthResponse;
-var CryptoUtils_1 = __webpack_require__(3);
-exports.CryptoUtils = CryptoUtils_1.CryptoUtils;
-var UrlUtils_1 = __webpack_require__(4);
-exports.UrlUtils = UrlUtils_1.UrlUtils;
-var WindowUtils_1 = __webpack_require__(23);
-exports.WindowUtils = WindowUtils_1.WindowUtils;
-// Errors
-var AuthError_1 = __webpack_require__(8);
-exports.AuthError = AuthError_1.AuthError;
-var ClientAuthError_1 = __webpack_require__(6);
-exports.ClientAuthError = ClientAuthError_1.ClientAuthError;
-var ServerError_1 = __webpack_require__(14);
-exports.ServerError = ServerError_1.ServerError;
-var ClientConfigurationError_1 = __webpack_require__(5);
-exports.ClientConfigurationError = ClientConfigurationError_1.ClientConfigurationError;
-var InteractionRequiredAuthError_1 = __webpack_require__(25);
-exports.InteractionRequiredAuthError = InteractionRequiredAuthError_1.InteractionRequiredAuthError;
-
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var CryptoUtils_1 = __webpack_require__(3);
-var UrlUtils_1 = __webpack_require__(4);
-/**
- * @hidden
- */
-var AccessTokenKey = /** @class */ (function () {
-    function AccessTokenKey(authority, clientId, scopes, uid, utid) {
-        this.authority = UrlUtils_1.UrlUtils.CanonicalizeUri(authority);
-        this.clientId = clientId;
-        this.scopes = scopes;
-        this.homeAccountIdentifier = CryptoUtils_1.CryptoUtils.base64Encode(uid) + "." + CryptoUtils_1.CryptoUtils.base64Encode(utid);
-    }
-    return AccessTokenKey;
-}());
-exports.AccessTokenKey = AccessTokenKey;
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @hidden
- */
-var AccessTokenValue = /** @class */ (function () {
-    function AccessTokenValue(accessToken, idToken, expiresIn, homeAccountIdentifier) {
-        this.accessToken = accessToken;
-        this.idToken = idToken;
-        this.expiresIn = expiresIn;
-        this.homeAccountIdentifier = homeAccountIdentifier;
-    }
-    return AccessTokenValue;
-}());
-exports.AccessTokenValue = AccessTokenValue;
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var CryptoUtils_1 = __webpack_require__(3);
-var ClientAuthError_1 = __webpack_require__(6);
-var StringUtils_1 = __webpack_require__(2);
-/**
- * @hidden
- */
-var ClientInfo = /** @class */ (function () {
-    function ClientInfo(rawClientInfo, authority) {
-        if (!rawClientInfo || StringUtils_1.StringUtils.isEmpty(rawClientInfo)) {
-            this.uid = "";
-            this.utid = "";
-            return;
-        }
-        try {
-            var decodedClientInfo = CryptoUtils_1.CryptoUtils.base64Decode(rawClientInfo);
-            var clientInfo = JSON.parse(decodedClientInfo);
-            if (clientInfo) {
-                if (clientInfo.hasOwnProperty("uid")) {
-                    this.uid = authority ? ClientInfo.stripPolicyFromUid(clientInfo.uid, authority) : clientInfo.uid;
-                }
-                if (clientInfo.hasOwnProperty("utid")) {
-                    this.utid = clientInfo.utid;
-                }
-            }
-        }
-        catch (e) {
-            throw ClientAuthError_1.ClientAuthError.createClientInfoDecodingError(e);
-        }
-    }
-    Object.defineProperty(ClientInfo.prototype, "uid", {
-        get: function () {
-            return this._uid ? this._uid : "";
-        },
-        set: function (uid) {
-            this._uid = uid;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClientInfo.prototype, "utid", {
-        get: function () {
-            return this._utid ? this._utid : "";
-        },
-        set: function (utid) {
-            this._utid = utid;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ClientInfo.createClientInfoFromIdToken = function (idToken, authority) {
-        var clientInfo = {
-            uid: idToken.subject,
-            utid: ""
-        };
-        return new ClientInfo(CryptoUtils_1.CryptoUtils.base64Encode(JSON.stringify(clientInfo)), authority);
-    };
-    ClientInfo.stripPolicyFromUid = function (uid, authority) {
-        var uidSegments = uid.split("-");
-        // Reverse the url segments so the last one is more easily accessible
-        var urlSegments = authority.split("/").reverse();
-        var policy = "";
-        if (!StringUtils_1.StringUtils.isEmpty(urlSegments[0])) {
-            policy = urlSegments[0];
-        }
-        else if (urlSegments.length > 1) {
-            // If the original url had a trailing slash, urlSegments[0] would be "" so take the next element
-            policy = urlSegments[1];
-        }
-        if (uidSegments[uidSegments.length - 1] === policy) {
-            // If the last segment of uid matches the last segment of authority url, remove the last segment of uid
-            return uidSegments.slice(0, uidSegments.length - 1).join("-");
-        }
-        return uid;
-    };
-    ClientInfo.prototype.encodeClientInfo = function () {
-        var clientInfo = JSON.stringify({ uid: this.uid, utid: this.utid });
-        return CryptoUtils_1.CryptoUtils.base64Encode(clientInfo);
-    };
-    return ClientInfo;
-}());
-exports.ClientInfo = ClientInfo;
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var ClientAuthError_1 = __webpack_require__(6);
-var TokenUtils_1 = __webpack_require__(20);
-var StringUtils_1 = __webpack_require__(2);
-/**
- * @hidden
- */
-var IdToken = /** @class */ (function () {
-    /* tslint:disable:no-string-literal */
-    function IdToken(rawIdToken) {
-        if (StringUtils_1.StringUtils.isEmpty(rawIdToken)) {
-            throw ClientAuthError_1.ClientAuthError.createIdTokenNullOrEmptyError(rawIdToken);
-        }
-        try {
-            this.rawIdToken = rawIdToken;
-            this.claims = TokenUtils_1.TokenUtils.extractIdToken(rawIdToken);
-            if (this.claims) {
-                if (this.claims.hasOwnProperty("iss")) {
-                    this.issuer = this.claims["iss"];
-                }
-                if (this.claims.hasOwnProperty("oid")) {
-                    this.objectId = this.claims["oid"];
-                }
-                if (this.claims.hasOwnProperty("sub")) {
-                    this.subject = this.claims["sub"];
-                }
-                if (this.claims.hasOwnProperty("tid")) {
-                    this.tenantId = this.claims["tid"];
-                }
-                if (this.claims.hasOwnProperty("ver")) {
-                    this.version = this.claims["ver"];
-                }
-                if (this.claims.hasOwnProperty("preferred_username")) {
-                    this.preferredName = this.claims["preferred_username"];
-                }
-                else if (this.claims.hasOwnProperty("upn")) {
-                    this.preferredName = this.claims["upn"];
-                }
-                if (this.claims.hasOwnProperty("name")) {
-                    this.name = this.claims["name"];
-                }
-                if (this.claims.hasOwnProperty("nonce")) {
-                    this.nonce = this.claims["nonce"];
-                }
-                if (this.claims.hasOwnProperty("exp")) {
-                    this.expiration = this.claims["exp"];
-                }
-                if (this.claims.hasOwnProperty("home_oid")) {
-                    this.homeObjectId = this.claims["home_oid"];
-                }
-                if (this.claims.hasOwnProperty("sid")) {
-                    this.sid = this.claims["sid"];
-                }
-                if (this.claims.hasOwnProperty("cloud_instance_host_name")) {
-                    this.cloudInstance = this.claims["cloud_instance_host_name"];
-                }
-                /* tslint:enable:no-string-literal */
-            }
-        }
-        catch (e) {
-            /*
-             * TODO: This error here won't really every be thrown, since extractIdToken() returns null if the decodeJwt() fails.
-             * Need to add better error handling here to account for being unable to decode jwts.
-             */
-            throw ClientAuthError_1.ClientAuthError.createIdTokenParsingError(e);
-        }
-    }
-    return IdToken;
-}());
-exports.IdToken = IdToken;
-
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var Constants_1 = __webpack_require__(1);
-var AccessTokenCacheItem_1 = __webpack_require__(35);
-var BrowserStorage_1 = __webpack_require__(36);
-var RequestUtils_1 = __webpack_require__(21);
-var StringUtils_1 = __webpack_require__(2);
-/**
- * @hidden
- */
-var AuthCache = /** @class */ (function (_super) {
-    tslib_1.__extends(AuthCache, _super);
-    function AuthCache(clientId, cacheLocation, storeAuthStateInCookie) {
-        var _this = _super.call(this, cacheLocation) || this;
-        _this.clientId = clientId;
-        // This is hardcoded to true for now. We may make this configurable in the future
-        _this.rollbackEnabled = true;
-        _this.migrateCacheEntries(storeAuthStateInCookie);
-        return _this;
-    }
-    /**
-     * Support roll back to old cache schema until the next major release: true by default now
-     * @param storeAuthStateInCookie
-     */
-    AuthCache.prototype.migrateCacheEntries = function (storeAuthStateInCookie) {
-        var _this = this;
-        var idTokenKey = Constants_1.Constants.cachePrefix + "." + Constants_1.PersistentCacheKeys.IDTOKEN;
-        var clientInfoKey = Constants_1.Constants.cachePrefix + "." + Constants_1.PersistentCacheKeys.CLIENT_INFO;
-        var errorKey = Constants_1.Constants.cachePrefix + "." + Constants_1.ErrorCacheKeys.ERROR;
-        var errorDescKey = Constants_1.Constants.cachePrefix + "." + Constants_1.ErrorCacheKeys.ERROR_DESC;
-        var idTokenValue = _super.prototype.getItem.call(this, idTokenKey);
-        var clientInfoValue = _super.prototype.getItem.call(this, clientInfoKey);
-        var errorValue = _super.prototype.getItem.call(this, errorKey);
-        var errorDescValue = _super.prototype.getItem.call(this, errorDescKey);
-        var values = [idTokenValue, clientInfoValue, errorValue, errorDescValue];
-        var keysToMigrate = [Constants_1.PersistentCacheKeys.IDTOKEN, Constants_1.PersistentCacheKeys.CLIENT_INFO, Constants_1.ErrorCacheKeys.ERROR, Constants_1.ErrorCacheKeys.ERROR_DESC];
-        keysToMigrate.forEach(function (cacheKey, index) { return _this.duplicateCacheEntry(cacheKey, values[index], storeAuthStateInCookie); });
-    };
-    /**
-     * Utility function to help with roll back keys
-     * @param newKey
-     * @param value
-     * @param storeAuthStateInCookie
-     */
-    AuthCache.prototype.duplicateCacheEntry = function (newKey, value, storeAuthStateInCookie) {
-        if (value) {
-            this.setItem(newKey, value, storeAuthStateInCookie);
-        }
-    };
-    /**
-     * Prepend msal.<client-id> to each key; Skip for any JSON object as Key (defined schemas do not need the key appended: AccessToken Keys or the upcoming schema)
-     * @param key
-     * @param addInstanceId
-     */
-    AuthCache.prototype.generateCacheKey = function (key, addInstanceId) {
-        try {
-            // Defined schemas do not need the key appended
-            JSON.parse(key);
-            return key;
-        }
-        catch (e) {
-            if (key.indexOf("" + Constants_1.Constants.cachePrefix) === 0 || key.indexOf(Constants_1.Constants.adalIdToken) === 0) {
-                return key;
-            }
-            return addInstanceId ? Constants_1.Constants.cachePrefix + "." + this.clientId + "." + key : Constants_1.Constants.cachePrefix + "." + key;
-        }
-    };
-    /**
-     * Validates that the input cache key contains the account search terms (clientId and homeAccountIdentifier) and
-     * then whether or not it contains the "scopes", depending on the token type being searched for. With matching account
-     * search terms, Access Token search tries to match the "scopes" keyword, while Id Token search expects "scopes" to not be included.
-     * @param key
-     * @param clientId
-     * @param homeAccountIdentifier
-     * @param tokenType
-     */
-    AuthCache.prototype.matchKeyForType = function (key, clientId, homeAccountIdentifier, tokenType) {
-        // All valid token cache item keys are valid JSON objects, ignore keys that aren't
-        var parsedKey = StringUtils_1.StringUtils.validateAndParseJsonCacheKey(key);
-        if (!parsedKey) {
-            return null;
-        }
-        // Does the cache item match the request account
-        var accountMatches = key.match(clientId) && key.match(homeAccountIdentifier);
-        // Does the cache item match the requested token type
-        var tokenTypeMatches = false;
-        switch (tokenType) {
-            case Constants_1.ServerHashParamKeys.ACCESS_TOKEN:
-                // Cache item is an access token if scopes are included in the cache item key
-                tokenTypeMatches = !!key.match(Constants_1.Constants.scopes);
-                break;
-            case Constants_1.ServerHashParamKeys.ID_TOKEN:
-                // Cache may be an ID token if scopes are NOT included in the cache item key
-                tokenTypeMatches = !key.match(Constants_1.Constants.scopes);
-                break;
-        }
-        return (accountMatches && tokenTypeMatches) ? parsedKey : null;
-    };
-    /**
-     * add value to storage
-     * @param key
-     * @param value
-     * @param enableCookieStorage
-     */
-    AuthCache.prototype.setItem = function (key, value, enableCookieStorage) {
-        _super.prototype.setItem.call(this, this.generateCacheKey(key, true), value, enableCookieStorage);
-        // Values stored in cookies will have rollback disabled to minimize cookie length
-        if (this.rollbackEnabled && !enableCookieStorage) {
-            _super.prototype.setItem.call(this, this.generateCacheKey(key, false), value, enableCookieStorage);
-        }
-    };
-    /**
-     * get one item by key from storage
-     * @param key
-     * @param enableCookieStorage
-     */
-    AuthCache.prototype.getItem = function (key, enableCookieStorage) {
-        return _super.prototype.getItem.call(this, this.generateCacheKey(key, true), enableCookieStorage);
-    };
-    /**
-     * remove value from storage
-     * @param key
-     */
-    AuthCache.prototype.removeItem = function (key) {
-        _super.prototype.removeItem.call(this, this.generateCacheKey(key, true));
-        if (this.rollbackEnabled) {
-            _super.prototype.removeItem.call(this, this.generateCacheKey(key, false));
-        }
-    };
-    /**
-     * Reset the cache items
-     */
-    AuthCache.prototype.resetCacheItems = function () {
-        var storage = window[this.cacheLocation];
-        var key;
-        for (key in storage) {
-            // Check if key contains msal prefix; For now, we are clearing all cache items created by MSAL.js
-            if (storage.hasOwnProperty(key) && (key.indexOf(Constants_1.Constants.cachePrefix) !== -1)) {
-                _super.prototype.removeItem.call(this, key);
-                // TODO: Clear cache based on client id (clarify use cases where this is needed)
-            }
-        }
-    };
-    /**
-     * Reset all temporary cache items
-     */
-    AuthCache.prototype.resetTempCacheItems = function (state) {
-        var _this = this;
-        var stateId = state && RequestUtils_1.RequestUtils.parseLibraryState(state).id;
-        var isTokenRenewalInProgress = this.tokenRenewalInProgress(state);
-        var storage = window[this.cacheLocation];
-        // check state and remove associated cache
-        if (stateId && !isTokenRenewalInProgress) {
-            Object.keys(storage).forEach(function (key) {
-                if (key.indexOf(stateId) !== -1) {
-                    _this.removeItem(key);
-                    _super.prototype.clearItemCookie.call(_this, key);
-                }
-            });
-        }
-        // delete the interaction status cache
-        this.removeItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS);
-        this.removeItem(Constants_1.TemporaryCacheKeys.REDIRECT_REQUEST);
-    };
-    /**
-     * Set cookies for IE
-     * @param cName
-     * @param cValue
-     * @param expires
-     */
-    AuthCache.prototype.setItemCookie = function (cName, cValue, expires) {
-        _super.prototype.setItemCookie.call(this, this.generateCacheKey(cName, true), cValue, expires);
-        if (this.rollbackEnabled) {
-            _super.prototype.setItemCookie.call(this, this.generateCacheKey(cName, false), cValue, expires);
-        }
-    };
-    AuthCache.prototype.clearItemCookie = function (cName) {
-        _super.prototype.clearItemCookie.call(this, this.generateCacheKey(cName, true));
-        if (this.rollbackEnabled) {
-            _super.prototype.clearItemCookie.call(this, this.generateCacheKey(cName, false));
-        }
-    };
-    /**
-     * get one item by key from cookies
-     * @param cName
-     */
-    AuthCache.prototype.getItemCookie = function (cName) {
-        return _super.prototype.getItemCookie.call(this, this.generateCacheKey(cName, true));
-    };
-    /**
-     * Get all tokens of a certain type from the cache
-     * @param clientId
-     * @param homeAccountIdentifier
-     * @param tokenType
-     */
-    AuthCache.prototype.getAllTokensByType = function (clientId, homeAccountIdentifier, tokenType) {
-        var _this = this;
-        var results = Object.keys(window[this.cacheLocation]).reduce(function (tokens, key) {
-            var matchedTokenKey = _this.matchKeyForType(key, clientId, homeAccountIdentifier, tokenType);
-            if (matchedTokenKey) {
-                var value = _this.getItem(key);
-                if (value) {
-                    try {
-                        var newAccessTokenCacheItem = new AccessTokenCacheItem_1.AccessTokenCacheItem(matchedTokenKey, JSON.parse(value));
-                        return tokens.concat([newAccessTokenCacheItem]);
-                    }
-                    catch (err) {
-                        // Skip cache items with non-valid JSON values
-                        return tokens;
-                    }
-                }
-            }
-            return tokens;
-        }, []);
-        return results;
-    };
-    /**
-     * Get all access tokens in the cache
-     * @param clientId
-     * @param homeAccountIdentifier
-     */
-    AuthCache.prototype.getAllAccessTokens = function (clientId, homeAccountIdentifier) {
-        return this.getAllTokensByType(clientId, homeAccountIdentifier, Constants_1.ServerHashParamKeys.ACCESS_TOKEN);
-    };
-    /**
-     * Get all id tokens in the cache in the form of AccessTokenCacheItem objects so they are
-     * in a normalized format and can make use of the existing cached access token validation logic
-     */
-    AuthCache.prototype.getAllIdTokens = function (clientId, homeAccountIdentifier) {
-        return this.getAllTokensByType(clientId, homeAccountIdentifier, Constants_1.ServerHashParamKeys.ID_TOKEN);
-    };
-    /**
-     * Get all access and ID tokens in the cache
-     * @param clientId
-     * @param homeAccountIdentifier
-     */
-    AuthCache.prototype.getAllTokens = function (clientId, homeAccountIdentifier) {
-        var accessTokens = this.getAllAccessTokens(clientId, homeAccountIdentifier);
-        var idTokens = this.getAllIdTokens(clientId, homeAccountIdentifier);
-        return accessTokens.concat(idTokens);
-    };
-    /**
-     * Return if the token renewal is still in progress
-     *
-     * @param stateValue
-     */
-    AuthCache.prototype.tokenRenewalInProgress = function (stateValue) {
-        var renewStatus = this.getItem(AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.RENEW_STATUS, stateValue));
-        return !!(renewStatus && renewStatus === Constants_1.Constants.inProgress);
-    };
-    /**
-     * Clear all cookies
-     */
-    AuthCache.prototype.clearMsalCookie = function (state) {
-        var _this = this;
-        /*
-         * If state is truthy, remove values associated with that request.
-         * Otherwise, remove all MSAL cookies.
-         */
-        if (state) {
-            this.clearItemCookie(AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.NONCE_IDTOKEN, state));
-            this.clearItemCookie(AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.STATE_LOGIN, state));
-            this.clearItemCookie(AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.LOGIN_REQUEST, state));
-            this.clearItemCookie(AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.STATE_ACQ_TOKEN, state));
-        }
-        else {
-            var cookies = document.cookie.split(";");
-            cookies.forEach(function (cookieString) {
-                var cookieName = cookieString.trim().split("=")[0];
-                if (cookieName.indexOf(Constants_1.Constants.cachePrefix) > -1) {
-                    _super.prototype.clearItemCookie.call(_this, cookieName);
-                }
-            });
-        }
-    };
-    /**
-     * Create acquireTokenAccountKey to cache account object
-     * @param accountId
-     * @param state
-     */
-    AuthCache.generateAcquireTokenAccountKey = function (accountId, state) {
-        var stateId = RequestUtils_1.RequestUtils.parseLibraryState(state).id;
-        return "" + Constants_1.TemporaryCacheKeys.ACQUIRE_TOKEN_ACCOUNT + Constants_1.Constants.resourceDelimiter + accountId + Constants_1.Constants.resourceDelimiter + stateId;
-    };
-    /**
-     * Create authorityKey to cache authority
-     * @param state
-     */
-    AuthCache.generateAuthorityKey = function (state) {
-        return AuthCache.generateTemporaryCacheKey(Constants_1.TemporaryCacheKeys.AUTHORITY, state);
-    };
-    /**
-     * Generates the cache key for temporary cache items, using request state
-     * @param tempCacheKey Cache key prefix
-     * @param state Request state value
-     */
-    AuthCache.generateTemporaryCacheKey = function (tempCacheKey, state) {
-        // Use the state id (a guid), in the interest of shorter key names, which is important for cookies.
-        var stateId = RequestUtils_1.RequestUtils.parseLibraryState(state).id;
-        return "" + tempCacheKey + Constants_1.Constants.resourceDelimiter + stateId;
-    };
-    return AuthCache;
-}(BrowserStorage_1.BrowserStorage));
-exports.AuthCache = AuthCache;
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @hidden
- */
-var AccessTokenCacheItem = /** @class */ (function () {
-    function AccessTokenCacheItem(key, value) {
-        this.key = key;
-        this.value = value;
-    }
-    return AccessTokenCacheItem;
-}());
-exports.AccessTokenCacheItem = AccessTokenCacheItem;
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var ClientConfigurationError_1 = __webpack_require__(5);
-var AuthError_1 = __webpack_require__(8);
-/**
- * @hidden
- */
-var BrowserStorage = /** @class */ (function () {
-    function BrowserStorage(cacheLocation) {
-        if (!window) {
-            throw AuthError_1.AuthError.createNoWindowObjectError("Browser storage class could not find window object");
-        }
-        var storageSupported = typeof window[cacheLocation] !== "undefined" && window[cacheLocation] != null;
-        if (!storageSupported) {
-            throw ClientConfigurationError_1.ClientConfigurationError.createStorageNotSupportedError(cacheLocation);
-        }
-        this.cacheLocation = cacheLocation;
-    }
-    /**
-     * add value to storage
-     * @param key
-     * @param value
-     * @param enableCookieStorage
-     */
-    BrowserStorage.prototype.setItem = function (key, value, enableCookieStorage) {
-        window[this.cacheLocation].setItem(key, value);
-        if (enableCookieStorage) {
-            this.setItemCookie(key, value);
-        }
-    };
-    /**
-     * get one item by key from storage
-     * @param key
-     * @param enableCookieStorage
-     */
-    BrowserStorage.prototype.getItem = function (key, enableCookieStorage) {
-        if (enableCookieStorage && this.getItemCookie(key)) {
-            return this.getItemCookie(key);
-        }
-        return window[this.cacheLocation].getItem(key);
-    };
-    /**
-     * remove value from storage
-     * @param key
-     */
-    BrowserStorage.prototype.removeItem = function (key) {
-        return window[this.cacheLocation].removeItem(key);
-    };
-    /**
-     * clear storage (remove all items from it)
-     */
-    BrowserStorage.prototype.clear = function () {
-        return window[this.cacheLocation].clear();
-    };
-    /**
-     * add value to cookies
-     * @param cName
-     * @param cValue
-     * @param expires
-     */
-    BrowserStorage.prototype.setItemCookie = function (cName, cValue, expires) {
-        var cookieStr = cName + "=" + cValue + ";path=/;";
-        if (expires) {
-            var expireTime = this.getCookieExpirationTime(expires);
-            cookieStr += "expires=" + expireTime + ";";
-        }
-        document.cookie = cookieStr;
-    };
-    /**
-     * get one item by key from cookies
-     * @param cName
-     */
-    BrowserStorage.prototype.getItemCookie = function (cName) {
-        var name = cName + "=";
-        var ca = document.cookie.split(";");
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) === " ") {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) === 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    };
-    /**
-     * Clear an item in the cookies by key
-     * @param cName
-     */
-    BrowserStorage.prototype.clearItemCookie = function (cName) {
-        this.setItemCookie(cName, "", -1);
-    };
-    /**
-     * Get cookie expiration time
-     * @param cookieLifeDays
-     */
-    BrowserStorage.prototype.getCookieExpirationTime = function (cookieLifeDays) {
-        var today = new Date();
-        var expr = new Date(today.getTime() + cookieLifeDays * 24 * 60 * 60 * 1000);
-        return expr.toUTCString();
-    };
-    return BrowserStorage;
-}());
-exports.BrowserStorage = BrowserStorage;
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var Constants_1 = __webpack_require__(1);
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-/**
- * @hidden
- */
-var ResponseUtils = /** @class */ (function () {
-    function ResponseUtils() {
-    }
-    ResponseUtils.setResponseIdToken = function (originalResponse, idTokenObj) {
-        if (!originalResponse) {
-            return null;
-        }
-        else if (!idTokenObj) {
-            return originalResponse;
-        }
-        var exp = Number(idTokenObj.expiration);
-        if (exp && !originalResponse.expiresOn) {
-            originalResponse.expiresOn = new Date(exp * 1000);
-        }
-        return tslib_1.__assign({}, originalResponse, { idToken: idTokenObj, idTokenClaims: idTokenObj.claims, uniqueId: idTokenObj.objectId || idTokenObj.subject, tenantId: idTokenObj.tenantId });
-    };
-    ResponseUtils.buildAuthResponse = function (idToken, authResponse, serverAuthenticationRequest, account, scopes, accountState) {
-        switch (serverAuthenticationRequest.responseType) {
-            case Constants_1.ResponseTypes.id_token:
-                authResponse = tslib_1.__assign({}, authResponse, { tokenType: Constants_1.ServerHashParamKeys.ID_TOKEN, account: account, scopes: scopes, accountState: accountState });
-                authResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
-                return (authResponse.idToken) ? authResponse : null;
-            case Constants_1.ResponseTypes.id_token_token:
-                authResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
-                return (authResponse && authResponse.accessToken && authResponse.idToken) ? authResponse : null;
-            case Constants_1.ResponseTypes.token:
-                authResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
-                return authResponse;
-            default:
-                return null;
-        }
-    };
-    return ResponseUtils;
-}());
-exports.ResponseUtils = ResponseUtils;
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-/**
- * @hidden
- */
-var Authority_1 = __webpack_require__(9);
-var StringUtils_1 = __webpack_require__(2);
-var ClientConfigurationError_1 = __webpack_require__(5);
-var AuthorityFactory = /** @class */ (function () {
-    function AuthorityFactory() {
-    }
-    AuthorityFactory.saveMetadataFromNetwork = function (authorityInstance, telemetryManager, correlationId) {
-        return tslib_1.__awaiter(this, void 0, Promise, function () {
-            var metadata;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, authorityInstance.resolveEndpointsAsync(telemetryManager, correlationId)];
-                    case 1:
-                        metadata = _a.sent();
-                        this.metadataMap.set(authorityInstance.CanonicalAuthority, metadata);
-                        return [2 /*return*/, metadata];
-                }
-            });
-        });
-    };
-    AuthorityFactory.getMetadata = function (authorityUrl) {
-        return this.metadataMap.get(authorityUrl);
-    };
-    AuthorityFactory.saveMetadataFromConfig = function (authorityUrl, authorityMetadataJson) {
-        try {
-            if (authorityMetadataJson) {
-                var parsedMetadata = JSON.parse(authorityMetadataJson);
-                if (!parsedMetadata.authorization_endpoint || !parsedMetadata.end_session_endpoint || !parsedMetadata.issuer) {
-                    throw ClientConfigurationError_1.ClientConfigurationError.createInvalidAuthorityMetadataError();
-                }
-                this.metadataMap.set(authorityUrl, {
-                    AuthorizationEndpoint: parsedMetadata.authorization_endpoint,
-                    EndSessionEndpoint: parsedMetadata.end_session_endpoint,
-                    Issuer: parsedMetadata.issuer
-                });
-            }
-        }
-        catch (e) {
-            throw ClientConfigurationError_1.ClientConfigurationError.createInvalidAuthorityMetadataError();
-        }
-    };
-    /**
-     * Create an authority object of the correct type based on the url
-     * Performs basic authority validation - checks to see if the authority is of a valid type (eg aad, b2c)
-     */
-    AuthorityFactory.CreateInstance = function (authorityUrl, validateAuthority, authorityMetadata) {
-        if (StringUtils_1.StringUtils.isEmpty(authorityUrl)) {
-            return null;
-        }
-        if (authorityMetadata) {
-            // todo: log statements
-            this.saveMetadataFromConfig(authorityUrl, authorityMetadata);
-        }
-        return new Authority_1.Authority(authorityUrl, validateAuthority, this.metadataMap.get(authorityUrl));
-    };
-    AuthorityFactory.metadataMap = new Map();
-    return AuthorityFactory;
-}());
-exports.AuthorityFactory = AuthorityFactory;
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var DefaultEvent_1 = tslib_1.__importDefault(__webpack_require__(40));
-var Constants_1 = __webpack_require__(1);
-var ApiEvent_1 = tslib_1.__importDefault(__webpack_require__(27));
-var HttpEvent_1 = tslib_1.__importDefault(__webpack_require__(41));
-var TelemetryManager = /** @class */ (function () {
-    function TelemetryManager(config, telemetryEmitter, logger) {
-        // correlation Id to list of events
-        this.completedEvents = {};
-        // event key to event
-        this.inProgressEvents = {};
-        // correlation id to map of eventname to count
-        this.eventCountByCorrelationId = {};
-        // Implement after API EVENT
-        this.onlySendFailureTelemetry = false;
-        // TODO THROW if bad options
-        this.telemetryPlatform = tslib_1.__assign({ sdk: Constants_1.Constants.libraryName, sdkVersion: Constants_1.libraryVersion(), networkInformation: {
-                // @ts-ignore
-                connectionSpeed: typeof navigator !== "undefined" && navigator.connection && navigator.connection.effectiveType
-            } }, config.platform);
-        this.clientId = config.clientId;
-        this.onlySendFailureTelemetry = config.onlySendFailureTelemetry;
-        /*
-         * TODO, when i get to wiring this through, think about what it means if
-         * a developer does not implement telem at all, we still instrument, but telemetryEmitter can be
-         * optional?
-         */
-        this.telemetryEmitter = telemetryEmitter;
-        this.logger = logger;
-    }
-    TelemetryManager.getTelemetrymanagerStub = function (clientId, logger) {
-        var applicationName = "UnSetStub";
-        var applicationVersion = "0.0";
-        var telemetryEmitter = function () { };
-        var telemetryPlatform = {
-            applicationName: applicationName,
-            applicationVersion: applicationVersion
-        };
-        var telemetryManagerConfig = {
-            platform: telemetryPlatform,
-            clientId: clientId
-        };
-        return new this(telemetryManagerConfig, telemetryEmitter, logger);
-    };
-    TelemetryManager.prototype.startEvent = function (event) {
-        this.logger.verbose("Telemetry Event started: " + event.key);
-        if (!this.telemetryEmitter) {
-            return;
-        }
-        event.start();
-        this.inProgressEvents[event.key] = event;
-    };
-    TelemetryManager.prototype.stopEvent = function (event) {
-        this.logger.verbose("Telemetry Event stopped: " + event.key);
-        if (!this.telemetryEmitter || !this.inProgressEvents[event.key]) {
-            return;
-        }
-        event.stop();
-        this.incrementEventCount(event);
-        var completedEvents = this.completedEvents[event.telemetryCorrelationId];
-        this.completedEvents[event.telemetryCorrelationId] = (completedEvents || []).concat([event]);
-        delete this.inProgressEvents[event.key];
-    };
-    TelemetryManager.prototype.flush = function (correlationId) {
-        var _this = this;
-        this.logger.verbose("Flushing telemetry events: " + correlationId);
-        // If there is only unfinished events should this still return them?
-        if (!this.telemetryEmitter || !this.completedEvents[correlationId]) {
-            return;
-        }
-        var orphanedEvents = this.getOrphanedEvents(correlationId);
-        orphanedEvents.forEach(function (event) { return _this.incrementEventCount(event); });
-        var eventsToFlush = this.completedEvents[correlationId].concat(orphanedEvents);
-        delete this.completedEvents[correlationId];
-        var eventCountsToFlush = this.eventCountByCorrelationId[correlationId];
-        delete this.eventCountByCorrelationId[correlationId];
-        // TODO add funcitonality for onlyFlushFailures after implementing api event? ??
-        if (!eventsToFlush || !eventsToFlush.length) {
-            return;
-        }
-        var defaultEvent = new DefaultEvent_1.default(this.telemetryPlatform, correlationId, this.clientId, eventCountsToFlush);
-        var eventsWithDefaultEvent = eventsToFlush.concat([defaultEvent]);
-        this.telemetryEmitter(eventsWithDefaultEvent.map(function (e) { return e.get(); }));
-    };
-    TelemetryManager.prototype.createAndStartApiEvent = function (correlationId, apiEventIdentifier) {
-        var apiEvent = new ApiEvent_1.default(correlationId, this.logger.isPiiLoggingEnabled(), apiEventIdentifier);
-        this.startEvent(apiEvent);
-        return apiEvent;
-    };
-    TelemetryManager.prototype.stopAndFlushApiEvent = function (correlationId, apiEvent, wasSuccessful, errorCode) {
-        apiEvent.wasSuccessful = wasSuccessful;
-        if (errorCode) {
-            apiEvent.apiErrorCode = errorCode;
-        }
-        this.stopEvent(apiEvent);
-        this.flush(correlationId);
-    };
-    TelemetryManager.prototype.createAndStartHttpEvent = function (correlation, httpMethod, url, eventLabel) {
-        var httpEvent = new HttpEvent_1.default(correlation, eventLabel);
-        httpEvent.url = url;
-        httpEvent.httpMethod = httpMethod;
-        this.startEvent(httpEvent);
-        return httpEvent;
-    };
-    TelemetryManager.prototype.incrementEventCount = function (event) {
-        var _a;
-        /*
-         * TODO, name cache event different?
-         * if type is cache event, change name
-         */
-        var eventName = event.eventName;
-        var eventCount = this.eventCountByCorrelationId[event.telemetryCorrelationId];
-        if (!eventCount) {
-            this.eventCountByCorrelationId[event.telemetryCorrelationId] = (_a = {},
-                _a[eventName] = 1,
-                _a);
-        }
-        else {
-            eventCount[eventName] = eventCount[eventName] ? eventCount[eventName] + 1 : 1;
-        }
-    };
-    TelemetryManager.prototype.getOrphanedEvents = function (correlationId) {
-        var _this = this;
-        return Object.keys(this.inProgressEvents)
-            .reduce(function (memo, eventKey) {
-            if (eventKey.indexOf(correlationId) !== -1) {
-                var event = _this.inProgressEvents[eventKey];
-                delete _this.inProgressEvents[eventKey];
-                return memo.concat([event]);
-            }
-            return memo;
-        }, []);
-    };
-    return TelemetryManager;
-}());
-exports.default = TelemetryManager;
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var TelemetryConstants_1 = __webpack_require__(11);
-var TelemetryEvent_1 = tslib_1.__importDefault(__webpack_require__(15));
-var TelemetryUtils_1 = __webpack_require__(12);
-var DefaultEvent = /** @class */ (function (_super) {
-    tslib_1.__extends(DefaultEvent, _super);
-    // TODO Platform Type
-    function DefaultEvent(platform, correlationId, clientId, eventCount) {
-        var _this = _super.call(this, TelemetryUtils_1.prependEventNamePrefix("default_event"), correlationId, "DefaultEvent") || this;
-        _this.event[TelemetryUtils_1.prependEventNamePrefix("client_id")] = clientId;
-        _this.event[TelemetryUtils_1.prependEventNamePrefix("sdk_plaform")] = platform.sdk;
-        _this.event[TelemetryUtils_1.prependEventNamePrefix("sdk_version")] = platform.sdkVersion;
-        _this.event[TelemetryUtils_1.prependEventNamePrefix("application_name")] = platform.applicationName;
-        _this.event[TelemetryUtils_1.prependEventNamePrefix("application_version")] = platform.applicationVersion;
-        _this.event[TelemetryUtils_1.prependEventNamePrefix("effective_connection_speed")] = platform.networkInformation && platform.networkInformation.connectionSpeed;
-        _this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.UiEventCountTelemetryBatchKey] = _this.getEventCount(TelemetryUtils_1.prependEventNamePrefix("ui_event"), eventCount);
-        _this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.HttpEventCountTelemetryBatchKey] = _this.getEventCount(TelemetryUtils_1.prependEventNamePrefix("http_event"), eventCount);
-        _this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.CacheEventCountConstStrKey] = _this.getEventCount(TelemetryUtils_1.prependEventNamePrefix("cache_event"), eventCount);
-        return _this;
-        // / Device id?
-    }
-    DefaultEvent.prototype.getEventCount = function (eventName, eventCount) {
-        if (!eventCount[eventName]) {
-            return 0;
-        }
-        return eventCount[eventName];
-    };
-    return DefaultEvent;
-}(TelemetryEvent_1.default));
-exports.default = DefaultEvent;
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(0);
-var TelemetryEvent_1 = tslib_1.__importDefault(__webpack_require__(15));
-var TelemetryUtils_1 = __webpack_require__(12);
-var ServerRequestParameters_1 = __webpack_require__(17);
-exports.EVENT_KEYS = {
-    HTTP_PATH: TelemetryUtils_1.prependEventNamePrefix("http_path"),
-    USER_AGENT: TelemetryUtils_1.prependEventNamePrefix("user_agent"),
-    QUERY_PARAMETERS: TelemetryUtils_1.prependEventNamePrefix("query_parameters"),
-    API_VERSION: TelemetryUtils_1.prependEventNamePrefix("api_version"),
-    RESPONSE_CODE: TelemetryUtils_1.prependEventNamePrefix("response_code"),
-    O_AUTH_ERROR_CODE: TelemetryUtils_1.prependEventNamePrefix("oauth_error_code"),
-    HTTP_METHOD: TelemetryUtils_1.prependEventNamePrefix("http_method"),
-    REQUEST_ID_HEADER: TelemetryUtils_1.prependEventNamePrefix("request_id_header"),
-    SPE_INFO: TelemetryUtils_1.prependEventNamePrefix("spe_info"),
-    SERVER_ERROR_CODE: TelemetryUtils_1.prependEventNamePrefix("server_error_code"),
-    SERVER_SUB_ERROR_CODE: TelemetryUtils_1.prependEventNamePrefix("server_sub_error_code"),
-    URL: TelemetryUtils_1.prependEventNamePrefix("url")
-};
-var HttpEvent = /** @class */ (function (_super) {
-    tslib_1.__extends(HttpEvent, _super);
-    function HttpEvent(correlationId, eventLabel) {
-        return _super.call(this, TelemetryUtils_1.prependEventNamePrefix("http_event"), correlationId, eventLabel) || this;
-    }
-    Object.defineProperty(HttpEvent.prototype, "url", {
-        set: function (url) {
-            var scrubbedUri = TelemetryUtils_1.scrubTenantFromUri(url);
-            this.event[exports.EVENT_KEYS.URL] = scrubbedUri && scrubbedUri.toLowerCase();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "httpPath", {
-        set: function (httpPath) {
-            this.event[exports.EVENT_KEYS.HTTP_PATH] = TelemetryUtils_1.scrubTenantFromUri(httpPath).toLowerCase();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "userAgent", {
-        set: function (userAgent) {
-            this.event[exports.EVENT_KEYS.USER_AGENT] = userAgent;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "queryParams", {
-        set: function (queryParams) {
-            this.event[exports.EVENT_KEYS.QUERY_PARAMETERS] = ServerRequestParameters_1.ServerRequestParameters.generateQueryParametersString(queryParams);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "apiVersion", {
-        set: function (apiVersion) {
-            this.event[exports.EVENT_KEYS.API_VERSION] = apiVersion.toLowerCase();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "httpResponseStatus", {
-        set: function (statusCode) {
-            this.event[exports.EVENT_KEYS.RESPONSE_CODE] = statusCode;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "oAuthErrorCode", {
-        set: function (errorCode) {
-            this.event[exports.EVENT_KEYS.O_AUTH_ERROR_CODE] = errorCode;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "httpMethod", {
-        set: function (httpMethod) {
-            this.event[exports.EVENT_KEYS.HTTP_METHOD] = httpMethod;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "requestIdHeader", {
-        set: function (requestIdHeader) {
-            this.event[exports.EVENT_KEYS.REQUEST_ID_HEADER] = requestIdHeader;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "speInfo", {
-        /**
-         * Indicates whether the request was executed on a ring serving SPE traffic.
-         * An empty string indicates this occurred on an outer ring, and the string "I"
-         * indicates the request occurred on the inner ring
-         */
-        set: function (speInfo) {
-            this.event[exports.EVENT_KEYS.SPE_INFO] = speInfo;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "serverErrorCode", {
-        set: function (errorCode) {
-            this.event[exports.EVENT_KEYS.SERVER_ERROR_CODE] = errorCode;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(HttpEvent.prototype, "serverSubErrorCode", {
-        set: function (subErrorCode) {
-            this.event[exports.EVENT_KEYS.SERVER_SUB_ERROR_CODE] = subErrorCode;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return HttpEvent;
-}(TelemetryEvent_1.default));
-exports.default = HttpEvent;
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var ScopeSet_1 = __webpack_require__(7);
-var UrlUtils_1 = __webpack_require__(4);
-/**
- * @hidden
- */
-var AuthCacheUtils = /** @class */ (function () {
-    function AuthCacheUtils() {
-    }
-    AuthCacheUtils.filterTokenCacheItemsByScope = function (tokenCacheItems, requestScopes) {
-        return tokenCacheItems.filter(function (cacheItem) {
-            var cachedScopes = cacheItem.key.scopes.split(" ");
-            var searchScopes = ScopeSet_1.ScopeSet.removeDefaultScopes(requestScopes);
-            // If requestScopes contain only default scopes search for default scopes otherwise search for everything but default scopes
-            return searchScopes.length === 0 ? ScopeSet_1.ScopeSet.containsScope(cachedScopes, requestScopes) : ScopeSet_1.ScopeSet.containsScope(cachedScopes, searchScopes);
-        });
-    };
-    AuthCacheUtils.filterTokenCacheItemsByAuthority = function (tokenCacheItems, authority) {
-        return tokenCacheItems.filter(function (cacheItem) { return UrlUtils_1.UrlUtils.CanonicalizeUri(cacheItem.key.authority) === authority; });
-    };
-    AuthCacheUtils.filterTokenCacheItemsByDomain = function (tokenCacheItems, requestDomain) {
-        return tokenCacheItems.filter(function (cacheItem) {
-            var cacheItemDomain = UrlUtils_1.UrlUtils.GetUrlComponents(cacheItem.key.authority).HostNameAndPort;
-            return cacheItemDomain === requestDomain;
-        });
-    };
-    return AuthCacheUtils;
-}());
-exports.AuthCacheUtils = AuthCacheUtils;
-
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var ClientConfigurationError_1 = __webpack_require__(5);
-function validateClaimsRequest(request) {
-    if (!request.claimsRequest) {
-        return;
-    }
-    try {
-        JSON.parse(request.claimsRequest);
-    }
-    catch (e) {
-        throw ClientConfigurationError_1.ClientConfigurationError.createClaimsRequestParsingError(e);
-    }
-    // TODO: More validation will be added when the server team tells us how they have actually implemented claims
-}
-exports.validateClaimsRequest = validateClaimsRequest;
-
-
 /***/ })
-/******/ ]);
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	// module exports must be returned from runtime so entry inlining is disabled
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(432);
+/******/ })()
+;
 });
 //# sourceMappingURL=msal.js.map

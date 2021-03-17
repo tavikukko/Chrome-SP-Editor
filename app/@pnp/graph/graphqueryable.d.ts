@@ -51,6 +51,10 @@ export declare class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      * @param factory The contructor for the class to create
      */
     protected getParent<T extends _GraphQueryable>(factory: IGraphQueryableConstructor<T>, baseUrl?: string | IGraphQueryable, path?: string): T;
+    /**
+     * Gets the current base url of this object (https://graph.microsoft.com/v1.0 or https://graph.microsoft.com/beta)
+     */
+    protected getUrlBase(): string;
 }
 export interface IGraphQueryable<GetType = any> extends _GraphQueryable<GetType> {
 }

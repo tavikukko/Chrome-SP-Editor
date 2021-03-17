@@ -11,6 +11,14 @@ export declare class _User extends _DirectoryObject<IUserType> {
      * Retrieve a collection of person objects ordered by their relevance to the user
      */
     get people(): IPeople;
+    /**
+    * People that have direct reports to the user
+    */
+    get directReports(): IPeople;
+    /**
+    * The manager associated with this user
+    */
+    get manager(): IUser;
 }
 export interface IUser extends _User, IUpdateable<IUserType>, IDeleteable {
 }

@@ -16,7 +16,7 @@ export declare class _Invitations extends _GraphQueryableCollection<IInvitationT
 }
 export interface IInvitations extends _Invitations {
 }
-export declare const Invitations: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IInvitations & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Invitations: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IInvitations & import("@pnp/odata").IInvokable<any>;
 /**
  * IInvitationAddResult
  */

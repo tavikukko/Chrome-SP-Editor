@@ -3,8 +3,8 @@ export declare class SPHttpClient implements IRequestClient {
     protected _runtime: Runtime;
     protected _impl: IHttpClientImpl;
     protected _digestCache: IGetDigest;
-    constructor(runtime: Runtime);
-    constructor(impl: IHttpClientImpl, runtime?: Runtime);
+    constructor(runtime?: Runtime);
+    constructor(runtime?: Runtime, impl?: IHttpClientImpl);
     fetch(url: string, options?: IFetchOptions): Promise<Response>;
     fetchRaw(url: string, options?: IFetchOptions): Promise<Response>;
     get(url: string, options?: IFetchOptions): Promise<Response>;

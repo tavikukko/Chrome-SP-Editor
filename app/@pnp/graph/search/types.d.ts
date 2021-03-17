@@ -13,5 +13,5 @@ export interface ISearch {
         requests: ISearchRequestType[];
     }): Promise<ISearchResponseType[]>;
 }
-export declare const Search: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ISearch & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Search: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ISearch & import("@pnp/odata").IInvokable<any>;
 //# sourceMappingURL=types.d.ts.map

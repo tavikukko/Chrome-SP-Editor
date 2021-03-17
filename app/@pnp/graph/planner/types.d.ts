@@ -12,7 +12,7 @@ export declare class _Planner extends _GraphQueryableInstance<IPlannerType> {
 }
 export interface IPlanner extends _Planner {
 }
-export declare const Planner: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPlanner & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Planner: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPlanner & import("@pnp/odata").IInvokable<any>;
 /**
  * Details
  */
@@ -20,7 +20,7 @@ export declare class _PlanDetails extends _GraphQueryableInstance<IPlannerPlanDe
 }
 export interface IPlanDetails extends _PlanDetails, IUpdateableWithETag<IPlannerPlanDetailsType> {
 }
-export declare const PlanDetails: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ITaskDetails & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const PlanDetails: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ITaskDetails & import("@pnp/odata").IInvokable<any>;
 /**
  * Plan
  */
@@ -31,7 +31,7 @@ export declare class _Plan extends _GraphQueryableInstance<IPlannerPlanType> {
 }
 export interface IPlan extends _Plan, IUpdateableWithETag<IPlannerPlanType>, IDeleteableWithETag {
 }
-export declare const Plan: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPlan & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Plan: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPlan & import("@pnp/odata").IInvokable<any>;
 export declare class _Plans extends _GraphQueryableCollection<IPlannerPlanType[]> {
     /**
      * Create a new Planner Plan.
@@ -43,7 +43,7 @@ export declare class _Plans extends _GraphQueryableCollection<IPlannerPlanType[]
 }
 export interface IPlans extends _Plans, IGetById<IPlan> {
 }
-export declare const Plans: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPlans & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Plans: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPlans & import("@pnp/odata").IInvokable<any>;
 /**
  * Details
  */
@@ -51,7 +51,7 @@ export declare class _TaskDetails extends _GraphQueryableInstance<IPlannerTaskDe
 }
 export interface ITaskDetails extends _TaskDetails, IUpdateableWithETag<IPlannerTaskDetailsType> {
 }
-export declare const TaskDetails: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ITaskDetails & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const TaskDetails: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ITaskDetails & import("@pnp/odata").IInvokable<any>;
 /**
  * Task
  */
@@ -60,7 +60,7 @@ export declare class _Task extends _GraphQueryableInstance<IPlannerTaskType> {
 }
 export interface ITask extends _Task, IUpdateableWithETag<IPlannerTaskType>, IDeleteableWithETag {
 }
-export declare const Task: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ITask & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Task: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ITask & import("@pnp/odata").IInvokable<any>;
 /**
  * Tasks
  */
@@ -77,7 +77,7 @@ export declare class _Tasks extends _GraphQueryableCollection<IPlannerTaskType[]
 }
 export interface ITasks extends _Tasks, IGetById<ITask> {
 }
-export declare const Tasks: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ITasks & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Tasks: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ITasks & import("@pnp/odata").IInvokable<any>;
 /**
  * Bucket
  */
@@ -86,7 +86,7 @@ export declare class _Bucket extends _GraphQueryableInstance<IPlannerBucketType>
 }
 export interface IBucket extends _Bucket, IUpdateableWithETag<IPlannerBucketType>, IDeleteableWithETag {
 }
-export declare const Bucket: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IBucket & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Bucket: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IBucket & import("@pnp/odata").IInvokable<any>;
 /**
  * Buckets
  */
@@ -102,7 +102,7 @@ export declare class _Buckets extends _GraphQueryableCollection<IPlannerBucketTy
 }
 export interface IBuckets extends _Buckets, IGetById<IBucket> {
 }
-export declare const Buckets: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IBuckets & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Buckets: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IBuckets & import("@pnp/odata").IInvokable<any>;
 export interface IBucketAddResult {
     data: IPlannerBucketType;
     bucket: IBucket;

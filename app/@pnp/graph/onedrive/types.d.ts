@@ -14,16 +14,17 @@ export declare class _Drive extends _GraphQueryableInstance<IDriveType> {
 }
 export interface IDrive extends _Drive {
 }
-export declare const Drive: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDrive & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Drive: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDrive & import("@pnp/odata").IInvokable<any>;
 /**
  * Describes a collection of Drive objects
  *
  */
 export declare class _Drives extends _GraphQueryableCollection<IDriveType[]> {
+    getById(id: string): IDrive;
 }
 export interface IDrives extends _Drives, IGetById<IDrive> {
 }
-export declare const Drives: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDrives & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Drives: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDrives & import("@pnp/odata").IInvokable<any>;
 /**
  * Describes a Root instance
  *
@@ -35,7 +36,7 @@ export declare class _Root extends _GraphQueryableInstance<IDrive> {
 }
 export interface IRoot extends _Root {
 }
-export declare const Root: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IRoot & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const Root: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IRoot & import("@pnp/odata").IInvokable<any>;
 /**
  * Describes a Drive Item instance
  *
@@ -56,7 +57,7 @@ export declare class _DriveItem extends _GraphQueryableInstance<any> {
 }
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable {
 }
-export declare const DriveItem: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDriveItem & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const DriveItem: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDriveItem & import("@pnp/odata").IInvokable<any>;
 /**
  * Describes a collection of Drive Item objects
  *
@@ -65,7 +66,7 @@ export declare class _DriveItems extends _GraphQueryableCollection {
 }
 export interface IDriveItems extends _DriveItems, IGetById<IDriveItem> {
 }
-export declare const DriveItems: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDriveItems & import("../../odata/invokable-binder.js").IInvokable<any>;
+export declare const DriveItems: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDriveItems & import("@pnp/odata").IInvokable<any>;
 /**
  * IDriveItemAddResult
  */
