@@ -35,5 +35,5 @@ export declare class CryptoUtils {
      *
      * @param query
      */
-    static deserialize(query: string): any;
+    static deserialize(query: string): object;
 }

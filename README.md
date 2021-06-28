@@ -9,6 +9,11 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 
 ## Version history
 
+- 5.6.10 updates
+    * Updated PnPjs to 2.6.0
+    * Updated monaco-editor to 0.25.2
+    * fixed issue with search not showing results, thanks [@alooft](https://github.com/alooft) & [@MarkusLanger](https://github.com/MarkusLanger)
+    * fixed Classic Admin Center url, thanks [@Gennady-G](https://github.com/Gennady-G)
 - 5.6.9 updates
     * Updated PnPjs to 2.3.0
     * Updated monaco-editor to 0.23.0

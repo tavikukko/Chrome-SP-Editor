@@ -108,5 +108,5 @@ export declare class WindowUtils {
     /**
      * Removes url fragment from browser url
      */
-    static clearUrlFragment(): void;
+    static clearUrlFragment(contentWindow: Window): void;
 }

@@ -7,7 +7,7 @@ export declare class TokenUtils {
      *
      * @param jwtToken
      */
-    static decodeJwt(jwtToken: string): any;
+    static decodeJwt(jwtToken: string): object;
     /**
      * Evaluates whether token cache item expiration is within expiration offset range
      * @param tokenCacheItem
@@ -18,5 +18,5 @@ export declare class TokenUtils {
      *
      * @param encodedIdToken
      */
-    static extractIdToken(encodedIdToken: string): any;
+    static extractIdToken(encodedIdToken: string): object;
 }

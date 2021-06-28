@@ -5,9 +5,9 @@
  */
 export declare class XhrClient {
     sendRequestAsync(url: string, method: string, enableCaching?: boolean): Promise<XhrResponse>;
-    protected handleError(responseText: string): any;
+    protected handleError(responseText: string): string;
 }
 export declare type XhrResponse = {
-    body: any;
+    body: object;
     statusCode: number;
 };

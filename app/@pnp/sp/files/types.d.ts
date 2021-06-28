@@ -194,7 +194,7 @@ export declare class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     setContent(content: string | ArrayBuffer | Blob): Promise<IFile>;
     /**
-     * Gets the associated list item for this folder, loading the default properties
+     * Gets the associated list item for this file, loading the default properties
      */
     getItem<T>(...selects: string[]): Promise<IItem & T>;
     /**

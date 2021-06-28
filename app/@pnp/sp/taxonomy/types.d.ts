@@ -59,8 +59,10 @@ export declare class _TermSet extends _SharePointQueryableInstance<ITermSetInfo>
     /**
      * Gets all the terms in this termset in an ordered tree using the appropriate sort ordering
      * ** This is an expensive operation and you should strongly consider caching the results **
+     *
+     * @param props Optional set of properties controlling how the tree is retrieved.
      */
-    getAllChildrenAsOrderedTree(): Promise<IOrderedTermInfo[]>;
+    getAllChildrenAsOrderedTree(props?: Partial<IGetOrderedTreeProps>): Promise<IOrderedTermInfo[]>;
 }
 export interface ITermSet extends _TermSet {
 }
@@ -156,8 +158,8 @@ export interface ITermInfo {
         description: string;
         languageTag: string;
     }[];
-    properties: ITaxonomyProperty[];
-    localProperties: ITaxonomyProperty[];
+    properties?: ITaxonomyProperty[];
+    localProperties?: ITaxonomyLocalProperty[];
     isDeprecated: boolean;
     isAvailableForTagging: {
         setId: string;
@@ -188,5 +190,12 @@ export interface ITaxonomyUserInfo {
 export interface ITaxonomyProperty {
     key: string;
     value: string;
+}
+export interface ITaxonomyLocalProperty {
+    setId: string;
+    properties: ITaxonomyProperty[];
+}
+export interface IGetOrderedTreeProps {
+    retrieveProperties: boolean;
 }
 //# sourceMappingURL=types.d.ts.map

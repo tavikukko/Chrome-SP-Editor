@@ -42,6 +42,12 @@ export declare class UrlUtils {
      */
     static isOrganizationsAuthority(url: string): boolean;
     /**
+     * Checks if an authority is for consumers (ex. https://a:b/consumers/)
+     * @param url The url
+     * @returns true if authority is for  and false otherwise
+     */
+    static isConsumersAuthority(url: string): boolean;
+    /**
      * Parses out the components from a url string.
      * @returns An object with the various components. Please cache this value insted of calling this multiple times on the same url.
      */
@@ -83,7 +89,7 @@ export declare class UrlUtils {
      * Returns deserialized portion of URL hash
      * @ignore
      */
-    static deserializeHash(urlFragment: string): any;
+    static deserializeHash(urlFragment: string): object;
     /**
      * @ignore
      * @param {string} URI

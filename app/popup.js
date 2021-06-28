@@ -153,7 +153,7 @@ riot.tag("spquicklinks", `
           this.links.unshift({ title: "Term store", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/termstoremanager.aspx`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Modern Term store", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/AdminHome.aspx#/termStoreAdminCenter`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "User profiles", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/tenantprofileadmin/manageuserprofileserviceapplication.aspx`, target: "_blank", css: "pointer-cursor" });
-          this.links.unshift({ title: "Classic admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/SiteCollections.aspx`, target: "_blank", css: "pointer-cursor" });
+          this.links.unshift({ title: "Classic admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/AdminHome.aspx#/siteManagement/view/CLASSIC%20SITES`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Admin center", url: `${this.admin}.${this.ctx._spPageContextInfo.webDomain}/_layouts/15/online/AdminHome.aspx#/home`, target: "_blank", css: "pointer-cursor" });
           this.links.unshift({ title: "Tenant", url: "", target: "", css: "disabled normal-cursor" });
         }

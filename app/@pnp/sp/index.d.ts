@@ -8,6 +8,8 @@ export { SPRest, sp, } from "./rest.js";
 export * from "./types.js";
 export { toAbsoluteUrl, } from "./utils/toabsoluteurl.js";
 export { extractWebUrl, } from "./utils/extractweburl.js";
+export { escapeQueryStrValue, } from "./utils/escapeQueryStrValue.js";
 export { ISPKeyValueCollection, objectToSPKeyValueCollection, } from "./utils/objectToSPKeyValueCollection.js";
 export { stripInvalidFileFolderChars, containsInvalidFileFolderChars, } from "./utils/file-names.js";
+export { odataUrlFrom, } from "./odata.js";
 //# sourceMappingURL=index.d.ts.map

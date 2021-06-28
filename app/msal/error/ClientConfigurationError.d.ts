@@ -16,8 +16,8 @@ export declare class ClientConfigurationError extends ClientAuthError {
     static createInvalidCallbackObjectError(callbackObject: object): ClientConfigurationError;
     static createEmptyScopesArrayError(scopesValue: string): ClientConfigurationError;
     static createScopesNonArrayError(scopesValue: string): ClientConfigurationError;
-    static createScopesRequiredError(scopesValue: any): ClientConfigurationError;
-    static createInvalidPromptError(promptValue: any): ClientConfigurationError;
+    static createScopesRequiredError(scopesValue: string[]): ClientConfigurationError;
+    static createInvalidPromptError(promptValue: string): ClientConfigurationError;
     static createClaimsRequestParsingError(claimsRequestParseError: string): ClientConfigurationError;
     static createEmptyRequestError(): ClientConfigurationError;
     static createInvalidCorrelationIdError(): ClientConfigurationError;

@@ -1,4 +1,4 @@
-/*! msal v1.4.8 2021-03-16 */
+/*! msal v1.4.11 2021-05-12 */
 'use strict';
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -10,12 +10,12 @@
 	else
 		root["Msal"] = factory();
 })(self, function() {
-return /******/ (() => { // webpackBootstrap
+return /******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 795:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
 /*! *****************************************************************************
@@ -313,7 +313,7 @@ exports.__importDefault = __importDefault;
 /***/ }),
 
 /***/ 630:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -396,7 +396,7 @@ exports.Account = Account;
 /***/ }),
 
 /***/ 681:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
 /*
@@ -425,7 +425,7 @@ exports.buildResponseStateOnly = buildResponseStateOnly;
 /***/ }),
 
 /***/ 733:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -452,7 +452,7 @@ exports.validateClaimsRequest = validateClaimsRequest;
 /***/ }),
 
 /***/ 271:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -546,7 +546,7 @@ exports.ClientInfo = ClientInfo;
 /***/ }),
 
 /***/ 875:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -615,7 +615,7 @@ exports.buildConfiguration = buildConfiguration;
 /***/ }),
 
 /***/ 881:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -697,7 +697,7 @@ exports.IdToken = IdToken;
 /***/ }),
 
 /***/ 89:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -811,7 +811,7 @@ exports.Logger = Logger;
 /***/ }),
 
 /***/ 55:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -1030,7 +1030,7 @@ exports.ScopeSet = ScopeSet;
 /***/ }),
 
 /***/ 436:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -1163,7 +1163,7 @@ var ServerRequestParameters = /** @class */ (function () {
         else if (idTokenObject) {
             if (idTokenObject.hasOwnProperty(Constants_1.Constants.upn)) {
                 ssoType = Constants_1.SSOTypes.ID_TOKEN;
-                ssoData = idTokenObject.upn;
+                ssoData = idTokenObject["upn"];
             }
         }
         serverReqParam = this.addSSOParameter(ssoType, ssoData);
@@ -1259,7 +1259,7 @@ var ServerRequestParameters = /** @class */ (function () {
      * @param request
      */
     ServerRequestParameters.isSSOParam = function (request) {
-        return request && (request.account || request.sid || request.loginHint);
+        return !!(request && (request.account || request.sid || request.loginHint));
     };
     /**
      * Returns the correct response_type string attribute for an acquireToken request configuration
@@ -1292,7 +1292,7 @@ exports.ServerRequestParameters = ServerRequestParameters;
 /***/ }),
 
 /***/ 463:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -2355,7 +2355,7 @@ var UserAgentApplication = /** @class */ (function () {
         this.logger.info("Returned from redirect url");
         this.logger.verbose("HandleRedirectAuthenticationResponse has been called");
         // clear hash from window
-        WindowUtils_1.WindowUtils.clearUrlFragment();
+        WindowUtils_1.WindowUtils.clearUrlFragment(window);
         this.logger.verbose("Window.location.hash cleared");
         // if (window.parent !== window), by using self, window.parent becomes equal to window in getResponseState method specifically
         var stateInfo = this.getResponseState(hash);
@@ -2410,10 +2410,10 @@ var UserAgentApplication = /** @class */ (function () {
         }
         if (parameters.hasOwnProperty(Constants_1.ServerHashParamKeys.STATE)) {
             this.logger.verbose("Hash contains state. Creating stateInfo object");
-            var parsedState = RequestUtils_1.RequestUtils.parseLibraryState(parameters.state);
+            var parsedState = RequestUtils_1.RequestUtils.parseLibraryState(parameters["state"]);
             stateResponse = {
                 requestType: Constants_1.Constants.unknown,
-                state: parameters.state,
+                state: parameters["state"],
                 timestamp: parsedState.ts,
                 method: parsedState.method,
                 stateMatch: false
@@ -2493,7 +2493,7 @@ var UserAgentApplication = /** @class */ (function () {
     UserAgentApplication.prototype.getTokenCacheItemByAuthority = function (authority, tokenCacheItems, requestScopes, tokenType) {
         var _this = this;
         var filteredAuthorityItems;
-        if (UrlUtils_1.UrlUtils.isCommonAuthority(authority) || UrlUtils_1.UrlUtils.isOrganizationsAuthority(authority)) {
+        if (UrlUtils_1.UrlUtils.isCommonAuthority(authority) || UrlUtils_1.UrlUtils.isOrganizationsAuthority(authority) || UrlUtils_1.UrlUtils.isConsumersAuthority(authority)) {
             filteredAuthorityItems = AuthCacheUtils_1.AuthCacheUtils.filterTokenCacheItemsByDomain(tokenCacheItems, UrlUtils_1.UrlUtils.GetUrlComponents(authority).HostNameAndPort);
         }
         else {
@@ -2572,12 +2572,6 @@ var UserAgentApplication = /** @class */ (function () {
         var accessTokenCacheItem = this.getTokenCacheItemByAuthority(matchAuthority, scopeFilteredTokenCacheItems, scopes, Constants_1.ServerHashParamKeys.ACCESS_TOKEN);
         if (!accessTokenCacheItem) {
             this.logger.verbose("No matching token found when filtering by scope and authority");
-            var authorityList = this.getUniqueAuthority(tokenCacheItems, "authority");
-            if (authorityList.length > 1) {
-                throw ClientAuthError_1.ClientAuthError.createMultipleAuthoritiesInCacheError(scopes.toString());
-            }
-            this.logger.verbose("Single authority used, setting authorityInstance");
-            serverAuthenticationRequest.authorityInstance = AuthorityFactory_1.AuthorityFactory.CreateInstance(authorityList[0], this.config.auth.validateAuthority);
             return null;
         }
         else {
@@ -2624,24 +2618,6 @@ var UserAgentApplication = /** @class */ (function () {
     UserAgentApplication.prototype.evaluateTokenExpiration = function (tokenCacheItem) {
         var expiration = Number(tokenCacheItem.value.expiresIn);
         return TokenUtils_1.TokenUtils.validateExpirationIsWithinOffset(expiration, this.config.system.tokenRenewalOffsetSeconds);
-    };
-    /**
-     * @hidden
-     * Used to get a unique list of authorities from the cache
-     * @param {Array<AccessTokenCacheItem>}  accessTokenCacheItems - accessTokenCacheItems saved in the cache
-     * @ignore
-     */
-    UserAgentApplication.prototype.getUniqueAuthority = function (accessTokenCacheItems, property) {
-        this.logger.verbose("GetUniqueAuthority has been called");
-        var authorityList = [];
-        var flags = [];
-        accessTokenCacheItems.forEach(function (element) {
-            if (element.key.hasOwnProperty(property) && (flags.indexOf(element.key[property]) === -1)) {
-                flags.push(element.key[property]);
-                authorityList.push(element.key[property]);
-            }
-        });
-        return authorityList;
     };
     /**
      * @hidden
@@ -2843,7 +2819,8 @@ var UserAgentApplication = /** @class */ (function () {
                 }
                 acquireTokenAccountKey = AuthCache_1.AuthCache.generateAcquireTokenAccountKey(accountId, stateInfo.state);
             }
-            var _a = Constants_1.ServerHashParamKeys.ERROR, hashErr = hashParams[_a], _b = Constants_1.ServerHashParamKeys.ERROR_DESCRIPTION, hashErrDesc = hashParams[_b];
+            var hashErr = hashParams[Constants_1.ServerHashParamKeys.ERROR];
+            var hashErrDesc = hashParams[Constants_1.ServerHashParamKeys.ERROR_DESCRIPTION];
             if (InteractionRequiredAuthError_1.InteractionRequiredAuthError.isInteractionRequiredError(hashErr) ||
                 InteractionRequiredAuthError_1.InteractionRequiredAuthError.isInteractionRequiredError(hashErrDesc)) {
                 error = new InteractionRequiredAuthError_1.InteractionRequiredAuthError(hashParams[Constants_1.ServerHashParamKeys.ERROR], hashParams[Constants_1.ServerHashParamKeys.ERROR_DESCRIPTION]);
@@ -3427,7 +3404,7 @@ exports.UserAgentApplication = UserAgentApplication;
 /***/ }),
 
 /***/ 767:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -3487,8 +3464,8 @@ var XhrClient = /** @class */ (function () {
         var jsonResponse;
         try {
             jsonResponse = JSON.parse(responseText);
-            if (jsonResponse.error) {
-                return jsonResponse.error;
+            if (jsonResponse["error"]) {
+                return jsonResponse["error"];
             }
             else {
                 throw responseText;
@@ -3506,7 +3483,7 @@ exports.XhrClient = XhrClient;
 /***/ }),
 
 /***/ 660:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -3648,9 +3625,9 @@ var Authority = /** @class */ (function () {
             httpEvent.httpResponseStatus = response.statusCode;
             telemetryManager.stopEvent(httpEvent);
             return {
-                AuthorizationEndpoint: response.body.authorization_endpoint,
-                EndSessionEndpoint: response.body.end_session_endpoint,
-                Issuer: response.body.issuer
+                AuthorizationEndpoint: response.body["authorization_endpoint"],
+                EndSessionEndpoint: response.body["end_session_endpoint"],
+                Issuer: response.body["issuer"]
             };
         })
             .catch(function (err) {
@@ -3718,7 +3695,7 @@ exports.Authority = Authority;
 /***/ }),
 
 /***/ 951:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -3794,7 +3771,7 @@ exports.AuthorityFactory = AuthorityFactory;
 /***/ }),
 
 /***/ 405:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -3838,7 +3815,7 @@ var TrustedAuthority = /** @class */ (function () {
                         .then(function (response) {
                         httpEvent.httpResponseStatus = response.statusCode;
                         telemetryManager.stopEvent(httpEvent);
-                        return response.body.metadata;
+                        return response.body["metadata"];
                     })
                         .catch(function (err) {
                         httpEvent.serverErrorCode = err;
@@ -3862,7 +3839,7 @@ var TrustedAuthority = /** @class */ (function () {
                     case 1:
                         metadata = _a.sent();
                         metadata.forEach(function (entry) {
-                            var authorities = entry.aliases;
+                            var authorities = entry["aliases"];
                             authorities.forEach(function (authority) {
                                 TrustedAuthority.TrustedHostList.push(authority.toLowerCase());
                             });
@@ -3896,7 +3873,7 @@ exports.TrustedAuthority = TrustedAuthority;
 /***/ }),
 
 /***/ 644:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
 /*
@@ -3920,7 +3897,7 @@ exports.AccessTokenCacheItem = AccessTokenCacheItem;
 /***/ }),
 
 /***/ 29:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -3948,7 +3925,7 @@ exports.AccessTokenKey = AccessTokenKey;
 /***/ }),
 
 /***/ 192:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
 /*
@@ -3974,7 +3951,7 @@ exports.AccessTokenValue = AccessTokenValue;
 /***/ }),
 
 /***/ 226:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -4302,7 +4279,7 @@ exports.AuthCache = AuthCache;
 /***/ }),
 
 /***/ 96:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -4369,7 +4346,7 @@ var BrowserStorage = /** @class */ (function () {
      * @param expires
      */
     BrowserStorage.prototype.setItemCookie = function (cName, cValue, expires) {
-        var cookieStr = cName + "=" + cValue + ";path=/;";
+        var cookieStr = encodeURIComponent(cName) + "=" + encodeURIComponent(cValue) + ";path=/;";
         if (expires) {
             var expireTime = this.getCookieExpirationTime(expires);
             cookieStr += "expires=" + expireTime + ";";
@@ -4381,7 +4358,7 @@ var BrowserStorage = /** @class */ (function () {
      * @param cName
      */
     BrowserStorage.prototype.getItemCookie = function (cName) {
-        var name = cName + "=";
+        var name = encodeURIComponent(cName) + "=";
         var ca = document.cookie.split(";");
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
@@ -4389,7 +4366,7 @@ var BrowserStorage = /** @class */ (function () {
                 c = c.substring(1);
             }
             if (c.indexOf(name) === 0) {
-                return c.substring(name.length, c.length);
+                return decodeURIComponent(c.substring(name.length, c.length));
             }
         }
         return "";
@@ -4418,7 +4395,7 @@ exports.BrowserStorage = BrowserStorage;
 /***/ }),
 
 /***/ 986:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -4464,7 +4441,7 @@ exports.AuthError = AuthError;
 /***/ }),
 
 /***/ 356:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -4476,10 +4453,6 @@ var tslib_1 = __webpack_require__(795);
 var AuthError_1 = __webpack_require__(986);
 var StringUtils_1 = __webpack_require__(454);
 exports.ClientAuthErrorMessage = {
-    multipleCacheAuthorities: {
-        code: "multiple_authorities",
-        desc: "Multiple authorities found in the cache. Pass authority in the API overload."
-    },
     endpointResolutionError: {
         code: "endpoints_resolution_error",
         desc: "Error: could not resolve endpoints. Please check network and try again."
@@ -4579,9 +4552,6 @@ var ClientAuthError = /** @class */ (function (_super) {
         }
         return new ClientAuthError(exports.ClientAuthErrorMessage.endpointResolutionError.code, errorMessage);
     };
-    ClientAuthError.createMultipleAuthoritiesInCacheError = function (scope) {
-        return new ClientAuthError(exports.ClientAuthErrorMessage.multipleCacheAuthorities.code, "Cache error for scope " + scope + ": " + exports.ClientAuthErrorMessage.multipleCacheAuthorities.desc + ".");
-    };
     ClientAuthError.createPopupWindowError = function (errDetail) {
         var errorMessage = exports.ClientAuthErrorMessage.popUpWindowError.desc;
         if (errDetail && !StringUtils_1.StringUtils.isEmpty(errDetail)) {
@@ -4654,7 +4624,7 @@ exports.ClientAuthError = ClientAuthError;
 /***/ }),
 
 /***/ 550:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -4833,7 +4803,7 @@ exports.ClientConfigurationError = ClientConfigurationError;
 /***/ }),
 
 /***/ 961:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -4890,7 +4860,7 @@ exports.InteractionRequiredAuthError = InteractionRequiredAuthError;
 /***/ }),
 
 /***/ 447:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -4934,7 +4904,7 @@ exports.ServerError = ServerError;
 /***/ }),
 
 /***/ 432:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -4993,19 +4963,19 @@ exports.InteractionRequiredAuthError = InteractionRequiredAuthError_1.Interactio
 /***/ }),
 
 /***/ 700:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 /* eslint-disable header/header */
 exports.name = "msal";
-exports.version = "1.4.8";
+exports.version = "1.4.11";
 
 
 /***/ }),
 
 /***/ 663:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -5152,7 +5122,7 @@ exports.default = ApiEvent;
 /***/ }),
 
 /***/ 868:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -5195,7 +5165,7 @@ exports.default = DefaultEvent;
 /***/ }),
 
 /***/ 140:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -5324,7 +5294,7 @@ exports.default = HttpEvent;
 /***/ }),
 
 /***/ 810:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
 /*
@@ -5357,7 +5327,7 @@ exports.TENANT_PLACEHOLDER = "<tenant>";
 /***/ }),
 
 /***/ 336:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -5449,7 +5419,7 @@ exports.default = TelemetryEvent;
 /***/ }),
 
 /***/ 478:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -5599,7 +5569,7 @@ exports.default = TelemetryManager;
 /***/ }),
 
 /***/ 847:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -5663,7 +5633,7 @@ exports.startBrowserPerformanceMeasurement = function (startMark) {
 /***/ }),
 
 /***/ 49:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -5704,7 +5674,7 @@ exports.AuthCacheUtils = AuthCacheUtils;
 /***/ }),
 
 /***/ 91:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
 /*
@@ -5951,6 +5921,7 @@ var SSOTypes;
     SSOTypes["SID"] = "sid";
     SSOTypes["LOGIN_HINT"] = "login_hint";
     SSOTypes["ORGANIZATIONS"] = "organizations";
+    SSOTypes["CONSUMERS"] = "consumers";
     SSOTypes["ID_TOKEN"] = "id_token";
     SSOTypes["ACCOUNT_ID"] = "accountIdentifier";
     SSOTypes["HOMEACCOUNT_ID"] = "homeAccountIdentifier";
@@ -5990,7 +5961,7 @@ exports.FramePrefix = {
 /***/ }),
 
 /***/ 453:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
 /*
@@ -6156,7 +6127,7 @@ exports.CryptoUtils = CryptoUtils;
 /***/ }),
 
 /***/ 52:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -6347,7 +6318,7 @@ exports.RequestUtils = RequestUtils;
 /***/ }),
 
 /***/ 756:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -6404,7 +6375,7 @@ exports.ResponseUtils = ResponseUtils;
 /***/ }),
 
 /***/ 454:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
 /*
@@ -6454,7 +6425,7 @@ exports.StringUtils = StringUtils;
 /***/ }),
 
 /***/ 78:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
 /*
@@ -6500,7 +6471,7 @@ exports.TimeUtils = TimeUtils;
 /***/ }),
 
 /***/ 94:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -6559,7 +6530,7 @@ var TokenUtils = /** @class */ (function () {
             return null;
         }
         try {
-            var base64IdToken = decodedToken.JWSPayload;
+            var base64IdToken = decodedToken["JWSPayload"];
             var base64Decoded = CryptoUtils_1.CryptoUtils.base64Decode(base64IdToken);
             if (!base64Decoded) {
                 // this._requestContext.logger.info("The returned id_token could not be base64 url safe decoded.");
@@ -6581,7 +6552,7 @@ exports.TokenUtils = TokenUtils;
 /***/ }),
 
 /***/ 741:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -6668,7 +6639,7 @@ var UrlUtils = /** @class */ (function () {
         var lowerCaseUrl = url.toLowerCase();
         var urlObject = this.GetUrlComponents(lowerCaseUrl);
         var pathArray = urlObject.PathSegments;
-        if (tenantId && (pathArray.length !== 0 && (pathArray[0] === Constants_1.Constants.common || pathArray[0] === Constants_1.SSOTypes.ORGANIZATIONS))) {
+        if (tenantId && (pathArray.length !== 0 && (pathArray[0] === Constants_1.Constants.common || pathArray[0] === Constants_1.SSOTypes.ORGANIZATIONS || pathArray[0] === Constants_1.SSOTypes.CONSUMERS))) {
             pathArray[0] = tenantId;
         }
         return this.constructAuthorityUriFromObject(urlObject, pathArray);
@@ -6695,6 +6666,16 @@ var UrlUtils = /** @class */ (function () {
         var authority = this.CanonicalizeUri(url);
         var pathArray = this.GetUrlComponents(authority).PathSegments;
         return (pathArray.length !== 0 && pathArray[0] === Constants_1.SSOTypes.ORGANIZATIONS);
+    };
+    /**
+     * Checks if an authority is for consumers (ex. https://a:b/consumers/)
+     * @param url The url
+     * @returns true if authority is for  and false otherwise
+     */
+    UrlUtils.isConsumersAuthority = function (url) {
+        var authority = this.CanonicalizeUri(url);
+        var pathArray = this.GetUrlComponents(authority).PathSegments;
+        return (pathArray.length !== 0 && pathArray[0] === Constants_1.SSOTypes.CONSUMERS);
     };
     /**
      * Parses out the components from a url string.
@@ -6831,7 +6812,7 @@ exports.UrlUtils = UrlUtils;
 /***/ }),
 
 /***/ 758:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 /*
@@ -6954,7 +6935,9 @@ var WindowUtils = /** @class */ (function () {
                 if (href && UrlUtils_1.UrlUtils.urlContainsHash(href)) {
                     logger.verbose("monitorPopupForHash found url in hash");
                     clearInterval(intervalId);
-                    resolve(contentWindow.location.hash);
+                    var hash = contentWindow.location.hash;
+                    WindowUtils.clearUrlFragment(contentWindow);
+                    resolve(hash);
                 }
                 else if (ticks > maxTicks) {
                     logger.error("monitorPopupForHash unable to find hash in url, timing out");
@@ -7138,14 +7121,12 @@ var WindowUtils = /** @class */ (function () {
     /**
      * Removes url fragment from browser url
      */
-    WindowUtils.clearUrlFragment = function () {
+    WindowUtils.clearUrlFragment = function (contentWindow) {
+        contentWindow.location.hash = "";
         // Office.js sets history.replaceState to null
-        if (typeof history.replaceState === "function") {
+        if (typeof contentWindow.history.replaceState === "function") {
             // Full removes "#" from url
-            history.replaceState(null, null, "" + window.location.pathname + window.location.search);
-        }
-        else {
-            window.location.hash = "";
+            contentWindow.history.replaceState(null, null, "" + contentWindow.location.pathname + contentWindow.location.search);
         }
     };
     /**

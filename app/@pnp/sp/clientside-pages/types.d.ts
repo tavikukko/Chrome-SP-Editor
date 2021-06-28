@@ -166,6 +166,29 @@ export declare class _ClientsidePage extends _SharePointQueryable {
      */
     getItem<T>(...selects: string[]): Promise<IItem & T>;
     /**
+     * Recycle this page
+     */
+    recycle(): Promise<void>;
+    /**
+     * Delete this page
+     */
+    delete(): Promise<void>;
+    /**
+     * Saves a copy of this page as a template in this library's Templates folder
+     *
+     * @param publish If true the template is published, false the template is not published (default: true)
+     * @returns IClientsidePage instance representing the new template page
+     */
+    saveAsTemplate(publish?: boolean): Promise<IClientsidePage>;
+    /**
+     * Share this Page's Preview content by Email
+     *
+     * @param emails Set of emails to which the preview is shared
+     * @param message The message to include
+     * @returns void
+     */
+    share(emails: string[], message: string): Promise<void>;
+    /**
      * Extends this queryable from the provided parent
      *
      * @param parent Parent queryable from which we will derive a base url
@@ -199,6 +222,13 @@ export declare class _ClientsidePage extends _SharePointQueryable {
      * @param emphasis The section emphasis
      */
     private getOrCreateSection;
+    /**
+     * Based on issue #1690 we need to take special case actions to ensure some things
+     * can be saved properly without breaking existing pages.
+     *
+     * @param control The control we are ensuring is "ready" to be saved
+     */
+    private specialSaveHandling;
 }
 export interface IClientsidePage extends _ClientsidePage {
 }
@@ -448,6 +478,18 @@ export interface IBannerImageProps {
     imageSourceType?: number;
     translateX?: number;
     translateY?: number;
+}
+export interface IRepostPage {
+    Description?: string;
+    IsBannerImageUrlExternal?: boolean;
+    OriginalSourceListId?: string;
+    ShouldSaveAsDraft?: boolean;
+    OriginalSourceSiteId?: string;
+    BannerImageUrl?: string;
+    Title?: string;
+    OriginalSourceItemId?: string;
+    OriginalSourceUrl?: string;
+    OriginalSourceWebId?: string;
 }
 export {};
 //# sourceMappingURL=types.d.ts.map

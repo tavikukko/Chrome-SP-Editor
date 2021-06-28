@@ -1,7 +1,9 @@
 import { ISharePointQueryable, _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable";
 import { IFile } from "../files/types.js";
 import "../items/index.js";
+export declare type AppCatalogScope = "tenant" | "sitecollection";
 export declare class _AppCatalog extends _SharePointQueryableCollection {
+    private readonly catalogPath;
     constructor(baseUrl: string | ISharePointQueryable, path?: string);
     /**
      * Get details of specific app from the app catalog

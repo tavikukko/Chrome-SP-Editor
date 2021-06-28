@@ -345,13 +345,6 @@ export declare class UserAgentApplication {
     private evaluateTokenExpiration;
     /**
      * @hidden
-     * Used to get a unique list of authorities from the cache
-     * @param {Array<AccessTokenCacheItem>}  accessTokenCacheItems - accessTokenCacheItems saved in the cache
-     * @ignore
-     */
-    private getUniqueAuthority;
-    /**
-     * @hidden
      * Check if ADAL id_token exists and return if exists.
      *
      */

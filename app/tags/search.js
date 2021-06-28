@@ -150,7 +150,7 @@ riot.tag("search", `
 
 		  </div>
 
-            <virtual if="{ elapsedTime > 0 }">
+            <virtual if="{ searchResults.length }">
               <div class="panel panel-default">
               <div class="panel-heading">Results, <b>{ totalRows }</b> hits in <b>{ elapsedTime }</b> ms (<i>total rows with duplicates </i><b>{ totalRowsIncludingDuplicates }</b>)</div>
               <div class="panel-body">

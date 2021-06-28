@@ -80,7 +80,7 @@ export declare class ServerRequestParameters {
      * Check to see if there are SSO params set in the Request
      * @param request
      */
-    static isSSOParam(request: AuthenticationParameters): string | Account;
+    static isSSOParam(request: AuthenticationParameters): boolean;
     /**
      * Returns the correct response_type string attribute for an acquireToken request configuration
      * @param accountsMatch boolean: Determines whether the account in the request matches the cached account

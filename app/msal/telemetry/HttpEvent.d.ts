@@ -1,4 +1,5 @@
 import TelemetryEvent from "./TelemetryEvent";
+import { StringDict } from "../MsalTypes";
 export declare const EVENT_KEYS: {
     HTTP_PATH: string;
     USER_AGENT: string;
@@ -18,7 +19,7 @@ export default class HttpEvent extends TelemetryEvent {
     url: string;
     httpPath: string;
     userAgent: string;
-    queryParams: any;
+    queryParams: StringDict;
     apiVersion: string;
     httpResponseStatus: number;
     oAuthErrorCode: string;

@@ -115,7 +115,7 @@ export declare class AuthCache extends BrowserStorage {
      * @param accountId
      * @param state
      */
-    static generateAcquireTokenAccountKey(accountId: any, state: string): string;
+    static generateAcquireTokenAccountKey(accountId: string, state: string): string;
     /**
      * Create authorityKey to cache authority
      * @param state

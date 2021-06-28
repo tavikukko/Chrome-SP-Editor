@@ -194,8 +194,10 @@ __webpack_require__.d(__webpack_exports__, {
   "Webs": () => (/* reexport */ Webs),
   "containsInvalidFileFolderChars": () => (/* reexport */ containsInvalidFileFolderChars),
   "defaultPath": () => (/* reexport */ defaultPath),
+  "escapeQueryStrValue": () => (/* reexport */ escapeQueryStrValue),
   "extractWebUrl": () => (/* reexport */ extractWebUrl),
   "objectToSPKeyValueCollection": () => (/* reexport */ objectToSPKeyValueCollection),
+  "odataUrlFrom": () => (/* reexport */ odataUrlFrom),
   "registerCustomRequestClientFactory": () => (/* reexport */ registerCustomRequestClientFactory),
   "sp": () => (/* reexport */ all_sp),
   "spDelete": () => (/* reexport */ spDelete),
@@ -435,19 +437,17 @@ function __importDefault(mod) {
     return (mod && mod.__esModule) ? mod : { default: mod };
 }
 
-function __classPrivateFieldGet(receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
+function __classPrivateFieldGet(receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 }
 
-function __classPrivateFieldSet(receiver, privateMap, value) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
-    }
-    privateMap.set(receiver, value);
-    return value;
+function __classPrivateFieldSet(receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 }
 
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/util.js
@@ -935,19 +935,17 @@ function tslib_es6_importDefault(mod) {
     return (mod && mod.__esModule) ? mod : { default: mod };
 }
 
-function tslib_es6_classPrivateFieldGet(receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
+function tslib_es6_classPrivateFieldGet(receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 }
 
-function tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
-    }
-    privateMap.set(receiver, value);
-    return value;
+function tslib_es6_classPrivateFieldSet(receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 }
 
 ;// CONCATENATED MODULE: ./node_modules/@pnp/common/libconfig.js
@@ -1924,19 +1922,17 @@ function tslib_tslib_es6_importDefault(mod) {
     return (mod && mod.__esModule) ? mod : { default: mod };
 }
 
-function tslib_tslib_es6_classPrivateFieldGet(receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
+function tslib_tslib_es6_classPrivateFieldGet(receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 }
 
-function tslib_tslib_es6_classPrivateFieldSet(receiver, privateMap, value) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
-    }
-    privateMap.set(receiver, value);
-    return value;
+function tslib_tslib_es6_classPrivateFieldSet(receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 }
 
 ;// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-extensions.js
@@ -3200,7 +3196,7 @@ var SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.3.0:" + methodName;
+                            clientTag = "PnPCoreJS:2.6.0:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -3242,7 +3238,8 @@ var SPHttpClient = /** @class */ (function () {
                 ctx.attempts++;
                 // If we have exceeded the retry count, reject.
                 if (ctx.retryCount <= ctx.attempts) {
-                    ctx.reject(Error("Retry count exceeded (" + ctx.retryCount + ") for request. Response status: [" + response.status + "] " + response.statusText));
+                    // eslint-disable-next-line max-len
+                    ctx.reject(new HttpRequestError("Retry count exceeded (" + ctx.retryCount + ") for request. Response status: [" + response.status + "] " + response.statusText, response));
                 }
                 else {
                     // Set our retry timeout for {delay} milliseconds.
@@ -4012,7 +4009,7 @@ var SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.3.0:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.6.0:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -4134,7 +4131,7 @@ var _Site = /** @class */ (function (_super) {
          *
          */
         get: function () {
-            return tag.configure(Web(this, "rootweb"), "si.rootWeb");
+            return tag.configure(Web(this, "rootweb").configureFrom(this), "si.rootWeb");
         },
         enumerable: false,
         configurable: true
@@ -4181,7 +4178,7 @@ var _Site = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, this.rootWeb.select("Url")()];
                     case 1:
                         web = _a.sent();
-                        return [2 /*return*/, tag.configure(Web(web.Url), "si.getRootWeb")];
+                        return [2 /*return*/, tag.configure(Web(web.Url).configureFrom(this), "si.getRootWeb")];
                 }
             });
         });
@@ -4191,11 +4188,12 @@ var _Site = /** @class */ (function (_super) {
      */
     _Site.prototype.getContextInfo = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var q, data, info;
+            var site, q, data, info;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        q = tag.configure(Site(this.parentUrl, "_api/contextinfo"), "si.getContextInfo");
+                        site = Site(this.parentUrl, "_api/contextinfo").configureFrom(this);
+                        q = tag.configure(site, "si.getContextInfo");
                         return [4 /*yield*/, spPost(q)];
                     case 1:
                         data = _a.sent();
@@ -4498,7 +4496,7 @@ var _Webs = /** @class */ (function (_super) {
                         data = _a.sent();
                         return [2 /*return*/, {
                                 data: data,
-                                web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")),
+                                web: Web(odataUrlFrom(data).replace(/_api\/web\/?/i, "")).configureFrom(this),
                             }];
                 }
             });
@@ -5909,13 +5907,17 @@ var _Files = /** @class */ (function (_super) {
         if (shouldOverWrite === void 0) { shouldOverWrite = true; }
         if (chunkSize === void 0) { chunkSize = 10485760; }
         return __awaiter(this, void 0, void 0, function () {
-            var response, file;
+            var response, odataUrl, file;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, spPost(this.clone(Files, "add(overwrite=" + shouldOverWrite + ",url='" + escapeQueryStrValue(url) + "')", false))];
                     case 1:
                         response = _a.sent();
-                        file = File(odataUrlFrom(response));
+                        odataUrl = odataUrlFrom(response);
+                        if (!stringIsNullOrEmpty(odataUrl) && /%27/i.test(odataUrl)) {
+                            odataUrl = odataUrl.replace(/%27/ig, "''");
+                        }
+                        file = File(odataUrl);
                         return [4 /*yield*/, file.setContentChunked(content, progress, chunkSize)];
                     case 2: return [2 /*return*/, _a.sent()];
                 }
@@ -6274,7 +6276,7 @@ var _File = /** @class */ (function (_super) {
         });
     };
     /**
-     * Gets the associated list item for this folder, loading the default properties
+     * Gets the associated list item for this file, loading the default properties
      */
     _File.prototype.getItem = function () {
         var selects = [];
@@ -6679,15 +6681,19 @@ SPRest.prototype.createBatch = function () {
 var _AppCatalog = /** @class */ (function (_super) {
     __extends(_AppCatalog, _super);
     function _AppCatalog(baseUrl, path) {
-        if (path === void 0) { path = "_api/web/tenantappcatalog/AvailableApps"; }
-        return _super.call(this, extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path) || this;
+        var _this = _super.call(this, extractWebUrl(typeof baseUrl === "string" ? baseUrl : baseUrl.toUrl()), path) || this;
+        // get the catalog path without the AvailableApps suffix
+        // used for adding, syncing to teams
+        var pathSplit = path.split("/");
+        _this.catalogPath = pathSplit.slice(0, pathSplit.length - 1).join("/");
+        return _this;
     }
     /**
      * Get details of specific app from the app catalog
      * @param id - Specify the guid of the app
      */
     _AppCatalog.prototype.getAppById = function (id) {
-        return tag.configure(App(this, "getById('" + id + "')"), "ac.getAppById");
+        return tag.configure(App(this, "getById('" + id + "')").configureFrom(this), "ac.getAppById");
     };
     /**
      * Synchronize a solution to the Microsoft Teams App Catalog
@@ -6708,7 +6714,7 @@ var _AppCatalog = /** @class */ (function (_super) {
                         appId = id;
                         return [3 /*break*/, 4];
                     case 1:
-                        web = Web(webUrl);
+                        web = Web(webUrl).configureFrom(this);
                         return [4 /*yield*/, web.lists.select("Id").filter("EntityTypeName eq 'AppCatalog'")()];
                     case 2:
                         listId = (_a.sent())[0].Id;
@@ -6723,7 +6729,8 @@ var _AppCatalog = /** @class */ (function (_super) {
                         }
                         _a.label = 4;
                     case 4:
-                        poster = tag.configure(AppCatalog(webUrl, "_api/web/tenantappcatalog/SyncSolutionToTeams(id=" + appId + ")"), "ac.syncSolutionToTeams");
+                        poster = tag.configure(AppCatalog(webUrl, this.catalogPath + "/SyncSolutionToTeams(id=" + appId + ")"), "ac.syncSolutionToTeams");
+                        poster.configureFrom(this);
                         return [4 /*yield*/, spPost(poster, {})];
                     case 5: return [2 /*return*/, _a.sent()];
                 }
@@ -6745,7 +6752,8 @@ var _AppCatalog = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), "_api/web/tenantappcatalog/add(overwrite=" + shouldOverWrite + ",url='" + filename + "')"), "ac.add");
+                        adder = tag.configure(AppCatalog(extractWebUrl(this.toUrl()), this.catalogPath + "/add(overwrite=" + shouldOverWrite + ",url='" + filename + "')"), "ac.add");
+                        adder.configureFrom(this);
                         return [4 /*yield*/, spPost(adder, {
                                 body: content, headers: {
                                     "binaryStringRequestBody": "true",
@@ -6842,8 +6850,9 @@ var App = spInvokableFactory(_App);
 ;// CONCATENATED MODULE: ./node_modules/@pnp/sp/appcatalog/web.js
 
 
-_Web.prototype.getAppCatalog = function (url) {
-    return AppCatalog(url || this);
+_Web.prototype.getAppCatalog = function (url, scope) {
+    if (scope === void 0) { scope = "tenant"; }
+    return AppCatalog(url || this, "_api/web/" + scope + "appcatalog/AvailableApps").configureFrom(this);
 };
 //# sourceMappingURL=web.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/sp/appcatalog/index.js
@@ -6866,6 +6875,9 @@ SPRest.prototype.getTenantAppCatalogWeb = function () {
                                 case 0: return [4 /*yield*/, SharePointQueryable("/", "_api/SP_TenantSettings_Current").configure(options).setRuntime(runtime)()];
                                 case 1:
                                     data = _b.sent();
+                                    if (!(data === null || data === void 0 ? void 0 : data.CorporateCatalogUrl)) {
+                                        throw new Error("Failed to get tenant corporate app catalog, its not configured on the tenant.");
+                                    }
                                     return [2 /*return*/, Web(data.CorporateCatalogUrl).configure(options).setRuntime(runtime)];
                             }
                         });
@@ -7597,8 +7609,8 @@ var _ClientsidePage = /** @class */ (function (_super) {
     });
     Object.defineProperty(_ClientsidePage.prototype, "authorByLine", {
         get: function () {
-            if (isArray(this.json.AuthorByline) && this.json.AuthorByline.length > 0) {
-                return this.json.AuthorByline[0];
+            if (isArray(this._layoutPart.properties.authorByline) && this._layoutPart.properties.authorByline.length > 0) {
+                return this._layoutPart.properties.authorByline[0];
             }
             return null;
         },
@@ -7688,7 +7700,7 @@ var _ClientsidePage = /** @class */ (function (_super) {
                         }
                         if (!this._bannerImageDirty) return [3 /*break*/, 2];
                         serverRelativePath = this.bannerImageUrl;
-                        web = Web(extractWebUrl(this.toUrl()));
+                        web = Web(extractWebUrl(this.toUrl())).configureFrom(this);
                         batch = web.createBatch();
                         web.getFileByServerRelativePath(serverRelativePath.replace(/%20/ig, " "))
                             .select("ListId", "WebId", "UniqueId", "Name", "SiteId").inBatch(batch)().then(function (r1) { return imgInfo_1 = r1; });
@@ -7758,6 +7770,11 @@ var _ClientsidePage = /** @class */ (function (_super) {
                     case 7:
                         this._bannerImageDirty = false;
                         this._bannerImageThumbnailUrlDirty = false;
+                        // we need to ensure we reload from the latest data to ensure all urls are updated and current in the object (expecially for new pages)
+                        return [4 /*yield*/, this.load()];
+                    case 8:
+                        // we need to ensure we reload from the latest data to ensure all urls are updated and current in the object (expecially for new pages)
+                        _a.sent();
                         return [2 /*return*/, r];
                 }
             });
@@ -8022,8 +8039,8 @@ var _ClientsidePage = /** @class */ (function (_super) {
                         if (userLoginData.length < 1) {
                             throw Error("Could not find user with login name '" + authorLoginName + "'.");
                         }
-                        this.json.AuthorByline = [authorLoginName];
-                        this._layoutPart.properties.authorByline = [authorLoginName];
+                        this.json.AuthorByline = [userLoginData[0].UserPrincipalName];
+                        this._layoutPart.properties.authorByline = [userLoginData[0].UserPrincipalName];
                         this._layoutPart.properties.authors = [{
                                 id: authorLoginName,
                                 name: userLoginData[0].Title,
@@ -8062,6 +8079,103 @@ var _ClientsidePage = /** @class */ (function (_super) {
                 }
             });
         });
+    };
+    /**
+     * Recycle this page
+     */
+    _ClientsidePage.prototype.recycle = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var item;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getItem()];
+                    case 1:
+                        item = _a.sent();
+                        return [4 /*yield*/, item.recycle()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Delete this page
+     */
+    _ClientsidePage.prototype.delete = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var item;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getItem()];
+                    case 1:
+                        item = _a.sent();
+                        return [4 /*yield*/, item.delete()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // not yet active in service
+    // /**
+    //  * Schedules a page for publishing
+    //  *
+    //  * @param publishDate Date to publish the item
+    //  * @returns Publish work item details
+    //  */
+    // public async schedulePublish(publishDate: Date): Promise<string> {
+    //     let r: string;
+    //     // currently the server throws an exception, but then the page is published as expected
+    //     // so we just ignore that error for now, YMMV
+    //     try {
+    //         r = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/SchedulePublish`), body({
+    //             sitePage: { PublishStartDate: publishDate },
+    //         }));
+    //     } catch {
+    //         r = "";
+    //     }
+    //     return r;
+    // }
+    /**
+     * Saves a copy of this page as a template in this library's Templates folder
+     *
+     * @param publish If true the template is published, false the template is not published (default: true)
+     * @returns IClientsidePage instance representing the new template page
+     */
+    _ClientsidePage.prototype.saveAsTemplate = function (publish) {
+        if (publish === void 0) { publish = true; }
+        return __awaiter(this, void 0, void 0, function () {
+            var data, page;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, spPost(initFrom(this, "_api/sitepages/pages(" + this.json.Id + ")/SavePageAsTemplate"))];
+                    case 1:
+                        data = _a.sent();
+                        page = ClientsidePage(this, null, data);
+                        page.title = this.title;
+                        return [4 /*yield*/, page.save(publish)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, page];
+                }
+            });
+        });
+    };
+    /**
+     * Share this Page's Preview content by Email
+     *
+     * @param emails Set of emails to which the preview is shared
+     * @param message The message to include
+     * @returns void
+     */
+    _ClientsidePage.prototype.share = function (emails, message) {
+        return spPost(initFrom(this, "_api/SP.Publishing.RichSharing/SharePageByEmail"), body({
+            recipientEmails: emails,
+            message: message,
+            url: this.json.AbsoluteUrl,
+        }));
     };
     /**
      * Extends this queryable from the provided parent
@@ -8138,7 +8252,7 @@ var _ClientsidePage = /** @class */ (function (_super) {
                 else {
                     column.controls.forEach(function (control) {
                         control.data.emphasis = _this.getEmphasisObj(section.emphasis);
-                        canvasData.push(control.data);
+                        canvasData.push(_this.specialSaveHandling(control).data);
                     });
                 }
             });
@@ -8246,6 +8360,28 @@ var _ClientsidePage = /** @class */ (function (_super) {
             section = sections[0];
         }
         return section;
+    };
+    /**
+     * Based on issue #1690 we need to take special case actions to ensure some things
+     * can be saved properly without breaking existing pages.
+     *
+     * @param control The control we are ensuring is "ready" to be saved
+     */
+    _ClientsidePage.prototype.specialSaveHandling = function (control) {
+        var _a, _b, _c;
+        // this is to handle the special case in issue #1690
+        // must ensure that searchablePlainTexts values have < replaced with &lt; in links web part
+        if (control.data.controlType === 3 && control.data.webPartId === "c70391ea-0b10-4ee9-b2b4-006d3fcad0cd") {
+            var texts = ((_c = (_b = (_a = control.data) === null || _a === void 0 ? void 0 : _a.webPartData) === null || _b === void 0 ? void 0 : _b.serverProcessedContent) === null || _c === void 0 ? void 0 : _c.searchablePlainTexts) || null;
+            if (objectDefinedNotNull(texts)) {
+                var keys = Object.getOwnPropertyNames(texts);
+                for (var i = 0; i < keys.length; i++) {
+                    texts[keys[i]] = texts[keys[i]].replace(/</ig, "&lt;");
+                    control.data.webPartData.serverProcessedContent.searchablePlainTexts = texts;
+                }
+            }
+        }
+        return control;
     };
     __decorate([
         tag("csp.load")
@@ -8734,6 +8870,12 @@ var ClientsideWebpart = /** @class */ (function (_super) {
 
 
 
+
+
+
+
+
+
 _Web.prototype.getClientsideWebParts = function () {
     return this.clone(SharePointQueryableCollection, "GetClientSideWebParts")();
 };
@@ -8744,6 +8886,43 @@ _Web.prototype.addClientsidePage =
     };
 _Web.prototype.loadClientsidePage = function (path) {
     return ClientsidePageFromFile(this.getFileByServerRelativePath(path));
+};
+_Web.prototype.addRepostPage = function (details) {
+    return __awaiter(this, void 0, void 0, function () {
+        var query, r;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    query = SharePointQueryableInstance(extractWebUrl(this.toUrl()), "_api/sitepages/pages/reposts").configureFrom(this);
+                    return [4 /*yield*/, spPost(query, body(util_assign(metadata("SP.Publishing.RepostPage"), details)))];
+                case 1:
+                    r = _a.sent();
+                    return [2 /*return*/, r.AbsoluteUrl];
+            }
+        });
+    });
+};
+// eslint-disable-next-line max-len
+_Web.prototype.addFullPageApp = function (pageName, title, componentId, promotedState) {
+    if (title === void 0) { title = pageName.replace(/\.[^/.]+$/, ""); }
+    return __awaiter(this, void 0, void 0, function () {
+        var parts, test, partDef, part, page;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.getClientsideWebParts()];
+                case 1:
+                    parts = _a.sent();
+                    test = new RegExp("{?" + componentId + "}?", "i");
+                    partDef = parts.find(function (p) { return test.test(p.Id); });
+                    part = ClientsideWebpart.fromComponentDef(partDef);
+                    return [4 /*yield*/, this.addClientsidePage(pageName, title, "SingleWebPartAppPage", promotedState)];
+                case 2:
+                    page = _a.sent();
+                    page.addSection().addColumn(12).addControl(part);
+                    return [2 /*return*/, page];
+            }
+        });
+    });
 };
 //# sourceMappingURL=web.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/sp/clientside-pages/index.js
@@ -8947,7 +9126,7 @@ var _Folder = /** @class */ (function (_super) {
                         if (hOP(q, "odata.null") && q["odata.null"]) {
                             throw Error("No associated item was found for this folder. It may be the root folder, which does not have an item.");
                         }
-                        return [2 /*return*/, util_assign(Item(odataUrlFrom(q)), q)];
+                        return [2 /*return*/, util_assign(Item(odataUrlFrom(q)).configureFrom(this), q)];
                 }
             });
         });
@@ -8966,7 +9145,7 @@ var _Folder = /** @class */ (function (_super) {
                     case 1:
                         urlInfo = _a.sent();
                         uri = new URL(urlInfo.ParentWeb.Url);
-                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolder()"), body({
+                        return [4 /*yield*/, spPost(Folder(urlInfo.ParentWeb.Url, "/_api/SP.MoveCopyUtil.MoveFolder()").configureFrom(this), body({
                                 destUrl: isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl),
                                 srcUrl: combine(uri.origin, urlInfo.Folder.ServerRelativeUrl),
                             }))];
@@ -8994,7 +9173,7 @@ var _Folder = /** @class */ (function (_super) {
                     case 1:
                         urlInfo = _a.sent();
                         uri = new URL(urlInfo.ParentWeb.Url);
-                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolderByPath()"), body({
+                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.MoveFolderByPath()").configureFrom(this), body({
                                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                                 options: {
                                     KeepBoth: KeepBoth,
@@ -9027,7 +9206,7 @@ var _Folder = /** @class */ (function (_super) {
                     case 1:
                         urlInfo = _a.sent();
                         uri = new URL(urlInfo.ParentWeb.Url);
-                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolder()"), body({
+                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolder()").configureFrom(this), body({
                                 destUrl: isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl),
                                 srcUrl: combine(uri.origin, urlInfo.Folder.ServerRelativeUrl),
                             }))];
@@ -9055,7 +9234,7 @@ var _Folder = /** @class */ (function (_super) {
                     case 1:
                         urlInfo = _a.sent();
                         uri = new URL(urlInfo.ParentWeb.Url);
-                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolderByPath()"), body({
+                        return [4 /*yield*/, spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolderByPath()").configureFrom(this), body({
                                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                                 options: {
                                     KeepBoth: KeepBoth,
@@ -9146,7 +9325,7 @@ var _Folder = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, this.clone(SharePointQueryableInstance, "listItemAllFields", false).select("odata.id")()];
                     case 1:
                         d = _a.sent();
-                        shareable = Item(odataUrlFrom(d));
+                        shareable = Item(odataUrlFrom(d)).configureFrom(this);
                         // we need to handle batching
                         if (this.hasBatch) {
                             shareable = shareable.inBatch(this.batch);
@@ -9432,7 +9611,7 @@ _Folder.prototype.getDefaultColumnValues = function () {
                     return [4 /*yield*/, this.select("ServerRelativePath")()];
                 case 2:
                     serRelPath = (_a.sent()).ServerRelativePath;
-                    web = Web(extractWebUrl(odataUrlFrom(folderProps)));
+                    web = Web(extractWebUrl(odataUrlFrom(folderProps))).configureFrom(this);
                     docLib = web.lists.getById(folderProps.vti_x005f_listname);
                     return [4 /*yield*/, docLib.getDefaultColumnValues()];
                 case 3: 
@@ -9452,7 +9631,7 @@ _Folder.prototype.setDefaultColumnValues = function (fieldDefaults, merge) {
                 case 0: return [4 /*yield*/, Folder(this, "Properties").select("vti_x005f_listname")()];
                 case 1:
                     folderProps = _a.sent();
-                    web = Web(extractWebUrl(odataUrlFrom(folderProps)));
+                    web = Web(extractWebUrl(odataUrlFrom(folderProps))).configureFrom(this);
                     docLib = web.lists.getById(folderProps.vti_x005f_listname);
                     return [4 /*yield*/, this.select("ServerRelativePath")()];
                 case 2:
@@ -11714,7 +11893,7 @@ _Field.prototype.descriptionResource = getValueForUICultureBinder("descriptionRe
 ;// CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/content-type.js
 
 
-_ContentType.prototype.titleResource = getValueForUICultureBinder("titleResource");
+_ContentType.prototype.titleResource = getValueForUICultureBinder("nameResource");
 _ContentType.prototype.descriptionResource = getValueForUICultureBinder("descriptionResource");
 //# sourceMappingURL=content-type.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/sp/regional-settings/index.js
@@ -11859,7 +12038,7 @@ var funcs = new Map([
     ["hiddenConstraints", ""],
     ["sortList", ""],
     ["timeout", ""],
-    ["hithighlightedProperties", ""],
+    ["hitHighlightedProperties", ""],
     ["clientType", ""],
     ["personalizationData", ""],
     ["resultsURL", ""],
@@ -11951,7 +12130,7 @@ var _Search = /** @class */ (function (_super) {
                             cacheKey = "PnPjs.SearchWithCaching(" + getHashCode(postBody.body) + ")";
                             if (objectDefinedNotNull(this.data.cachingOptions)) {
                                 // if our key ends in the postquery url we overwrite it
-                                if (queryRegex.test(this.data.cachingOptions.key)) {
+                                if (stringIsNullOrEmpty(this.data.cachingOptions.key) || queryRegex.test(this.data.cachingOptions.key)) {
                                     this.data.cachingOptions.key = cacheKey;
                                 }
                             }
@@ -13450,6 +13629,7 @@ function shareWith(o, loginNames, role, requireSignin, propagateAcl, emailData) 
 }
 function sendShareObjectRequest(o, options) {
     var w = tag.configure(Web(extractWebUrl(o.toUrl()), "/_api/SP.Web.ShareObject"), "sh.sendShareObjectRequest");
+    w.configureFrom(this);
     return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
 }
 /**
@@ -13472,11 +13652,11 @@ function getRoleValue(role, group) {
                         case RoleType.Guest: return [3 /*break*/, 3];
                     }
                     return [3 /*break*/, 5];
-                case 1: return [4 /*yield*/, Web("_api/web", "associatedmembergroup").select("Id")()];
+                case 1: return [4 /*yield*/, Web("_api/web", "associatedmembergroup").configureFrom(this).select("Id")()];
                 case 2:
                     g1 = _b.sent();
                     return [2 /*return*/, "group: " + g1.Id];
-                case 3: return [4 /*yield*/, Web("_api/web", "associatedvisitorgroup").select("Id")()];
+                case 3: return [4 /*yield*/, Web("_api/web", "associatedvisitorgroup").configureFrom(this).select("Id")()];
                 case 4:
                     g2 = _b.sent();
                     return [2 /*return*/, "group: " + g2.Id];
@@ -13744,7 +13924,7 @@ _Web.prototype.shareObjectRaw = function (options) {
  * @param options The set of options to send to ShareObject
  */
 _Web.prototype.unshareObject = function (url) {
-    return spPost(Web(this, "unshareObject"), body({ url: url }));
+    return spPost(Web(this, "unshareObject").configureFrom(this), body({ url: url }));
 };
 //# sourceMappingURL=web.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/index.js
@@ -14190,7 +14370,7 @@ _List.prototype.getSiteScript = function () {
                 case 0: return [4 /*yield*/, this.clone(List).rootFolder.get()];
                 case 1:
                     rootFolder = _a.sent();
-                    return [4 /*yield*/, Web(extractWebUrl(this.toUrl())).select("Url").get()];
+                    return [4 /*yield*/, Web(extractWebUrl(this.toUrl())).configureFrom(this).select("Url").get()];
                 case 2:
                     web = _a.sent();
                     absoluteListUrl = combine(web.Url, "Lists", rootFolder.Name);
@@ -15008,14 +15188,22 @@ var _TermSet = /** @class */ (function (_super) {
     /**
      * Gets all the terms in this termset in an ordered tree using the appropriate sort ordering
      * ** This is an expensive operation and you should strongly consider caching the results **
+     *
+     * @param props Optional set of properties controlling how the tree is retrieved.
      */
-    _TermSet.prototype.getAllChildrenAsOrderedTree = function () {
+    _TermSet.prototype.getAllChildrenAsOrderedTree = function (props) {
+        if (props === void 0) { props = {}; }
         return __awaiter(this, void 0, void 0, function () {
-            var setInfo, tree, ensureOrder, visitor;
+            var selects, setInfo, tree, ensureOrder, visitor;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.select("*", "customSortOrder")()];
+                    case 0:
+                        selects = ["*", "customSortOrder"];
+                        if (props.retrieveProperties) {
+                            selects.push("properties", "localProperties");
+                        }
+                        return [4 /*yield*/, this.select.apply(this, __spreadArray([], __read(selects)))()];
                     case 1:
                         setInfo = _a.sent();
                         tree = [];
@@ -15043,7 +15231,7 @@ var _TermSet = /** @class */ (function (_super) {
                                     }
                                 });
                                 // we have a case where if a set is ordered and a term is added to that set
-                                // AND the ordering information hasn't been updated the new term will not have
+                                // AND the ordering information hasn't been updated in the UI the new term will not have
                                 // any associated ordering information. See #1547 which reported this. So here we
                                 // append any terms remaining in "terms" not in "orderedChildren" to the end of "orderedChildren"
                                 orderedChildren_1.push.apply(orderedChildren_1, __spreadArray([], __read(terms.filter(function (info) { return ordering.indexOf(info.id) < 0; }))));
@@ -15053,13 +15241,14 @@ var _TermSet = /** @class */ (function (_super) {
                         };
                         visitor = function (source, parent) { return __awaiter(_this, void 0, void 0, function () {
                             var children, i, child, orderedTerm;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0: return [4 /*yield*/, source.children.select("*", "customSortOrder")()];
+                            var _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0: return [4 /*yield*/, (_a = source.children).select.apply(_a, __spreadArray([], __read(selects)))()];
                                     case 1:
-                                        children = _a.sent();
+                                        children = _b.sent();
                                         i = 0;
-                                        _a.label = 2;
+                                        _b.label = 2;
                                     case 2:
                                         if (!(i < children.length)) return [3 /*break*/, 6];
                                         child = children[i];
@@ -15067,12 +15256,12 @@ var _TermSet = /** @class */ (function (_super) {
                                         if (!(child.childrenCount > 0)) return [3 /*break*/, 4];
                                         return [4 /*yield*/, visitor(this.getTermById(children[i].id), orderedTerm.children)];
                                     case 3:
-                                        _a.sent();
+                                        _b.sent();
                                         orderedTerm.children = ensureOrder(orderedTerm.children, child.customSortOrder);
-                                        _a.label = 4;
+                                        _b.label = 4;
                                     case 4:
                                         parent.push(orderedTerm);
-                                        _a.label = 5;
+                                        _b.label = 5;
                                     case 5:
                                         i++;
                                         return [3 /*break*/, 2];
@@ -15697,6 +15886,8 @@ function stripInvalidFileFolderChars(input, replacer, onPremise) {
 }
 //# sourceMappingURL=file-names.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/sp/index.js
+
+
 
 
 
