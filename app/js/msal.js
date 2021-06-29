@@ -951,12 +951,21 @@ var Msal;
               return Storage._instance;
           }
           this._cacheLocation = cacheLocation;
-          this._localStorageSupported = typeof window[this._cacheLocation] != "undefined" && window[this._cacheLocation] != null;
-          this._sessionStorageSupported = typeof window[cacheLocation] != "undefined" && window[cacheLocation] != null;
-          Storage._instance = this;
-          if (!this._localStorageSupported && !this._sessionStorageSupported) {
-              throw new Error("localStorage and sessionStorage not supported");
+          try {
+              this._localStorageSupported = typeof window[this._cacheLocation] != "undefined" && window[this._cacheLocation] != null;
+          } catch (e) {
+              this._localStorageSupported = false;
           }
+          try {
+              this._sessionStorageSupported = typeof window[cacheLocation] != "undefined" && window[cacheLocation] != null;
+          } catch (e) {
+              this._sessionStorageSupported = false;
+          }
+
+          Storage._instance = this;
+          /* if (!this._localStorageSupported && !this._sessionStorageSupported) {
+               throw new Error("localStorage and sessionStorage not supported");
+           }*/
           return Storage._instance;
       }
       Storage.prototype.setItem = function (key, value) {
