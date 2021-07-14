@@ -8,6 +8,8 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 5.6.12 updates
+    * Updated PnPjs to 2.7.0
 - 5.6.11 bug fix
     * Fixed issue SP Editor not working in incognito mode
 - 5.6.10 updates
