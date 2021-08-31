@@ -1,32 +1,26 @@
 {
-  "_args": [
-    [
-      "monaco-editor@0.25.2",
-      "/Users/tomi/development/Chrome-SP-Editor"
-    ]
-  ],
-  "_development": true,
-  "_from": "monaco-editor@0.25.2",
-  "_id": "monaco-editor@0.25.2",
+  "_from": "monaco-editor@^0.27.0",
+  "_id": "monaco-editor@0.27.0",
   "_inBundle": false,
-  "_integrity": "sha512-5iylzSJevCnzJn9UVsW8yOZ3yHjmAs4TfvH3zsbftKiFKmHG0xirGN6DK9Kk04VSWxYCZZAIafYJoNJJMAU1KA==",
+  "_integrity": "sha512-UhwP78Wb8w0ZSYoKXQNTV/0CHObp6NS3nCt51QfKE6sKyBo5PBsvuDOHoI2ooBakc6uIwByRLHVeT7+yXQe2fQ==",
   "_location": "/monaco-editor",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "monaco-editor@0.25.2",
+    "raw": "monaco-editor@^0.27.0",
     "name": "monaco-editor",
     "escapedName": "monaco-editor",
-    "rawSpec": "0.25.2",
+    "rawSpec": "^0.27.0",
     "saveSpec": null,
-    "fetchSpec": "0.25.2"
+    "fetchSpec": "^0.27.0"
   },
   "_requiredBy": [
     "#DEV:/"
   ],
-  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.25.2.tgz",
-  "_spec": "0.25.2",
+  "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.27.0.tgz",
+  "_shasum": "4b69108bb1dc1f60174c5dcdf51bc5306ab5ba26",
+  "_spec": "monaco-editor@^0.27.0",
   "_where": "/Users/tomi/development/Chrome-SP-Editor",
   "author": {
     "name": "Microsoft Corporation"
@@ -34,17 +28,19 @@
   "bugs": {
     "url": "https://github.com/Microsoft/monaco-editor/issues"
   },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "A browser based code editor",
   "devDependencies": {
     "clean-css": "^5.1.1",
     "event-stream": "4.0.1",
     "gulp": "^4.0.2",
-    "monaco-css": "3.5.0",
-    "monaco-editor-core": "0.25.1",
-    "monaco-html": "3.5.1",
-    "monaco-json": "3.5.1",
-    "monaco-languages": "2.5.0",
-    "monaco-typescript": "4.5.0",
+    "monaco-css": "3.7.0",
+    "monaco-editor-core": "0.27.0",
+    "monaco-html": "3.7.0",
+    "monaco-json": "3.7.0",
+    "monaco-languages": "2.7.0",
+    "monaco-typescript": "4.7.0",
     "rimraf": "^3.0.2",
     "typedoc": "^0.20.29",
     "typescript": "4.2.3",
@@ -69,5 +65,5 @@
     "website": "gulp build-website && npm run typedoc && gulp prepare-website-branch"
   },
   "typings": "./esm/vs/editor/editor.api.d.ts",
-  "version": "0.25.2"
+  "version": "0.27.0"
 }

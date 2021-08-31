@@ -63,6 +63,14 @@ export declare const DriveItem: (baseUrl: string | import("../graphqueryable.js"
  *
  */
 export declare class _DriveItems extends _GraphQueryableCollection {
+    add(filename: string, content: string): Promise<IDriveItemAddResult>;
+    /**
+     * Adds a folder to this collection of drive items
+     *
+     * @param name Name of the new folder
+     * @returns result with folder data and chainable drive item object
+     */
+    addFolder(name: string): Promise<IDriveItemAddResult>;
 }
 export interface IDriveItems extends _DriveItems, IGetById<IDriveItem> {
 }

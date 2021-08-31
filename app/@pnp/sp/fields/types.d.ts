@@ -153,12 +153,19 @@ export declare class _Fields extends _SharePointQueryableCollection<IFieldInfo[]
   */
     addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<IFieldAddResult>;
     /**
-   * Adds a new SP.FieldLocation to the collection
-   *
-   * @param title The field title.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
+     * Adds a new SP.FieldLocation to the collection
+     *
+     * @param title The field title.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
     addLocation(title: string, properties?: IFieldCreationProperties): Promise<IFieldAddResult>;
+    /**
+     * Adds a new SP.FieldLocation to the collection
+     *
+     * @param title The field title.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    addImageField(title: string, properties?: IFieldCreationProperties): Promise<IFieldAddResult>;
 }
 export interface IFields extends _Fields {
 }

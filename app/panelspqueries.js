@@ -3290,7 +3290,7 @@ var runSearch = function runSearch() {
 
 var runSearchAllProps = function runSearchAllProps() {
  var content = arguments[1];
- var SourceId = arguments[2]; 
+ var SourceId = arguments[2];
 
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
     var $pnp = modules[0];

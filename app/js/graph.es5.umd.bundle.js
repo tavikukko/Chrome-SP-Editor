@@ -2987,7 +2987,7 @@ var GraphHttpClient = /** @class */ (function () {
         }
         if (!headers.has("SdkVersion")) {
             // this marks the requests for understanding by the service
-            headers.append("SdkVersion", "PnPCoreJS/2.7.0");
+            headers.append("SdkVersion", "PnPCoreJS/2.8.0");
         }
         var opts = util_assign(options, { headers: headers });
         return this.fetchRaw(url, opts);
@@ -3366,7 +3366,12 @@ var _GraphQueryableSearchableCollection = /** @class */ (function (_super) {
      * 	To request second and subsequent pages of Graph data
      */
     _GraphQueryableSearchableCollection.prototype.search = function (query) {
-        this.query.set("$search", query);
+        this.configure({
+            headers: {
+                ConsistencyLevel: "eventual",
+            },
+        });
+        this.query.set("$search", "\"" + query + "\"");
         return this;
     };
     return _GraphQueryableSearchableCollection;
@@ -3998,7 +4003,7 @@ var _Groups = /** @class */ (function (_super) {
         getById(Group)
     ], _Groups);
     return _Groups;
-}(_GraphQueryableCollection));
+}(_GraphQueryableSearchableCollection));
 
 var Groups = graphInvokableFactory(_Groups);
 //# sourceMappingURL=types.js.map
@@ -4030,6 +4035,20 @@ function findRooms(roomList) {
     if (roomList) {
         query.query.set("@roomList", "'" + encodeURIComponent(roomList) + "'");
     }
+    return query;
+}
+/**
+ * Get the instances (occurrences) of an event for a specified time range.
+ * If the event is a seriesMaster type, this returns the occurrences and exceptions of the event in the specified time range.
+ *
+ * @param this IGraphQueryable instance
+ * @param start start time
+ * @param end end time
+ */
+function instances(start, end) {
+    var query = this.clone(GraphQueryableCollection, "instances");
+    query.query.set("startDateTime", encodeURIComponent(start));
+    query.query.set("endDateTime", encodeURIComponent(end));
     return query;
 }
 //# sourceMappingURL=funcs.js.map
@@ -4083,7 +4102,9 @@ var Calendars = graphInvokableFactory(_Calendars);
 var _Event = /** @class */ (function (_super) {
     __extends(_Event, _super);
     function _Event() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.instances = instances;
+        return _this;
     }
     _Event = __decorate([
         deleteable(),
@@ -4206,7 +4227,7 @@ var _Users = /** @class */ (function (_super) {
         getById(User)
     ], _Users);
     return _Users;
-}(_GraphQueryableCollection));
+}(_GraphQueryableSearchableCollection));
 
 var Users = graphInvokableFactory(_Users);
 var _People = /** @class */ (function (_super) {
@@ -4218,7 +4239,7 @@ var _People = /** @class */ (function (_super) {
         defaultPath("people")
     ], _People);
     return _People;
-}(_GraphQueryableCollection));
+}(_GraphQueryableSearchableCollection));
 
 var People = graphInvokableFactory(_People);
 //# sourceMappingURL=types.js.map
@@ -5023,7 +5044,7 @@ var _Messages = /** @class */ (function (_super) {
         addable()
     ], _Messages);
     return _Messages;
-}(_GraphQueryableCollection));
+}(_GraphQueryableSearchableCollection));
 
 var Messages = graphInvokableFactory(_Messages);
 /**
@@ -5274,7 +5295,56 @@ var _DriveItems = /** @class */ (function (_super) {
     function _DriveItems() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    _DriveItems = __decorate([
+    _DriveItems_1 = _DriveItems;
+    _DriveItems.prototype.add = function (filename, content) {
+        return __awaiter(this, void 0, void 0, function () {
+            var parent, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        parent = this.getParent(_DriveItems_1);
+                        parent.concat(":/" + filename + ":/content");
+                        return [4 /*yield*/, graphPut(parent, { body: content })];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                driveItem: this.getById(data.id),
+                            }];
+                }
+            });
+        });
+    };
+    /**
+     * Adds a folder to this collection of drive items
+     *
+     * @param name Name of the new folder
+     * @returns result with folder data and chainable drive item object
+     */
+    _DriveItems.prototype.addFolder = function (name) {
+        return __awaiter(this, void 0, void 0, function () {
+            var postBody, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postBody = {
+                            name: name,
+                            folder: {},
+                            "@microsoft.graph.conflictBehavior": "rename",
+                        };
+                        return [4 /*yield*/, graphPost(this, body(postBody))];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, {
+                                data: data,
+                                driveItem: this.getById(data.id),
+                            }];
+                }
+            });
+        });
+    };
+    var _DriveItems_1;
+    _DriveItems = _DriveItems_1 = __decorate([
         getById(DriveItem)
     ], _DriveItems);
     return _DriveItems;

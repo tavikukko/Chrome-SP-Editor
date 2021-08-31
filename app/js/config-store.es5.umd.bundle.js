@@ -3123,7 +3123,7 @@ var SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.7.0:" + methodName;
+                            clientTag = "PnPCoreJS:2.8.0:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -3936,7 +3936,7 @@ var SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.7.0:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.8.0:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -3970,7 +3970,7 @@ var SPBatch = /** @class */ (function (_super) {
                     // the entire batch resulted in an error and we need to handle that better #1356
                     // things consistently with the rest of the http errors
                     throw (_b.sent());
-                    case 4: return [4 /*yield*/, fetchResponse.clone().text()];
+                    case 4: return [4 /*yield*/, fetchResponse.text()];
                     case 5:
                         text = _b.sent();
                         responses = SPBatch.ParseResponse(text);
@@ -5328,6 +5328,8 @@ _Web.prototype.getCatalog = function (type) {
 
 
 
+
+
 /**
  * Describes a collection of Item objects
  *
@@ -5667,7 +5669,7 @@ var _Item = /** @class */ (function (_super) {
             var urlInfo;
             return tslib_es6_generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.select("Id", "ParentList/Id", "ParentList/RootFolder/UniqueId", "ParentList/RootFolder/ServerRelativeUrl", "ParentList/RootFolder/ServerRelativePath", "ParentList/ParentWeb/Id", "ParentList/ParentWeb/Url", "ParentList/ParentWeb/ServerRelativeUrl", "ParentList/ParentWeb/ServerRelativePath").expand("ParentList", "ParentList/RootFolder", "ParentList/ParentWeb")()];
+                    case 0: return [4 /*yield*/, this.select("Id", "ParentList/Id", "ParentList/Title", "ParentList/RootFolder/UniqueId", "ParentList/RootFolder/ServerRelativeUrl", "ParentList/RootFolder/ServerRelativePath", "ParentList/ParentWeb/Id", "ParentList/ParentWeb/Url", "ParentList/ParentWeb/ServerRelativeUrl", "ParentList/ParentWeb/ServerRelativePath").expand("ParentList", "ParentList/RootFolder", "ParentList/ParentWeb")()];
                     case 1:
                         urlInfo = _a.sent();
                         return [2 /*return*/, {
@@ -5676,6 +5678,7 @@ var _Item = /** @class */ (function (_super) {
                                 },
                                 ParentList: {
                                     Id: urlInfo.ParentList.Id,
+                                    Title: urlInfo.ParentList.Title,
                                     RootFolderServerRelativePath: urlInfo.ParentList.RootFolder.ServerRelativePath,
                                     RootFolderServerRelativeUrl: urlInfo.ParentList.RootFolder.ServerRelativeUrl,
                                     RootFolderUniqueId: urlInfo.ParentList.RootFolder.UniqueId,
@@ -5687,6 +5690,41 @@ var _Item = /** @class */ (function (_super) {
                                     Url: urlInfo.ParentList.ParentWeb.Url,
                                 },
                             }];
+                }
+            });
+        });
+    };
+    _Item.prototype.setImageField = function (fieldName, imageName, imageContent) {
+        return tslib_es6_awaiter(this, void 0, void 0, function () {
+            var contextInfo, webUrl, q, result, itemInfo;
+            return tslib_es6_generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getParentInfos()];
+                    case 1:
+                        contextInfo = _a.sent();
+                        webUrl = extractWebUrl(this.toUrl());
+                        q = SharePointQueryable(webUrl, "/_api/web/UploadImage");
+                        q.concat("(listTitle=@a1,imageName=@a2,listId=@a3,itemId=@a4)");
+                        q.query.set("@a1", "'" + escapeQueryStrValue(contextInfo.ParentList.Title) + "'");
+                        q.query.set("@a2", "'" + escapeQueryStrValue(imageName) + "'");
+                        q.query.set("@a3", "'" + escapeQueryStrValue(contextInfo.ParentList.Id) + "'");
+                        q.query.set("@a4", contextInfo.Item.Id);
+                        return [4 /*yield*/, spPost(q, { body: imageContent })];
+                    case 2:
+                        result = _a.sent();
+                        itemInfo = {
+                            "type": "thumbnail",
+                            "fileName": result.Name,
+                            "nativeFile": {},
+                            "fieldName": fieldName,
+                            "serverUrl": contextInfo.ParentWeb.Url.replace(contextInfo.ParentWeb.ServerRelativeUrl, ""),
+                            "serverRelativeUrl": result.ServerRelativeUrl,
+                            "id": result.UniqueId,
+                        };
+                        return [2 /*return*/, this.validateUpdateListItem([{
+                                    FieldName: fieldName,
+                                    FieldValue: JSON.stringify(itemInfo),
+                                }])];
                 }
             });
         });

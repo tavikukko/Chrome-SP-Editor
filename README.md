@@ -8,6 +8,11 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 5.6.13 updates
+    * Issue with pagelayout change fixed
+    * Updated PnPjs to 2.8.0
+    * Updated monaco-editor to 0.27.0
+    * updated microsoft-graph-client to 3.0.0
 - 5.6.12 updates
     * Updated PnPjs to 2.7.0
 - 5.6.11 bug fix

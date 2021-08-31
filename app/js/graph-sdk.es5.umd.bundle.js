@@ -59,20 +59,26 @@ __webpack_require__.d(__webpack_exports__, {
   "Client": () => (/* reexport */ Client),
   "CustomAuthenticationProvider": () => (/* reexport */ CustomAuthenticationProvider),
   "FeatureUsageFlag": () => (/* reexport */ FeatureUsageFlag),
+  "FileUpload": () => (/* reexport */ FileUpload),
+  "GraphClientError": () => (/* reexport */ GraphClientError),
   "GraphError": () => (/* reexport */ GraphError),
   "GraphRequest": () => (/* reexport */ GraphRequest),
   "HTTPMessageHandler": () => (/* reexport */ HTTPMessageHandler),
-  "ImplicitMSALAuthenticationProvider": () => (/* reexport */ ImplicitMSALAuthenticationProvider),
   "LargeFileUploadTask": () => (/* reexport */ LargeFileUploadTask),
-  "MSALAuthenticationProviderOptions": () => (/* reexport */ MSALAuthenticationProviderOptions),
   "MiddlewareFactory": () => (/* reexport */ MiddlewareFactory),
   "OneDriveLargeFileUploadTask": () => (/* reexport */ OneDriveLargeFileUploadTask),
   "PageIterator": () => (/* reexport */ PageIterator),
+  "Range": () => (/* reexport */ Range),
+  "RedirectHandler": () => (/* reexport */ RedirectHandler),
+  "RedirectHandlerOptions": () => (/* reexport */ RedirectHandlerOptions),
   "ResponseType": () => (/* reexport */ ResponseType),
   "RetryHandler": () => (/* reexport */ RetryHandler),
   "RetryHandlerOptions": () => (/* reexport */ RetryHandlerOptions),
+  "StreamUpload": () => (/* reexport */ StreamUpload),
   "TelemetryHandler": () => (/* reexport */ TelemetryHandler),
-  "TelemetryHandlerOptions": () => (/* reexport */ TelemetryHandlerOptions)
+  "TelemetryHandlerOptions": () => (/* reexport */ TelemetryHandlerOptions),
+  "UploadResult": () => (/* reexport */ UploadResult),
+  "getValidRangeSize": () => (/* reexport */ getValidRangeSize)
 });
 
 ;// CONCATENATED MODULE: ./node_modules/tslib/tslib.es6.js
@@ -95,11 +101,13 @@ PERFORMANCE OF THIS SOFTWARE.
 var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
     return extendStatics(d, b);
 };
 
 function __extends(d, b) {
+    if (typeof b !== "function" && b !== null)
+        throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -181,13 +189,16 @@ function __generator(thisArg, body) {
     }
 }
 
-function __createBinding(o, m, k, k2) {
+var __createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
-}
+});
 
-function __exportStar(m, exports) {
-    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) exports[p] = m[p];
+function __exportStar(m, o) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p)) __createBinding(o, m, p);
 }
 
 function __values(o) {
@@ -219,19 +230,31 @@ function __read(o, n) {
     return ar;
 }
 
+/** @deprecated */
 function __spread() {
     for (var ar = [], i = 0; i < arguments.length; i++)
         ar = ar.concat(__read(arguments[i]));
     return ar;
 }
 
+/** @deprecated */
 function __spreadArrays() {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
     for (var r = Array(s), k = 0, i = 0; i < il; i++)
         for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
             r[k] = a[j];
     return r;
-};
+}
+
+function __spreadArray(to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+}
 
 function __await(v) {
     return this instanceof __await ? (this.v = v, this) : new __await(v);
@@ -268,11 +291,17 @@ function __makeTemplateObject(cooked, raw) {
     return cooked;
 };
 
+var __setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
 function __importStar(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result.default = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 }
 
@@ -280,22 +309,20 @@ function __importDefault(mod) {
     return (mod && mod.__esModule) ? mod : { default: mod };
 }
 
-function __classPrivateFieldGet(receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
+function __classPrivateFieldGet(receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 }
 
-function __classPrivateFieldSet(receiver, privateMap, value) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
-    }
-    privateMap.set(receiver, value);
-    return value;
+function __classPrivateFieldSet(receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 }
 
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/RequestMethod.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/RequestMethod.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -320,7 +347,7 @@ var RequestMethod;
     RequestMethod["DELETE"] = "DELETE";
 })(RequestMethod || (RequestMethod = {}));
 //# sourceMappingURL=RequestMethod.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/content/BatchRequestContent.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/content/BatchRequestContent.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -504,7 +531,7 @@ class BatchRequestContent {
                 bodyParsed = true;
             }
             catch (e) {
-                // tslint:disable-line: no-empty
+                //TODO- Handle empty catches
             }
             if (!bodyParsed) {
                 try {
@@ -537,7 +564,7 @@ class BatchRequestContent {
                     bodyParsed = true;
                 }
                 catch (e) {
-                    // tslint:disable-line: no-empty
+                    // TODO-Handle empty catches
                 }
             }
             return body;
@@ -628,6 +655,8 @@ class BatchRequestContent {
                 const requestStep = cur.value[1];
                 const batchRequestData = (yield BatchRequestContent.getRequestData(requestStep.request));
                 /**
+                 * @see{@https://tools.ietf.org/html/rfc7578#section-4.4}
+                 * TODO- Setting/Defaulting of content-type header to the correct value
                  * @see {@link https://developer.microsoft.com/en-us/graph/docs/concepts/json_batching#request-format}
                  */
                 if (batchRequestData.body !== undefined && (batchRequestData.headers === undefined || batchRequestData.headers["content-type"] === undefined)) {
@@ -736,7 +765,7 @@ class BatchRequestContent {
  */
 BatchRequestContent.requestLimit = 20;
 //# sourceMappingURL=BatchRequestContent.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/content/BatchResponseContent.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/content/BatchResponseContent.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -826,7 +855,199 @@ class BatchResponseContent {
     }
 }
 //# sourceMappingURL=BatchResponseContent.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/MiddlewareControl.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/Constants.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+/**
+ * @module Constants
+ */
+/**
+ * @constant
+ * A Default API endpoint version for a request
+ */
+const GRAPH_API_VERSION = "v1.0";
+/**
+ * @constant
+ * A Default base url for a request
+ */
+const GRAPH_BASE_URL = "https://graph.microsoft.com/";
+/**
+ * To hold list of the service root endpoints for Microsoft Graph and Graph Explorer for each national cloud.
+ * Set(iterable:Object) is not supported in Internet Explorer. The consumer is recommended to use a suitable polyfill.
+ */
+const GRAPH_URLS = new Set(["graph.microsoft.com", "graph.microsoft.us", "dod-graph.microsoft.us", "graph.microsoft.de", "microsoftgraph.chinacloudapi.cn", "canary.graph.microsoft.com"]);
+//# sourceMappingURL=Constants.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/GraphClientError.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+/**
+ * @module GraphClientError
+ */
+/**
+ * @class
+ * Create GraphClientError object to handle client-side errors
+ * encountered within the JavaScript Client SDK.
+ * Whereas GraphError Class should be used to handle errors in the response from the Graph API.
+ */
+class GraphClientError extends Error {
+    /**
+     * @public
+     * @constructor
+     * Creates an instance of GraphClientError
+     * @param {string} message? - Error message
+     * @returns An instance of GraphClientError
+     */
+    constructor(message) {
+        super(message);
+        Object.setPrototypeOf(this, GraphClientError.prototype);
+    }
+    /**
+     * @public
+     * @static
+     * @async
+     * To set the GraphClientError object
+     * @param {any} - The error returned encountered by the Graph JavaScript Client SDK while processing request
+     * @returns GraphClientError object set to the error passed
+     */
+    static setGraphClientError(error) {
+        let graphClientError;
+        if (error instanceof Error) {
+            graphClientError = error;
+        }
+        else {
+            graphClientError = new GraphClientError();
+            graphClientError.customError = error;
+        }
+        return graphClientError;
+    }
+}
+//# sourceMappingURL=GraphClientError.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/GraphRequestUtil.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+/**
+ * @module GraphRequestUtil
+ */
+
+
+/**
+ * To hold list of OData query params
+ */
+const oDataQueryNames = ["$select", "$expand", "$orderby", "$filter", "$top", "$skip", "$skipToken", "$count"];
+/**
+ * To construct the URL by appending the segments with "/"
+ * @param {string[]} urlSegments - The array of strings
+ * @returns The constructed URL string
+ */
+const urlJoin = (urlSegments) => {
+    const removePostSlash = (s) => s.replace(/\/+$/, "");
+    const removePreSlash = (s) => s.replace(/^\/+/, "");
+    const joiner = (pre, cur) => [removePostSlash(pre), removePreSlash(cur)].join("/");
+    const parts = Array.prototype.slice.call(urlSegments);
+    return parts.reduce(joiner);
+};
+/**
+ * Serializes the content
+ * @param {any} content - The content value that needs to be serialized
+ * @returns The serialized content
+ *
+ * Note:
+ * This conversion is required due to the following reasons:
+ * Body parameter of Request method of isomorphic-fetch only accepts Blob, ArrayBuffer, FormData, TypedArrays string.
+ * Node.js platform does not support Blob, FormData. Javascript File object inherits from Blob so it is also not supported in node. Therefore content of type Blob, File, FormData will only come from browsers.
+ * Parallel to ArrayBuffer in javascript, node provides Buffer interface. Node's Buffer is able to send the arbitrary binary data to the server successfully for both Browser and Node platform. Whereas sending binary data via ArrayBuffer or TypedArrays was only possible using Browser. To support both Node and Browser, `serializeContent` converts TypedArrays or ArrayBuffer to `Node Buffer`.
+ * If the data received is in JSON format, `serializeContent` converts the JSON to string.
+ */
+const serializeContent = (content) => {
+    const className = content && content.constructor && content.constructor.name;
+    if (className === "Buffer" || className === "Blob" || className === "File" || className === "FormData" || typeof content === "string") {
+        return content;
+    }
+    if (className === "ArrayBuffer") {
+        content = Buffer.from(content);
+    }
+    else if (className === "Int8Array" || className === "Int16Array" || className === "Int32Array" || className === "Uint8Array" || className === "Uint16Array" || className === "Uint32Array" || className === "Uint8ClampedArray" || className === "Float32Array" || className === "Float64Array" || className === "DataView") {
+        content = Buffer.from(content.buffer);
+    }
+    else {
+        try {
+            content = JSON.stringify(content);
+        }
+        catch (error) {
+            throw new Error("Unable to stringify the content");
+        }
+    }
+    return content;
+};
+/**
+ * Checks if the url is one of the service root endpoints for Microsoft Graph and Graph Explorer.
+ * @param {string} url - The url to be verified
+ * @returns {boolean} - Returns true if the url is a Graph URL
+ */
+const isGraphURL = (url) => {
+    return isValidEndpoint(url);
+};
+/**
+ * Checks if the url is for one of the custom hosts provided during client initialization
+ * @param {string} url - The url to be verified
+ * @param {Set} customHosts - The url to be verified
+ * @returns {boolean} - Returns true if the url is a for a custom host
+ */
+const isCustomHost = (url, customHosts) => {
+    customHosts.forEach((host) => isCustomHostValid(host));
+    return isValidEndpoint(url, customHosts);
+};
+/**
+ * Checks if the url is for one of the provided hosts.
+ * @param {string} url - The url to be verified
+ * @param {Set<string>} allowedHosts - A set of hosts.
+ * @returns {boolean} - Returns true is for one of the provided endpoints.
+ */
+const isValidEndpoint = (url, allowedHosts = GRAPH_URLS) => {
+    // Valid Graph URL pattern - https://graph.microsoft.com/{version}/{resource}?{query-parameters}
+    // Valid Graph URL example - https://graph.microsoft.com/v1.0/
+    url = url.toLowerCase();
+    if (url.indexOf("https://") !== -1) {
+        url = url.replace("https://", "");
+        // Find where the host ends
+        const startofPortNoPos = url.indexOf(":");
+        const endOfHostStrPos = url.indexOf("/");
+        let hostName = "";
+        if (endOfHostStrPos !== -1) {
+            if (startofPortNoPos !== -1 && startofPortNoPos < endOfHostStrPos) {
+                hostName = url.substring(0, startofPortNoPos);
+                return allowedHosts.has(hostName);
+            }
+            // Parse out the host
+            hostName = url.substring(0, endOfHostStrPos);
+            return allowedHosts.has(hostName);
+        }
+    }
+    return false;
+};
+/**
+ * Throws error if the string is not a valid host/hostname and contains other url parts.
+ * @param {string} url - The host to be verified
+ */
+const isCustomHostValid = (host) => {
+    if (host.indexOf("/") !== -1) {
+        throw new GraphClientError("Please add only hosts or hostnames to the CustomHosts config. If the url is `http://example.com:3000/`, host is `example:3000`");
+    }
+};
+//# sourceMappingURL=GraphRequestUtil.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/MiddlewareControl.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -846,7 +1067,6 @@ class MiddlewareControl {
      * @returns The instance of MiddlewareControl
      */
     constructor(middlewareOptions = []) {
-        // tslint:disable-next-line:ban-types
         this.middlewareOptions = new Map();
         for (const option of middlewareOptions) {
             const fn = option.constructor;
@@ -863,7 +1083,6 @@ class MiddlewareControl {
      * // call this function like this:
      * getMiddlewareOptions(MiddlewareControl)
      */
-    // tslint:disable-next-line:ban-types
     getMiddlewareOptions(fn) {
         return this.middlewareOptions.get(fn);
     }
@@ -874,13 +1093,12 @@ class MiddlewareControl {
      * @param {MiddlewareOptions} option - The strongly typed middleware option
      * @returns nothing
      */
-    // tslint:disable-next-line:ban-types
     setMiddlewareOptions(fn, option) {
         this.middlewareOptions.set(fn, option);
     }
 }
 //# sourceMappingURL=MiddlewareControl.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/MiddlewareUtil.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/MiddlewareUtil.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1023,13 +1241,13 @@ const appendRequestHeader = (request, options, key, value) => {
  * @param {Request} request - The request object
  * @returns A promise that resolves to request object
  */
-const cloneRequestWithNewUrl = (newUrl, request) => __awaiter(undefined, void 0, void 0, function* () {
+const cloneRequestWithNewUrl = (newUrl, request) => __awaiter(void 0, void 0, void 0, function* () {
     const body = request.headers.get("Content-Type") ? yield request.blob() : yield Promise.resolve(undefined);
     const { method, headers, referrer, referrerPolicy, mode, credentials, cache, redirect, integrity, keepalive, signal } = request;
     return new Request(newUrl, { method, headers, body, referrer, referrerPolicy, mode, credentials, cache, redirect, integrity, keepalive, signal });
 });
 //# sourceMappingURL=MiddlewareUtil.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/AuthenticationHandlerOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/options/AuthenticationHandlerOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1056,7 +1274,7 @@ class AuthenticationHandlerOptions {
     }
 }
 //# sourceMappingURL=AuthenticationHandlerOptions.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/TelemetryHandlerOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/options/TelemetryHandlerOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1073,10 +1291,12 @@ class AuthenticationHandlerOptions {
  */
 var FeatureUsageFlag;
 (function (FeatureUsageFlag) {
+    /* eslint-disable  @typescript-eslint/naming-convention */
     FeatureUsageFlag[FeatureUsageFlag["NONE"] = 0] = "NONE";
     FeatureUsageFlag[FeatureUsageFlag["REDIRECT_HANDLER_ENABLED"] = 1] = "REDIRECT_HANDLER_ENABLED";
     FeatureUsageFlag[FeatureUsageFlag["RETRY_HANDLER_ENABLED"] = 2] = "RETRY_HANDLER_ENABLED";
     FeatureUsageFlag[FeatureUsageFlag["AUTHENTICATION_HANDLER_ENABLED"] = 4] = "AUTHENTICATION_HANDLER_ENABLED";
+    /* eslint-enable  @typescript-eslint/naming-convention */
 })(FeatureUsageFlag || (FeatureUsageFlag = {}));
 /**
  * @class
@@ -1120,9 +1340,7 @@ class TelemetryHandlerOptions {
      * @returns nothing
      */
     setFeatureUsage(flag) {
-        /* tslint:disable: no-bitwise */
         this.featureUsage = this.featureUsage | flag;
-        /* tslint:enable: no-bitwise */
     }
     /**
      * @public
@@ -1134,12 +1352,16 @@ class TelemetryHandlerOptions {
     }
 }
 //# sourceMappingURL=TelemetryHandlerOptions.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/AuthenticationHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/AuthenticationHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
+ */
+
+/**
+ * @module AuthenticationHandler
  */
 
 
@@ -1170,29 +1392,32 @@ class AuthenticationHandler {
      */
     execute(context) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
+            const url = typeof context.request === "string" ? context.request : context.request.url;
+            if (isGraphURL(url) || (context.customHosts && isCustomHost(url, context.customHosts))) {
                 let options;
                 if (context.middlewareControl instanceof MiddlewareControl) {
                     options = context.middlewareControl.getMiddlewareOptions(AuthenticationHandlerOptions);
                 }
                 let authenticationProvider;
                 let authenticationProviderOptions;
-                if (typeof options !== "undefined") {
+                if (options) {
                     authenticationProvider = options.authenticationProvider;
                     authenticationProviderOptions = options.authenticationProviderOptions;
                 }
-                if (typeof authenticationProvider === "undefined") {
+                if (!authenticationProvider) {
                     authenticationProvider = this.authenticationProvider;
                 }
                 const token = yield authenticationProvider.getAccessToken(authenticationProviderOptions);
                 const bearerKey = `Bearer ${token}`;
                 appendRequestHeader(context.request, context.options, AuthenticationHandler.AUTHORIZATION_HEADER, bearerKey);
                 TelemetryHandlerOptions.updateFeatureUsageFlag(context, FeatureUsageFlag.AUTHENTICATION_HANDLER_ENABLED);
-                return yield this.nextMiddleware.execute(context);
             }
-            catch (error) {
-                throw error;
+            else {
+                if (context.options.headers) {
+                    delete context.options.headers[AuthenticationHandler.AUTHORIZATION_HEADER];
+                }
             }
+            return yield this.nextMiddleware.execute(context);
         });
     }
     /**
@@ -1211,7 +1436,7 @@ class AuthenticationHandler {
  */
 AuthenticationHandler.AUTHORIZATION_HEADER = "Authorization";
 //# sourceMappingURL=AuthenticationHandler.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/HTTPMessageHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/HTTPMessageHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1234,18 +1459,12 @@ class HTTPMessageHandler {
      */
     execute(context) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                context.response = yield fetch(context.request, context.options);
-                return;
-            }
-            catch (error) {
-                throw error;
-            }
+            context.response = yield fetch(context.request, context.options);
         });
     }
 }
 //# sourceMappingURL=HTTPMessageHandler.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/RetryHandlerOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/options/RetryHandlerOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1267,7 +1486,7 @@ class RetryHandlerOptions {
      * @param {ShouldRetry} [shouldRetry = RetryHandlerOptions.DEFAULT_SHOULD_RETRY] - The shouldRetry callback function
      * @returns An instance of RetryHandlerOptions
      */
-    constructor(delay = RetryHandlerOptions.DEFAULT_DELAY, maxRetries = RetryHandlerOptions.DEFAULT_MAX_RETRIES, shouldRetry = RetryHandlerOptions.DEFAULT_SHOULD_RETRY) {
+    constructor(delay = RetryHandlerOptions.DEFAULT_DELAY, maxRetries = RetryHandlerOptions.DEFAULT_MAX_RETRIES, shouldRetry = RetryHandlerOptions.defaultShouldRetry) {
         if (delay > RetryHandlerOptions.MAX_DELAY && maxRetries > RetryHandlerOptions.MAX_MAX_RETRIES) {
             const error = new Error(`Delay and MaxRetries should not be more than ${RetryHandlerOptions.MAX_DELAY} and ${RetryHandlerOptions.MAX_MAX_RETRIES}`);
             error.name = "MaxLimitExceeded";
@@ -1339,9 +1558,9 @@ RetryHandlerOptions.MAX_MAX_RETRIES = 10;
  * @private
  * A member holding default shouldRetry callback
  */
-RetryHandlerOptions.DEFAULT_SHOULD_RETRY = () => true;
+RetryHandlerOptions.defaultShouldRetry = () => true;
 //# sourceMappingURL=RetryHandlerOptions.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/RetryHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/RetryHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1411,14 +1630,12 @@ class RetryHandler {
         const retryAfter = response.headers !== undefined ? response.headers.get(RetryHandler.RETRY_AFTER_HEADER) : null;
         let newDelay;
         if (retryAfter !== null) {
-            // tslint:disable: prefer-conditional-expression
             if (Number.isNaN(Number(retryAfter))) {
                 newDelay = Math.round((new Date(retryAfter).getTime() - Date.now()) / 1000);
             }
             else {
                 newDelay = Number(retryAfter);
             }
-            // tslint:enable: prefer-conditional-expression
         }
         else {
             // Adding randomness to avoid retrying at a same
@@ -1469,21 +1686,16 @@ class RetryHandler {
      */
     executeWithRetry(context, retryAttempts, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield this.nextMiddleware.execute(context);
-                if (retryAttempts < options.maxRetries && this.isRetry(context.response) && this.isBuffered(context.request, context.options) && options.shouldRetry(options.delay, retryAttempts, context.request, context.options, context.response)) {
-                    ++retryAttempts;
-                    setRequestHeader(context.request, context.options, RetryHandler.RETRY_ATTEMPT_HEADER, retryAttempts.toString());
-                    const delay = this.getDelay(context.response, retryAttempts, options.delay);
-                    yield this.sleep(delay);
-                    return yield this.executeWithRetry(context, retryAttempts, options);
-                }
-                else {
-                    return;
-                }
+            yield this.nextMiddleware.execute(context);
+            if (retryAttempts < options.maxRetries && this.isRetry(context.response) && this.isBuffered(context.request, context.options) && options.shouldRetry(options.delay, retryAttempts, context.request, context.options, context.response)) {
+                ++retryAttempts;
+                setRequestHeader(context.request, context.options, RetryHandler.RETRY_ATTEMPT_HEADER, retryAttempts.toString());
+                const delay = this.getDelay(context.response, retryAttempts, options.delay);
+                yield this.sleep(delay);
+                return yield this.executeWithRetry(context, retryAttempts, options);
             }
-            catch (error) {
-                throw error;
+            else {
+                return;
             }
         });
     }
@@ -1496,15 +1708,10 @@ class RetryHandler {
      */
     execute(context) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const retryAttempts = 0;
-                const options = this.getOptions(context);
-                TelemetryHandlerOptions.updateFeatureUsageFlag(context, FeatureUsageFlag.RETRY_HANDLER_ENABLED);
-                return yield this.executeWithRetry(context, retryAttempts, options);
-            }
-            catch (error) {
-                throw error;
-            }
+            const retryAttempts = 0;
+            const options = this.getOptions(context);
+            TelemetryHandlerOptions.updateFeatureUsageFlag(context, FeatureUsageFlag.RETRY_HANDLER_ENABLED);
+            return yield this.executeWithRetry(context, retryAttempts, options);
         });
     }
     /**
@@ -1525,7 +1732,7 @@ class RetryHandler {
 RetryHandler.RETRY_STATUS_CODES = [
     429,
     503,
-    504,
+    504, // Gateway timeout
 ];
 /**
  * @private
@@ -1540,234 +1747,7 @@ RetryHandler.RETRY_ATTEMPT_HEADER = "Retry-Attempt";
  */
 RetryHandler.RETRY_AFTER_HEADER = "Retry-After";
 //# sourceMappingURL=RetryHandler.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Constants.js
-/**
- * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
- * See License in the project root for license information.
- * -------------------------------------------------------------------------------------------
- */
-/**
- * @module Constants
- */
-/**
- * @constant
- * A Default API endpoint version for a request
- */
-const GRAPH_API_VERSION = "v1.0";
-/**
- * @constant
- * A Default base url for a request
- */
-const GRAPH_BASE_URL = "https://graph.microsoft.com/";
-/**
- * To hold list of the service root endpoints for Microsoft Graph and Graph Explorer for each national cloud.
- * Set(iterable:Object) is not supported in Internet Explorer. The consumer is recommended to use a suitable polyfill.
- */
-const GRAPH_URLS = new Set(["graph.microsoft.com", "graph.microsoft.us", "dod-graph.microsoft.us", "graph.microsoft.de", "microsoftgraph.chinacloudapi.cn"]);
-//# sourceMappingURL=Constants.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphRequestUtil.js
-/**
- * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
- * See License in the project root for license information.
- * -------------------------------------------------------------------------------------------
- */
-/**
- * @module GraphRequestUtil
- */
-
-/**
- * To hold list of OData query params
- */
-const oDataQueryNames = ["$select", "$expand", "$orderby", "$filter", "$top", "$skip", "$skipToken", "$count"];
-/**
- * To construct the URL by appending the segments with "/"
- * @param {string[]} urlSegments - The array of strings
- * @returns The constructed URL string
- */
-const urlJoin = (urlSegments) => {
-    const removePostSlash = (s) => s.replace(/\/+$/, "");
-    const removePreSlash = (s) => s.replace(/^\/+/, "");
-    const joiner = (pre, cur) => [removePostSlash(pre), removePreSlash(cur)].join("/");
-    const parts = Array.prototype.slice.call(urlSegments);
-    return parts.reduce(joiner);
-};
-/**
- * Serializes the content
- * @param {any} content - The content value that needs to be serialized
- * @returns The serialized content
- *
- * Note:
- * This conversion is required due to the following reasons:
- * Body parameter of Request method of isomorphic-fetch only accepts Blob, ArrayBuffer, FormData, TypedArrays string.
- * Node.js platform does not support Blob, FormData. Javascript File object inherits from Blob so it is also not supported in node. Therefore content of type Blob, File, FormData will only come from browsers.
- * Parallel to ArrayBuffer in javascript, node provides Buffer interface. Node's Buffer is able to send the arbitrary binary data to the server successfully for both Browser and Node platform. Whereas sending binary data via ArrayBuffer or TypedArrays was only possible using Browser. To support both Node and Browser, `serializeContent` converts TypedArrays or ArrayBuffer to `Node Buffer`.
- * If the data received is in JSON format, `serializeContent` converts the JSON to string.
- */
-const serializeContent = (content) => {
-    const className = content && content.constructor && content.constructor.name;
-    if (className === "Buffer" || className === "Blob" || className === "File" || className === "FormData" || typeof content === "string") {
-        return content;
-    }
-    if (className === "ArrayBuffer") {
-        content = Buffer.from(content);
-    }
-    else if (className === "Int8Array" || className === "Int16Array" || className === "Int32Array" || className === "Uint8Array" || className === "Uint16Array" || className === "Uint32Array" || className === "Uint8ClampedArray" || className === "Float32Array" || className === "Float64Array" || className === "DataView") {
-        content = Buffer.from(content.buffer);
-    }
-    else {
-        try {
-            content = JSON.stringify(content);
-        }
-        catch (error) {
-            throw new Error("Unable to stringify the content");
-        }
-    }
-    return content;
-};
-/**
- * Checks if the url is one of the service root endpoints for Microsoft Graph and Graph Explorer.
- * @param {string} url - The url to be verified
- * @returns {boolean} - Returns true if the url is a Graph URL
- */
-const isGraphURL = (url) => {
-    // Valid Graph URL pattern - https://graph.microsoft.com/{version}/{resource}?{query-parameters}
-    // Valid Graph URL example - https://graph.microsoft.com/v1.0/
-    url = url.toLowerCase();
-    if (url.indexOf("https://") !== -1) {
-        url = url.replace("https://", "");
-        // Find where the host ends
-        const startofPortNoPos = url.indexOf(":");
-        const endOfHostStrPos = url.indexOf("/");
-        let hostName = "";
-        if (endOfHostStrPos !== -1) {
-            if (startofPortNoPos !== -1 && startofPortNoPos < endOfHostStrPos) {
-                hostName = url.substring(0, startofPortNoPos);
-                return GRAPH_URLS.has(hostName);
-            }
-            // Parse out the host
-            hostName = url.substring(0, endOfHostStrPos);
-            return GRAPH_URLS.has(hostName);
-        }
-    }
-    return false;
-};
-//# sourceMappingURL=GraphRequestUtil.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Version.js
-/**
- * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
- * See License in the project root for license information.
- * -------------------------------------------------------------------------------------------
- */
-// THIS FILE IS AUTO GENERATED
-// ANY CHANGES WILL BE LOST DURING BUILD
-/**
- * @module Version
- */
-const PACKAGE_VERSION = "2.2.1";
-//# sourceMappingURL=Version.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/TelemetryHandler.js
-/**
- * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
- * See License in the project root for license information.
- * -------------------------------------------------------------------------------------------
- */
-
-/**
- * @module TelemetryHandler
- */
-
-
-
-
-
-/**
- * @class
- * @implements Middleware
- * Class for TelemetryHandler
- */
-class TelemetryHandler {
-    /**
-     * @public
-     * @async
-     * To execute the current middleware
-     * @param {Context} context - The context object of the request
-     * @returns A Promise that resolves to nothing
-     */
-    execute(context) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const url = typeof context.request === "string" ? context.request : context.request.url;
-                if (isGraphURL(url)) {
-                    // Add telemetry only if the request url is a Graph URL.
-                    // Errors are reported as in issue #265 if headers are present when redirecting to a non Graph URL
-                    let clientRequestId = getRequestHeader(context.request, context.options, TelemetryHandler.CLIENT_REQUEST_ID_HEADER);
-                    if (!clientRequestId) {
-                        clientRequestId = generateUUID();
-                        setRequestHeader(context.request, context.options, TelemetryHandler.CLIENT_REQUEST_ID_HEADER, clientRequestId);
-                    }
-                    let sdkVersionValue = `${TelemetryHandler.PRODUCT_NAME}/${PACKAGE_VERSION}`;
-                    let options;
-                    if (context.middlewareControl instanceof MiddlewareControl) {
-                        options = context.middlewareControl.getMiddlewareOptions(TelemetryHandlerOptions);
-                    }
-                    if (options) {
-                        const featureUsage = options.getFeatureUsage();
-                        sdkVersionValue += ` (${TelemetryHandler.FEATURE_USAGE_STRING}=${featureUsage})`;
-                    }
-                    appendRequestHeader(context.request, context.options, TelemetryHandler.SDK_VERSION_HEADER, sdkVersionValue);
-                }
-                else {
-                    // Remove telemetry headers if present during redirection.
-                    delete context.options.headers[TelemetryHandler.CLIENT_REQUEST_ID_HEADER];
-                    delete context.options.headers[TelemetryHandler.SDK_VERSION_HEADER];
-                }
-                return yield this.nextMiddleware.execute(context);
-            }
-            catch (error) {
-                throw error;
-            }
-        });
-    }
-    /**
-     * @public
-     * To set the next middleware in the chain
-     * @param {Middleware} next - The middleware instance
-     * @returns Nothing
-     */
-    setNext(next) {
-        this.nextMiddleware = next;
-    }
-}
-/**
- * @private
- * @static
- * A member holding the name of the client request id header
- */
-TelemetryHandler.CLIENT_REQUEST_ID_HEADER = "client-request-id";
-/**
- * @private
- * @static
- * A member holding the name of the sdk version header
- */
-TelemetryHandler.SDK_VERSION_HEADER = "SdkVersion";
-/**
- * @private
- * @static
- * A member holding the language prefix for the sdk version header value
- */
-TelemetryHandler.PRODUCT_NAME = "graph-js";
-/**
- * @private
- * @static
- * A member holding the key for the feature usage metrics
- */
-TelemetryHandler.FEATURE_USAGE_STRING = "featureUsage";
-//# sourceMappingURL=TelemetryHandler.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/RedirectHandlerOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/options/RedirectHandlerOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1788,7 +1768,7 @@ class RedirectHandlerOptions {
      * @param {ShouldRedirect} [shouldRedirect = RedirectHandlerOptions.DEFAULT_SHOULD_RETRY] - The should redirect callback
      * @returns An instance of RedirectHandlerOptions
      */
-    constructor(maxRedirects = RedirectHandlerOptions.DEFAULT_MAX_REDIRECTS, shouldRedirect = RedirectHandlerOptions.DEFAULT_SHOULD_RETRY) {
+    constructor(maxRedirects = RedirectHandlerOptions.DEFAULT_MAX_REDIRECTS, shouldRedirect = RedirectHandlerOptions.defaultShouldRetry) {
         if (maxRedirects > RedirectHandlerOptions.MAX_MAX_REDIRECTS) {
             const error = new Error(`MaxRedirects should not be more than ${RedirectHandlerOptions.MAX_MAX_REDIRECTS}`);
             error.name = "MaxLimitExceeded";
@@ -1819,9 +1799,9 @@ RedirectHandlerOptions.MAX_MAX_REDIRECTS = 20;
  * @private
  * A member holding default shouldRedirect callback
  */
-RedirectHandlerOptions.DEFAULT_SHOULD_RETRY = () => true;
+RedirectHandlerOptions.defaultShouldRetry = () => true;
 //# sourceMappingURL=RedirectHandlerOptions.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/RedirectHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/RedirectHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -1948,30 +1928,25 @@ class RedirectHandler {
      */
     executeWithRedirect(context, redirectCount, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield this.nextMiddleware.execute(context);
-                const response = context.response;
-                if (redirectCount < options.maxRedirects && this.isRedirect(response) && this.hasLocationHeader(response) && options.shouldRedirect(response)) {
-                    ++redirectCount;
-                    if (response.status === RedirectHandler.STATUS_CODE_SEE_OTHER) {
-                        context.options.method = RequestMethod.GET;
-                        delete context.options.body;
-                    }
-                    else {
-                        const redirectUrl = this.getLocationHeader(response);
-                        if (!this.isRelativeURL(redirectUrl) && this.shouldDropAuthorizationHeader(response.url, redirectUrl)) {
-                            delete context.options.headers[RedirectHandler.AUTHORIZATION_HEADER];
-                        }
-                        yield this.updateRequestUrl(redirectUrl, context);
-                    }
-                    yield this.executeWithRedirect(context, redirectCount, options);
+            yield this.nextMiddleware.execute(context);
+            const response = context.response;
+            if (redirectCount < options.maxRedirects && this.isRedirect(response) && this.hasLocationHeader(response) && options.shouldRedirect(response)) {
+                ++redirectCount;
+                if (response.status === RedirectHandler.STATUS_CODE_SEE_OTHER) {
+                    context.options.method = RequestMethod.GET;
+                    delete context.options.body;
                 }
                 else {
-                    return;
+                    const redirectUrl = this.getLocationHeader(response);
+                    if (!this.isRelativeURL(redirectUrl) && this.shouldDropAuthorizationHeader(response.url, redirectUrl)) {
+                        delete context.options.headers[RedirectHandler.AUTHORIZATION_HEADER];
+                    }
+                    yield this.updateRequestUrl(redirectUrl, context);
                 }
+                yield this.executeWithRedirect(context, redirectCount, options);
             }
-            catch (error) {
-                throw error;
+            else {
+                return;
             }
         });
     }
@@ -1984,16 +1959,11 @@ class RedirectHandler {
      */
     execute(context) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const redirectCount = 0;
-                const options = this.getOptions(context);
-                context.options.redirect = RedirectHandler.MANUAL_REDIRECT;
-                TelemetryHandlerOptions.updateFeatureUsageFlag(context, FeatureUsageFlag.REDIRECT_HANDLER_ENABLED);
-                return yield this.executeWithRedirect(context, redirectCount, options);
-            }
-            catch (error) {
-                throw error;
-            }
+            const redirectCount = 0;
+            const options = this.getOptions(context);
+            context.options.redirect = RedirectHandler.MANUAL_REDIRECT;
+            TelemetryHandlerOptions.updateFeatureUsageFlag(context, FeatureUsageFlag.REDIRECT_HANDLER_ENABLED);
+            return yield this.executeWithRedirect(context, redirectCount, options);
         });
     }
     /**
@@ -2016,7 +1986,7 @@ RedirectHandler.REDIRECT_STATUS_CODES = [
     302,
     303,
     307,
-    308,
+    308, // Moved Permanently
 ];
 /**
  * @private
@@ -2043,7 +2013,115 @@ RedirectHandler.AUTHORIZATION_HEADER = "Authorization";
  */
 RedirectHandler.MANUAL_REDIRECT = "manual";
 //# sourceMappingURL=RedirectHandler.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/MiddlewareFactory.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/Version.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+// THIS FILE IS AUTO GENERATED
+// ANY CHANGES WILL BE LOST DURING BUILD
+/**
+ * @module Version
+ */
+const PACKAGE_VERSION = "3.0.0";
+//# sourceMappingURL=Version.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/TelemetryHandler.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+
+/**
+ * @module TelemetryHandler
+ */
+
+
+
+
+
+/**
+ * @class
+ * @implements Middleware
+ * Class for TelemetryHandler
+ */
+class TelemetryHandler {
+    /**
+     * @public
+     * @async
+     * To execute the current middleware
+     * @param {Context} context - The context object of the request
+     * @returns A Promise that resolves to nothing
+     */
+    execute(context) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const url = typeof context.request === "string" ? context.request : context.request.url;
+            if (isGraphURL(url) || (context.customHosts && isCustomHost(url, context.customHosts))) {
+                // Add telemetry only if the request url is a Graph URL.
+                // Errors are reported as in issue #265 if headers are present when redirecting to a non Graph URL
+                let clientRequestId = getRequestHeader(context.request, context.options, TelemetryHandler.CLIENT_REQUEST_ID_HEADER);
+                if (!clientRequestId) {
+                    clientRequestId = generateUUID();
+                    setRequestHeader(context.request, context.options, TelemetryHandler.CLIENT_REQUEST_ID_HEADER, clientRequestId);
+                }
+                let sdkVersionValue = `${TelemetryHandler.PRODUCT_NAME}/${PACKAGE_VERSION}`;
+                let options;
+                if (context.middlewareControl instanceof MiddlewareControl) {
+                    options = context.middlewareControl.getMiddlewareOptions(TelemetryHandlerOptions);
+                }
+                if (options) {
+                    const featureUsage = options.getFeatureUsage();
+                    sdkVersionValue += ` (${TelemetryHandler.FEATURE_USAGE_STRING}=${featureUsage})`;
+                }
+                appendRequestHeader(context.request, context.options, TelemetryHandler.SDK_VERSION_HEADER, sdkVersionValue);
+            }
+            else {
+                // Remove telemetry headers if present during redirection.
+                delete context.options.headers[TelemetryHandler.CLIENT_REQUEST_ID_HEADER];
+                delete context.options.headers[TelemetryHandler.SDK_VERSION_HEADER];
+            }
+            return yield this.nextMiddleware.execute(context);
+        });
+    }
+    /**
+     * @public
+     * To set the next middleware in the chain
+     * @param {Middleware} next - The middleware instance
+     * @returns Nothing
+     */
+    setNext(next) {
+        this.nextMiddleware = next;
+    }
+}
+/**
+ * @private
+ * @static
+ * A member holding the name of the client request id header
+ */
+TelemetryHandler.CLIENT_REQUEST_ID_HEADER = "client-request-id";
+/**
+ * @private
+ * @static
+ * A member holding the name of the sdk version header
+ */
+TelemetryHandler.SDK_VERSION_HEADER = "SdkVersion";
+/**
+ * @private
+ * @static
+ * A member holding the language prefix for the sdk version header value
+ */
+TelemetryHandler.PRODUCT_NAME = "graph-js";
+/**
+ * @private
+ * @static
+ * A member holding the key for the feature usage metrics
+ */
+TelemetryHandler.FEATURE_USAGE_STRING = "featureUsage";
+//# sourceMappingURL=TelemetryHandler.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/MiddlewareFactory.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -2095,7 +2173,7 @@ class MiddlewareFactory {
     }
 }
 //# sourceMappingURL=MiddlewareFactory.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/ChaosStrategy.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/options/ChaosStrategy.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -2115,7 +2193,7 @@ var ChaosStrategy;
     ChaosStrategy[ChaosStrategy["RANDOM"] = 1] = "RANDOM";
 })(ChaosStrategy || (ChaosStrategy = {}));
 //# sourceMappingURL=ChaosStrategy.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/ChaosHandlerOptions.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/options/ChaosHandlerOptions.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -2144,19 +2222,20 @@ class ChaosHandlerOptions {
      * @param {any?} responseBody - The response body to be returned in the response
      * @returns An instance of ChaosHandlerOptions
      */
-    constructor(chaosStrategy = ChaosStrategy.RANDOM, statusMessage = "Some error Happened", statusCode, chaosPercentage, responseBody) {
+    constructor(chaosStrategy = ChaosStrategy.RANDOM, statusMessage = "Some error Happened", statusCode, chaosPercentage, responseBody, headers) {
         this.chaosStrategy = chaosStrategy;
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
         this.chaosPercentage = chaosPercentage !== undefined ? chaosPercentage : 10;
         this.responseBody = responseBody;
+        this.headers = headers;
         if (this.chaosPercentage > 100) {
             throw new Error("Error Pecentage can not be more than 100");
         }
     }
 }
 //# sourceMappingURL=ChaosHandlerOptions.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/options/ChaosHandlerData.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/options/ChaosHandlerData.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -2243,7 +2322,7 @@ const httpStatusCode = {
     511: "Network Authentication Required",
 };
 //# sourceMappingURL=ChaosHandlerData.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/middleware/ChaosHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/middleware/ChaosHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -2278,43 +2357,41 @@ class ChaosHandler {
     /**
      * Generates responseHeader
      * @private
-     * @param {number} statusCode - the status code to be returned for the request
+     * @param {ChaosHandlerOptions} chaosHandlerOptions - The ChaosHandlerOptions object
      * @param {string} requestID - request id
      * @param {string} requestDate - date of the request
      * @returns response Header
      */
-    createResponseHeaders(statusCode, requestID, requestDate) {
-        const responseHeader = new Headers();
+    createResponseHeaders(chaosHandlerOptions, requestID, requestDate) {
+        const responseHeader = chaosHandlerOptions.headers ? new Headers(chaosHandlerOptions.headers) : new Headers();
         responseHeader.append("Cache-Control", "no-store");
         responseHeader.append("request-id", requestID);
         responseHeader.append("client-request-id", requestID);
         responseHeader.append("x-ms-ags-diagnostic", "");
         responseHeader.append("Date", requestDate);
         responseHeader.append("Strict-Transport-Security", "");
-        if (statusCode === 429) {
+        if (chaosHandlerOptions.statusCode === 429) {
             // throttling case has to have a timeout scenario
-            responseHeader.append("retry-after", "300");
+            responseHeader.append("retry-after", "3");
         }
         return responseHeader;
     }
     /**
      * Generates responseBody
      * @private
-     * @param {number} statusCode - the status code to be returned for the request
-     * @param {string} statusMessage - the status message to be returned for the request
+     * @param {ChaosHandlerOptions} options - The ChaosHandlerOptions object
      * @param {string} requestID - request id
      * @param {string} requestDate - date of the request
-     * @param {any?} requestBody - the request body to be returned for the request
-     * @returns response body
+     *  * @returns response body
      */
-    createResponseBody(statusCode, statusMessage, requestID, requestDate, responseBody) {
-        if (responseBody) {
-            return responseBody;
+    createResponseBody(chaosHandlerOptions, requestID, requestDate) {
+        if (chaosHandlerOptions.responseBody) {
+            return chaosHandlerOptions.responseBody;
         }
         let body;
-        if (statusCode >= 400) {
-            const codeMessage = httpStatusCode[statusCode];
-            const errMessage = statusMessage;
+        if (chaosHandlerOptions.statusCode >= 400) {
+            const codeMessage = httpStatusCode[chaosHandlerOptions.statusCode];
+            const errMessage = chaosHandlerOptions.statusMessage;
             body = {
                 error: {
                     code: codeMessage,
@@ -2338,22 +2415,13 @@ class ChaosHandler {
      * @param {Context} context - Contains the context of the request
      */
     createResponse(chaosHandlerOptions, context) {
-        try {
-            let responseBody;
-            let responseHeader;
-            let requestID;
-            let requestDate;
-            const requestURL = context.request;
-            requestID = generateUUID();
-            requestDate = new Date();
-            responseHeader = this.createResponseHeaders(chaosHandlerOptions.statusCode, requestID, requestDate.toString());
-            responseBody = this.createResponseBody(chaosHandlerOptions.statusCode, chaosHandlerOptions.statusMessage, requestID, requestDate.toString(), chaosHandlerOptions.responseBody);
-            const init = { url: requestURL, status: chaosHandlerOptions.statusCode, statusText: chaosHandlerOptions.statusMessage, headers: responseHeader };
-            context.response = new Response(responseBody, init);
-        }
-        catch (error) {
-            throw error;
-        }
+        const requestURL = context.request;
+        const requestID = generateUUID();
+        const requestDate = new Date();
+        const responseHeader = this.createResponseHeaders(chaosHandlerOptions, requestID, requestDate.toString());
+        const responseBody = this.createResponseBody(chaosHandlerOptions, requestID, requestDate.toString());
+        const init = { url: requestURL, status: chaosHandlerOptions.statusCode, statusText: chaosHandlerOptions.statusMessage, headers: responseHeader };
+        context.response = new Response(typeof responseBody === "string" ? responseBody : JSON.stringify(responseBody), init);
     }
     /**
      * Decides whether to send the request to the graph or not
@@ -2364,17 +2432,12 @@ class ChaosHandler {
      */
     sendRequest(chaosHandlerOptions, context) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                this.setStatusCode(chaosHandlerOptions, context.request, context.options.method);
-                if (!chaosHandlerOptions.statusCode) {
-                    yield this.nextMiddleware.execute(context);
-                }
-                else {
-                    this.createResponse(chaosHandlerOptions, context);
-                }
+            this.setStatusCode(chaosHandlerOptions, context.request, context.options.method);
+            if ((chaosHandlerOptions.chaosStrategy === ChaosStrategy.MANUAL && !this.nextMiddleware) || Math.floor(Math.random() * 100) < chaosHandlerOptions.chaosPercentage) {
+                this.createResponse(chaosHandlerOptions, context);
             }
-            catch (error) {
-                throw error;
+            else if (this.nextMiddleware) {
+                yield this.nextMiddleware.execute(context);
             }
         });
     }
@@ -2385,13 +2448,8 @@ class ChaosHandler {
      * @returns a random status code from a given set of status codes
      */
     getRandomStatusCode(requestMethod) {
-        try {
-            const statusCodeArray = methodStatusCode[requestMethod];
-            return statusCodeArray[Math.floor(Math.random() * statusCodeArray.length)];
-        }
-        catch (error) {
-            throw error;
-        }
+        const statusCodeArray = methodStatusCode[requestMethod];
+        return statusCodeArray[Math.floor(Math.random() * statusCodeArray.length)];
     }
     /**
      * To fetch the relative URL out of the complete URL using a predefined regex pattern
@@ -2415,43 +2473,36 @@ class ChaosHandler {
      * @param {string} requestMethod - the API method for the request
      */
     setStatusCode(chaosHandlerOptions, requestURL, requestMethod) {
-        try {
-            if (chaosHandlerOptions.chaosStrategy === ChaosStrategy.MANUAL) {
-                if (chaosHandlerOptions.statusCode === undefined) {
-                    // manual mode with no status code, can be a global level or request level without statusCode
-                    const relativeURL = this.getRelativeURL(requestURL);
-                    if (this.manualMap.get(relativeURL) !== undefined) {
-                        // checking Manual Map for exact match
-                        if (this.manualMap.get(relativeURL).get(requestMethod) !== undefined) {
-                            chaosHandlerOptions.statusCode = this.manualMap.get(relativeURL).get(requestMethod);
-                        }
-                        // else statusCode would be undefined
+        if (chaosHandlerOptions.chaosStrategy === ChaosStrategy.MANUAL) {
+            if (chaosHandlerOptions.statusCode === undefined) {
+                // manual mode with no status code, can be a global level or request level without statusCode
+                const relativeURL = this.getRelativeURL(requestURL);
+                if (this.manualMap.get(relativeURL) !== undefined) {
+                    // checking Manual Map for exact match
+                    if (this.manualMap.get(relativeURL).get(requestMethod) !== undefined) {
+                        chaosHandlerOptions.statusCode = this.manualMap.get(relativeURL).get(requestMethod);
                     }
-                    else {
-                        // checking for regex match if exact match doesn't work
-                        this.manualMap.forEach((value, key) => {
-                            const regexURL = new RegExp(key + "$");
-                            if (regexURL.test(relativeURL)) {
-                                if (this.manualMap.get(key).get(requestMethod) !== undefined) {
-                                    chaosHandlerOptions.statusCode = this.manualMap.get(key).get(requestMethod);
-                                }
-                                // else statusCode would be undefined
+                    // else statusCode would be undefined
+                }
+                else {
+                    // checking for regex match if exact match doesn't work
+                    this.manualMap.forEach((value, key) => {
+                        const regexURL = new RegExp(key + "$");
+                        if (regexURL.test(relativeURL)) {
+                            if (this.manualMap.get(key).get(requestMethod) !== undefined) {
+                                chaosHandlerOptions.statusCode = this.manualMap.get(key).get(requestMethod);
                             }
-                        });
-                    }
-                    // Case of redirection or request url not in map ---> statusCode would be undefined
+                            // else statusCode would be undefined
+                        }
+                    });
                 }
-            }
-            else {
-                // Handling the case of Random here
-                if (Math.floor(Math.random() * 100) < chaosHandlerOptions.chaosPercentage) {
-                    chaosHandlerOptions.statusCode = this.getRandomStatusCode(requestMethod);
-                }
-                // else statusCode would be undefined
+                // Case of redirection or request url not in map ---> statusCode would be undefined
             }
         }
-        catch (error) {
-            throw error;
+        else {
+            // Handling the case of Random here
+            chaosHandlerOptions.statusCode = this.getRandomStatusCode(requestMethod);
+            // else statusCode would be undefined
         }
     }
     /**
@@ -2479,13 +2530,8 @@ class ChaosHandler {
      */
     execute(context) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const chaosHandlerOptions = this.getOptions(context);
-                return yield this.sendRequest(chaosHandlerOptions, context);
-            }
-            catch (error) {
-                throw error;
-            }
+            const chaosHandlerOptions = this.getOptions(context);
+            return yield this.sendRequest(chaosHandlerOptions, context);
         });
     }
     /**
@@ -2499,7 +2545,222 @@ class ChaosHandler {
     }
 }
 //# sourceMappingURL=ChaosHandler.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Range.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/ResponseType.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+/**
+ * @enum
+ * Enum for ResponseType values
+ * @property {string} ARRAYBUFFER - To download response content as an [ArrayBuffer]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer}
+ * @property {string} BLOB - To download content as a [binary/blob] {@link https://developer.mozilla.org/en-US/docs/Web/API/Blob}
+ * @property {string} DOCUMENT - This downloads content as a document or stream
+ * @property {string} JSON - To download response content as a json
+ * @property {string} STREAM - To download response as a [stream]{@link https://nodejs.org/api/stream.html}
+ * @property {string} TEXT - For downloading response as a text
+ */
+var ResponseType;
+(function (ResponseType) {
+    ResponseType["ARRAYBUFFER"] = "arraybuffer";
+    ResponseType["BLOB"] = "blob";
+    ResponseType["DOCUMENT"] = "document";
+    ResponseType["JSON"] = "json";
+    ResponseType["RAW"] = "raw";
+    ResponseType["STREAM"] = "stream";
+    ResponseType["TEXT"] = "text";
+})(ResponseType || (ResponseType = {}));
+//# sourceMappingURL=ResponseType.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/GraphResponseHandler.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+
+
+/**
+ * @enum
+ * Enum for document types
+ * @property {string} TEXT_HTML - The text/html content type
+ * @property {string} TEXT_XML - The text/xml content type
+ * @property {string} APPLICATION_XML - The application/xml content type
+ * @property {string} APPLICATION_XHTML - The application/xhml+xml content type
+ */
+var DocumentType;
+(function (DocumentType) {
+    DocumentType["TEXT_HTML"] = "text/html";
+    DocumentType["TEXT_XML"] = "text/xml";
+    DocumentType["APPLICATION_XML"] = "application/xml";
+    DocumentType["APPLICATION_XHTML"] = "application/xhtml+xml";
+})(DocumentType || (DocumentType = {}));
+/**
+ * @enum
+ * Enum for Content types
+ * @property {string} TEXT_PLAIN - The text/plain content type
+ * @property {string} APPLICATION_JSON - The application/json content type
+ */
+var ContentType;
+(function (ContentType) {
+    ContentType["TEXT_PLAIN"] = "text/plain";
+    ContentType["APPLICATION_JSON"] = "application/json";
+})(ContentType || (ContentType = {}));
+/**
+ * @enum
+ * Enum for Content type regex
+ * @property {string} DOCUMENT - The regex to match document content types
+ * @property {string} IMAGE - The regex to match image content types
+ */
+var ContentTypeRegexStr;
+(function (ContentTypeRegexStr) {
+    ContentTypeRegexStr["DOCUMENT"] = "^(text\\/(html|xml))|(application\\/(xml|xhtml\\+xml))$";
+    ContentTypeRegexStr["IMAGE"] = "^image\\/.+";
+})(ContentTypeRegexStr || (ContentTypeRegexStr = {}));
+/**
+ * @class
+ * Class for GraphResponseHandler
+ */
+class GraphResponseHandler {
+    /**
+     * @private
+     * @static
+     * To parse Document response
+     * @param {Response} rawResponse - The response object
+     * @param {DocumentType} type - The type to which the document needs to be parsed
+     * @returns A promise that resolves to a document content
+     */
+    static parseDocumentResponse(rawResponse, type) {
+        if (typeof DOMParser !== "undefined") {
+            return new Promise((resolve, reject) => {
+                rawResponse.text().then((xmlString) => {
+                    try {
+                        const parser = new DOMParser();
+                        const xmlDoc = parser.parseFromString(xmlString, type);
+                        resolve(xmlDoc);
+                    }
+                    catch (error) {
+                        reject(error);
+                    }
+                });
+            });
+        }
+        else {
+            return Promise.resolve(rawResponse.body);
+        }
+    }
+    /**
+     * @private
+     * @static
+     * @async
+     * To convert the native Response to response content
+     * @param {Response} rawResponse - The response object
+     * @param {ResponseType} [responseType] - The response type value
+     * @returns A promise that resolves to the converted response content
+     */
+    static convertResponse(rawResponse, responseType) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (rawResponse.status === 204) {
+                // NO CONTENT
+                return Promise.resolve();
+            }
+            let responseValue;
+            const contentType = rawResponse.headers.get("Content-type");
+            switch (responseType) {
+                case ResponseType.ARRAYBUFFER:
+                    responseValue = yield rawResponse.arrayBuffer();
+                    break;
+                case ResponseType.BLOB:
+                    responseValue = yield rawResponse.blob();
+                    break;
+                case ResponseType.DOCUMENT:
+                    responseValue = yield GraphResponseHandler.parseDocumentResponse(rawResponse, DocumentType.TEXT_XML);
+                    break;
+                case ResponseType.JSON:
+                    responseValue = yield rawResponse.json();
+                    break;
+                case ResponseType.STREAM:
+                    responseValue = yield Promise.resolve(rawResponse.body);
+                    break;
+                case ResponseType.TEXT:
+                    responseValue = yield rawResponse.text();
+                    break;
+                default:
+                    if (contentType !== null) {
+                        const mimeType = contentType.split(";")[0];
+                        if (new RegExp(ContentTypeRegexStr.DOCUMENT).test(mimeType)) {
+                            responseValue = yield GraphResponseHandler.parseDocumentResponse(rawResponse, mimeType);
+                        }
+                        else if (new RegExp(ContentTypeRegexStr.IMAGE).test(mimeType)) {
+                            responseValue = rawResponse.blob();
+                        }
+                        else if (mimeType === ContentType.TEXT_PLAIN) {
+                            responseValue = yield rawResponse.text();
+                        }
+                        else if (mimeType === ContentType.APPLICATION_JSON) {
+                            responseValue = yield rawResponse.json();
+                        }
+                        else {
+                            responseValue = Promise.resolve(rawResponse.body);
+                        }
+                    }
+                    else {
+                        /**
+                         * RFC specification {@link https://tools.ietf.org/html/rfc7231#section-3.1.1.5} says:
+                         *  A sender that generates a message containing a payload body SHOULD
+                         *  generate a Content-Type header field in that message unless the
+                         *  intended media type of the enclosed representation is unknown to the
+                         *  sender.  If a Content-Type header field is not present, the recipient
+                         *  MAY either assume a media type of "application/octet-stream"
+                         *  ([RFC2046], Section 4.5.1) or examine the data to determine its type.
+                         *
+                         *  So assuming it as a stream type so returning the body.
+                         */
+                        responseValue = Promise.resolve(rawResponse.body);
+                    }
+                    break;
+            }
+            return responseValue;
+        });
+    }
+    /**
+     * @public
+     * @static
+     * @async
+     * To get the parsed response
+     * @param {Response} rawResponse - The response object
+     * @param {ResponseType} [responseType] - The response type value
+     * @param {GraphRequestCallback} [callback] - The graph request callback function
+     * @returns The parsed response
+     */
+    static getResponse(rawResponse, responseType, callback) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (responseType === ResponseType.RAW) {
+                return Promise.resolve(rawResponse);
+            }
+            else {
+                const response = yield GraphResponseHandler.convertResponse(rawResponse, responseType);
+                if (rawResponse.ok) {
+                    // Status Code 2XX
+                    if (typeof callback === "function") {
+                        callback(null, response);
+                    }
+                    else {
+                        return response;
+                    }
+                }
+                else {
+                    // NOT OK Response
+                    throw response;
+                }
+            }
+        });
+    }
+}
+//# sourceMappingURL=GraphResponseHandler.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/tasks/FileUploadTask/Range.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -2528,13 +2789,81 @@ class Range {
     }
 }
 //# sourceMappingURL=Range.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/LargeFileUploadTask.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/tasks/FileUploadTask/UploadResult.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
+/**
+ * Class representing a successful file upload result
+ */
+class UploadResult {
+    /**
+     * @public
+     * @param {responseBody} responsebody - The response body from the completed upload response
+     * @param {location} location - The location value from the headers from the completed upload response
+     */
+    constructor(responseBody, location) {
+        // Response body or the location parameter can be undefined.
+        this._location = location;
+        this._responseBody = responseBody;
+    }
+    /**
+     * @public
+     * Get of the location value.
+     * Location value is looked up in the response header
+     */
+    get location() {
+        return this._location;
+    }
+    /**
+     * @public
+     * Set the location value
+     * Location value is looked up in the response header
+     */
+    set location(location) {
+        this._location = location;
+    }
+    /**
+     * @public
+     * Get The response body from the completed upload response
+     */
+    get responseBody() {
+        return this._responseBody;
+    }
+    /**
+     * @public
+     * Set the response body from the completed upload response
+     */
+    set responseBody(responseBody) {
+        this._responseBody = responseBody;
+    }
+    /**
+     * @public
+     * @param {responseBody} responseBody - The response body from the completed upload response
+     * @param {responseHeaders} responseHeaders - The headers from the completed upload response
+     */
+    static CreateUploadResult(responseBody, responseHeaders) {
+        return new UploadResult(responseBody, responseHeaders.get("location"));
+    }
+}
+//# sourceMappingURL=UploadResult.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/tasks/LargeFileUploadTask.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+
+/**
+ * @module LargeFileUploadTask
+ */
+
+
+
 
 
 /**
@@ -2559,8 +2888,14 @@ class LargeFileUploadTask {
          */
         this.DEFAULT_FILE_SIZE = 5 * 1024 * 1024;
         this.client = client;
+        if (!file.sliceFile) {
+            throw new GraphClientError("Please pass the FileUpload object, StreamUpload object or any custom implementation of the FileObject interface");
+        }
+        else {
+            this.file = file;
+        }
         this.file = file;
-        if (options.rangeSize === undefined) {
+        if (!options.rangeSize) {
             options.rangeSize = this.DEFAULT_FILE_SIZE;
         }
         this.options = options;
@@ -2579,20 +2914,16 @@ class LargeFileUploadTask {
      */
     static createUploadSession(client, requestUrl, payload, headers = {}) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const session = yield client
-                    .api(requestUrl)
-                    .headers(headers)
-                    .post(payload);
-                const largeFileUploadSession = {
-                    url: session.uploadUrl,
-                    expiry: new Date(session.expirationDateTime),
-                };
-                return largeFileUploadSession;
-            }
-            catch (err) {
-                throw err;
-            }
+            const session = yield client
+                .api(requestUrl)
+                .headers(headers)
+                .post(payload);
+            const largeFileUploadSession = {
+                url: session.uploadUrl,
+                expiry: new Date(session.expirationDateTime),
+                isCancelled: false,
+            };
+            return largeFileUploadSession;
         });
     }
     /**
@@ -2641,14 +2972,18 @@ class LargeFileUploadTask {
         return new Range(minVal, maxValue);
     }
     /**
+     * @deprecated This function has been moved into FileObject interface.
      * @public
      * Slices the file content to the given range
      * @param {Range} range - The range value
      * @returns The sliced ArrayBuffer or Blob
      */
     sliceFile(range) {
-        const blob = this.file.content.slice(range.minValue, range.maxValue + 1);
-        return blob;
+        console.warn("The LargeFileUploadTask.sliceFile() function has been deprecated and moved into the FileObject interface.");
+        if (this.file.content instanceof ArrayBuffer || this.file.content instanceof Blob || this.file.content instanceof Buffer) {
+            return this.file.content.slice(range.minValue, range.maxValue + 1);
+        }
+        throw new GraphClientError("The LargeFileUploadTask.sliceFile() function expects only Blob, ArrayBuffer or Buffer file content. Please note that the sliceFile() function is deprecated.");
     }
     /**
      * @public
@@ -2658,27 +2993,39 @@ class LargeFileUploadTask {
      */
     upload() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                while (true) {
-                    const nextRange = this.getNextRange();
-                    if (nextRange.maxValue === -1) {
-                        const err = new Error("Task with which you are trying to upload is already completed, Please check for your uploaded file");
-                        err.name = "Invalid Session";
-                        throw err;
-                    }
-                    const fileSlice = this.sliceFile(nextRange);
-                    const response = yield this.uploadSlice(fileSlice, nextRange, this.file.size);
-                    // Upon completion of upload process incase of onedrive, driveItem is returned, which contains id
-                    if (response.id !== undefined) {
-                        return response;
-                    }
-                    else {
-                        this.updateTaskStatus(response);
-                    }
+            const uploadEventHandlers = this.options && this.options.uploadEventHandlers;
+            while (!this.uploadSession.isCancelled) {
+                const nextRange = this.getNextRange();
+                if (nextRange.maxValue === -1) {
+                    const err = new Error("Task with which you are trying to upload is already completed, Please check for your uploaded file");
+                    err.name = "Invalid Session";
+                    throw err;
                 }
-            }
-            catch (err) {
-                throw err;
+                const fileSlice = yield this.file.sliceFile(nextRange);
+                const rawResponse = yield this.uploadSliceGetRawResponse(fileSlice, nextRange, this.file.size);
+                if (!rawResponse) {
+                    throw new GraphClientError("Something went wrong! Large file upload slice response is null.");
+                }
+                const responseBody = yield GraphResponseHandler.getResponse(rawResponse);
+                /**
+                 * (rawResponse.status === 201) -> This condition is applicable for OneDrive, PrintDocument and Outlook APIs.
+                 * (rawResponse.status === 200 && responseBody.id) -> This additional condition is applicable only for OneDrive API.
+                 */
+                if (rawResponse.status === 201 || (rawResponse.status === 200 && responseBody.id)) {
+                    const uploadResult = UploadResult.CreateUploadResult(responseBody, rawResponse.headers);
+                    return uploadResult;
+                }
+                /* Handling the API issue where the case of Outlook upload response property -'nextExpectedRanges'  is not uniform.
+                 * https://github.com/microsoftgraph/msgraph-sdk-serviceissues/issues/39
+                 */
+                const res = {
+                    expirationDateTime: responseBody.expirationDateTime || responseBody.ExpirationDateTime,
+                    nextExpectedRanges: responseBody.NextExpectedRanges || responseBody.nextExpectedRanges,
+                };
+                this.updateTaskStatus(res);
+                if (uploadEventHandlers && uploadEventHandlers.progress) {
+                    uploadEventHandlers.progress(nextRange, uploadEventHandlers.extraCallbackParam);
+                }
             }
         });
     }
@@ -2689,21 +3036,38 @@ class LargeFileUploadTask {
      * @param {ArrayBuffer | Blob | File} fileSlice - The file slice
      * @param {Range} range - The range value
      * @param {number} totalSize - The total size of a complete file
+     * @returns The response body of the upload slice result
      */
     uploadSlice(fileSlice, range, totalSize) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.client
-                    .api(this.uploadSession.url)
-                    .headers({
-                    "Content-Length": `${range.maxValue - range.minValue + 1}`,
-                    "Content-Range": `bytes ${range.minValue}-${range.maxValue}/${totalSize}`,
-                })
-                    .put(fileSlice);
-            }
-            catch (err) {
-                throw err;
-            }
+            return yield this.client
+                .api(this.uploadSession.url)
+                .headers({
+                "Content-Length": `${range.maxValue - range.minValue + 1}`,
+                "Content-Range": `bytes ${range.minValue}-${range.maxValue}/${totalSize}`,
+            })
+                .put(fileSlice);
+        });
+    }
+    /**
+     * @public
+     * @async
+     * Uploads given slice to the server
+     * @param {unknown} fileSlice - The file slice
+     * @param {Range} range - The range value
+     * @param {number} totalSize - The total size of a complete file
+     * @returns The raw response of the upload slice result
+     */
+    uploadSliceGetRawResponse(fileSlice, range, totalSize) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.client
+                .api(this.uploadSession.url)
+                .headers({
+                "Content-Length": `${range.maxValue - range.minValue + 1}`,
+                "Content-Range": `bytes ${range.minValue}-${range.maxValue}/${totalSize}`,
+            })
+                .responseType(ResponseType.RAW)
+                .put(fileSlice);
         });
     }
     /**
@@ -2714,12 +3078,14 @@ class LargeFileUploadTask {
      */
     cancel() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.client.api(this.uploadSession.url).delete();
+            const cancelResponse = yield this.client
+                .api(this.uploadSession.url)
+                .responseType(ResponseType.RAW)
+                .delete();
+            if (cancelResponse.status === 204) {
+                this.uploadSession.isCancelled = true;
             }
-            catch (err) {
-                throw err;
-            }
+            return cancelResponse;
         });
     }
     /**
@@ -2730,14 +3096,9 @@ class LargeFileUploadTask {
      */
     getStatus() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const response = yield this.client.api(this.uploadSession.url).get();
-                this.updateTaskStatus(response);
-                return response;
-            }
-            catch (err) {
-                throw err;
-            }
+            const response = yield this.client.api(this.uploadSession.url).get();
+            this.updateTaskStatus(response);
+            return response;
         });
     }
     /**
@@ -2748,18 +3109,63 @@ class LargeFileUploadTask {
      */
     resume() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield this.getStatus();
-                return yield this.upload();
-            }
-            catch (err) {
-                throw err;
-            }
+            yield this.getStatus();
+            return yield this.upload();
         });
+    }
+    /**
+     * @public
+     * @async
+     * Get the upload session information
+     * @returns The large file upload session
+     */
+    getUploadSession() {
+        return this.uploadSession;
     }
 }
 //# sourceMappingURL=LargeFileUploadTask.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/OneDriveLargeFileUploadTaskUtil.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/tasks/FileUploadTask/FileObjectClasses/FileUpload.js
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
+
+/**
+ * @class
+ * Class used for creating LargeFileUploadTask fileobject.
+ * This class accepts files of type ArrayBuffer, Blob, Buffer.
+ */
+class FileUpload {
+    /**
+     * @public
+     * @constructor
+     * @param {ArrayBuffer | Blob | Buffer} content - The file to be uploaded
+     * @param {string} name - The name of the file to be uploaded
+     * @param {number} size - The total size of the file to be uploaded
+     * @returns An instance of the FileUpload class
+     */
+    constructor(content, name, size) {
+        this.content = content;
+        this.name = name;
+        this.size = size;
+        if (!content || !name || !size) {
+            throw new GraphClientError("Please provide the Readable Stream content, name of the file and size of the file");
+        }
+    }
+    /**
+     * @public
+     * Slices the file content to the given range
+     * @param {Range} range - The range value
+     * @returns The sliced file part
+     */
+    sliceFile(range) {
+        return this.content.slice(range.minValue, range.maxValue + 1);
+    }
+}
+//# sourceMappingURL=FileUpload.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/tasks/OneDriveLargeFileUploadTaskUtil.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -2803,13 +3209,18 @@ const getValidRangeSize = (rangeSize = DEFAULT_FILE_SIZE) => {
     return roundTo320KB(rangeSize);
 };
 //# sourceMappingURL=OneDriveLargeFileUploadTaskUtil.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/OneDriveLargeFileUploadTask.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/tasks/OneDriveLargeFileUploadTask.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
+
+/**
+ * @module OneDriveLargeFileUploadTask
+ */
+
 
 
 
@@ -2870,6 +3281,9 @@ class OneDriveLargeFileUploadTask extends LargeFileUploadTask {
      */
     static create(client, file, options) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (!client || !file || !options) {
+                throw new GraphClientError("Please provide the Graph client instance, file object and OneDriveLargeFileUploadOptions value");
+            }
             const name = options.fileName;
             let content;
             let size;
@@ -2886,22 +3300,36 @@ class OneDriveLargeFileUploadTask extends LargeFileUploadTask {
                 size = b.byteLength - b.byteOffset;
                 content = b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength);
             }
-            try {
-                const requestUrl = OneDriveLargeFileUploadTask.constructCreateSessionUrl(options.fileName, options.path);
-                const session = yield OneDriveLargeFileUploadTask.createUploadSession(client, requestUrl, options.fileName);
-                const rangeSize = getValidRangeSize(options.rangeSize);
-                const fileObj = {
-                    name,
-                    content,
-                    size,
-                };
-                return new OneDriveLargeFileUploadTask(client, fileObj, session, {
-                    rangeSize,
-                });
+            const fileObj = new FileUpload(content, name, size);
+            return this.createTaskWithFileObject(client, fileObj, options);
+        });
+    }
+    /**
+     * @public
+     * @static
+     * @async
+     * Creates a OneDriveLargeFileUploadTask
+     * @param {Client} client - The GraphClient instance
+     * @param {FileObject} file - FileObject instance
+     * @param {OneDriveLargeFileUploadOptions} options - The options for upload task
+     * @returns The promise that will be resolves to OneDriveLargeFileUploadTask instance
+     */
+    static createTaskWithFileObject(client, fileObject, options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!client || !fileObject || !options) {
+                throw new GraphClientError("Please provide the Graph client instance, FileObject interface implementation and OneDriveLargeFileUploadOptions value");
             }
-            catch (err) {
-                throw err;
-            }
+            const requestUrl = OneDriveLargeFileUploadTask.constructCreateSessionUrl(options.fileName, options.path);
+            const uploadSessionPayload = {
+                fileName: options.fileName,
+                conflictBehavior: options.conflictBehavior,
+            };
+            const session = yield OneDriveLargeFileUploadTask.createUploadSession(client, requestUrl, uploadSessionPayload);
+            const rangeSize = getValidRangeSize(options.rangeSize);
+            return new OneDriveLargeFileUploadTask(client, fileObject, session, {
+                rangeSize,
+                uploadEventHandlers: options.uploadEventHandlers,
+            });
         });
     }
     /**
@@ -2912,46 +3340,38 @@ class OneDriveLargeFileUploadTask extends LargeFileUploadTask {
      * @param {Client} client - The GraphClient instance
      * @param {string} requestUrl - The URL to create the upload session
      * @param {string} fileName - The name of a file to upload, (with extension)
+     * @param {string} conflictBehavior - Conflict behaviour option. Default is 'rename'
      * @returns The promise that resolves to LargeFileUploadSession
      */
-    static createUploadSession(client, requestUrl, fileName) {
+    static createUploadSession(client, requestUrl, payloadOptions) {
         const _super = Object.create(null, {
             createUploadSession: { get: () => super.createUploadSession }
         });
         return __awaiter(this, void 0, void 0, function* () {
             const payload = {
                 item: {
-                    "@microsoft.graph.conflictBehavior": "rename",
-                    name: fileName,
+                    "@microsoft.graph.conflictBehavior": (payloadOptions === null || payloadOptions === void 0 ? void 0 : payloadOptions.conflictBehavior) || "rename",
+                    name: payloadOptions === null || payloadOptions === void 0 ? void 0 : payloadOptions.fileName,
                 },
             };
-            try {
-                return _super.createUploadSession.call(this, client, requestUrl, payload);
-            }
-            catch (err) {
-                throw err;
-            }
+            return _super.createUploadSession.call(this, client, requestUrl, payload);
         });
     }
     /**
      * @public
      * Commits upload session to end uploading
      * @param {string} requestUrl - The URL to commit the upload session
+     * @param {string} conflictBehavior - Conflict behaviour option. Default is 'rename'
      * @returns The promise resolves to committed response
      */
-    commit(requestUrl) {
+    commit(requestUrl, conflictBehavior = "rename") {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const payload = {
-                    name: this.file.name,
-                    "@microsoft.graph.conflictBehavior": "rename",
-                    "@microsoft.graph.sourceUrl": this.uploadSession.url,
-                };
-                return yield this.client.api(requestUrl).put(payload);
-            }
-            catch (err) {
-                throw err;
-            }
+            const payload = {
+                name: this.file.name,
+                "@microsoft.graph.conflictBehavior": conflictBehavior,
+                "@microsoft.graph.sourceUrl": this.uploadSession.url,
+            };
+            return yield this.client.api(requestUrl).put(payload);
         });
     }
 }
@@ -2962,7 +3382,129 @@ class OneDriveLargeFileUploadTask extends LargeFileUploadTask {
  */
 OneDriveLargeFileUploadTask.DEFAULT_UPLOAD_PATH = "/";
 //# sourceMappingURL=OneDriveLargeFileUploadTask.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/tasks/PageIterator.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/tasks/FileUploadTask/FileObjectClasses/StreamUpload.js
+
+
+/**
+ * @class
+ * FileObject class for Readable Stream upload
+ */
+class StreamUpload {
+    constructor(content, name, size) {
+        this.content = content;
+        this.name = name;
+        this.size = size;
+        if (!content || !name || !size) {
+            throw new GraphClientError("Please provide the Readable Stream content, name of the file and size of the file");
+        }
+    }
+    /**
+     * @public
+     * Slices the file content to the given range
+     * @param {Range} range - The range value
+     * @returns The sliced file part
+     */
+    sliceFile(range) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let rangeSize = range.maxValue - range.minValue + 1;
+            /* readable.readable Is true if it is safe to call readable.read(),
+             * which means the stream has not been destroyed or emitted 'error' or 'end'
+             */
+            const bufs = [];
+            /**
+             * The sliceFile reads the first `rangeSize` number of bytes from the stream.
+             * The previousSlice property is used to seek the range of bytes in the previous slice.
+             * Suppose, the sliceFile reads bytes from `10 - 20` from the stream but the upload of this slice fails.
+             * When the user resumes, the stream will have bytes from position 21.
+             * The previousSlice.Range is used to compare if the requested range is cached in the previousSlice property or present in the Readable Stream.
+             */
+            if (this.previousSlice) {
+                if (range.minValue < this.previousSlice.range.minValue) {
+                    throw new GraphClientError("An error occurred while uploading the stream. Please restart the stream upload from the first byte of the file.");
+                }
+                if (range.minValue < this.previousSlice.range.maxValue) {
+                    const previousRangeMin = this.previousSlice.range.minValue;
+                    const previousRangeMax = this.previousSlice.range.maxValue;
+                    // Check if the requested range is same as previously sliced range
+                    if (range.minValue === previousRangeMin && range.maxValue === previousRangeMax) {
+                        return this.previousSlice.fileSlice;
+                    }
+                    /**
+                     * The following check considers a possibility
+                     * of an upload failing after some of the bytes of the previous slice
+                     * were successfully uploaded.
+                     * Example - Previous slice range - `10 - 20`. Current requested range is `15 - 20`.
+                     */
+                    if (range.maxValue === previousRangeMax) {
+                        return this.previousSlice.fileSlice.slice(range.minValue, range.maxValue + 1);
+                    }
+                    /**
+                     * If an upload fails after some of the bytes of the previous slice
+                     * were successfully uploaded and the new Range.Maximum is greater than the previous Range.Maximum
+                     * Example - Previous slice range - `10 - 20`. Current requested range is `15 - 25`,
+                     * then read the bytes from position 15 to 20 from previousSlice.fileSlice and read bytes from position 21 to 25 from the Readable Stream
+                     */
+                    bufs.push(this.previousSlice.fileSlice.slice(range.minValue, previousRangeMax + 1));
+                    rangeSize = range.maxValue - previousRangeMax;
+                }
+            }
+            if (this.content && this.content.readable) {
+                if (this.content.readableLength >= rangeSize) {
+                    bufs.push(this.content.read(rangeSize));
+                }
+                else {
+                    bufs.push(yield this.readNBytesFromStream(rangeSize));
+                }
+            }
+            else {
+                throw new GraphClientError("Stream is not readable.");
+            }
+            const slicedChunk = Buffer.concat(bufs);
+            this.previousSlice = { fileSlice: slicedChunk, range };
+            return slicedChunk;
+        });
+    }
+    /**
+     * @private
+     * Reads the specified byte size from the stream
+     * @param {number} size - The size of bytes to be read
+     * @returns Buffer with the given length of data.
+     */
+    readNBytesFromStream(size) {
+        return new Promise((resolve, reject) => {
+            const chunks = [];
+            let remainder = size;
+            let length = 0;
+            this.content.on("end", () => {
+                if (remainder > 0) {
+                    return reject(new GraphClientError("Stream ended before reading required range size"));
+                }
+            });
+            this.content.on("readable", () => {
+                /**
+                 * (chunk = this.content.read(size)) can return null if size of stream is less than 'size' parameter.
+                 * Read the remainder number of bytes from the stream iteratively as they are available.
+                 */
+                let chunk;
+                while (length < size && (chunk = this.content.read(remainder)) !== null) {
+                    length += chunk.length;
+                    chunks.push(chunk);
+                    if (remainder > 0) {
+                        remainder = size - length;
+                    }
+                }
+                if (length === size) {
+                    return resolve(Buffer.concat(chunks));
+                }
+                if (!this.content || !this.content.readable) {
+                    return reject(new GraphClientError("Error encountered while reading the stream during the upload"));
+                }
+            });
+        });
+    }
+}
+//# sourceMappingURL=StreamUpload.js.map
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/tasks/PageIterator.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -3018,27 +3560,22 @@ class PageIterator {
      */
     fetchAndUpdateNextPageData() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let graphRequest = this.client.api(this.nextLink);
-                if (this.requestOptions) {
-                    if (this.requestOptions.headers) {
-                        graphRequest = graphRequest.headers(this.requestOptions.headers);
-                    }
-                    if (this.requestOptions.middlewareOptions) {
-                        graphRequest = graphRequest.middlewareOptions(this.requestOptions.middlewareOptions);
-                    }
-                    if (this.requestOptions.options) {
-                        graphRequest = graphRequest.options(this.requestOptions.options);
-                    }
+            let graphRequest = this.client.api(this.nextLink);
+            if (this.requestOptions) {
+                if (this.requestOptions.headers) {
+                    graphRequest = graphRequest.headers(this.requestOptions.headers);
                 }
-                const response = yield graphRequest.get();
-                this.collection = response.value;
-                this.nextLink = response["@odata.nextLink"];
-                this.deltaLink = response["@odata.deltaLink"];
+                if (this.requestOptions.middlewareOptions) {
+                    graphRequest = graphRequest.middlewareOptions(this.requestOptions.middlewareOptions);
+                }
+                if (this.requestOptions.options) {
+                    graphRequest = graphRequest.options(this.requestOptions.options);
+                }
             }
-            catch (error) {
-                throw error;
-            }
+            const response = yield graphRequest.get();
+            this.collection = response.value;
+            this.nextLink = response["@odata.nextLink"];
+            this.deltaLink = response["@odata.deltaLink"];
         });
     }
     /**
@@ -3058,23 +3595,18 @@ class PageIterator {
      */
     iterate() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let advance = this.iterationHelper();
-                while (advance) {
-                    if (this.nextLink !== undefined) {
-                        yield this.fetchAndUpdateNextPageData();
-                        advance = this.iterationHelper();
-                    }
-                    else {
-                        advance = false;
-                    }
+            let advance = this.iterationHelper();
+            while (advance) {
+                if (this.nextLink !== undefined) {
+                    yield this.fetchAndUpdateNextPageData();
+                    advance = this.iterationHelper();
                 }
-                if (this.nextLink === undefined && this.collection.length === 0) {
-                    this.complete = true;
+                else {
+                    advance = false;
                 }
             }
-            catch (error) {
-                throw error;
+            if (this.nextLink === undefined && this.collection.length === 0) {
+                this.complete = true;
             }
         });
     }
@@ -3087,12 +3619,7 @@ class PageIterator {
      */
     resume() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return this.iterate();
-            }
-            catch (error) {
-                throw error;
-            }
+            return this.iterate();
         });
     }
     /**
@@ -3105,12 +3632,16 @@ class PageIterator {
     }
 }
 //# sourceMappingURL=PageIterator.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/CustomAuthenticationProvider.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/CustomAuthenticationProvider.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
+ */
+
+/**
+ * @module CustomAuthenticationProvider
  */
 
 /**
@@ -3138,20 +3669,27 @@ class CustomAuthenticationProvider {
     getAccessToken() {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
-                this.provider((error, accessToken) => {
+                this.provider((error, accessToken) => __awaiter(this, void 0, void 0, function* () {
                     if (accessToken) {
                         resolve(accessToken);
                     }
                     else {
-                        reject(error);
+                        if (!error) {
+                            const invalidTokenMessage = "Access token is undefined or empty.\
+						Please provide a valid token.\
+						For more help - https://github.com/microsoftgraph/msgraph-sdk-javascript/blob/dev/docs/CustomAuthenticationProvider.md";
+                            error = new GraphClientError(invalidTokenMessage);
+                        }
+                        const err = yield GraphClientError.setGraphClientError(error);
+                        reject(err);
                     }
-                });
+                }));
             });
         });
     }
 }
 //# sourceMappingURL=CustomAuthenticationProvider.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphError.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/GraphError.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -3189,7 +3727,7 @@ class GraphError extends Error {
     }
 }
 //# sourceMappingURL=GraphError.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphErrorHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/GraphErrorHandler.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -3228,7 +3766,7 @@ class GraphErrorHandler {
      * @static
      * @async
      * Populates the GraphError instance from the Error returned by graph service
-     * @param {any} error - The error returned by graph service or some native error
+     * @param {GraphAPIErrorResponse} graphError - The error possibly returned by graph service or some native error
      * @param {number} statusCode - The status code of the response
      * @returns A promise that resolves to GraphError instance
      *
@@ -3244,20 +3782,15 @@ class GraphErrorHandler {
      *      }
      *  }
      */
-    static constructErrorFromResponse(error, statusCode) {
-        error = error.error;
+    static constructErrorFromResponse(graphError, statusCode) {
+        const error = graphError.error;
         const gError = new GraphError(statusCode, error.message);
         gError.code = error.code;
         if (error.innerError !== undefined) {
             gError.requestId = error.innerError["request-id"];
             gError.date = new Date(error.innerError.date);
         }
-        try {
-            gError.body = JSON.stringify(error);
-        }
-        catch (error) {
-            // tslint:disable-line: no-empty
-        }
+        gError.body = JSON.stringify(error);
         return gError;
     }
     /**
@@ -3265,6 +3798,7 @@ class GraphErrorHandler {
      * @static
      * @async
      * To get the GraphError object
+     * Reference - https://docs.microsoft.com/en-us/graph/errors
      * @param {any} [error = null] - The error returned by graph service or some native error
      * @param {number} [statusCode = -1] - The status code of the response
      * @param {GraphRequestCallback} [callback] - The graph request callback function
@@ -3276,11 +3810,12 @@ class GraphErrorHandler {
             if (error && error.error) {
                 gError = GraphErrorHandler.constructErrorFromResponse(error, statusCode);
             }
-            else if (typeof Error !== "undefined" && error instanceof Error) {
+            else if (error instanceof Error) {
                 gError = GraphErrorHandler.constructError(error, statusCode);
             }
             else {
                 gError = new GraphError(statusCode);
+                gError.body = error; // if a custom error is passed which is not instance of Error object or a graph API response
             }
             if (typeof callback === "function") {
                 callback(gError, null);
@@ -3292,35 +3827,7 @@ class GraphErrorHandler {
     }
 }
 //# sourceMappingURL=GraphErrorHandler.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/ResponseType.js
-/**
- * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
- * See License in the project root for license information.
- * -------------------------------------------------------------------------------------------
- */
-/**
- * @enum
- * Enum for ResponseType values
- * @property {string} ARRAYBUFFER - To download response content as an [ArrayBuffer]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer}
- * @property {string} BLOB - To download content as a [binary/blob] {@link https://developer.mozilla.org/en-US/docs/Web/API/Blob}
- * @property {string} DOCUMENT - This downloads content as a document or stream
- * @property {string} JSON - To download response content as a json
- * @property {string} STREAM - To download response as a [stream]{@link https://nodejs.org/api/stream.html}
- * @property {string} TEXT - For downloading response as a text
- */
-var ResponseType;
-(function (ResponseType) {
-    ResponseType["ARRAYBUFFER"] = "arraybuffer";
-    ResponseType["BLOB"] = "blob";
-    ResponseType["DOCUMENT"] = "document";
-    ResponseType["JSON"] = "json";
-    ResponseType["RAW"] = "raw";
-    ResponseType["STREAM"] = "stream";
-    ResponseType["TEXT"] = "text";
-})(ResponseType || (ResponseType = {}));
-//# sourceMappingURL=ResponseType.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphResponseHandler.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/GraphRequest.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -3328,206 +3835,8 @@ var ResponseType;
  * -------------------------------------------------------------------------------------------
  */
 
-
 /**
- * @enum
- * Enum for document types
- * @property {string} TEXT_HTML - The text/html content type
- * @property {string} TEXT_XML - The text/xml content type
- * @property {string} APPLICATION_XML - The application/xml content type
- * @property {string} APPLICATION_XHTML - The application/xhml+xml content type
- */
-var DocumentType;
-(function (DocumentType) {
-    DocumentType["TEXT_HTML"] = "text/html";
-    DocumentType["TEXT_XML"] = "text/xml";
-    DocumentType["APPLICATION_XML"] = "application/xml";
-    DocumentType["APPLICATION_XHTML"] = "application/xhtml+xml";
-})(DocumentType || (DocumentType = {}));
-/**
- * @enum
- * Enum for Content types
- * @property {string} TEXT_PLAIN - The text/plain content type
- * @property {string} APPLICATION_JSON - The application/json content type
- */
-var ContentType;
-(function (ContentType) {
-    ContentType["TEXT_PLAIN"] = "text/plain";
-    ContentType["APPLICATION_JSON"] = "application/json";
-})(ContentType || (ContentType = {}));
-/**
- * @enum
- * Enum for Content type regex
- * @property {string} DOCUMENT - The regex to match document content types
- * @property {string} IMAGE - The regex to match image content types
- */
-var ContentTypeRegexStr;
-(function (ContentTypeRegexStr) {
-    ContentTypeRegexStr["DOCUMENT"] = "^(text\\/(html|xml))|(application\\/(xml|xhtml\\+xml))$";
-    ContentTypeRegexStr["IMAGE"] = "^image\\/.+";
-})(ContentTypeRegexStr || (ContentTypeRegexStr = {}));
-/**
- * @class
- * Class for GraphResponseHandler
- */
-class GraphResponseHandler {
-    /**
-     * @private
-     * @static
-     * To parse Document response
-     * @param {Response} rawResponse - The response object
-     * @param {DocumentType} type - The type to which the document needs to be parsed
-     * @returns A promise that resolves to a document content
-     */
-    static parseDocumentResponse(rawResponse, type) {
-        try {
-            if (typeof DOMParser !== "undefined") {
-                return new Promise((resolve, reject) => {
-                    rawResponse.text().then((xmlString) => {
-                        try {
-                            const parser = new DOMParser();
-                            const xmlDoc = parser.parseFromString(xmlString, type);
-                            resolve(xmlDoc);
-                        }
-                        catch (error) {
-                            reject(error);
-                        }
-                    });
-                });
-            }
-            else {
-                return Promise.resolve(rawResponse.body);
-            }
-        }
-        catch (error) {
-            throw error;
-        }
-    }
-    /**
-     * @private
-     * @static
-     * @async
-     * To convert the native Response to response content
-     * @param {Response} rawResponse - The response object
-     * @param {ResponseType} [responseType] - The response type value
-     * @returns A promise that resolves to the converted response content
-     */
-    static convertResponse(rawResponse, responseType) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (rawResponse.status === 204) {
-                // NO CONTENT
-                return Promise.resolve();
-            }
-            let responseValue;
-            try {
-                switch (responseType) {
-                    case ResponseType.ARRAYBUFFER:
-                        responseValue = yield rawResponse.arrayBuffer();
-                        break;
-                    case ResponseType.BLOB:
-                        responseValue = yield rawResponse.blob();
-                        break;
-                    case ResponseType.DOCUMENT:
-                        responseValue = yield GraphResponseHandler.parseDocumentResponse(rawResponse, DocumentType.TEXT_XML);
-                        break;
-                    case ResponseType.JSON:
-                        responseValue = yield rawResponse.json();
-                        break;
-                    case ResponseType.STREAM:
-                        responseValue = yield Promise.resolve(rawResponse.body);
-                        break;
-                    case ResponseType.TEXT:
-                        responseValue = yield rawResponse.text();
-                        break;
-                    default:
-                        const contentType = rawResponse.headers.get("Content-type");
-                        if (contentType !== null) {
-                            const mimeType = contentType.split(";")[0];
-                            if (new RegExp(ContentTypeRegexStr.DOCUMENT).test(mimeType)) {
-                                responseValue = yield GraphResponseHandler.parseDocumentResponse(rawResponse, mimeType);
-                            }
-                            else if (new RegExp(ContentTypeRegexStr.IMAGE).test(mimeType)) {
-                                responseValue = rawResponse.blob();
-                            }
-                            else if (mimeType === ContentType.TEXT_PLAIN) {
-                                responseValue = yield rawResponse.text();
-                            }
-                            else if (mimeType === ContentType.APPLICATION_JSON) {
-                                responseValue = yield rawResponse.json();
-                            }
-                            else {
-                                responseValue = Promise.resolve(rawResponse.body);
-                            }
-                        }
-                        else {
-                            /**
-                             * RFC specification {@link https://tools.ietf.org/html/rfc7231#section-3.1.1.5} says:
-                             *  A sender that generates a message containing a payload body SHOULD
-                             *  generate a Content-Type header field in that message unless the
-                             *  intended media type of the enclosed representation is unknown to the
-                             *  sender.  If a Content-Type header field is not present, the recipient
-                             *  MAY either assume a media type of "application/octet-stream"
-                             *  ([RFC2046], Section 4.5.1) or examine the data to determine its type.
-                             *
-                             *  So assuming it as a stream type so returning the body.
-                             */
-                            responseValue = Promise.resolve(rawResponse.body);
-                        }
-                        break;
-                }
-            }
-            catch (error) {
-                throw error;
-            }
-            return responseValue;
-        });
-    }
-    /**
-     * @public
-     * @static
-     * @async
-     * To get the parsed response
-     * @param {Response} rawResponse - The response object
-     * @param {ResponseType} [responseType] - The response type value
-     * @param {GraphRequestCallback} [callback] - The graph request callback function
-     * @returns The parsed response
-     */
-    static getResponse(rawResponse, responseType, callback) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                if (responseType === ResponseType.RAW) {
-                    return Promise.resolve(rawResponse);
-                }
-                else {
-                    const response = yield GraphResponseHandler.convertResponse(rawResponse, responseType);
-                    if (rawResponse.ok) {
-                        // Status Code 2XX
-                        if (typeof callback === "function") {
-                            callback(null, response);
-                        }
-                        else {
-                            return response;
-                        }
-                    }
-                    else {
-                        // NOT OK Response
-                        throw response;
-                    }
-                }
-            }
-            catch (error) {
-                throw error;
-            }
-        });
-    }
-}
-//# sourceMappingURL=GraphResponseHandler.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/GraphRequest.js
-/**
- * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
- * See License in the project root for license information.
- * -------------------------------------------------------------------------------------------
+ * @module GraphRequest
  */
 
 
@@ -3541,7 +3850,6 @@ class GraphResponseHandler {
  * A Class representing GraphRequest
  */
 class GraphRequest {
-    /* tslint:enable: variable-name */
     /**
      * @public
      * @constructor
@@ -3641,7 +3949,7 @@ class GraphRequest {
     buildFullUrl() {
         const url = urlJoin([this.urlComponents.host, this.urlComponents.version, this.urlComponents.path]) + this.createQueryString();
         if (this.config.debugLogging) {
-            console.log(url); // tslint:disable-line: no-console
+            console.log(url);
         }
         return url;
     }
@@ -3656,14 +3964,14 @@ class GraphRequest {
         const query = [];
         if (Object.keys(urlComponents.oDataQueryParams).length !== 0) {
             for (const property in urlComponents.oDataQueryParams) {
-                if (urlComponents.oDataQueryParams.hasOwnProperty(property)) {
+                if (Object.prototype.hasOwnProperty.call(urlComponents.oDataQueryParams, property)) {
                     query.push(property + "=" + urlComponents.oDataQueryParams[property]);
                 }
             }
         }
         if (Object.keys(urlComponents.otherURLQueryParams).length !== 0) {
             for (const property in urlComponents.otherURLQueryParams) {
-                if (urlComponents.otherURLQueryParams.hasOwnProperty(property)) {
+                if (Object.prototype.hasOwnProperty.call(urlComponents.otherURLQueryParams, property)) {
                     query.push(property + "=" + urlComponents.otherURLQueryParams[property]);
                 }
             }
@@ -3698,7 +4006,7 @@ class GraphRequest {
         }
         else if (queryDictionaryOrString.constructor === Object) {
             for (const key in queryDictionaryOrString) {
-                if (queryDictionaryOrString.hasOwnProperty(key)) {
+                if (Object.prototype.hasOwnProperty.call(queryDictionaryOrString, key)) {
                     this.setURLComponentsQueryParamater(key, queryDictionaryOrString[key]);
                 }
             }
@@ -3793,23 +4101,29 @@ class GraphRequest {
      * @returns A promise that resolves to the response content
      */
     send(request, options, callback) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             let rawResponse;
             const middlewareControl = new MiddlewareControl(this._middlewareOptions);
             this.updateRequestOptions(options);
+            const customHosts = (_a = this.config) === null || _a === void 0 ? void 0 : _a.customHosts;
             try {
                 const context = yield this.httpClient.sendRequest({
                     request,
                     options,
                     middlewareControl,
+                    customHosts,
                 });
                 rawResponse = context.response;
                 const response = yield GraphResponseHandler.getResponse(rawResponse, this._responseType, callback);
                 return response;
             }
             catch (error) {
+                if (error instanceof GraphClientError) {
+                    throw error;
+                }
                 let statusCode;
-                if (typeof rawResponse !== "undefined") {
+                if (rawResponse) {
                     statusCode = rawResponse.status;
                 }
                 const gError = yield GraphErrorHandler.getError(error, statusCode, callback);
@@ -3856,7 +4170,7 @@ class GraphRequest {
      */
     headers(headers) {
         for (const key in headers) {
-            if (headers.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(headers, key)) {
                 this._headers[key] = headers[key];
             }
         }
@@ -3881,7 +4195,7 @@ class GraphRequest {
      */
     options(options) {
         for (const key in options) {
-            if (options.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(options, key)) {
                 this._options[key] = options[key];
             }
         }
@@ -4009,7 +4323,7 @@ class GraphRequest {
      * @param {boolean} isCount - The count boolean
      * @returns The same GraphRequest instance that is being called with, after adding the boolean value for the $count query option
      */
-    count(isCount = false) {
+    count(isCount = true) {
         this.urlComponents.oDataQueryParams.$count = isCount.toString();
         return this;
     }
@@ -4039,13 +4353,8 @@ class GraphRequest {
             const options = {
                 method: RequestMethod.GET,
             };
-            try {
-                const response = yield this.send(url, options, callback);
-                return response;
-            }
-            catch (error) {
-                throw error;
-            }
+            const response = yield this.send(url, options, callback);
+            return response;
         });
     }
     /**
@@ -4072,13 +4381,7 @@ class GraphRequest {
                 this.setHeaderContentType();
                 options.headers = this._headers;
             }
-            try {
-                const response = yield this.send(url, options, callback);
-                return response;
-            }
-            catch (error) {
-                throw error;
-            }
+            return yield this.send(url, options, callback);
         });
     }
     /**
@@ -4091,12 +4394,7 @@ class GraphRequest {
      */
     create(content, callback) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.post(content, callback);
-            }
-            catch (error) {
-                throw error;
-            }
+            return yield this.post(content, callback);
         });
     }
     /**
@@ -4115,13 +4413,7 @@ class GraphRequest {
                 method: RequestMethod.PUT,
                 body: serializeContent(content),
             };
-            try {
-                const response = yield this.send(url, options, callback);
-                return response;
-            }
-            catch (error) {
-                throw error;
-            }
+            return yield this.send(url, options, callback);
         });
     }
     /**
@@ -4140,13 +4432,7 @@ class GraphRequest {
                 method: RequestMethod.PATCH,
                 body: serializeContent(content),
             };
-            try {
-                const response = yield this.send(url, options, callback);
-                return response;
-            }
-            catch (error) {
-                throw error;
-            }
+            return yield this.send(url, options, callback);
         });
     }
     /**
@@ -4159,12 +4445,7 @@ class GraphRequest {
      */
     update(content, callback) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.patch(content, callback);
-            }
-            catch (error) {
-                throw error;
-            }
+            return yield this.patch(content, callback);
         });
     }
     /**
@@ -4180,13 +4461,7 @@ class GraphRequest {
             const options = {
                 method: RequestMethod.DELETE,
             };
-            try {
-                const response = yield this.send(url, options, callback);
-                return response;
-            }
-            catch (error) {
-                throw error;
-            }
+            return yield this.send(url, options, callback);
         });
     }
     /**
@@ -4198,12 +4473,7 @@ class GraphRequest {
      */
     del(callback) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.delete(callback);
-            }
-            catch (error) {
-                throw error;
-            }
+            return yield this.delete(callback);
         });
     }
     /**
@@ -4220,13 +4490,7 @@ class GraphRequest {
                 method: RequestMethod.GET,
             };
             this.responseType(ResponseType.STREAM);
-            try {
-                const stream = yield this.send(url, options, callback);
-                return stream;
-            }
-            catch (error) {
-                throw error;
-            }
+            return yield this.send(url, options, callback);
         });
     }
     /**
@@ -4247,18 +4511,12 @@ class GraphRequest {
                 },
                 body: stream,
             };
-            try {
-                const response = yield this.send(url, options, callback);
-                return response;
-            }
-            catch (error) {
-                throw error;
-            }
+            return yield this.send(url, options, callback);
         });
     }
 }
 //# sourceMappingURL=GraphRequest.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/HTTPClient.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/HTTPClient.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -4326,24 +4584,19 @@ class HTTPClient {
      */
     sendRequest(context) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                if (typeof context.request === "string" && context.options === undefined) {
-                    const error = new Error();
-                    error.name = "InvalidRequestOptions";
-                    error.message = "Unable to execute the middleware, Please provide valid options for a request";
-                    throw error;
-                }
-                yield this.middleware.execute(context);
-                return context;
-            }
-            catch (error) {
+            if (typeof context.request === "string" && context.options === undefined) {
+                const error = new Error();
+                error.name = "InvalidRequestOptions";
+                error.message = "Unable to execute the middleware, Please provide valid options for a request";
                 throw error;
             }
+            yield this.middleware.execute(context);
+            return context;
         });
     }
 }
 //# sourceMappingURL=HTTPClient.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/HTTPClientFactory.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/HTTPClientFactory.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -4417,7 +4670,7 @@ class HTTPClientFactory {
     }
 }
 //# sourceMappingURL=HTTPClientFactory.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/ValidatePolyFilling.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/ValidatePolyFilling.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -4449,7 +4702,7 @@ const validatePolyFilling = () => {
     return true;
 };
 //# sourceMappingURL=ValidatePolyFilling.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/Client.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/Client.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -4482,14 +4735,9 @@ class Client {
             debugLogging: false,
             defaultVersion: GRAPH_API_VERSION,
         };
-        try {
-            validatePolyFilling();
-        }
-        catch (error) {
-            throw error;
-        }
+        validatePolyFilling();
         for (const key in clientOptions) {
-            if (clientOptions.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(clientOptions, key)) {
                 this.config[key] = clientOptions[key];
             }
         }
@@ -4524,7 +4772,7 @@ class Client {
     static init(options) {
         const clientOptions = {};
         for (const i in options) {
-            if (options.hasOwnProperty(i)) {
+            if (Object.prototype.hasOwnProperty.call(options, i)) {
                 clientOptions[i] = i === "authProvider" ? new CustomAuthenticationProvider(options[i]) : options[i];
             }
         }
@@ -4538,12 +4786,7 @@ class Client {
      * @returns The Client instance
      */
     static initWithMiddleware(clientOptions) {
-        try {
-            return new Client(clientOptions);
-        }
-        catch (error) {
-            throw error;
-        }
+        return new Client(clientOptions);
     }
     /**
      * @public
@@ -4556,7 +4799,7 @@ class Client {
     }
 }
 //# sourceMappingURL=Client.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/browser/ImplicitMSALAuthenticationProvider.js
+;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/src/browser/index.js
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -4564,119 +4807,24 @@ class Client {
  * -------------------------------------------------------------------------------------------
  */
 
-/**
- * @class
- * Class representing ImplicitMSALAuthenticationProvider
- * @extends AuthenticationProvider
- */
-class ImplicitMSALAuthenticationProvider {
-    /**
-     * @public
-     * @constructor
-     * Creates an instance of ImplicitMSALAuthenticationProvider
-     * @param {any} msalApplication - An instance of MSAL UserAgentApplication
-     * @param {MSALAuthenticationProviderOptions} options - An instance of MSALAuthenticationProviderOptions
-     * @returns An instance of ImplicitMSALAuthenticationProvider
-     */
-    constructor(msalApplication, options) {
-        this.options = options;
-        this.msalApplication = msalApplication;
-    }
-    /**
-     * @public
-     * @async
-     * To get the access token
-     * @param {AuthenticationProviderOptions} authenticationProviderOptions - The authentication provider options object
-     * @returns The promise that resolves to an access token
-     */
-    getAccessToken(authenticationProviderOptions) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const options = authenticationProviderOptions;
-            let scopes;
-            if (typeof options !== "undefined") {
-                scopes = options.scopes;
-            }
-            if (typeof scopes === "undefined" || scopes.length === 0) {
-                scopes = this.options.scopes;
-            }
-            if (scopes.length === 0) {
-                const error = new Error();
-                error.name = "EmptyScopes";
-                error.message = "Scopes cannot be empty, Please provide a scopes";
-                throw error;
-            }
-            if (this.msalApplication.getAccount()) {
-                const tokenRequest = {
-                    scopes,
-                };
-                try {
-                    const authResponse = yield this.msalApplication.acquireTokenSilent(tokenRequest);
-                    return authResponse.accessToken;
-                }
-                catch (error) {
-                    if (error.name === "InteractionRequiredAuthError") {
-                        try {
-                            const authResponse = yield this.msalApplication.acquireTokenPopup(tokenRequest);
-                            return authResponse.accessToken;
-                        }
-                        catch (error) {
-                            throw error;
-                        }
-                    }
-                    else {
-                        throw error;
-                    }
-                }
-            }
-            else {
-                try {
-                    const tokenRequest = {
-                        scopes,
-                    };
-                    yield this.msalApplication.loginPopup(tokenRequest);
-                    const authResponse = yield this.msalApplication.acquireTokenSilent(tokenRequest);
-                    return authResponse.accessToken;
-                }
-                catch (error) {
-                    throw error;
-                }
-            }
-        });
-    }
-}
-//# sourceMappingURL=ImplicitMSALAuthenticationProvider.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/MSALAuthenticationProviderOptions.js
-/**
- * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
- * See License in the project root for license information.
- * -------------------------------------------------------------------------------------------
- */
-/**
- * @class
- * @implements AuthenticationProviderOptions
- * Class representing MSALAuthenticationProviderOptions
- */
-class MSALAuthenticationProviderOptions {
-    /**
-     * @public
-     * @constructor
-     * To create an instance of MSALAuthenticationProviderOptions
-     * @param {string[]} scopes - An array of scopes
-     * @returns An instance of MSALAuthenticationProviderOptions
-     */
-    constructor(scopes) {
-        this.scopes = scopes;
-    }
-}
-//# sourceMappingURL=MSALAuthenticationProviderOptions.js.map
-;// CONCATENATED MODULE: ./node_modules/@microsoft/microsoft-graph-client/lib/es/browser/index.js
-/**
- * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
- * See License in the project root for license information.
- * -------------------------------------------------------------------------------------------
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

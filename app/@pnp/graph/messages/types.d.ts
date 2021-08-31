@@ -1,5 +1,5 @@
 import { Message as IMessageType, MailFolder as IMailFolderType, MailboxSettings as IMailboxSettingsType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable.js";
+import { _GraphQueryableCollection, _GraphQueryableInstance, _GraphQueryableSearchableCollection } from "../graphqueryable.js";
 import { IGetById, IAddable, IUpdateable } from "../decorators.js";
 /**
  * Message
@@ -12,7 +12,7 @@ export declare const Message: (baseUrl: string | import("../graphqueryable.js").
 /**
  * Messages
  */
-export declare class _Messages extends _GraphQueryableCollection<IMessageType[]> {
+export declare class _Messages extends _GraphQueryableSearchableCollection<IMessageType[]> {
 }
 export interface IMessages extends _Messages, IGetById<IMessage>, IAddable<IMessageType> {
 }

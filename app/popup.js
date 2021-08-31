@@ -243,9 +243,10 @@ riot.tag("spquicklinks", `
 
     this.getPageLayout = async function (siteUrl, serverRequestPath) {
       let ploR = await fetch(siteUrl + "/_api/web/getFileByServerRelativeUrl('" + serverRequestPath + "')/listItemAllFields?$select=PageLayoutType,PromotedState", {
+        method: 'get',
         headers: {
-          accept: 'application/json;odata=nometadata',
-          'content-type': 'application/json;odata=nometadata',
+          'Accept': 'application/json;odata=nometadata',
+          'Content-Type': 'application/json',
           'X-ClientService-ClientTag': 'SPEDITOR'
         }
       })

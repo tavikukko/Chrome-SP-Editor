@@ -128,6 +128,7 @@ export declare class _Item extends _SharePointQueryableInstance {
      * Gets the parent information for this item's list and web
      */
     getParentInfos(): Promise<IItemParentInfos>;
+    setImageField(fieldName: string, imageName: string, imageContent: any): Promise<any>;
     /**
      * Ensures we have the proper list item entity type name, either from the value provided or from the list
      *
@@ -191,6 +192,11 @@ export interface IItemUpdateResult {
 export interface IItemUpdateResultData {
     "odata.etag": string;
 }
+export interface IItemImageUploadResult {
+    Name: string;
+    ServerRelativeUrl: string;
+    UniqueId: string;
+}
 export interface IItemDeleteParams {
     /**
      * If true, delete or recycle a file when the LockType
@@ -206,6 +212,7 @@ export interface IItemParentInfos {
     };
     ParentList: {
         Id: string;
+        Title: string;
         RootFolderServerRelativePath: IResourcePath;
         RootFolderServerRelativeUrl: string;
         RootFolderUniqueId: string;

@@ -3208,7 +3208,7 @@ var SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.7.0:" + methodName;
+                            clientTag = "PnPCoreJS:2.8.0:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -4021,7 +4021,7 @@ var SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.7.0:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.8.0:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -4055,7 +4055,7 @@ var SPBatch = /** @class */ (function (_super) {
                     // the entire batch resulted in an error and we need to handle that better #1356
                     // things consistently with the rest of the http errors
                     throw (_b.sent());
-                    case 4: return [4 /*yield*/, fetchResponse.clone().text()];
+                    case 4: return [4 /*yield*/, fetchResponse.text()];
                     case 5:
                         text = _b.sent();
                         responses = SPBatch.ParseResponse(text);
@@ -5295,6 +5295,8 @@ var ControlMode;
 
 
 
+
+
 /**
  * Describes a collection of Item objects
  *
@@ -5634,7 +5636,7 @@ var _Item = /** @class */ (function (_super) {
             var urlInfo;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.select("Id", "ParentList/Id", "ParentList/RootFolder/UniqueId", "ParentList/RootFolder/ServerRelativeUrl", "ParentList/RootFolder/ServerRelativePath", "ParentList/ParentWeb/Id", "ParentList/ParentWeb/Url", "ParentList/ParentWeb/ServerRelativeUrl", "ParentList/ParentWeb/ServerRelativePath").expand("ParentList", "ParentList/RootFolder", "ParentList/ParentWeb")()];
+                    case 0: return [4 /*yield*/, this.select("Id", "ParentList/Id", "ParentList/Title", "ParentList/RootFolder/UniqueId", "ParentList/RootFolder/ServerRelativeUrl", "ParentList/RootFolder/ServerRelativePath", "ParentList/ParentWeb/Id", "ParentList/ParentWeb/Url", "ParentList/ParentWeb/ServerRelativeUrl", "ParentList/ParentWeb/ServerRelativePath").expand("ParentList", "ParentList/RootFolder", "ParentList/ParentWeb")()];
                     case 1:
                         urlInfo = _a.sent();
                         return [2 /*return*/, {
@@ -5643,6 +5645,7 @@ var _Item = /** @class */ (function (_super) {
                                 },
                                 ParentList: {
                                     Id: urlInfo.ParentList.Id,
+                                    Title: urlInfo.ParentList.Title,
                                     RootFolderServerRelativePath: urlInfo.ParentList.RootFolder.ServerRelativePath,
                                     RootFolderServerRelativeUrl: urlInfo.ParentList.RootFolder.ServerRelativeUrl,
                                     RootFolderUniqueId: urlInfo.ParentList.RootFolder.UniqueId,
@@ -5654,6 +5657,41 @@ var _Item = /** @class */ (function (_super) {
                                     Url: urlInfo.ParentList.ParentWeb.Url,
                                 },
                             }];
+                }
+            });
+        });
+    };
+    _Item.prototype.setImageField = function (fieldName, imageName, imageContent) {
+        return __awaiter(this, void 0, void 0, function () {
+            var contextInfo, webUrl, q, result, itemInfo;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getParentInfos()];
+                    case 1:
+                        contextInfo = _a.sent();
+                        webUrl = extractWebUrl(this.toUrl());
+                        q = SharePointQueryable(webUrl, "/_api/web/UploadImage");
+                        q.concat("(listTitle=@a1,imageName=@a2,listId=@a3,itemId=@a4)");
+                        q.query.set("@a1", "'" + escapeQueryStrValue(contextInfo.ParentList.Title) + "'");
+                        q.query.set("@a2", "'" + escapeQueryStrValue(imageName) + "'");
+                        q.query.set("@a3", "'" + escapeQueryStrValue(contextInfo.ParentList.Id) + "'");
+                        q.query.set("@a4", contextInfo.Item.Id);
+                        return [4 /*yield*/, spPost(q, { body: imageContent })];
+                    case 2:
+                        result = _a.sent();
+                        itemInfo = {
+                            "type": "thumbnail",
+                            "fileName": result.Name,
+                            "nativeFile": {},
+                            "fieldName": fieldName,
+                            "serverUrl": contextInfo.ParentWeb.Url.replace(contextInfo.ParentWeb.ServerRelativeUrl, ""),
+                            "serverRelativeUrl": result.ServerRelativeUrl,
+                            "id": result.UniqueId,
+                        };
+                        return [2 /*return*/, this.validateUpdateListItem([{
+                                    FieldName: fieldName,
+                                    FieldValue: JSON.stringify(itemInfo),
+                                }])];
                 }
             });
         });
@@ -7703,14 +7741,15 @@ var _ClientsidePage = /** @class */ (function (_super) {
     _ClientsidePage.prototype.save = function (publish) {
         if (publish === void 0) { publish = true; }
         return __awaiter(this, void 0, void 0, function () {
-            var serverRelativePath, imgInfo_1, webUrl_1, web, batch, f, saveBody, bannerImageUrlValue, updater, r;
+            var previewPartialUrl, serverRelativePath, imgInfo_1, webUrl_1, web, batch, f, saveBody, bannerImageUrlValue, updater, r;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (this.json.Id === null) {
                             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
                         }
-                        if (!this._bannerImageDirty) return [3 /*break*/, 2];
+                        previewPartialUrl = "_layouts/15/getpreview.ashx";
+                        if (!(this._bannerImageDirty && !this.bannerImageUrl.includes(previewPartialUrl))) return [3 /*break*/, 2];
                         serverRelativePath = this.bannerImageUrl;
                         web = Web(extractWebUrl(this.toUrl())).configureFrom(this);
                         batch = web.createBatch();
@@ -7722,7 +7761,7 @@ var _ClientsidePage = /** @class */ (function (_super) {
                     case 1:
                         // we know the .then calls above will run before execute resolves, ensuring the vars are set
                         _a.sent();
-                        f = SharePointQueryable(webUrl_1, "_layouts/15/getpreview.ashx");
+                        f = SharePointQueryable(webUrl_1, previewPartialUrl);
                         f.query.set("guidSite", "" + imgInfo_1.SiteId);
                         f.query.set("guidWeb", "" + imgInfo_1.WebId);
                         f.query.set("guidFile", "" + imgInfo_1.UniqueId);
@@ -7759,6 +7798,7 @@ var _ClientsidePage = /** @class */ (function (_super) {
                             LayoutWebpartsContent: this.getLayoutWebpartsContent(),
                             Title: this.title,
                             TopicHeader: this.topicHeader,
+                            BannerImageUrl: this.bannerImageUrl
                         });
                         if (this._bannerImageDirty || this._bannerImageThumbnailUrlDirty) {
                             bannerImageUrlValue = this._bannerImageThumbnailUrlDirty ? this.thumbnailUrl : this.bannerImageUrl;
@@ -10375,14 +10415,26 @@ var _Fields = /** @class */ (function (_super) {
         });
     };
     /**
-   * Adds a new SP.FieldLocation to the collection
-   *
-   * @param title The field title.
-   * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
-   */
+     * Adds a new SP.FieldLocation to the collection
+     *
+     * @param title The field title.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
     _Fields.prototype.addLocation = function (title, properties) {
         var props = { FieldTypeKind: 33 };
         return this.add(title, "SP.FieldLocation", util_assign(props, properties));
+    };
+    /**
+     * Adds a new SP.FieldLocation to the collection
+     *
+     * @param title The field title.
+     * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
+     */
+    _Fields.prototype.addImageField = function (title, properties) {
+        var props = {
+            FieldTypeKind: 34,
+        };
+        return this.add(title, "SP.FieldMultiLineText", util_assign(props, properties));
     };
     __decorate([
         tag("fs.createFieldAsXml")
@@ -10429,6 +10481,9 @@ var _Fields = /** @class */ (function (_super) {
     __decorate([
         tag("fs.addLocation")
     ], _Fields.prototype, "addLocation", null);
+    __decorate([
+        tag("fs.addImage")
+    ], _Fields.prototype, "addImageField", null);
     _Fields = __decorate([
         defaultPath("fields")
     ], _Fields);
@@ -13448,6 +13503,262 @@ var RoleType;
     RoleType[RoleType["Administrator"] = 5] = "Administrator";
 })(RoleType || (RoleType = {}));
 //# sourceMappingURL=types.js.map
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/file.js
+
+
+
+
+_File.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
+    if (role === void 0) { role = SharingRole.View; }
+    if (requireSignin === void 0) { requireSignin = false; }
+    return __awaiter(this, void 0, void 0, function () {
+        var item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.getItem()];
+                case 1:
+                    item = _a.sent();
+                    return [2 /*return*/, item.shareWith(loginNames, role, requireSignin, emailData)];
+            }
+        });
+    });
+};
+_File.prototype.getShareLink = function (kind, expiration) {
+    if (expiration === void 0) { expiration = null; }
+    return __awaiter(this, void 0, void 0, function () {
+        var item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.getItem()];
+                case 1:
+                    item = _a.sent();
+                    return [2 /*return*/, item.getShareLink(kind, expiration)];
+            }
+        });
+    });
+};
+_File.prototype.checkSharingPermissions = function (recipients) {
+    return __awaiter(this, void 0, void 0, function () {
+        var item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.getItem()];
+                case 1:
+                    item = _a.sent();
+                    return [2 /*return*/, item.checkSharingPermissions(recipients)];
+            }
+        });
+    });
+};
+// eslint-disable-next-line max-len
+_File.prototype.getSharingInformation = function (request, expands) {
+    if (request === void 0) { request = null; }
+    if (expands === void 0) { expands = []; }
+    return __awaiter(this, void 0, void 0, function () {
+        var item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.getItem()];
+                case 1:
+                    item = _a.sent();
+                    return [2 /*return*/, item.getSharingInformation(request, expands)];
+            }
+        });
+    });
+};
+_File.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
+    if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
+    return __awaiter(this, void 0, void 0, function () {
+        var item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.getItem()];
+                case 1:
+                    item = _a.sent();
+                    return [2 /*return*/, item.getObjectSharingSettings(useSimplifiedRoles)];
+            }
+        });
+    });
+};
+_File.prototype.unshare = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        var item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.getItem()];
+                case 1:
+                    item = _a.sent();
+                    return [2 /*return*/, item.unshare()];
+            }
+        });
+    });
+};
+_File.prototype.deleteSharingLinkByKind = function (linkKind) {
+    return __awaiter(this, void 0, void 0, function () {
+        var item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.getItem()];
+                case 1:
+                    item = _a.sent();
+                    return [2 /*return*/, item.deleteSharingLinkByKind(linkKind)];
+            }
+        });
+    });
+};
+_File.prototype.unshareLink = function unshareLink(linkKind, shareId) {
+    if (shareId === void 0) { shareId = emptyGuid; }
+    return __awaiter(this, void 0, void 0, function () {
+        var item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.getItem()];
+                case 1:
+                    item = _a.sent();
+                    return [2 /*return*/, item.unshareLink(linkKind, shareId)];
+            }
+        });
+    });
+};
+//# sourceMappingURL=file.js.map
+;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/folder.js
+
+
+
+_Folder.prototype.shareWith = function (loginNames, role, requireSignin, shareEverything, emailData) {
+    if (role === void 0) { role = SharingRole.View; }
+    if (requireSignin === void 0) { requireSignin = false; }
+    if (shareEverything === void 0) { shareEverything = false; }
+    return __awaiter(this, void 0, void 0, function () {
+        var dependency, shareable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    dependency = this.addBatchDependency();
+                    return [4 /*yield*/, this.getShareable()];
+                case 1:
+                    shareable = _a.sent();
+                    dependency();
+                    return [2 /*return*/, shareable.shareWith(loginNames, role, requireSignin, shareEverything, emailData)];
+            }
+        });
+    });
+};
+_Folder.prototype.getShareLink = function (kind, expiration) {
+    if (expiration === void 0) { expiration = null; }
+    return __awaiter(this, void 0, void 0, function () {
+        var dependency, shareable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    dependency = this.addBatchDependency();
+                    return [4 /*yield*/, this.getShareable()];
+                case 1:
+                    shareable = _a.sent();
+                    dependency();
+                    return [2 /*return*/, shareable.getShareLink(kind, expiration)];
+            }
+        });
+    });
+};
+_Folder.prototype.checkSharingPermissions = function (recipients) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dependency, shareable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    dependency = this.addBatchDependency();
+                    return [4 /*yield*/, this.getShareable()];
+                case 1:
+                    shareable = _a.sent();
+                    dependency();
+                    return [2 /*return*/, shareable.checkSharingPermissions(recipients)];
+            }
+        });
+    });
+};
+_Folder.prototype.getSharingInformation = function (request, expands) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dependency, shareable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    dependency = this.addBatchDependency();
+                    return [4 /*yield*/, this.getShareable()];
+                case 1:
+                    shareable = _a.sent();
+                    dependency();
+                    return [2 /*return*/, shareable.getSharingInformation(request, expands)];
+            }
+        });
+    });
+};
+_Folder.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
+    if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
+    return __awaiter(this, void 0, void 0, function () {
+        var dependency, shareable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    dependency = this.addBatchDependency();
+                    return [4 /*yield*/, this.getShareable()];
+                case 1:
+                    shareable = _a.sent();
+                    dependency();
+                    return [2 /*return*/, shareable.getObjectSharingSettings(useSimplifiedRoles)];
+            }
+        });
+    });
+};
+_Folder.prototype.unshare = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        var dependency, shareable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    dependency = this.addBatchDependency();
+                    return [4 /*yield*/, this.getShareable()];
+                case 1:
+                    shareable = _a.sent();
+                    dependency();
+                    return [2 /*return*/, shareable.unshare()];
+            }
+        });
+    });
+};
+_Folder.prototype.deleteSharingLinkByKind = function (kind) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dependency, shareable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    dependency = this.addBatchDependency();
+                    return [4 /*yield*/, this.getShareable()];
+                case 1:
+                    shareable = _a.sent();
+                    dependency();
+                    return [2 /*return*/, shareable.deleteSharingLinkByKind(kind)];
+            }
+        });
+    });
+};
+_Folder.prototype.unshareLink = function (kind, shareId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dependency, shareable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    dependency = this.addBatchDependency();
+                    return [4 /*yield*/, this.getShareable()];
+                case 1:
+                    shareable = _a.sent();
+                    dependency();
+                    return [2 /*return*/, shareable.unshareLink(kind, shareId)];
+            }
+        });
+    });
+};
+//# sourceMappingURL=folder.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/funcs.js
 
 
@@ -13641,7 +13952,7 @@ function shareWith(o, loginNames, role, requireSignin, propagateAcl, emailData) 
 }
 function sendShareObjectRequest(o, options) {
     var w = tag.configure(Web(extractWebUrl(o.toUrl()), "/_api/SP.Web.ShareObject"), "sh.sendShareObjectRequest");
-    w.configureFrom(this);
+    w.configureFrom(o);
     return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
 }
 /**
@@ -13689,161 +14000,6 @@ function getRoleValue(role, group) {
     });
 }
 //# sourceMappingURL=funcs.js.map
-;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/file.js
-
-
-
-_File.prototype.shareWith = function (loginNames, role, requireSignin, emailData) {
-    if (role === void 0) { role = SharingRole.View; }
-    if (requireSignin === void 0) { requireSignin = false; }
-    return shareWith(this, loginNames, role, requireSignin, false, emailData);
-};
-_File.prototype.getShareLink = getShareLink;
-_File.prototype.checkSharingPermissions = checkPermissions;
-_File.prototype.getSharingInformation = getSharingInformation;
-_File.prototype.getObjectSharingSettings = getObjectSharingSettings;
-_File.prototype.unshare = unshareObject;
-_File.prototype.deleteSharingLinkByKind = deleteLinkByKind;
-_File.prototype.unshareLink = unshareLink;
-//# sourceMappingURL=file.js.map
-;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/folder.js
-
-
-
-_Folder.prototype.shareWith = function (loginNames, role, requireSignin, shareEverything, emailData) {
-    if (role === void 0) { role = SharingRole.View; }
-    if (requireSignin === void 0) { requireSignin = false; }
-    if (shareEverything === void 0) { shareEverything = false; }
-    return __awaiter(this, void 0, void 0, function () {
-        var dependency, shareable;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    dependency = this.addBatchDependency();
-                    return [4 /*yield*/, this.getShareable()];
-                case 1:
-                    shareable = _a.sent();
-                    dependency();
-                    return [2 /*return*/, shareable.shareWith(loginNames, role, requireSignin, shareEverything, emailData)];
-            }
-        });
-    });
-};
-_Folder.prototype.getShareLink = function (kind, expiration) {
-    if (expiration === void 0) { expiration = null; }
-    return __awaiter(this, void 0, void 0, function () {
-        var dependency, shareable;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    dependency = this.addBatchDependency();
-                    return [4 /*yield*/, this.getShareable()];
-                case 1:
-                    shareable = _a.sent();
-                    dependency();
-                    return [2 /*return*/, shareable.getShareLink(kind, expiration)];
-            }
-        });
-    });
-};
-_Folder.prototype.checkSharingPermissions = function (recipients) {
-    return __awaiter(this, void 0, void 0, function () {
-        var dependency, shareable;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    dependency = this.addBatchDependency();
-                    return [4 /*yield*/, this.getShareable()];
-                case 1:
-                    shareable = _a.sent();
-                    dependency();
-                    return [2 /*return*/, shareable.checkSharingPermissions(recipients)];
-            }
-        });
-    });
-};
-_Folder.prototype.getSharingInformation = function (request, expands) {
-    return __awaiter(this, void 0, void 0, function () {
-        var dependency, shareable;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    dependency = this.addBatchDependency();
-                    return [4 /*yield*/, this.getShareable()];
-                case 1:
-                    shareable = _a.sent();
-                    dependency();
-                    return [2 /*return*/, shareable.getSharingInformation(request, expands)];
-            }
-        });
-    });
-};
-_Folder.prototype.getObjectSharingSettings = function (useSimplifiedRoles) {
-    if (useSimplifiedRoles === void 0) { useSimplifiedRoles = true; }
-    return __awaiter(this, void 0, void 0, function () {
-        var dependency, shareable;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    dependency = this.addBatchDependency();
-                    return [4 /*yield*/, this.getShareable()];
-                case 1:
-                    shareable = _a.sent();
-                    dependency();
-                    return [2 /*return*/, shareable.getObjectSharingSettings(useSimplifiedRoles)];
-            }
-        });
-    });
-};
-_Folder.prototype.unshare = function () {
-    return __awaiter(this, void 0, void 0, function () {
-        var dependency, shareable;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    dependency = this.addBatchDependency();
-                    return [4 /*yield*/, this.getShareable()];
-                case 1:
-                    shareable = _a.sent();
-                    dependency();
-                    return [2 /*return*/, shareable.unshare()];
-            }
-        });
-    });
-};
-_Folder.prototype.deleteSharingLinkByKind = function (kind) {
-    return __awaiter(this, void 0, void 0, function () {
-        var dependency, shareable;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    dependency = this.addBatchDependency();
-                    return [4 /*yield*/, this.getShareable()];
-                case 1:
-                    shareable = _a.sent();
-                    dependency();
-                    return [2 /*return*/, shareable.deleteSharingLinkByKind(kind)];
-            }
-        });
-    });
-};
-_Folder.prototype.unshareLink = function (kind, shareId) {
-    return __awaiter(this, void 0, void 0, function () {
-        var dependency, shareable;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    dependency = this.addBatchDependency();
-                    return [4 /*yield*/, this.getShareable()];
-                case 1:
-                    shareable = _a.sent();
-                    dependency();
-                    return [2 /*return*/, shareable.unshareLink(kind, shareId)];
-            }
-        });
-    });
-};
-//# sourceMappingURL=folder.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/sp/sharing/item.js
 
 

@@ -1,5 +1,61 @@
 # Monaco Editor Changelog
 
+## [0.27.0] (16.08.2021)
+
+* added property `inlineClassName` to style injected text
+* added option `foldingImportsByDefault`
+* added more JSON diagnostic options.
+
+### Breaking Change
+
+* changed `seedSearchStringFromSelection` from boolean to `'never' | 'always' 'selection'`
+* changed suggestion preview mode `subwordDiff` to `subwordSmart`, introduced `subword`
+
+### Thank you
+
+Contributions to `monaco-editor`:
+
+* [@Surm4 (Marcin)](https://github.com/Surm4): Exposed colors sample update in the playground. [PR #2561](https://github.com/microsoft/monaco-editor/pull/2561)
+
+Contributions to `monaco-languages`:
+
+* [@alefragnani (Alessandro Fragnani)](https://github.com/alefragnani): Adds `strict` keyword to Pascal language [PR #153](https://github.com/microsoft/monaco-languages/pull/153)
+* [@jonatanklosko (Jonatan Kłosko)](https://github.com/jonatanklosko): Properly tokenize fence closing in GitHub style code blocks [PR #149](https://github.com/microsoft/monaco-languages/pull/149)
+* [@kupiakos (Alyssa Haroldsen)](https://github.com/kupiakos): Remove ' as an auto-closing pair for Rust [PR #151](https://github.com/microsoft/monaco-languages/pull/151)
+* [@lofcz (Matěj Štágl)](https://github.com/lofcz): Fix razor + liquid render of tags with a dash symbol [PR #150](https://github.com/microsoft/monaco-languages/pull/150)
+
+
+## [0.26.0] (15.07.2021)
+
+* added support for injected text. Use `IModelDecorationOptions.before`/`after`.
+* added support for inlay hints provider.
+
+### Breaking Changes
+
+* CompletionItemLabel now has the property `label`, `detail` and `description` (instead of `name`, `parameters`, `qualifier` and `type`).
+
+### Thank you
+
+Contributions to `monaco-editor`:
+
+* [@anthony-c-martin (Anthony Martin)](https://github.com/anthony-c-martin): Add Bicep sample [PR #2541](https://github.com/microsoft/monaco-editor/pull/2541)
+
+Contributions to `monaco-languages`:
+
+* [@anjbur (Angela Burton)](https://github.com/anjbur): Add support for Q# [PR #142](https://github.com/microsoft/monaco-languages/pull/142)
+* [@maxwrlr](https://github.com/maxwrlr): Implement Syntax-Highlighting for SPARQL [PR #145](https://github.com/microsoft/monaco-languages/pull/145)
+* [@nathanrreed (Nathan Reed)](https://github.com/nathanrreed)
+  * fix c++ comment continuation highlighting #2497 [PR #143](https://github.com/microsoft/monaco-languages/pull/143)
+  * fix rust raw string highlighting #2552 [PR #146](https://github.com/microsoft/monaco-languages/pull/146)
+  * fix char literal highlighting #2481 [PR #147](https://github.com/microsoft/monaco-languages/pull/147)
+  * fix rust raw string highlighting #2086 [PR #148](https://github.com/microsoft/monaco-languages/pull/148)
+* [@qwefgh90 (Changwon Choe)](https://github.com/qwefgh90): improve a rule which freeze a page in restructuredText [PR #141](https://github.com/microsoft/monaco-languages/pull/141)
+* [@RubenRBS (Rubén Rincón Blanco)](https://github.com/RubenRBS): Add Swift fileprivate access modifier [PR #144](https://github.com/microsoft/monaco-languages/pull/144)
+
+Contributions to `monaco-typescript`:
+
+* [@spahnke (Sebastian Pahnke)](https://github.com/spahnke): Build tag text correctly for all tags [PR #81](https://github.com/microsoft/monaco-typescript/pull/81)
+
 ## [0.25.2] (17.06.2021)
 
 * fixes a problem that [certain characters could not be typed on non-US keyboards](https://github.com/microsoft/monaco-editor/issues/2533).

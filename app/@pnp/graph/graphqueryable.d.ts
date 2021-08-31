@@ -135,7 +135,7 @@ export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, 
     skipToken(token: string): this;
 }
 export declare const GraphQueryableCollection: (baseUrl: string | IGraphQueryable, path?: string) => IGraphQueryableCollection<any[]> & IInvokable<any>;
-export declare class _GraphQueryableSearchableCollection extends _GraphQueryableCollection {
+export declare class _GraphQueryableSearchableCollection<GetType = any[]> extends _GraphQueryableCollection<GetType> {
     /**
      * 	To request second and subsequent pages of Graph data
      */

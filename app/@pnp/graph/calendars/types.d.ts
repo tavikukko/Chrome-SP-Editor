@@ -1,7 +1,7 @@
 import { Event as IEventType, Calendar as ICalendarType } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable.js";
 import { IDeleteable, IUpdateable, IGetById } from "../decorators.js";
-import { calendarView } from "./funcs.js";
+import { calendarView, instances } from "./funcs.js";
 /**
  * Calendar
  */
@@ -24,6 +24,7 @@ export declare const Calendars: (baseUrl: string | import("../graphqueryable.js"
  * Event
  */
 export declare class _Event extends _GraphQueryableInstance<IEventType> {
+    instances: typeof instances;
 }
 export interface IEvent extends _Event, IDeleteable, IUpdateable {
 }

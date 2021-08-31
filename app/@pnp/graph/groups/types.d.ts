@@ -1,6 +1,6 @@
 import { ITypedHash } from "@pnp/common";
 import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection } from "../graphqueryable.js";
+import { _GraphQueryableSearchableCollection } from "../graphqueryable.js";
 import { IDeleteable, IUpdateable, IGetById } from "../decorators.js";
 import { _DirectoryObject } from "../directory-objects/types.js";
 export declare enum GroupType {
@@ -58,7 +58,7 @@ export declare const Group: (baseUrl: string | import("../graphqueryable.js").IG
  * Describes a collection of Field objects
  *
  */
-export declare class _Groups extends _GraphQueryableCollection<IGroupType[]> {
+export declare class _Groups extends _GraphQueryableSearchableCollection<IGroupType[]> {
     /**
      * Create a new group as specified in the request body.
      *

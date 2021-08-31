@@ -3268,7 +3268,7 @@ var SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = telemetry_tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.7.0:" + methodName;
+                            clientTag = "PnPCoreJS:2.8.0:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -3959,7 +3959,7 @@ var SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.7.0:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.8.0:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -3993,7 +3993,7 @@ var SPBatch = /** @class */ (function (_super) {
                     // the entire batch resulted in an error and we need to handle that better #1356
                     // things consistently with the rest of the http errors
                     throw (_b.sent());
-                    case 4: return [4 /*yield*/, fetchResponse.clone().text()];
+                    case 4: return [4 /*yield*/, fetchResponse.text()];
                     case 5:
                         text = _b.sent();
                         responses = SPBatch.ParseResponse(text);

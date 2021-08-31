@@ -1,4 +1,4 @@
-/*! msal v1.4.11 2021-05-12 */
+/*! msal v1.4.12 2021-07-22 */
 'use strict';
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -1183,11 +1183,12 @@ var ServerRequestParameters = /** @class */ (function () {
      * @param {@link ServerRequestParameters}
      * @ignore
      */
-    ServerRequestParameters.prototype.addHintParameters = function (account, qParams) {
+    ServerRequestParameters.prototype.addHintParameters = function (account, params) {
         /*
          * This is a final check for all queryParams added so far; preference order: sid > login_hint
          * sid cannot be passed along with login_hint or domain_hint, hence we check both are not populated yet in queryParameters
          */
+        var qParams = params;
         if (account && !qParams[Constants_1.SSOTypes.SID]) {
             // sid - populate only if login_hint is not already populated and the account has sid
             var populateSID = !qParams[Constants_1.SSOTypes.LOGIN_HINT] && account.sid && this.promptValue === Constants_1.PromptState.NONE;
@@ -1208,10 +1209,8 @@ var ServerRequestParameters = /** @class */ (function () {
      * Add SID to extraQueryParameters
      * @param sid
      */
-    ServerRequestParameters.prototype.addSSOParameter = function (ssoType, ssoData, ssoParam) {
-        if (!ssoParam) {
-            ssoParam = {};
-        }
+    ServerRequestParameters.prototype.addSSOParameter = function (ssoType, ssoData, params) {
+        var ssoParam = params || {};
         if (!ssoData) {
             return ssoParam;
         }
@@ -1378,10 +1377,18 @@ var UserAgentApplication = /** @class */ (function () {
         // cache keys msal - typescript throws an error if any value other than "localStorage" or "sessionStorage" is passed
         this.cacheStorage = new AuthCache_1.AuthCache(this.clientId, this.config.cache.cacheLocation, this.inCookie);
         // Initialize window handling code
-        window.activeRenewals = {};
-        window.renewStates = [];
-        window.callbackMappedToRenewStates = {};
-        window.promiseMappedToRenewStates = {};
+        if (!window.activeRenewals) {
+            window.activeRenewals = {};
+        }
+        if (!window.renewStates) {
+            window.renewStates = [];
+        }
+        if (!window.callbackMappedToRenewStates) {
+            window.callbackMappedToRenewStates = {};
+        }
+        if (!window.promiseMappedToRenewStates) {
+            window.promiseMappedToRenewStates = {};
+        }
         window.msal = this;
         var urlHash = window.location.hash;
         var urlContainsHash = UrlUtils_1.UrlUtils.urlContainsHash(urlHash);
@@ -2126,7 +2133,7 @@ var UserAgentApplication = /** @class */ (function () {
         if (!window.callbackMappedToRenewStates[expectedState]) {
             window.callbackMappedToRenewStates[expectedState] = function (response, error) {
                 // reset active renewals
-                window.activeRenewals[requestSignature] = null;
+                delete window.activeRenewals[requestSignature];
                 // for all promiseMappedtoRenewStates for a given 'state' - call the reject/resolve with error/token respectively
                 for (var i = 0; i < window.promiseMappedToRenewStates[expectedState].length; ++i) {
                     try {
@@ -2146,8 +2153,8 @@ var UserAgentApplication = /** @class */ (function () {
                     }
                 }
                 // reset
-                window.promiseMappedToRenewStates[expectedState] = null;
-                window.callbackMappedToRenewStates[expectedState] = null;
+                delete window.promiseMappedToRenewStates[expectedState];
+                delete window.callbackMappedToRenewStates[expectedState];
             };
         }
     };
@@ -2273,9 +2280,10 @@ var UserAgentApplication = /** @class */ (function () {
      * Used to call the constructor callback with the token/error
      * @param {string} [hash=window.location.hash] - Hash fragment of Url.
      */
-    UserAgentApplication.prototype.processCallBack = function (hash, stateInfo, parentCallback) {
+    UserAgentApplication.prototype.processCallBack = function (hash, respStateInfo, parentCallback) {
         this.logger.info("ProcessCallBack has been called. Processing callback from redirect response");
         // get the state info from the hash
+        var stateInfo = respStateInfo;
         if (!stateInfo) {
             this.logger.verbose("StateInfo is null, getting stateInfo from hash");
             stateInfo = this.getResponseState(hash);
@@ -2581,11 +2589,9 @@ var UserAgentApplication = /** @class */ (function () {
             // The response value will stay null if token retrieved from the cache is expired, otherwise it will be populated with said token's data
             if (tokenIsStillValid) {
                 this.logger.verbose("Access token expiration is within offset, using access token found in cache");
-                if (!account) {
-                    account = this.getAccount();
-                    if (!account) {
-                        throw AuthError_1.AuthError.createUnexpectedError("Account should not be null here.");
-                    }
+                var responseAccount = account || this.getAccount();
+                if (!responseAccount) {
+                    throw AuthError_1.AuthError.createUnexpectedError("Account should not be null here.");
                 }
                 var aState = this.getAccountState(serverAuthenticationRequest.state);
                 var response = {
@@ -2597,7 +2603,7 @@ var UserAgentApplication = /** @class */ (function () {
                     accessToken: accessTokenCacheItem.value.accessToken,
                     scopes: accessTokenCacheItem.key.scopes.split(" "),
                     expiresOn: new Date(Number(accessTokenCacheItem.value.expiresIn) * 1000),
-                    account: account,
+                    account: responseAccount,
                     accountState: aState,
                     fromCache: true
                 };
@@ -4969,7 +4975,7 @@ exports.InteractionRequiredAuthError = InteractionRequiredAuthError_1.Interactio
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 /* eslint-disable header/header */
 exports.name = "msal";
-exports.version = "1.4.11";
+exports.version = "1.4.12";
 
 
 /***/ }),
@@ -6354,15 +6360,15 @@ var ResponseUtils = /** @class */ (function () {
     ResponseUtils.buildAuthResponse = function (idToken, authResponse, serverAuthenticationRequest, account, scopes, accountState) {
         switch (serverAuthenticationRequest.responseType) {
             case Constants_1.ResponseTypes.id_token:
-                authResponse = tslib_1.__assign({}, authResponse, { tokenType: Constants_1.ServerHashParamKeys.ID_TOKEN, account: account, scopes: scopes, accountState: accountState });
-                authResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
-                return (authResponse.idToken) ? authResponse : null;
+                var idTokenResponse = tslib_1.__assign({}, authResponse, { tokenType: Constants_1.ServerHashParamKeys.ID_TOKEN, account: account, scopes: scopes, accountState: accountState });
+                idTokenResponse = ResponseUtils.setResponseIdToken(idTokenResponse, idToken);
+                return (idTokenResponse.idToken) ? idTokenResponse : null;
             case Constants_1.ResponseTypes.id_token_token:
-                authResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
-                return (authResponse && authResponse.accessToken && authResponse.idToken) ? authResponse : null;
+                var idTokeTokenResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
+                return (idTokeTokenResponse && idTokeTokenResponse.accessToken && idTokeTokenResponse.idToken) ? idTokeTokenResponse : null;
             case Constants_1.ResponseTypes.token:
-                authResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
-                return authResponse;
+                var tokenResponse = ResponseUtils.setResponseIdToken(authResponse, idToken);
+                return tokenResponse;
             default:
                 return null;
         }
@@ -6446,10 +6452,8 @@ var TimeUtils = /** @class */ (function () {
      */
     TimeUtils.parseExpiresIn = function (expiresIn) {
         // if AAD did not send "expires_in" property, use default expiration of 3599 seconds, for some reason AAD sends 3599 as "expires_in" value instead of 3600
-        if (!expiresIn) {
-            expiresIn = "3599";
-        }
-        return parseInt(expiresIn, 10);
+        var expires = expiresIn || "3599";
+        return parseInt(expires, 10);
     };
     /**
      * Return the current time in Unix time (seconds). Date.getTime() returns in milliseconds.
@@ -6714,10 +6718,11 @@ var UrlUtils = /** @class */ (function () {
      */
     UrlUtils.CanonicalizeUri = function (url) {
         if (url) {
-            url = url.toLowerCase();
-        }
-        if (url && !UrlUtils.endsWith(url, "/")) {
-            url += "/";
+            var lowerCaseUrl = url.toLowerCase();
+            if (!UrlUtils.endsWith(lowerCaseUrl, "/")) {
+                lowerCaseUrl += "/";
+            }
+            return lowerCaseUrl;
         }
         return url;
     };
@@ -6743,15 +6748,16 @@ var UrlUtils = /** @class */ (function () {
         if (StringUtils_1.StringUtils.isEmpty(url)) {
             return url;
         }
+        var updatedUrl = url;
         var regex = new RegExp("(\\&" + name + "=)[^\&]+");
-        url = url.replace(regex, "");
+        updatedUrl = url.replace(regex, "");
         // name=value&
         regex = new RegExp("(" + name + "=)[^\&]+&");
-        url = url.replace(regex, "");
+        updatedUrl = url.replace(regex, "");
         // name=value
         regex = new RegExp("(" + name + "=)[^\&]+");
-        url = url.replace(regex, "");
-        return url;
+        updatedUrl = url.replace(regex, "");
+        return updatedUrl;
     };
     /**
      * @hidden
