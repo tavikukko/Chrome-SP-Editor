@@ -56,8 +56,6 @@
     }
   ],
   "permissions": [
-    "webRequest",
-    "webRequestBlocking",
     "tabs",
     "activeTab",
     "downloads"
