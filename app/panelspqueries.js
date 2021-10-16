@@ -3375,7 +3375,7 @@ var runSearchAllPropsCurPage = function runSearchAllPropsCurPage() {
       }
 
        var opts = {
-         Querytext: `UniqueId:{${page.UniqueId}}`,
+         Querytext: `NormUniqueID:${page.UniqueId}`,
          RowLimit: 1,
          Refiners: "managedproperties(filter=600/0/*)",
        };
@@ -3392,7 +3392,7 @@ var runSearchAllPropsCurPage = function runSearchAllPropsCurPage() {
          );
 
          r = await $pnp.sp.search({
-           Querytext: `UniqueId:{${page.UniqueId}}`, RowLimit: 1, SelectProperties: filteredProps
+           Querytext: `NormUniqueID:${page.UniqueId}`, RowLimit: 1, SelectProperties: filteredProps
          })
        } else {
          r = r1
