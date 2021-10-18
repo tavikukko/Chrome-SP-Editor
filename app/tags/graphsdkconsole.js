@@ -153,7 +153,7 @@ import {
   console.log() will output here
 */
 `,
-              "json",
+              "text",
               new monaco.Uri("results.ts")
             ),
             language: 'json',
@@ -168,6 +168,7 @@ import {
             suggestOnTriggerCharacters: true,
             showTypeScriptWarnings: false,
             colorDecorators: true,
+            "bracketPairColorization.enabled": true,
           });
 
           // adds auto-complete for @microsoft & adal module imports
@@ -294,6 +295,7 @@ import {
                 console.logNew = console.log;
                 console.logNew = function (value) {
                   playgroundresults.setValue(JSON.stringify(value, null, 4));
+                  monaco.editor.setModelLanguage(playgroundresults.getModel(), "json");
                 };
                 eval(script)
               }

@@ -126,6 +126,7 @@ import { taxonomy } from "@pnp/sp-taxonomy"
             suggestOnTriggerCharacters: true,
             showTypeScriptWarnings: false,
             colorDecorators: true,
+            "bracketPairColorization.enabled": true,
           });
 
           // adds auto-complete for @pnp module imports

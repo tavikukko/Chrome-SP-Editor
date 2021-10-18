@@ -1526,7 +1526,7 @@ var SPRest = /** @class */ (function () {
                     options: {},
                 }, init || {});
                 baseUrl = init.baseUrl, cloneGlobal = init.cloneGlobal, options = init.options, config = init.config;
-                runtime = cloneGlobal ? new Runtime(DefaultRuntime.export()) : new Runtime();
+                runtime = cloneGlobal ? new Runtime(DefaultRuntime["export"]()) : new Runtime();
                 runtime.assign(config);
                 return [2 /*return*/, new SPRest(options, baseUrl, runtime)];
             });
@@ -2001,7 +2001,7 @@ var extendFactory = function (factory, extensions) {
 };
 function extendCol(a, e) {
     if (Array.isArray(e)) {
-        a.push.apply(a, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(e)));
+        a.push.apply(a, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(e), false));
     }
     else {
         a.push(e);
@@ -2050,16 +2050,16 @@ function extensionOrDefault(op, or, target) {
         var extensions = [];
         // we need to first invoke extensions tied to only this object
         if (Reflect.has(target, ObjExtensionsSym)) {
-            extensions.push.apply(extensions, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(Reflect.get(target, ObjExtensionsSym))));
+            extensions.push.apply(extensions, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(Reflect.get(target, ObjExtensionsSym)), false));
         }
         // second we need to process any global extensions
-        extensions.push.apply(extensions, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(globalExtensions)));
+        extensions.push.apply(extensions, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(globalExtensions), false));
         for (var i = 0; i < extensions.length; i++) {
             var extension = extensions[i];
             var result = undefined;
             if (isFunc(extension)) {
                 // this extension is a function which we call
-                result = extension.apply(void 0, tslib_tslib_es6_spreadArray([op, target], tslib_tslib_es6_read(rest)));
+                result = extension.apply(void 0, tslib_tslib_es6_spreadArray([op, target], tslib_tslib_es6_read(rest), false));
             }
             else if (op === "get" && Reflect.has(extension, rest[0])) {
                 // this extension is a named extension meaning we are overriding a specific method/property
@@ -2067,7 +2067,7 @@ function extensionOrDefault(op, or, target) {
             }
             else if (Reflect.has(extension, op)) {
                 // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
-                result = Reflect.get(extension, op).apply(void 0, tslib_tslib_es6_spreadArray([target], tslib_tslib_es6_read(rest)));
+                result = Reflect.get(extension, op).apply(void 0, tslib_tslib_es6_spreadArray([target], tslib_tslib_es6_read(rest), false));
             }
             if (typeof result !== "undefined") {
                 // if a extension returned a result, we return that
@@ -2077,7 +2077,7 @@ function extensionOrDefault(op, or, target) {
             }
         }
     }
-    return or.apply(void 0, tslib_tslib_es6_spreadArray([target], tslib_tslib_es6_read(rest)));
+    return or.apply(void 0, tslib_tslib_es6_spreadArray([target], tslib_tslib_es6_read(rest), false));
 }
 //# sourceMappingURL=invokable-extensions.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
@@ -2096,8 +2096,8 @@ var invokableBinder = function (invoker) { return function (constructor) {
                 for (var _i = 0; _i < arguments.length; _i++) {
                     ags[_i] = arguments[_i];
                 }
-                return invoker.call.apply(invoker, tslib_tslib_es6_spreadArray([r], tslib_tslib_es6_read(ags)));
-            }, new (constructor.bind.apply(constructor, tslib_tslib_es6_spreadArray([void 0], tslib_tslib_es6_read(as))))());
+                return invoker.call.apply(invoker, tslib_tslib_es6_spreadArray([r], tslib_tslib_es6_read(ags), false));
+            }, new (constructor.bind.apply(constructor, tslib_tslib_es6_spreadArray([void 0], tslib_tslib_es6_read(as), false)))());
             Reflect.setPrototypeOf(r, constructor.prototype);
             return r;
         };
@@ -2320,7 +2320,7 @@ function cloneQueryableData(source) {
     var s = JSON.stringify(source, function (key, value) {
         switch (key) {
             case "query":
-                return JSON.stringify(tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(value)));
+                return JSON.stringify(tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(value), false));
             case "batch":
             case "batchDependency":
             case "cachingOptions":
@@ -2391,7 +2391,7 @@ var Queryable = /** @class */ (function () {
             this._runtime = args[0];
         }
         else {
-            this._runtime = args[0] ? new Runtime(DefaultRuntime.export()) : new Runtime();
+            this._runtime = args[0] ? new Runtime(DefaultRuntime["export"]()) : new Runtime();
             if (args.length > 1 && objectDefinedNotNull(args[1])) {
                 this._runtime.assign(args[1]);
             }
@@ -3208,7 +3208,7 @@ var SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.8.0:" + methodName;
+                            clientTag = "PnPCoreJS:2.10.0:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -3818,7 +3818,7 @@ function odataUrlFrom(candidate) {
         Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
         return "";
     }
-    return combine.apply(void 0, __spreadArray([], __read(parts)));
+    return combine.apply(void 0, __spreadArray([], __read(parts), false));
 }
 var SPODataEntityParserImpl = /** @class */ (function (_super) {
     __extends(SPODataEntityParserImpl, _super);
@@ -4021,7 +4021,7 @@ var SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.8.0:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.10.0:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -5023,7 +5023,7 @@ var _List = /** @class */ (function (_super) {
             expands[_i - 1] = arguments[_i];
         }
         var q = this.clone(List, "getitems");
-        return spPost(q.expand.apply(q, __spreadArray([], __read(expands))), body({ query: util_assign(metadata("SP.CamlQuery"), query) }));
+        return spPost(q.expand.apply(q, __spreadArray([], __read(expands), false)), body({ query: util_assign(metadata("SP.CamlQuery"), query) }));
     };
     /**
      * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx
@@ -6339,7 +6339,7 @@ var _File = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         q = this.listItemAllFields;
-                        return [4 /*yield*/, q.select.apply(q, __spreadArray([], __read(selects)))()];
+                        return [4 /*yield*/, q.select.apply(q, __spreadArray([], __read(selects), false))()];
                     case 1:
                         d = _a.sent();
                         return [2 /*return*/, util_assign(Item(odataUrlFrom(d)), d)];
@@ -7798,7 +7798,7 @@ var _ClientsidePage = /** @class */ (function (_super) {
                             LayoutWebpartsContent: this.getLayoutWebpartsContent(),
                             Title: this.title,
                             TopicHeader: this.topicHeader,
-                            BannerImageUrl: this.bannerImageUrl
+                            BannerImageUrl: this.bannerImageUrl,
                         });
                         if (this._bannerImageDirty || this._bannerImageThumbnailUrlDirty) {
                             bannerImageUrlValue = this._bannerImageThumbnailUrlDirty ? this.thumbnailUrl : this.bannerImageUrl;
@@ -7990,6 +7990,8 @@ var _ClientsidePage = /** @class */ (function (_super) {
             url = url.replace(/^https?:\/\/[a-z0-9.]*?\.[a-z]{2,3}\//i, "/");
         }
         this.json.BannerImageUrl = url;
+        // update serverProcessedContent (page behavior change 2021-Oct-13)
+        this._layoutPart.serverProcessedContent = { imageSources: { imageSource: url }, };
         this._bannerImageDirty = true;
         /*
             setting the banner image resets the thumbnail image (matching UI functionality)
@@ -8124,7 +8126,7 @@ var _ClientsidePage = /** @class */ (function (_super) {
                     case 1:
                         listData = _a.sent();
                         item = (List(listData["odata.id"])).configureFrom(this).items.getById(this.json.Id);
-                        return [4 /*yield*/, item.select.apply(item, __spreadArray([], __read(selects)))()];
+                        return [4 /*yield*/, item.select.apply(item, __spreadArray([], __read(selects), false))()];
                     case 2:
                         itemData = _a.sent();
                         return [2 /*return*/, util_assign((Item(odataUrlFrom(itemData))).configureFrom(this), itemData)];
@@ -8868,8 +8870,15 @@ var ClientsideWebpart = /** @class */ (function (_super) {
         this.data.webPartData.properties = util_assign(this.data.webPartData.properties, properties);
         return this;
     };
+    ClientsideWebpart.prototype.setServerProcessedContent = function (properties) {
+        this.data.webPartData.serverProcessedContent = util_assign(this.data.webPartData.serverProcessedContent || {}, properties);
+        return this;
+    };
     ClientsideWebpart.prototype.getProperties = function () {
         return this.data.webPartData.properties;
+    };
+    ClientsideWebpart.prototype.getServerProcessedContent = function () {
+        return this.data.webPartData.serverProcessedContent;
     };
     ClientsideWebpart.prototype.onColumnChange = function (col) {
         this.data.position.sectionFactor = col.factor;
@@ -9172,7 +9181,7 @@ var _Folder = /** @class */ (function (_super) {
             var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, (_a = this.listItemAllFields).select.apply(_a, __spreadArray([], __read(selects)))()];
+                    case 0: return [4 /*yield*/, (_a = this.listItemAllFields).select.apply(_a, __spreadArray([], __read(selects), false))()];
                     case 1:
                         q = _b.sent();
                         if (hOP(q, "odata.null") && q["odata.null"]) {
@@ -13863,7 +13872,7 @@ function getSharingInformation(request, expands) {
     if (request === void 0) { request = null; }
     if (expands === void 0) { expands = []; }
     var o = tag.configure(this.clone(SharePointQueryableInstance, "getSharingInformation"), "sh.getSharingInformation");
-    return spPost(o.expand.apply(o, __spreadArray([], __read(expands))), body({ request: request }));
+    return spPost(o.expand.apply(o, __spreadArray([], __read(expands), false)), body({ request: request }));
 }
 /**
  * Gets the sharing settings of an item.
@@ -15371,7 +15380,7 @@ var _TermSet = /** @class */ (function (_super) {
                         if (props.retrieveProperties) {
                             selects.push("properties", "localProperties");
                         }
-                        return [4 /*yield*/, this.select.apply(this, __spreadArray([], __read(selects)))()];
+                        return [4 /*yield*/, this.select.apply(this, __spreadArray([], __read(selects), false))()];
                     case 1:
                         setInfo = _a.sent();
                         tree = [];
@@ -15382,12 +15391,12 @@ var _TermSet = /** @class */ (function (_super) {
                             }
                             var ordering = null;
                             if (sorts === null && setSorts.length > 0) {
-                                ordering = __spreadArray([], __read(setSorts));
+                                ordering = __spreadArray([], __read(setSorts), false);
                             }
                             else {
                                 var index = sorts.findIndex(function (v) { return v.setId === setInfo.id; });
                                 if (index >= 0) {
-                                    ordering = __spreadArray([], __read(sorts[index].order));
+                                    ordering = __spreadArray([], __read(sorts[index].order), false);
                                 }
                             }
                             if (ordering !== null) {
@@ -15402,7 +15411,7 @@ var _TermSet = /** @class */ (function (_super) {
                                 // AND the ordering information hasn't been updated in the UI the new term will not have
                                 // any associated ordering information. See #1547 which reported this. So here we
                                 // append any terms remaining in "terms" not in "orderedChildren" to the end of "orderedChildren"
-                                orderedChildren_1.push.apply(orderedChildren_1, __spreadArray([], __read(terms.filter(function (info) { return ordering.indexOf(info.id) < 0; }))));
+                                orderedChildren_1.push.apply(orderedChildren_1, __spreadArray([], __read(terms.filter(function (info) { return ordering.indexOf(info.id) < 0; })), false));
                                 return orderedChildren_1;
                             }
                             return terms;
@@ -15412,7 +15421,7 @@ var _TermSet = /** @class */ (function (_super) {
                             var _a;
                             return __generator(this, function (_b) {
                                 switch (_b.label) {
-                                    case 0: return [4 /*yield*/, (_a = source.children).select.apply(_a, __spreadArray([], __read(selects)))()];
+                                    case 0: return [4 /*yield*/, (_a = source.children).select.apply(_a, __spreadArray([], __read(selects), false))()];
                                     case 1:
                                         children = _b.sent();
                                         i = 0;

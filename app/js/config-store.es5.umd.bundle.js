@@ -1916,7 +1916,7 @@ var extendFactory = function (factory, extensions) {
 };
 function extendCol(a, e) {
     if (Array.isArray(e)) {
-        a.push.apply(a, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(e)));
+        a.push.apply(a, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(e), false));
     }
     else {
         a.push(e);
@@ -1965,16 +1965,16 @@ function extensionOrDefault(op, or, target) {
         var extensions = [];
         // we need to first invoke extensions tied to only this object
         if (Reflect.has(target, ObjExtensionsSym)) {
-            extensions.push.apply(extensions, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(Reflect.get(target, ObjExtensionsSym))));
+            extensions.push.apply(extensions, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(Reflect.get(target, ObjExtensionsSym)), false));
         }
         // second we need to process any global extensions
-        extensions.push.apply(extensions, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(globalExtensions)));
+        extensions.push.apply(extensions, tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(globalExtensions), false));
         for (var i = 0; i < extensions.length; i++) {
             var extension = extensions[i];
             var result = undefined;
             if (util_isFunc(extension)) {
                 // this extension is a function which we call
-                result = extension.apply(void 0, tslib_tslib_es6_spreadArray([op, target], tslib_tslib_es6_read(rest)));
+                result = extension.apply(void 0, tslib_tslib_es6_spreadArray([op, target], tslib_tslib_es6_read(rest), false));
             }
             else if (op === "get" && Reflect.has(extension, rest[0])) {
                 // this extension is a named extension meaning we are overriding a specific method/property
@@ -1982,7 +1982,7 @@ function extensionOrDefault(op, or, target) {
             }
             else if (Reflect.has(extension, op)) {
                 // this extension is a ProxyHandler that has a handler defined for {op} so we pass control and see if we get a result
-                result = Reflect.get(extension, op).apply(void 0, tslib_tslib_es6_spreadArray([target], tslib_tslib_es6_read(rest)));
+                result = Reflect.get(extension, op).apply(void 0, tslib_tslib_es6_spreadArray([target], tslib_tslib_es6_read(rest), false));
             }
             if (typeof result !== "undefined") {
                 // if a extension returned a result, we return that
@@ -1992,7 +1992,7 @@ function extensionOrDefault(op, or, target) {
             }
         }
     }
-    return or.apply(void 0, tslib_tslib_es6_spreadArray([target], tslib_tslib_es6_read(rest)));
+    return or.apply(void 0, tslib_tslib_es6_spreadArray([target], tslib_tslib_es6_read(rest), false));
 }
 //# sourceMappingURL=invokable-extensions.js.map
 ;// CONCATENATED MODULE: ./node_modules/@pnp/odata/invokable-binder.js
@@ -2011,8 +2011,8 @@ var invokableBinder = function (invoker) { return function (constructor) {
                 for (var _i = 0; _i < arguments.length; _i++) {
                     ags[_i] = arguments[_i];
                 }
-                return invoker.call.apply(invoker, tslib_tslib_es6_spreadArray([r], tslib_tslib_es6_read(ags)));
-            }, new (constructor.bind.apply(constructor, tslib_tslib_es6_spreadArray([void 0], tslib_tslib_es6_read(as))))());
+                return invoker.call.apply(invoker, tslib_tslib_es6_spreadArray([r], tslib_tslib_es6_read(ags), false));
+            }, new (constructor.bind.apply(constructor, tslib_tslib_es6_spreadArray([void 0], tslib_tslib_es6_read(as), false)))());
             Reflect.setPrototypeOf(r, constructor.prototype);
             return r;
         };
@@ -2235,7 +2235,7 @@ function cloneQueryableData(source) {
     var s = JSON.stringify(source, function (key, value) {
         switch (key) {
             case "query":
-                return JSON.stringify(tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(value)));
+                return JSON.stringify(tslib_tslib_es6_spreadArray([], tslib_tslib_es6_read(value), false));
             case "batch":
             case "batchDependency":
             case "cachingOptions":
@@ -2306,7 +2306,7 @@ var Queryable = /** @class */ (function () {
             this._runtime = args[0];
         }
         else {
-            this._runtime = args[0] ? new Runtime(DefaultRuntime.export()) : new Runtime();
+            this._runtime = args[0] ? new Runtime(DefaultRuntime["export"]()) : new Runtime();
             if (args.length > 1 && objectDefinedNotNull(args[1])) {
                 this._runtime.assign(args[1]);
             }
@@ -3123,7 +3123,7 @@ var SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.8.0:" + methodName;
+                            clientTag = "PnPCoreJS:2.10.0:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -3733,7 +3733,7 @@ function odataUrlFrom(candidate) {
         Logger.write("No uri information found in ODataEntity parsing, chaining will fail for this object.", 2 /* Warning */);
         return "";
     }
-    return combine.apply(void 0, tslib_es6_spreadArray([], tslib_es6_read(parts)));
+    return combine.apply(void 0, tslib_es6_spreadArray([], tslib_es6_read(parts), false));
 }
 var SPODataEntityParserImpl = /** @class */ (function (_super) {
     tslib_es6_extends(SPODataEntityParserImpl, _super);
@@ -3936,7 +3936,7 @@ var SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.8.0:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.10.0:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {
@@ -4086,7 +4086,7 @@ var SPRest = /** @class */ (function () {
                     options: {},
                 }, init || {});
                 baseUrl = init.baseUrl, cloneGlobal = init.cloneGlobal, options = init.options, config = init.config;
-                runtime = cloneGlobal ? new Runtime(DefaultRuntime.export()) : new Runtime();
+                runtime = cloneGlobal ? new Runtime(DefaultRuntime["export"]()) : new Runtime();
                 runtime.assign(config);
                 return [2 /*return*/, new SPRest(options, baseUrl, runtime)];
             });
@@ -5027,7 +5027,7 @@ var _List = /** @class */ (function (_super) {
             expands[_i - 1] = arguments[_i];
         }
         var q = this.clone(List, "getitems");
-        return spPost(q.expand.apply(q, tslib_es6_spreadArray([], tslib_es6_read(expands))), body({ query: util_assign(metadata("SP.CamlQuery"), query) }));
+        return spPost(q.expand.apply(q, tslib_es6_spreadArray([], tslib_es6_read(expands), false)), body({ query: util_assign(metadata("SP.CamlQuery"), query) }));
     };
     /**
      * See: https://msdn.microsoft.com/en-us/library/office/dn292554.aspx

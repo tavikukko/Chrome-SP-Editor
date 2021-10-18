@@ -1,4 +1,4 @@
-/*! msal v1.4.12 2021-07-22 */
+/*! msal v1.4.14 2021-10-05 */
 'use strict';
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -1395,7 +1395,7 @@ var UserAgentApplication = /** @class */ (function () {
         // check if back button is pressed
         WindowUtils_1.WindowUtils.checkIfBackButtonIsPressed(this.cacheStorage);
         // On the server 302 - Redirect, handle this
-        if (urlContainsHash) {
+        if (urlContainsHash && this.cacheStorage.isInteractionInProgress(true)) {
             var stateInfo = this.getResponseState(urlHash);
             if (stateInfo.method === Constants_1.Constants.interactionTypeRedirect) {
                 this.handleRedirectAuthenticationResponse(urlHash);
@@ -1482,7 +1482,7 @@ var UserAgentApplication = /** @class */ (function () {
     UserAgentApplication.prototype.authErrorHandler = function (interactionType, authErr, response, reject) {
         this.logger.verbose("AuthErrorHandler has been called");
         // set interaction_status to complete
-        this.cacheStorage.removeItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS);
+        this.cacheStorage.setInteractionInProgress(false);
         if (interactionType === Constants_1.Constants.interactionTypeRedirect) {
             this.logger.verbose("Interaction type is redirect");
             if (this.errorReceivedCallback) {
@@ -1596,12 +1596,12 @@ var UserAgentApplication = /** @class */ (function () {
         this.logger.verbose("AcquireTokenInteractive has been called");
         // block the request if made from the hidden iframe
         WindowUtils_1.WindowUtils.blockReloadInHiddenIframes();
-        var interactionProgress = this.cacheStorage.getItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS);
+        var interactionProgress = this.cacheStorage.isInteractionInProgress(false);
         if (interactionType === Constants_1.Constants.interactionTypeRedirect) {
             this.cacheStorage.setItem(Constants_1.TemporaryCacheKeys.REDIRECT_REQUEST, "" + Constants_1.Constants.inProgress + Constants_1.Constants.resourceDelimiter + request.state);
         }
         // If already in progress, do not proceed
-        if (interactionProgress === Constants_1.Constants.inProgress) {
+        if (interactionProgress) {
             var thrownError = isLoginCall ? ClientAuthError_1.ClientAuthError.createLoginInProgressError() : ClientAuthError_1.ClientAuthError.createAcquireTokenInProgressError();
             var stateOnlyResponse = AuthResponse_1.buildResponseStateOnly(this.getAccountState(request.state));
             this.cacheStorage.resetTempCacheItems(request.state);
@@ -1677,7 +1677,7 @@ var UserAgentApplication = /** @class */ (function () {
                         this.logger.verbose("AcquireTokenHelper has been called");
                         this.logger.verbose("Interaction type: " + interactionType + ". isLoginCall: " + isLoginCall);
                         // Track the acquireToken progress
-                        this.cacheStorage.setItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS, Constants_1.Constants.inProgress);
+                        this.cacheStorage.setInteractionInProgress(true);
                         requestSignature = request.scopes ? request.scopes.join(" ").toLowerCase() : Constants_1.Constants.oidcScopes.join(" ");
                         this.logger.verbosePii("Request signature: " + requestSignature);
                         acquireTokenAuthority = (request && request.authority) ? AuthorityFactory_1.AuthorityFactory.CreateInstance(request.authority, this.config.auth.validateAuthority, request.authorityMetadata) : this.authorityInstance;
@@ -1753,7 +1753,7 @@ var UserAgentApplication = /** @class */ (function () {
                         hash = _a.sent();
                         this.handleAuthenticationResponse(hash);
                         // Request completed successfully, set to completed
-                        this.cacheStorage.removeItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS);
+                        this.cacheStorage.setInteractionInProgress(false);
                         this.logger.info("Closing popup window");
                         // TODO: Check how this can be extracted for any framework specific code?
                         if (this.config.framework.isAngular) {
@@ -1771,7 +1771,7 @@ var UserAgentApplication = /** @class */ (function () {
                         }
                         else {
                             // Request failed, set to canceled
-                            this.cacheStorage.removeItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS);
+                            this.cacheStorage.setInteractionInProgress(false);
                             popUpWindow.close();
                         }
                         return [3 /*break*/, 8];
@@ -2029,7 +2029,7 @@ var UserAgentApplication = /** @class */ (function () {
             return popupWindow;
         }
         catch (e) {
-            this.cacheStorage.removeItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS);
+            this.cacheStorage.setInteractionInProgress(false);
             throw ClientAuthError_1.ClientAuthError.createPopupWindowError(e.toString());
         }
     };
@@ -3175,7 +3175,7 @@ var UserAgentApplication = /** @class */ (function () {
      * @returns {boolean} true/false
      */
     UserAgentApplication.prototype.getLoginInProgress = function () {
-        return this.cacheStorage.getItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS) === Constants_1.Constants.inProgress;
+        return this.cacheStorage.isInteractionInProgress(true);
     };
     /**
      * @hidden
@@ -3184,12 +3184,7 @@ var UserAgentApplication = /** @class */ (function () {
      * @param loginInProgress
      */
     UserAgentApplication.prototype.setInteractionInProgress = function (inProgress) {
-        if (inProgress) {
-            this.cacheStorage.setItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS, Constants_1.Constants.inProgress);
-        }
-        else {
-            this.cacheStorage.removeItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS);
-        }
+        this.cacheStorage.setInteractionInProgress(inProgress);
     };
     /**
      * @hidden
@@ -3207,7 +3202,7 @@ var UserAgentApplication = /** @class */ (function () {
      * returns the status of acquireTokenInProgress
      */
     UserAgentApplication.prototype.getAcquireTokenInProgress = function () {
-        return this.cacheStorage.getItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS) === Constants_1.Constants.inProgress;
+        return this.cacheStorage.isInteractionInProgress(true);
     };
     /**
      * @hidden
@@ -3979,6 +3974,7 @@ var AuthCache = /** @class */ (function (_super) {
     tslib_1.__extends(AuthCache, _super);
     function AuthCache(clientId, cacheLocation, storeAuthStateInCookie) {
         var _this = _super.call(this, cacheLocation) || this;
+        _this.temporaryCache = new BrowserStorage_1.BrowserStorage(Constants_1.SESSION_STORAGE);
         _this.clientId = clientId;
         // This is hardcoded to true for now. We may make this configurable in the future
         _this.rollbackEnabled = true;
@@ -4100,10 +4096,28 @@ var AuthCache = /** @class */ (function (_super) {
      * @param key
      */
     AuthCache.prototype.removeItem = function (key) {
+        this.temporaryCache.removeItem(this.generateCacheKey(key, true));
         _super.prototype.removeItem.call(this, this.generateCacheKey(key, true));
         if (this.rollbackEnabled) {
             _super.prototype.removeItem.call(this, this.generateCacheKey(key, false));
         }
+    };
+    /**
+     * Sets temporary cache value
+     * @param key
+     * @param value
+     * @param enableCookieStorage
+     */
+    AuthCache.prototype.setTemporaryItem = function (key, value, enableCookieStorage) {
+        this.temporaryCache.setItem(this.generateCacheKey(key, true), value, enableCookieStorage);
+    };
+    /**
+     * Gets temporary cache value
+     * @param key
+     * @param enableCookieStorage
+     */
+    AuthCache.prototype.getTemporaryItem = function (key, enableCookieStorage) {
+        return this.temporaryCache.getItem(this.generateCacheKey(key, true), enableCookieStorage);
     };
     /**
      * Reset the cache items
@@ -4137,7 +4151,7 @@ var AuthCache = /** @class */ (function (_super) {
             });
         }
         // delete the interaction status cache
-        this.removeItem(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS);
+        this.setInteractionInProgress(false);
         this.removeItem(Constants_1.TemporaryCacheKeys.REDIRECT_REQUEST);
     };
     /**
@@ -4216,6 +4230,39 @@ var AuthCache = /** @class */ (function (_super) {
         var accessTokens = this.getAllAccessTokens(clientId, homeAccountIdentifier);
         var idTokens = this.getAllIdTokens(clientId, homeAccountIdentifier);
         return accessTokens.concat(idTokens);
+    };
+    /**
+     * Returns whether or not interaction is currently in progress. Optionally scope it to just this clientId
+     * @param forThisClient
+     */
+    AuthCache.prototype.isInteractionInProgress = function (matchClientId) {
+        var clientId = this.getInteractionInProgress();
+        if (matchClientId) {
+            return clientId === this.clientId;
+        }
+        else {
+            return !!clientId;
+        }
+    };
+    /**
+     * Returns the clientId of the interaction currently in progress
+     */
+    AuthCache.prototype.getInteractionInProgress = function () {
+        return this.getTemporaryItem(this.generateCacheKey(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS, false));
+    };
+    /**
+     * Sets interaction in progress state
+     * @param isInProgress
+     */
+    AuthCache.prototype.setInteractionInProgress = function (newInProgressValue) {
+        if (newInProgressValue && !this.isInteractionInProgress(false)) {
+            // Ensure we don't overwrite interaction in progress for a different clientId
+            this.setTemporaryItem(this.generateCacheKey(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS, false), this.clientId);
+        }
+        else if (!newInProgressValue && this.isInteractionInProgress(true)) {
+            // Only remove if the current in progress interaction is for this clientId
+            this.removeItem(this.generateCacheKey(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS, false));
+        }
     };
     /**
      * Return if the token renewal is still in progress
@@ -4964,6 +5011,8 @@ var ClientConfigurationError_1 = __webpack_require__(550);
 exports.ClientConfigurationError = ClientConfigurationError_1.ClientConfigurationError;
 var InteractionRequiredAuthError_1 = __webpack_require__(961);
 exports.InteractionRequiredAuthError = InteractionRequiredAuthError_1.InteractionRequiredAuthError;
+var packageMetadata_1 = __webpack_require__(700);
+exports.version = packageMetadata_1.version;
 
 
 /***/ }),
@@ -4975,7 +5024,7 @@ exports.InteractionRequiredAuthError = InteractionRequiredAuthError_1.Interactio
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 /* eslint-disable header/header */
 exports.name = "msal";
-exports.version = "1.4.12";
+exports.version = "1.4.14";
 
 
 /***/ }),
@@ -5857,6 +5906,7 @@ var Constants = /** @class */ (function () {
     return Constants;
 }());
 exports.Constants = Constants;
+exports.SESSION_STORAGE = "sessionStorage";
 /**
  * Keys in the hashParams
  */
@@ -5900,7 +5950,7 @@ var TemporaryCacheKeys;
     TemporaryCacheKeys["LOGIN_REQUEST"] = "login.request";
     TemporaryCacheKeys["RENEW_STATUS"] = "token.renew.status";
     TemporaryCacheKeys["URL_HASH"] = "urlHash";
-    TemporaryCacheKeys["INTERACTION_STATUS"] = "interaction_status";
+    TemporaryCacheKeys["INTERACTION_STATUS"] = "interaction.status";
     TemporaryCacheKeys["REDIRECT_REQUEST"] = "redirect_request";
 })(TemporaryCacheKeys = exports.TemporaryCacheKeys || (exports.TemporaryCacheKeys = {}));
 var PersistentCacheKeys;

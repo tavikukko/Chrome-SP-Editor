@@ -1,5 +1,104 @@
 # Monaco Editor Changelog
 
+## [0.29.1] (11.10.2021)
+
+* fixes [an issue with the ESM version in DOMPurify](https://github.com/microsoft/monaco-editor/issues/2691).
+
+### Thank you
+
+Contributions to `monaco-languages`:
+
+* [@sw23 (Spencer Williams)](https://github.com/sw23)
+  * Adding syntax highlighting support for .pla files (Programmable Logic Array) [PR #163](https://github.com/microsoft/monaco-languages/pull/163)
+  * SystemVerilog: Adding better syntax highlighting for primitive table definitions [PR #165](https://github.com/microsoft/monaco-languages/pull/165)
+* [@tochicool (Tochi Obudulu)](https://github.com/tochicool): Add support for Protocol Buffers language [PR #164](https://github.com/microsoft/monaco-languages/pull/164)
+
+
+## [0.29.0] (08.10.2021)
+
+* adds an `ariaContainerElement` option for editors
+* adds `guides.bracketPairs` to enable guides driven by bracket pairs
+* adds `maxFileSize` to control the maximum file size for which to compute diffs
+* adds `CodeActionProvider.resolveCodeAction`
+
+### Breaking Change
+
+* consolidated the options `renderIndentGuides`, `highlightActiveIndentGuide` to `guides`
+
+### Thank you
+
+Contributions to `monaco-editor`:
+
+* [@crackalak (Dan Hughes)](https://github.com/crackalak): Added `ariaContainerElement` to shadow dom test [PR #2644](https://github.com/microsoft/monaco-editor/pull/2644)
+* [@HKalbasi](https://github.com/HKalbasi): Add example for inlay hints [PR #2640](https://github.com/microsoft/monaco-editor/pull/2640)
+* [@silverwind](https://github.com/silverwind): Fix letter case in repo URL [PR #2674](https://github.com/microsoft/monaco-editor/pull/2674)
+* [@Un-index](https://github.com/Un-index): chore: Align run button text in playground.css [PR #2658](https://github.com/microsoft/monaco-editor/pull/2658)
+
+Contributions to `monaco-editor-samples`:
+
+* [@koto (Krzysztof Kotowicz)](https://github.com/koto): Added an example of loading Monaco with Trusted Types [PR #92](https://github.com/microsoft/monaco-editor-samples/pull/92)
+
+Contributions to `monaco-editor-webpack-plugin`:
+
+* [@six-ponies (马騳骉)](https://github.com/six-ponies): fix: Failed to execute 'importScripts' on 'WorkerGlobalScope': The URL xxx is invalid. [PR #160](https://github.com/microsoft/monaco-editor-webpack-plugin/pull/160)
+
+Contributions to `monaco-languages`:
+
+* [@aaaaaa2493 (Vladimir Turov)](https://github.com/aaaaaa2493): Support Java 12-17 syntax [PR #159](https://github.com/microsoft/monaco-languages/pull/159)
+* [@mbtools (Marc Bernard)](https://github.com/mbtools): Update ABAP syntax  [PR #160](https://github.com/microsoft/monaco-languages/pull/160)
+* [@scarolan (Sean Carolan)](https://github.com/scarolan): Replace // with # for line comments [PR #158](https://github.com/microsoft/monaco-languages/pull/158)
+* [@valeriia-melnychuk (Valeriia Melnychuk)](https://github.com/valeriia-melnychuk): Implement syntax highlighting for Flow9 [PR #154](https://github.com/microsoft/monaco-languages/pull/154)
+
+Contributions to `monaco-typescript`:
+
+* [@paranoidjk (paranoidjk)](https://github.com/paranoidjk): feat: support find reference to extraLib [PR #84](https://github.com/microsoft/monaco-typescript/pull/84)
+* [@troy351](https://github.com/troy351): Add type definition of `setInlayHintsOptions` [PR #83](https://github.com/microsoft/monaco-typescript/pull/83)
+
+
+## [0.28.0] (22.09.2021)
+
+* adds [support for typescript inlay hints](https://github.com/microsoft/monaco-typescript/pull/82). Inlay hints can be enabled like this:
+```ts
+monaco.languages.typescript.typescriptDefaults.setInlayHintsOptions({
+	includeInlayParameterNameHints: 'all',
+	includeInlayParameterNameHintsWhenArgumentMatchesName: true,
+	includeInlayFunctionParameterTypeHints: true,
+	includeInlayVariableTypeHints: true,
+	includeInlayPropertyDeclarationTypeHints: true,
+	includeInlayFunctionLikeReturnTypeHints: true,
+	includeInlayEnumMemberValueHints: true
+});
+```
+* adds support for bracket pair highlighting, which can be enabled by configuring `bracketPairColorization.enabled` when creating a new editor:
+```ts
+var editor = monaco.editor.create(document.getElementById('container'), {
+	model: model,
+	language: 'javascript',
+  "bracketPairColorization.enabled": true,
+});
+```
+
+* `registerCodeActionProvider` now accepts metadata to specify provided code action kinds (e.g. `quickfix`, `refactor` or `source`).
+
+### Thank you
+
+Contributions to `monaco-editor`:
+
+* [@SpaceComet](https://github.com/SpaceComet): Small update on the website playground [PR #2616](https://github.com/microsoft/monaco-editor/pull/2616)
+* [@thien-do (Thien Do)](https://github.com/thien-do): Add usage with Vite to ESM Integrate doc [PR #2632](https://github.com/microsoft/monaco-editor/pull/2632)
+
+Contributions to `monaco-html`:
+
+* [@Pranomvignesh (Pranom Vignesh)](https://github.com/Pranomvignesh): fix(workerManager.js) : Added a check for the existence of the worker [PR #15](https://github.com/microsoft/monaco-html/pull/15)
+
+Contributions to `monaco-languages`:
+
+* [@ladyrick (LadyRick)](https://github.com/ladyrick): fix(cpp): fix cpp language integer suffix [PR #156](https://github.com/microsoft/monaco-languages/pull/156)
+
+Contributions to `monaco-typescript`:
+
+* [@Kingwl (Wenlu Wang)](https://github.com/Kingwl): Add inlay hints support [PR #82](https://github.com/microsoft/monaco-typescript/pull/82)
+
 ## [0.27.0] (16.08.2021)
 
 * added property `inlineClassName` to style injected text
@@ -24,6 +123,9 @@ Contributions to `monaco-languages`:
 * [@kupiakos (Alyssa Haroldsen)](https://github.com/kupiakos): Remove ' as an auto-closing pair for Rust [PR #151](https://github.com/microsoft/monaco-languages/pull/151)
 * [@lofcz (Matěj Štágl)](https://github.com/lofcz): Fix razor + liquid render of tags with a dash symbol [PR #150](https://github.com/microsoft/monaco-languages/pull/150)
 
+## [0.26.1] (15.07.2021)
+
+* fixes [minimatch dependency issue](https://github.com/microsoft/monaco-editor/issues/2578) by downgrading the monaco-json dependency.
 
 ## [0.26.0] (15.07.2021)
 

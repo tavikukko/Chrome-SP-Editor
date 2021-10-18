@@ -341,7 +341,9 @@ export declare class ClientsideWebpart extends ColumnControl<IClientsideWebPartD
     get dataVersion(): string;
     set dataVersion(value: string);
     setProperties<T = any>(properties: T): this;
+    setServerProcessedContent<T = any>(properties: T): this;
     getProperties<T = any>(): T;
+    getServerProcessedContent<T = any>(): T;
     protected onColumnChange(col: CanvasColumn): void;
     protected import(component: IClientsidePageComponent): void;
 }
@@ -459,10 +461,10 @@ export interface IClientsideWebPartData<PropertiesType = any> extends ICanvasCon
         title: string;
         description: string;
         serverProcessedContent?: {
-            "htmlStrings": ITypedHash<string>;
-            "searchablePlainTexts": ITypedHash<string>;
-            "imageSources": ITypedHash<string>;
-            "links": ITypedHash<string>;
+            htmlStrings?: ITypedHash<string>;
+            searchablePlainTexts?: ITypedHash<string>;
+            imageSources?: ITypedHash<string>;
+            links?: ITypedHash<string>;
         };
         dataVersion: string;
         properties: PropertiesType;

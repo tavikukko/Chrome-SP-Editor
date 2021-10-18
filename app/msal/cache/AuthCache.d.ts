@@ -8,6 +8,7 @@ import { BrowserStorage } from "./BrowserStorage";
 export declare class AuthCache extends BrowserStorage {
     private clientId;
     private rollbackEnabled;
+    private temporaryCache;
     constructor(clientId: string, cacheLocation: CacheLocation, storeAuthStateInCookie: boolean);
     /**
      * Support roll back to old cache schema until the next major release: true by default now
@@ -56,6 +57,19 @@ export declare class AuthCache extends BrowserStorage {
      */
     removeItem(key: string): void;
     /**
+     * Sets temporary cache value
+     * @param key
+     * @param value
+     * @param enableCookieStorage
+     */
+    setTemporaryItem(key: string, value: string, enableCookieStorage?: boolean): void;
+    /**
+     * Gets temporary cache value
+     * @param key
+     * @param enableCookieStorage
+     */
+    getTemporaryItem(key: string, enableCookieStorage?: boolean): string;
+    /**
      * Reset the cache items
      */
     resetCacheItems(): void;
@@ -100,6 +114,20 @@ export declare class AuthCache extends BrowserStorage {
      * @param homeAccountIdentifier
      */
     getAllTokens(clientId: string, homeAccountIdentifier: string): Array<AccessTokenCacheItem>;
+    /**
+     * Returns whether or not interaction is currently in progress. Optionally scope it to just this clientId
+     * @param forThisClient
+     */
+    isInteractionInProgress(matchClientId: boolean): boolean;
+    /**
+     * Returns the clientId of the interaction currently in progress
+     */
+    getInteractionInProgress(): string;
+    /**
+     * Sets interaction in progress state
+     * @param isInProgress
+     */
+    setInteractionInProgress(newInProgressValue: boolean): void;
     /**
      * Return if the token renewal is still in progress
      *
