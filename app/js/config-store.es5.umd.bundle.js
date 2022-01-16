@@ -3123,7 +3123,7 @@ var SPHttpClient = /** @class */ (function () {
                         }
                         if (!headers.has("X-ClientService-ClientTag")) {
                             methodName = tag.getClientTag(headers);
-                            clientTag = "PnPCoreJS:2.10.0:" + methodName;
+                            clientTag = "PnPCoreJS:2.11.0:" + methodName;
                             if (clientTag.length > 32) {
                                 clientTag = clientTag.substr(0, 32);
                             }
@@ -3936,7 +3936,7 @@ var SPBatch = /** @class */ (function (_super) {
                                 headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
                             }
                             if (!headers.has("X-ClientService-ClientTag")) {
-                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.10.0:batch");
+                                headers.append("X-ClientService-ClientTag", "PnPCoreJS:@pnp-2.11.0:batch");
                             }
                             // write headers into batch body
                             headers.forEach(function (value, name) {

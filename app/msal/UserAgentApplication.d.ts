@@ -89,12 +89,13 @@ export declare class UserAgentApplication {
      * setter for the authority URL
      * @param {string} authority
      */
+    set authority(val: string);
     /**
-    * Method to manage the authority URL.
-    *
-    * @returns {string} authority
-    */
-    authority: string;
+     * Method to manage the authority URL.
+     *
+     * @returns {string} authority
+     */
+    get authority(): string;
     /**
      * Get the current authority instance from the MSAL configuration object
      *

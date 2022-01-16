@@ -1,4 +1,4 @@
-/*! msal v1.4.14 2021-10-05 */
+/*! msal v1.4.15 2021-11-02 */
 'use strict';
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -19,21 +19,22 @@ return /******/ (function() { // webpackBootstrap
 
 
 /*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
+Copyright (c) Microsoft Corporation.
 
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 /* global Reflect, Promise */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.__classPrivateFieldSet = exports.__classPrivateFieldGet = exports.__importDefault = exports.__importStar = exports.__makeTemplateObject = exports.__asyncValues = exports.__asyncDelegator = exports.__asyncGenerator = exports.__await = exports.__spreadArrays = exports.__spread = exports.__read = exports.__values = exports.__exportStar = exports.__createBinding = exports.__generator = exports.__awaiter = exports.__metadata = exports.__param = exports.__decorate = exports.__rest = exports.__assign = exports.__extends = void 0;
 var extendStatics = function (d, b) {
     extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -94,6 +95,7 @@ function __metadata(metadataKey, metadataValue) {
 }
 exports.__metadata = __metadata;
 function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try {
             step(generator.next(value));
@@ -107,7 +109,7 @@ function __awaiter(thisArg, _arguments, P, generator) {
         catch (e) {
             reject(e);
         } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 }
@@ -182,23 +184,31 @@ function __generator(thisArg, body) {
     }
 }
 exports.__generator = __generator;
+function __createBinding(o, m, k, k2) {
+    if (k2 === undefined)
+        k2 = k;
+    o[k2] = m[k];
+}
+exports.__createBinding = __createBinding;
 function __exportStar(m, exports) {
     for (var p in m)
-        if (!exports.hasOwnProperty(p))
+        if (p !== "default" && !exports.hasOwnProperty(p))
             exports[p] = m[p];
 }
 exports.__exportStar = __exportStar;
 function __values(o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
     if (m)
         return m.call(o);
-    return {
-        next: function () {
-            if (o && i >= o.length)
-                o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
+    if (o && typeof o.length === "number")
+        return {
+            next: function () {
+                if (o && i >= o.length)
+                    o = void 0;
+                return { value: o && o[i++], done: !o };
+            }
+        };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 }
 exports.__values = __values;
 function __read(o, n) {
@@ -308,6 +318,21 @@ function __importDefault(mod) {
     return (mod && mod.__esModule) ? mod : { default: mod };
 }
 exports.__importDefault = __importDefault;
+function __classPrivateFieldGet(receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+}
+exports.__classPrivateFieldGet = __classPrivateFieldGet;
+function __classPrivateFieldSet(receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+}
+exports.__classPrivateFieldSet = __classPrivateFieldSet;
 
 
 /***/ }),
@@ -321,6 +346,7 @@ exports.__importDefault = __importDefault;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Account = void 0;
 var CryptoUtils_1 = __webpack_require__(453);
 var StringUtils_1 = __webpack_require__(454);
 /**
@@ -404,6 +430,7 @@ exports.Account = Account;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.buildResponseStateOnly = void 0;
 function buildResponseStateOnly(state) {
     return {
         uniqueId: "",
@@ -433,6 +460,7 @@ exports.buildResponseStateOnly = buildResponseStateOnly;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.validateClaimsRequest = void 0;
 var ClientConfigurationError_1 = __webpack_require__(550);
 function validateClaimsRequest(request) {
     if (!request.claimsRequest) {
@@ -460,6 +488,7 @@ exports.validateClaimsRequest = validateClaimsRequest;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ClientInfo = void 0;
 var CryptoUtils_1 = __webpack_require__(453);
 var ClientAuthError_1 = __webpack_require__(356);
 var StringUtils_1 = __webpack_require__(454);
@@ -496,7 +525,7 @@ var ClientInfo = /** @class */ (function () {
         set: function (uid) {
             this._uid = uid;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ClientInfo.prototype, "utid", {
@@ -506,7 +535,7 @@ var ClientInfo = /** @class */ (function () {
         set: function (utid) {
             this._utid = utid;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ClientInfo.createClientInfoFromIdToken = function (idToken, authority) {
@@ -554,6 +583,7 @@ exports.ClientInfo = ClientInfo;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.buildConfiguration = void 0;
 var tslib_1 = __webpack_require__(795);
 var Logger_1 = __webpack_require__(89);
 var UrlUtils_1 = __webpack_require__(741);
@@ -602,10 +632,10 @@ var DEFAULT_FRAMEWORK_OPTIONS = {
 function buildConfiguration(_a) {
     var auth = _a.auth, _b = _a.cache, cache = _b === void 0 ? {} : _b, _c = _a.system, system = _c === void 0 ? {} : _c, _d = _a.framework, framework = _d === void 0 ? {} : _d;
     var overlayedConfig = {
-        auth: tslib_1.__assign({}, DEFAULT_AUTH_OPTIONS, auth),
-        cache: tslib_1.__assign({}, DEFAULT_CACHE_OPTIONS, cache),
-        system: tslib_1.__assign({}, DEFAULT_SYSTEM_OPTIONS, system),
-        framework: tslib_1.__assign({}, DEFAULT_FRAMEWORK_OPTIONS, framework)
+        auth: tslib_1.__assign(tslib_1.__assign({}, DEFAULT_AUTH_OPTIONS), auth),
+        cache: tslib_1.__assign(tslib_1.__assign({}, DEFAULT_CACHE_OPTIONS), cache),
+        system: tslib_1.__assign(tslib_1.__assign({}, DEFAULT_SYSTEM_OPTIONS), system),
+        framework: tslib_1.__assign(tslib_1.__assign({}, DEFAULT_FRAMEWORK_OPTIONS), framework)
     };
     return overlayedConfig;
 }
@@ -623,6 +653,7 @@ exports.buildConfiguration = buildConfiguration;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.IdToken = void 0;
 var ClientAuthError_1 = __webpack_require__(356);
 var TokenUtils_1 = __webpack_require__(94);
 var StringUtils_1 = __webpack_require__(454);
@@ -705,6 +736,7 @@ exports.IdToken = IdToken;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Logger = exports.LogLevel = void 0;
 var StringUtils_1 = __webpack_require__(454);
 var packageMetadata_1 = __webpack_require__(700);
 var LogLevel;
@@ -819,6 +851,8 @@ exports.Logger = Logger;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ScopeSet = void 0;
+var tslib_1 = __webpack_require__(795);
 var ClientConfigurationError_1 = __webpack_require__(550);
 var Constants_1 = __webpack_require__(91);
 var ScopeSet = /** @class */ (function () {
@@ -832,8 +866,8 @@ var ScopeSet = /** @class */ (function () {
      */
     // TODO: Rename this, intersecting scopes isn't a great name for duplicate checker
     ScopeSet.isIntersectingScopes = function (cachedScopes, scopes) {
-        var convertedCachedScopes = this.trimAndConvertArrayToLowerCase(cachedScopes.slice());
-        var requestScopes = this.trimAndConvertArrayToLowerCase(scopes.slice());
+        var convertedCachedScopes = this.trimAndConvertArrayToLowerCase(tslib_1.__spreadArrays(cachedScopes));
+        var requestScopes = this.trimAndConvertArrayToLowerCase(tslib_1.__spreadArrays(scopes));
         for (var i = 0; i < requestScopes.length; i++) {
             if (convertedCachedScopes.indexOf(requestScopes[i].toLowerCase()) > -1) {
                 return true;
@@ -848,8 +882,8 @@ var ScopeSet = /** @class */ (function () {
      * @param scopes
      */
     ScopeSet.containsScope = function (cachedScopes, scopes) {
-        var convertedCachedScopes = this.trimAndConvertArrayToLowerCase(cachedScopes.slice());
-        var requestScopes = this.trimAndConvertArrayToLowerCase(scopes.slice());
+        var convertedCachedScopes = this.trimAndConvertArrayToLowerCase(tslib_1.__spreadArrays(cachedScopes));
+        var requestScopes = this.trimAndConvertArrayToLowerCase(tslib_1.__spreadArrays(scopes));
         return requestScopes.every(function (value) { return convertedCachedScopes.indexOf(value.toString().toLowerCase()) >= 0; });
     };
     /**
@@ -950,9 +984,9 @@ var ScopeSet = /** @class */ (function () {
      */
     ScopeSet.appendScopes = function (reqScopes, reqExtraScopesToConsent) {
         if (reqScopes) {
-            var convertedExtraScopes = reqExtraScopesToConsent ? this.trimAndConvertArrayToLowerCase(reqExtraScopesToConsent.slice()) : null;
-            var convertedReqScopes = this.trimAndConvertArrayToLowerCase(reqScopes.slice());
-            return convertedExtraScopes ? convertedReqScopes.concat(convertedExtraScopes) : convertedReqScopes;
+            var convertedExtraScopes = reqExtraScopesToConsent ? this.trimAndConvertArrayToLowerCase(tslib_1.__spreadArrays(reqExtraScopesToConsent)) : null;
+            var convertedReqScopes = this.trimAndConvertArrayToLowerCase(tslib_1.__spreadArrays(reqScopes));
+            return convertedExtraScopes ? tslib_1.__spreadArrays(convertedReqScopes, convertedExtraScopes) : convertedReqScopes;
         }
         return null;
     };
@@ -1038,6 +1072,8 @@ exports.ScopeSet = ScopeSet;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ServerRequestParameters = void 0;
+var tslib_1 = __webpack_require__(795);
 var CryptoUtils_1 = __webpack_require__(453);
 var Constants_1 = __webpack_require__(91);
 var StringUtils_1 = __webpack_require__(454);
@@ -1063,7 +1099,7 @@ var ServerRequestParameters = /** @class */ (function () {
         this.clientId = clientId;
         this.nonce = CryptoUtils_1.CryptoUtils.createNewGuid();
         // set scope to clientId if null
-        this.scopes = scopes ? scopes.slice() : Constants_1.Constants.oidcScopes;
+        this.scopes = scopes ? tslib_1.__spreadArrays(scopes) : Constants_1.Constants.oidcScopes;
         this.scopes = ScopeSet_1.ScopeSet.trimScopes(this.scopes);
         // set state (already set at top level)
         this.state = state;
@@ -1079,7 +1115,7 @@ var ServerRequestParameters = /** @class */ (function () {
         get: function () {
             return this.authorityInstance ? this.authorityInstance.CanonicalAuthority : null;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -1299,6 +1335,7 @@ exports.ServerRequestParameters = ServerRequestParameters;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UserAgentApplication = void 0;
 var tslib_1 = __webpack_require__(795);
 var AccessTokenKey_1 = __webpack_require__(29);
 var AccessTokenValue_1 = __webpack_require__(192);
@@ -1419,7 +1456,7 @@ var UserAgentApplication = /** @class */ (function () {
         set: function (val) {
             this.authorityInstance = AuthorityFactory_1.AuthorityFactory.CreateInstance(val, this.config.auth.validateAuthority);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -1825,7 +1862,7 @@ var UserAgentApplication = /** @class */ (function () {
         if (!request.sid && !request.loginHint) {
             throw ClientConfigurationError_1.ClientConfigurationError.createSsoSilentError();
         }
-        return this.acquireTokenSilent(tslib_1.__assign({}, request, { scopes: Constants_1.Constants.oidcScopes }));
+        return this.acquireTokenSilent(tslib_1.__assign(tslib_1.__assign({}, request), { scopes: Constants_1.Constants.oidcScopes }));
     };
     /**
      * Use this function to obtain a token before every call to the API / resource provider
@@ -3413,6 +3450,7 @@ exports.UserAgentApplication = UserAgentApplication;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.XhrClient = void 0;
 var Constants_1 = __webpack_require__(91);
 /**
  * XHR client for JSON endpoints
@@ -3492,6 +3530,7 @@ exports.XhrClient = XhrClient;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Authority = exports.AuthorityType = void 0;
 var tslib_1 = __webpack_require__(795);
 var ClientConfigurationError_1 = __webpack_require__(550);
 var XHRClient_1 = __webpack_require__(767);
@@ -3525,14 +3564,14 @@ var Authority = /** @class */ (function () {
         get: function () {
             return Authority.isAdfs(this.canonicalAuthority) ? AuthorityType.Adfs : AuthorityType.Default;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Authority.prototype, "Tenant", {
         get: function () {
             return this.CanonicalAuthorityUrlComponents.PathSegments[0];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Authority.prototype, "AuthorizationEndpoint", {
@@ -3540,7 +3579,7 @@ var Authority = /** @class */ (function () {
             this.validateResolved();
             return this.tenantDiscoveryResponse.AuthorizationEndpoint.replace(/{tenant}|{tenantid}/g, this.Tenant);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Authority.prototype, "EndSessionEndpoint", {
@@ -3548,7 +3587,7 @@ var Authority = /** @class */ (function () {
             this.validateResolved();
             return this.tenantDiscoveryResponse.EndSessionEndpoint.replace(/{tenant}|{tenantid}/g, this.Tenant);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Authority.prototype, "SelfSignedJwtAudience", {
@@ -3556,7 +3595,7 @@ var Authority = /** @class */ (function () {
             this.validateResolved();
             return this.tenantDiscoveryResponse.Issuer.replace(/{tenant}|{tenantid}/g, this.Tenant);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Authority.prototype.validateResolved = function () {
@@ -3575,7 +3614,7 @@ var Authority = /** @class */ (function () {
             this.canonicalAuthority = UrlUtils_1.UrlUtils.CanonicalizeUri(url);
             this.canonicalAuthorityUrlComponents = null;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Authority.prototype, "CanonicalAuthorityUrlComponents", {
@@ -3585,7 +3624,7 @@ var Authority = /** @class */ (function () {
             }
             return this.canonicalAuthorityUrlComponents;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Authority.prototype, "DefaultOpenIdConfigurationEndpoint", {
@@ -3593,7 +3632,7 @@ var Authority = /** @class */ (function () {
         get: function () {
             return (this.AuthorityType === AuthorityType.Adfs) ? "" + this.CanonicalAuthority + Constants_1.WELL_KNOWN_SUFFIX : this.CanonicalAuthority + "v2.0/" + Constants_1.WELL_KNOWN_SUFFIX;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -3704,6 +3743,7 @@ exports.Authority = Authority;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthorityFactory = void 0;
 var tslib_1 = __webpack_require__(795);
 /**
  * @hidden
@@ -3780,6 +3820,7 @@ exports.AuthorityFactory = AuthorityFactory;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.TrustedAuthority = void 0;
 var tslib_1 = __webpack_require__(795);
 var XHRClient_1 = __webpack_require__(767);
 var Constants_1 = __webpack_require__(91);
@@ -3882,6 +3923,7 @@ exports.TrustedAuthority = TrustedAuthority;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AccessTokenCacheItem = void 0;
 /**
  * @hidden
  */
@@ -3906,6 +3948,7 @@ exports.AccessTokenCacheItem = AccessTokenCacheItem;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AccessTokenKey = void 0;
 var CryptoUtils_1 = __webpack_require__(453);
 var UrlUtils_1 = __webpack_require__(741);
 /**
@@ -3934,6 +3977,7 @@ exports.AccessTokenKey = AccessTokenKey;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AccessTokenValue = void 0;
 /**
  * @hidden
  */
@@ -3960,6 +4004,7 @@ exports.AccessTokenValue = AccessTokenValue;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthCache = void 0;
 var tslib_1 = __webpack_require__(795);
 var Constants_1 = __webpack_require__(91);
 var AccessTokenCacheItem_1 = __webpack_require__(644);
@@ -4229,7 +4274,7 @@ var AuthCache = /** @class */ (function (_super) {
     AuthCache.prototype.getAllTokens = function (clientId, homeAccountIdentifier) {
         var accessTokens = this.getAllAccessTokens(clientId, homeAccountIdentifier);
         var idTokens = this.getAllIdTokens(clientId, homeAccountIdentifier);
-        return accessTokens.concat(idTokens);
+        return tslib_1.__spreadArrays(accessTokens, idTokens);
     };
     /**
      * Returns whether or not interaction is currently in progress. Optionally scope it to just this clientId
@@ -4340,6 +4385,7 @@ exports.AuthCache = AuthCache;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.BrowserStorage = void 0;
 var ClientConfigurationError_1 = __webpack_require__(550);
 var AuthError_1 = __webpack_require__(986);
 /**
@@ -4456,6 +4502,7 @@ exports.BrowserStorage = BrowserStorage;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthError = exports.AuthErrorMessage = void 0;
 var tslib_1 = __webpack_require__(795);
 exports.AuthErrorMessage = {
     unexpectedError: {
@@ -4502,6 +4549,7 @@ exports.AuthError = AuthError;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ClientAuthError = exports.ClientAuthErrorMessage = void 0;
 var tslib_1 = __webpack_require__(795);
 var AuthError_1 = __webpack_require__(986);
 var StringUtils_1 = __webpack_require__(454);
@@ -4685,6 +4733,7 @@ exports.ClientAuthError = ClientAuthError;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ClientConfigurationError = exports.ClientConfigurationErrorMessage = void 0;
 var tslib_1 = __webpack_require__(795);
 var ClientAuthError_1 = __webpack_require__(356);
 exports.ClientConfigurationErrorMessage = {
@@ -4864,6 +4913,7 @@ exports.ClientConfigurationError = ClientConfigurationError;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.InteractionRequiredAuthError = exports.InteractionRequiredAuthErrorMessage = void 0;
 var tslib_1 = __webpack_require__(795);
 var ServerError_1 = __webpack_require__(447);
 exports.InteractionRequiredAuthErrorMessage = {
@@ -4921,6 +4971,7 @@ exports.InteractionRequiredAuthError = InteractionRequiredAuthError;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ServerError = exports.ServerErrorMessage = void 0;
 var tslib_1 = __webpack_require__(795);
 var AuthError_1 = __webpack_require__(986);
 exports.ServerErrorMessage = {
@@ -4956,75 +5007,15 @@ exports.ServerError = ServerError;
 
 /***/ }),
 
-/***/ 432:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-/**
- * @packageDocumentation
- * @module @azure/msal
- */
-var UserAgentApplication_1 = __webpack_require__(463);
-exports.UserAgentApplication = UserAgentApplication_1.UserAgentApplication;
-exports.authResponseCallback = UserAgentApplication_1.authResponseCallback;
-exports.errorReceivedCallback = UserAgentApplication_1.errorReceivedCallback;
-exports.tokenReceivedCallback = UserAgentApplication_1.tokenReceivedCallback;
-var Logger_1 = __webpack_require__(89);
-exports.Logger = Logger_1.Logger;
-var Logger_2 = __webpack_require__(89);
-exports.LogLevel = Logger_2.LogLevel;
-var Account_1 = __webpack_require__(630);
-exports.Account = Account_1.Account;
-var Constants_1 = __webpack_require__(91);
-exports.Constants = Constants_1.Constants;
-exports.ServerHashParamKeys = Constants_1.ServerHashParamKeys;
-var Authority_1 = __webpack_require__(660);
-exports.Authority = Authority_1.Authority;
-var UserAgentApplication_2 = __webpack_require__(463);
-exports.CacheResult = UserAgentApplication_2.CacheResult;
-var Configuration_1 = __webpack_require__(875);
-exports.CacheLocation = Configuration_1.CacheLocation;
-exports.Configuration = Configuration_1.Configuration;
-var AuthenticationParameters_1 = __webpack_require__(733);
-exports.AuthenticationParameters = AuthenticationParameters_1.AuthenticationParameters;
-var AuthResponse_1 = __webpack_require__(681);
-exports.AuthResponse = AuthResponse_1.AuthResponse;
-var CryptoUtils_1 = __webpack_require__(453);
-exports.CryptoUtils = CryptoUtils_1.CryptoUtils;
-var UrlUtils_1 = __webpack_require__(741);
-exports.UrlUtils = UrlUtils_1.UrlUtils;
-var WindowUtils_1 = __webpack_require__(758);
-exports.WindowUtils = WindowUtils_1.WindowUtils;
-// Errors
-var AuthError_1 = __webpack_require__(986);
-exports.AuthError = AuthError_1.AuthError;
-var ClientAuthError_1 = __webpack_require__(356);
-exports.ClientAuthError = ClientAuthError_1.ClientAuthError;
-var ServerError_1 = __webpack_require__(447);
-exports.ServerError = ServerError_1.ServerError;
-var ClientConfigurationError_1 = __webpack_require__(550);
-exports.ClientConfigurationError = ClientConfigurationError_1.ClientConfigurationError;
-var InteractionRequiredAuthError_1 = __webpack_require__(961);
-exports.InteractionRequiredAuthError = InteractionRequiredAuthError_1.InteractionRequiredAuthError;
-var packageMetadata_1 = __webpack_require__(700);
-exports.version = packageMetadata_1.version;
-
-
-/***/ }),
-
 /***/ 700:
 /***/ (function(__unused_webpack_module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.version = exports.name = void 0;
 /* eslint-disable header/header */
 exports.name = "msal";
-exports.version = "1.4.14";
+exports.version = "1.4.15";
 
 
 /***/ }),
@@ -5039,6 +5030,7 @@ exports.version = "1.4.14";
  */
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.API_EVENT_IDENTIFIER = exports.API_CODE = exports.EVENT_KEYS = void 0;
 var tslib_1 = __webpack_require__(795);
 var TelemetryEvent_1 = tslib_1.__importDefault(__webpack_require__(336));
 var TelemetryConstants_1 = __webpack_require__(810);
@@ -5094,28 +5086,28 @@ var ApiEvent = /** @class */ (function (_super) {
         set: function (apiEventIdentifier) {
             this.event[TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.ApiTelemIdConstStrKey] = apiEventIdentifier;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ApiEvent.prototype, "apiCode", {
         set: function (apiCode) {
             this.event[TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.ApiIdConstStrKey] = apiCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ApiEvent.prototype, "authority", {
         set: function (uri) {
             this.event[exports.EVENT_KEYS.AUTHORITY] = TelemetryUtils_1.scrubTenantFromUri(uri).toLowerCase();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ApiEvent.prototype, "apiErrorCode", {
         set: function (errorCode) {
             this.event[exports.EVENT_KEYS.API_ERROR_CODE] = errorCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ApiEvent.prototype, "tenantId", {
@@ -5124,7 +5116,7 @@ var ApiEvent = /** @class */ (function (_super) {
                 TelemetryUtils_1.hashPersonalIdentifier(tenantId)
                 : null;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ApiEvent.prototype, "accountId", {
@@ -5133,7 +5125,7 @@ var ApiEvent = /** @class */ (function (_super) {
                 TelemetryUtils_1.hashPersonalIdentifier(accountId)
                 : null;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ApiEvent.prototype, "wasSuccessful", {
@@ -5143,7 +5135,7 @@ var ApiEvent = /** @class */ (function (_super) {
         set: function (wasSuccessful) {
             this.event[exports.EVENT_KEYS.WAS_SUCESSFUL] = wasSuccessful;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ApiEvent.prototype, "loginHint", {
@@ -5152,26 +5144,26 @@ var ApiEvent = /** @class */ (function (_super) {
                 TelemetryUtils_1.hashPersonalIdentifier(loginHint)
                 : null;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ApiEvent.prototype, "authorityType", {
         set: function (authorityType) {
             this.event[exports.EVENT_KEYS.AUTHORITY_TYPE] = authorityType.toLowerCase();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ApiEvent.prototype, "promptType", {
         set: function (promptType) {
             this.event[exports.EVENT_KEYS.PROMPT] = promptType.toLowerCase();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ApiEvent;
 }(TelemetryEvent_1.default));
-exports.default = ApiEvent;
+exports["default"] = ApiEvent;
 
 
 /***/ }),
@@ -5214,7 +5206,7 @@ var DefaultEvent = /** @class */ (function (_super) {
     };
     return DefaultEvent;
 }(TelemetryEvent_1.default));
-exports.default = DefaultEvent;
+exports["default"] = DefaultEvent;
 
 
 /***/ }),
@@ -5228,6 +5220,7 @@ exports.default = DefaultEvent;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.EVENT_KEYS = void 0;
 var tslib_1 = __webpack_require__(795);
 var TelemetryEvent_1 = tslib_1.__importDefault(__webpack_require__(336));
 var TelemetryUtils_1 = __webpack_require__(847);
@@ -5256,63 +5249,63 @@ var HttpEvent = /** @class */ (function (_super) {
             var scrubbedUri = TelemetryUtils_1.scrubTenantFromUri(url);
             this.event[exports.EVENT_KEYS.URL] = scrubbedUri && scrubbedUri.toLowerCase();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "httpPath", {
         set: function (httpPath) {
             this.event[exports.EVENT_KEYS.HTTP_PATH] = TelemetryUtils_1.scrubTenantFromUri(httpPath).toLowerCase();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "userAgent", {
         set: function (userAgent) {
             this.event[exports.EVENT_KEYS.USER_AGENT] = userAgent;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "queryParams", {
         set: function (queryParams) {
             this.event[exports.EVENT_KEYS.QUERY_PARAMETERS] = ServerRequestParameters_1.ServerRequestParameters.generateQueryParametersString(queryParams);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "apiVersion", {
         set: function (apiVersion) {
             this.event[exports.EVENT_KEYS.API_VERSION] = apiVersion.toLowerCase();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "httpResponseStatus", {
         set: function (statusCode) {
             this.event[exports.EVENT_KEYS.RESPONSE_CODE] = statusCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "oAuthErrorCode", {
         set: function (errorCode) {
             this.event[exports.EVENT_KEYS.O_AUTH_ERROR_CODE] = errorCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "httpMethod", {
         set: function (httpMethod) {
             this.event[exports.EVENT_KEYS.HTTP_METHOD] = httpMethod;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "requestIdHeader", {
         set: function (requestIdHeader) {
             this.event[exports.EVENT_KEYS.REQUEST_ID_HEADER] = requestIdHeader;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "speInfo", {
@@ -5324,26 +5317,26 @@ var HttpEvent = /** @class */ (function (_super) {
         set: function (speInfo) {
             this.event[exports.EVENT_KEYS.SPE_INFO] = speInfo;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "serverErrorCode", {
         set: function (errorCode) {
             this.event[exports.EVENT_KEYS.SERVER_ERROR_CODE] = errorCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(HttpEvent.prototype, "serverSubErrorCode", {
         set: function (subErrorCode) {
             this.event[exports.EVENT_KEYS.SERVER_SUB_ERROR_CODE] = subErrorCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return HttpEvent;
 }(TelemetryEvent_1.default));
-exports.default = HttpEvent;
+exports["default"] = HttpEvent;
 
 
 /***/ }),
@@ -5357,6 +5350,7 @@ exports.default = HttpEvent;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.TENANT_PLACEHOLDER = exports.TELEMETRY_BLOB_EVENT_NAMES = exports.ELAPSED_TIME_KEY = exports.START_TIME_KEY = exports.EVENT_NAME_KEY = exports.EVENT_NAME_PREFIX = void 0;
 exports.EVENT_NAME_PREFIX = "msal.";
 exports.EVENT_NAME_KEY = "event_name";
 exports.START_TIME_KEY = "start_time";
@@ -5425,50 +5419,50 @@ var TelemetryEvent = /** @class */ (function () {
         set: function (value) {
             this.event["" + TelemetryConstants_1.TELEMETRY_BLOB_EVENT_NAMES.MsalCorrelationIdConstStrKey] = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TelemetryEvent.prototype, "eventName", {
         get: function () {
             return this.event[TelemetryUtils_1.prependEventNamePrefix(TelemetryConstants_1.EVENT_NAME_KEY)];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     TelemetryEvent.prototype.get = function () {
-        return tslib_1.__assign({}, this.event, { eventId: this.eventId });
+        return tslib_1.__assign(tslib_1.__assign({}, this.event), { eventId: this.eventId });
     };
     Object.defineProperty(TelemetryEvent.prototype, "key", {
         get: function () {
             return this.telemetryCorrelationId + "_" + this.eventId + "-" + this.eventName;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TelemetryEvent.prototype, "displayName", {
         get: function () {
             return "Msal-" + this.label + "-" + this.telemetryCorrelationId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TelemetryEvent.prototype, "perfStartMark", {
         get: function () {
             return "start-" + this.key;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TelemetryEvent.prototype, "perfEndMark", {
         get: function () {
             return "end-" + this.key;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return TelemetryEvent;
 }());
-exports.default = TelemetryEvent;
+exports["default"] = TelemetryEvent;
 
 
 /***/ }),
@@ -5543,7 +5537,7 @@ var TelemetryManager = /** @class */ (function () {
         event.stop();
         this.incrementEventCount(event);
         var completedEvents = this.completedEvents[event.telemetryCorrelationId];
-        this.completedEvents[event.telemetryCorrelationId] = (completedEvents || []).concat([event]);
+        this.completedEvents[event.telemetryCorrelationId] = tslib_1.__spreadArrays((completedEvents || []), [event]);
         delete this.inProgressEvents[event.key];
     };
     TelemetryManager.prototype.flush = function (correlationId) {
@@ -5555,7 +5549,7 @@ var TelemetryManager = /** @class */ (function () {
         }
         var orphanedEvents = this.getOrphanedEvents(correlationId);
         orphanedEvents.forEach(function (event) { return _this.incrementEventCount(event); });
-        var eventsToFlush = this.completedEvents[correlationId].concat(orphanedEvents);
+        var eventsToFlush = tslib_1.__spreadArrays(this.completedEvents[correlationId], orphanedEvents);
         delete this.completedEvents[correlationId];
         var eventCountsToFlush = this.eventCountByCorrelationId[correlationId];
         delete this.eventCountByCorrelationId[correlationId];
@@ -5564,7 +5558,7 @@ var TelemetryManager = /** @class */ (function () {
             return;
         }
         var defaultEvent = new DefaultEvent_1.default(this.telemetryPlatform, correlationId, this.clientId, eventCountsToFlush);
-        var eventsWithDefaultEvent = eventsToFlush.concat([defaultEvent]);
+        var eventsWithDefaultEvent = tslib_1.__spreadArrays(eventsToFlush, [defaultEvent]);
         this.telemetryEmitter(eventsWithDefaultEvent.map(function (e) { return e.get(); }));
     };
     TelemetryManager.prototype.createAndStartApiEvent = function (correlationId, apiEventIdentifier) {
@@ -5611,14 +5605,14 @@ var TelemetryManager = /** @class */ (function () {
             if (eventKey.indexOf(correlationId) !== -1) {
                 var event = _this.inProgressEvents[eventKey];
                 delete _this.inProgressEvents[eventKey];
-                return memo.concat([event]);
+                return tslib_1.__spreadArrays(memo, [event]);
             }
             return memo;
         }, []);
     };
     return TelemetryManager;
 }());
-exports.default = TelemetryManager;
+exports["default"] = TelemetryManager;
 
 
 /***/ }),
@@ -5632,6 +5626,7 @@ exports.default = TelemetryManager;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.startBrowserPerformanceMeasurement = exports.endBrowserPerformanceMeasurement = exports.supportsBrowserPerformance = exports.prependEventNamePrefix = exports.hashPersonalIdentifier = exports.scrubTenantFromUri = void 0;
 var TelemetryConstants_1 = __webpack_require__(810);
 var CryptoUtils_1 = __webpack_require__(453);
 var UrlUtils_1 = __webpack_require__(741);
@@ -5696,6 +5691,7 @@ exports.startBrowserPerformanceMeasurement = function (startMark) {
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthCacheUtils = void 0;
 var ScopeSet_1 = __webpack_require__(55);
 var UrlUtils_1 = __webpack_require__(741);
 /**
@@ -5737,6 +5733,7 @@ exports.AuthCacheUtils = AuthCacheUtils;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FramePrefix = exports.PromptState = exports.NetworkRequestType = exports.BlacklistedEQParams = exports.SSOTypes = exports.WELL_KNOWN_SUFFIX = exports.AAD_INSTANCE_DISCOVERY_ENDPOINT = exports.DEFAULT_AUTHORITY = exports.ErrorCacheKeys = exports.PersistentCacheKeys = exports.TemporaryCacheKeys = exports.ResponseTypes = exports.ServerHashParamKeys = exports.SESSION_STORAGE = exports.Constants = void 0;
 /**
  * @hidden
  * Constants
@@ -5747,77 +5744,77 @@ var Constants = /** @class */ (function () {
     Object.defineProperty(Constants, "libraryName", {
         get: function () { return "Msal.js"; } // used in telemetry sdkName
         ,
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "claims", {
         get: function () { return "claims"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "clientId", {
         get: function () { return "clientId"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "adalIdToken", {
         get: function () { return "adal.idtoken"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "cachePrefix", {
         get: function () { return "msal"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "scopes", {
         get: function () { return "scopes"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "no_account", {
         get: function () { return "NO_ACCOUNT"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "upn", {
         get: function () { return "upn"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "domain_hint", {
         get: function () { return "domain_hint"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "prompt_select_account", {
         get: function () { return "&prompt=select_account"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "prompt_none", {
         get: function () { return "&prompt=none"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "prompt", {
         get: function () { return "prompt"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "response_mode_fragment", {
         get: function () { return "&response_mode=fragment"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "resourceDelimiter", {
         get: function () { return "|"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "cacheDelimiter", {
         get: function () { return "."; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "popUpWidth", {
@@ -5825,7 +5822,7 @@ var Constants = /** @class */ (function () {
         set: function (width) {
             this._popUpWidth = width;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "popUpHeight", {
@@ -5833,72 +5830,72 @@ var Constants = /** @class */ (function () {
         set: function (height) {
             this._popUpHeight = height;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "login", {
         get: function () { return "LOGIN"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "renewToken", {
         get: function () { return "RENEW_TOKEN"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "unknown", {
         get: function () { return "UNKNOWN"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "ADFS", {
         get: function () { return "adfs"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "homeAccountIdentifier", {
         get: function () { return "homeAccountIdentifier"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "common", {
         get: function () { return "common"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "openidScope", {
         get: function () { return "openid"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "profileScope", {
         get: function () { return "profile"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "oidcScopes", {
         get: function () { return [this.openidScope, this.profileScope]; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "interactionTypeRedirect", {
         get: function () { return "redirectInteraction"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "interactionTypePopup", {
         get: function () { return "popupInteraction"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "interactionTypeSilent", {
         get: function () { return "silentInteraction"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Constants, "inProgress", {
         get: function () { return "inProgress"; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Constants._popUpWidth = 483;
@@ -6025,6 +6022,7 @@ exports.FramePrefix = {
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CryptoUtils = void 0;
 /**
  * @hidden
  */
@@ -6191,6 +6189,7 @@ exports.CryptoUtils = CryptoUtils;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.RequestUtils = void 0;
 var tslib_1 = __webpack_require__(795);
 var Constants_1 = __webpack_require__(91);
 var ClientConfigurationError_1 = __webpack_require__(550);
@@ -6237,7 +6236,7 @@ var RequestUtils = /** @class */ (function () {
         // validate and generate state and correlationId
         var state = this.validateAndGenerateState(request && request.state, interactionType);
         var correlationId = this.validateAndGenerateCorrelationId(request && request.correlationId);
-        var validatedRequest = tslib_1.__assign({}, request, { extraQueryParameters: extraQueryParameters,
+        var validatedRequest = tslib_1.__assign(tslib_1.__assign({}, request), { extraQueryParameters: extraQueryParameters,
             scopes: scopes,
             state: state,
             correlationId: correlationId });
@@ -6382,6 +6381,7 @@ exports.RequestUtils = RequestUtils;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ResponseUtils = void 0;
 var tslib_1 = __webpack_require__(795);
 var Constants_1 = __webpack_require__(91);
 /*
@@ -6405,12 +6405,12 @@ var ResponseUtils = /** @class */ (function () {
         if (exp && !originalResponse.expiresOn) {
             originalResponse.expiresOn = new Date(exp * 1000);
         }
-        return tslib_1.__assign({}, originalResponse, { idToken: idTokenObj, idTokenClaims: idTokenObj.claims, uniqueId: idTokenObj.objectId || idTokenObj.subject, tenantId: idTokenObj.tenantId });
+        return tslib_1.__assign(tslib_1.__assign({}, originalResponse), { idToken: idTokenObj, idTokenClaims: idTokenObj.claims, uniqueId: idTokenObj.objectId || idTokenObj.subject, tenantId: idTokenObj.tenantId });
     };
     ResponseUtils.buildAuthResponse = function (idToken, authResponse, serverAuthenticationRequest, account, scopes, accountState) {
         switch (serverAuthenticationRequest.responseType) {
             case Constants_1.ResponseTypes.id_token:
-                var idTokenResponse = tslib_1.__assign({}, authResponse, { tokenType: Constants_1.ServerHashParamKeys.ID_TOKEN, account: account, scopes: scopes, accountState: accountState });
+                var idTokenResponse = tslib_1.__assign(tslib_1.__assign({}, authResponse), { tokenType: Constants_1.ServerHashParamKeys.ID_TOKEN, account: account, scopes: scopes, accountState: accountState });
                 idTokenResponse = ResponseUtils.setResponseIdToken(idTokenResponse, idToken);
                 return (idTokenResponse.idToken) ? idTokenResponse : null;
             case Constants_1.ResponseTypes.id_token_token:
@@ -6439,6 +6439,7 @@ exports.ResponseUtils = ResponseUtils;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.StringUtils = void 0;
 /**
  * @hidden
  */
@@ -6489,6 +6490,7 @@ exports.StringUtils = StringUtils;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.TimeUtils = void 0;
 /**
  * @hidden
  */
@@ -6533,6 +6535,7 @@ exports.TimeUtils = TimeUtils;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.TokenUtils = void 0;
 var CryptoUtils_1 = __webpack_require__(453);
 var StringUtils_1 = __webpack_require__(454);
 var TimeUtils_1 = __webpack_require__(78);
@@ -6614,6 +6617,7 @@ exports.TokenUtils = TokenUtils;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UrlUtils = void 0;
 var Constants_1 = __webpack_require__(91);
 var ScopeSet_1 = __webpack_require__(55);
 var StringUtils_1 = __webpack_require__(454);
@@ -6876,6 +6880,7 @@ exports.UrlUtils = UrlUtils;
  * Licensed under the MIT License.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.WindowUtils = void 0;
 var ClientAuthError_1 = __webpack_require__(356);
 var UrlUtils_1 = __webpack_require__(741);
 var Constants_1 = __webpack_require__(91);
@@ -7055,28 +7060,23 @@ var WindowUtils = /** @class */ (function () {
         if (typeof iframeId === "undefined") {
             return null;
         }
+        logger.info("Add msal iframe to document");
         logger.infoPii("Add msal frame to document:" + iframeId);
         var adalFrame = document.getElementById(iframeId);
         if (!adalFrame) {
-            if (document.createElement &&
-                document.documentElement &&
-                (window.navigator.userAgent.indexOf("MSIE 5.0") === -1)) {
-                var ifr = document.createElement("iframe");
-                ifr.setAttribute("id", iframeId);
-                ifr.setAttribute("aria-hidden", "true");
-                ifr.style.visibility = "hidden";
-                ifr.style.position = "absolute";
-                ifr.style.width = ifr.style.height = "0";
-                ifr.style.border = "0";
-                ifr.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms");
-                adalFrame = document.getElementsByTagName("body")[0].appendChild(ifr);
-            }
-            else if (document.body && document.body.insertAdjacentHTML) {
-                document.body.insertAdjacentHTML("beforeend", "<iframe name='" + iframeId + "' id='" + iframeId + "' style='display:none'></iframe>");
-            }
-            if (window.frames && window.frames[iframeId]) {
-                adalFrame = window.frames[iframeId];
-            }
+            logger.verbose("Add msal iframe does not exist");
+            var ifr = document.createElement("iframe");
+            ifr.setAttribute("id", iframeId);
+            ifr.setAttribute("aria-hidden", "true");
+            ifr.style.visibility = "hidden";
+            ifr.style.position = "absolute";
+            ifr.style.width = ifr.style.height = "0";
+            ifr.style.border = "0";
+            ifr.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms");
+            adalFrame = document.getElementsByTagName("body")[0].appendChild(ifr);
+        }
+        else {
+            logger.verbose("Add msal iframe already exists");
         }
         return adalFrame;
     };
@@ -7206,8 +7206,9 @@ exports.WindowUtils = WindowUtils;
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -7224,10 +7225,67 @@ exports.WindowUtils = WindowUtils;
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(432);
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+!function() {
+var exports = __webpack_exports__;
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * @packageDocumentation
+ * @module @azure/msal
+ */
+var UserAgentApplication_1 = __webpack_require__(463);
+Object.defineProperty(exports, "UserAgentApplication", ({ enumerable: true, get: function () { return UserAgentApplication_1.UserAgentApplication; } }));
+Object.defineProperty(exports, "authResponseCallback", ({ enumerable: true, get: function () { return UserAgentApplication_1.authResponseCallback; } }));
+Object.defineProperty(exports, "errorReceivedCallback", ({ enumerable: true, get: function () { return UserAgentApplication_1.errorReceivedCallback; } }));
+Object.defineProperty(exports, "tokenReceivedCallback", ({ enumerable: true, get: function () { return UserAgentApplication_1.tokenReceivedCallback; } }));
+var Logger_1 = __webpack_require__(89);
+Object.defineProperty(exports, "Logger", ({ enumerable: true, get: function () { return Logger_1.Logger; } }));
+var Logger_2 = __webpack_require__(89);
+Object.defineProperty(exports, "LogLevel", ({ enumerable: true, get: function () { return Logger_2.LogLevel; } }));
+var Account_1 = __webpack_require__(630);
+Object.defineProperty(exports, "Account", ({ enumerable: true, get: function () { return Account_1.Account; } }));
+var Constants_1 = __webpack_require__(91);
+Object.defineProperty(exports, "Constants", ({ enumerable: true, get: function () { return Constants_1.Constants; } }));
+Object.defineProperty(exports, "ServerHashParamKeys", ({ enumerable: true, get: function () { return Constants_1.ServerHashParamKeys; } }));
+var Authority_1 = __webpack_require__(660);
+Object.defineProperty(exports, "Authority", ({ enumerable: true, get: function () { return Authority_1.Authority; } }));
+var UserAgentApplication_2 = __webpack_require__(463);
+Object.defineProperty(exports, "CacheResult", ({ enumerable: true, get: function () { return UserAgentApplication_2.CacheResult; } }));
+var Configuration_1 = __webpack_require__(875);
+Object.defineProperty(exports, "CacheLocation", ({ enumerable: true, get: function () { return Configuration_1.CacheLocation; } }));
+Object.defineProperty(exports, "Configuration", ({ enumerable: true, get: function () { return Configuration_1.Configuration; } }));
+var AuthenticationParameters_1 = __webpack_require__(733);
+Object.defineProperty(exports, "AuthenticationParameters", ({ enumerable: true, get: function () { return AuthenticationParameters_1.AuthenticationParameters; } }));
+var AuthResponse_1 = __webpack_require__(681);
+Object.defineProperty(exports, "AuthResponse", ({ enumerable: true, get: function () { return AuthResponse_1.AuthResponse; } }));
+var CryptoUtils_1 = __webpack_require__(453);
+Object.defineProperty(exports, "CryptoUtils", ({ enumerable: true, get: function () { return CryptoUtils_1.CryptoUtils; } }));
+var UrlUtils_1 = __webpack_require__(741);
+Object.defineProperty(exports, "UrlUtils", ({ enumerable: true, get: function () { return UrlUtils_1.UrlUtils; } }));
+var WindowUtils_1 = __webpack_require__(758);
+Object.defineProperty(exports, "WindowUtils", ({ enumerable: true, get: function () { return WindowUtils_1.WindowUtils; } }));
+// Errors
+var AuthError_1 = __webpack_require__(986);
+Object.defineProperty(exports, "AuthError", ({ enumerable: true, get: function () { return AuthError_1.AuthError; } }));
+var ClientAuthError_1 = __webpack_require__(356);
+Object.defineProperty(exports, "ClientAuthError", ({ enumerable: true, get: function () { return ClientAuthError_1.ClientAuthError; } }));
+var ServerError_1 = __webpack_require__(447);
+Object.defineProperty(exports, "ServerError", ({ enumerable: true, get: function () { return ServerError_1.ServerError; } }));
+var ClientConfigurationError_1 = __webpack_require__(550);
+Object.defineProperty(exports, "ClientConfigurationError", ({ enumerable: true, get: function () { return ClientConfigurationError_1.ClientConfigurationError; } }));
+var InteractionRequiredAuthError_1 = __webpack_require__(961);
+Object.defineProperty(exports, "InteractionRequiredAuthError", ({ enumerable: true, get: function () { return InteractionRequiredAuthError_1.InteractionRequiredAuthError; } }));
+var packageMetadata_1 = __webpack_require__(700);
+Object.defineProperty(exports, "version", ({ enumerable: true, get: function () { return packageMetadata_1.version; } }));
+
+}();
+/******/ 	return __webpack_exports__;
 /******/ })()
 ;
 });

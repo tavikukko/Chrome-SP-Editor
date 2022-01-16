@@ -22,7 +22,7 @@ export declare class ServerRequestParameters {
     claimsValue: string;
     queryParameters: string;
     extraQueryParameters: string;
-    readonly authority: string;
+    get authority(): string;
     /**
      * Constructor
      * @param authority

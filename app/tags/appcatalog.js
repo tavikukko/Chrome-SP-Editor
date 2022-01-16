@@ -4,7 +4,7 @@ riot.tag("appcatalog", `
               <div class="treenode { item.selected ? ' selected' : '' } " onclick="{ clicked }" >
                 <span class="{ item.spin ? 'fe-icon fa fa-spinner fa-spin' : 'fe-icon fa fa-file-archive-o' }"></span>
                 <span>{ item.FileLeafRef }</span>
-              </div> 
+              </div>
               <virtual if="{ item.go }">
                 <ul class="fe-ul" each="{ file in item.files }">
                   <li class="fe-li { file.file.dir ? 'dir' : file.selected ? 'selected' : '' } ">
@@ -37,7 +37,7 @@ riot.tag("appcatalog", `
             renderIndentGuides: true
           });
 
-          appcatalogeditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
+          appcatalogeditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function () {
             if (this.editorItem == undefined) return;
             require(['js/jszip.min'], function (JSZip) {
               JSZip.loadAsync(this.editorItem.zip).then(function (zip) {
@@ -51,7 +51,7 @@ riot.tag("appcatalog", `
             }.bind(this));
           }.bind(this));
 
-          appcatalogeditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
+          appcatalogeditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD, function () {
             if (this.editorItem == undefined) return;
             require(['js/jszip.min'], function (JSZip) {
               JSZip.loadAsync(this.editorItem.zip).then(function (zip) {
@@ -176,7 +176,7 @@ riot.tag("appcatalog", `
       this.getContent = function (item, file) {
         this.editorItem = item;
         this.editorFile = file;
-        
+
         this.items.map(function (item) {
           item.selected = false;
 

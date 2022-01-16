@@ -128,6 +128,7 @@ END OF typescript NOTICES AND INFORMATION
 
 
 
+
 %% HTML 5.1 W3C Working Draft version 08 October 2015 (http://www.w3.org/TR/2015/WD-html51-20151008/)
 =========================================
 Copyright © 2015 W3C® (MIT, ERCIM, Keio, Beihang). This software or document includes material copied
@@ -230,6 +231,7 @@ END OF Ionic documentation NOTICES AND INFORMATION
 
 
 
+
 %% vscode-swift version 0.0.1 (https://github.com/owensd/vscode-swift)
 =========================================
 The MIT License (MIT)
@@ -254,3 +256,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 =========================================
 END OF vscode-swift NOTICES AND INFORMATION
+

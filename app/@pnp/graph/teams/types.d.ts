@@ -5,6 +5,7 @@ import { Team as ITeamType, TeamsAsyncOperation as ITeamsAsyncOperation, TeamsTa
  * Represents a Microsoft Team
  */
 export declare class _Team extends _GraphQueryableInstance<ITeamType> {
+    get primaryChannel(): IChannel;
     get channels(): IChannels;
     /**
      * Archives this Team

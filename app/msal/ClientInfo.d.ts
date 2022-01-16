@@ -4,9 +4,11 @@ import { IdToken } from "./IdToken";
  */
 export declare class ClientInfo {
     private _uid;
-    uid: string;
+    get uid(): string;
+    set uid(uid: string);
     private _utid;
-    utid: string;
+    get utid(): string;
+    set utid(utid: string);
     static createClientInfoFromIdToken(idToken: IdToken, authority: string): ClientInfo;
     constructor(rawClientInfo: string, authority: string);
     static stripPolicyFromUid(uid: string, authority: string): string;

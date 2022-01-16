@@ -226,7 +226,7 @@ import {
 
           }.bind(this));
 
-          var playgroundBinding2 = playground2.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
+          var playgroundBinding2 = playground2.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD, function () {
               try {
                 let model = playground2.getModel().getValue();
 

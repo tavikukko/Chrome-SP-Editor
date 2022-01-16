@@ -14,22 +14,23 @@ export declare enum AuthorityType {
 export declare class Authority {
     constructor(authority: string, validateAuthority: boolean, authorityMetadata?: ITenantDiscoveryResponse);
     static isAdfs(authorityUrl: string): boolean;
-    readonly AuthorityType: AuthorityType;
+    get AuthorityType(): AuthorityType;
     IsValidationEnabled: boolean;
-    readonly Tenant: string;
+    get Tenant(): string;
     private tenantDiscoveryResponse;
-    readonly AuthorizationEndpoint: string;
-    readonly EndSessionEndpoint: string;
-    readonly SelfSignedJwtAudience: string;
+    get AuthorizationEndpoint(): string;
+    get EndSessionEndpoint(): string;
+    get SelfSignedJwtAudience(): string;
     private validateResolved;
     /**
      * A URL that is the authority set by the developer
      */
-    CanonicalAuthority: string;
+    get CanonicalAuthority(): string;
+    set CanonicalAuthority(url: string);
     private canonicalAuthority;
     private canonicalAuthorityUrlComponents;
-    readonly CanonicalAuthorityUrlComponents: IUri;
-    protected readonly DefaultOpenIdConfigurationEndpoint: string;
+    get CanonicalAuthorityUrlComponents(): IUri;
+    protected get DefaultOpenIdConfigurationEndpoint(): string;
     /**
      * Given a string, validate that it is of the form https://domain/path
      */

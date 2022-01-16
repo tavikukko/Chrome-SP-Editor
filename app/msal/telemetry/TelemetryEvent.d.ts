@@ -7,11 +7,12 @@ export default class TelemetryEvent {
     private setElapsedTime;
     stop(): void;
     start(): void;
-    telemetryCorrelationId: string;
-    readonly eventName: string;
+    get telemetryCorrelationId(): string;
+    set telemetryCorrelationId(value: string);
+    get eventName(): string;
     get(): object;
-    readonly key: string;
-    readonly displayName: string;
-    private readonly perfStartMark;
-    private readonly perfEndMark;
+    get key(): string;
+    get displayName(): string;
+    private get perfStartMark();
+    private get perfEndMark();
 }

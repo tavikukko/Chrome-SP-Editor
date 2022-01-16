@@ -39,7 +39,7 @@ riot.tag("fileeditor", `
 
         /* this needs more testing */
 
-        fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
+        fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function () {
           if (bgautosave) {
             port.onMessage.addListener(this.fileeditorlistener);
 
@@ -52,7 +52,7 @@ riot.tag("fileeditor", `
           else alert("Please check 'Update changes to SharePoint' to save the changes")
         }.bind(this));
 
-        fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_D, function () {
+        fileeditoreditor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD, function () {
 
           var filename = selectedFile.split('/').pop();
           var extension = filename.split('.').pop();

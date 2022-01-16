@@ -16,21 +16,21 @@ export declare const EVENT_KEYS: {
 };
 export default class HttpEvent extends TelemetryEvent {
     constructor(correlationId: string, eventLabel: string);
-    url: string;
-    httpPath: string;
-    userAgent: string;
-    queryParams: StringDict;
-    apiVersion: string;
-    httpResponseStatus: number;
-    oAuthErrorCode: string;
-    httpMethod: string;
-    requestIdHeader: string;
+    set url(url: string);
+    set httpPath(httpPath: string);
+    set userAgent(userAgent: string);
+    set queryParams(queryParams: StringDict);
+    set apiVersion(apiVersion: string);
+    set httpResponseStatus(statusCode: number);
+    set oAuthErrorCode(errorCode: string);
+    set httpMethod(httpMethod: string);
+    set requestIdHeader(requestIdHeader: string);
     /**
      * Indicates whether the request was executed on a ring serving SPE traffic.
      * An empty string indicates this occurred on an outer ring, and the string "I"
      * indicates the request occurred on the inner ring
      */
-    speInfo: string;
-    serverErrorCode: string;
-    serverSubErrorCode: string;
+    set speInfo(speInfo: string);
+    set serverErrorCode(errorCode: string);
+    set serverSubErrorCode(subErrorCode: string);
 }

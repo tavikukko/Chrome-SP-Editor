@@ -47,7 +47,7 @@ export declare class _Replies extends _SharePointQueryableCollection<ICommentInf
      *
      * @param info Comment information to add
      */
-    add(info: string | ICommentInfo): Promise<IComment & ICommentInfo>;
+    add(info: string | Partial<ICommentInfo>): Promise<IComment & ICommentInfo>;
 }
 export interface IReplies extends _Replies {
 }
