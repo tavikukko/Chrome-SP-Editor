@@ -1,7 +1,6 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable.js";
+import { _SPCollection, _SPInstance } from "../spqueryable.js";
 import { ISiteUsers } from "../site-users/types.js";
-import { ITypedHash } from "@pnp/common";
-export declare class _SiteGroups extends _SharePointQueryableCollection<ISiteGroupInfo[]> {
+export declare class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {
     /**
      * Gets a group from the collection by id
      *
@@ -13,7 +12,7 @@ export declare class _SiteGroups extends _SharePointQueryableCollection<ISiteGro
      *
      * @param properties The group properties object of property names and values to be set for the group
      */
-    add(properties: ITypedHash<any>): Promise<IGroupAddResult>;
+    add(properties: Partial<ISiteGroupInfo>): Promise<IGroupAddResult>;
     /**
      * Gets a group from the collection by name
      *
@@ -35,19 +34,17 @@ export declare class _SiteGroups extends _SharePointQueryableCollection<ISiteGro
 }
 export interface ISiteGroups extends _SiteGroups {
 }
-export declare const SiteGroups: import("../sharepointqueryable.js").ISPInvokableFactory<ISiteGroups>;
-export declare class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupInfo> {
+export declare const SiteGroups: import("../spqueryable.js").ISPInvokableFactory<ISiteGroups>;
+export declare class _SiteGroup extends _SPInstance<ISiteGroupInfo> {
     /**
      * Gets the users for this group
      *
      */
     get users(): ISiteUsers;
     /**
-     * Updates the group with the given property values
-     *
-     * @param props The group properties object of property names and values to be set for the group
-     */
-    update: (props: ITypedHash<any>) => Promise<IGroupUpdateResult>;
+    * @param props Group properties to update
+    */
+    update(props: Partial<ISiteGroupInfo>): Promise<IGroupUpdateResult>;
     /**
      * Set the owner of a group using a user id
      * @param userId the id of the user that will be set as the owner of the current group
@@ -56,7 +53,7 @@ export declare class _SiteGroup extends _SharePointQueryableInstance<ISiteGroupI
 }
 export interface ISiteGroup extends _SiteGroup {
 }
-export declare const SiteGroup: import("../sharepointqueryable.js").ISPInvokableFactory<ISiteGroup>;
+export declare const SiteGroup: import("../spqueryable.js").ISPInvokableFactory<ISiteGroup>;
 /**
  * Result from updating a group
  *

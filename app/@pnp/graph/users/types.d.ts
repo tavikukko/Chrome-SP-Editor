@@ -22,15 +22,15 @@ export declare class _User extends _DirectoryObject<IUserType> {
 }
 export interface IUser extends _User, IUpdateable<IUserType>, IDeleteable {
 }
-export declare const User: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IUser & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const User: import("../graphqueryable.js").IGraphInvokableFactory<IUser>;
 export declare class _Users extends _GraphQueryableSearchableCollection<IUserType[]> {
 }
 export interface IUsers extends _Users, IGetById<IUser> {
 }
-export declare const Users: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IUsers & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const Users: import("../graphqueryable.js").IGraphInvokableFactory<IUsers>;
 export declare class _People extends _GraphQueryableSearchableCollection<IPersonType[]> {
 }
 export interface IPeople extends _People {
 }
-export declare const People: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPeople & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const People: import("../graphqueryable.js").IGraphInvokableFactory<IPeople>;
 //# sourceMappingURL=types.d.ts.map

@@ -1,5 +1,5 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable.js";
-export declare class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
+import { _SPCollection, _SPInstance } from "../spqueryable.js";
+export declare class _Comments extends _SPCollection<ICommentInfo[]> {
     /**
      * Adds a new comment to this collection
      *
@@ -19,8 +19,8 @@ export declare class _Comments extends _SharePointQueryableCollection<ICommentIn
 }
 export interface IComments extends _Comments {
 }
-export declare const Comments: import("../sharepointqueryable.js").ISPInvokableFactory<IComments>;
-export declare class _Comment extends _SharePointQueryableInstance<ICommentInfo> {
+export declare const Comments: import("../spqueryable.js").ISPInvokableFactory<IComments>;
+export declare class _Comment extends _SPInstance<ICommentInfo> {
     /**
      * A comment's replies
      */
@@ -40,8 +40,8 @@ export declare class _Comment extends _SharePointQueryableInstance<ICommentInfo>
 }
 export interface IComment extends _Comment {
 }
-export declare const Comment: import("../sharepointqueryable.js").ISPInvokableFactory<IComment>;
-export declare class _Replies extends _SharePointQueryableCollection<ICommentInfo[]> {
+export declare const Comment: import("../spqueryable.js").ISPInvokableFactory<IComment>;
+export declare class _Replies extends _SPCollection<ICommentInfo[]> {
     /**
      * Adds a new reply to this collection
      *
@@ -51,7 +51,7 @@ export declare class _Replies extends _SharePointQueryableCollection<ICommentInf
 }
 export interface IReplies extends _Replies {
 }
-export declare const Replies: import("../sharepointqueryable.js").ISPInvokableFactory<IReplies>;
+export declare const Replies: import("../spqueryable.js").ISPInvokableFactory<IReplies>;
 /**
  * Defines the information for a comment author
  */
@@ -78,11 +78,13 @@ export interface ICommentInfo {
     itemId: number;
     likeCount: number;
     listId: string;
-    mentions: {
-        loginName: string;
-        email: string;
-        name: string;
-    } | null;
+    mentions: [
+        {
+            loginName: string;
+            email: string;
+            name: string;
+        }
+    ] | null;
     parentId: string;
     replyCount: number;
     text: string;

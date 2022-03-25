@@ -1,5 +1,5 @@
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
-export declare class _RelatedItemManager extends _SharePointQueryable implements IRelatedItemManager {
+import { _SPQueryable, ISPQueryable } from "../spqueryable.js";
+export declare class _RelatedItemManager extends _SPQueryable implements IRelatedItemManager {
     getRelatedItems(sourceListName: string, sourceItemId: number): Promise<IRelatedItem[]>;
     getPageOneRelatedItems(sourceListName: string, sourceItemId: number): Promise<IRelatedItem[]>;
     addSingleLink(sourceListName: string, sourceItemId: number, sourceWebUrl: string, targetListName: string, targetItemID: number, targetWebUrl: string, tryAddReverseLink?: boolean): Promise<void>;
@@ -65,7 +65,7 @@ export interface IRelatedItemManager {
      */
     deleteSingleLink(sourceListName: string, sourceItemId: number, sourceWebUrl: string, targetListName: string, targetItemId: number, targetWebUrl: string, tryDeleteReverseLink?: boolean): Promise<void>;
 }
-export declare const RelatedItemManager: (url: string | ISharePointQueryable) => IRelatedItemManager;
+export declare const RelatedItemManager: (base: string | ISPQueryable) => IRelatedItemManager;
 export interface IRelatedItem {
     ListId: string;
     ItemId: number;

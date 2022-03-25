@@ -1,7 +1,7 @@
-import { ISharePointQueryable, _SharePointQueryable } from "../sharepointqueryable.js";
-export declare class _SiteScripts extends _SharePointQueryable {
-    constructor(baseUrl: string | ISharePointQueryable, methodName?: string);
-    execute<T>(props: any): Promise<T>;
+import { ISPQueryable, _SPQueryable } from "../spqueryable.js";
+export declare class _SiteScripts extends _SPQueryable {
+    constructor(base: string | ISPQueryable, methodName?: string);
+    run<T>(props: any): Promise<T>;
     /**
      * Gets a list of information on all existing site scripts.
      */
@@ -54,7 +54,7 @@ export declare class _SiteScripts extends _SharePointQueryable {
 }
 export interface ISiteScripts extends _SiteScripts {
 }
-export declare const SiteScripts: (baseUrl: string | ISharePointQueryable, methodName?: string) => ISiteScripts;
+export declare const SiteScripts: (baseUrl: string | ISPQueryable, methodName?: string) => ISiteScripts;
 /**
  * Result from creating or retrieving a site script
  *

@@ -1,6 +1,6 @@
-import { _SharePointQueryableInstance, ISharePointQueryableCollection, ISharePointQueryable } from "../sharepointqueryable.js";
+import { _SPInstance, ISPQueryable, ISPCollection, ISPInstance } from "../spqueryable.js";
 import { PrincipalType, PrincipalSource } from "../types.js";
-export declare class _Profiles extends _SharePointQueryableInstance {
+export declare class _Profiles extends _SPInstance {
     private clientPeoplePickerQuery;
     private profileLoader;
     /**
@@ -8,15 +8,15 @@ export declare class _Profiles extends _SharePointQueryableInstance {
      *
      * @param baseUrl The url or SharePointQueryable which forms the parent of this user profile query
      */
-    constructor(baseUrl: string | ISharePointQueryable, path?: string);
+    constructor(baseUrl: string | ISPQueryable, path?: string);
     /**
      * The url of the edit profile page for the current user
      */
-    get editProfileLink(): Promise<string>;
+    getEditProfileLink(): Promise<string>;
     /**
      * A boolean value that indicates whether the current user's "People I'm Following" list is public
      */
-    get isMyPeopleListPublic(): Promise<boolean>;
+    getIsMyPeopleListPublic(): Promise<boolean>;
     /**
      * A boolean value that indicates whether the current user is being followed by the specified user
      *
@@ -45,12 +45,12 @@ export declare class _Profiles extends _SharePointQueryableInstance {
      * Gets the people who are following the current user
      *
      */
-    get myFollowers(): ISharePointQueryableCollection;
+    get myFollowers(): ISPCollection;
     /**
      * Gets user properties for the current user
      *
      */
-    get myProperties(): _SharePointQueryableInstance;
+    get myProperties(): ISPInstance;
     /**
      * Gets the people who the specified user is following
      *
@@ -152,7 +152,7 @@ export declare class _Profiles extends _SharePointQueryableInstance {
 }
 export interface IProfiles extends _Profiles {
 }
-export declare const Profiles: import("../sharepointqueryable.js").ISPInvokableFactory<IProfiles>;
+export declare const Profiles: import("../spqueryable.js").ISPInvokableFactory<IProfiles>;
 /**
  * Client people picker query parameters
  */

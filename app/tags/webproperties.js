@@ -61,7 +61,7 @@ riot.tag("webproperties", `
 
     this.init = function () {
 
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getWebProperties;
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + mod_queryable + ' ' + exescript + ' ' + getWebProperties;
       script += " exescript(getWebProperties);";
       chrome.devtools.inspectedWindow.eval(script);
 

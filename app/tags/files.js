@@ -72,7 +72,7 @@ riot.tag("files", `
         return;
       }
       else if (filename.match(/.css$/) || filename.match(/.js$/)) {
-        var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + addFile;
+        var script = pnp + ' ' + sj + ' ' + alertify + ' ' + mod_queryable + ' ' + exescript + ' ' + addFile;
         script += " exescript(addFile, '" + filename + "');";
         chrome.devtools.inspectedWindow.eval(script);
       }

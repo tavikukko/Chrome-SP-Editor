@@ -1,22 +1,22 @@
-import { _SharePointQueryableCollection, _SharePointQueryableInstance } from "../sharepointqueryable.js";
+import { _SPInstance, _SPCollection } from "../spqueryable.js";
 /**
  * Describes a collection of Form objects
  *
  */
-export declare class _TermStore extends _SharePointQueryableInstance<ITermStoreInfo> {
+export declare class _TermStore extends _SPInstance<ITermStoreInfo> {
     /**
      * Gets the term groups associated with this tenant
      */
     get groups(): ITermGroups;
     /**
-     * Gets the term groups associated with this tenant
+     * Gets the term sets associated with this tenant
      */
     get sets(): ITermSets;
 }
 export interface ITermStore extends _TermStore {
 }
-export declare const TermStore: import("../sharepointqueryable.js").ISPInvokableFactory<ITermStore>;
-export declare class _TermGroups extends _SharePointQueryableCollection<ITermGroupInfo[]> {
+export declare const TermStore: import("../spqueryable.js").ISPInvokableFactory<ITermStore>;
+export declare class _TermGroups extends _SPCollection<ITermGroupInfo[]> {
     /**
      * Gets a term group by id
      *
@@ -26,8 +26,8 @@ export declare class _TermGroups extends _SharePointQueryableCollection<ITermGro
 }
 export interface ITermGroups extends _TermGroups {
 }
-export declare const TermGroups: import("../sharepointqueryable.js").ISPInvokableFactory<ITermGroups>;
-export declare class _TermGroup extends _SharePointQueryableInstance<ITermGroupInfo> {
+export declare const TermGroups: import("../spqueryable.js").ISPInvokableFactory<ITermGroups>;
+export declare class _TermGroup extends _SPInstance<ITermGroupInfo> {
     /**
      * Gets the term sets associated with this tenant
      */
@@ -35,8 +35,8 @@ export declare class _TermGroup extends _SharePointQueryableInstance<ITermGroupI
 }
 export interface ITermGroup extends _TermGroup {
 }
-export declare const TermGroup: import("../sharepointqueryable.js").ISPInvokableFactory<ITermGroup>;
-export declare class _TermSets extends _SharePointQueryableCollection<ITermSetInfo[]> {
+export declare const TermGroup: import("../spqueryable.js").ISPInvokableFactory<ITermGroup>;
+export declare class _TermSets extends _SPCollection<ITermSetInfo[]> {
     /**
      * Gets a term group by id
      *
@@ -46,8 +46,8 @@ export declare class _TermSets extends _SharePointQueryableCollection<ITermSetIn
 }
 export interface ITermSets extends _TermSets {
 }
-export declare const TermSets: import("../sharepointqueryable.js").ISPInvokableFactory<ITermSets>;
-export declare class _TermSet extends _SharePointQueryableInstance<ITermSetInfo> {
+export declare const TermSets: import("../spqueryable.js").ISPInvokableFactory<ITermSets>;
+export declare class _TermSet extends _SPInstance<ITermSetInfo> {
     /**
      * Gets all the terms in this set
      */
@@ -66,13 +66,13 @@ export declare class _TermSet extends _SharePointQueryableInstance<ITermSetInfo>
 }
 export interface ITermSet extends _TermSet {
 }
-export declare const TermSet: import("../sharepointqueryable.js").ISPInvokableFactory<ITermSet>;
-export declare class _Children extends _SharePointQueryableCollection<ITermInfo[]> {
+export declare const TermSet: import("../spqueryable.js").ISPInvokableFactory<ITermSet>;
+export declare class _Children extends _SPCollection<ITermInfo[]> {
 }
 export interface IChildren extends _Children {
 }
-export declare const Children: import("../sharepointqueryable.js").ISPInvokableFactory<IChildren>;
-export declare class _Terms extends _SharePointQueryableCollection<ITermInfo[]> {
+export declare const Children: import("../spqueryable.js").ISPInvokableFactory<IChildren>;
+export declare class _Terms extends _SPCollection<ITermInfo[]> {
     /**
      * Gets a term group by id
      *
@@ -82,16 +82,16 @@ export declare class _Terms extends _SharePointQueryableCollection<ITermInfo[]> 
 }
 export interface ITerms extends _Terms {
 }
-export declare const Terms: import("../sharepointqueryable.js").ISPInvokableFactory<ITerms>;
-export declare class _Term extends _SharePointQueryableInstance<ITermInfo> {
+export declare const Terms: import("../spqueryable.js").ISPInvokableFactory<ITerms>;
+export declare class _Term extends _SPInstance<ITermInfo> {
     get children(): IChildren;
     get relations(): IRelations;
     get set(): ITermSet;
 }
 export interface ITerm extends _Term {
 }
-export declare const Term: import("../sharepointqueryable.js").ISPInvokableFactory<ITerm>;
-export declare class _Relations extends _SharePointQueryableCollection<IRelationInfo[]> {
+export declare const Term: import("../spqueryable.js").ISPInvokableFactory<ITerm>;
+export declare class _Relations extends _SPCollection<IRelationInfo[]> {
     /**
      * Gets a term group by id
      *
@@ -101,15 +101,15 @@ export declare class _Relations extends _SharePointQueryableCollection<IRelation
 }
 export interface IRelations extends _Relations {
 }
-export declare const Relations: import("../sharepointqueryable.js").ISPInvokableFactory<IRelations>;
-export declare class _Relation extends _SharePointQueryableInstance<IRelationInfo> {
+export declare const Relations: import("../spqueryable.js").ISPInvokableFactory<IRelations>;
+export declare class _Relation extends _SPInstance<IRelationInfo> {
     get fromTerm(): ITerm;
     get toTerm(): ITerm;
     get set(): ITermSet;
 }
 export interface IRelation extends _Relation {
 }
-export declare const Relation: import("../sharepointqueryable.js").ISPInvokableFactory<IRelation>;
+export declare const Relation: import("../spqueryable.js").ISPInvokableFactory<IRelation>;
 export interface ITermStoreInfo {
     id: string;
     name: string;

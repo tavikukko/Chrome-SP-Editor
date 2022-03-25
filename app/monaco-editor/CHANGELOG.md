@@ -1,5 +1,66 @@
 # Monaco Editor Changelog
 
+## [0.32.1] (04.02.2022)
+
+- fixes [an issue with service initialization](https://github.com/microsoft/monaco-editor/issues/2941).
+
+## [0.32.0] (03.02.2022)
+
+### Breaking Changes
+
+- The binary format for `IEncodedLineTokens` has changed to support strikethrough text.
+- `IDiffEditor.getDomNode()` has been renamed to `IDiffEditor.getContainerDomNode()`.
+- `InlayHint.text` has been replaced by `InlayHint.label` and `InlayHintsProvider.provideInlayHints` now returns an `InlayHintList`.
+
+### Thank you
+
+Contributions to `monaco-editor`:
+
+- [@blutorange (Andre Wachsmuth)](https://github.com/blutorange): Implements #2383 Add syntax modes for FreeMarker template language [PR #2847](https://github.com/microsoft/monaco-editor/pull/2847)
+- [@forensicmike (forensicmike1)](https://github.com/forensicmike): Add "cd monaco-editor" to the step by step commandline instructions for cloning and running the samples [PR #2894](https://github.com/microsoft/monaco-editor/pull/2894)
+- [@juan-carlos-diaz](https://github.com/juan-carlos-diaz): Fix #2851 Highlight correctly the attributes and identifiers (with dashes) for Shell language [PR #2871](https://github.com/microsoft/monaco-editor/pull/2871)
+- [@MasterOdin (Matthew Peveler)](https://github.com/MasterOdin): Only run publish workflow on main monaco-editor repo [PR #2926](https://github.com/microsoft/monaco-editor/pull/2926)
+- [@philipturner (Philip Turner)](https://github.com/philipturner)
+  - Update Swift language specification to version 5.5 [PR #2855](https://github.com/microsoft/monaco-editor/pull/2855)
+  - Add @preconcurrency to Swift declaration attributes [PR #2924](https://github.com/microsoft/monaco-editor/pull/2924)
+- [@rcjsuen (Remy Suen)](https://github.com/rcjsuen): Support hyphenated HTML tags in Markdown syntax [PR #2864](https://github.com/microsoft/monaco-editor/pull/2864)
+- [@resistdesign (Ryan Graff)](https://github.com/resistdesign): doc: (samples) Simplify Browser ESM Parcel build [PR #2832](https://github.com/microsoft/monaco-editor/pull/2832)
+- [@ValeraS (Valeriy)](https://github.com/ValeraS)
+  - fix(monaco-editor-webpack-plugin): load monaco-editor with webpack 4 [PR #2818](https://github.com/microsoft/monaco-editor/pull/2818)
+  - tune(monaco-editor-webpack-plugin): expose plugin options type [PR #2853](https://github.com/microsoft/monaco-editor/pull/2853)
+- [@ZusorCode (Tobias Messner)](https://github.com/ZusorCode): Add .cjs extension for javascript files [PR #2929](https://github.com/microsoft/monaco-editor/pull/2929)
+
+## [0.31.1] (14.12.2021)
+
+- Fixes [a problem with missing colors](https://github.com/microsoft/monaco-editor/issues/2822)
+- Fixes [a problem with scheduling background tokenization](https://github.com/microsoft/vscode/issues/138887)
+- Improves TypeScript's ESM worker.
+
+## [0.31.0] (10.12.2021)
+
+- adds support for [highlighting non basic ASCII, invisible or ambiguous unicode characters](https://code.visualstudio.com/updates/v1_63#_unicode-highlighting).
+- adds support for setting an editor banner
+- streaming hover results in case of multiple hover providers
+- fixes multiple IME issues
+
+### Breaking Changes
+
+- the generated code is now bundled with ESBuild and the generated code makes use of newer browser features, e.g. [optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining). These features should be available in all browsers, but they might not be parsed correctly by older JS parsers, specifically parcel v1 might have problems parsing the JS.
+
+### Thank you
+
+- [@activeguild (j1ngzoue)](https://github.com/activeguild): Add 'browser-ems-vite-react' sample [PR #2767](https://github.com/microsoft/monaco-editor/pull/2767)
+- [@emojiiii (C.Y.Kun)](https://github.com/emojiiii): Fix some errors on the website playground [PR #2779](https://github.com/microsoft/monaco-editor/pull/2779)
+- [@gitpaladin (Chen Minglong)](https://github.com/gitpaladin): Fix token while missing `syntax=` directive [PR #2809](https://github.com/microsoft/monaco-editor/pull/2809)
+- [@jonatanklosko (Jonatan Kłosko)](https://github.com/jonatanklosko): Update Elixir tokenization of sigil modifiers [PR #2806](https://github.com/microsoft/monaco-editor/pull/2806)
+- [@MasterOdin (Matthew Peveler)](https://github.com/MasterOdin)
+  - Update builtin functions for mysql [PR #2749](https://github.com/microsoft/monaco-editor/pull/2749)
+  - Update list of keywords for redshift [PR #2757](https://github.com/microsoft/monaco-editor/pull/2757)
+  - Remove return from example addAction [PR #2772](https://github.com/microsoft/monaco-editor/pull/2772)
+- [@milahu](https://github.com/milahu): fix link to monaco.d.ts [PR #2769](https://github.com/microsoft/monaco-editor/pull/2769)
+- [@Pranomvignesh (Pranom Vignesh)](https://github.com/Pranomvignesh): Semantic Tokens Provider Sample is broken in docs [PR #2764](https://github.com/microsoft/monaco-editor/pull/2764)
+- [@rramo012 (Rafael Ramos)](https://github.com/rramo012): Fixing the documentation links [PR #2748](https://github.com/microsoft/monaco-editor/pull/2748)
+
 ## [0.30.1] (09.11.2021)
 
 - Fixes [a performance regression where all languages would be loaded when loading the first language](https://github.com/microsoft/monaco-editor/issues/2750).

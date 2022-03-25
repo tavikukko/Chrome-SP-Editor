@@ -1,25 +1,16 @@
-import { _SharePointQueryableInstance, ISharePointQueryableInstance, _SharePointQueryableCollection, IDeleteableWithETag } from "../sharepointqueryable.js";
+import { _SPCollection, _SPInstance, ISPInstance, IDeleteableWithETag } from "../spqueryable.js";
 import { IItem } from "../items/index.js";
 /**
  * Describes a collection of File objects
  *
  */
-export declare class _Files extends _SharePointQueryableCollection<IFileInfo[]> {
+export declare class _Files extends _SPCollection<IFileInfo[]> {
     /**
      * Gets a File by filename
      *
      * @param name The name of the file, including extension.
      */
-    getByName(name: string): IFile;
-    /**
-     * Uploads a file. Not supported for batching
-     *
-     * @param url The folder-relative url of the file.
-     * @param content The file contents
-     * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
-     * @returns The new File and the raw response.
-     */
-    add(url: string, content: any, shouldOverWrite?: boolean): Promise<IFileAddResult>;
+    getByUrl(name: string): IFile;
     /**
      * Adds a file using the pound percent safe methods
      *
@@ -50,18 +41,18 @@ export declare class _Files extends _SharePointQueryableCollection<IFileInfo[]> 
 }
 export interface IFiles extends _Files {
 }
-export declare const Files: import("../sharepointqueryable.js").ISPInvokableFactory<IFiles>;
+export declare const Files: import("../spqueryable.js").ISPInvokableFactory<IFiles>;
 /**
  * Describes a single File instance
  *
  */
-export declare class _File extends _SharePointQueryableInstance<IFileInfo> {
-    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+export declare class _File extends _SPInstance<IFileInfo> {
+    delete: (this: import("../spqueryable.js").ISPQueryable<any>, eTag?: string) => Promise<void>;
     /**
      * Gets a value that specifies the list item field values for the list item corresponding to the file.
      *
      */
-    get listItemAllFields(): ISharePointQueryableInstance;
+    get listItemAllFields(): ISPInstance;
     /**
      * Gets a collection of versions
      *
@@ -118,13 +109,6 @@ export declare class _File extends _SharePointQueryableInstance<IFileInfo> {
      * @param comment The comment for the denial.
      */
     deny(comment?: string): Promise<void>;
-    /**
-     * Moves the file to the specified destination url.
-     *
-     * @param url The absolute url or server relative url of the destination file path to move to.
-     * @param moveOperations The bitwise MoveOperations value for how to move the file.
-     */
-    moveTo(url: string, moveOperations?: MoveOperations): Promise<void>;
     /**
      * Moves the file by path to the specified destination url.
      * Also works with different site collections.
@@ -194,7 +178,7 @@ export declare class _File extends _SharePointQueryableInstance<IFileInfo> {
      */
     setContent(content: string | ArrayBuffer | Blob): Promise<IFile>;
     /**
-     * Gets the associated list item for this file, loading the default properties
+     * Gets the associated list item for this folder, loading the default properties
      */
     getItem<T>(...selects: string[]): Promise<IItem & T>;
     /**
@@ -246,12 +230,12 @@ export declare class _File extends _SharePointQueryableInstance<IFileInfo> {
 }
 export interface IFile extends _File, IDeleteableWithETag {
 }
-export declare const File: import("../sharepointqueryable.js").ISPInvokableFactory<IFile>;
+export declare const File: import("../spqueryable.js").ISPInvokableFactory<IFile>;
 /**
  * Describes a collection of Version objects
  *
  */
-export declare class _Versions extends _SharePointQueryableCollection {
+export declare class _Versions extends _SPCollection {
     /**
      * Gets a version by id
      *
@@ -296,17 +280,16 @@ export declare class _Versions extends _SharePointQueryableCollection {
 }
 export interface IVersions extends _Versions {
 }
-export declare const Versions: import("../sharepointqueryable.js").ISPInvokableFactory<IVersions>;
+export declare const Versions: import("../spqueryable.js").ISPInvokableFactory<IVersions>;
 /**
  * Describes a single Version instance
  *
  */
-export declare class _Version extends _SharePointQueryableInstance {
-    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+export declare class _Version extends _SPInstance {
 }
 export interface IVersion extends _Version, IDeleteableWithETag {
 }
-export declare const Version: import("../sharepointqueryable.js").ISPInvokableFactory<IVersion>;
+export declare const Version: import("../spqueryable.js").ISPInvokableFactory<IVersion>;
 /**
  * Types for document check in.
  * Minor = 0

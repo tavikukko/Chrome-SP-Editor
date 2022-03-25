@@ -1,15 +1,15 @@
-export { ISharePointQueryable, ISharePointQueryableCollection, ISharePointQueryableInstance, SharePointQueryableInstance, SharePointQueryableCollection, ISharePointQueryableConstructor, SharePointQueryable, spInvokableFactory, ISPInvokableFactory, } from "./sharepointqueryable.js";
-export { SPBatch, } from "./batch.js";
+export * from "./spqueryable.js";
 export * from "./decorators.js";
 export * from "./operations.js";
-export { ISPConfiguration, ISPConfigurationPart, } from "./splibconfig.js";
-export { SPHttpClient, } from "./sphttpclient.js";
-export { SPRest, sp, } from "./rest.js";
+export { SPFI as SPFI, spfi as spfi, } from "./fi.js";
 export * from "./types.js";
-export { toAbsoluteUrl, } from "./utils/toabsoluteurl.js";
-export { extractWebUrl, } from "./utils/extractweburl.js";
-export { escapeQueryStrValue, } from "./utils/escapeQueryStrValue.js";
-export { ISPKeyValueCollection, objectToSPKeyValueCollection, } from "./utils/objectToSPKeyValueCollection.js";
-export { stripInvalidFileFolderChars, containsInvalidFileFolderChars, } from "./utils/file-names.js";
-export { odataUrlFrom, } from "./odata.js";
+export * from "./utils/escape-query-str.js";
+export * from "./utils/extract-web-url.js";
+export * from "./utils/file-names.js";
+export * from "./utils/odata-url-from.js";
+export * from "./behaviors/defaults.js";
+export * from "./behaviors/telemetry.js";
+export * from "./behaviors/request-digest.js";
+export * from "./behaviors/spbrowser.js";
+export * from "./behaviors/spfx.js";
 //# sourceMappingURL=index.d.ts.map

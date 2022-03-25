@@ -1,17 +1,11 @@
-import { IWeb } from "./types.js";
-import { SPBatch } from "../batch.js";
+import { Web } from "./types.js";
 export { IWeb, IWebs, Web, IWebAddResult, IWebUpdateResult, Webs, IWebInfo, IStorageEntity, IWebInfosData, } from "./types.js";
-declare module "../rest" {
-    interface SPRest {
+declare module "../fi" {
+    interface SPFI {
         /**
          * Access to the current web instance
          */
-        readonly web: IWeb;
-        /**
-         * Creates a new batch object for use with the SharePointQueryable.addToBatch method
-         *
-         */
-        createBatch(): SPBatch;
+        readonly web: ReturnType<typeof Web>;
     }
 }
 //# sourceMappingURL=index.d.ts.map

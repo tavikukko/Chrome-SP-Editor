@@ -8,7 +8,7 @@ export declare class _Subscription extends _GraphQueryableInstance<ISubscription
 }
 export interface ISubscription extends _Subscription, IDeleteable, IUpdateable<ISubscriptionType> {
 }
-export declare const Subscription: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ISubscription & import("@pnp/odata").IInvokable<any>;
+export declare const Subscription: import("../graphqueryable.js").IGraphInvokableFactory<ISubscription>;
 /**
  * Subscriptions
  */
@@ -27,7 +27,7 @@ export declare class _Subscriptions extends _GraphQueryableCollection<ISubscript
 }
 export interface ISubscriptions extends _Subscriptions, IGetById<ISubscription> {
 }
-export declare const Subscriptions: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ISubscriptions & import("@pnp/odata").IInvokable<any>;
+export declare const Subscriptions: import("../graphqueryable.js").IGraphInvokableFactory<ISubscriptions>;
 /**
  * ISubAddResult
  */

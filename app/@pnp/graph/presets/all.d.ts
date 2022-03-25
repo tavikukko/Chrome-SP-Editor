@@ -10,7 +10,6 @@ import "../members/index.js";
 import "../messages/index.js";
 import "../onedrive/index.js";
 import "../onenote/index.js";
-import "../outlook/index.js";
 import "../photos/index.js";
 import "../planner/index.js";
 import "../search/index.js";

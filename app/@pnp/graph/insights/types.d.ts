@@ -11,7 +11,7 @@ export declare class _Insights extends _GraphQueryableInstance<IOfficeGraphInsig
 }
 export interface IInsights extends _Insights {
 }
-export declare const Insights: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IInsights & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const Insights: import("../graphqueryable.js").IGraphInvokableFactory<IInsights>;
 /**
  * Describes a Trending Insight instance
  */
@@ -20,7 +20,7 @@ export declare class _TrendingInsight extends _GraphQueryableInstance<ITrendingI
 }
 export interface ITrendingInsight extends _TrendingInsight {
 }
-export declare const TrendingInsight: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ITrendingInsight & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const TrendingInsight: import("../graphqueryable.js").IGraphInvokableFactory<ITrendingInsight>;
 /**
  * Describes a collection of Trending Insight objects
  *
@@ -29,7 +29,7 @@ export declare class _TrendingInsights extends _GraphQueryableCollection<ITrendi
 }
 export interface ITrendingInsights extends _TrendingInsights, IGetById<ITrendingInsight> {
 }
-export declare const TrendingInsights: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ITrendingInsights & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const TrendingInsights: import("../graphqueryable.js").IGraphInvokableFactory<ITrendingInsights>;
 /**
  * Describes a Used Insight instance
  */
@@ -38,7 +38,7 @@ export declare class _UsedInsight extends _GraphQueryableInstance<IUsedInsightTy
 }
 export interface IUsedInsight extends _UsedInsight {
 }
-export declare const UsedInsight: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IUsedInsight & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const UsedInsight: import("../graphqueryable.js").IGraphInvokableFactory<IUsedInsight>;
 /**
  * Describes a collection of Used Insight objects
  *
@@ -47,7 +47,7 @@ export declare class _UsedInsights extends _GraphQueryableCollection<IUsedInsigh
 }
 export interface IUsedInsights extends _UsedInsights, IGetById<IUsedInsight> {
 }
-export declare const UsedInsights: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IUsedInsights & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const UsedInsights: import("../graphqueryable.js").IGraphInvokableFactory<IUsedInsights>;
 /**
  * Describes a Shared Insight instance
  */
@@ -56,7 +56,7 @@ export declare class _SharedInsight extends _GraphQueryableInstance<ISharedInsig
 }
 export interface ISharedInsight extends _SharedInsight {
 }
-export declare const SharedInsight: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ISharedInsight & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const SharedInsight: import("../graphqueryable.js").IGraphInvokableFactory<ISharedInsight>;
 /**
  * Describes a collection of Shared Insight objects
  *
@@ -65,7 +65,7 @@ export declare class _SharedInsights extends _GraphQueryableCollection<ISharedIn
 }
 export interface ISharedInsights extends _SharedInsights, IGetById<ISharedInsight> {
 }
-export declare const SharedInsights: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ISharedInsights & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const SharedInsights: import("../graphqueryable.js").IGraphInvokableFactory<ISharedInsights>;
 /**
  * Describes a Resource Entity instance
  */
@@ -73,5 +73,5 @@ export declare class _Resource extends _GraphQueryableInstance<IEntityType> {
 }
 export interface IResource extends _Resource {
 }
-export declare const Resource: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IResource & import("@pnp/odata/invokable-binder.js").IInvokable<any>;
+export declare const Resource: import("../graphqueryable.js").IGraphInvokableFactory<IResource>;
 //# sourceMappingURL=types.d.ts.map

@@ -1,8 +1,8 @@
 import { ICommunications } from "./types.js";
 import "./users.js";
 export { Presence, IPresence, Communications, ICommunications, } from "./types.js";
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly communications: ICommunications;
     }
 }

@@ -1,5 +1,5 @@
-import { _GraphQueryableInstance, _GraphQueryableCollection } from "../graphqueryable";
-import { IUpdateable, IGetById, IDeleteable } from "../decorators";
+import { _GraphQueryableInstance, _GraphQueryableCollection } from "../graphqueryable.js";
+import { IUpdateable, IGetById, IDeleteable } from "../decorators.js";
 import { Team as ITeamType, TeamsAsyncOperation as ITeamsAsyncOperation, TeamsTab as ITeamsTabType } from "@microsoft/microsoft-graph-types";
 /**
  * Represents a Microsoft Team
@@ -29,7 +29,7 @@ export declare class _Team extends _GraphQueryableInstance<ITeamType> {
 }
 export interface ITeam extends _Team, IUpdateable<ITeamType> {
 }
-export declare const Team: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => ITeam & import("@pnp/odata").IInvokable<any>;
+export declare const Team: import("../graphqueryable.js").IGraphInvokableFactory<ITeam>;
 /**
  * Teams
  */
@@ -38,7 +38,7 @@ export declare class _Teams extends _GraphQueryableCollection<ITeamType[]> {
 }
 export interface ITeams extends _Teams, IGetById<ITeam> {
 }
-export declare const Teams: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => ITeams & import("@pnp/odata").IInvokable<any>;
+export declare const Teams: import("../graphqueryable.js").IGraphInvokableFactory<ITeams>;
 /**
  * Channel
  */
@@ -47,7 +47,7 @@ export declare class _Channel extends _GraphQueryableInstance {
 }
 export interface IChannel extends _Channel {
 }
-export declare const Channel: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IChannel & import("@pnp/odata").IInvokable<any>;
+export declare const Channel: import("../graphqueryable.js").IGraphInvokableFactory<IChannel>;
 /**
  * Channels
  */
@@ -62,7 +62,7 @@ export declare class _Channels extends _GraphQueryableCollection {
 }
 export interface IChannels extends _Channels, IGetById<IChannel> {
 }
-export declare const Channels: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => IChannels & import("@pnp/odata").IInvokable<any>;
+export declare const Channels: import("../graphqueryable.js").IGraphInvokableFactory<IChannels>;
 /**
  * Tab
  */
@@ -70,7 +70,7 @@ export declare class _Tab extends _GraphQueryableInstance {
 }
 export interface ITab extends _Tab, IUpdateable, IDeleteable {
 }
-export declare const Tab: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => ITab & import("@pnp/odata").IInvokable<any>;
+export declare const Tab: import("../graphqueryable.js").IGraphInvokableFactory<ITab>;
 /**
  * Tabs
  */
@@ -85,7 +85,7 @@ export declare class _Tabs extends _GraphQueryableCollection {
 }
 export interface ITabs extends _Tabs, IGetById<ITab> {
 }
-export declare const Tabs: (baseUrl: string | import("../graphqueryable").IGraphQueryable<any>, path?: string) => ITabs & import("@pnp/odata").IInvokable<any>;
+export declare const Tabs: import("../graphqueryable.js").IGraphInvokableFactory<ITabs>;
 export interface ITeamUpdateResult {
     data: any;
     team: ITeam;

@@ -1,7 +1,7 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable.js";
+import { _SPCollection, _SPInstance } from "../spqueryable.js";
 import { ISerializableNavigationNode } from "../navigation/types.js";
 import { ISite } from "../sites/types.js";
-export declare class _HubSites extends _SharePointQueryableCollection<IHubSiteInfo[]> {
+export declare class _HubSites extends _SPCollection<IHubSiteInfo[]> {
     /**
      * Gets a Hub Site from the collection by id
      *
@@ -11,8 +11,8 @@ export declare class _HubSites extends _SharePointQueryableCollection<IHubSiteIn
 }
 export interface IHubSites extends _HubSites {
 }
-export declare const HubSites: import("../sharepointqueryable.js").ISPInvokableFactory<IHubSites>;
-export declare class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo> {
+export declare const HubSites: import("../spqueryable.js").ISPInvokableFactory<IHubSites>;
+export declare class _HubSite extends _SPInstance<IHubSiteInfo> {
     /**
      * Gets the ISite instance associated with this hubsite
      */
@@ -20,7 +20,7 @@ export declare class _HubSite extends _SharePointQueryableInstance<IHubSiteInfo>
 }
 export interface IHubSite extends _HubSite {
 }
-export declare const HubSite: import("../sharepointqueryable.js").ISPInvokableFactory<IHubSite>;
+export declare const HubSite: import("../spqueryable.js").ISPInvokableFactory<IHubSite>;
 export interface IHubSiteInfo {
     ID: string;
     Title: string;
@@ -51,6 +51,6 @@ export interface IHubSiteWebData {
     requiresJoinApproval: boolean;
     hideNameInNavigation: boolean;
     parentHubSiteId: string;
-    relatedHubSiteIds: string | null;
+    relatedHubSiteIds: string[] | null;
 }
 //# sourceMappingURL=types.d.ts.map

@@ -1,5 +1,4 @@
 import { _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable.js";
-import { ITypedHash } from "@pnp/common";
 import { Contact as IContactType, ContactFolder as IContactFolderType, EmailAddress as IEmailAddressType } from "@microsoft/microsoft-graph-types";
 import { IUpdateable, IDeleteable, IGetById } from "../decorators.js";
 /**
@@ -9,7 +8,7 @@ export declare class _Contact extends _GraphQueryableInstance<IContactType> {
 }
 export interface IContact extends _Contact, IUpdateable<IContactType>, IDeleteable {
 }
-export declare const Contact: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IContact & import("@pnp/odata").IInvokable<any>;
+export declare const Contact: import("../graphqueryable.js").IGraphInvokableFactory<IContact>;
 /**
  * Contacts
  */
@@ -23,11 +22,11 @@ export declare class _Contacts extends _GraphQueryableCollection<IContactType[]>
     * @param businessPhones The contact's business phone numbers.
     * @param additionalProperties A plain object collection of additional properties you want to set on the new contact
     */
-    add(givenName: string, surName: string, emailAddresses: IEmailAddressType[], businessPhones: string[], additionalProperties?: ITypedHash<any>): Promise<IContactAddResult>;
+    add(givenName: string, surName: string, emailAddresses: IEmailAddressType[], businessPhones: string[], additionalProperties?: Record<string, any>): Promise<IContactAddResult>;
 }
 export interface IContacts extends _Contacts, IGetById<IContact> {
 }
-export declare const Contacts: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IContacts & import("@pnp/odata").IInvokable<any>;
+export declare const Contacts: import("../graphqueryable.js").IGraphInvokableFactory<IContacts>;
 /**
  * Contact Folder
  */
@@ -43,7 +42,7 @@ export declare class _ContactFolder extends _GraphQueryableInstance<IContactFold
 }
 export interface IContactFolder extends _ContactFolder, IUpdateable, IDeleteable {
 }
-export declare const ContactFolder: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IContactFolder & import("@pnp/odata").IInvokable<any>;
+export declare const ContactFolder: import("../graphqueryable.js").IGraphInvokableFactory<IContactFolder>;
 /**
  * Contact Folders
  */
@@ -58,7 +57,7 @@ export declare class _ContactFolders extends _GraphQueryableCollection<IContactF
 }
 export interface IContactFolders extends _ContactFolders, IGetById<IContactFolder> {
 }
-export declare const ContactFolders: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IContactFolders & import("@pnp/odata").IInvokable<any>;
+export declare const ContactFolders: import("../graphqueryable.js").IGraphInvokableFactory<IContactFolders>;
 /**
  * IContactFolderAddResult
  */

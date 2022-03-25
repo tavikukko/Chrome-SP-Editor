@@ -18,5 +18,5 @@ export declare class _Photo extends _GraphQueryableInstance<IPhotoType> {
 }
 export interface IPhoto extends _Photo {
 }
-export declare const Photo: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPhoto & import("@pnp/odata").IInvokable<any>;
+export declare const Photo: import("../graphqueryable.js").IGraphInvokableFactory<IPhoto>;
 //# sourceMappingURL=types.d.ts.map

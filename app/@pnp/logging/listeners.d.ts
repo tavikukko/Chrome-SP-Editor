@@ -1,40 +1,20 @@
-import { ILogEntry, ILogListener } from "./logger.js";
+import { ILogEntry, ILogListener } from "./index.js";
+export declare function ConsoleListener(prefix?: string, colors?: IConsoleListenerColors): ILogListener;
 /**
- * Implementation of LogListener which logs to the console
- *
+ * Text color options for use in the ConsoleListener
+ * All values can be specified as known names, hex values, rgb, or rgba values
  */
-export declare class ConsoleListener implements ILogListener {
-    /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
-    log(entry: ILogEntry): void;
-    /**
-     * Formats the message
-     *
-     * @param entry The information to format into a string
-     */
-    private format;
+export interface IConsoleListenerColors {
+    /** Default text color for all logging levels unless they're specified */
+    color?: string;
+    /** Text color to use for messages with LogLevel.Verbose */
+    verbose?: string;
+    /** Text color to use for messages with LogLevel.Info */
+    info?: string;
+    /** Text color to use for messages with LogLevel.Warning */
+    warning?: string;
+    /** Text color to use for messages with LogLevel.Error */
+    error?: string;
 }
-/**
- * Implementation of LogListener which logs to the supplied function
- *
- */
-export declare class FunctionListener implements ILogListener {
-    private method;
-    /**
-     * Creates a new instance of the FunctionListener class
-     *
-     * @constructor
-     * @param  method The method to which any logging data will be passed
-     */
-    constructor(method: (entry: ILogEntry) => void);
-    /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
-    log(entry: ILogEntry): void;
-}
+export declare function FunctionListener(impl: (entry: ILogEntry) => void): ILogListener;
 //# sourceMappingURL=listeners.d.ts.map

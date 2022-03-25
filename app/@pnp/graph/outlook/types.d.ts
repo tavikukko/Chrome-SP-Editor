@@ -9,7 +9,7 @@ export declare class _Outlook extends _GraphQueryableInstance<IOutlookType> {
 }
 export interface IOutlook extends _Outlook {
 }
-export declare const Outlook: (baseUrl: string | import("@pnp/graph").IGraphQueryable<any>, path?: string) => IOutlook & import("@pnp/odata").IInvokable<any>;
+export declare const Outlook: import("@pnp/graph/graphqueryable").IGraphInvokableFactory<IOutlook>;
 /**
  * Describes an Outlook Category instance
  */
@@ -17,7 +17,7 @@ export declare class _OutlookCategory extends _GraphQueryableInstance<IOutlookCa
 }
 export interface IOutlookCategory extends _OutlookCategory, IUpdateable<IOutlookCategoryType>, IDeleteable {
 }
-export declare const OutlookCategory: (baseUrl: string | import("@pnp/graph").IGraphQueryable<any>, path?: string) => IOutlookCategory & import("@pnp/odata").IInvokable<any>;
+export declare const OutlookCategory: import("@pnp/graph/graphqueryable").IGraphInvokableFactory<IOutlookCategory>;
 /**
  * Categories
  */
@@ -31,7 +31,7 @@ export declare class _MasterCategories extends _GraphQueryableCollection<IOutloo
 }
 export interface IMasterCategories extends _MasterCategories, IGetById<IOutlookCategory> {
 }
-export declare const MasterCategories: (baseUrl: string | import("@pnp/graph").IGraphQueryable<any>, path?: string) => IMasterCategories & import("@pnp/odata").IInvokable<any>;
+export declare const MasterCategories: import("@pnp/graph/graphqueryable").IGraphInvokableFactory<IMasterCategories>;
 /**
  * MasterCategoryAddResult
  */

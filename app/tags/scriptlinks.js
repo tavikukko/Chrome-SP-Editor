@@ -53,7 +53,7 @@ riot.tag("scrlinks", `
     });
 
     this.init = function () {
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + mod_queryable + ' ' + exescript + ' ' + getCustomActions;
       script += " exescript(getCustomActions);";
       chrome.devtools.inspectedWindow.eval(script);
 
@@ -80,13 +80,13 @@ riot.tag("scrlinks", `
             }
             break;
           case 'removeCustomAction':
-            var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
+            var script = pnp + ' ' + sj + ' ' + alertify + ' ' + mod_queryable + ' ' + exescript + ' ' + getCustomActions;
             script += " exescript(getCustomActions);";
             chrome.devtools.inspectedWindow.eval(script);
             break;
           case 'addCustomAction':
             if (message.success) {
-              var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + getCustomActions;
+              var script = pnp + ' ' + sj + ' ' + alertify + ' ' + mod_queryable + ' ' + exescript + ' ' + getCustomActions;
               script += " exescript(getCustomActions);";
               chrome.devtools.inspectedWindow.eval(script);
             }
@@ -108,7 +108,7 @@ riot.tag("scrlinks", `
     }.bind(this);
 
     this.remove = function (e) {
-      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + exescript + ' ' + removeCustomAction;
+      var script = pnp + ' ' + sj + ' ' + alertify + ' ' + mod_queryable + ' ' + exescript + ' ' + removeCustomAction;
       script += " exescript(removeCustomAction, '" + e.item.link.scope + "', '" + e.item.link.id + "');";
       chrome.devtools.inspectedWindow.eval(script);
     }.bind(this);

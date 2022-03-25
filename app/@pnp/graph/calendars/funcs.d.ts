@@ -1,8 +1,5 @@
 import { IGraphQueryable, IGraphQueryableCollection } from "../graphqueryable.js";
 import { EmailAddress, Event as IEvent } from "@microsoft/microsoft-graph-types";
-/**
- * Temporary until graph types include this type
- */
 interface IEventWithTag extends IEvent {
     "@odata.etag": string;
 }

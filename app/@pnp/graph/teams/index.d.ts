@@ -1,6 +1,6 @@
-import { ITeamCreateResult, ITeam, ITeams } from "./types";
+import { ITeamCreateResult, ITeam, ITeams } from "./types.js";
 import { Team as ITeamType } from "@microsoft/microsoft-graph-types";
-import "./users";
+import "./users.js";
 export { Channel, Channels, IChannel, IChannelCreateResult, IChannels, ITab, ITabCreateResult, ITabUpdateResult, ITabs, ITeam, ITeamCreateResult, ITeamCreateResultAsync, ITeamUpdateResult, ITeams, Tab, Tabs, Team, Teams, } from "./types.js";
 declare module "../groups/types" {
     interface _Group {
@@ -12,8 +12,8 @@ declare module "../groups/types" {
         createTeam(properties: ITeamType): Promise<ITeamCreateResult>;
     }
 }
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly teams: ITeams;
     }
 }

@@ -52,140 +52,98 @@ __webpack_require__.d(__webpack_exports__, {
   "ConsoleListener": () => (/* reexport */ ConsoleListener),
   "FunctionListener": () => (/* reexport */ FunctionListener),
   "LogLevel": () => (/* reexport */ LogLevel),
-  "Logger": () => (/* reexport */ Logger)
+  "Logger": () => (/* reexport */ Logger),
+  "PnPLogging": () => (/* reexport */ PnPLogging)
 });
 
-;// CONCATENATED MODULE: ./node_modules/@pnp/logging/logger.js
+;// CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
+function ConsoleListener(prefix, colors) {
+    return new _ConsoleListener(prefix, colors);
+}
+function withColor(msg, color) {
+    if (typeof color === "undefined") {
+        console.log(msg);
+    }
+    else {
+        console.log(`%c${msg}`, `color:${color}`);
+    }
+}
 /**
- * Class used to subscribe ILogListener and log messages throughout an application
+ * Formats the message
+ *
+ * @param entry The information to format into a string
+ */
+function entryToString(entry, prefix) {
+    const msg = [];
+    if (prefix.length > 0) {
+        msg.push(`${prefix} -`);
+    }
+    msg.push(entry.message);
+    if (entry.data !== undefined) {
+        try {
+            msg.push("Data: " + JSON.stringify(entry.data));
+        }
+        catch (e) {
+            msg.push(`Data: Error in stringify of supplied data ${e}`);
+        }
+    }
+    return msg.join(" ");
+}
+// index order matters, this is a lookup table based on the corresponding LogLevel value
+const colorProps = ["verbose", "info", "warning", "error"];
+/**
+ * Implementation of LogListener which logs to the console
  *
  */
-var Logger = /** @class */ (function () {
-    function Logger() {
+class _ConsoleListener {
+    /**
+     * Makes a new one
+     *
+     * @param prefix Optional text to include at the start of all messages (useful for filtering)
+     * @param colors Optional text color settings
+     */
+    constructor(_prefix = "", _colors = {}) {
+        this._prefix = _prefix;
+        this._colors = _colors;
     }
-    Object.defineProperty(Logger, "activeLogLevel", {
-        /**
-       * Gets or sets the active log level to apply for log filtering
-       */
-        get: function () {
-            return Logger.instance.activeLogLevel;
-        },
-        set: function (value) {
-            Logger.instance.activeLogLevel = value;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Logger, "instance", {
-        get: function () {
-            if (Logger._instance === undefined || Logger._instance === null) {
-                Logger._instance = new LoggerImpl();
-            }
-            return Logger._instance;
-        },
-        enumerable: false,
-        configurable: true
-    });
     /**
-   * Adds ILogListener instances to the set of subscribed listeners
-   *
-   * @param listeners One or more listeners to subscribe to this log
-   */
-    Logger.subscribe = function () {
-        var listeners = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            listeners[_i] = arguments[_i];
-        }
-        listeners.forEach(function (listener) { return Logger.instance.subscribe(listener); });
-    };
+     * Any associated data that a given logging listener may choose to log or ignore
+     *
+     * @param entry The information to be logged
+     */
+    log(entry) {
+        withColor(entryToString(entry, this._prefix), this._colors[colorProps[entry.level]]);
+    }
+}
+function FunctionListener(impl) {
+    return new _FunctionListener(impl);
+}
+/**
+ * Implementation of LogListener which logs to the supplied function
+ *
+ */
+class _FunctionListener {
     /**
-   * Clears the subscribers collection, returning the collection before modification
-   */
-    Logger.clearSubscribers = function () {
-        return Logger.instance.clearSubscribers();
-    };
-    Object.defineProperty(Logger, "count", {
-        /**
-       * Gets the current subscriber count
-       */
-        get: function () {
-            return Logger.instance.count;
-        },
-        enumerable: false,
-        configurable: true
-    });
+     * Creates a new instance of the FunctionListener class
+     *
+     * @constructor
+     * @param  method The method to which any logging data will be passed
+     */
+    constructor(method) {
+        this.method = method;
+    }
     /**
-   * Writes the supplied string to the subscribed listeners
-   *
-   * @param message The message to write
-   * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
-   */
-    Logger.write = function (message, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        Logger.instance.log({ level: level, message: message });
-    };
-    /**
-   * Writes the supplied string to the subscribed listeners
-   *
-   * @param json The json object to stringify and write
-   * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
-   */
-    Logger.writeJSON = function (json, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        this.write(JSON.stringify(json), level);
-    };
-    /**
-   * Logs the supplied entry to the subscribed listeners
-   *
-   * @param entry The message to log
-   */
-    Logger.log = function (entry) {
-        Logger.instance.log(entry);
-    };
-    /**
-   * Logs an error object to the subscribed listeners
-   *
-   * @param err The error object
-   */
-    Logger.error = function (err) {
-        Logger.instance.log({ data: err, level: 3 /* Error */, message: err.message });
-    };
-    return Logger;
-}());
+     * Any associated data that a given logging listener may choose to log or ignore
+     *
+     * @param entry The information to be logged
+     */
+    log(entry) {
+        this.method(entry);
+    }
+}
+//# sourceMappingURL=listeners.js.map
+;// CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
 
-var LoggerImpl = /** @class */ (function () {
-    function LoggerImpl(activeLogLevel, subscribers) {
-        if (activeLogLevel === void 0) { activeLogLevel = 2 /* Warning */; }
-        if (subscribers === void 0) { subscribers = []; }
-        this.activeLogLevel = activeLogLevel;
-        this.subscribers = subscribers;
-    }
-    LoggerImpl.prototype.subscribe = function (listener) {
-        this.subscribers.push(listener);
-    };
-    LoggerImpl.prototype.clearSubscribers = function () {
-        var s = this.subscribers.slice(0);
-        this.subscribers.length = 0;
-        return s;
-    };
-    Object.defineProperty(LoggerImpl.prototype, "count", {
-        get: function () {
-            return this.subscribers.length;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    LoggerImpl.prototype.write = function (message, level) {
-        if (level === void 0) { level = 1 /* Info */; }
-        this.log({ level: level, message: message });
-    };
-    LoggerImpl.prototype.log = function (entry) {
-        if (entry !== undefined && this.activeLogLevel <= entry.level) {
-            this.subscribers.map(function (subscriber) { return subscriber.log(entry); });
-        }
-    };
-    return LoggerImpl;
-}());
 /**
  * A set of logging levels
  */
@@ -197,85 +155,91 @@ var LogLevel;
     LogLevel[LogLevel["Error"] = 3] = "Error";
     LogLevel[LogLevel["Off"] = 99] = "Off";
 })(LogLevel || (LogLevel = {}));
-//# sourceMappingURL=logger.js.map
-;// CONCATENATED MODULE: ./node_modules/@pnp/logging/listeners.js
+const _subscribers = [];
+let _activeLogLevel = 2 /* Warning */;
 /**
- * Implementation of LogListener which logs to the console
+ * Class used to subscribe ILogListener and log messages throughout an application
  *
  */
-var ConsoleListener = /** @class */ (function () {
-    function ConsoleListener() {
+class Logger {
+    /**
+   * Gets or sets the active log level to apply for log filtering
+   */
+    static get activeLogLevel() {
+        return _activeLogLevel;
+    }
+    static set activeLogLevel(value) {
+        _activeLogLevel = value;
     }
     /**
-     * Any associated data that a given logging listener may choose to log or ignore
+     * Adds ILogListener instances to the set of subscribed listeners
      *
-     * @param entry The information to be logged
+     * @param listeners One or more listeners to subscribe to this log
      */
-    ConsoleListener.prototype.log = function (entry) {
-        var msg = this.format(entry);
-        switch (entry.level) {
-            case 0 /* Verbose */:
-            case 1 /* Info */:
-                console.log(msg);
-                break;
-            case 2 /* Warning */:
-                console.warn(msg);
-                break;
-            case 3 /* Error */:
-                console.error(msg);
-                break;
-        }
-    };
-    /**
-     * Formats the message
-     *
-     * @param entry The information to format into a string
-     */
-    ConsoleListener.prototype.format = function (entry) {
-        var msg = [];
-        msg.push("Message: " + entry.message);
-        if (entry.data !== undefined) {
-            try {
-                msg.push(" Data: " + JSON.stringify(entry.data));
-            }
-            catch (e) {
-                msg.push(" Data: Error in stringify of supplied data " + e);
-            }
-        }
-        return msg.join("");
-    };
-    return ConsoleListener;
-}());
-
-/**
- * Implementation of LogListener which logs to the supplied function
- *
- */
-var FunctionListener = /** @class */ (function () {
-    /**
-     * Creates a new instance of the FunctionListener class
-     *
-     * @constructor
-     * @param  method The method to which any logging data will be passed
-     */
-    function FunctionListener(method) {
-        this.method = method;
+    static subscribe(...listeners) {
+        _subscribers.push(...listeners);
     }
     /**
-     * Any associated data that a given logging listener may choose to log or ignore
-     *
-     * @param entry The information to be logged
-     */
-    FunctionListener.prototype.log = function (entry) {
-        this.method(entry);
+   * Clears the subscribers collection, returning the collection before modification
+   */
+    static clearSubscribers() {
+        const s = _subscribers.slice(0);
+        _subscribers.length = 0;
+        return s;
+    }
+    /**
+   * Gets the current subscriber count
+   */
+    static get count() {
+        return _subscribers.length;
+    }
+    /**
+   * Writes the supplied string to the subscribed listeners
+   *
+   * @param message The message to write
+   * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
+   */
+    static write(message, level = 1 /* Info */) {
+        Logger.log({ level: level, message: message });
+    }
+    /**
+   * Writes the supplied string to the subscribed listeners
+   *
+   * @param json The json object to stringify and write
+   * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
+   */
+    static writeJSON(json, level = 1 /* Info */) {
+        Logger.write(JSON.stringify(json), level);
+    }
+    /**
+   * Logs the supplied entry to the subscribed listeners
+   *
+   * @param entry The message to log
+   */
+    static log(entry) {
+        if (entry !== undefined && Logger.activeLogLevel <= entry.level) {
+            _subscribers.map(subscriber => subscriber.log(entry));
+        }
+    }
+    /**
+   * Logs an error object to the subscribed listeners
+   *
+   * @param err The error object
+   */
+    static error(err) {
+        Logger.log({ data: err, level: 3 /* Error */, message: err.message });
+    }
+}
+function PnPLogging(activeLevel) {
+    return (instance) => {
+        instance.on.log(function (message, level) {
+            if (activeLevel <= level) {
+                _subscribers.map(subscriber => subscriber.log({ level, message }));
+            }
+        });
+        return instance;
     };
-    return FunctionListener;
-}());
-
-//# sourceMappingURL=listeners.js.map
-;// CONCATENATED MODULE: ./node_modules/@pnp/logging/index.js
-
-
+}
 //# sourceMappingURL=index.js.map
 ;// CONCATENATED MODULE: ./pnpjs-sources/index-logging.ts
 

@@ -7,7 +7,7 @@ export declare class _Presence extends _GraphQueryableInstance<IUserPresence> {
 }
 export interface IPresence extends _Presence {
 }
-export declare const Presence: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPresence & import("@pnp/odata").IInvokable<any>;
+export declare const Presence: import("../graphqueryable.js").IGraphInvokableFactory<IPresence>;
 export declare class _Communications extends _GraphQueryableCollection<IUserPresence[]> {
     /**
      * Retrieve presence information for a group of users.
@@ -18,5 +18,5 @@ export declare class _Communications extends _GraphQueryableCollection<IUserPres
 }
 export interface ICommunications extends _Communications {
 }
-export declare const Communications: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ICommunications & import("@pnp/odata").IInvokable<any>;
+export declare const Communications: import("../graphqueryable.js").IGraphInvokableFactory<ICommunications>;
 //# sourceMappingURL=types.d.ts.map

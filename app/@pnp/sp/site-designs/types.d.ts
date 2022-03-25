@@ -1,7 +1,7 @@
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
-export declare class _SiteDesigns extends _SharePointQueryable {
-    constructor(baseUrl: string | ISharePointQueryable, methodName?: string);
-    execute<T>(props: any): Promise<T>;
+import { ISPQueryable, _SPQueryable } from "../spqueryable.js";
+export declare class _SiteDesigns extends _SPQueryable {
+    constructor(base: string | ISPQueryable, methodName?: string);
+    run<T>(props: any): Promise<T>;
     /**
      * Creates a new site design available to users when they create a new site from the SharePoint home page.
      *
@@ -86,7 +86,7 @@ export declare class _SiteDesigns extends _SharePointQueryable {
 }
 export interface ISiteDesigns extends _SiteDesigns {
 }
-export declare const SiteDesigns: (baseUrl: string | ISharePointQueryable, methodName?: string) => ISiteDesigns;
+export declare const SiteDesigns: (baseUrl: string | ISPQueryable, methodName?: string) => ISiteDesigns;
 /**
  * Result from creating or retrieving a site design
  *

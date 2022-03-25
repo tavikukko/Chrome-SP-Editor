@@ -8,7 +8,7 @@ export declare class _Attachment extends _GraphQueryableInstance<IAttachmentType
 }
 export interface IAttachment extends _Attachment {
 }
-export declare const Attachment: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IAttachment & import("@pnp/odata").IInvokable<any>;
+export declare const Attachment: import("../graphqueryable.js").IGraphInvokableFactory<IAttachment>;
 /**
  * Attachments
  */
@@ -23,5 +23,5 @@ export declare class _Attachments extends _GraphQueryableCollection<IAttachmentT
 }
 export interface IAttachments extends _Attachments, IGetById<IAttachment> {
 }
-export declare const Attachments: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IAttachments & import("@pnp/odata").IInvokable<any>;
+export declare const Attachments: import("../graphqueryable.js").IGraphInvokableFactory<IAttachments>;
 //# sourceMappingURL=types.d.ts.map

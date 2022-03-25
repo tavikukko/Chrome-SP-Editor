@@ -1,7 +1,7 @@
 import { IGroups } from "./types.js";
 export { Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups, } from "./types.js";
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly groups: IGroups;
     }
 }

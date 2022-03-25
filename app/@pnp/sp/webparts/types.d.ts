@@ -1,6 +1,6 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryableInstance, _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
-export declare class _LimitedWebPartManager extends _SharePointQueryable implements ILimitedWebPartManager {
-    get scope(): ISharePointQueryable;
+import { _SPQueryable, ISPQueryable, _SPCollection, _SPInstance, ISPInstance } from "../spqueryable.js";
+export declare class _LimitedWebPartManager extends _SPQueryable implements ILimitedWebPartManager {
+    get scope(): ISPQueryable;
     get webparts(): IWebPartDefinitions;
     export(id: string): Promise<string>;
     import(xml: string): Promise<any>;
@@ -9,7 +9,7 @@ export interface ILimitedWebPartManager {
     /**
      * Gets the scope of this web part manager (User = 0 or Shared = 1)
      */
-    readonly scope: ISharePointQueryable;
+    readonly scope: ISPQueryable;
     /**
      * Gets the set of web part definitions contained by this web part manager
      */
@@ -27,8 +27,8 @@ export interface ILimitedWebPartManager {
      */
     import(xml: string): Promise<any>;
 }
-export declare const LimitedWebPartManager: (baseUrl: string | ISharePointQueryable, path?: string) => ILimitedWebPartManager;
-export declare class _WebPartDefinitions extends _SharePointQueryableCollection {
+export declare const LimitedWebPartManager: (baseUrl: string | ISPQueryable, path?: string) => ILimitedWebPartManager;
+export declare class _WebPartDefinitions extends _SPCollection {
     /**
      * Gets a web part definition from the collection by id
      *
@@ -44,12 +44,12 @@ export declare class _WebPartDefinitions extends _SharePointQueryableCollection 
 }
 export interface IWebPartDefinitions extends _WebPartDefinitions {
 }
-export declare const WebPartDefinitions: import("../sharepointqueryable.js").ISPInvokableFactory<IWebPartDefinitions>;
-export declare class _WebPartDefinition extends _SharePointQueryableInstance {
+export declare const WebPartDefinitions: import("../spqueryable.js").ISPInvokableFactory<IWebPartDefinitions>;
+export declare class _WebPartDefinition extends _SPInstance {
     /**
     * Gets the webpart information associated with this definition
     */
-    get webpart(): ISharePointQueryableInstance;
+    get webpart(): ISPInstance;
     /**
      * Saves changes to the Web Part made using other properties and methods on the SPWebPartDefinition object
      */
@@ -76,7 +76,7 @@ export declare class _WebPartDefinition extends _SharePointQueryableInstance {
 }
 export interface IWebPartDefinition extends _WebPartDefinition {
 }
-export declare const WebPartDefinition: import("../sharepointqueryable.js").ISPInvokableFactory<IWebPartDefinition>;
+export declare const WebPartDefinition: import("../spqueryable.js").ISPInvokableFactory<IWebPartDefinition>;
 export declare enum WebPartsPersonalizationScope {
     User = 0,
     Shared = 1

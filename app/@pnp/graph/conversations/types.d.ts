@@ -12,7 +12,7 @@ export declare class _Conversation extends _GraphQueryableInstance<IConversation
 }
 export interface IConversation extends _Conversation, IUpdateable<IConversationType>, IDeleteable {
 }
-export declare const Conversation: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IConversation & import("@pnp/odata").IInvokable<any>;
+export declare const Conversation: import("../graphqueryable.js").IGraphInvokableFactory<IConversation>;
 /**
  * Conversations
  */
@@ -20,7 +20,7 @@ export declare class _Conversations extends _GraphQueryableCollection<IConversat
 }
 export interface IConversations extends _Conversations, IGetById<IConversation>, IAddable<IConversationType> {
 }
-export declare const Conversations: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IConversations & import("@pnp/odata").IInvokable<any>;
+export declare const Conversations: import("../graphqueryable.js").IGraphInvokableFactory<IConversations>;
 /**
  * Thread
  */
@@ -38,7 +38,7 @@ export declare class _Thread extends _GraphQueryableInstance {
 }
 export interface IThread extends _Thread, IDeleteable {
 }
-export declare const Thread: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IThread & import("@pnp/odata").IInvokable<any>;
+export declare const Thread: import("../graphqueryable.js").IGraphInvokableFactory<IThread>;
 /**
  * Threads
  */
@@ -48,7 +48,7 @@ export interface IThreads extends _Threads, IGetById<IThread>, IAddable<IConvers
     id: string;
 }> {
 }
-export declare const Threads: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IThreads & import("@pnp/odata").IInvokable<any>;
+export declare const Threads: import("../graphqueryable.js").IGraphInvokableFactory<IThreads>;
 /**
  * Post
  */
@@ -66,7 +66,7 @@ export declare class _Post extends _GraphQueryableInstance<IPostType> {
 }
 export interface IPost extends _Post, IDeleteable {
 }
-export declare const Post: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPost & import("@pnp/odata").IInvokable<any>;
+export declare const Post: import("../graphqueryable.js").IGraphInvokableFactory<IPost>;
 /**
  * Posts
  */
@@ -74,7 +74,7 @@ export declare class _Posts extends _GraphQueryableCollection<IPostType[]> {
 }
 export interface IPosts extends _Posts, IGetById<IPost>, IAddable<IPostType> {
 }
-export declare const Posts: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IPosts & import("@pnp/odata").IInvokable<any>;
+export declare const Posts: import("../graphqueryable.js").IGraphInvokableFactory<IPosts>;
 /**
  * Senders
  */
@@ -93,7 +93,7 @@ export declare class _Senders extends _GraphQueryableCollection<IUserType[]> {
 }
 export interface ISenders extends _Senders {
 }
-export declare const Senders: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ISenders & import("@pnp/odata").IInvokable<any>;
+export declare const Senders: import("../graphqueryable.js").IGraphInvokableFactory<ISenders>;
 /**
  * Information used to forward a post
  */

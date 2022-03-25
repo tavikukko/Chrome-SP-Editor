@@ -1,3 +1,4 @@
+export declare const emptyGuid = "00000000-0000-0000-0000-000000000000";
 /**
  * Represents the unique sequential location of a change within the change log.
  */

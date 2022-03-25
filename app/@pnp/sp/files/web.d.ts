@@ -1,18 +1,11 @@
 import { IFile } from "./types.js";
 declare module "../webs/types" {
     interface _Web {
-        getFileByServerRelativeUrl(fileRelativeUrl: string): IFile;
         getFileByServerRelativePath(fileRelativeUrl: string): IFile;
         getFileById(uniqueId: string): IFile;
         getFileByUrl(fileUrl: string): IFile;
     }
     interface IWeb {
-        /**
-         * Gets a file by server relative url
-         *
-         * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
-         */
-        getFileByServerRelativeUrl(fileRelativeUrl: string): IFile;
         /**
          * Gets a file by server relative url if your file name contains # and % characters
          *

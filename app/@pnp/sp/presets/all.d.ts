@@ -1,4 +1,3 @@
-import { SPRest } from "../rest.js";
 import "../appcatalog/index.js";
 import "../attachments/index.js";
 import "../clientside-pages/index.js";
@@ -48,7 +47,7 @@ export * from "../hubsites/index.js";
 export * from "../items/index.js";
 export * from "../lists/index.js";
 export * from "../navigation/index.js";
-export { spODataEntity, spODataEntityArray } from "../odata.js";
+export * from "../utils/odata-url-from.js";
 export * from "../profiles/index.js";
 export * from "../regional-settings/index.js";
 export * from "../related-items/index.js";
@@ -69,5 +68,4 @@ export * from "../views/index.js";
 export * from "../webparts/index.js";
 export * from "../webs/index.js";
 export * from "../index.js";
-export declare const sp: SPRest;
 //# sourceMappingURL=all.d.ts.map

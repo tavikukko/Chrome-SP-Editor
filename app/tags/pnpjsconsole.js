@@ -65,50 +65,28 @@ riot.tag("pnpjsconsole", `
           playground = monaco.editor.create(document.getElementById('pnpjsconsole'), {
             model: monaco.editor.createModel(
               `/*
-  Hit 'ctrl + d' or 'cmd + d' to run the code, view console for results
-*/
-import { sp } from "@pnp/sp/presets/all";
-
-(async () => {
-
-  const web = await sp.web.select("Title")()
-  console.log("Web Title: ", web.Title);
-
-})().catch(console.log)
-
-/*
-  Before using @pnp/graph, you need to grant needed API permissions
-  to 'SharePoint Online Client Extensibility Web Application Principal' AAD Application
-  from https://aad.portal.azure.com
-*/
-import { graph } from "@pnp/graph"
-import "@pnp/graph/users"
-
-// wrapping the code inside self-excecuting async function
-// enables you to use await expression
-(async () => {
-
-  // To be able to load context, the inspected page needs to be a modern page
-  const { context } = await (window as any).moduleLoaderPromise
-  graph.setup({
-      spfxContext: context
-  })
-  const me = await graph.me();
-  console.log(me)
-
-})().catch(console.log)
-
-/*
-  SP Editor also supports sp-taxonomy & sp-clientsvc packages
-*/
-import { taxonomy } from "@pnp/sp-taxonomy"
-
-(async () => {
-
-  const ts = await taxonomy.termStores.get()
-  console.log(ts);
-
-})().catch(console.log)
+              Hit 'ctrl + d' or 'cmd + d' to run the code, view console for results
+            */
+            import { SPBrowser, spfi, spPost } from "@pnp/sp/presets/all";
+            import { graphfi, SPFx } from "@pnp/graph/presets/all";
+            
+            (async () => {
+            
+              /* context */
+              const ctx = await (window as any).moduleLoaderPromise || (window as any)._spPageContextInfo
+              const sp = spfi().using(SPBrowser({ baseUrl: ctx.webAbsoluteUrl || ctx.context._pageContext._web.absoluteUrl }))
+            
+              /* sp code */
+              const web = await sp.web.select("Title")()
+              console.log("Web Title: ", web.Title);
+            /*
+              const graphs = graphfi().using(SPFx(ctx.context));
+            
+                const userInfo = await graphs.me();
+                console.log(JSON.stringify(userInfo, null, 4));
+            */
+            })().catch(console.log)
+            
 
 `,
               "typescript",
@@ -202,17 +180,17 @@ import { taxonomy } from "@pnp/sp-taxonomy"
 
                     var lineRe = line.match("var (.*) = require");
                     var mod = -1;
-                    mod = line.indexOf("@pnp/common") > -1 ? 0 : mod;
-                    mod = line.indexOf("@pnp/config-store") > -1 ? 1 : mod;
+                    mod = line.indexOf("@pnp/core") > -1 ? 0 : mod;
+                    mod = line.indexOf("@pnp/logging") > -1 ? 1 : mod;
                     mod = line.indexOf("@pnp/graph") > -1 ? 2 : mod;
-                    mod = line.indexOf("@pnp/logging") > -1 ? 3 : mod;
-                    mod = line.indexOf("@pnp/odata") > -1 ? 4 : mod;
-                    mod = line.indexOf("@pnp/pnpjs") > -1 ? 5 : mod;
+                    mod = line.indexOf("@pnp/queryable") > -1 ? 3 : mod;
+                    mod = line.indexOf("@pnp/msaljsclient") > -1 ? 4 : mod;
+                    /*mod = line.indexOf("@pnp/sp") > -1 ? 5 : mod;
                     mod = line.indexOf("@pnp/sp-addinhelpers") > -1 ? 6 : mod;
                     mod = line.indexOf("@pnp/sp-clientsvc") > -1 ? 7 : mod;
                     mod = line.indexOf("@pnp/sp-taxonomy") > -1 ? 9 : mod;
-                    mod = line.indexOf("@pnp/adaljsclient") > -1 ? 10 : mod;
-                    mod = mod === -1 && line.indexOf("@pnp/sp") > -1 ? 8 : mod;
+                    mod = line.indexOf("@pnp/adaljsclient") > -1 ? 10 : mod;*/
+                    mod = mod === -1 && line.indexOf("@pnp/sp") > -1 ? 5 : mod;
 
                     prepnp.push('var ' + lineRe[1] + ' = modules[' + mod + '];');
                   }
@@ -254,7 +232,7 @@ import { taxonomy } from "@pnp/sp-taxonomy"
 
                 var execme = [
                   'var execme = function execme() {',
-                  '\tPromise.all([SystemJS.import(mod_common),SystemJS.import(mod_config),SystemJS.import(mod_graph),SystemJS.import(mod_logging),SystemJS.import(mod_odata),SystemJS.import(mod_pnpjs),SystemJS.import(mod_addin),SystemJS.import(mod_client),SystemJS.import(mod_sp),SystemJS.import(mod_taxonomy),SystemJS.import(mod_adaljs)]).then(function (modules) {',
+                  '\tPromise.all([SystemJS.import(mod_core),SystemJS.import(mod_logging),SystemJS.import(mod_graph),SystemJS.import(mod_queryable),SystemJS.import(mod_msaljsclient),SystemJS.import(mod_sp)]).then(function (modules) {',
                   '\t\t' + prepnp.join('\n'),
                   '\t\t// Your code starts here',
                   '\t\t// #####################',
@@ -264,17 +242,17 @@ import { taxonomy } from "@pnp/sp-taxonomy"
                   '\t});',
                   '};'].join('\n').replace(/GraphManToken/g, graphmantoken);
 
-                var script = mod_common + '\n' +
-                  mod_config + '\n' +
+                var script = mod_core + '\n' +
+                 // mod_config + '\n' +
                   mod_graph + '\n' +
                   mod_logging + '\n' +
-                  mod_odata + '\n' +
-                  mod_pnpjs + '\n' +
-                  mod_addin + '\n' +
-                  mod_client + '\n' +
+                  mod_queryable + '\n' +
+                //  mod_pnpjs + '\n' +
+                //  mod_addin + '\n' +
+                //  mod_client + '\n' +
                   mod_sp + '\n' +
-                  mod_taxonomy + '\n' +
-                  mod_adaljs + '\n' +
+                //  mod_taxonomy + '\n' +
+                  mod_msaljsclient + '\n' +
                   sj + '\n\n' +
                   exescript + '\n\n' +
                   execme + '\n\n';

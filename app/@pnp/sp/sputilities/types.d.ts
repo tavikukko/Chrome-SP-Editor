@@ -1,11 +1,7 @@
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
-import { ITypedHash } from "@pnp/common";
-import { SPBatch } from "../batch.js";
-import { ICachingOptions, IQueryable } from "@pnp/odata";
+import { _SPQueryable, ISPQueryable, SPInit } from "../spqueryable.js";
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
-import { IFile } from "../files/types.js";
-export declare class _Utilities extends _SharePointQueryable implements IUtilities {
-    constructor(baseUrl: string | ISharePointQueryable, methodName: string);
+export declare class _Utilities extends _SPQueryable implements IUtilities {
+    constructor(base: string | ISPQueryable, methodName?: string);
     excute<T>(props: any): Promise<T>;
     sendEmail(props: IEmailProperties): Promise<void>;
     getCurrentUserEmailAddresses(): Promise<string>;
@@ -13,22 +9,11 @@ export declare class _Utilities extends _SharePointQueryable implements IUtiliti
     searchPrincipals(input: string, scopes: PrincipalType, sources: PrincipalSource, groupName: string, maxCount: number): Promise<IPrincipalInfo[]>;
     createEmailBodyForInvitation(pageAddress: string): Promise<string>;
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<IPrincipalInfo[]>;
-    createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult>;
 }
 /**
  * Describes the SharePoint utility methods
  */
 export interface IUtilities {
-    /**
-     * Gives you the ability to cache returned data in an easy way.
-     * @param options instance of ICachingOptions
-     */
-    usingCaching(options?: ICachingOptions): this;
-    /**
-     * Gives you the ability to batch multiple requests into a single request to SharePoint.
-     * @param batch instance of SPBatch
-     */
-    inBatch(batch: SPBatch): this;
     /**
      * This methods will send an e-mail based on the incoming properties of the IEmailProperties parameter.
      * @param props IEmailProperties object
@@ -68,23 +53,8 @@ export interface IUtilities {
      * @param maxCount Specifies the maximum number of principals to be returned.
      */
     expandGroupsToPrincipals(inputs: string[], maxCount?: number): Promise<IPrincipalInfo[]>;
-    /**
-     * Creates a new Wiki page.
-     * @param info Instance of IWikiPageCreationInfo.
-     */
-    createWikiPage(info: IWikiPageCreationInfo): Promise<ICreateWikiPageResult>;
 }
-export declare const Utilities: import("../sharepointqueryable.js").ISPInvokableFactory<IUtilities & Pick<IQueryable<any>, "configure" | "setRuntime" | "getRuntime">>;
-export interface ICreateWikiPageResult {
-    /**
-     * The returned Wiki page represented by raw data.
-     */
-    data: any;
-    /**
-     * The returned Wiki page represented as a file which can be further updated.
-     */
-    file: IFile;
-}
+export declare const Utilities: (base: SPInit, path?: string) => IUtilities;
 export interface IEmailProperties {
     /**
      * The list of receivers represented by a string array.
@@ -111,7 +81,7 @@ export interface IEmailProperties {
     /**
      * The additional headers appened to the request in key/value pairs.
      */
-    AdditionalHeaders?: ITypedHash<string>;
+    AdditionalHeaders?: Record<string, string>;
     /**
      * The from address of the email.
      * This is optional.

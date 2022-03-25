@@ -1,11 +1,11 @@
 import { ILists, IList } from "./types.js";
-import { ISharePointQueryableCollection } from "../sharepointqueryable.js";
+import { ISPCollection } from "../spqueryable.js";
 declare module "../webs/types" {
     interface _Web {
         readonly lists: ILists;
         readonly siteUserInfoList: IList;
         readonly defaultDocumentLibrary: IList;
-        readonly customListTemplates: ISharePointQueryableCollection;
+        readonly customListTemplates: ISPCollection;
         getList(listRelativeUrl: string): IList;
         getCatalog(type: number): Promise<IList>;
     }
@@ -25,7 +25,7 @@ declare module "../webs/types" {
         /**
          * Gets the collection of all list definitions and list templates that are available
          */
-        readonly customListTemplates: ISharePointQueryableCollection;
+        readonly customListTemplates: ISPCollection;
         /**
          * Gets a list by server relative url (list's root folder)
          *

@@ -1,4 +1,4 @@
 import "./site.js";
 import "./web.js";
-export { Feature, IFeature, Features, IFeatures, IFeatureAddResult, IFeatureInfo, } from "./types.js";
+export { IFeature, Feature, IFeatures, Features, IFeatureAddResult, IFeatureInfo, } from "./types.js";
 //# sourceMappingURL=index.d.ts.map

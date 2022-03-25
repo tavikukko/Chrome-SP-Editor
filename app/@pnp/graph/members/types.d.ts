@@ -12,7 +12,7 @@ export declare class _Member extends _GraphQueryableInstance<IMemberType> {
 }
 export interface IMember extends _Member {
 }
-export declare const Member: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IMember & import("@pnp/odata").IInvokable<any>;
+export declare const Member: import("../graphqueryable.js").IGraphInvokableFactory<IMember>;
 /**
  * Members
  */
@@ -28,5 +28,5 @@ export declare class _Members extends _GraphQueryableCollection<IMemberType[]> {
 }
 export interface IMembers extends _Members, IGetById<IMember> {
 }
-export declare const Members: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IMembers & import("@pnp/odata").IInvokable<any>;
+export declare const Members: import("../graphqueryable.js").IGraphInvokableFactory<IMembers>;
 //# sourceMappingURL=types.d.ts.map

@@ -1,12 +1,12 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable.js";
-export declare class _Features extends _SharePointQueryableCollection<IFeatureInfo[]> {
+import { _SPInstance, _SPCollection } from "../spqueryable.js";
+export declare class _Features extends _SPCollection<IFeatureInfo[]> {
     /**
      * Adds (activates) the specified feature
      *
      * @param id The Id of the feature (GUID)
      * @param force If true the feature activation will be forced
      */
-    add(id: string, force?: boolean): Promise<IFeatureAddResult>;
+    add(featureId: string, force?: boolean): Promise<IFeatureAddResult>;
     /**
      * Gets a feature from the collection with the specified guid
      *
@@ -19,22 +19,16 @@ export declare class _Features extends _SharePointQueryableCollection<IFeatureIn
      * @param id The Id of the feature (GUID)
      * @param force If true the feature deactivation will be forced
      */
-    remove(id: string, force?: boolean): Promise<any>;
+    remove(featureId: string, force?: boolean): Promise<any>;
 }
 export interface IFeatures extends _Features {
 }
-export declare const Features: import("../sharepointqueryable.js").ISPInvokableFactory<IFeatures>;
-export declare class _Feature extends _SharePointQueryableInstance<IFeatureInfo> {
-    /**
-     * Removes (deactivates) the feature
-     *
-     * @param force If true the feature deactivation will be forced
-     */
-    deactivate(force?: boolean): Promise<any>;
+export declare const Features: import("../spqueryable.js").ISPInvokableFactory<IFeatures>;
+export declare class _Feature extends _SPInstance<IFeatureInfo> {
 }
 export interface IFeature extends _Feature {
 }
-export declare const Feature: import("../sharepointqueryable.js").ISPInvokableFactory<IFeature>;
+export declare const Feature: import("../spqueryable.js").ISPInvokableFactory<IFeature>;
 /**
  * Result from adding (activating) a feature to the collection
  */

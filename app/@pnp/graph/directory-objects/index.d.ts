@@ -1,7 +1,7 @@
 import { IDirectoryObjects } from "./types.js";
 export { IDirectoryObject, DirectoryObjectTypes, DirectoryObject, DirectoryObjects, IDirectoryObjects, } from "./types.js";
-declare module "../rest" {
-    interface GraphRest {
+declare module "../fi" {
+    interface GraphFI {
         readonly directoryObjects: IDirectoryObjects;
     }
 }

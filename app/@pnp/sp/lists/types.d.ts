@@ -1,4 +1,4 @@
-import { ISharePointQueryableCollection, _SharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable.js";
+import { _SPCollection, _SPInstance, ISPQueryable, ISPCollection, IDeleteableWithETag } from "../spqueryable.js";
 import { IChangeQuery } from "../types.js";
 import { IBasePermissions } from "../security/types.js";
 import { IFieldInfo } from "../fields/types.js";
@@ -6,8 +6,8 @@ import { IFormInfo } from "../forms/types.js";
 import { IFolderInfo } from "../folders/types.js";
 import { IViewInfo } from "../views/types.js";
 import { IUserCustomActionInfo } from "../user-custom-actions/types.js";
-import { IResourcePath } from "../utils/toResourcePath.js";
-export declare class _Lists extends _SharePointQueryableCollection<IListInfo[]> {
+import { IResourcePath } from "../utils/to-resource-path.js";
+export declare class _Lists extends _SPCollection<IListInfo[]> {
     /**
      * Gets a list from the collection by guid id
      *
@@ -51,29 +51,29 @@ export declare class _Lists extends _SharePointQueryableCollection<IListInfo[]> 
 }
 export interface ILists extends _Lists {
 }
-export declare const Lists: import("../sharepointqueryable.js").ISPInvokableFactory<ILists>;
-export declare class _List extends _SharePointQueryableInstance<IListInfo> {
-    delete: (this: ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+export declare const Lists: import("../spqueryable.js").ISPInvokableFactory<ILists>;
+export declare class _List extends _SPInstance<IListInfo> {
+    delete: (this: ISPQueryable<any>, eTag?: string) => Promise<void>;
     /**
      * Gets the effective base permissions of this list
      *
      */
-    get effectiveBasePermissions(): ISharePointQueryable;
+    get effectiveBasePermissions(): ISPQueryable;
     /**
      * Gets the event receivers attached to this list
      *
      */
-    get eventReceivers(): ISharePointQueryableCollection;
+    get eventReceivers(): ISPCollection;
     /**
      * Gets the related fields of this list
      *
      */
-    get relatedFields(): ISharePointQueryable;
+    get relatedFields(): ISPQueryable;
     /**
      * Gets the IRM settings for this list
      *
      */
-    get informationRightsManagementSettings(): ISharePointQueryable;
+    get informationRightsManagementSettings(): ISPQueryable;
     /**
      * Updates this list intance with the supplied properties
      *
@@ -113,7 +113,7 @@ export declare class _List extends _SharePointQueryableInstance<IListInfo> {
      * @param overrideParams The parameters that are used to override and extend the regular SPRenderListDataParameters.
      * @param query Allows setting of query parameters
      */
-    renderListDataAsStream(parameters: IRenderListDataParameters, overrideParams?: any, query?: Map<string, string>): Promise<IRenderListDataAsStreamResult>;
+    renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters?: any, query?: Map<string, string>): Promise<IRenderListDataAsStreamResult>;
     /**
      * Gets the field values and field schema attributes for a list item.
      * @param itemId Item id of the item to render form data for
@@ -125,10 +125,6 @@ export declare class _List extends _SharePointQueryableInstance<IListInfo> {
      * Reserves a list item ID for idempotent list item creation.
      */
     reserveListItemId(): Promise<number>;
-    /**
-     * Returns the ListItemEntityTypeFullName for this list, used when adding/updating list items. Does not support batching.
-     */
-    getListItemEntityTypeFullName(): Promise<string>;
     /**
      * Creates an item using path (in a folder), validates and sets its field values.
      *
@@ -155,20 +151,20 @@ export declare class _List extends _SharePointQueryableInstance<IListInfo> {
 }
 export interface IList extends _List, IDeleteableWithETag {
 }
-export declare const List: import("../sharepointqueryable.js").ISPInvokableFactory<IList>;
+export declare const List: import("../spqueryable.js").ISPInvokableFactory<IList>;
 /**
  * Represents the output of the add method
  */
 export interface IListAddResult {
     list: IList;
-    data: any;
+    data: IListInfo;
 }
 /**
  * Represents the output of the update method
  */
 export interface IListUpdateResult {
     list: IList;
-    data: any;
+    data: IListInfo;
 }
 /**
  * Represents the output of the ensure method
@@ -176,7 +172,7 @@ export interface IListUpdateResult {
 export interface IListEnsureResult {
     list: IList;
     created: boolean;
-    data: any;
+    data: IListInfo;
 }
 /**
  * Specifies a Collaborative Application Markup Language (CAML) query on a list or joined lists.

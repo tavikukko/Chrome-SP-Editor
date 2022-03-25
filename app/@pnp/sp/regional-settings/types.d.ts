@@ -1,12 +1,5 @@
-import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePointQueryableCollection } from "../sharepointqueryable.js";
-export declare class _RegionalSettings extends _SharePointQueryableInstance<IRegionalSettingsInfo> {
-    /**
-     * Gets the collection of languages used in a server farm.
-     * ** Please use getInstalledLanguages instead of this method **
-     */
-    get installedLanguages(): ISharePointQueryableCollection<{
-        Items: IInstalledLanguageInfo[];
-    }>;
+import { _SPInstance, _SPCollection } from "../spqueryable.js";
+export declare class _RegionalSettings extends _SPInstance<IRegionalSettingsInfo> {
     /**
      * Gets time zone
      */
@@ -22,8 +15,8 @@ export declare class _RegionalSettings extends _SharePointQueryableInstance<IReg
 }
 export interface IRegionalSettings extends _RegionalSettings {
 }
-export declare const RegionalSettings: import("../sharepointqueryable.js").ISPInvokableFactory<IRegionalSettings>;
-export declare class _TimeZone extends _SharePointQueryableInstance<ITimeZoneInfo> {
+export declare const RegionalSettings: import("../spqueryable.js").ISPInvokableFactory<IRegionalSettings>;
+export declare class _TimeZone extends _SPInstance<ITimeZoneInfo> {
     /**
      * Gets an Local Time by UTC Time
      *
@@ -39,18 +32,18 @@ export declare class _TimeZone extends _SharePointQueryableInstance<ITimeZoneInf
 }
 export interface ITimeZone extends _TimeZone {
 }
-export declare const TimeZone: import("../sharepointqueryable.js").ISPInvokableFactory<ITimeZone>;
-export declare class _TimeZones extends _SharePointQueryableCollection<ITimeZoneInfo[]> {
+export declare const TimeZone: import("../spqueryable.js").ISPInvokableFactory<ITimeZone>;
+export declare class _TimeZones extends _SPCollection<ITimeZoneInfo[]> {
     /**
      * Gets an TimeZone by id (see: https://msdn.microsoft.com/en-us/library/office/jj247008.aspx)
      *
      * @param id The integer id of the timezone to retrieve
      */
-    getById(id: number): Promise<ITimeZone & ITimeZoneInfo>;
+    getById(id: number): Promise<ITimeZoneInfo>;
 }
 export interface ITimeZones extends _TimeZones {
 }
-export declare const TimeZones: import("../sharepointqueryable.js").ISPInvokableFactory<ITimeZones>;
+export declare const TimeZones: import("../spqueryable.js").ISPInvokableFactory<ITimeZones>;
 /**
  * This is the data for Regional Settings
  */

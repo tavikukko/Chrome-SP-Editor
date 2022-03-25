@@ -1,9 +1,9 @@
-export { graph, GraphRest } from "./rest.js";
-export { GraphBatch, } from "./batch.js";
+export { graphfi as graphfi, GraphFI as GraphFI } from "./fi.js";
 export { IGraphQueryableCollection, IGraphQueryableInstance, IGraphQueryableSearchableCollection, GraphQueryable, IGraphQueryable, GraphQueryableCollection, GraphQueryableInstance, IGraphQueryableConstructor, GraphQueryableSearchableCollection, } from "./graphqueryable.js";
-export { IGraphConfiguration, IGraphConfigurationPart, } from "./graphlibconfig";
-export * from "./graphhttpclient.js";
-export * from "./types.js";
 export * from "./operations.js";
-export { toAbsoluteUrl, } from "./utils/toabsoluteurl.js";
+export * from "./behaviors/defaults.js";
+export * from "./behaviors/endpoint.js";
+export * from "./behaviors/graphbrowser.js";
+export * from "./behaviors/telemetry.js";
+export * from "./behaviors/spfx.js";
 //# sourceMappingURL=index.d.ts.map

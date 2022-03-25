@@ -1,10 +1,7 @@
-import { ISharePointQueryable, _SharePointQueryableInstance, _SharePointQueryableCollection } from "../sharepointqueryable";
+import { _SPCollection, _SPInstance, ISPQueryable } from "../spqueryable.js";
 import { IFile } from "../files/types.js";
-import "../items/index.js";
-export declare type AppCatalogScope = "tenant" | "sitecollection";
-export declare class _AppCatalog extends _SharePointQueryableCollection {
-    private readonly catalogPath;
-    constructor(baseUrl: string | ISharePointQueryable, path?: string);
+export declare class _AppCatalog extends _SPCollection {
+    constructor(base: string | ISPQueryable, path?: string);
     /**
      * Get details of specific app from the app catalog
      * @param id - Specify the guid of the app
@@ -29,8 +26,8 @@ export declare class _AppCatalog extends _SharePointQueryableCollection {
 }
 export interface IAppCatalog extends _AppCatalog {
 }
-export declare const AppCatalog: import("../sharepointqueryable").ISPInvokableFactory<IAppCatalog>;
-export declare class _App extends _SharePointQueryableInstance {
+export declare const AppCatalog: import("../spqueryable.js").ISPInvokableFactory<IAppCatalog>;
+export declare class _App extends _SPInstance {
     /**
      * This method deploys an app on the app catalog. It must be called in the context
      * of the tenant app catalog web or it will fail.
@@ -65,7 +62,7 @@ export declare class _App extends _SharePointQueryableInstance {
 }
 export interface IApp extends _App {
 }
-export declare const App: import("../sharepointqueryable").ISPInvokableFactory<IApp>;
+export declare const App: import("../spqueryable.js").ISPInvokableFactory<IApp>;
 /**
  * Result object after adding an app
  */

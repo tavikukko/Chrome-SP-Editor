@@ -1,8 +1,6 @@
-import { IQueryable } from "@pnp/odata";
-import { ITypedHash } from "@pnp/common";
 import { IFile } from "../files/types.js";
 import { IItem } from "../items/types.js";
-import { _SharePointQueryable, ISharePointQueryable } from "../sharepointqueryable.js";
+import { _SPQueryable, SPInit } from "../spqueryable.js";
 import { IWeb } from "../webs/types.js";
 import "../files/web.js";
 import "../comments/item.js";
@@ -34,7 +32,7 @@ export declare type CanvasColumnFactor = 0 | 2 | 4 | 6 | 8 | 12;
 /**
  * Represents the data and methods associated with client side "modern" pages
  */
-export declare class _ClientsidePage extends _SharePointQueryable {
+export declare class _ClientsidePage extends _SPQueryable {
     protected json?: Partial<IPageData>;
     sections: CanvasSection[];
     commentsDisabled: boolean;
@@ -45,7 +43,7 @@ export declare class _ClientsidePage extends _SharePointQueryable {
     /**
      * PLEASE DON'T USE THIS CONSTRUCTOR DIRECTLY, thank you 🐇
      */
-    constructor(baseUrl: string | ISharePointQueryable, path?: string, json?: Partial<IPageData>, noInit?: boolean, sections?: CanvasSection[], commentsDisabled?: boolean);
+    constructor(base: SPInit, path?: string, json?: Partial<IPageData>, noInit?: boolean, sections?: CanvasSection[], commentsDisabled?: boolean);
     private static getDefaultLayoutPart;
     get pageLayout(): ClientsidePageLayoutType;
     set pageLayout(value: ClientsidePageLayoutType);
@@ -166,8 +164,8 @@ export declare class _ClientsidePage extends _SharePointQueryable {
      */
     getItem<T>(...selects: string[]): Promise<IItem & T>;
     /**
-     * Recycle this page
-     */
+         * Recycle this page
+         */
     recycle(): Promise<void>;
     /**
      * Delete this page
@@ -188,13 +186,6 @@ export declare class _ClientsidePage extends _SharePointQueryable {
      * @returns void
      */
     share(emails: string[], message: string): Promise<void>;
-    /**
-     * Extends this queryable from the provided parent
-     *
-     * @param parent Parent queryable from which we will derive a base url
-     * @param path Additional path
-     */
-    protected assign(parent: IQueryable<any>, path?: string): void;
     protected getCanvasContent1(): string;
     protected getLayoutWebpartsContent(): string;
     protected setControls(controls: IClientsideControlBaseData[]): void;
@@ -341,8 +332,8 @@ export declare class ClientsideWebpart extends ColumnControl<IClientsideWebPartD
     get dataVersion(): string;
     set dataVersion(value: string);
     setProperties<T = any>(properties: T): this;
-    setServerProcessedContent<T = any>(properties: T): this;
     getProperties<T = any>(): T;
+    setServerProcessedContent<T = any>(properties: T): this;
     getServerProcessedContent<T = any>(): T;
     protected onColumnChange(col: CanvasColumn): void;
     protected import(component: IClientsidePageComponent): void;
@@ -461,10 +452,10 @@ export interface IClientsideWebPartData<PropertiesType = any> extends ICanvasCon
         title: string;
         description: string;
         serverProcessedContent?: {
-            htmlStrings?: ITypedHash<string>;
-            searchablePlainTexts?: ITypedHash<string>;
-            imageSources?: ITypedHash<string>;
-            links?: ITypedHash<string>;
+            htmlStrings?: Record<string, string>;
+            searchablePlainTexts?: Record<string, string>;
+            imageSources?: Record<string, string>;
+            links?: Record<string, string>;
         };
         dataVersion: string;
         properties: PropertiesType;

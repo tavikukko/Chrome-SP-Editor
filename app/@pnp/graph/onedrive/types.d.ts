@@ -14,7 +14,7 @@ export declare class _Drive extends _GraphQueryableInstance<IDriveType> {
 }
 export interface IDrive extends _Drive {
 }
-export declare const Drive: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDrive & import("@pnp/odata").IInvokable<any>;
+export declare const Drive: import("../graphqueryable.js").IGraphInvokableFactory<IDrive>;
 /**
  * Describes a collection of Drive objects
  *
@@ -24,7 +24,7 @@ export declare class _Drives extends _GraphQueryableCollection<IDriveType[]> {
 }
 export interface IDrives extends _Drives, IGetById<IDrive> {
 }
-export declare const Drives: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDrives & import("@pnp/odata").IInvokable<any>;
+export declare const Drives: import("../graphqueryable.js").IGraphInvokableFactory<IDrives>;
 /**
  * Describes a Root instance
  *
@@ -36,7 +36,7 @@ export declare class _Root extends _GraphQueryableInstance<IDrive> {
 }
 export interface IRoot extends _Root {
 }
-export declare const Root: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IRoot & import("@pnp/odata").IInvokable<any>;
+export declare const Root: import("../graphqueryable.js").IGraphInvokableFactory<IRoot>;
 /**
  * Describes a Drive Item instance
  *
@@ -57,7 +57,7 @@ export declare class _DriveItem extends _GraphQueryableInstance<any> {
 }
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable {
 }
-export declare const DriveItem: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDriveItem & import("@pnp/odata").IInvokable<any>;
+export declare const DriveItem: import("../graphqueryable.js").IGraphInvokableFactory<IDriveItem>;
 /**
  * Describes a collection of Drive Item objects
  *
@@ -66,7 +66,6 @@ export declare class _DriveItems extends _GraphQueryableCollection {
     add(filename: string, content: string): Promise<IDriveItemAddResult>;
     /**
      * Adds a folder to this collection of drive items
-     *
      * @param name Name of the new folder
      * @returns result with folder data and chainable drive item object
      */
@@ -74,7 +73,7 @@ export declare class _DriveItems extends _GraphQueryableCollection {
 }
 export interface IDriveItems extends _DriveItems, IGetById<IDriveItem> {
 }
-export declare const DriveItems: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => IDriveItems & import("@pnp/odata").IInvokable<any>;
+export declare const DriveItems: import("../graphqueryable.js").IGraphInvokableFactory<IDriveItems>;
 /**
  * IDriveItemAddResult
  */

@@ -1,13 +1,12 @@
-import { _SharePointQueryableInstance, ISharePointQueryableInstance, _SharePointQueryableCollection, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable.js";
-import { ITypedHash } from "@pnp/common";
+import { _SPCollection, IDeleteableWithETag, _SPInstance, ISPQueryable, ISPInstance } from "../spqueryable.js";
 import { IListItemFormUpdateValue } from "../lists/types.js";
 import { IList } from "../lists/index.js";
-import { IResourcePath } from "../utils/toResourcePath.js";
+import { IResourcePath } from "../utils/to-resource-path.js";
 /**
  * Describes a collection of Item objects
  *
  */
-export declare class _Items extends _SharePointQueryableCollection {
+export declare class _Items extends _SPCollection {
     /**
     * Gets an Item by id
     *
@@ -33,73 +32,62 @@ export declare class _Items extends _SharePointQueryableCollection {
      */
     getPaged<T = any[]>(): Promise<PagedItemCollection<T>>;
     /**
-     * Gets all the items in a list, regardless of count. Does not support batching or caching
-     *
-     *  @param requestSize Number of items to return in each request (Default: 2000)
-     *  @param acceptHeader Allows for setting the value of the Accept header for SP 2013 support
-     */
-    getAll(requestSize?: number, acceptHeader?: string): Promise<any[]>;
-    /**
      * Adds a new item to the collection
      *
      * @param properties The new items's properties
      * @param listItemEntityTypeFullName The type name of the list's entities
      */
-    add(properties?: ITypedHash<any>, listItemEntityTypeFullName?: string): Promise<IItemAddResult>;
-    /**
-     * Ensures we have the proper list item entity type name, either from the value provided or from the list
-     *
-     * @param candidatelistItemEntityTypeFullName The potential type name
-     */
-    private ensureListItemEntityTypeName;
+    add(properties?: Record<string, any>): Promise<IItemAddResult>;
 }
 export interface IItems extends _Items {
 }
-export declare const Items: import("../sharepointqueryable.js").ISPInvokableFactory<IItems>;
+export declare const Items: import("@pnp/sp").ISPInvokableFactory<IItems>;
 /**
  * Descrines a single Item instance
  *
  */
-export declare class _Item extends _SharePointQueryableInstance {
-    delete: (this: ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+export declare class _Item extends _SPInstance {
+    delete: (this: ISPQueryable<any>, eTag?: string) => Promise<void>;
     /**
      * Gets the effective base permissions for the item
      *
      */
-    get effectiveBasePermissions(): ISharePointQueryable;
+    get effectiveBasePermissions(): ISPQueryable;
     /**
      * Gets the effective base permissions for the item in a UI context
      *
      */
-    get effectiveBasePermissionsForUI(): ISharePointQueryable;
+    get effectiveBasePermissionsForUI(): ISPQueryable;
     /**
      * Gets the field values for this list item in their HTML representation
      *
      */
-    get fieldValuesAsHTML(): ISharePointQueryableInstance;
+    get fieldValuesAsHTML(): ISPInstance;
     /**
      * Gets the field values for this list item in their text representation
      *
      */
-    get fieldValuesAsText(): ISharePointQueryableInstance;
+    get fieldValuesAsText(): ISPInstance;
     /**
      * Gets the field values for this list item for use in editing controls
      *
      */
-    get fieldValuesForEdit(): ISharePointQueryableInstance;
+    get fieldValuesForEdit(): ISPInstance;
     /**
      * Gets the collection of versions associated with this item
      */
     get versions(): IItemVersions;
+    /**
+     * this item's list
+     */
     get list(): IList;
     /**
      * Updates this list instance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
-     * @param listItemEntityTypeFullName The type name of the list's entities
      */
-    update(properties: ITypedHash<any>, eTag?: string, listItemEntityTypeFullName?: string): Promise<IItemUpdateResult>;
+    update(properties: Record<string, any>, eTag?: string): Promise<IItemUpdateResult>;
     /**
      * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
@@ -129,21 +117,15 @@ export declare class _Item extends _SharePointQueryableInstance {
      */
     getParentInfos(): Promise<IItemParentInfos>;
     setImageField(fieldName: string, imageName: string, imageContent: any): Promise<any>;
-    /**
-     * Ensures we have the proper list item entity type name, either from the value provided or from the list
-     *
-     * @param candidatelistItemEntityTypeFullName The potential type name
-     */
-    private ensureListItemEntityTypeName;
 }
 export interface IItem extends _Item, IDeleteableWithETag {
 }
-export declare const Item: import("../sharepointqueryable.js").ISPInvokableFactory<IItem>;
+export declare const Item: import("@pnp/sp").ISPInvokableFactory<IItem>;
 /**
  * Describes a collection of Version objects
  *
  */
-export declare class _ItemVersions extends _SharePointQueryableCollection {
+export declare class _ItemVersions extends _SPCollection {
     /**
      * Gets a version by id
      *
@@ -153,17 +135,17 @@ export declare class _ItemVersions extends _SharePointQueryableCollection {
 }
 export interface IItemVersions extends _ItemVersions {
 }
-export declare const ItemVersions: import("../sharepointqueryable.js").ISPInvokableFactory<IItemVersions>;
+export declare const ItemVersions: import("@pnp/sp").ISPInvokableFactory<IItemVersions>;
 /**
  * Describes a single Version instance
  *
  */
-export declare class _ItemVersion extends _SharePointQueryableInstance {
-    delete: (this: ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+export declare class _ItemVersion extends _SPInstance {
+    delete: (this: ISPQueryable<any>, eTag?: string) => Promise<void>;
 }
 export interface IItemVersion extends _ItemVersion, IDeleteableWithETag {
 }
-export declare const ItemVersion: import("../sharepointqueryable.js").ISPInvokableFactory<IItemVersion>;
+export declare const ItemVersion: import("@pnp/sp").ISPInvokableFactory<IItemVersion>;
 /**
  * Provides paging functionality for list items
  */
@@ -179,7 +161,7 @@ export declare class PagedItemCollection<T> {
     /**
      * Gets the next set of results, or resolves to null if no results are available
      */
-    getNext(): Promise<PagedItemCollection<T>>;
+    getNext(): Promise<PagedItemCollection<T> | null>;
 }
 export interface IItemAddResult {
     item: IItem;
@@ -190,7 +172,7 @@ export interface IItemUpdateResult {
     data: IItemUpdateResultData;
 }
 export interface IItemUpdateResultData {
-    "odata.etag": string;
+    etag: string;
 }
 export interface IItemImageUploadResult {
     Name: string;

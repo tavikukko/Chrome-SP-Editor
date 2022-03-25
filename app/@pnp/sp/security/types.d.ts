@@ -1,11 +1,11 @@
-import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable.js";
+import { _SPInstance, _SPCollection, ISPCollection, IDeleteable } from "../spqueryable.js";
 import { ISiteGroups } from "../site-groups/types.js";
-export declare type SecurableQueryable = _SharePointQueryableInstance & ISecurableMethods;
+export declare type SecurableQueryable = _SPInstance & ISecurableMethods;
 /**
  * Describes a set of role assignments for the current scope
  *
  */
-export declare class _RoleAssignments extends _SharePointQueryableCollection<IRoleAssignmentInfo[]> {
+export declare class _RoleAssignments extends _SPCollection<IRoleAssignmentInfo[]> {
     /**
      * Gets the role assignment associated with the specified principal id from the collection.
      *
@@ -31,13 +31,13 @@ export declare class _RoleAssignments extends _SharePointQueryableCollection<IRo
 }
 export interface IRoleAssignments extends _RoleAssignments {
 }
-export declare const RoleAssignments: import("../sharepointqueryable.js").ISPInvokableFactory<IRoleAssignments>;
+export declare const RoleAssignments: import("../spqueryable.js").ISPInvokableFactory<IRoleAssignments>;
 /**
  * Describes a role assignment
  *
  */
-export declare class _RoleAssignment extends _SharePointQueryableInstance<IRoleAssignmentInfo> {
-    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
+export declare class _RoleAssignment extends _SPInstance<IRoleAssignmentInfo> {
+    delete: (this: import("../spqueryable.js").ISPQueryable<any>) => Promise<void>;
     /**
      * Gets the groups that directly belong to the access control list (ACL) for this securable object
      *
@@ -47,16 +47,16 @@ export declare class _RoleAssignment extends _SharePointQueryableInstance<IRoleA
      * Gets the role definition bindings for this role assignment
      *
      */
-    get bindings(): ISharePointQueryableCollection;
+    get bindings(): ISPCollection;
 }
 export interface IRoleAssignment extends _RoleAssignment, IDeleteable {
 }
-export declare const RoleAssignment: import("../sharepointqueryable.js").ISPInvokableFactory<IRoleAssignment>;
+export declare const RoleAssignment: import("../spqueryable.js").ISPInvokableFactory<IRoleAssignment>;
 /**
  * Describes a collection of role definitions
  *
  */
-export declare class _RoleDefinitions extends _SharePointQueryableCollection<IRoleDefinitionInfo[]> {
+export declare class _RoleDefinitions extends _SPCollection<IRoleDefinitionInfo[]> {
     /**
      * Gets the role definition with the specified id from the collection
      *
@@ -91,13 +91,13 @@ export declare class _RoleDefinitions extends _SharePointQueryableCollection<IRo
 }
 export interface IRoleDefinitions extends _RoleDefinitions {
 }
-export declare const RoleDefinitions: import("../sharepointqueryable.js").ISPInvokableFactory<IRoleDefinitions>;
+export declare const RoleDefinitions: import("../spqueryable.js").ISPInvokableFactory<IRoleDefinitions>;
 /**
  * Describes a role definition
  *
  */
-export declare class _RoleDefinition extends _SharePointQueryableInstance<IRoleDefinitionInfo> {
-    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
+export declare class _RoleDefinition extends _SPInstance<IRoleDefinitionInfo> {
+    delete: (this: import("../spqueryable.js").ISPQueryable<any>) => Promise<void>;
     /**
      * Updates this role definition with the supplied properties
      *
@@ -107,10 +107,10 @@ export declare class _RoleDefinition extends _SharePointQueryableInstance<IRoleD
 }
 export interface IRoleDefinition extends _RoleDefinition, IDeleteable {
 }
-export declare const RoleDefinition: import("../sharepointqueryable.js").ISPInvokableFactory<IRoleDefinition>;
+export declare const RoleDefinition: import("../spqueryable.js").ISPInvokableFactory<IRoleDefinition>;
 export interface ISecurableMethods {
     readonly roleAssignments: IRoleAssignments;
-    readonly firstUniqueAncestorSecurableObject: _SharePointQueryableInstance;
+    readonly firstUniqueAncestorSecurableObject: _SPInstance;
     getUserEffectivePermissions(loginName: string): Promise<IBasePermissions>;
     getCurrentUserEffectivePermissions(): Promise<IBasePermissions>;
     breakRoleInheritance(copyRoleAssignments?: boolean, clearSubscopes?: boolean): Promise<any>;

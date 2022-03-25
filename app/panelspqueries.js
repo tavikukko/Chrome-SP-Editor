@@ -1,13 +1,13 @@
-var pnp = "var speditorpnp = '" + chrome.extension.getURL('app/js/pnpjs.es5.umd.bundle.js') + "';";
+var pnp = "var speditorpnp = '" + chrome.extension.getURL('app/js/sp.es5.umd.bundle.js') + "';";
 var sj = "var sj = '" + chrome.extension.getURL('app/js/system.js') + "';";
 var alertify = "var alertify = '" + chrome.extension.getURL('app/js/alertify.js') + "';";
 
-var mod_common = "var mod_common = '" + chrome.extension.getURL('app/js/common.es5.umd.bundle.js') + "';";
+var mod_core = "var mod_core = '" + chrome.extension.getURL('app/js/core.es5.umd.bundle.js') + "';";
 var mod_config = "var mod_config = '" + chrome.extension.getURL('app/js/config-store.es5.umd.bundle.js') + "';";
 var mod_graph = "var mod_graph = '" + chrome.extension.getURL('app/js/graph.es5.umd.bundle.js') + "';";
 var mod_logging = "var mod_logging = '" + chrome.extension.getURL('app/js/logging.es5.umd.bundle.js') + "';";
-var mod_adaljs = "var mod_adaljs = '" + chrome.extension.getURL('app/js/adaljsclient.es5.umd.bundle.js') + "';";
-var mod_odata = "var mod_odata = '" + chrome.extension.getURL('app/js/odata.es5.umd.bundle.js') + "';";
+var mod_msaljsclient = "var mod_msaljsclient = '" + chrome.extension.getURL('app/js/msaljsclient.es5.umd.bundle.js') + "';";
+var mod_queryable = "var mod_queryable = '" + chrome.extension.getURL('app/js/queryable.es5.umd.bundle.js') + "';";
 var mod_pnpjs = "var mod_pnpjs = '" + chrome.extension.getURL('app/js/pnpjs.es5.umd.bundle.js') + "';";
 var mod_addin = "var mod_addin = '" + chrome.extension.getURL('app/js/sp-addinhelpers.es5.umd.bundle.js') + "';";
 var mod_client = "var mod_client = '" + chrome.extension.getURL('app/js/sp-clientsvc.es5.umd.bundle.js') + "';";
@@ -18,26 +18,26 @@ var mod_graph_sdk = "var mod_graph_sdk = '" + chrome.extension.getURL('app/js/gr
 
 // getCustomActions
 var getCustomActions = function getCustomActions() {
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify), SystemJS.import(mod_queryable)]).then(function (modules) {
     var $pnp = modules[0];
-    var alertify = modules[1];
+    var $queryable = modules[2];
 
-    $pnp.setup({
-      sp: {
-        headers: {
-          "Accept": "application/json; odata=verbose",
-          "Cache-Control": "no-cache",
-          "X-ClientService-ClientTag": "SPEDITOR"
-        }
-      }
-    });
+
+    const sp = $pnp.spfi().using($pnp.SPBrowser({ baseUrl: _spPageContextInfo.webAbsoluteUrl }))
+      .using($queryable.InjectHeaders({
+        "Accept": "application/json; odata=verbose",
+        "Cache-Control": "no-cache",
+        "X-ClientService-ClientTag": "SPEDITOR"
+      }));
+
+      console.log($pnp.DefaultHeaders())
 
     var promises = [];
     var webactions = [];
     var siteactions = [];
 
-    promises.push($pnp.sp.site.userCustomActions.get());
-    promises.push($pnp.sp.web.userCustomActions.get());
+    promises.push(sp.site.userCustomActions());
+    promises.push(sp.web.userCustomActions());
     Promise.all(promises).then(promise => {
       promise.forEach(function (actions) {
         actions.forEach(function (action) {
@@ -105,16 +105,14 @@ var updateSchemaForWeb = function updateSchemaForWeb() {
   Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
     var $pnp = modules[0];
     var alertify = modules[1];
+    var $core = modules[2];    
 
-    $pnp.setup({
-      sp: {
-        headers: {
-          "Accept": "application/json; odata=verbose",
-          "Cache-Control": "no-cache",
-          "X-ClientService-ClientTag": "SPEDITOR"
-        }
-      }
-    });
+    const sp = $pnp.spfi().using($pnp.SPBrowser({ baseUrl: _spPageContextInfo.webAbsoluteUrl }))
+      .using($core.InjectHeaders({
+        "Accept": "application/json; odata=verbose",
+        "Cache-Control": "no-cache",
+        "X-ClientService-ClientTag": "SPEDITOR"
+      }));
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -224,22 +222,20 @@ var addCustomAction = function addCustomAction() {
 
   var querystrings = "";
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify), SystemJS.import(mod_queryable)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+    var $queryable = modules[2];
+
+    const sp = $pnp.spfi().using($pnp.SPBrowser({ baseUrl: _spPageContextInfo.webAbsoluteUrl }))
+      .using($queryable.InjectHeaders({
+        "Accept": "application/json; odata=verbose",
+        "Cache-Control": "no-cache",
+        "X-ClientService-ClientTag": "SPEDITOR"
+      }));
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
-
-    $pnp.setup({
-      sp: {
-        headers: {
-          "Accept": "application/json; odata=verbose",
-          "Cache-Control": "no-cache",
-          "X-ClientService-ClientTag": "SPEDITOR"
-        }
-      }
-    });
 
     if (url.split("?").length > 1) {
       querystrings = '?' + url.split("?")[1];
@@ -279,7 +275,7 @@ var addCustomAction = function addCustomAction() {
 
     alertify.delay(5000).log("Adding scriptLink...");
     if (scope === 'site')
-      $pnp.sp.site.userCustomActions.add(payload)
+      sp.site.userCustomActions.add(payload)
         .then(function (result) {
           alertify.delay(5000).success("ScriptLink added successfully!");
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
@@ -291,7 +287,7 @@ var addCustomAction = function addCustomAction() {
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: false, result: error, source: 'chrome-sp-editor' }), '*');
         });
     else
-      $pnp.sp.web.userCustomActions.add(payload)
+      sp.web.userCustomActions.add(payload)
         .then(function (result) {
           alertify.delay(5000).success("ScriptLink added successfully!");
           window.postMessage(JSON.stringify({ function: 'addCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
@@ -310,19 +306,17 @@ var removeCustomAction = function removeCustomAction() {
   var scope = arguments[1];
   var id = arguments[2]
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify), SystemJS.import(mod_queryable)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+    var $queryable = modules[2];
 
-    $pnp.setup({
-      sp: {
-        headers: {
-          "Accept": "application/json; odata=verbose",
-          "Cache-Control": "no-cache",
-          "X-ClientService-ClientTag": "SPEDITOR"
-        }
-      }
-    });
+    const sp = $pnp.spfi().using($pnp.SPBrowser({ baseUrl: _spPageContextInfo.webAbsoluteUrl }))
+      .using($queryable.InjectHeaders({
+        "Accept": "application/json; odata=verbose",
+        "Cache-Control": "no-cache",
+        "X-ClientService-ClientTag": "SPEDITOR"
+      }));
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -331,7 +325,7 @@ var removeCustomAction = function removeCustomAction() {
       alertify.delay(5000).log("Removing scriptLink...");
 
       if (scope === 'site') {
-        $pnp.sp.site.userCustomActions.getById(id).delete().then(function (result) {
+        sp.site.userCustomActions.getById(id).delete().then(function (result) {
           alertify.delay(5000).success("ScriptLink removed successfully!");
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 
@@ -345,7 +339,7 @@ var removeCustomAction = function removeCustomAction() {
         });
       }
       else {
-        $pnp.sp.web.userCustomActions.getById(id).delete().then(function (result) {
+        sp.web.userCustomActions.getById(id).delete().then(function (result) {
           alertify.delay(5000).success("ScriptLink removed successfully!");
           window.postMessage(JSON.stringify({ function: 'removeCustomAction', success: true, result: null, source: 'chrome-sp-editor' }), '*');
 
@@ -367,19 +361,17 @@ var removeCustomAction = function removeCustomAction() {
 // add new file to root site Style Library
 var addFile = function addFile() {
   var filename = arguments[1];
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify), SystemJS.import(mod_queryable)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+    var $queryable = modules[2];
 
-    $pnp.setup({
-      sp: {
-        headers: {
-          "Accept": "application/json; odata=verbose",
-          "Cache-Control": "no-cache",
-          "X-ClientService-ClientTag": "SPEDITOR"
-        }
-      }
-    });
+    const sp = $pnp.spfi().using($pnp.SPBrowser({ baseUrl: _spPageContextInfo.webAbsoluteUrl }))
+      .using($queryable.InjectHeaders({
+        "Accept": "application/json; odata=verbose",
+        "Cache-Control": "no-cache",
+        "X-ClientService-ClientTag": "SPEDITOR"
+      }));
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -390,7 +382,7 @@ var addFile = function addFile() {
     for (var i = 0; i < contentStr.length; i++)
       contentBytes[i] = contentStr.charCodeAt(i);
 
-    $pnp.sp.site.rootWeb.getFolderByServerRelativeUrl("Style Library").files.add(filename, contentBytes).then(function (result) {
+    sp.site.rootWeb.getFolderByServerRelativePath("Style Library").files.addUsingPath(filename, contentBytes).then(function (result) {
       alertify.delay(5000).success("File added successfully!");
       window.postMessage(JSON.stringify({ function: 'addFile', success: true, result: null, source: 'chrome-sp-editor' }), '*');
     }).catch(function (error) {
@@ -406,24 +398,22 @@ var addFile = function addFile() {
 
 // getWebProperties
 var getWebProperties = function getWebProperties() {
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then(function (modules) {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify), SystemJS.import(mod_queryable)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+    var $queryable = modules[2];
 
-    $pnp.setup({
-      sp: {
-        headers: {
-          "Accept": "application/json; odata=verbose",
-          "Cache-Control": "no-cache",
-          "X-ClientService-ClientTag": "SPEDITOR"
-        }
-      }
-    });
+    const sp = $pnp.spfi().using($pnp.SPBrowser({ baseUrl: _spPageContextInfo.webAbsoluteUrl }))
+      .using($queryable.InjectHeaders({
+        "Accept": "application/json; odata=verbose",
+        "Cache-Control": "no-cache",
+        "X-ClientService-ClientTag": "SPEDITOR"
+      }));
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
 
-    $pnp.sp.web.select('AllProperties').expand('AllProperties').get().then(function (result) {
+    sp.web.select('AllProperties').expand('AllProperties')().then(function (result) {
 
       var compare = function compare(a, b) {
         if (a.prop.toLowerCase() < b.prop.toLowerCase())
@@ -469,19 +459,17 @@ var addWebProperties = function addWebProperties() {
   var prop = arguments[1];
   var value = arguments[2];
 
-  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify)]).then((modules) => {
+  Promise.all([SystemJS.import(speditorpnp), SystemJS.import(alertify), SystemJS.import(mod_queryable)]).then(function (modules) {
     var $pnp = modules[0];
     var alertify = modules[1];
+    var $queryable = modules[2];
 
-    $pnp.setup({
-      sp: {
-        headers: {
-          "Accept": "application/json; odata=verbose",
-          "Cache-Control": "no-cache",
-          "X-ClientService-ClientTag": "SPEDITOR"
-        }
-      }
-    });
+    const sp = $pnp.spfi().using($pnp.SPBrowser({ baseUrl: _spPageContextInfo.webAbsoluteUrl }))
+      .using($queryable.InjectHeaders({
+        "Accept": "application/json; odata=verbose",
+        "Cache-Control": "no-cache",
+        "X-ClientService-ClientTag": "SPEDITOR"
+      }));
 
     alertify.logPosition('bottom right');
     alertify.maxLogItems(2);
@@ -490,9 +478,9 @@ var addWebProperties = function addWebProperties() {
 
     var webid = "";
     var siteid = "";
-    $pnp.sp.site.get().then((data) => {
+    sp.site().then((data) => {
       siteid = data.Id;
-      $pnp.sp.web.get().then((data) => {
+      sp.web().then((data) => {
         webid = data.Id;
 
         var endpoint = _spPageContextInfo.webAbsoluteUrl + '/_vti_bin/client.svc/ProcessQuery';

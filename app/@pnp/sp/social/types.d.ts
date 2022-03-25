@@ -1,6 +1,5 @@
-import { _SharePointQueryableInstance, ISharePointQueryable } from "../sharepointqueryable.js";
-import { IQueryable } from "@pnp/odata";
-export declare class _Social extends _SharePointQueryableInstance implements ISocial {
+import { _SPInstance, ISPQueryable, SPInit } from "../spqueryable.js";
+export declare class _Social extends _SPInstance implements ISocial {
     get my(): IMySocial;
     getFollowedSitesUri(): Promise<string>;
     getFollowedDocumentsUri(): Promise<string>;
@@ -9,6 +8,23 @@ export declare class _Social extends _SharePointQueryableInstance implements ISo
     stopFollowing(actorInfo: ISocialActorInfo): Promise<void>;
     private createSocialActorInfoRequestBody;
 }
+/**
+ * Get a new Social instance for the particular Url
+ */
+export declare const Social: (baseUrl: SPInit) => ISocial;
+/**
+ * Current user's Social instance
+ */
+export declare class _MySocial extends _SPInstance {
+    followed(types: SocialActorTypes): Promise<ISocialActor[]>;
+    followedCount(types: SocialActorTypes): Promise<number>;
+    followers(): Promise<ISocialActor[]>;
+    suggestions(): Promise<ISocialActor[]>;
+}
+/**
+ * Invokable factory for IMySocial instances
+ */
+export declare const MySocial: (baseUrl: string | ISPQueryable, path?: string) => IMySocial;
 /**
  * Describes the public methods for the Social interface
  */
@@ -45,55 +61,34 @@ export interface ISocial {
     stopFollowing(actorInfo: ISocialActorInfo): Promise<void>;
 }
 /**
- * Get a new Social instance for the particular Url
- */
-export declare const Social: (baseUrl: string | ISharePointQueryable) => ISocial & Pick<IQueryable<any>, "configure" | "setRuntime" | "getRuntime">;
-/**
- * Current user's Social instance
- */
-export declare class _MySocial extends _SharePointQueryableInstance implements IMySocial {
-    followed(types: SocialActorTypes): Promise<ISocialActor[]>;
-    followedCount(types: SocialActorTypes): Promise<number>;
-    followers(): Promise<ISocialActor[]>;
-    suggestions(): Promise<ISocialActor[]>;
-}
-/**
  * Defines the public methods exposed by the my endpoint
  */
 export interface IMySocial {
     /**
-   * Allow access to the v2 invokable
-   */
+     * Allow access to the v2 invokable
+     */
     (this: IMySocial): Promise<IMySocialData>;
     /**
-   * Gets this user's data
-   */
-    get(): Promise<IMySocialData>;
-    /**
-   * Gets users, documents, sites, and tags that the current user is following.
-   *
-   * @param types Bitwise set of SocialActorTypes to retrieve
-   */
+     * Gets users, documents, sites, and tags that the current user is following.
+     *
+     * @param types Bitwise set of SocialActorTypes to retrieve
+     */
     followed(types: SocialActorTypes): Promise<ISocialActor[]>;
     /**
-   * Gets the count of users, documents, sites, and tags that the current user is following.
-   *
-   * @param types Bitwise set of SocialActorTypes to retrieve
-   */
+     * Gets the count of users, documents, sites, and tags that the current user is following.
+     *
+     * @param types Bitwise set of SocialActorTypes to retrieve
+     */
     followedCount(types: SocialActorTypes): Promise<number>;
     /**
-   * Gets the users who are following the current user.
-   */
+     * Gets the users who are following the current user.
+     */
     followers(): Promise<ISocialActor[]>;
     /**
-   * Gets users who the current user might want to follow.
-   */
+     * Gets users who the current user might want to follow.
+     */
     suggestions(): Promise<ISocialActor[]>;
 }
-/**
- * Invokable factory for IMySocial instances
- */
-export declare const MySocial: import("../sharepointqueryable.js").ISPInvokableFactory<IMySocial>;
 /**
  * Social actor info
  *

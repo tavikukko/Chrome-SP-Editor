@@ -1,5 +1,5 @@
 import { SearchRequest as ISearchRequestType, SearchResponse as ISearchResponseType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableInstance } from "../graphqueryable.js";
+import { GraphInit, _GraphQueryableInstance } from "../graphqueryable.js";
 /**
  * Search
  */
@@ -13,5 +13,5 @@ export interface ISearch {
         requests: ISearchRequestType[];
     }): Promise<ISearchResponseType[]>;
 }
-export declare const Search: (baseUrl: string | import("../graphqueryable.js").IGraphQueryable<any>, path?: string) => ISearch & import("@pnp/odata").IInvokable<any>;
+export declare const Search: (base: GraphInit, path?: string) => ISearch;
 //# sourceMappingURL=types.d.ts.map

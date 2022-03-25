@@ -73,8 +73,8 @@ module.exports = [{
   },
 },
 {
-  // sp-addinhelpers.es5.umd.bundle.js
-  entry: "./pnpjs-sources/index-sp-addinhelpers.ts",
+  // queryable.es5.umd.bundle.js
+  entry: "./pnpjs-sources/index-queryable.ts",
   mode: "production",
   module: {
     rules: [
@@ -94,45 +94,8 @@ module.exports = [{
     ]
   },
   output: {
-    filename: "sp-addinhelpers.es5.umd.bundle.js",
-    library: "pnp.sp-addinhelpers",
-    libraryTarget: "umd",
-  },
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json"],
-  },
-  stats: {
-    assets: false,
-    colors: true,
-  },
-  optimization: {
-    minimize: false
-  },
-},
-{
-  // odata.es5.umd.bundle.js
-  entry: "./pnpjs-sources/index-odata.ts",
-  mode: "production",
-  module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        use: [{
-          loader: "ts-loader",
-        }],
-      },
-      {
-        test: /\.m?js/,
-        resolve: {
-          fullySpecified: false
-        },
-        type: "javascript/auto",
-      },
-    ]
-  },
-  output: {
-    filename: "odata.es5.umd.bundle.js",
-    library: "pnp.odata",
+    filename: "queryable.es5.umd.bundle.js",
+    library: "pnp.queryable",
     libraryTarget: "umd",
   },
   resolve: {
@@ -184,8 +147,8 @@ module.exports = [{
   },
 },
 {
-  // config-store.es5.umd.bundle.js
-  entry: "./pnpjs-sources/index-config-store.ts",
+  // core.es5.umd.bundle.js
+  entry: "./pnpjs-sources/index-core.ts",
   mode: "production",
   module: {
     rules: [
@@ -205,8 +168,8 @@ module.exports = [{
     ]
   },
   output: {
-    filename: "config-store.es5.umd.bundle.js",
-    library: "pnp.config-store",
+    filename: "core.es5.umd.bundle.js",
+    library: "pnp.core",
     libraryTarget: "umd",
   },
   resolve: {
@@ -221,8 +184,8 @@ module.exports = [{
   },
 },
 {
-  // common.es5.umd.bundle.js
-  entry: "./pnpjs-sources/index-common.ts",
+  // msaljsclient.es5.umd.bundle.js
+  entry: "./pnpjs-sources/index-msaljsclient.ts",
   mode: "production",
   module: {
     rules: [
@@ -242,82 +205,8 @@ module.exports = [{
     ]
   },
   output: {
-    filename: "common.es5.umd.bundle.js",
-    library: "pnp.common",
-    libraryTarget: "umd",
-  },
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json"],
-  },
-  stats: {
-    assets: false,
-    colors: true,
-  },
-  optimization: {
-    minimize: false
-  },
-},
-{
-  // adaljsclient.es5.umd.bundle.js
-  entry: "./pnpjs-sources/index-adaljsclient.ts",
-  mode: "production",
-  module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        use: [{
-          loader: "ts-loader",
-        }],
-      },
-      {
-        test: /\.m?js/,
-        resolve: {
-          fullySpecified: false
-        },
-        type: "javascript/auto",
-      },
-    ]
-  },
-  output: {
-    filename: "adaljsclient.es5.umd.bundle.js",
-    library: "pnp.adaljsclient",
-    libraryTarget: "umd",
-  },
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json"],
-  },
-  stats: {
-    assets: false,
-    colors: true,
-  },
-  optimization: {
-    minimize: false
-  },
-},
-{
-  // pnpjs.es5.umd.bundle.js
-  entry: "./pnpjs-sources/index-pnpjs.ts",
-  mode: "production",
-  module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        use: [{
-          loader: "ts-loader",
-        }],
-      },
-      {
-        test: /\.m?js/,
-        resolve: {
-          fullySpecified: false
-        },
-        type: "javascript/auto",
-      },
-    ]
-  },
-  output: {
-    filename: "pnpjs.es5.umd.bundle.js",
-    library: "pnp",
+    filename: "msaljsclient.es5.umd.bundle.js",
+    library: "pnp.msaljsclient",
     libraryTarget: "umd",
   },
   resolve: {

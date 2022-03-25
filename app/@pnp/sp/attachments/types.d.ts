@@ -1,5 +1,5 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteableWithETag } from "../sharepointqueryable.js";
-export declare class _Attachments extends _SharePointQueryableCollection<IAttachmentInfo[]> {
+import { IDeleteableWithETag, _SPCollection, _SPInstance } from "../spqueryable.js";
+export declare class _Attachments extends _SPCollection<IAttachmentInfo[]> {
     /**
     * Gets a Attachment File by filename
     *
@@ -13,30 +13,12 @@ export declare class _Attachments extends _SharePointQueryableCollection<IAttach
      * @param content The Base64 file content.
      */
     add(name: string, content: string | Blob | ArrayBuffer): Promise<IAttachmentAddResult>;
-    /**
-     * Adds multiple new attachment to the collection. Not supported for batching.
-     *
-     * @param files The collection of files to add
-     */
-    addMultiple(files: IAttachmentFileInfo[]): Promise<void>;
-    /**
-     * Delete multiple attachments from the collection. Not supported for batching.
-     *
-     * @param files The collection of files to delete
-     */
-    deleteMultiple(...files: string[]): Promise<void>;
-    /**
-     * Delete multiple attachments from the collection and send to recycle bin. Not supported for batching.
-     *
-     * @param files The collection of files to be deleted and sent to recycle bin
-     */
-    recycleMultiple(...files: string[]): Promise<void>;
 }
 export interface IAttachments extends _Attachments {
 }
-export declare const Attachments: import("../sharepointqueryable.js").ISPInvokableFactory<IAttachments>;
-export declare class _Attachment extends _SharePointQueryableInstance<IAttachmentInfo> {
-    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>, eTag?: string) => Promise<void>;
+export declare const Attachments: import("../spqueryable.js").ISPInvokableFactory<IAttachments>;
+export declare class _Attachment extends _SPInstance<IAttachmentInfo> {
+    delete: (this: import("../spqueryable.js").ISPQueryable<any>, eTag?: string) => Promise<void>;
     /**
      * Gets the contents of the file as text
      *
@@ -71,7 +53,7 @@ export declare class _Attachment extends _SharePointQueryableInstance<IAttachmen
 }
 export interface IAttachment extends _Attachment, IDeleteableWithETag {
 }
-export declare const Attachment: import("../sharepointqueryable.js").ISPInvokableFactory<IAttachment>;
+export declare const Attachment: import("../spqueryable.js").ISPInvokableFactory<IAttachment>;
 export interface IAttachmentAddResult {
     file: IAttachment;
     data: IAttachmentFileInfo;

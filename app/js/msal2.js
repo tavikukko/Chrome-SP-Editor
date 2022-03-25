@@ -1,4 +1,4 @@
-/*! msal v1.4.15 2021-11-02 */
+/*! msal v1.4.16 2022-02-08 */
 'use strict';
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -1497,6 +1497,7 @@ var UserAgentApplication = /** @class */ (function () {
     };
     UserAgentApplication.prototype.authResponseHandler = function (interactionType, response, resolve) {
         this.logger.verbose("AuthResponseHandler has been called");
+        this.cacheStorage.setInteractionInProgress(false);
         if (interactionType === Constants_1.Constants.interactionTypeRedirect) {
             this.logger.verbose("Interaction type is redirect");
             if (this.errorReceivedCallback) {
@@ -1633,17 +1634,19 @@ var UserAgentApplication = /** @class */ (function () {
         this.logger.verbose("AcquireTokenInteractive has been called");
         // block the request if made from the hidden iframe
         WindowUtils_1.WindowUtils.blockReloadInHiddenIframes();
-        var interactionProgress = this.cacheStorage.isInteractionInProgress(false);
-        if (interactionType === Constants_1.Constants.interactionTypeRedirect) {
-            this.cacheStorage.setItem(Constants_1.TemporaryCacheKeys.REDIRECT_REQUEST, "" + Constants_1.Constants.inProgress + Constants_1.Constants.resourceDelimiter + request.state);
+        try {
+            this.cacheStorage.setInteractionInProgress(true);
         }
-        // If already in progress, do not proceed
-        if (interactionProgress) {
+        catch (e) {
+            // If already in progress, do not proceed
             var thrownError = isLoginCall ? ClientAuthError_1.ClientAuthError.createLoginInProgressError() : ClientAuthError_1.ClientAuthError.createAcquireTokenInProgressError();
             var stateOnlyResponse = AuthResponse_1.buildResponseStateOnly(this.getAccountState(request.state));
             this.cacheStorage.resetTempCacheItems(request.state);
             this.authErrorHandler(interactionType, thrownError, stateOnlyResponse, reject);
             return;
+        }
+        if (interactionType === Constants_1.Constants.interactionTypeRedirect) {
+            this.cacheStorage.setItem(Constants_1.TemporaryCacheKeys.REDIRECT_REQUEST, "" + Constants_1.Constants.inProgress + Constants_1.Constants.resourceDelimiter + request.state);
         }
         // Get the account object if a session exists
         var account;
@@ -1713,8 +1716,6 @@ var UserAgentApplication = /** @class */ (function () {
                     case 0:
                         this.logger.verbose("AcquireTokenHelper has been called");
                         this.logger.verbose("Interaction type: " + interactionType + ". isLoginCall: " + isLoginCall);
-                        // Track the acquireToken progress
-                        this.cacheStorage.setInteractionInProgress(true);
                         requestSignature = request.scopes ? request.scopes.join(" ").toLowerCase() : Constants_1.Constants.oidcScopes.join(" ");
                         this.logger.verbosePii("Request signature: " + requestSignature);
                         acquireTokenAuthority = (request && request.authority) ? AuthorityFactory_1.AuthorityFactory.CreateInstance(request.authority, this.config.auth.validateAuthority, request.authorityMetadata) : this.authorityInstance;
@@ -4012,6 +4013,7 @@ var BrowserStorage_1 = __webpack_require__(96);
 var RequestUtils_1 = __webpack_require__(52);
 var StringUtils_1 = __webpack_require__(454);
 var IdToken_1 = __webpack_require__(881);
+var ClientAuthError_1 = __webpack_require__(356);
 /**
  * @hidden
  */
@@ -4300,9 +4302,14 @@ var AuthCache = /** @class */ (function (_super) {
      * @param isInProgress
      */
     AuthCache.prototype.setInteractionInProgress = function (newInProgressValue) {
-        if (newInProgressValue && !this.isInteractionInProgress(false)) {
-            // Ensure we don't overwrite interaction in progress for a different clientId
-            this.setTemporaryItem(this.generateCacheKey(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS, false), this.clientId);
+        if (newInProgressValue) {
+            if (this.isInteractionInProgress(false)) {
+                throw ClientAuthError_1.ClientAuthError.createAcquireTokenInProgressError();
+            }
+            else {
+                // Ensure we don't overwrite interaction in progress for a different clientId
+                this.setTemporaryItem(this.generateCacheKey(Constants_1.TemporaryCacheKeys.INTERACTION_STATUS, false), this.clientId);
+            }
         }
         else if (!newInProgressValue && this.isInteractionInProgress(true)) {
             // Only remove if the current in progress interaction is for this clientId
@@ -5015,7 +5022,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.version = exports.name = void 0;
 /* eslint-disable header/header */
 exports.name = "msal";
-exports.version = "1.4.15";
+exports.version = "1.4.16";
 
 
 /***/ }),

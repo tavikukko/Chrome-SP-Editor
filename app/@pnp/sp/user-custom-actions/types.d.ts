@@ -1,7 +1,6 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable.js";
-import { ITypedHash } from "@pnp/common";
+import { _SPCollection, _SPInstance, IDeleteable } from "../spqueryable.js";
 import { IBasePermissions } from "../security/index.js";
-export declare class _UserCustomActions extends _SharePointQueryableCollection<IUserCustomActionInfo[]> {
+export declare class _UserCustomActions extends _SPCollection<IUserCustomActionInfo[]> {
     /**
      * Returns the user custom action with the specified id
      *
@@ -13,7 +12,7 @@ export declare class _UserCustomActions extends _SharePointQueryableCollection<I
      *
      * @param properties The information object of property names and values which define the new user custom action
      */
-    add(properties: ITypedHash<any>): Promise<IUserCustomActionAddResult>;
+    add(properties: Partial<IUserCustomActionInfo>): Promise<IUserCustomActionAddResult>;
     /**
      * Deletes all user custom actions in the collection
      */
@@ -21,19 +20,19 @@ export declare class _UserCustomActions extends _SharePointQueryableCollection<I
 }
 export interface IUserCustomActions extends _UserCustomActions {
 }
-export declare const UserCustomActions: import("../sharepointqueryable.js").ISPInvokableFactory<IUserCustomActions>;
-export declare class _UserCustomAction extends _SharePointQueryableInstance<IUserCustomActionInfo> {
-    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
+export declare const UserCustomActions: import("../spqueryable.js").ISPInvokableFactory<IUserCustomActions>;
+export declare class _UserCustomAction extends _SPInstance<IUserCustomActionInfo> {
+    delete: (this: import("../spqueryable.js").ISPQueryable<any>) => Promise<void>;
     /**
     * Updates this user custom action with the supplied properties
     *
     * @param properties An information object of property names and values to update for this user custom action
     */
-    update: any;
+    update(props: Partial<IUserCustomActionInfo>): Promise<IUserCustomActionUpdateResult>;
 }
 export interface IUserCustomAction extends _UserCustomAction, IDeleteable {
 }
-export declare const UserCustomAction: import("../sharepointqueryable.js").ISPInvokableFactory<IUserCustomAction>;
+export declare const UserCustomAction: import("../spqueryable.js").ISPInvokableFactory<IUserCustomAction>;
 /**
  * Result from adding a user custom action
  */

@@ -1,8 +1,7 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, IDeleteable } from "../sharepointqueryable.js";
+import { _SPCollection, _SPInstance, IDeleteable } from "../spqueryable.js";
 import { ISiteGroups } from "../site-groups/types.js";
-import { ITypedHash } from "@pnp/common";
 import { PrincipalType } from "../types.js";
-export declare class _SiteUsers extends _SharePointQueryableCollection<ISiteUserInfo[]> {
+export declare class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
     /**
      * Gets a user from the collection by id
      *
@@ -43,28 +42,28 @@ export declare class _SiteUsers extends _SharePointQueryableCollection<ISiteUser
 }
 export interface ISiteUsers extends _SiteUsers {
 }
-export declare const SiteUsers: import("../sharepointqueryable.js").ISPInvokableFactory<ISiteUsers>;
+export declare const SiteUsers: import("../spqueryable.js").ISPInvokableFactory<ISiteUsers>;
 /**
  * Describes a single user
  *
  */
-export declare class _SiteUser extends _SharePointQueryableInstance<ISiteUserInfo> {
-    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
+export declare class _SiteUser extends _SPInstance<ISiteUserInfo> {
+    delete: (this: import("../spqueryable.js").ISPQueryable<any>) => Promise<void>;
     /**
      * Gets the groups for this user
      *
      */
     get groups(): ISiteGroups;
     /**
-    * Updates this user instance with the supplied properties
-    *
-    * @param properties A plain object of property names and values to update for the user
-    */
-    update: (props: ITypedHash<any>) => Promise<IUserUpdateResult>;
+     * Updates this user
+     *
+     * @param props Group properties to update
+     */
+    update(props: Partial<ISiteUserInfo>): Promise<IUserUpdateResult>;
 }
 export interface ISiteUser extends _SiteUser, IDeleteable {
 }
-export declare const SiteUser: import("../sharepointqueryable.js").ISPInvokableFactory<ISiteUser>;
+export declare const SiteUser: import("../spqueryable.js").ISPInvokableFactory<ISiteUser>;
 export interface ISiteUserInfo extends ISiteUserProps {
     Expiration: string;
     IsEmailAuthenticationGuestUser: boolean;

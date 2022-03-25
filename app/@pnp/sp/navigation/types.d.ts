@@ -1,9 +1,9 @@
-import { _SharePointQueryableInstance, _SharePointQueryableCollection, _SharePointQueryable, IDeleteable } from "../sharepointqueryable.js";
+import { _SPCollection, _SPInstance, _SPQueryable, IDeleteable, ISPQueryable } from "../spqueryable.js";
 /**
  * Represents a collection of navigation nodes
  *
  */
-export declare class _NavigationNodes extends _SharePointQueryableCollection<INavNodeInfo[]> {
+export declare class _NavigationNodes extends _SPCollection<INavNodeInfo[]> {
     /**
      * Gets a navigation node by id
      *
@@ -28,13 +28,13 @@ export declare class _NavigationNodes extends _SharePointQueryableCollection<INa
 }
 export interface INavigationNodes extends _NavigationNodes {
 }
-export declare const NavigationNodes: import("../sharepointqueryable.js").ISPInvokableFactory<INavigationNodes>;
+export declare const NavigationNodes: import("../spqueryable.js").ISPInvokableFactory<INavigationNodes>;
 /**
  * Represents an instance of a navigation node
  *
  */
-export declare class _NavigationNode extends _SharePointQueryableInstance<INavNodeInfo> {
-    delete: (this: import("../sharepointqueryable.js").ISharePointQueryable<any>) => Promise<void>;
+export declare class _NavigationNode extends _SPInstance<INavNodeInfo> {
+    delete: (this: ISPQueryable<any>) => Promise<void>;
     /**
      * Represents the child nodes of this node
      */
@@ -48,7 +48,7 @@ export declare class _NavigationNode extends _SharePointQueryableInstance<INavNo
 }
 export interface INavigationNode extends _NavigationNode, IDeleteable {
 }
-export declare const NavigationNode: import("../sharepointqueryable.js").ISPInvokableFactory<INavigationNode>;
+export declare const NavigationNode: import("../spqueryable.js").ISPInvokableFactory<INavigationNode>;
 export interface INavNodeUpdateResult {
     data: any;
     node: INavigationNode;
@@ -57,7 +57,7 @@ export interface INavNodeUpdateResult {
  * Exposes the navigation components
  *
  */
-export declare class _Navigation extends _SharePointQueryable {
+export declare class _Navigation extends _SPQueryable {
     /**
      * Gets the quicklaunch navigation nodes for the current context
      *
@@ -73,12 +73,12 @@ export interface INavigation {
     readonly quicklaunch: INavigationNodes;
     readonly topNavigationBar: INavigationNodes;
 }
-export declare const Navigation: import("../sharepointqueryable.js").ISPInvokableFactory<INavigation>;
+export declare const Navigation: INavigation;
 /**
  * Represents the top level navigation service
  */
-export declare class _NavigationService extends _SharePointQueryable {
-    constructor(path?: string);
+export declare class _NavigationService extends _SPQueryable {
+    constructor(base?: string | ISPQueryable, path?: string);
     /**
      * The MenuState service operation returns a Menu-State (dump) of a SiteMapProvider on a site.
      *
@@ -98,7 +98,7 @@ export declare class _NavigationService extends _SharePointQueryable {
 }
 export interface INavigationService extends _NavigationService {
 }
-export declare const NavigationService: (path?: string) => INavigationService;
+export declare const NavigationService: (base?: string | ISPQueryable, path?: string) => INavigationService;
 export interface IMenuNode {
     CustomProperties: any[];
     FriendlyUrlSegment: string;

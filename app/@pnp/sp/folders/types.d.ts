@@ -1,20 +1,13 @@
-import { ITypedHash } from "@pnp/common";
-import { _SharePointQueryableInstance, ISharePointQueryableCollection, _SharePointQueryableCollection, ISharePointQueryableInstance, ISharePointQueryable, IDeleteableWithETag } from "../sharepointqueryable.js";
+import { _SPCollection, _SPInstance, ISPInstance, IDeleteableWithETag } from "../spqueryable.js";
 import { IItem } from "../items/types.js";
-import { IResourcePath } from "../utils/toResourcePath.js";
-export declare class _Folders extends _SharePointQueryableCollection<IFolderInfo[]> {
+import { IResourcePath } from "../utils/to-resource-path.js";
+export declare class _Folders extends _SPCollection<IFolderInfo[]> {
     /**
      * Gets a folder by it's name
      *
      * @param name Folder's name
      */
-    getByName(name: string): IFolder;
-    /**
-     * Adds a new folder at the specified URL
-     *
-     * @param url
-     */
-    add(url: string): Promise<IFolderAddResult>;
+    getByUrl(name: string): IFolder;
     /**
      * Adds a new folder by path and should be prefered over add
      *
@@ -25,14 +18,9 @@ export declare class _Folders extends _SharePointQueryableCollection<IFolderInfo
 }
 export interface IFolders extends _Folders {
 }
-export declare const Folders: import("../sharepointqueryable.js").ISPInvokableFactory<IFolders>;
-export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
-    delete: (this: ISharePointQueryable<any>, eTag?: string) => Promise<void>;
-    /**
-     * Specifies the sequence in which content types are displayed.
-     *
-     */
-    get contentTypeOrder(): ISharePointQueryableCollection;
+export declare const Folders: import("../spqueryable.js").ISPInvokableFactory<IFolders>;
+export declare class _Folder extends _SPInstance<IFolderInfo> {
+    delete: (this: import("../spqueryable.js").ISPQueryable<any>, eTag?: string) => Promise<void>;
     /**
      * Gets this folder's sub folders
      *
@@ -42,7 +30,7 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      * Gets this folder's list item field values
      *
      */
-    get listItemAllFields(): ISharePointQueryableInstance;
+    get listItemAllFields(): ISPInstance;
     /**
      * Gets the parent folder, if available
      *
@@ -52,22 +40,12 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      * Gets this folder's properties
      *
      */
-    get properties(): ISharePointQueryableInstance;
-    /**
-     * Gets this folder's server relative url
-     *
-     */
-    get serverRelativeUrl(): ISharePointQueryable;
-    /**
-     * Gets a value that specifies the content type order.
-     *
-     */
-    get uniqueContentTypeOrder(): ISharePointQueryableCollection;
+    get properties(): ISPInstance;
     /**
      * Updates folder's properties
      * @param props Folder's properties to update
      */
-    update: (props: ITypedHash<any>) => Promise<IFolderUpdateResult>;
+    update(props: Partial<IFolderInfo>): Promise<IFolderUpdateResult>;
     /**
      * Moves the folder to the Recycle Bin and returns the identifier of the new Recycle Bin item.
      */
@@ -77,12 +55,6 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      */
     getItem<T>(...selects: string[]): Promise<IItem & T>;
     /**
-     * Moves a folder to destination path
-     *
-     * @param destUrl Absolute or relative URL of the destination path
-     */
-    moveTo(destUrl: string): Promise<void>;
-    /**
      * Moves a folder by path to destination path
      * Also works with different site collections.
      *
@@ -90,12 +62,6 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
      * @param keepBoth Keep both if folder with the same name in the same location already exists?
      */
     moveByPath(destUrl: string, KeepBoth?: boolean): Promise<void>;
-    /**
-     * Copies a folder to destination path
-     *
-     * @param destUrl Absolute or relative URL of the destination path
-     */
-    copyTo(destUrl: string): Promise<void>;
     /**
      * Copies a folder by path to destination path
      * Also works with different site collections.
@@ -127,7 +93,7 @@ export declare class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 }
 export interface IFolder extends _Folder, IDeleteableWithETag {
 }
-export declare const Folder: import("../sharepointqueryable.js").ISPInvokableFactory<IFolder>;
+export declare const Folder: import("../spqueryable.js").ISPInvokableFactory<IFolder>;
 /**
  * Describes result of adding a folder
  */
