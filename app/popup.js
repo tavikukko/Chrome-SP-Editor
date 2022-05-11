@@ -166,7 +166,8 @@ riot.tag("spquicklinks", `
             if (appCatalogUrl && appCatalogUrl.indexOf("undefined") === -1) {
               var index = that.links.findIndex(l => l.title === "Search administration");
               var i = index > -1 ? index + 1 : 6
-              that.links.splice(i, 0, { title: "App Catalog", url: `${appCatalogUrl}/AppCatalog/Forms/AllItems.aspx`, target: "_blank", css: "pointer-cursor" });
+              that.links.splice(i, 0, { title: "Modern App Catalog" , url: `${appCatalogUrl}/_layouts/15/tenantAppCatalog.aspx/manageApps`, target: "_blank", css: "pointer-cursor" });
+              that.links.splice(i + 1, 0, { title: "App Catalog", url: `${appCatalogUrl}/AppCatalog/Forms/AllItems.aspx`, target: "_blank", css: "pointer-cursor" });
               that.update();
             }
           });
