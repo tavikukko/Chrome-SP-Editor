@@ -2,7 +2,7 @@
   "_args": [
     [
       "monaco-editor@0.30.1",
-      "/Users/tomi/development/Chrome-SP-Editor"
+      "/Users/tomitavela/development/Chrome-SP-Editor"
     ]
   ],
   "_development": true,
@@ -27,7 +27,7 @@
   ],
   "_resolved": "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.30.1.tgz",
   "_spec": "0.30.1",
-  "_where": "/Users/tomi/development/Chrome-SP-Editor",
+  "_where": "/Users/tomitavela/development/Chrome-SP-Editor",
   "author": {
     "name": "Microsoft Corporation"
   },

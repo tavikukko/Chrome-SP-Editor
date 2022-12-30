@@ -1,13 +1,21 @@
 (function () {
 
   var getContext = function () {
+
+    var removePropertyFromObject = function (propertyName, objectToBeProcessed) {
+      let { [propertyName]: _, ...objectWithoutProperty } = objectToBeProcessed;
+      return objectWithoutProperty;
+    }
+
     if (window && window._spPageContextInfo && !window._spPageContextInfo.speditorctx) {
-      window.postMessage(JSON.stringify({ _spPageContextInfo: _spPageContextInfo }), "*");
+      var ctx = removePropertyFromObject("dataSyncClient", _spPageContextInfo)
+      window.postMessage(JSON.stringify({ _spPageContextInfo: ctx }), "*");
     } else if (window && window.moduleLoaderPromise) {
       // polyfill for _spPageContextInfo on modern sites
       window.moduleLoaderPromise.then(function (e) {
         window._spPageContextInfo = e.context._pageContext._legacyPageContext;
         window._spPageContextInfo.speditorctx = true;
+        var ctx = removePropertyFromObject("dataSyncClient", window._spPageContextInfo)
         window.postMessage(JSON.stringify({ _spPageContextInfo: window._spPageContextInfo }), "*");
       });
     } else {
