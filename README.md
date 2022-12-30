@@ -8,6 +8,9 @@ Here's a great introduction video by [Jeff Jones](http://www.spjeff.com/2017/04/
 [![](https://raw.githubusercontent.com/tavikukko/Chrome-SP-Editor/master/icons/icon-video.png)](http://www.spjeff.com/2017/04/24/video-sp-editor-chrome-extension "Introduction Video")
 
 ## Version history
+- 5.6.17
+    * Added link to Modern App Catalog, thanks [@MarkusLanger](https://github.com/MarkusLanger) for the PR!
+    * Fixed issue where in some pages SP Editor was not able to get the context, thanks [@anoopt](https://github.com/anoopt) for the fix!
 - 5.6.16
     * Updated PnPjs to 2.11.0
     * Updated monaco-editor to 0.30.1
